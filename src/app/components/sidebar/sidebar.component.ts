@@ -409,7 +409,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.PERMISSION_TO_VIEW_HISTORY = true
             console.log('[SIDEBAR] - PERMISSION_TO_VIEW_HISTORY ', this.PERMISSION_TO_VIEW_HISTORY);
           } else {
-            this.PERMISSION_TO_VIEW_MONITOR = false
+            this.PERMISSION_TO_VIEW_HISTORY = false
 
             console.log('[SIDEBAR] - PERMISSION_TO_VIEW_HISTORY ', this.PERMISSION_TO_VIEW_HISTORY);
           }
@@ -441,17 +441,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_FLOWS = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+          console.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_FLOWS = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+          console.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+          console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
         }
 
         // -------------------------------
@@ -460,17 +460,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_KB = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+          console.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_KB = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+          console.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+          console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
         }
 
         // -------------------------------
@@ -479,17 +479,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_ANALYTICS = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          console.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ANALYTICS = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          console.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
         // -------------------------------
@@ -498,17 +498,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_ACTVITIES = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+          console.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ACTVITIES = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+          console.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ACTVITIES = status.matchedPermissions.includes(PERMISSIONS.ACTIVITIES_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+          console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
         }
 
 
@@ -1922,7 +1922,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+          console.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;
