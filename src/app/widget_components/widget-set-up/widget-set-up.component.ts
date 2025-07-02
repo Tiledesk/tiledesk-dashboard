@@ -37,6 +37,7 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import emojiRegex from 'emoji-regex';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -2146,7 +2147,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   checkIsEmoji(calloutTitle) {
     this.calloutTitleForPreview = calloutTitle;
     this.callout_emoticon = null;
-    const emojiRegex = require('emoji-regex');
+    // const emojiRegex = require('emoji-regex');
 
     const regex = emojiRegex();
     let match;
