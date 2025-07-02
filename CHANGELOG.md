@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.115
+- Improves navigation performance
+
 ### 2.7.114
 - Minor improvements and bug fixing
 
