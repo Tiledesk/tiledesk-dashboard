@@ -19,6 +19,8 @@ import { RolesService } from 'app/services/roles.service';
 import { C } from '@angular/cdk/keycodes';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { browserRefresh } from 'app/app.component';
+import { ProjectUser } from 'app/models/project-user';
+
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -250,21 +252,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
 
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
+        } else {
+          this.ROLE_IS_AGENT = false;
         }
-      });
+      }
+    });
   }
 
   /**
@@ -492,7 +490,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // this.integrationSelectedName = 'none';
       // this.integrationLocked = true;
       // this.plan_require = integration.plan;
-      this.logger.log("available for plan ", integration.plan)
       this.logger.log("available for plan ", integration.plan)
     })
   }
