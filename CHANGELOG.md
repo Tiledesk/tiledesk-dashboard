@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.115-rc4
+- Adds the ability to manage the “resolve” function for  a conversation 
+- Adds the ability to manage the “send message” function
+- Improves the Domains whitelist and the check when sending messages
+
 ### 2.7.115-rc3
 - Auto closes the domains whitelist dialog when the user change route
 - Makes the domain list in the dialog "Manage Whitelisted Domains" not editable
