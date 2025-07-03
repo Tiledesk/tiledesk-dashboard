@@ -277,7 +277,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   kbNameSpaceid: string = '';
   currentProjectUser: any;
   isVisibleSupportMenu: boolean;
-  company_brand_color: string
+  company_brand_color: string;
+  isTiledeskDomain = false;
 
   constructor(
     private router: Router,
@@ -304,6 +305,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private element: ElementRef,
     private renderer: Renderer2
   ) {
+    this.getBaseUrlAndThenProjectPlan();
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
     const brand = brandService.getBrand();
@@ -345,7 +347,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
     // this.getProjectPlan()
-    this.getBaseUrlAndThenProjectPlan();
+
     // this.listenToKbVersion()
 
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
@@ -374,10 +376,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
   getBaseUrlAndThenProjectPlan() {
-    const href = window.location.href;
-
     // For test in local host
-    // const href= "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
+    // const currentDomain = "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
+    const currentDomain = window.location.hostname;
+    this.isTiledeskDomain = currentDomain.includes('tiledesk.com');
+    console.log('[SIDEBAR] isTiledeskDomain ', this.isTiledeskDomain)
+
+    const href = window.location.href;
 
     this.logger.log('[SIDEBAR] href ', href)
 
@@ -1129,7 +1134,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
         }
 
-   
+
         if (event.url.indexOf('/bots-demo') !== -1) {
           this.BOTS_DEMO_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
@@ -1647,9 +1652,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
   getCurrentProjectProjectUsersProjectBots() {
- 
+
     this.auth.project_bs.subscribe((project) => {
-    
+
 
       if (project) {
         this.project = project
@@ -1680,141 +1685,141 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getProjectUser();
         // this.getFaqKbByProjectId()
         // if(this.isVisibleKNB) {
-          // const areEnabledKbn = this.getKnbValue()
-          // console.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
-          // if (areEnabledKbn) {
-          //   this.getKnowledgeBaseSettings()
-          // }
+        // const areEnabledKbn = this.getKnbValue()
+        // console.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
+        // if (areEnabledKbn) {
+        //   this.getKnowledgeBaseSettings()
+        // }
       }
     });
   }
 
-    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
-    getProjectUser() {
-      //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
-      this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-        // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
-        if ((projectUser) && (projectUser.length !== 0)) {
-          // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-          // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-          // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
-          // this.user_is_available_bs = projectUser.user_available;
-  
-          // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
-          this.subsTo_WsCurrentUser(projectUser[0]._id)
-  
-          if (projectUser[0].user_available !== undefined) {
-            this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
-          }
-  
-          // ADDED 21 AGO
-          if (projectUser[0].role !== undefined) {
-            this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
-  
-            // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-            this.USER_ROLE = projectUser[0].role;
-  
-            // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-            this.usersService.user_role(projectUser[0].role);
-  
-          }
-        } else {
-          // this could be the case in which the current user was deleted as a member of the current project
-          this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
+  // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
+  getProjectUser() {
+    //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
+    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
+      // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
+      if ((projectUser) && (projectUser.length !== 0)) {
+        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
+        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
+        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+        // this.user_is_available_bs = projectUser.user_available;
+
+        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
+        this.subsTo_WsCurrentUser(projectUser[0]._id)
+
+        if (projectUser[0].user_available !== undefined) {
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
         }
-  
-      }, (error) => {
-        this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+
+        // ADDED 21 AGO
+        if (projectUser[0].role !== undefined) {
+          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+
+          // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
+          this.USER_ROLE = projectUser[0].role;
+
+          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
+          this.usersService.user_role(projectUser[0].role);
+
+        }
+      } else {
+        // this could be the case in which the current user was deleted as a member of the current project
+        this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
+      }
+
+    }, (error) => {
+      this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+    }, () => {
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+    });
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      this.USER_ROLE = user_role;
+      this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+      if (this.USER_ROLE) {
+        // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+        if (this.USER_ROLE === 'agent') {
+          this.SHOW_SETTINGS_SUBMENU = false;
+        }
+      }
+
+    });
+  }
+
+  subsTo_WsCurrentUser(currentuserprjctuserid) {
+    this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+    // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+    this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+
+    this.getWsCurrentUserAvailability$();
+    this.getWsCurrentUserIsBusy$();
+  }
+
+
+
+  getWsCurrentUserAvailability$() {
+    // this.usersService.currentUserWsAvailability$
+    this.wsRequestsService.currentUserWsAvailability$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((data) => {
+        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+        if (data !== null) {
+          if (data['user_available'] === false && data['profileStatus'] === "inactive") {
+            this.IS_AVAILABLE = false;
+            this.IS_INACTIVE = true;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
+          } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
+            this.IS_AVAILABLE = false;
+            this.IS_INACTIVE = false;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+          } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
+            this.IS_AVAILABLE = true;
+            this.IS_INACTIVE = false;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+          }
+
+          // if (this.IS_AVAILABLE === true) {
+          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+          // } else {
+          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+          // }
+        }
+      }, error => {
+        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
       }, () => {
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
       });
-    }
+  }
 
-    getProjectUserRole() {
-      this.usersService.project_user_role_bs.subscribe((user_role) => {
-        this.USER_ROLE = user_role;
-        this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-        if (this.USER_ROLE) {
-          // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
-          if (this.USER_ROLE === 'agent') {
-            this.SHOW_SETTINGS_SUBMENU = false;
-          }
+  getWsCurrentUserIsBusy$() {
+    // this.usersService.currentUserWsIsBusy$
+    this.wsRequestsService.currentUserWsIsBusy$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((currentuser_isbusy) => {
+        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        if (currentuser_isbusy !== null) {
+          this.IS_BUSY = currentuser_isbusy;
+          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
-  
+      }, error => {
+        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
+      }, () => {
+        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
       });
-    }
 
-    subsTo_WsCurrentUser(currentuserprjctuserid) {
-      this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-      // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-      this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-  
-      this.getWsCurrentUserAvailability$();
-      this.getWsCurrentUserIsBusy$();
-    }
-  
-  
-  
-    getWsCurrentUserAvailability$() {
-      // this.usersService.currentUserWsAvailability$
-      this.wsRequestsService.currentUserWsAvailability$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((data) => {
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
-          if (data !== null) {
-            if (data['user_available'] === false && data['profileStatus'] === "inactive") {
-              this.IS_AVAILABLE = false;
-              this.IS_INACTIVE = true;
-              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
-            } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
-              this.IS_AVAILABLE = false;
-              this.IS_INACTIVE = false;
-              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
-            } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
-              this.IS_AVAILABLE = true;
-              this.IS_INACTIVE = false;
-              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
-            }
-  
-            // if (this.IS_AVAILABLE === true) {
-            //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
-            // } else {
-            //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
-            // }
-          }
-        }, error => {
-          this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
-        }, () => {
-          this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
-        });
-    }
-  
-    getWsCurrentUserIsBusy$() {
-      // this.usersService.currentUserWsIsBusy$
-      this.wsRequestsService.currentUserWsIsBusy$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((currentuser_isbusy) => {
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
-          if (currentuser_isbusy !== null) {
-            this.IS_BUSY = currentuser_isbusy;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
-          }
-        }, error => {
-          this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
-        }, () => {
-          this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
-        });
-  
-  
-    }
+
+  }
 
   // No more used  
   // getKnowledgeBaseSettings() {
@@ -1968,20 +1973,46 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   goToAllMyChatbot() {
-    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
-    // if (this.areVisibleChatbot) {
-    //   this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
-    // } else {
-    //   this.router.navigate(['/project/' + this.projectId + '/bots-demo']);
-    // }
+    // this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    const now = performance.now();
+    console.log('[SIDEBAR] Clicked CHATBOT at:', now);
+    
+    const route = `project/${this.project._id}/bots/my-chatbots/all`
+     this.router.navigate([route]).then(() => {
+      const afterNav = performance.now();
+      const durationMs = afterNav - now;
+      const durationSec = durationMs / 1000;
+      console.log(`[SIDEBAR] CHATBOT Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+    });
   }
 
+
+
   goToNewKnowledgeBases() {
+    const now = performance.now();
+    console.log('[SIDEBAR] Clicked Knowledge Base at:', now);
+
+    const route = this.kbNameSpaceid !== ''
+      ? `project/${this.project._id}/knowledge-bases/${this.kbNameSpaceid}`
+      : `project/${this.project._id}/knowledge-bases/0`;
+
+    this.router.navigate([route]).then(() => {
+      const afterNav = performance.now();
+      const durationMs = afterNav - now;
+      const durationSec = durationMs / 1000;
+      console.log(`[SIDEBAR] KB Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+    });
+  }
+
+
+  _goToNewKnowledgeBases() {
+    console.log('[SIDEBAR] has clicked goToNewKnowledgeBases timestamp ',)
     if (this.kbNameSpaceid !== '') {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
     } else {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
     }
+
   }
 
   goToWidgetSetUpOrToCannedResponses() {
