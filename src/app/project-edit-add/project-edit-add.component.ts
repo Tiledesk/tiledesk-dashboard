@@ -2870,7 +2870,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (result) {
           this.urlWhitelist = result;
           // Save to backend or localStorage as needed
-          this.logger.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
+          console.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
 
           this.saveUrlWhitelist(this.urlWhitelist)
         }

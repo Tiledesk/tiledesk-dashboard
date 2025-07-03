@@ -5613,7 +5613,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onMessageChange(msg: string) {
-    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg) 
+    // console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg) 
     // if (!this.ALLOW_TO_SEND_EMOJI) {
     //   this.chat_message = removeEmojis(msg);
     // }
@@ -5624,6 +5624,9 @@ checkEmojiContent(message: string): void {
   if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
     const messageWithoutEmojis = removeEmojis(message).trim();
     this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+    setTimeout(() => {
+      this.showEmojiWarning = false;
+    }, 3000);
   } else {
     this.showEmojiWarning = false;
   }
