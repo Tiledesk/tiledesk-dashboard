@@ -1989,18 +1989,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
   goToNewKnowledgeBases() {
-    const now = performance.now();
-    console.log('[SIDEBAR] Clicked Knowledge Base at:', now);
+    const clickTime = performance.now();
+    console.log('[SIDEBAR] Clicked GO TO Knowledge Base at:', clickTime);
+
+     //  mark for the click 
+    // performance.mark('kb-navigation-start');
+    
+    // Salva il timestamp in una variabile globale o service
+    (window as any).kbNavigationStartTime = clickTime;
 
     const route = this.kbNameSpaceid !== ''
       ? `project/${this.project._id}/knowledge-bases/${this.kbNameSpaceid}`
       : `project/${this.project._id}/knowledge-bases/0`;
 
+    // Navigation time (routing only)
     this.router.navigate([route]).then(() => {
-      const afterNav = performance.now();
-      const durationMs = afterNav - now;
-      const durationSec = durationMs / 1000;
-      console.log(`[SIDEBAR] KB Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+      const navigationEnd = performance.now();
+      const navigationDurationMs = navigationEnd - clickTime;
+      const navigationDurationSec = navigationDurationMs / 1000;
+      // console.log(`[SIDEBAR] KB Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+      console.log(`[SIDEBAR] Navigation complete (${navigationDurationSec.toFixed(2)} seconds) (indicate the time: to change route, to load the Knowledge Base Component, to execute the component constructor)`);
+      // console.log(`[SIDEBAR] (${durationSec.toFixed(2)} seconds) Does NOT include the component's ngOnInit time, data loading time, DOM rendering time`);
     });
   }
 
@@ -2024,7 +2033,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   }
   goToWidgetSetUp() {
-    this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+    // this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+    const now = performance.now();
+    console.log('[SIDEBAR] Clicked WIDGET  at:', now);
+    const route = `project/${this.project._id}/widget-set-up`
+      this.router.navigate([route]).then(() => {
+      const afterNav = performance.now();
+      const durationMs = afterNav - now;
+      const durationSec = durationMs / 1000;
+      console.log(`[SIDEBAR] WIDGET Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+    });
   }
 
   goToCannedResponses() {

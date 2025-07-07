@@ -707,7 +707,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   changeAvailabilityState(projectid, selectedStatusValue) {
-    // this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
 
     // available = !available
     let IS_AVAILABLE = null
