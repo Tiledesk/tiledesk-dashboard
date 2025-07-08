@@ -623,6 +623,7 @@ input[type="checkbox"]:disabled {
   font-family: var(--header-font-family) !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
+  margin-right: 25px;
 }
 
 
@@ -889,7 +890,19 @@ input[type="checkbox"]:disabled {
 }
 
 
+.chrome-gt-100 {
+  margin-top: -64px;
+}
 
+.chrome-lt-100 {
+  margin-top: 6px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
 
 /* New chatbot table
 /* ************************************* */
