@@ -115,9 +115,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
   loadMoreData() {
     this.isLoading = true;
     this.numberPage++;
-    console.log('[KB TABLE] - numberPage ', this.numberPage) 
+    this.logger.log('[KB TABLE] - numberPage ', this.numberPage) 
     this.searchParams.page = this.numberPage;
-    console.log('[KB TABLE] -  this.searchParams.page ', this.searchParams.page) 
+    this.logger.log('[KB TABLE] -  this.searchParams.page ', this.searchParams.page) 
     // Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
     // this.logger.log('[KB TABLE] emit loadPage searchParams', this.searchParams) 
     this.loadPage.emit(this.searchParams);
@@ -140,7 +140,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
         if (tableMeasures.length) {
           const tableDurationMs = tableMeasures[0].duration;
           const tableDurationSec = tableDurationMs / 1000;
-          console.log('[KB TABLE][PERF] KnowledgeBaseTableComponent render time:', tableDurationMs.toFixed(2), 'ms', `(${tableDurationSec.toFixed(2)} seconds)`);
+          this.logger.log('[KB TABLE][PERF] KnowledgeBaseTableComponent render time:', tableDurationMs.toFixed(2), 'ms', `(${tableDurationSec.toFixed(2)} seconds)`);
         }
       }
   
@@ -149,7 +149,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       if (clickTime) {
         const currentTime = performance.now();
         const totalTimeFromClick = currentTime - clickTime;
-        console.log('[KB TABLE][PERF] Total time from sidebar click to data ready:', totalTimeFromClick.toFixed(2), 'ms', `(${(totalTimeFromClick/1000).toFixed(2)} seconds)`);
+        this.logger.log('[KB TABLE][PERF] Total time from sidebar click to data ready:', totalTimeFromClick.toFixed(2), 'ms', `(${(totalTimeFromClick/1000).toFixed(2)} seconds)`);
       }
   
       // Pulizia opzionale
@@ -158,7 +158,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
 
     this.logger.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
-    console.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
+    this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
     this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
@@ -262,12 +262,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.searchParams.direction = this.directionDesc;
     this.isLoading = true;
     this.loadByFilter.next(this.searchParams);
-    console.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
+    this.logger.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
   }
 
   onLoadByFilter(filterValue?: string, column?: string) {
     this.hasFiltered = true;
-    console.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
+    this.logger.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
     this.logger.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
     this.logger.log('[KB TABLE] >>> filterType ', this.filterType)
     // let status = '';

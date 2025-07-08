@@ -237,11 +237,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     if (clickTime) {
       const currentTime = performance.now();
       const timeFromClick = currentTime - clickTime;
-      console.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
     } else {
       // Fallback se non c'è il timestamp del click
       const currentTime = performance.now();
-      console.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
     }
 
     this.kbsList = [];
@@ -2284,10 +2284,10 @@ _presentDialogImportContents() {
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          console.log("payIsVisible: ", this.payIsVisible)
+          this.logger.log("payIsVisible: ", this.payIsVisible)
         } else {
           this.payIsVisible = true;
-          console.log("payIsVisible: ", this.payIsVisible)
+          this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
     })
@@ -2431,8 +2431,8 @@ _presentDialogImportContents() {
 
   onLoadPage(searchParams?: any) {
     this.hasFiltered = true
-    console.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage onLoadPage:', this.loadPage);  
-    console.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage onLoadPage:', this.loadPage);  
+    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
@@ -2471,7 +2471,7 @@ _presentDialogImportContents() {
   }
 
   onLoadByFilter(searchParams) {
-    console.log('onLoadByFilter:',searchParams);
+    this.logger.log('onLoadByFilter:',searchParams);
     this.hasFiltered = true
     // searchParams.page = 0;
     this.numberPage = -1;
@@ -2485,7 +2485,7 @@ _presentDialogImportContents() {
       this.showSpinner = true
     }
    
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
@@ -2515,7 +2515,7 @@ _presentDialogImportContents() {
         this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
         if (i === this.kbsListCount - 1) {
           this.getKbCompleted = true;
-          console.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
+          this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
         }
       });
 
@@ -2866,7 +2866,7 @@ _presentDialogImportContents() {
   }
 
   onDeleteNamespace(removeAlsoNamespace, namespaceIndex) {
-   console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace removeAlsoNamespace " + removeAlsoNamespace);
+   this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace removeAlsoNamespace " + removeAlsoNamespace);
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaceIndex " + namespaceIndex);
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespace.id);
     // let id_namespace = this.id_project;

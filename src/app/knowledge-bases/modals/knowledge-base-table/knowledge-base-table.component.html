@@ -209,11 +209,21 @@
                             (ngModelChange)="onLoadByFilter($event, 'status')">
                             <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
                             <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
-                            <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
-                            <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
-                            <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
-                            <ng-option value="300"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
-                            <ng-option value="400"> {{ 'KbPage.StatusError' | translate }}</ng-option>
+                            <ng-option value="-1"> 
+                                {{ 'KbPage.StatusNotStarted' | translate }}
+                            </ng-option>
+                            <ng-option value="100"> 
+                                {{ 'KbPage.StatusQueued' | translate }}
+                            </ng-option>
+                            <ng-option value="200"> 
+                                {{ 'KbPage.StatusStarted' | translate }}
+                            </ng-option>
+                            <ng-option value="300"> 
+                                {{ 'KbPage.StatusFinished' | translate }}
+                            </ng-option>
+                            <ng-option value="400"> 
+                                {{ 'KbPage.StatusError' | translate }}
+                            </ng-option>
                         </ng-select>
                     </div>
 
@@ -403,9 +413,9 @@
                     <tr *ngIf="kbsList?.length == 0">
                         <td colspan="5" style="width: 100%; ">
                             <div class="ellipsis-text" style="width: 100%;
-                        display: inline-block;
-                        text-align: center;
-                        padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                                display: inline-block;
+                                text-align: center;
+                                padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
@@ -483,7 +493,7 @@
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
                             <span *ngIf="kb.type === 'url'"
-                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
                                 matTooltipPosition='below' 

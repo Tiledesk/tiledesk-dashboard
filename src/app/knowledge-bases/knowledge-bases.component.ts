@@ -38,18 +38,12 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
-import { ShepherdService } from 'angular-shepherd';
+// import { ShepherdService } from 'angular-shepherd';
 // import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
 // import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
-// import {
-//   // provideHighlightOptions,
-//   Highlight,
-//   // HighlightAuto,
-// } from 'ngx-highlightjs';
-// // import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 
@@ -212,7 +206,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService,
-    private shepherdService: ShepherdService,
+   
 
   ) {
     super(prjctPlanService, notify);
@@ -231,15 +225,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     if (clickTime) {
       const currentTime = performance.now();
       const timeFromClick = currentTime - clickTime;
-      console.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
     } else {
       // Fallback se non c'è il timestamp del click
       const currentTime = performance.now();
-      console.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
     }
 
     this.kbsList = [];
-    this.getBrowserVersion();
+    // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
    
     this.getLoggedUser();
@@ -2458,7 +2452,7 @@ _presentDialogImportContents() {
 
 
   onLoadPage(searchParams?: any) {
-    console.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
@@ -2468,7 +2462,7 @@ _presentDialogImportContents() {
       this.numberPage = limitPage;
     }
     params += "&page=" + this.numberPage;
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
    
     this.logger.log('onLoadNextPage searchParams > search (2):', searchParams.search);
     if (searchParams?.status) {
