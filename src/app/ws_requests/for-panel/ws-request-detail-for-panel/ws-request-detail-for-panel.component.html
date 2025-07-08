@@ -134,7 +134,7 @@
               *ngIf="request?.language">
               {{ request?.language }}
             </span>
-            <span  class="unavailable-language" style=""
+            <span  class="unavailable-language"
               *ngIf="!request?.language">
               {{'Unavailable' | translate}}
             </span>
@@ -291,7 +291,7 @@
             </span> -->
           <!-- </span> -->
 
-          <span class="request--browser" style="">
+          <span class="request--browser">
             <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
             <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}
             </span>
