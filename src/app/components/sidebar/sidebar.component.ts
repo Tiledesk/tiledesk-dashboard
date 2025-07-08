@@ -214,6 +214,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
   FLOW_AUTOMATION_ROUTE_IS_ACTIVE: boolean;
+  FLOW_AIAGENT_ROUTE_IS_ACTIVE: boolean;
   FLOW_WEBHOOKS_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
   TMPLT_ALL_ROUTE_IS_ACTIVE: boolean;
@@ -380,7 +381,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // const currentDomain = "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
     const currentDomain = window.location.hostname;
     this.isTiledeskDomain = currentDomain.includes('tiledesk.com');
-    console.log('[SIDEBAR] isTiledeskDomain ', this.isTiledeskDomain)
+    this.logger.log('[SIDEBAR] isTiledeskDomain ', this.isTiledeskDomain)
 
     const href = window.location.href;
 
@@ -1124,6 +1125,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/flows/flow-aiagent') !== -1) {
+          this.FLOW_AIAGENT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
+        } else {
+          this.FLOW_AIAGENT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/flows/flow-webhooks') !== -1) {
@@ -1975,14 +1984,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   goToAllMyChatbot() {
     // this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
     const now = performance.now();
-    console.log('[SIDEBAR] Clicked CHATBOT at:', now);
+    this.logger.log('[SIDEBAR] Clicked CHATBOT at:', now);
     
     const route = `project/${this.project._id}/bots/my-chatbots/all`
      this.router.navigate([route]).then(() => {
       const afterNav = performance.now();
       const durationMs = afterNav - now;
       const durationSec = durationMs / 1000;
-      console.log(`[SIDEBAR] CHATBOT Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+      this.logger.log(`[SIDEBAR] CHATBOT Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
     });
   }
 
@@ -1990,7 +1999,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   goToNewKnowledgeBases() {
     const clickTime = performance.now();
-    console.log('[SIDEBAR] Clicked GO TO Knowledge Base at:', clickTime);
+    this.logger.log('[SIDEBAR] Clicked GO TO Knowledge Base at:', clickTime);
 
      //  mark for the click 
     // performance.mark('kb-navigation-start');
@@ -2008,14 +2017,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       const navigationDurationMs = navigationEnd - clickTime;
       const navigationDurationSec = navigationDurationMs / 1000;
       // console.log(`[SIDEBAR] KB Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
-      console.log(`[SIDEBAR] Navigation complete (${navigationDurationSec.toFixed(2)} seconds) (indicate the time: to change route, to load the Knowledge Base Component, to execute the component constructor)`);
+      this.logger.log(`[SIDEBAR] Navigation complete (${navigationDurationSec.toFixed(2)} seconds) (indicate the time: to change route, to load the Knowledge Base Component, to execute the component constructor)`);
       // console.log(`[SIDEBAR] (${durationSec.toFixed(2)} seconds) Does NOT include the component's ngOnInit time, data loading time, DOM rendering time`);
     });
   }
 
 
   _goToNewKnowledgeBases() {
-    console.log('[SIDEBAR] has clicked goToNewKnowledgeBases timestamp ',)
+    this.logger.log('[SIDEBAR] has clicked goToNewKnowledgeBases timestamp ',)
     if (this.kbNameSpaceid !== '') {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
     } else {
@@ -2035,13 +2044,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   goToWidgetSetUp() {
     // this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
     const now = performance.now();
-    console.log('[SIDEBAR] Clicked WIDGET  at:', now);
+    this.logger.log('[SIDEBAR] Clicked WIDGET  at:', now);
     const route = `project/${this.project._id}/widget-set-up`
       this.router.navigate([route]).then(() => {
       const afterNav = performance.now();
       const durationMs = afterNav - now;
       const durationSec = durationMs / 1000;
-      console.log(`[SIDEBAR] WIDGET Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+      this.logger.log(`[SIDEBAR] WIDGET Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
     });
   }
 
