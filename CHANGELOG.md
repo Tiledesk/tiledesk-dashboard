@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.116
+- Adds pagination to Flows list
+
 ### 2.7.115
 - Improves navigation performance
 
