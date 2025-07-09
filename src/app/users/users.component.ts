@@ -55,6 +55,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // set to none the property display of the modal
   display = 'none'
   displayCancelInvitationModal = 'none'
+  displayRestoreModal = 'none';
   project: Project
 
   USER_ROLE: string
@@ -1034,6 +1035,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
   }
 
+  openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
+    this.displayRestoreModal = 'block';
+    this.id_projectUser = projectUser_id
+    this.user_id = userID
+    this.user_firstname = userFirstname
+    this.user_lastname = userLastname
+  }
+
   onCloseDeleteModalHandled() {
     this.display = 'none'
     // this.logger.log('Confirm Delete Project-User');
@@ -1104,19 +1113,33 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         // NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
-        for (let i = 0; i < this.projectUsersList.length; i++) {
-          if (this.id_projectUser === this.projectUsersList[i]._id) {
-            this.projectUsersList.splice(i, 1)
-            this.projectUsersLength = this.projectUsersList.length
-            localStorage.removeItem('dshbrd----' + this.id_projectUser)
-          }
+        const userToDisable = this.projectUsersList.find(user => user._id === this.id_projectUser);
+        if (userToDisable) {
+          userToDisable.status = 'disabled';
         }
       },
     )
   }
 
+  onCloseRestoreModalHandled() {
+    this.displayRestoreModal = 'none';
+    this.usersService.updateProjectUser(this.id_projectUser, false, "", 'active').subscribe((projectUser: any) => {
+
+    }, (error) => {
+      this.logger.error('[USERS] ON-CLOSE-RESTORE-MODAL - RESTORE PROJECT USERS - ERROR ', error)
+      this.notify.showWidgetStyleUpdateNotification("An error occurred restoring teammate", 4, 'report_problem')
+    }, () => {
+      this.notify.showWidgetStyleUpdateNotification("Teammate successfully restored", 2, 'done')
+      const userToEnable = this.projectUsersList.find(user => user._id === this.id_projectUser);
+      if (userToEnable) {
+        userToEnable.status = 'active';
+      }
+    })
+  }
+
   onCloseModal() {
-    this.display = 'none'
+    this.display = 'none';
+    this.displayRestoreModal = 'none';
   }
 
 

@@ -1009,7 +1009,7 @@ export class UsersService {
    * @param user_is_available 
    * @returns 
    */
-  public updateProjectUser(projectUser_id: string, user_is_available: boolean, profilestatus: string) {
+  public updateProjectUser(projectUser_id: string, user_is_available: boolean, profilestatus: string, status?: string) {
 
     let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + projectUser_id;
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY (PUT) URL ', url);
