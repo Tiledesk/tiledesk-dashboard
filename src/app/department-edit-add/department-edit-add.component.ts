@@ -470,140 +470,41 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
 
   onChangeDeptDescription($event) {
-    console.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
+    this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
+
     // let cleaned = $event.trim();
 
-    // // Remove wrapping quotes if it's wrapped in " or '
+    // // Step 1: Remove surrounding quotes
     // if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
-    //     (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+    //   (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
     //   cleaned = cleaned.slice(1, -1);
     // }
 
-    // let startsWithArray = cleaned.startsWith('[');
-
-    // if (startsWithArray) {
-    //   try {
-    //     const array = JSON.parse(cleaned);
-    //     if (Array.isArray(array)) {
-    //       console.log('✅ Converted to array:', array);
-    //       // You can now use this array
-    //       this.groupsParsedArray = array;
-    //       this.hideSectionAssignTo = true;
-    //       console.log('✅ hideSectionAssignTo:', this.hideSectionAssignTo);
-    //     } else {
-    //       console.log('⚠️ JSON is valid but not an array');
-    //       this.hideSectionAssignTo = false;
-    //       console.log('⚠️ hideSectionAssignTo:', this.hideSectionAssignTo);
-    //     }
-    //   } catch (err) {
-    //     console.log('❌ Invalid JSON:', err.message);
-    //     this.hideSectionAssignTo = false;
-    //     console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
-    //   }
-    // } else {
-    //   console.log('❌ Does not start with [');
-    //   this.hideSectionAssignTo = false;
-    //   console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
-    // }
-
-    //   let cleaned =  $event.trim();
-
-    //   // Remove surrounding single or double quotes if present
-    //   if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
-    //       (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
-    //     cleaned = cleaned.slice(1, -1);
-    //   }
-
-    //   // If the content has escaped quotes like \" — wrap it in double quotes
-    //   const needsUnescaping = cleaned.includes('\\"');
-
-    //   try {
-    //     let parsed;
-
-    //   if (needsUnescaping) {
-    //     // First wrap in quotes, then parse
-    //     parsed = JSON.parse('"' + cleaned.replace(/"/g, '\\"') + '"'); // Unescape
-    //     parsed = JSON.parse(parsed); // Now parse real JSON array
-    //   } else {
-    //     parsed = JSON.parse(cleaned);
-    //   }
-
-    //   if (Array.isArray(parsed)) {
-    //     console.log('✅ Final parsed array:', parsed);
-    //     this.hideSectionAssignTo = true;
-    //     console.log('✅  hideSectionAssignTo:', this.hideSectionAssignTo);
-    //     this.groupsParsedArray = parsed;
-    //   } else {
-    //     console.log('⚠️ Not an array');
-    //     this.hideSectionAssignTo = false;
-    //     console.log('⚠️ hideSectionAssignTo:', this.hideSectionAssignTo);
-    //   }
-
-    // } catch (err) {
-    //   console.log('❌ Could not parse JSON:', err.message);
-    //   this.hideSectionAssignTo = false;
-    //   console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
-    // }
-
-
-    // let cleaned = $event.trim();
-
-    // // Try to fix broken JSON by replacing \" with "
+    // // Step 2: Fix escaped quotes
     // if (cleaned.includes('\\"')) {
     //   cleaned = cleaned.replace(/\\"/g, '"');
     // }
 
+    // // Step 3: Try parsing
     // try {
     //   const parsed = JSON.parse(cleaned);
-
     //   if (Array.isArray(parsed)) {
-    //     console.log('✅ Successfully parsed JSON array:', parsed);
-    //     this.hideSectionAssignTo = true;
-    //     console.log('✅ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //     console.log('✅ Parsed array:', parsed);
+    //     this.displayAssignTo = false;
+    //     console.log('✅ displayAssignTo:', this.displayAssignTo);
     //     this.groupsParsedArray = parsed;
+    //     this.getGroupsByProjectId()
     //   } else {
-    //     console.log('⚠️ JSON is valid but not an array');
-    //     this.hideSectionAssignTo = false;
-    //     console.log('⚠️ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //     this.displayAssignTo = true;
+    //     console.log('⚠️ displayAssignTo:', this.displayAssignTo);
     //   }
     // } catch (err) {
-    //   console.log('❌ Could not parse JSON:', err.message);
-    //   this.hideSectionAssignTo = false;
-    //    console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //   console.log('❌ Parsing failed:', err.message);
+    //   this.displayAssignTo = true;
+    //   console.log('❌ displayAssignTo:', this.displayAssignTo);
     // }
 
 
-    let cleaned = $event.trim();
-
-    // Step 1: Remove surrounding quotes
-    if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
-      (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
-      cleaned = cleaned.slice(1, -1);
-    }
-
-    // Step 2: Fix escaped quotes
-    if (cleaned.includes('\\"')) {
-      cleaned = cleaned.replace(/\\"/g, '"');
-    }
-
-    // Step 3: Try parsing
-    try {
-      const parsed = JSON.parse(cleaned);
-      if (Array.isArray(parsed)) {
-        console.log('✅ Parsed array:', parsed);
-        this.displayAssignTo = false;
-        console.log('✅ displayAssignTo:', this.displayAssignTo);
-        this.groupsParsedArray = parsed;
-        this.getGroupsByProjectId()
-      } else {
-        this.displayAssignTo = true;
-        console.log('⚠️ displayAssignTo:', this.displayAssignTo);
-      }
-    } catch (err) {
-      console.log('❌ Parsing failed:', err.message);
-      this.displayAssignTo = true;
-      console.log('❌ displayAssignTo:', this.displayAssignTo);
-    }
   }
 
 
@@ -1684,15 +1585,21 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
               
               this.dept_description_toUpdate = ""
               // Optionally assign to class property
-              // this.groupsParsedArray = parsedGroups;
+              this.groupsParsedArray = parsedGroups;
+              this.displayAssignTo = false;
+              this.getGroupsByProjectId()
+
             } else {
               console.log('[DEPT-EDIT-ADD] ⚠️ Parsed result is not an array:', parsed);
+              this.displayAssignTo = true;
             }
           } catch (error) {
             console.error('[DEPT-EDIT-ADD] ❌ Error parsing description:', error);
+            this.displayAssignTo = true;
           }
         } else {
           console.log('[DEPT-EDIT-ADD] ℹ️ Description is missing or does not start with "["');
+          this.displayAssignTo = true;
         }
 
 
