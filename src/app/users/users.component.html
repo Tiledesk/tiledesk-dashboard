@@ -210,9 +210,8 @@
 
               <div class="card-list" *ngFor="let projectUser of projectUsersList;let i = index;">
 
-                <div class="cl-card" (click)='goToEditUser(projectUser?._id)'>
+                <div class="cl-card" [ngClass]="{'bg-disabled': projectUser?.status === 'disabled'}" (click)='goToEditUser(projectUser?._id)'>
                   <div class="cl-card-content">
-
                     <div class="cl-card-first-column">
                       <div class="status-wpr" style="position: relative;">
                         <div id="teammate-status-icon" class="teammate-status-icon"
@@ -300,7 +299,21 @@
 
                     <div class="cl-card-second-column">
                       <div class="cl-card-stats-wpr">
-                        <div id="pu-status-wpr" class="cl-card-item-stats">
+                        
+                        <div *ngIf="projectUser.status === 'disabled'" id="pu-status-wpr" class="cl-card-item-stats">
+                          <div id="pu-status" class="cl-card-item-stats-title">
+                            {{ "Status" | translate }}
+                          </div>
+                          <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+
+                            <div style="width: 118px; display: flex; justify-content: center; align-items: center;">
+                              <span class="material-icons-outlined" style="font-size: 16px;">block</span>
+                              <p style="margin: 0 4px;">{{ "Disabled" | translate }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div *ngIf="projectUser.status !== 'disabled'" id="pu-status-wpr" class="cl-card-item-stats">
                           <div id="pu-status" class="cl-card-item-stats-title">
                             {{ "Status" | translate }}
                           </div>
@@ -391,9 +404,19 @@
                                 <mat-icon>edit</mat-icon>
                                 <span>{{ 'UsersPage.tootipEditUser' | translate }}</span>
                               </button>
+
+                              <button class="mat-menu-btn"
+                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status === 'disabled'"
+                                mat-menu-item
+                                (click)='openRestoreModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                [disabled]="USER_ROLE !== 'owner'">
+                                <mat-icon>undo</mat-icon>
+
+                                <span>{{ "UsersPage.RestoreMember" | translate }}</span>
+                              </button>
                 
                               <button class="mat-menu-btn"
-                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status !== 'disabled'"
                                 mat-menu-item
                                 (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
                                 [disabled]="USER_ROLE !== 'owner'">
@@ -930,7 +953,6 @@
   <!-- /.modal-dialog -->
 </div>
 
-
 <!-- ============ CANCEL PENDING INVITATION ============ -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCancelInvitationModal}"
   style="background-color: rgba(90,90,90,0.5);">
@@ -971,6 +993,62 @@
      
         <button class="btn btn-red" (click)="deletePendinInvitation()">
           {{ "UsersPage.modalCancelInvite" | translate }}
+        </button>
+      </div>
+
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- ============ USERS RESTORE MODAL ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayRestoreModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title warning">
+          <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
+          <span class="modal-header-icon-wpr" style="background-color: #d1e3fb;"> 
+            <mat-icon>undo</mat-icon>
+          </span>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "UsersPage.RestoreMember" | translate }}
+          </span>
+        </h4>
+
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
+          {{ "UsersPage.TheMemberWithId" | translate }}
+          <code>{{user_id}}</code>
+          {{ "UsersPage.WillBeRemoved" | translate }}
+        </h4> -->
+
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-body--content">
+          {{ "UsersPage.AreYouSureRestore" | translate:{ firstname: user_firstname, lastname: user_lastname } }}
+          <!----
+          <b>{{user_firstname}} {{user_lastname }} </b>
+          in the project?
+          -->
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
+        
+          {{ "Cancel" | translate }}
+        </button>
+       
+        <button class="btn btn-tdblu-no-boxshadow" (click)="onCloseRestoreModalHandled()">
+          {{ "UsersPage.RestoreMember" | translate }}
         </button>
       </div>
 
