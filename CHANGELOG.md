@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.118-rc1
+- Adds the ability to see in the details of a department multiple groups and their load percentage
+
+### 2.7.116
+- Adds pagination to Flows list
+
+### 2.7.115
+- Improves navigation performance
+
 ### 2.7.115-rc4
 - Adds the ability to manage the “resolve” function for  a conversation 
 - Adds the ability to manage the “send message” function
