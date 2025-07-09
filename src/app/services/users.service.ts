@@ -1022,7 +1022,7 @@ export class UsersService {
       })
     };
 
-    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
+    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus, 'status': status };
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
     return this._httpClient
