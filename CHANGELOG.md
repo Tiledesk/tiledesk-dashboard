@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.7.118-rc2
-- Adds the ability for teammate with owner or admin roles to disable/restore a project member
+- Adds the ability for teammates with owner or admin roles to remove/restore a project member
 
 ### 2.7.118-rc1
 - Adds the ability to see in the details of a department multiple groups and their load percentage
