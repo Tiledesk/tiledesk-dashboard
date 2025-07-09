@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPlanEE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanEE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanEE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 import moment from "moment";
-import { PricingBaseComponent } from './pricing-base/pricing-base.component';
+import { ProjectUser } from 'app/models/project-user';
 declare var Stripe: any;
 
 
@@ -26,7 +26,7 @@ enum PLAN_DESC {
   Starter = "For individuals starting AI automation", //Basic = 'Automate simple website conversations as an individual',
   Pro = "For teams scaling AI-powered workflows", //Premium = 'Expand automation across channels for individuals and small teams',
   Business = "For businesses requiring advanced AI tools", //Team = 'For growing teams scaling business automation',
-  Custom = "For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
+  Custom = "For organizations needing higher limits & advanced integrations"//"For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
@@ -36,7 +36,8 @@ enum MONTHLY_PRICE {
   Starter = "49", //Basic = "15",
   Pro = "149", //Premium = "100",
   Business = "499", // Team = "299",
-  Custom = '500',
+  Custom = 'As per your needs' //'500',
+  
 }
 
 enum ANNUAL_PRICE {
@@ -46,7 +47,7 @@ enum ANNUAL_PRICE {
   Starter = "490", // Basic = "150",
   Pro = "1490", // Premium = "1,000",
   Business = "4990", // Team = "2,990",
-  Custom = '500',
+  Custom = 'As per your needs' //'500',
 }
 
 enum ANNUAL_PRICE_PER_MONTH {
@@ -217,6 +218,18 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.CHAT_PANEL_MODE = window.self !== window.top;
     this.logger.log('[PRICING] Is in iframe (CHAT_PANEL_MODE) :', this.CHAT_PANEL_MODE);
 
+
+    this.logger.log('[PRICING] .router.url ' , this.router.url)
+    // this.CHAT_PANEL_MODE = false
+   
+    // if (this.router.url.indexOf('/request-for-panel') !== -1) {
+    //   this.CHAT_PANEL_MODE = true;
+    //   console.log('[PRICING] CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE )
+    // } else {
+
+    //   this.CHAT_PANEL_MODE = false;
+    //   console.log('[PRICING] CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE )
+    // }
   }
 
   /**
@@ -500,19 +513,17 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-
       this.user = user;
     })
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
   getCurrentProject() {
@@ -579,7 +590,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_dR61507XM1GO0mcfZp"; // STARTER Montly
       this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_00g9Bwfqebho4Cs7sU"; // STARTER Annually
       this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_4gwfZU2Ds3OW6KA9B3"; // PRO Montly
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_14kdRMdi6etA5GwfZt"; // PRO Annually
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_28o9Bw5PE2KS6KAcNg" // PRO Annually // "https://buy.stripe.com/test_14kdRMdi6etA5GwfZt"; // PRO Annually
       this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_28o9Bw5PE2KS6KAcNg'; // Business Annually
       this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_eVaaFA5PE2KSc4U5kQ'; // Business Montly
 
