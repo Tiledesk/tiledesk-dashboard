@@ -797,3 +797,30 @@ select[disabled] {
   color: var(--blue-20);
   margin-right: 6px;
 }
+
+.custom-group-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.custom-group-row:hover { 
+  background-color: rgba(249, 249, 249, .6);
+  border: 1px solid var(--blue-20);
+}
+
+.group-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.group-percentage {
+  font-weight: 500;
+  color: #555;
+}

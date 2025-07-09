@@ -66,6 +66,7 @@
                             [disabled]="IS_DEFAULT_DEPT === true" (ngModelChange)="onChangeDeptName($event)">
                         </div>
                       </div>
+                    </section>
 
 
                       <!-- ------------------------------------------------------------------- -->
@@ -82,7 +83,7 @@
                             style="margin-top: 2px"> </textarea>
                         </div>
                       </div>
-                    </section>
+                    
 
 
 
@@ -93,8 +94,7 @@
                     <section *ngIf="IS_DEFAULT_DEPT === true">
                       <div class="row">
                         <div class="col-xs-12">
-                          <h4 style="text-transform: none; color: rgba(0,0,0,.54);
-                    font-size: 20px;margin-top:0px">
+                          <h4 style="text-transform: none; color: rgba(0,0,0,.54); font-size: 20px;margin-top:0px">
 
                             <!-- {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate }} -->
                             {{ "RoutingPage.SettingUpTileDeskRoutingRules_2" | translate }}
@@ -296,39 +296,7 @@
                           <div class="row aligned-row">
 
                             <div class="col-xs-12">
-                              <!-- <label>
-                            <!- - [disabled]="onlybot_disable_routing" - ->
-                            <input type="radio" name="routing" value="assigned"
-                              (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
-                              [checked]="dept_routing === 'assigned'">
-                            <img *ngIf="dept_routing !== 'assigned'" class="radio-btn-img"
-                              src="assets/img/assigned_btn.svg">
-                            <img *ngIf="dept_routing === 'assigned'" class="radio-btn-img"
-                              src="assets/img/assigned_btn_active.svg">
-
-                            <span *ngIf="dept_routing === 'assigned'"
-                              class="material-icons assigned-routing-check-icon">
-                              done </span>
-
-                            <span class="radio_as_img_label"
-                              [ngClass]="{'radio_as_img_label_active': dept_routing === 'assigned'}"> Assigned </span>
-                          </label> -->
-
-                              <!-- <label>
-                            <!- - [disabled]="onlybot_disable_routing" - ->
-                            <input type="radio" name="routing" value="pooled"
-                              (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
-                              [checked]="dept_routing === 'pooled'">
-                            <img *ngIf="dept_routing !== 'pooled'" class="radio-btn-img"
-                              src="assets/img/pooled_btn.svg">
-                            <img *ngIf="dept_routing === 'pooled'" class="radio-btn-img"
-                              src="assets/img/pooled_btn_active.svg">
-                            <span *ngIf="dept_routing === 'pooled'" class="material-icons pooled-routing-check-icon">
-                              done
-                            </span>
-                            <span class="radio_as_img_label"
-                              [ngClass]="{'radio_as_img_label_active': dept_routing === 'pooled'}"> Pooled </span>
-                          </label> -->
+                         
 
                               <div class="routing-rules">
 
@@ -392,21 +360,6 @@
 
                               </div>
                             </div>
-
-
-                            <!--  ------------------------------------------------------------------ -->
-                            <!-- Selected rooting info -->
-                            <!-- ------------------------------------------------------------------- -->
-
-                            <!-- <div class="col-xs-12 ">
-                          <span class="selected-routing-info" *ngIf="dept_routing === 'assigned'">
-                            {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
-                          </span>
-                          <span class="selected-routing-info" *ngIf="dept_routing === 'pooled'">
-                            {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
-                          </span>
-                        </div> -->
-
                           </div>
 
 
@@ -414,32 +367,13 @@
                           <!-- ------------------------------------------------------------------- -->
                           <!-- Combo box Assign to Group -->
                           <!-- ------------------------------------------------------------------- -->
-                          <div class="row" style="margin-top: 12px;">
+                         <!-- displayAssignTo  {{ displayAssignTo }} -->
+                          <div class="row" style="margin-top: 12px;" *ngIf="displayAssignTo === true"> 
                             <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                               {{ "DeptsAddEditPage.AssignTo" | translate }}
                             </label>
                             <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                              <!-- [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}" -->
-                              <!-- [disabled]="onlybot_disable_routing" -->
-                              <!-- <select #selectGroup (change)="setSelectedGroup(selectGroup.value)" style="min-width: 150px;"
-                            [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
-
-                            <!- - // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' - ->
-                            <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST"
-                              [selected]="GROUP_ID_NOT_EXIST">
-                              <p>
-                                {{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }}
-                                {{ "DeptsAddEditPage.Trashed" | translate}}
-                              </p>
-                            </option>
-                            <option class="not_selected" value="ALL_USERS_SELECTED">
-                              {{ "DeptsAddEditPage.AllUsers" | translate }}
-                            </option>
-                            <option *ngFor="let group of groupsList" [value]="group?._id"
-                              [selected]="selectedGroupId === group?._id">
-                              {{group?.name}} {{ "RoutingPage.GroupLabel" | translate }}
-                            </option>
-                          </select> -->
+                              
 
                               <ng-select (change)="_setSelectedGroup()" [(ngModel)]="selectedGroupId"
                                 [items]="groupsList" bindLabel="name" bindValue="_id" [searchable]="false"
@@ -459,6 +393,32 @@
                               </span>
 
                             </div>
+                          </div>
+
+
+                        <!-- New section for demo  -->
+                        <div class="row" *ngIf="displayAssignTo === false && groupsParsedArray?.length">
+                          <div class="col-xs-12">
+                            <h3 class="card_title__underlined" style="margin-top: 25px;">
+                              <span class="card_title__underline">
+
+                                Groups
+                              </span>
+                            </h3>
+                          </div>
+
+                          <div class="col-xs-12">
+                            <div class="section-subtitle" style="height: 5px;"> </div>
+                          </div>
+                        </div>
+                          <div class="row" style="margin-top: 12px; max-width: 523px;" *ngIf="displayAssignTo === false && groupsParsedArray?.length" class="groups-container">
+                              <!-- groupsParsedArray   {{groupsParsedArray | json}} -->
+                               <div class="gropus-wpr" *ngFor="let group of groupsParsedArray" (click)="goToGroupDetail(group.id)"> 
+                                <div class="custom-group-row" >
+                                  <span class="group-name">{{ group.name || 'Unknown group' }}</span>
+                                  <span class="group-percentage">{{ group.percentage }}%</span>
+                                </div>
+                              </div>
                           </div>
                         </section>
 
@@ -824,7 +784,7 @@
                     <!-- --------------------------------------------------------------------- -->
                     <!-- Agent -->
                     <!-- --------------------------------------------------------------------- -->
-                    <div class="row" style="margin-top:0px">
+                    <div class="row" style="margin-top:0px" *ngIf="displayAssignTo === true">
                       <!-- border-top: 1px solid #dadde1; -->
                       <div class="col-sm-12">
 
@@ -834,15 +794,11 @@
                           </span>
 
 
-                          <span *ngIf="!selectedGroupId" style="color: rgba(0,0,0,.54);text-transform: uppercase; font-size: 12px;
-                  position: relative;
-                  top: 1px;">
+                          <span *ngIf="!selectedGroupId" style="color: rgba(0,0,0,.54);text-transform: uppercase; font-size: 12px;position: relative; top: 1px;">
                             {{ 'DeptsAddEditPage.AllUsers' | translate }}
                           </span>
 
-                          <span *ngIf="selectedGroupId" style=" color: rgba(0,0,0,.54);font-size: 12px;
-                  position: relative;
-                  top: 1px;">
+                          <span *ngIf="selectedGroupId" style=" color: rgba(0,0,0,.54);font-size: 12px; position: relative;top: 1px;">
                             {{ 'DepartmentsPage.Group' | translate }}
                             <span style="text-transform: uppercase;">
                               {{ group_name }}

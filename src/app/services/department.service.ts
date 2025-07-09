@@ -276,8 +276,8 @@ export class DepartmentService {
    * @param id
    * @param deptName
    */
-  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
-
+  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string, tags?:any) {
+  console.log('[DEPTS-SERV] UPDATE DEPT - tags ', tags);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

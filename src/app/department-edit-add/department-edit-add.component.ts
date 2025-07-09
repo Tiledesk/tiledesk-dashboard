@@ -153,6 +153,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   isAuthorized = false;
   permissionChecked = false;
+  displayAssignTo: boolean = true;
+  groupsParsedArray: any
+  tags: any;
 
   constructor(
     private router: Router,
@@ -201,30 +204,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
     } else if (this.NOT_HAS_EDITED === false) {
 
-      // areYouSureMsg
-      // youHaveUnsavedChangesMsg
-      // cancelMsg
-      // this.cancelMsg,
-
-      // return swal({
-      //   // title: this.areYouSureMsg,
-      //   text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
-      //   icon: "warning",
-      //   buttons: true,
-      //   // dangerMode: true,
-      // }).then((willRemain) => {
-      //     if (willRemain) {
-      //       this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
-
-      //       return true;
-
-      //     } else {
-      //       this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
-
-      //       return false;
-
-      //     }
-      //   });
 
       return Swal.fire({
         title: this.areYouSureMsg,
@@ -367,26 +346,26 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
 
- async checkEditPermissions(){
-   const result = await this.roleService.checkRoleForCurrentProject('department-edit')
+  async checkEditPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('department-edit')
     console.log('[DEPT-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[DEPT-EDIT-ADD] isAuthorized to view EDIT',  this.isAuthorized)
-    console.log('[DEPT-EDIT-ADD] permissionChecked ',  this.permissionChecked)
+    console.log('[DEPT-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
 
   }
-  
-  
-  
-  async checkCreatePermissions(){
-     const result = await this.roleService.checkRoleForCurrentProject('department-create')
+
+
+
+  async checkCreatePermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('department-create')
     console.log('[DEPT-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE',  this.isAuthorized)
-    console.log('[DEPT-EDIT-ADD] permissionChecked ',  this.permissionChecked)
-    
+    console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
+
   }
 
 
@@ -483,14 +462,148 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // @ canDeactivate NOT_HAS_EDITED is to canDeactivate if is false is displayed the alert
   // -------------------------------------------------------------------------------------
   onChangeDeptName($event) {
+    console.log('[DEPT-EDIT-ADD] - onChangeDeptName IS_DEFAULT_DEPT', this.IS_DEFAULT_DEPT);
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptName ', $event);
+
     this.NOT_HAS_EDITED = false
   }
 
 
   onChangeDeptDescription($event) {
-    this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
-    this.NOT_HAS_EDITED = false
+    console.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
+    // let cleaned = $event.trim();
+
+    // // Remove wrapping quotes if it's wrapped in " or '
+    // if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+    //     (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+    //   cleaned = cleaned.slice(1, -1);
+    // }
+
+    // let startsWithArray = cleaned.startsWith('[');
+
+    // if (startsWithArray) {
+    //   try {
+    //     const array = JSON.parse(cleaned);
+    //     if (Array.isArray(array)) {
+    //       console.log('✅ Converted to array:', array);
+    //       // You can now use this array
+    //       this.groupsParsedArray = array;
+    //       this.hideSectionAssignTo = true;
+    //       console.log('✅ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //     } else {
+    //       console.log('⚠️ JSON is valid but not an array');
+    //       this.hideSectionAssignTo = false;
+    //       console.log('⚠️ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //     }
+    //   } catch (err) {
+    //     console.log('❌ Invalid JSON:', err.message);
+    //     this.hideSectionAssignTo = false;
+    //     console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //   }
+    // } else {
+    //   console.log('❌ Does not start with [');
+    //   this.hideSectionAssignTo = false;
+    //   console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
+    // }
+
+    //   let cleaned =  $event.trim();
+
+    //   // Remove surrounding single or double quotes if present
+    //   if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+    //       (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+    //     cleaned = cleaned.slice(1, -1);
+    //   }
+
+    //   // If the content has escaped quotes like \" — wrap it in double quotes
+    //   const needsUnescaping = cleaned.includes('\\"');
+
+    //   try {
+    //     let parsed;
+
+    //   if (needsUnescaping) {
+    //     // First wrap in quotes, then parse
+    //     parsed = JSON.parse('"' + cleaned.replace(/"/g, '\\"') + '"'); // Unescape
+    //     parsed = JSON.parse(parsed); // Now parse real JSON array
+    //   } else {
+    //     parsed = JSON.parse(cleaned);
+    //   }
+
+    //   if (Array.isArray(parsed)) {
+    //     console.log('✅ Final parsed array:', parsed);
+    //     this.hideSectionAssignTo = true;
+    //     console.log('✅  hideSectionAssignTo:', this.hideSectionAssignTo);
+    //     this.groupsParsedArray = parsed;
+    //   } else {
+    //     console.log('⚠️ Not an array');
+    //     this.hideSectionAssignTo = false;
+    //     console.log('⚠️ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //   }
+
+    // } catch (err) {
+    //   console.log('❌ Could not parse JSON:', err.message);
+    //   this.hideSectionAssignTo = false;
+    //   console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
+    // }
+
+
+    // let cleaned = $event.trim();
+
+    // // Try to fix broken JSON by replacing \" with "
+    // if (cleaned.includes('\\"')) {
+    //   cleaned = cleaned.replace(/\\"/g, '"');
+    // }
+
+    // try {
+    //   const parsed = JSON.parse(cleaned);
+
+    //   if (Array.isArray(parsed)) {
+    //     console.log('✅ Successfully parsed JSON array:', parsed);
+    //     this.hideSectionAssignTo = true;
+    //     console.log('✅ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //     this.groupsParsedArray = parsed;
+    //   } else {
+    //     console.log('⚠️ JSON is valid but not an array');
+    //     this.hideSectionAssignTo = false;
+    //     console.log('⚠️ hideSectionAssignTo:', this.hideSectionAssignTo);
+    //   }
+    // } catch (err) {
+    //   console.log('❌ Could not parse JSON:', err.message);
+    //   this.hideSectionAssignTo = false;
+    //    console.log('❌ hideSectionAssignTo:', this.hideSectionAssignTo);
+    // }
+
+
+    let cleaned = $event.trim();
+
+    // Step 1: Remove surrounding quotes
+    if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+      (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+      cleaned = cleaned.slice(1, -1);
+    }
+
+    // Step 2: Fix escaped quotes
+    if (cleaned.includes('\\"')) {
+      cleaned = cleaned.replace(/\\"/g, '"');
+    }
+
+    // Step 3: Try parsing
+    try {
+      const parsed = JSON.parse(cleaned);
+      if (Array.isArray(parsed)) {
+        console.log('✅ Parsed array:', parsed);
+        this.displayAssignTo = false;
+        console.log('✅ displayAssignTo:', this.displayAssignTo);
+        this.groupsParsedArray = parsed;
+        this.getGroupsByProjectId()
+      } else {
+        this.displayAssignTo = true;
+        console.log('⚠️ displayAssignTo:', this.displayAssignTo);
+      }
+    } catch (err) {
+      console.log('❌ Parsing failed:', err.message);
+      this.displayAssignTo = true;
+      console.log('❌ displayAssignTo:', this.displayAssignTo);
+    }
   }
 
 
@@ -915,7 +1028,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
    */
   getGroupsByProjectId() {
-
     if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
       this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
 
@@ -923,7 +1035,19 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+      console.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+
+      if (Array.isArray(this.groupsParsedArray)) {
+        this.groupsParsedArray = this.groupsParsedArray.map(item => {
+          const matchedGroup = groups.find(group => group._id === item.id);
+          return {
+            ...item,
+            name: matchedGroup ? matchedGroup.name : 'Unknown group'
+          };
+        });
+
+        console.log('[DEPT-EDIT-ADD] - myParsedArray with group names:', this.groupsParsedArray);
+      }
 
       if (groups) {
         this.groupsList = groups;
@@ -1151,11 +1275,55 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getDeptById() {
     this.deptService.getDeptById(this.id_dept).subscribe((dept: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
-        this.dept_description_toUpdate = dept.description;
+        // this.dept_description_toUpdate = dept.description;
+
+        let rawDescription = dept.description?.trim() || '';
+        console.log('[DEPT-EDIT-ADD] Raw dept description:', rawDescription);
+
+        // Check if the string starts with [ or is a quoted escaped JSON string
+        if (rawDescription.startsWith('[') ||
+          (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
+          (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))) {
+
+          try {
+            // Step 1: Remove surrounding quotes if any
+            if (
+              (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
+              (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
+            ) {
+              rawDescription = rawDescription.slice(1, -1);
+            }
+
+            // Step 2: Unescape JSON string (replace \" with ")
+            const unescaped = rawDescription.replace(/\\"/g, '"');
+
+            // Step 3: Parse into array
+            this.groupsParsedArray = JSON.parse(unescaped);
+            this.dept_description_toUpdate = '';
+            console.log('[DEPT-EDIT-ADD] Parsed groupsParsedArray:', this.groupsParsedArray);
+            this.displayAssignTo = false
+            this.getGroupsByProjectId()
+
+          } catch (err) {
+            console.error('[DEPT-EDIT-ADD] ❌ Error parsing groupsParsedArray:', err);
+            this.groupsParsedArray = [];
+            this.dept_description_toUpdate = dept.description;
+            this.displayAssignTo = true
+          }
+
+        } else {
+          this.groupsParsedArray = [];
+          this.dept_description_toUpdate = rawDescription;
+          this.displayAssignTo = true
+        }
+
+        // console.log('[DEPT-EDIT-ADD] Final dept_description_toUpdate:', this.dept_description_toUpdate)
+        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - dept_description_toUpdate : ', this.dept_description_toUpdate);
+
         this.botId = dept.id_bot;
         this.dept_routing = dept.routing;
         this.selectedGroupId = dept.id_group;
@@ -1400,11 +1568,16 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.router.navigate(['project/' + this.project._id + '/group/edit/' + this.selectedGroupId]);
   }
 
+  goToGroupDetail(groupid) {
+    console.log('goToGroupDetail groupid', groupid)
+    this.router.navigate(['project/' + this.project._id + '/group/edit/' + groupid]);
+  }
+
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
 
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
 
-     console.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
+      console.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
 
@@ -1458,11 +1631,18 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - updated_btn ', updated_btn);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
-    this.logger.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+
+
+
+
+
+
     this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
+    console.log('[DEPT-EDIT-ADD] - EDIT - TAGS WHEN EDIT IS PRESSED ', this.tags)
 
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
@@ -1476,8 +1656,45 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.botIdEdit,
       this.bot_only,
       this.selectedGroupId,
-      this.dept_routing).subscribe((data) => {
+      this.dept_routing,
+      this.tags).subscribe((data) => {
         this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
+        console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES data description ', data['description']);
+
+        if (data && data['description'] && typeof data['description'] === 'string' && data['description'].trim().startsWith('[')) {
+          let toParse = data['description'].trim();
+          let parsedGroups: any[] = [];
+
+          try {
+            // Remove wrapping quotes if any
+            if (
+              (toParse.startsWith('"') && toParse.endsWith('"')) ||
+              (toParse.startsWith("'") && toParse.endsWith("'"))
+            ) {
+              toParse = toParse.slice(1, -1);
+            }
+
+            // Unescape \" to "
+            toParse = toParse.replace(/\\"/g, '"');
+
+            const parsed = JSON.parse(toParse);
+            if (Array.isArray(parsed)) {
+              parsedGroups = parsed;
+              console.log('[DEPT-EDIT-ADD] ✅ Parsed group array:', parsedGroups);
+              
+              this.dept_description_toUpdate = ""
+              // Optionally assign to class property
+              // this.groupsParsedArray = parsedGroups;
+            } else {
+              console.log('[DEPT-EDIT-ADD] ⚠️ Parsed result is not an array:', parsed);
+            }
+          } catch (error) {
+            console.error('[DEPT-EDIT-ADD] ❌ Error parsing description:', error);
+          }
+        } else {
+          console.log('[DEPT-EDIT-ADD] ℹ️ Description is missing or does not start with "["');
+        }
+
 
       }, (error) => {
         this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
