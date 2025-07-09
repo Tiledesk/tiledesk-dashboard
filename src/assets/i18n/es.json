@@ -1062,6 +1062,7 @@
         "FromTheProject": "del proyecto",
         "Confirm": "Confirmar",
         "RestoreMember": "Restaurar miembro",
+        "DisableMember": "Deshabilitar miembro",
         "TheUserHasBeenInvited": "El usuario ha sido invitado.",
         "Continue": "Continuar",
         "PendingInvitation": "Invitaciones pendientes",
