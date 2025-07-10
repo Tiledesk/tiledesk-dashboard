@@ -207,4 +207,39 @@ export class GroupService {
 
   }
 
+  public disableGroup(id_group: string): Observable<Group[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.GROUPS_URL + 'disable/' + id_group;
+    this.logger.log('[GROUP-SERV] - GET GROUP BY ID - URL', url);
+
+    return this._httpClient
+      .put<Group[]>(url, {}, httpOptions)
+  }
+
+  public restoreGroup(id_group: string): Observable<Group[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    console.log("this.TOKEN: ", this.TOKEN)
+    console.log("httpOptions: ", httpOptions)
+
+    const url = this.GROUPS_URL + 'enable/' + id_group;
+    this.logger.log('[GROUP-SERV] - GET GROUP BY ID - URL', url);
+
+    return this._httpClient
+      .put<Group[]>(url, {}, httpOptions)
+  }
+
 }
