@@ -160,9 +160,9 @@ export class NotifyService {
 
     Swal.fire({
       icon: 'warning',
-      title: 'Permission Denied',
-      text: 'We are sorry, bu you don\'t have permissions to perform this action.',
-      confirmButtonText: 'OK',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YonDontHavePermissionsToPerformThisAction'),
+      confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
