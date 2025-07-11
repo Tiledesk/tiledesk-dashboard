@@ -58,7 +58,7 @@
             <div class="row group-row" style=" margin-left: 20px;">
               <div class="col-md-8">
 
-                <div class="page-title--wrapper">
+                <div class="page-title---wrapper">
                   <div class="title--header">
                     <!-- {{ pageName }} -->
                   </div>
@@ -131,17 +131,17 @@
                           </td>
                         </tr>
 
-                        <tr *ngFor="let group of groupsList | sortBy : 'name'">
-                          <!-- *ngIf="!group?.trashed" -->
-                          <!-- rel="tooltip" title="{{ group?._id }}" -->
-                          <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
-                            <span class="tooltipx">
-                              <span style="font-weight:400; font-size: 13px"> {{ group?.name }}</span>
-                              <span class="tooltiptext">
-                                {{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }}
-                              </span>
-                            </span>
-                          </td>
+                    <tr *ngFor="let group of groupsList | sortBy : 'name'">
+                      <!-- *ngIf="!group?.trashed" -->
+                      <!-- rel="tooltip" title="{{ group?._id }}" -->
+                      <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
+                        <span class="tooltipx">
+                          <span style="font-weight:400; font-size: 13px; display: flex;"> {{ group?.name }} <span class="disabled-span" *ngIf="group.enabled === false"><span class="material-icons-outlined" style="font-size: 16px;">block</span>Disabled</span></span>
+                          <span class="tooltiptext">
+                            {{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }}
+                          </span>
+                        </span>
+                      </td>
 
                           <!-- <td>
                     {{ group?._id }}
@@ -170,21 +170,31 @@
                             </span>
                           </td>
 
-                          <!-- EDIT / DELETE GROUPS  -->
-                          <td class="td-actions text-right" style="padding-top:16px">
-                            <!-- Modifica Gruppo -->
-                            <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipEditGroup' | translate }}"
-                              class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_edit(group?._id)'>
-                              <i class="material-icons">edit</i>
-                            </button>
-                            <!-- Elimima Gruppo -->
-                            <button type="button" rel="tooltip"
-                              title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}"
-                              class="btn btn-danger btn-simple btn-xs"
-                              (click)='openDeleteModal(group?._id, group?.name)'>
-                              <i class="material-icons">delete</i>
-                            </button>
-                          </td>
+                      <!-- EDIT / DELETE GROUPS  -->
+                      <td class="td-actions text-right" style="padding-top:16px">
+                        <!-- Modifica Gruppo -->
+                        <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipEditGroup' | translate }}"
+                          class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_edit(group?._id)'>
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <!-- Disabilita Gruppo -->
+                        <button *ngIf="group.enabled !== false" type="button" rel="tooltip" title="Disable"
+                          class="btn btn-primary btn-simple btn-xs" (click)='disableGroup(group?._id)'>
+                          <i class="material-icons">do_not_disturb_on</i>
+                          <!-- <span class="material-icons-outlined">do_not_disturb_on</span> -->
+                        </button>
+                        <!-- Riabilita Gruppo -->
+                        <button *ngIf="group.enabled === false" type="button" rel="tooltip" title="Restore"
+                          class="btn btn-primary btn-simple btn-xs" (click)='restoreGroup(group?._id)'>
+                          <i class="material-icons">undo</i>
+                          <!-- <span class="material-icons-outlined">undo</span> -->
+                        </button>
+                        <!-- Elimima Gruppo -->
+                        <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}"
+                          class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(group?._id, group?.name)'>
+                          <i class="material-icons">delete</i>
+                        </button>
+                      </td>
 
                         </tr>
                       </tbody>

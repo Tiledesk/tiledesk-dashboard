@@ -341,3 +341,16 @@ only screen and (max-width: 760px),
   text-decoration: underline;
 }
 
+.disabled-span {
+  display: flex;
+  margin-left: 12px;
+  color: #b1afaf;
+}
+
+
+.page-title---wrapper {
+  justify-content: space-between;
+  display: flex;
+  flex-flow: row;
+  margin: 15px 0px 15px 26px;
+}

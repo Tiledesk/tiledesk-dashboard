@@ -63,7 +63,7 @@ export class GroupsComponent implements OnInit {
     public brandService: BrandService,
     public departmentService: DepartmentService,
     private translate: TranslateService,
-    private roleService: RoleService
+    private roleService: RoleService,
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -282,5 +282,48 @@ export class GroupsComponent implements OnInit {
 
   
   }
+
+  disableGroup(group_id) {
+
+    this.groupsService.disableGroup(group_id).subscribe((group) => {
+      this.logger.log("[GROUPS] disableGroup response: ", group);
+    }, (error) => {
+      this.logger.error("[GROUPS] error disabling group: ", error);
+      if (error.status === 403) {
+        this.notify.showWidgetStyleUpdateNotification(error.error.error, 4, 'report_problem')
+      } else {
+        this.notify.showWidgetStyleUpdateNotification("An error occurred disabling group", 4, 'report_problem')
+      }
+    }, () => {
+      this.logger.log("[GROUPS] group disabled");
+      this.notify.showWidgetStyleUpdateNotification("Group disabled successfully", 2, 'done')
+      const groupToDisable = this.groupsList.find(g => g._id === group_id);
+      if (groupToDisable) {
+        groupToDisable.enabled = false;
+      }
+    })
+  }
+
+  restoreGroup(group_id) {
+
+    this.groupsService.restoreGroup(group_id).subscribe((group) => {
+      this.logger.log("[GROUPS] restoreGroup response: ", group);
+    }, (error) => {
+      this.logger.error("[GROUPS] error restoring group: ", error);
+      if (error.status === 403) {
+        this.notify.showWidgetStyleUpdateNotification(error.error.error, 4, 'report_problem')
+      } else {
+        this.notify.showWidgetStyleUpdateNotification("An error occurred enabling group", 4, 'report_problem')
+      }
+    }, () => {
+      this.logger.log("[GROUPS] group restored");
+      this.notify.showWidgetStyleUpdateNotification("Group enabled successfully", 2, 'done')
+      const groupToRestore = this.groupsList.find(g => g._id === group_id);
+      if (groupToRestore) {
+        groupToRestore.enabled = true;
+      }
+    })
+  }
+  
 
 }
