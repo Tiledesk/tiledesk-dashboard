@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.118-rc4
+- Adds the ability to disable a group
+
 ### 2.7.118-rc3
 - Adds the ability to manage the “join” function for  a conversation 
 - Adds the ability to manage the “reopen” function for  a conversation 
