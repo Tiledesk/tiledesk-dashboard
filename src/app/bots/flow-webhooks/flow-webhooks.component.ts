@@ -42,6 +42,8 @@ export class FlowWebhooksComponent implements OnInit {
 
   SERVER_BASE_PATH: string;
 
+  project: any;
+
   constructor(
     private auth: AuthService,
     private translate: TranslateService,
@@ -53,13 +55,21 @@ export class FlowWebhooksComponent implements OnInit {
      public notify: NotifyService,
   ) { }
 
+
   ngOnInit(): void {
     this.getBrowserVersion();
     this.getFaqKbByProjectId()
-    // this.getTemplates()
-    // this.getCommunityTemplates()
     this.getFlowWebhooks()
     this.getServerBaseURL()
+    this.getCurrentProject()
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project;
+      }
+    })
   }
 
   getServerBaseURL() {
@@ -97,6 +107,11 @@ export class FlowWebhooksComponent implements OnInit {
     });
   }
 
+  goToFlowWebhookDetail(webhookid: string) {
+    if (this.project && this.project._id) {
+      this.router.navigate(['project/' + this.project._id + '/flows/flow-webhooks-logs/webhook/' + webhookid]);
+    }
+  }
 
   // --------------------------------------------------------------------------------------
   //  @ Enable / disable flow webkook
@@ -321,5 +336,6 @@ export class FlowWebhooksComponent implements OnInit {
 
     });
   }
+
 
 }

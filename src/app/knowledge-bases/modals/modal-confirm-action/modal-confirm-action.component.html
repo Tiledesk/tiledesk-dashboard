@@ -1,0 +1,41 @@
+<!-- <h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <div class="form-container">
+    <div class="info-container">
+      <i class="material-icons-outlined info-icon">help_outline</i>
+      <div class="info-text">
+        <p>{{ data.message }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions style="justify-content: center;">
+  <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+    {{ data.cancelText || 'Cancel' }}
+  </button>
+  <button class="mat-dialog-ko-btn" mat-button color="warn" (click)="onYesClick()">
+    {{ data.confirmText || 'Confirm' }}
+  </button>
+</div> 
+
+ -->
+
+<h1 mat-dialog-title> {{ data.title }} </h1>
+
+<div mat-dialog-content>
+    <div class="form-container">
+        <p [innerHTML] = "data.message"> </p>
+    </div>
+</div>
+
+<div class="mat-dialog-actions" mat-dialog-actions>
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ data.cancelText || 'Cancel' }}
+    </button>
+    
+    <button class="mat-dialog-ko-btn" mat-button (click)="onYesClick()" cdkFocusInitial>
+        {{ data.confirmText || 'Confirm' }}
+    </button>
+</div>
+
+

@@ -150,11 +150,6 @@
                     </div>
 
 
-                    <!-- ---------------------------------- -->
-
-
-
-
                     <div class="link-to-docs-container">
                         <!-- <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu">
@@ -178,21 +173,10 @@
                             </span>
                         </div>
 
-                        <!-- *ngIf="hasAlreadyVisitedKb === 'false'" -->
-                        <!-- <div  class="getting-started-add-content">
-                            <div class="getting-started-add-content-text"> {{ 'KbPage.GetStartedByAddingContents' | translate }}  </div> 
-                            <button class="btn custom-button-round add-content center" style="box-shadow: unset;"
-                            [matMenuTriggerFor]="menu"> 
-                            <span class="material-icons-round">add</span>
-                        </button>
-                        </div> -->
+                        
                     </div>
                 </div>
-                <!-- <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
-                    <add-content-menu class="mat-menu"
-                        (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
-                    </add-content-menu>
-                </mat-menu> -->
+              
             </div>
         </div>
     </div>
@@ -225,11 +209,21 @@
                             (ngModelChange)="onLoadByFilter($event, 'status')">
                             <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
                             <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
-                            <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
-                            <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
-                            <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
-                            <ng-option value="300"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
-                            <ng-option value="400"> {{ 'KbPage.StatusError' | translate }}</ng-option>
+                            <ng-option value="-1"> 
+                                {{ 'KbPage.StatusNotStarted' | translate }}
+                            </ng-option>
+                            <ng-option value="100"> 
+                                {{ 'KbPage.StatusQueued' | translate }}
+                            </ng-option>
+                            <ng-option value="200"> 
+                                {{ 'KbPage.StatusStarted' | translate }}
+                            </ng-option>
+                            <ng-option value="300"> 
+                                {{ 'KbPage.StatusFinished' | translate }}
+                            </ng-option>
+                            <ng-option value="400"> 
+                                {{ 'KbPage.StatusError' | translate }}
+                            </ng-option>
                         </ng-select>
                     </div>
 
@@ -353,11 +347,7 @@
 
 
         <div *ngIf="!isLoading || SHOW_MORE_BTN" #tableBody class="table-body card-content table-responsive">
-            <!-- <div class="btn-preview">
-            <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
-              <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
-            </button>
-        </div> -->
+         
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -423,14 +413,14 @@
                     <tr *ngIf="kbsList?.length == 0">
                         <td colspan="5" style="width: 100%; ">
                             <div class="ellipsis-text" style="width: 100%;
-                        display: inline-block;
-                        text-align: center;
-                        padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                                display: inline-block;
+                                text-align: center;
+                                padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
 
-                    <tr *ngFor="let kb of kbsList">
+                    <tr *ngFor="let kb of kbsList; trackBy: trackByKbId">
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
 
@@ -470,27 +460,32 @@
                                     style="font-size: 16px; color: white;">quiz</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">FAQ</span>
                             </div>
-                            <!-- <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span> -->
-                            <!-- <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span> -->
+           
                         </td>
 
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
-                            <!-- <loading-spinner *ngIf="kb.status < -1 || kb.status > 4" class="custom-spinner"></loading-spinner> -->
-                            <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
-                        <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
-                        <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
-                        <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
+
                             <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                class="material-icons-outlined status-icon">done</span>
+                                class="material-icons-outlined status-icon">
+                                done
+                            </span>
                             <span *ngIf="kb.status == 100" id="done"
-                                class="material-icons-outlined status-icon">done_all</span>
+                                class="material-icons-outlined status-icon">
+                                done_all
+                            </span>
                             <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                class="material-icons-outlined status-icon animated-icon">cached</span>
+                                class="material-icons-outlined status-icon animated-icon">
+                                cached
+                            </span>
                             <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                class="material-icons-outlined status-icon status-done">done_all</span>
+                                class="material-icons-outlined status-icon status-done">
+                               done_all
+                            </span>
                             <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                class="material-icons-outlined status-icon status-error">error</span>
+                                class="material-icons-outlined status-icon status-error">
+                                error
+                            </span>
                         </td>
 
                         <!-- ----------------------- -->
@@ -498,7 +493,7 @@
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
                             <span *ngIf="kb.type === 'url'"
-                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
                                 matTooltipPosition='below' 
@@ -531,20 +526,6 @@
                             {{ kb.updatedAt | amTimeAgo }}
                         </td>
 
-                        <!-- <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                        <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}" class="ellipsis-text" style="max-width: 100%; font-size: 16px;">{{ kb.name }}</div>
-                        
-                        <div *ngIf="kb.type === 'text'" class="subtitle ellipsis-text" style="max-width: 100%;">
-                           
-                            {{kb.content | slice:0:500 }}
-
-                        </div>
-                        <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
-          
-                            {{kb.source }}
-
-                        </div>
-                    </td> -->
 
                         <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
                             <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"

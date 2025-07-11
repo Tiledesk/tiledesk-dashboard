@@ -1,0 +1,32 @@
+<div class="add-content-container unanswered-questions-modal">
+ 
+  <ng-container *ngIf="unansweredQuestions.length > 0; else noQuestions">
+    <div class="uq-list">
+      <div class="uq-list-header">
+        <span class="uq-list-header-question">Question</span>
+        <span class="uq-list-header-actions">Actions</span>
+      </div>
+      <div *ngFor="let q of unansweredQuestions" class="uq-list-item">
+        <span class="uq-question-text">{{ q.question }}</span>
+        <span class="uq-actions">
+          <button class="uq-btn uq-btn-icon" mat-icon-button matTooltipClass="kb-custom-mat-tooltip" matTooltip="Add question to KB" (click)="onOpenAddKnowledgeBaseModal(q)">
+            <mat-icon class="add-icon">add_circle_outline</mat-icon>
+          </button>
+          <button class="uq-btn uq-btn-icon" mat-icon-button matTooltipClass="kb-custom-mat-tooltip" matTooltip="Discard question" (click)="onDiscardQuestion(q)">
+            <mat-icon class="delete-icon">delete_outline</mat-icon>
+          </button>
+        </span>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noQuestions>
+    <div class="add-header-container">
+      <div class="upgrade-title">Unanswered questions</div>
+      <span class="span-6"></span>
+      <div class="upgrade-subtitle">These are the questions that users asked but your knowledge base could not answer.</div>
+      <!-- <div class="upgrade-subtitle">You can add them to your KB or discard them.</div> -->
+      <span class="span-32"></span>
+    </div>
+    <div class="uq-no-questions">There are no unanswered questions</div>
+  </ng-template>
+</div> 
