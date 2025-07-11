@@ -761,7 +761,7 @@
                 <div class="requester---avatar"
                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}">
                   <span
-                    *ngIf="(request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.fullname !== request?.lead?.phone"
+                    *ngIf="(request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.fullname !== request?.lead?.phone || request?.fullnameIsNumber)"
                     style="color: #ffffff">
                     {{ request?.requester_fullname_initial }}
                   </span>
@@ -771,14 +771,14 @@
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
                   </span>
-                  <span
+                  <!-- <span
                     *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO)  && !request?.lead?.phone"
                     class="material-icons-outlined"
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
-                  </span>
+                  </span> -->
                   <span
-                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone  && !request?.fullnameIsNumber)"
                     style="color: #ffffff;">
                     {{ request?.requester_fullname_initial }}
                   </span>
