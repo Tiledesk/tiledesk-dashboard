@@ -802,6 +802,13 @@ li:before {
   height: 16px;
   min-height: 16px;
 }
+.span-12 {
+  display: block;
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  min-height: 12px;
+}
 
 .plan-features-text {
   color: rgb(8, 15, 26);
@@ -1026,8 +1033,8 @@ li:before {
   gap: 0px 12px;
   grid-auto-flow: row;
   // grid-template-columns: 238px 238px 238px 238px;
-  // grid-template-columns: 280px 280px 280px 280px;
-  grid-template-columns: 350px 350px 350px;
+  grid-template-columns: 280px 280px 280px 280px;
+  // grid-template-columns: 350px 350px 350px;
   ;
   padding: 0px;
 }

@@ -941,7 +941,24 @@ export class NotifyService {
       // },
       // dangerMode: false,
     })
+  }
 
+
+  presentModalYouDontBelongToTheProject() {
+    Swal.fire({
+      title: this.translate.instant('AccessDenied') + '!',
+      text: this.translate.instant('ItLooksLikeYouAreNotTeammateOfThisProject') + '. ' + this.translate.instant('ContactTheProjectAdministratorToGrantYouTheAccess') + '.',
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   presentModalOnlyOwnerCanManageTSMTPsettings(onlyOwnerCanManageSMTPSettings: string, learnMoreAboutDefaultRoles: string) {

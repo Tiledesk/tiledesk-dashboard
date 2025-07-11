@@ -27,9 +27,9 @@
                 </div>
               </div>
               <!-- logoUrl {{ logoUrl }} -->
-              <div class="c21-header-content" style="">
+              <div class="c21-header-content">
                 <!-- LOGO_IS_ON === true &&  -->
-                <div class="c21-logo" *ngIf="logoUrl !== 'No Logo'" style="">
+                <div class="c21-logo" *ngIf="logoUrl !== 'No Logo'">
                   <!-- <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
                     src="https://tiledesk.com/tiledesk-logo-white.png/"> -->
                   <!-- height: 55px; width: auto;margin-bottom: 20px; -->
@@ -37,13 +37,12 @@
                     [src]="widgetLogoURL ">
                   <img *ngIf="hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="myLogo"
                     [src]="logoUrl"> -->
-                  <img style="" alt="widget-logo" [src]="logoUrl">
+                  <img alt="widget-logo" [src]="logoUrl">
                 </div>
 
-                <div class="c21-text" style="">
+                <div class="c21-text">
                   <!-- padding-top: 16px; -->
                   <div class="c21-text-wellcome"
-                    style=""
                     [ngStyle]="{'color': secondaryColor}">
 
                     <span>
@@ -52,7 +51,6 @@
                     </span>
                   </div>
                   <div class="c21-text-intro"
-                    style=""
                     [ngStyle]="{'color': secondaryColor}">
 
                     <span>
@@ -64,7 +62,7 @@
               </div>
             </div>
           </div>
-          <div class="c21-body" style="">
+          <div class="c21-body">
             <!-- <div class="c21-body-container"> -->
               <!-- style="padding-top:0px; margin-top:0px" -->
               <div class="c21-body-content" >
@@ -106,7 +104,7 @@
                           <div class="c21-body-conv" [ngClass]="{'c21-body-conv-home' : C21_BODY_HOME === true}">
 
                             <div class="c21-left-conv">
-                              <div class="c21-icon-avatar" style="">
+                              <div class="c21-icon-avatar">
                                 <div class="c21-avatar-image contact-avatar" *ngIf="C21_BODY_HOME && hasProfilePhoto"
                                   [style.background-image]="'url(' + userProfileImageurl + ')'">
                                 </div>
@@ -130,7 +128,7 @@
                                   <path d="M0 0h24v24H0z" fill="none"></path>
                                 </svg>
                               </span>
-                              <span class="v-align-center c21-label-button" style="">
+                              <span class="v-align-center c21-label-button">
                                 <!-- {{'NewConversation' | translate}} -->
                                 <!-- {{ selected_translation?.LABEL_START_NW_CONV }} -->
                                 {{ newConversation }}
@@ -159,7 +157,7 @@
                         <div class="c21-item-conversation" [ngClass]="{'list' : C21_BODY_HOME === false}" *ngIf="!C21_BODY_HOME">
                           <div class="c21-body-conv" [ngClass]="{'c21-body-conv-home' : C21_BODY_HOME === true}">
                             <div class="c21-left-conv">
-                              <div class="c21-icon-avatar" style="">
+                              <div class="c21-icon-avatar">
                                 <!-- <img src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"/> -->
 
                                 <!-- // WIDGET HOME WITH CONVERSATION  -->
@@ -235,7 +233,7 @@
                                 <path d="M0 0h24v24H0z" fill="none"></path>
                               </svg>
                             </span>
-                            <span class="v-align-center c21-label-button" style="">
+                            <span class="v-align-center c21-label-button">
                               <!-- {{'NewConversation' | translate}} -->
                               <!-- {{ selected_translation?.LABEL_START_NW_CONV }} -->
                               {{ newConversation }}
