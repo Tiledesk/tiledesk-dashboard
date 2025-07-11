@@ -139,7 +139,8 @@
                 <div class="join-btn-col">
                   <div class="tool_tip" style="width: 100%;">
                     <button class="btn btn-block btn-primary action--btn" style="background-color: var(--blue-20) !important; border-radius: var(--btn-border-radius) !important;"
-                      (click)='$event.stopPropagation();joinRequest(request?.request_id)'>
+                      (click)='$event.stopPropagation();joinRequest(request?.request_id)'
+                      [disabled]="!PERMISSION_TO_JOIN_REQUEST">
                       {{'Join' | translate}}
                     </button>
                     <span class="top"

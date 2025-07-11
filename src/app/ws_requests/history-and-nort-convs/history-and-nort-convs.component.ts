@@ -317,6 +317,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   isDefaultRole: boolean;
   PERMISSION_TO_UPDATE_REQUEST: boolean;
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_REOPEN: boolean;
+  PERMISSION_TO_DELETE: boolean;
+
   /**
    * 
    * @param router 
@@ -450,7 +454,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
             
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
             console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
@@ -461,6 +465,55 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         } else {
           this.PERMISSION_TO_ARCHIVE_REQUEST = true
           console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // PERMISSION_TO_REOPEN
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
+            
+            this.PERMISSION_TO_REOPEN = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
+          } else {
+            this.PERMISSION_TO_REOPEN = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 2', this.PERMISSION_TO_REOPEN);
+          }
+        } else {
+          this.PERMISSION_TO_REOPEN = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
+        }
+
+        // PERMISSION_TO_DELETE
+         if (status.role === 'owner') {
+          // Owner always has permission
+          this.PERMISSION_TO_DELETE = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else if (status.role === 'admin' || status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_DELETE = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.REQUEST_DELETE);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -1194,7 +1247,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // Join request
   // ------------------------------------------
   joinRequest(request, request_id: string) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
 
       // this._onJoinHandled(request_id, this.currentUserID, request);
       //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
@@ -1240,9 +1296,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           }
         }
       }
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction()
-    }
+    
   }
 
   presentModalYouCannotJoinChat() {
@@ -3212,6 +3266,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
+  
+
   selectAllHistory(e) {
     console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
@@ -3472,8 +3528,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   deleteArchivedRequest(request_id) {
-    this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)
 
+    if (!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
+
+    this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)
     Swal.fire({
       title: this.areYouSure + "?",
       text: this.requestWillBePermanentlyDeleted,
@@ -3534,43 +3596,45 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   reopenArchivedRequest(request, request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
-      // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
-      // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+    if (!this.PERMISSION_TO_REOPEN) {
 
-      // const closedAt = moment(new Date(request['closed_at'])).toDate()
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
-      // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
-      // const today = moment(new Date()).format("YYYY-MM-DD")
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
-
-      const requestclosedAt = moment(request['closed_at']);
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
-      const currentTime = moment();
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
-
-
-      const daysDiff = currentTime.diff(requestclosedAt, 'd');
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
-
-
-      if (daysDiff > 10) {
-        this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
-        this.presentModalReopenConvIsNotPossible()
-      } else {
-        // this.logger.log(moment(closedAtPlusTen).isSame(today))
-        this.reopenConversation(request_id)
-
-        this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
-      }
-    } else {
       this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
     }
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+    // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
+    // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+
+    // const closedAt = moment(new Date(request['closed_at'])).toDate()
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+    // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+    // const today = moment(new Date()).format("YYYY-MM-DD")
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
+
+    const requestclosedAt = moment(request['closed_at']);
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+    const currentTime = moment();
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+
+
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+
+    if (daysDiff > 10) {
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
+      this.presentModalReopenConvIsNotPossible()
+    } else {
+      // this.logger.log(moment(closedAtPlusTen).isSame(today))
+      this.reopenConversation(request_id)
+
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+    }
+    
   }
 
   presentModalReopenConvIsNotPossible() {

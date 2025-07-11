@@ -807,7 +807,7 @@
                 <!-- <input id="allCheckbox" [disabled]="project_user?.is_group_member"  -->
                 <!-- --------------------------------------------------- -->
                 <th *ngIf="IS_HERE_FOR_HISTORY" class="table-header-option" style="text-align: center; width: 25px;">
-                  <div class="checkbox-wpr" *ngIf="(USER_ROLE === 'owner') || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_ARCHIVE_REQUEST)">
+                  <div class="checkbox-wpr" *ngIf="(USER_ROLE === 'owner') || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_DELETE)">
                     <label for="allCheckbox">
                       <input id="allCheckbox"
                         [checked]="allChecked"
@@ -836,7 +836,7 @@
 
                 <th class="table-header-option " style="text-align: center" (click)="search()">
                   <div class="refresh-icon-wpr"
-                    [ngClass]="{'not_is_owner': USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'has-permission':PERMISSION_TO_UPDATE_REQUEST && IS_HERE_FOR_HISTORY,  'is_agent': USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
+                    [ngClass]="{'not_is_owner': USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'has-permission':PERMISSION_TO_DELETE && IS_HERE_FOR_HISTORY,  'is_agent': USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
                       matTooltipClass="mat-white-tooltip" 
                       matTooltip="{{ 'Refresh' | translate }}" 
@@ -861,14 +861,16 @@
                   <!-- Action Delete selected if IS_HERE_FOR_HISTORY -->
                   <!-- --------------------------------------------------- -->
                   <!-- {{  Delete | translate }}  -->
-                  <div *ngIf="(request_selected.length > 0 && USER_ROLE === 'owner') || (request_selected.length > 0 && USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_UPDATE_REQUEST && PERMISSION_TO_ARCHIVE_REQUEST)" class="delete-selected-wpr">
+                 <!-- PERMISSION_TO_DELETE   {{PERMISSION_TO_DELETE}} - request_selected length {{request_selected.length}} - USER_ROLE {{ USER_ROLE}} -->
+                  <div *ngIf="(request_selected.length > 0 && USER_ROLE === 'owner') || (request_selected.length > 0 && USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_DELETE)" class="delete-selected-wpr">
                     <button class="custom-input-group---btn" type="button" style="height: 37px;"
                       (click)="deleteSelected()" 
                       matTooltipClass="mat-white-tooltip"
                       matTooltip="{{ 'DeleteResolvedConversations' | translate }}" 
                       #tooltip="matTooltip" 
                       matTooltipPosition='below'
-                      matTooltipHideDelay="100">
+                      matTooltipHideDelay="100"
+                      [disabled]="(USER_ROLE === 'admin' || USER_ROLE === 'agent') || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && !PERMISSION_TO_DELETE)">
                      
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
@@ -888,18 +890,23 @@
                   <!-- ---------------------------------------------------------------------------------------- -->
                   <!-- Action archive selected if IS HERE FOR NO REAL TIME REQUESTS (!IS_HERE_FOR_HISTORY) -->
                   <!-- ---------------------------------------------------------------------------------------- -->
+                   <!-- PERMISSION_TO_ARCHIVE_REQUEST {{ PERMISSION_TO_ARCHIVE_REQUEST }}  -->
+                    <!-- matTooltip="{{ 'VisitorsPage.Resolve' | translate }}"  -->
                   <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
-                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
+                    <button class="custom-input-group---btn" type="button" style="height: 37px;"
                       (click)="archiveSelected()" 
                       matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
+                     
+                      [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? 'You don\'t have permission' : 'VisitorsPage.Resolve' | translate"
                       #tooltip="matTooltip"
                       matTooltipPosition='below' 
                       matTooltipHideDelay="100"
+                      [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }"
                       [disabled]="!PERMISSION_TO_ARCHIVE_REQUEST">
 
                       <span class="material-icons delete-forever-icon"
-                        style="vertical-align:middle; cursor: pointer; color:grey;">
+                        style="vertical-align:middle; cursor: pointer; color:grey;"
+                         [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
                         archive
                       </span>
                     </button>
@@ -953,15 +960,15 @@
                 <th class="table-header-option"> </th>
 
                 <th class="table-header-option" style="text-align: center;"
-                  *ngIf="(USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY) || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_UPDATE_REQUEST) ">
+                  *ngIf="(USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY) || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_DELETE) ">
                   <!-- <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
                     refresh
                   </span> -->
                 </th>
 
                 <!-- *ngIf="(!IS_HERE_FOR_HISTORY && USER_ROLE !== 'agent')" -->
-                <th class="table-header-option io-sono" style="text-align: center;"
-                  *ngIf="(!IS_HERE_FOR_HISTORY && USER_ROLE === 'owner' || !IS_HERE_FOR_HISTORY && USER_ROLE === 'admin')">
+                <th class="table-header-option t-h-o" style="text-align: center;"
+                  *ngIf="(!IS_HERE_FOR_HISTORY && USER_ROLE === 'owner' || !IS_HERE_FOR_HISTORY && USER_ROLE === 'admin') || (!IS_HERE_FOR_HISTORY && USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && !PERMISSION_TO_ARCHIVE_REQUEST)">
                   <!-- <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
                     refresh
                   </span> -->
@@ -1113,7 +1120,7 @@
                 <!--  --------------------------------------------------------------------- -->
                 <!--  checkbox displayed in history  (only if user as role owner) -->
                 <!--  --------------------------------------------------------------------- -->
-                <td style="text-align: center;width: 46px;" *ngIf="(USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY) || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_ARCHIVE_REQUEST && IS_HERE_FOR_HISTORY)">
+                <td style="text-align: center;width: 46px;" *ngIf="(USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY) || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_DELETE && IS_HERE_FOR_HISTORY)">
                   <div class="checkbox">
                     <label>
                       <!--  -->
@@ -2319,13 +2326,12 @@
                    <!-- matTooltip="{{ 'Delete' | translate }}"  -->
                   <button type="button" class="btn btn-danger btn-simple btn-xs"
                     (click)='deleteArchivedRequest(request?.request_id)'
-                    [disabled]="USER_ROLE !== 'owner'"
+                    [disabled]="(USER_ROLE === 'admin' || USER_ROLE === 'agent') || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && !PERMISSION_TO_DELETE) || request.status !== 1000 "
                     matTooltipClass="mat-white-tooltip"
                     [matTooltip]="request?.status !== 1000 ? ( 'Only resolved conversation can be deleted' ) : ( 'Delete' | translate )"
                     #tooltip="matTooltip"
                     matTooltipPosition='above' 
-                    matTooltipHideDelay="100"
-                    [disabled]="request.status !== 1000">
+                    matTooltipHideDelay="100">
                    
                     <i class="material-icons">delete_forever</i>
 
@@ -2342,7 +2348,7 @@
                   <!-- ------------------ -->
                   <button type="button" class="btn btn-danger btn-simple btn-xs" *ngIf="request.status === 1000"
                     (click)='reopenArchivedRequest(request, request?.request_id)'
-                    [disabled]="(USER_ROLE === 'agent' && !request['currentUserIsJoined'])"
+                    [disabled]="((USER_ROLE === 'agent' && !request['currentUserIsJoined']) || !PERMISSION_TO_REOPEN)"
                     matTooltipClass="mat-white-tooltip" 
                     matTooltip="{{ 'Reopen' | translate }}" 
                     #tooltip="matTooltip"
@@ -2376,13 +2382,18 @@
                   <!-- // ARCHIVE X UNASSIGNED REQUEST is ALLOWED TO USER WITH ADMIN AND OWNER ROLE SO IS DISABLED WHEN THE USER ROLE IS AGENT-->
                   <button *ngIf="request?.participants.length === 0 && request.status !== 1000" type="button" rel="tooltip"
                     title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                    class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
-                    [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST">
+                    class="btn btn-tdblu btn-simple btn-xs " (click)='archiveRequest(request?.request_id)'
+                    [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST"
+                    matTooltipClass="mat-white-tooltip" 
+                    matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100">
                     <i class="material-icons">archive</i>
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
                       <i></i>
-                    </span>
+                    </span> -->
                   </button>
                 </td>
 
@@ -2399,9 +2410,14 @@
                   <section *ngIf="!IS_HERE_FOR_HISTORY">
                     <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
                       style="padding-top: 9px !important;" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-                      class="btn btn-tdblu btn-simple btn-xs tool_tip"
+                      class="btn btn-tdblu btn-simple btn-xs"
                       (click)='joinRequest(request ,request?.request_id)'
-                      [disabled]="request?.currentUserIsJoined === true">
+                      [disabled]="request?.currentUserIsJoined === true || !PERMISSION_TO_JOIN_REQUEST"
+                      matTooltipClass="mat-white-tooltip" 
+                      matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}" 
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above' 
+                      matTooltipHideDelay="100">
 
                       <!-- ------------------------------------------------------------------------------------------------------ -->
                       <!-- SVG font-awesome link icon -->
@@ -2413,18 +2429,24 @@
                           d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                         </path>
                       </svg>
-                      <span
+                      <!-- <span
                         style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
                         class="top">
                         <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
                         <i style="left: 54%;"></i>
-                      </span>
+                      </span> -->
                     </button>
 
                     <!-- (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname) -->
+                 
                     <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
-                      title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
-                      (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'>
+                      title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
+                      (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'
+                      matTooltipClass="mat-white-tooltip" 
+                      matTooltip="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" 
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above' 
+                      matTooltipHideDelay="100">
 
 
                       <!-- ------------------------------------------------------------------------------------------------------ -->
@@ -2438,13 +2460,13 @@
                           d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z">
                         </path>
                       </svg>
-                      <span
+                      <!-- <span
                         style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
                         class="top">
                         <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}
                         </span>
                         <i style="left: 54%;"></i>
-                      </span>
+                      </span> -->
 
                     </button>
 
@@ -2456,14 +2478,19 @@
                   <button *ngIf="request?.participants.length > 0" type="button" rel="tooltip"
                     style="padding-top: 9px !important;" 
                     title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                    class="btn btn-tdblu btn-simple btn-xs tool_tip" 
+                    class="btn btn-tdblu btn-simple btn-xs" 
                     (click)='archiveRequest(request?.request_id)'
+                    matTooltipClass="mat-white-tooltip" 
+                    matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100"
                     [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || !PERMISSION_TO_ARCHIVE_REQUEST">
                     <i class="material-icons">archive</i>
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
                       <i></i>
-                    </span>
+                    </span> -->
                   </button>
 
                   <!-- --------------------------- -->
@@ -2473,14 +2500,19 @@
                   <button *ngIf="request?.participants.length === 0" type="button" rel="tooltip"
                     style="padding-top: 9px !important;" 
                     title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                    class="btn btn-tdblu btn-simple btn-xs tool_tip" 
+                    class="btn btn-tdblu btn-simple btn-xs" 
                     (click)='archiveRequest(request?.request_id)'
+                    matTooltipClass="mat-white-tooltip" 
+                    matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100"
                     [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST">
                     <i class="material-icons">archive</i>
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
                       <i></i>
-                    </span>
+                    </span> -->
                   </button>
                 </td>
 

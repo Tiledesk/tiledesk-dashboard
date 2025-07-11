@@ -53,18 +53,22 @@
           </th>
 
           <!-- --------------------------------------------------------- -->
-          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- Requests Icons th (in this th put the button to archive 
+           matTooltip="{{'VisitorsPage.Resolve' | translate}}" -->
           <!-- ---------------------------------------------------------- -->
           <th style="padding-top: 6px;padding-bottom: 6px !important;">
             <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button"
               (click)="archiveSelected()" 
               matTooltipClass="mat-white-tooltip"
-              matTooltip="{{'VisitorsPage.Resolve' | translate}}" 
+              [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? 'You don\'t have permission' : 'VisitorsPage.Resolve' | translate"
               #tooltip="matTooltip" 
               matTooltipPosition='above'
-              matTooltipHideDelay="100">
+              matTooltipHideDelay="100"
+              [disabled]="!PERMISSION_TO_ARCHIVE_REQUEST"
+              [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
 
-              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;"
+              [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
                 archive
               </span>
             </button>
@@ -1172,7 +1176,7 @@
             <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
               (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id, request?.channel)'
-              [disabled]="request?.currentUserIsJoined === true"
+              [disabled]="request?.currentUserIsJoined === true || !PERMISSION_TO_JOIN_REQUEST"
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}" 
               #tooltip="matTooltip" 

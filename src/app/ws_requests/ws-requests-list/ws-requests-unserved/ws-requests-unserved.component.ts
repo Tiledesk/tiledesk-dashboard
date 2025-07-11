@@ -76,6 +76,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   CHANNELS_NAME = CHANNELS_NAME;
 
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
 
   /**
    * Constructor
@@ -153,17 +154,33 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
             
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
             this.PERMISSION_TO_ARCHIVE_REQUEST = false
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
           }
         } else {
           this.PERMISSION_TO_ARCHIVE_REQUEST = true
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
 
@@ -708,15 +725,16 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // Join request
   // ------------------------------------------
   joinRequest(request_id: string) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest request_id', request_id);
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest currentUserID', this.currentUserID);
-
-      this.displayModalAreyouSureYouWantToTakeChargeOfTheConversation(request_id, this.currentUserID);
-      // this.onJoinHandled(request_id, this.currentUserID);
-    } else {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-    }
+      return
+    }  
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest request_id', request_id);
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest currentUserID', this.currentUserID);
+
+    this.displayModalAreyouSureYouWantToTakeChargeOfTheConversation(request_id, this.currentUserID);
+      // this.onJoinHandled(request_id, this.currentUserID);
+    
   }
 
   displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) {

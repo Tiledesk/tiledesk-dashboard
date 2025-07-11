@@ -291,7 +291,7 @@
             </span> -->
           <!-- </span> -->
 
-          <span class="request--browser" style="">
+          <span class="request--browser">
             <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
             <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}
             </span>
@@ -375,7 +375,7 @@
       <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
       <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
         class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn" (click)='joinRequest(request?.request_id)'
-        [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000">
+        [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000 || !PERMISSION_TO_JOIN_REQUEST">
         <!-- ------------------------------------------------------------------------------------------------------ -->
         <!-- SVG font-awesome link icon -->
         <!-- ------------------------------------------------------------------------------------------------------ -->

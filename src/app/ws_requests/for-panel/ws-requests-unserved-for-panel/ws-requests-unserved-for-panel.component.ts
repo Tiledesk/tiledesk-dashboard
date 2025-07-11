@@ -117,6 +117,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   PERMISSION_TO_UPDATE_REQUEST: boolean;
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
 
   /**
    * 
@@ -218,6 +219,22 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
           console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
         // if (status.matchedPermissions.includes('lead_update')) {
         //   // Enable lead update action
         // }
@@ -280,20 +297,22 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // Join request
   // ------------------------------------------
   joinRequest(request_id: string) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return;
+    }
 
-      const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
-      window.parent.postMessage(msg, '*')
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
+
+    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
+    window.parent.postMessage(msg, '*')
       // this.onJoinHandled(request_id, this.currentUserID);
 
       // ------------------------
       // For test
       // ------------------------
       // this.onJoinHandledinWsRequestsUnsevedForPanel(request_id, this.currentUserID);
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-    }
+    
   }
 
   listenToParentPostMessage() {

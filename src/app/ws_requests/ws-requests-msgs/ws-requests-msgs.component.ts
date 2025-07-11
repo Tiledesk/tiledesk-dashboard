@@ -391,6 +391,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_UPDATE_REQUEST: boolean;
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_SEND_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_REOPEN: boolean;
+
   /**
    * Constructor
    * @param router 
@@ -611,6 +614,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.PERMISSION_TO_SEND_REQUEST = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_SEND_REQUEST ', this.PERMISSION_TO_SEND_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+         // PERMISSION_TO_REOPEN
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
+            console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
+            
+            this.PERMISSION_TO_REOPEN = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
+          } else {
+            this.PERMISSION_TO_REOPEN = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REOPEN 2', this.PERMISSION_TO_REOPEN);
+          }
+        } else {
+          this.PERMISSION_TO_REOPEN = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -4360,48 +4395,49 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   reopenArchivedRequest(request, request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
-      // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
-      // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
-
-      // const closedAt = moment(new Date(request['closed_at'])).toDate()
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
-      // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
-      // const today = moment(new Date()).format("YYYY-MM-DD")
-      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
-      // unarchiveRequest
-
-
-      const requestclosedAt = moment(request['closed_at']);
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
-      const currentTime = moment();
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
-
-
-      const daysDiff = currentTime.diff(requestclosedAt, 'd');
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
-
-
-      if (daysDiff > 10) {
-        this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
-        this.presentModalReopenConvIsNotPossible()
-      } else {
-        // this.logger.log(moment(closedAtPlusTen).isSame(today))
-        this.reopenConversation(request_id)
-
-        let convWokingStatus = 'open'
-        this.updateRequestWorkingStatus(convWokingStatus)
-
-        this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
-      }
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    if (!this.PERMISSION_TO_REOPEN) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
     }
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+    // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
+    // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+
+    // const closedAt = moment(new Date(request['closed_at'])).toDate()
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+    // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+    // const today = moment(new Date()).format("YYYY-MM-DD")
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
+    // unarchiveRequest
+
+
+    const requestclosedAt = moment(request['closed_at']);
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+    const currentTime = moment();
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+
+
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+
+    if (daysDiff > 10) {
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
+      this.presentModalReopenConvIsNotPossible()
+    } else {
+      // this.logger.log(moment(closedAtPlusTen).isSame(today))
+      this.reopenConversation(request_id)
+
+      let convWokingStatus = 'open'
+      this.updateRequestWorkingStatus(convWokingStatus)
+
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+    }
+    
   }
 
   presentModalReopenConvIsNotPossible() {
@@ -4434,31 +4470,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     })
   }
 
+ 
+getJoinTooltipMessage(): string {
+  if (!this.PERMISSION_TO_JOIN_REQUEST) {
+    return this.translate.instant('YonDontHavePermissionsToPerformThisAction');
+  }
+
+  if (this.request?.status !== 1000) {
+    return this.translate.instant('ThisConversationIsNotAssignedToYou');
+  }
+
+  return this.translate.instant('ThisConversationIsClosedReopenItToJoin');
+}
+  
+
   // JOIN TO CHAT GROUP
   onJoinHandled() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
-        if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
-          this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array ', this.agents_array)
-          this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array 0 is a bot', this.agents_array[0].isBot)
-          let agentFullname = ""
-          if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
-            agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
-          } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
-            agentFullname = this.agents_array[0].firstname
-          }
-          this.presentModalYouCannotJoinChat(agentFullname)
-        } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
-          this.joinChat()
-        } else if (this.agents_array.length === 0) {
-          this.joinChat()
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+    if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+      if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
+        this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array ', this.agents_array)
+        this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array 0 is a bot', this.agents_array[0].isBot)
+        let agentFullname = ""
+        if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
+          agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
+        } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
+          agentFullname = this.agents_array[0].firstname
         }
-      } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
+        this.presentModalYouCannotJoinChat(agentFullname)
+      } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
+        this.joinChat()
+      } else if (this.agents_array.length === 0) {
         this.joinChat()
       }
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction()
+    } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
+      this.joinChat()
     }
+   
   }
 
 

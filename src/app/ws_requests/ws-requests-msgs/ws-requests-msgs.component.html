@@ -65,10 +65,10 @@
                     <div class=" chat-header-wpr-join-chat-btn"
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                       <div class="chat-header-wpr-btn">
-                        <!-- btn-primary chat-header-btn -->
+                        <!-- [matTooltip]="request?.status !== 1000 ? ( 'ThisConversationIsNotAssignedToYou' | translate ) : ( 'This conversation is closed, reopen it to Join' )"  -->
                         <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
-                          [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
-                          [matTooltip]="request?.status !== 1000 ? ( 'ThisConversationIsNotAssignedToYou' | translate ) : ( 'This conversation is closed, reopen it to Join' )"
+                          [disabled]="request?.status == 1000 || !PERMISSION_TO_JOIN_REQUEST" role="button" matTooltipClass="custom-mat-tooltip"
+                          [matTooltip]="getJoinTooltipMessage()"
                           #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                           <i class="material-icons"
                             style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
@@ -440,12 +440,6 @@
                       </span>
                     </div>
                   
-
-  
-                      <!-- <div *ngIf="showEmojiWarning"
-                        class="emoji-warning animated-fade">
-                        Emojis not allowed
-                      </div> -->
                       
 
                     <div class="col-xs-12 h-100 plr-0" style="position: relative;"
@@ -604,9 +598,12 @@
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
                   <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
-                    [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
-                    [matTooltipDisabled]="request?.status == 1000" matTooltipPosition='below' matTooltipHideDelay="100">
+                    [disabled]="request?.status == 1000" 
+                    role="button" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" 
+                    #tooltip="matTooltip"
+                    [matTooltipDisabled]="request?.status == 1000" 
+                    matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
                       style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
                     <span style="vertical-align: middle">
@@ -1420,7 +1417,7 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
-                              [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              [disabled]="((request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true) || !PERMISSION_TO_ARCHIVE_REQUEST)">
                               <i class="material-icons" style="vertical-align: middle;">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
                             </button>
@@ -1436,7 +1433,7 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
-                              [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REOPEN">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
                               <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
@@ -1450,7 +1447,7 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
-                              [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REOPEN">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
                               <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>

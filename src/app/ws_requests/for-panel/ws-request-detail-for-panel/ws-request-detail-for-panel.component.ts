@@ -78,6 +78,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   PERMISSION_TO_UPDATE_REQUEST: boolean;
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
 
   constructor(
     private wsMsgsService: WsMsgsService,
@@ -187,6 +188,22 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
           console.log('[REQUEST-DTLS-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
+          // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[REQUEST-DTLS-X-PANEL] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[REQUEST-DTLS-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
         // if (status.matchedPermissions.includes('lead_update')) {
         //   // Enable lead update action
         // }
@@ -257,7 +274,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   joinRequest(request_id: string) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) { 
+      
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
       const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
       window.parent.postMessage(msg, '*')
       this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
@@ -265,9 +286,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       // For test
       // ------------------------
       // this.onJoinHandledinWsRequestDetailForPanel(request_id, this.currentUserID)
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-    }
   }
 
   listenToParentPostMessage() {

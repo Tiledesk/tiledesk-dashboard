@@ -99,6 +99,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   PERMISSION_TO_ARCHIVE_REQUEST: boolean
+  PERMISSION_TO_JOIN_REQUEST: boolean
 
   /**
    * Constructor
@@ -206,6 +207,22 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           } else {
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
             console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+
+          // PERMISSION_TO_JOIN_REQUEST
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+              console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+             
+              this.PERMISSION_TO_JOIN_REQUEST = true
+              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+            } else {
+              this.PERMISSION_TO_JOIN_REQUEST = false
+              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+            }
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
           }
   
   
@@ -743,7 +760,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // Join request
   // ------------------------------------------
   joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
       //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
       //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
       //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
@@ -805,9 +825,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
         }
       }
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-    }
+   
   }
 
   presentModalYouCannotJoinChat() {
