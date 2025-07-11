@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.118-rc3
+- Adds the ability to manage the “join” function for  a conversation 
+- Adds the ability to manage the “reopen” function for  a conversation 
+- Adds the ability to manage the “delete” function for  a conversation 
+
 ### 2.7.118-rc2
 - Adds the ability for teammates with owner or admin roles to remove/restore a project member
 
