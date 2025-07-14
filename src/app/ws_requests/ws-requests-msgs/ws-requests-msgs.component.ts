@@ -6113,7 +6113,7 @@ checkEmojiContent(message: string): void {
 
           if (nonWhitelistedDomains.length > 0) {
             console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
-            this.triggerWarning('This message contains a URL from a domain that is not allowed.');
+            this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
             return;
           }
         }

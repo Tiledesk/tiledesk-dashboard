@@ -3007,21 +3007,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allowed_urls !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allowed_urls  project.settings.allowed_urls', project.settings.allowed_urls) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls  project.settings.allowed_urls', project.settings.allowed_urls) 
             this.isEnabledAllowedURLs = project.settings.allowed_urls
-             console.log('[PRJCT-EDIT-ADD] allowed_urls this.isEnabledAllowedURLs ', this.isEnabledAllowedURLs) 
+             this.logger.log('[PRJCT-EDIT-ADD] allowed_urls this.isEnabledAllowedURLs ', this.isEnabledAllowedURLs) 
           } else {
             this.isEnabledAllowedURLs = false;
-            console.log('[PRJCT-EDIT-ADD] allowed_urls this.isEnabledAllowedURLs (else) ', this.isEnabledAllowedURLs) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls this.isEnabledAllowedURLs (else) ', this.isEnabledAllowedURLs) 
           }
 
           if (project.settings.allowed_urls_list !== undefined) {
             console.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
             this.currentWhitelist = project.settings.allowed_urls_list
-             console.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist ', this.currentWhitelist) 
+             this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist ', this.currentWhitelist) 
           } else {
             this.currentWhitelist = [];
-            console.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist (else) ', this.currentWhitelist) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist (else) ', this.currentWhitelist) 
           }
 
           
@@ -3055,8 +3055,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.isAllowedSendEmoji = true;
           this.isEnabledAllowedURLs = false;
           this.currentWhitelist = []
-          console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
-          console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
 
 
@@ -3228,11 +3228,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       //   delete this.widgetObj['allowEmoji'];
       // }
        
-      // console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
+      // this.logger.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
 
       this.cacheService.clearCache()
     }).catch((err) => {
-      console.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
+      this.logger.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
@@ -3247,7 +3247,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       this.cacheService.clearCache()
     }).catch((err) => {
-      console.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
+      this.logger.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
 
@@ -3274,7 +3274,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (result) {
           this.urlWhitelist = result;
           // Save to backend or localStorage as needed
-          console.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
+          this.logger.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
 
           this.saveUrlWhitelist(this.urlWhitelist)
         }
@@ -3287,10 +3287,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   saveUrlWhitelist(urlWhitelist) {
     this.projectService.saveURLsWhitelist(urlWhitelist).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT: ", result)
+      this.logger.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT: ", result)
 
       if (result['settings']['allowed_urls_list'] ) {
-        console.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT > allowed_urls_list: ", result['settings']['allowed_urls_list'])
+        this.logger.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT > allowed_urls_list: ", result['settings']['allowed_urls_list'])
         this.currentWhitelist = result['settings']['allowed_urls_list']
       }
      
@@ -3298,7 +3298,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       this.cacheService.clearCache()
     }).catch((err) => {
-      console.error("[PRJCT-EDIT-ADD] - saveURLs Whitelist ERROR: ", err)
+      this.logger.error("[PRJCT-EDIT-ADD] - saveURLs Whitelist ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
 

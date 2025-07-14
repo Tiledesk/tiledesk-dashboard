@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-urls-whitelist',
@@ -43,9 +44,10 @@ export class UrlsWhitelistComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UrlsWhitelistComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public logger: LoggerService,
   ) {
-    console.log(' UrlsWhitelistComponent data ', data)
+    this.logger.log(' UrlsWhitelistComponent data ', data)
     if (data) {
       this.whitelistedUrls = data
     }
@@ -128,7 +130,7 @@ export class UrlsWhitelistComponent implements OnInit {
 
 
   onSave(): void {
-    console.warn('this.formArray ', this.formArray);
+    this.logger.warn('this.formArray ', this.formArray);
     if (this.formArray.invalid) {
       this.formArray.markAllAsTouched();
       return;
@@ -154,10 +156,10 @@ export class UrlsWhitelistComponent implements OnInit {
   //       ctrl.value?.trim().toLowerCase() === trimmedUrl.toLowerCase()
   //     );
 
-  //     console.log('[URLS WHITELIST] isDuplicate ', isDuplicate)
+  //     this.logger.log('[URLS WHITELIST] isDuplicate ', isDuplicate)
   //     if (isDuplicate) {
   //       // Optionally show a duplicate warning (you can add a message in template)
-  //       console.warn('[URLS WHITELIS] Duplicate URL');
+  //       this.logger.warn('[URLS WHITELIS] Duplicate URL');
   //       this.urlForm.get('url')?.setErrors({ duplicate: true });
   //       return;
   //     }
@@ -196,10 +198,10 @@ export class UrlsWhitelistComponent implements OnInit {
   //   validateUrl() {
   //   if (!this.newUrl) {
   //     this.urlError = 'URL is required';
-  //     console.log('validateUrl URL is required ', this.newUrl)
+  //     this.logger.log('validateUrl URL is required ', this.newUrl)
   //   } else if (!this.isValidUrl(this.newUrl)) {
   //     this.urlError = 'Invalid URL format';
-  //     console.log('validateUrl Invalid URL format ', this.newUrl)
+  //     this.logger.log('validateUrl Invalid URL format ', this.newUrl)
   //   } else {
   //     this.urlError = null; // Important!
   //   }

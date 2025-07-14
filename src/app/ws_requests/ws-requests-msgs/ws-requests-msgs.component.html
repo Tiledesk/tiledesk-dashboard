@@ -406,40 +406,61 @@
                     <!-- texarea send message  -->
                     <!-- ------------------------------------------------ -->
                     <!-- <div class="col-xs-12  w-100 plr-0"> -->
-                    <!-- row -->
-                    <!-- <div class=" w-100"> -->
-                    <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
-                    <div class="chat-msg-attachement" *ngIf="uploadedFiles">
-                      <span *ngIf="showSpinnerAttachmentUplolad === true">
-                        <i class="fa fa-spinner fa-spin" style="vertical-align: middle;"></i>
-                      </span>
-                      <span *ngIf="uploadedFiles?.type.startsWith('image')">
-                        <i class="fa fa-file-image-o" style="vertical-align: middle;"></i>
-                      </span>
-                      <span *ngIf="!uploadedFiles?.type.startsWith('image')">
-                        <i class="fa fa-file-o" style="vertical-align: middle;"></i>
-                      </span>
-                      {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
-                      <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
-                        (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
-                        <span class="material-icons">
-                          clear
-                        </span>
-                      </span>
-                      <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && uploadedFiles?.type.startsWith('image')"
-                        class="remove-attachment" (click)="removeNativeAttachment(uploadedFiles?.downloadURL)">
-                        <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false">
-                          clear
-                        </span>
-                      </span>
-                      <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && !uploadedFiles?.type.startsWith('image')"
-                        class="remove-attachment" (click)="removeNativeDocumentAttachment(uploadedFiles?.downloadURL)">
-                        <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false">
-                          clear
-                        </span>
-                      </span>
-                    </div>
-                  
+                      <!-- row -->
+                      <!-- <div class=" w-100"> -->
+                        <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
+                        <div class="chat-msg-attachement" *ngIf="uploadedFiles">
+                          <span *ngIf="showSpinnerAttachmentUplolad === true">
+                            <i class="fa fa-spinner fa-spin" style="vertical-align: middle;"></i>
+                          </span>
+                          <span *ngIf="uploadedFiles?.type.startsWith('image')">
+                            <i class="fa fa-file-image-o" style="vertical-align: middle;"></i>
+                          </span>
+                          <span *ngIf="!uploadedFiles?.type.startsWith('image')">
+                            <i class="fa fa-file-o" style="vertical-align: middle;"></i>
+                          </span>
+                          {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
+                          <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
+                            (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
+                            <span class="material-icons">
+                              clear
+                            </span>
+                          </span>
+                          <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && uploadedFiles?.type.startsWith('image')" class="remove-attachment"
+                            (click)="removeNativeAttachment(uploadedFiles?.downloadURL)">
+                            <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false" >
+                              clear
+                            </span>
+                          </span>
+                          <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && !uploadedFiles?.type.startsWith('image')" class="remove-attachment"
+                            (click)="removeNativeDocumentAttachment(uploadedFiles?.downloadURL)">
+                            <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false">
+                              clear
+                            </span>
+                          </span>
+                        </div>
+                        <!-- height:46px -->
+                        <!-- style="  margin-bottom: 8px;" -->
+                        <!-- (keydown.enter)="onKeydownEnter($event)" -->
+                        <!-- (ngModelChange)="onChangeTextInSendMsg($event)" -->
+                        <!-- (paste)="onPasteInSendMsg($event)" -->
+                        <div class="col-xs-12 h-100 plr-0" style="position: relative;"
+                          [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+
+
+                           <!-- For emojis -->
+                            <div class="emoji-warning-container">
+                              <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
+                                {{'EmojisNotAllowed' | translate}}
+                              </div>
+                            </div>
+
+                            <!-- For not allowed URLs -->
+                            <div class="warning-container">
+                              <div class="warning-message" [class.visible]="warningMessage">
+                                {{ warningMessage }}
+                              </div>
+                            </div>
                       
 
                     <div class="col-xs-12 h-100 plr-0" style="position: relative;"
