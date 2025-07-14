@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.117
+### 2.7.118
 - Adds the ability to create namespaces where hybrid searches can be performed
 
 ### 2.7.116
