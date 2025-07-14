@@ -135,7 +135,7 @@ export class SigninComponent implements OnInit {
 
   getOSCODE() {
     this.OAUTH2_SIGNIN_ENABLED =  this.appConfigService.getConfig().oauth2SigninEnabled;
-    console.log('[SIGN-IN] OAUTH2_SIGNIN_ENABLED ', this.OAUTH2_SIGNIN_ENABLED)
+    this.logger.log('[SIGN-IN] OAUTH2_SIGNIN_ENABLED ', this.OAUTH2_SIGNIN_ENABLED)
 
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     let keys = this.public_Key.split("-");

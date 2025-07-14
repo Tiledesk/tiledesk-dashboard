@@ -1,5 +1,17 @@
 # tiledesk-dashboard
 
+### 2.7.118
+- Adds the ability to create namespaces where hybrid searches can be performed
+
+### 2.7.116
+- Adds pagination to Flows list
+
+### 2.7.115
+- Improves navigation performance
+
+### 2.7.114
+- Minor improvements and bug fixing
+
 ### 2.7.113
 - Adds the environment variable "oauth2SigninEnabled"
 
