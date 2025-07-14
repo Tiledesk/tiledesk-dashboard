@@ -699,7 +699,7 @@
     "AllowedDomains": "Allowed domains",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"By enabling this option a teammate can only send URLs belonging to domains' whitelist",
     "ConfigureWhitelist": "Configure whitelist",
-    "ManageWhitelist": "Manage Whitelisted URLs",
+    "ManageWhitelist": "Manage Whitelisted domains",
     "Domain":"Domain",
     "EnterADomain": "Enter a domain",
     "DomainRequired": "Domain is required",

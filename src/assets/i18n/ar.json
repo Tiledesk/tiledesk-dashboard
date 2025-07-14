@@ -699,7 +699,7 @@
     "AllowedDomains": "النطاقات المسموح بها",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"عند تمكين هذا الخيار، يمكن لأعضاء الفريق إرسال عناوين URL التابعة للقائمة البيضاء للنطاقات فقط",
     "ConfigureWhitelist": "تكوين القائمة البيضاء",
-    "ManageWhitelist": "إدارة عناوين URL المسموح بها",
+    "ManageWhitelist":"إدارة المجالات المدرجة في القائمة البيضاء",
     "Domain":"اِختِصاص",
     "EnterADomain": "أدخل نطاقًا",
     "DomainRequired": "النطاق مطلوب",

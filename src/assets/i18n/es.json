@@ -699,7 +699,7 @@
     "AllowedDomains": "Dominios permitidos",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Al habilitar esta opción, un compañero de equipo solo podrá enviar URL que pertenezcan a la lista blanca de dominios",
     "ConfigureWhitelist": "Configurar la lista blanca",
-    "ManageWhitelist": "Administrar URLs permitidas",
+    "ManageWhitelist": "Administrar dominios en la lista blanca",
     "Domain":"Dominio",
     "EnterADomain": "Introducir un dominio",
     "DomainRequired": "El dominio es obligatorio",

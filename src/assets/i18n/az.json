@@ -700,7 +700,7 @@
     "AllowedDomains": "İcazə verilən domenlər",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Bu seçimi aktiv etməklə komanda yoldaşı yalnız domenlərin ağ siyahısına aid olan URL-ləri göndərə bilər",
     "ConfigureWhitelist": "Ağ siyahını konfiqurasiya edin",
-    "ManageWhitelist": "İcazə verilmiş URL-ləri idarə et",
+    "ManageWhitelist": "Ağ siyahıya alınmış domenləri idarə edin",
     "Domain":"Domen",
     "EnterADomain": "Domeni daxil edin",
     "DomainRequired": "Domen tələb olunur",

@@ -701,7 +701,7 @@
     "AllowedDomains": "İzin verilen alan adları",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Bu seçeneği etkinleştirerek bir takım arkadaşı yalnızca beyaz listeye alınmış alan adlarına ait URL'leri gönderebilir",
     "ConfigureWhitelist": "Beyaz listeyi yapılandırın",
-    "ManageWhitelist": "Керування дозволеними URL-адресами",
+    "ManageWhitelist": "Beyaz listeye eklenen alan adlarını yönetin",
     "Domain": "İhtisas",
     "EnterADomain": "Введіть домен",
     "DomainRequired": "Потрібен домен",

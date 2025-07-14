@@ -700,7 +700,7 @@
     "AllowedDomains": "Дозвољени домени",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Омогућавањем ове опције, члан тима може слати само URL-ове који припадају белој листи домена",
     "ConfigureWhitelist": "Конфигуриши белу листу",
-    "ManageWhitelist": "Upravljaj dozvoljenim URL-ovima",
+    "ManageWhitelist": "Управљајте доменима са беле листе",
     "EnterADomain": "Unesite domen",
     "Domain": "Домен",
     "DomainRequired": "Domen je obavezan",

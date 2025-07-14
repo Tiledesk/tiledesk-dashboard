@@ -700,7 +700,7 @@
     "AllowedDomains": "Tillåtna domäner",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Genom att aktivera detta alternativ kan en lagkamrat endast skicka webbadresser som tillhör domäners tillåtna lista",
     "ConfigureWhitelist": "Konfigurera vitlista",
-    "ManageWhitelist": "Hantera godkända webbadresser",
+    "ManageWhitelist": "Hantera vitlistade domäner",
     "EnterADomain": "Ange en domän",
     "Domain": "Domän",
     "DomainRequired": "Domän krävs",

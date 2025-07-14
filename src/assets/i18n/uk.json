@@ -700,7 +700,7 @@
     "AllowedDomains": "Дозволені домени",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Увімкнувши цю опцію, учасник команди зможе надсилати лише URL-адреси, що належать до білого списку доменів",
     "ConfigureWhitelist": "Налаштувати білий список",
-    "ManageWhitelist": "Керування дозволеними URL-адресами",
+    "ManageWhitelist": "Керування доменами з білого списку",
     "Domain": "Домен",
     "EnterADomain": "Введіть домен",
     "DomainRequired": "Потрібен домен",

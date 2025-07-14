@@ -699,7 +699,7 @@
     "AllowedDomains": "Рұқсат етілген домендер",
     "ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist":"Бұл опцияны қосу арқылы командалас домендердің ақ тізіміне жататын URL мекенжайларын ғана жібере алады",
     "ConfigureWhitelist": "Ақ тізімді конфигурациялау",
-    "ManageWhitelist": "Рұқсат етілген URL-мекенжайларды басқару",
+    "ManageWhitelist": "Ақ тізімдегі домендерді басқару",
     "Domain": "Домен",
     "EnterADomain": "Доменді енгізіңіз",
     "DomainRequired": "Домен қажет",
