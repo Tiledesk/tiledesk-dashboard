@@ -385,6 +385,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   panelOpenState = false;
 
+  isDropdownOpen: boolean = false;
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
@@ -393,6 +394,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_SEND_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
   PERMISSION_TO_REOPEN: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_STATUS: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_PRIORITY: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS: boolean;
+  PERMISSION_TO_UPDATE_SMART_ASSIGNMENT: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_TAGS: boolean;
+  PERMISSION_TO_READ_TAGS: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_NOTES: boolean;
+  PERMISSION_TO_REASSIGN_REQUEST: boolean;
 
   /**
    * Constructor
@@ -648,6 +657,135 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
         }
 
+
+        // PERMISSION_TO_UPDATE_REQUEST_STATUS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_STATUS)) {
+ 
+            this.PERMISSION_TO_UPDATE_REQUEST_STATUS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_STATUS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_STATUS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_STATUS 2', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_STATUS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_STATUS ', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_PRIORITY
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_PRIORITY)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_PRIORITY 1 ', this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_PRIORITY 2', this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_PRIORITY ', this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_FOLLOWERS)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS 2', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS ', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
+        }
+
+        // PERMISSION_TO_UPDATE_SMART_ASSIGNMENT
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_SMART_ASSIGNMENT)) {
+           
+            this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_SMART_ASSIGNMENT 1 ', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
+          } else {
+            this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_SMART_ASSIGNMENT 2', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_TAGS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_TAGS)) {
+           
+            this.PERMISSION_TO_UPDATE_REQUEST_TAGS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_TAGS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_TAGS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_TAGS 2', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_TAGS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_TAGS ', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_NOTES
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_NOTES)) {
+           
+            this.PERMISSION_TO_UPDATE_REQUEST_NOTES = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_NOTES 1 ', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_NOTES = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_NOTES 2', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_NOTES = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_NOTES ', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
+        }
+
+        // PERMISSION_TO_REASSIGN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REASSIGN)) {
+           
+            this.PERMISSION_TO_REASSIGN_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REASSIGN_REQUEST 1 ', this.PERMISSION_TO_REASSIGN_REQUEST);
+          } else {
+            this.PERMISSION_TO_REASSIGN_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REASSIGN_REQUEST 2', this.PERMISSION_TO_REASSIGN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_REASSIGN_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_REASSIGN_REQUEST ', this.PERMISSION_TO_REASSIGN_REQUEST);
+        }
+
+
+
+        // PERMISSION_TO_READ_TAGS (IN TAGS SECTION )
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ)) {
+           
+            this.PERMISSION_TO_READ_TAGS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TAGS 1 ', this.PERMISSION_TO_READ_TAGS);
+          } else {
+            this.PERMISSION_TO_READ_TAGS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TAGS 2', this.PERMISSION_TO_READ_TAGS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TAGS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TAGS ', this.PERMISSION_TO_READ_TAGS);
+        }
+
+     
+
+
+
+       
+        
         // if (status.matchedPermissions.includes('lead_update')) {
         //   // Enable lead update action
         // }
@@ -3059,6 +3197,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   removeTag(tag: string) {
+    if(!this.PERMISSION_TO_UPDATE_REQUEST_TAGS) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return;
+    }
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
       this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
       this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag id TO REMOVE: ', tag['_id']);
@@ -3242,60 +3384,61 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   addNote() {
     // this.disableMainPanelScroll();
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
-        this.showSpinnerInAddNoteBtn = true;
-        this.wsRequestsService.createNote(this.new_note, this.id_request)
-          .subscribe((responses: any) => {
-            this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
-          }, (error) => {
-            this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
-            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
-            this.showSpinnerInAddNoteBtn = false;
-          }, () => {
-            this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
-            this.new_note = ''
-            // var panel = <HTMLElement>document.querySelector('.note-panel')
-            // panel.scrollTop = panel.scrollHeight;
-            // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
-
-            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
-            this.showSpinnerInAddNoteBtn = false;
-            // this.enableMainPanelScroll()
-
-          });
-      }
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_NOTES) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
     }
+    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
+      this.showSpinnerInAddNoteBtn = true;
+      this.wsRequestsService.createNote(this.new_note, this.id_request)
+        .subscribe((responses: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
+          this.showSpinnerInAddNoteBtn = false;
+        }, () => {
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
+          this.new_note = ''
+          // var panel = <HTMLElement>document.querySelector('.note-panel')
+          // panel.scrollTop = panel.scrollHeight;
+          // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
+
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
+          this.showSpinnerInAddNoteBtn = false;
+          // this.enableMainPanelScroll()
+
+        });
+    }
+  
   }
 
 
   deleteNote(note_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      this.notify.operationinprogress(this.translationMap.get('Processing'));
-
-      this.wsRequestsService.deleteNote(this.id_request, note_id)
-        .subscribe((responses: any) => {
-          this.logger.log('[WS-REQUESTS-MSGS]  - DELETE NOTE - RES ', responses);
-
-
-        }, (error) => {
-          this.logger.error('[WS-REQUESTS-MSGS]  - DELETE NOTE - ERROR ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteError'], 4, 'report_problem');
-        }, () => {
-
-          var panel = <HTMLElement>document.querySelector('.note-panel')
-          // panel.scrollTop = panel.scrollHeight;
-          this.logger.log('[WS-REQUESTS-MSGS]  DELETE NOTE * COMPLETE *');
-          // this.notify.showWidgetStyleUpdateNotification(this.delete_note_success, 2, 'done');
-          this.notify.operationcompleted(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteSuccess']);
-
-          // this.closeModalDeleteNote(); // no more used
-        });
-    } else {
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_NOTES) {
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return
     }
+    this.notify.operationinprogress(this.translationMap.get('Processing'));
+
+    this.wsRequestsService.deleteNote(this.id_request, note_id)
+      .subscribe((responses: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS]  - DELETE NOTE - RES ', responses);
+
+
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS]  - DELETE NOTE - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteError'], 4, 'report_problem');
+      }, () => {
+
+        var panel = <HTMLElement>document.querySelector('.note-panel')
+        // panel.scrollTop = panel.scrollHeight;
+        this.logger.log('[WS-REQUESTS-MSGS]  DELETE NOTE * COMPLETE *');
+        // this.notify.showWidgetStyleUpdateNotification(this.delete_note_success, 2, 'done');
+        this.notify.operationcompleted(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteSuccess']);
+
+        // this.closeModalDeleteNote(); // no more used
+      });
   }
 
 
@@ -3642,8 +3785,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openSelectUsersModal(actionSelected) {
     console.log(' openSelectUsersModal PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST)
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+   
       this.actionInModal = actionSelected
+      if (this.actionInModal === 'reassign') {
+
+       if (!this.PERMISSION_TO_REASSIGN_REQUEST) {
+          this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+          return;
+        }
+      }
+
+
       console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
       this.closeMoreOptionDropdown();
 
@@ -3670,9 +3822,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.presentModalAddAgent()
       }
       // this.getAllUsersOfCurrentProject();
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-    }
+   
   }
 
   presentModalAddAgent() {
@@ -4348,13 +4498,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   handleDropdownClick(event: MouseEvent): void {
     console.log('[WS-REQUESTS-MSGS] - handleDropdownClick ');
-    if (!this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_STATUS) {
       event.preventDefault(); // Prevent dropdown from opening
       // event.stopPropagation();
       event.stopImmediatePropagation();
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
 
     }
+
+     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
 
@@ -6089,7 +6241,7 @@ checkEmojiContent(message: string): void {
   }
 
   isOpenDropdown(_is0penDropDown) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_UPDATE_REQUEST_STATUS) {
       this.is0penDropDown = _is0penDropDown
     } else {
       this.notify.presentDialogNoPermissionToPermomfAction()

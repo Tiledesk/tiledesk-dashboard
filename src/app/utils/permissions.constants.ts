@@ -11,7 +11,14 @@ export const PERMISSIONS = {
   REQUEST_JOIN: 'request_join',
   REQUEST_REOPEN: 'request_reopen',
   REQUEST_DELETE: 'request_delete',
-  
+  REQUEST_UPDATE_STATUS: 'request_update_status',
+  REQUEST_UPDATE_PRIORITY: 'request_update_priority',
+  REQUEST_UPDATE_FOLLOWERS: 'request_update_followers',
+  REQUEST_UPDATE_SMART_ASSIGNMENT: 'request_update_smart_assignment',
+  REQUEST_UPDATE_TAGS: 'request_update_tags',
+  REQUEST_UPDATE_NOTES: 'request_update_notes',
+  REQUEST_REASSIGN:'request_reassign',
+
 
   HISTORY_READ: 'history_read',
 

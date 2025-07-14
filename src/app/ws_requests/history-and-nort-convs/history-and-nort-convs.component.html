@@ -897,7 +897,7 @@
                       (click)="archiveSelected()" 
                       matTooltipClass="mat-white-tooltip"
                      
-                      [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? 'You don\'t have permission' : 'VisitorsPage.Resolve' | translate"
+                      [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? ('YouDoNotHavePermissions' | translate) : ('VisitorsPage.Resolve' | translate)"
                       #tooltip="matTooltip"
                       matTooltipPosition='below' 
                       matTooltipHideDelay="100"

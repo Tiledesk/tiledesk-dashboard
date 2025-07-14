@@ -60,7 +60,7 @@
             <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button"
               (click)="archiveSelected()" 
               matTooltipClass="mat-white-tooltip"
-              [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? 'You don\'t have permission' : 'VisitorsPage.Resolve' | translate"
+              [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? ('YouDoNotHavePermissions' | translate) : ('VisitorsPage.Resolve' | translate)"
               #tooltip="matTooltip" 
               matTooltipPosition='above'
               matTooltipHideDelay="100"

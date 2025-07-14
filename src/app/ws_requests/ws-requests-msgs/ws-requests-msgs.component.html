@@ -496,7 +496,11 @@
                             <!-- data-toggle="dropdown" -->
                             <button type="button"
                               class="btn btn-tdblu-no-boxshadow dropdown-toggle send-msg-dropdown-toggle"
-                              [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST ? 'dropdown' : null"
+                              [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
+                              [ngStyle]="{
+                                'opacity': PERMISSION_TO_UPDATE_REQUEST_STATUS ? '1' : '0.6',
+                                'cursor': PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'pointer' : 'not-allowed'
+                               }"
                               (click)="isOpenDropdown(isOpen = !isOpen)">
                               <span class="caret"
                                 [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
@@ -688,7 +692,7 @@
                             </a>
                           </li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST}">
                             <a (click)='openSelectUsersModal(action = "reassign")'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
@@ -1296,11 +1300,20 @@
                       <!-- ----------------------------------------------------------  -->
                       <!-- Working status dropdow data-toggle="dropdown"-->
                       <!-- ----------------------------------------------------------  -->
-                      <!-- workingStatus {{ request?.workingStatus }} status {{request?.status}} -->
-                      <div class="dropdown">
+                    <!-- matTooltip="{{'ChangeTheConversationStatus' | translate }}"  -->
+                      <div class="dropdown"  matTooltipClass="custom-mat-tooltip"
+                          [matTooltip]="!isDropdownOpen ? ('ChangeTheConversationStatus' | translate) : ''"
+                          #tooltip="matTooltip"
+                          matTooltipPosition='above' 
+                          matTooltipHideDelay="100">
+
                         <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;"
-                          [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST ? 'dropdown' : null"
+                          [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
                           (click)="handleDropdownClick($event)"
+                          [ngStyle]="{
+                            'opacity': PERMISSION_TO_UPDATE_REQUEST_STATUS ? '1' : '0.6',
+                            'cursor': PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'pointer' : 'not-allowed'
+                          }"
                           [ngClass]="{
                           'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
                           'open' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
@@ -1331,8 +1344,10 @@
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)"
                             class="conversation-open-assigned" *ngIf="!request?.subject"
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            matTooltip="{{'ConversationBeingProcessed' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1342,9 +1357,13 @@
                           </li>
                           <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
-                            *ngIf="request?.subject" class="ticket-open-assigned" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            *ngIf="request?.subject" 
+                            class="ticket-open-assigned" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'TicketBeingProcessed' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1357,7 +1376,8 @@
                             (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1369,8 +1389,10 @@
                             [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
                             (click)="hasSelectedSolved('updatedWorkingStatus')" class="conversation-resolved"
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; ">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -2523,7 +2545,7 @@
                       </ng-select>
 
                       <!-- Invisible overlay to block interactions -->
-                      <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
+                      <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY"
                           (click)="handleBlockedSelectClick($event)"
                           style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
                       </div>
@@ -2571,23 +2593,47 @@
 
                       <div class="followers">
                         <!-- (change)="getValues($event)" -->
-                        <ng-select class="ticket-followers" [items]="projectTeammates" bindLabel="label"
-                          [multiple]="true" placeholder="Search teammate" [(ngModel)]="selectedFollowers"
-                          (add)="addFollower($event)" (remove)="removeFollower($event)" [hideSelected]="true"
-                          (clear)="removeAllFollowers($event)">
-                        </ng-select>
+                        <div class="followers-select" style="position: relative;"> 
+                          <ng-select class="ticket-followers" [items]="projectTeammates" 
+                            bindLabel="label"
+                            [multiple]="true" 
+                            placeholder="Search teammate" 
+                            [(ngModel)]="selectedFollowers"
+                            (add)="addFollower($event)" 
+                            (remove)="removeFollower($event)" 
+                            [hideSelected]="true"
+                            (clear)="removeAllFollowers($event)">
+                          </ng-select>
+
+                          <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS"
+                            (click)="handleBlockedSelectClick($event)"
+                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
+                          </div>
+
+                        </div>
 
                         <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21" class="convert-to-offline-btns-wpr"
                           style="margin-top:14px">
 
                           <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn-wpr">
-                            <button (click)="smartAssignmentOff()" class="convert-to-offline-btn">
+                            <button (click)="smartAssignmentOff()" class="convert-to-offline-btn"
+                              [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT"
+                              [ngStyle]="{
+                                'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'
+                                }"
+                                matTooltipClass="custom-mat-tooltip"
+                                [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
+                                #tooltip="matTooltip"
+                                matTooltipPosition='right' 
+                                matTooltipHideDelay="100">
                               {{'ConvertToOffline' | translate}}
                             </button>
 
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeDisabled' | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right'
+                              matTooltipHideDelay="100">
                               <i class="material-icons">
                                 help_outline
                               </i>
@@ -2595,13 +2641,24 @@
                           </span>
 
                           <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn-wpr">
-                            <button class="convert-to-offline-btn" (click)="smartAssignmentOn()">
+                            <button class="convert-to-offline-btn" (click)="smartAssignmentOn()" 
+                              [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT"
+                              [ngStyle]="{
+                                'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'
+                                }"
+                                matTooltipClass="custom-mat-tooltip"
+                                [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
+                                #tooltip="matTooltip"
+                                matTooltipPosition='right' 
+                                matTooltipHideDelay="100">
                               {{'ConvertToOnline' | translate}}
                             </button>
 
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100">
                               <i class="material-icons">
                                 help_outline
                               </i>
@@ -2694,7 +2751,7 @@
                         </ng-select>
 
                         <!-- Invisible overlay to block interactions -->
-                        <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
+                        <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_TAGS"
                             (click)="handleBlockedSelectClick($event)"
                             style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
                         </div>
@@ -2705,11 +2762,14 @@
                   </form>
 
                 </div> <!-- ./Conversation tag -->
-                <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false">
-                  <button (click)="goToTags()" class="manage_tags">
-                    {{ 'Tags.ManageTags' | translate}}
-                  </button>
-                </div>
+              
+                <ng-container *ngIf="PERMISSION_TO_READ_TAGS"> 
+                  <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false">
+                    <button (click)="goToTags()" class="manage_tags">
+                      {{ 'Tags.ManageTags' | translate}}
+                    </button>
+                  </div>
+                </ng-container>
               </div>
 
               <div *ngIf="tab2">
