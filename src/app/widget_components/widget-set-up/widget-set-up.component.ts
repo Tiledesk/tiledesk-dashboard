@@ -1867,10 +1867,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         this.calloutTitle = this.selected_translation["CALLOUT_TITLE_PLACEHOLDER"];
         // this.calloutTitleForPreview =  this.calloutTitle.trim();
-        console.log('[WIDGET-SET-UP] -  calloutTitle (on getCurrentTranslation)', this.calloutTitle);
+        this.logger.log('[WIDGET-SET-UP] -  calloutTitle (on getCurrentTranslation)', this.calloutTitle);
         this.checkIsEmoji(this.calloutTitle.trim());
         
-        console.log('[WIDGET-SET-UP] - checkIsEmoji calloutTitleForPreview (on getCurrentTranslation)', this.calloutTitleForPreview);
+        this.logger.log('[WIDGET-SET-UP] - checkIsEmoji calloutTitleForPreview (on getCurrentTranslation)', this.calloutTitleForPreview);
 
         this.calloutMsg = this.selected_translation["CALLOUT_MSG_PLACEHOLDER"];
         this.logger.log('[WIDGET-SET-UP] ***** selected translation CALLOUT_TITLE_PLACEHOLDER: ', this.calloutTitle, ' - CALLOUT_MSG: ', this.calloutMsg);
@@ -2140,7 +2140,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   calloutTitleChange(event) {
     this.calloutTitle = event;
-    console.log('[WIDGET-SET-UP] - CALLOUT TITLE CHANGE: ', this.calloutTitle);
+    this.logger.log('[WIDGET-SET-UP] - CALLOUT TITLE CHANGE: ', this.calloutTitle);
     // if (event.length === 0) {   }
     this.checkIsEmoji(this.calloutTitle.trim())
   }
@@ -2156,9 +2156,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     let match;
     while (match = regex.exec(this.calloutTitleForPreview)) {
       const emoji = match[0];
-      console.log(`[WIDGET-SET-UP] checkIsEmoji emoji ${emoji} — code points: ${[emoji].length}`);
+      this.logger.log(`[WIDGET-SET-UP] checkIsEmoji emoji ${emoji} — code points: ${[emoji].length}`);
 
-      console.log(`[WIDGET-SET-UP] checkIsEmoji emoji: ${emoji} — position: `, this.calloutTitleForPreview.indexOf(emoji));
+      this.logger.log(`[WIDGET-SET-UP] checkIsEmoji emoji: ${emoji} — position: `, this.calloutTitleForPreview.indexOf(emoji));
 
       if (this.calloutTitleForPreview.indexOf(emoji) === 0) {
 

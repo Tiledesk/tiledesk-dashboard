@@ -1938,7 +1938,8 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
 
-                          Teammates can send emojis
+                          <!-- Teammates can send emojis -->
+                           {{'TeammatesCanSendEmojis' | translate}}
                         </span>
                       </h3>
                     </div>
@@ -1947,8 +1948,8 @@
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
                       <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
-                        <!-- {{'EnablingThisOptionHidesChatbotAttributes' | translate }} -->
-                        By enabling this option teammates will be able to send emojis
+                        {{'ByEnablingThisOptionTeammatesWillBeAbleToSendEmojis' | translate }}
+                        <!-- By enabling this option teammates will be able to send emojis -->
                       </p>
                     </div>
 
@@ -1985,7 +1986,7 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
 
-                          Allowed domains
+                           {{'AllowedDomains' | translate }}
                         </span>
                       </h3>
                     </div>
@@ -1994,8 +1995,8 @@
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
                       <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
-                        <!-- {{'EnablingThisOptionHidesChatbotAttributes' | translate }} -->
-                        By enabling this option a teammate can only send URLs belonging to domains' whitelist
+                        {{'ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist' | translate }}
+                    
                       </p>
                     </div>
 
@@ -2022,7 +2023,8 @@
                       <div *ngIf="isEnabledAllowedURLs" class="configure-urls-whitelist-btn-wpr">
 
                         <button class="btn configure-urls-whitelist-btn" (click)="onOpenUrlsWhitelist()">
-                          Configure whitelist
+                          <!-- Configure whitelist -->
+                          {{ 'ConfigureWhitelist' | translate}}
                         </button>
                       </div>
 
