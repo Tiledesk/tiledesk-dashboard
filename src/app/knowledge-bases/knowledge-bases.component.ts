@@ -161,6 +161,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   chatbotsUsingNamespace: any;
   botid: string;
   nameSpaceId: string;
+  isActiveHybrid: boolean = false;
 
 
   storageBucket: string;
@@ -346,6 +347,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       const isActiveSubscription = project.isActiveSubscription
       const trialExpired = project.trialExpired
       const projectProfileType = project.profile.type
+      this.isActiveHybrid = project.profile?.customization?.hybrid ? true : false;
       this.managePlanRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
       const projectProfile = project.profile
       this.getIfRefreshRateIsEnabledInCustomization(projectProfile)
@@ -653,8 +655,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
-  createNewNamespace(namespaceName: string) {
-    this.kbService.createNamespace(namespaceName).subscribe((namespace: any) => {
+  createNewNamespace(namespaceName: string, hybrid: boolean) {
+    this.kbService.createNamespace(namespaceName, hybrid).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
@@ -1782,18 +1784,19 @@ _presentDialogImportContents() {
 
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
+      data: {
+        hybridActive: this.isActiveHybrid
+      },
     })
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
 
       if (result && result.namespaceName) {
 
-        const namespaceName = result.namespaceName
+        const namespaceName = result.namespaceName;
+        const hybrid = result.hybrid || false;
 
-        this.createNewNamespace(namespaceName)
+        this.createNewNamespace(namespaceName, hybrid)
       }
     });
   }
