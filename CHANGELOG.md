@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.117
+- Adds the ability to create namespaces where hybrid searches can be performed
+
 ### 2.7.116
 - Adds pagination to Flows list
 
