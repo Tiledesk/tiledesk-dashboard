@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.119
+- Improves Hybrid badges management
+
 ### 2.7.118
 - Adds the ability to create namespaces where hybrid searches can be performed
 
