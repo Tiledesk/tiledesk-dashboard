@@ -4,7 +4,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 30px;
 }
 
 .add-content-container.unanswered-questions-modal {
@@ -12,11 +11,16 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 30px;
+    padding: 12px 15px 6px;
     border-radius: var(--card-border-radius);
     border: 1px solid #e5effe !important;
 }
 
+.preview-count-left {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+}
 
 .upgrade-title {
     font-size: 24px;
@@ -53,17 +57,17 @@
   background: none;
   border-radius: 0;
   box-shadow: none;
-  padding: 0;
+  padding: 0 12px;
   margin: 0;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 .uq-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  font-weight: 500;
-  color: #b2b2b2;
+  font-weight: var(--table-thead-font-weight);
+  color: var(--table-thead-color);
   padding: 0 0 8px 0;
   border-bottom: 1px solid #f0f4f8;
 }

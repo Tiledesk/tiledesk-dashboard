@@ -45,6 +45,7 @@ import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
+import { QuotesService } from 'app/services/quotes.service';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -169,7 +170,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   chatbotsUsingNamespace: any;
   botid: string;
   nameSpaceId: string;
-
+  totalCount: Number;
+  quotas: any;
 
   storageBucket: string;
   baseUrl: string;
@@ -228,7 +230,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private departmentService: DepartmentService,
     private shepherdService: ShepherdService,
     private unansweredQuestionsService: UnansweredQuestionsService,
-
+    private quotasService: QuotesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -383,8 +385,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
 
         this.getAllNamespaces()
+        this.getQuotas();
       }
     });
+  }
+
+  async getQuotas() {
+    this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
+      this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
+    })
   }
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
@@ -555,6 +564,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+        this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
       }
     });
   }
@@ -891,6 +901,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
+      this.loadUnansweredQuestions();
 
     }
   }
@@ -2751,6 +2762,7 @@ _presentDialogImportContents() {
       if (doneCb) doneCb(false);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      this.getAllNamespaces();
       this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
@@ -2916,6 +2928,7 @@ _presentDialogImportContents() {
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
+      this.getAllNamespaces();
       this.trackUserActioOnKB('Deleted Knowledge Base')
     })
   }

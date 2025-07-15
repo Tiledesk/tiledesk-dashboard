@@ -6,6 +6,17 @@
     // margin: 0 60px;
 }
 
+.sidebar-title {
+    color: var(--settings-sidebar-color);
+    padding-left: 12px;
+    font-size: var(--settings-sidebar-group-name-font-size);
+    font-weight: 500;
+    line-height: 14px;
+    text-transform: var(--settings-sidebar-group-name-text-transform);
+    cursor: default;
+    margin-bottom: 12px;
+}
+
 .kb-content {
     flex: 1 1 auto;
     margin: 0 20px;
@@ -75,19 +86,45 @@
     width: fit-content;
 }
 
-.hybrid-search-badge {
-    background-color: #C065A8;
-    color: white;
-    padding: 0px 8px;
-    border-radius: 9999px;
-    font-size: 10px;
-    font-weight: 400;
-    height: 20px;
+.hybrid-search-icon {
+    font-weight: 600;
+    color: #C065A8;
+    margin-right: 8px;
     position: relative;
     top: 1px;
-    width: fit-content;
 }
 
+.hybrid-search-badge {
+    font-weight: 400;
+    font-size: 10px;
+    color: #FFF;
+    padding: 0 8px;
+    background-color: #C065A8;
+    margin-right: 8px;
+    position: relative;
+    top: 1px;
+    border-radius: 9999px;
+}
+
+.standard-search-icon {
+    font-weight: 600;
+    color: #747eaa;
+    margin-right: 8px;
+    position: relative;
+    top: 1px;
+}
+
+.standard-search-badge {
+    font-weight: 400;
+    font-size: 10px;
+    color: #FFF;
+    padding: 0 8px;
+    background-color: #747eaa;
+    margin-right: 8px;
+    position: relative;
+    top: 1px;
+    border-radius: 9999px;
+}
 
 .kb-default-badge-in-menu-wpr  {
     display: flex;
@@ -697,6 +734,7 @@ table {
     flex-direction: row;
     gap: 8px;
     align-items: center;
+    margin-bottom: 4px;
 }
 
 .selected-namespace-content>.selected-namespace-name {
@@ -811,8 +849,8 @@ table {
 .chatbot-using-current-namespace-wpr {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 6px;
+    align-items: baseline;
+    //gap: 6px;
     margin-top: 6px;
 }
 
@@ -968,12 +1006,15 @@ table {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 18px;
-  margin-top: 8px;
+  //margin-bottom: 18px;
+  margin-top: 24px;
+  margin-bottom: 16px;
   gap: 0;
   overflow: hidden;
   border-radius: 10px;
-  background: #f7f7f7;
+  //background: #f7f7f7;
+  background: #fff;
+  //border: 1px solid #e3e8ee;
   border: 1px solid #e3e8ee;
   width: fit-content;
   //height: 40px;
@@ -1016,7 +1057,7 @@ table {
   top: 0px;
 }
 .kb-switch-field input[type="radio"]:checked + label {  
-  background: #fff;
+    background: #e3e9f6;
     color: #1b1919;
     box-shadow: 0px 0px 10px #006cff00;
     z-index: 2;

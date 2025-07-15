@@ -23,8 +23,8 @@
 
       <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
         <!-- Sidebar sinistra -->
-        <div class="kb-sidebar" style="width: 260px; min-width: 200px; max-width: 320px; background: #f7f7f7; border-right: 1px solid #e0e0e0; padding: 20px 0; height: 100vh; position: sticky; top: 0; overflow-y: auto; box-shadow: 0px 0px 4px 1px #91919129; border-radius: 8px;">
-          <div style="font-weight: bold; font-size: 18px; padding: 0 24px 16px 24px;">
+        <div class="kb-sidebar" style="width: 260px; min-width: 200px; max-width: 320px; border-right: 1px solid #e0e0e0; padding: 20px 0; height: 100vh; position: sticky; top: 0; overflow-y: auto;">
+          <div class="sidebar-title" >
             Your Knowledge Bases
             <!--{{ 'KnowledgeBases' | translate }}-->
           </div>
@@ -32,28 +32,57 @@
             <li *ngFor="let ns of namespaces"
                 (click)="onSelectNamespace(ns)"
                 [ngClass]="{'active': ns === selectedNamespace}"
-                style="cursor: pointer; padding: 12px 24px; border-left: 4px solid transparent; transition: background 0.2s, border-color 0.2s;"
+                style="cursor: pointer; padding: 9px 0px 9px 9px; border-left: 4px solid transparent; transition: background 0.2s, border-color 0.2s;"
                 [style.background]="ns === selectedNamespace ? '#e3e9f6' : 'transparent'"
                 [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'">
               <div style="display: flex; align-items: center; width: 100%;">
-                <!-- Colonna sinistra: nome -->
-                <div style="flex: 1 1 0; font-size: 15px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  {{ ns.name }}
-                </div>
-                <!-- Colonna centrale: badge(s) -->
-                <div style="flex: 0 0 54px; display: flex; align-items: center; justify-content: flex-end; min-width: 0;">
-                  <span *ngIf="ns?.default" 
+
+                <div style="display: flex; align-items: center; justify-content: flex-end; min-width: 0; margin-bottom: 2px;">
+                  <!-- <span *ngIf="ns?.default" 
                         class="kb-default-badge" 
                         style="display: inline-flex; justify-content: center; align-items: center; width: 18px; height: 18px; border-radius: 50%; font-weight: bold; font-size: 11px; margin-left: 8px;">
                     D
+                  </span> -->
+                  
+                  <span *ngIf="ns?.hybrid === true" 
+                    class="hybrid-search-icon" 
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='after'
+                    matTooltipShowDelay="600"
+                    matTooltipHideDelay="100">H
                   </span>
-                  <span *ngIf="ns?.engine?.type === 'serverless'" 
-                        class="hybrid-search-badge" 
-                        style="display: inline-flex; justify-content: center; align-items: center; width: 18px; height: 18px; border-radius: 50%; font-weight: bold; font-size: 11px; margin-left: 6px;">
-                    H
+                  <span *ngIf="!ns?.hybrid" 
+                      class="standard-search-icon"
+                      matTooltipClass="kb-custom-mat-tooltip"
+                      matTooltip="This Knowledge Base uses semantic search" 
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='after'
+                      matTooltipShowDelay="600"
+                      matTooltipHideDelay="100">
+                    S
+                  </span>
+                  <span *ngIf="ns?.default" 
+                    class="material-icons-round" 
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="This is the default Knowledge Base" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='after'
+                    matTooltipShowDelay="600"
+                    matTooltipHideDelay="100"
+                    style="font-size: 18px; color: #d9b100; margin-right: 6px;">
+                    grade
                   </span>
                 </div>
-                <!-- Colonna destra: chevron, spazio sempre riservato -->
+
+                <div style="flex: 1 1 0; font-size: 15px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  {{ ns.name }}
+                </div>
+                
+
+                <div *ngIf="ns.count" class="counter-badge">{{ns.count}}</div>
+
                 <div style="flex: 0 0 32px; display: flex; align-items: center; justify-content: center; margin-left: 12px;">
                   <mat-icon *ngIf="ns === selectedNamespace" style="color: #0f62ff;">chevron_right</mat-icon>
                 </div>
@@ -64,10 +93,16 @@
             </li>
             
           </ul>
-          <button class="custom-button xs" style="margin: 24px 24px 0 24px; width: calc(100% - 48px);" (click)="presentModalAddNewNamespace()">
+
+          <button class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px);" (click)="presentModalAddNewNamespace()">
             <mat-icon style="vertical-align: middle;">add</mat-icon>
             <span style="vertical-align: middle;">New Knowledge Base</span>
           </button>
+
+          <div class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
+            Total Contents: {{totalCount}}/{{quotas.kbs}}
+          </div>
+          
         </div>
         <!-- Contenuto destro -->
         <div class="kb-main-content" style="flex: 1 1 0; min-width: 0; padding-left: 0;">
@@ -111,14 +146,30 @@
       
                       </div>
                       <div class="kb-bottom-badge-wpr"> 
-                        <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div>
-                        <div class="hybrid-search-badge" *ngIf="selectedNamespace?.engine?.type === 'serverless'"
+                        <div *ngIf="selectedNamespace?.default" 
+                          class="kb-default-badge"
+                          matTooltipClass="kb-custom-mat-tooltip"
+                          matTooltip="This is the default Knowledge Base" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='after'
+                          matTooltipHideDelay="100">
+                          Default
+                        </div>
+                        <div class="hybrid-search-badge" *ngIf="selectedNamespace?.hybrid === true"
                               matTooltipClass="kb-custom-mat-tooltip"
                               matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}" 
                               #tooltip="matTooltip" 
                               matTooltipPosition='right'
                               matTooltipHideDelay="100">
                             {{ 'KbPage.Hybrid' | translate }}
+                        </div>
+                        <div class="standard-search-badge" *ngIf="!selectedNamespace?.hybrid"
+                            matTooltipClass="kb-custom-mat-tooltip"
+                            matTooltip="This Knowledge Base uses semantic search" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='after'
+                            matTooltipHideDelay="100">
+                            Standard
                         </div>
                       </div>
                     </div>
@@ -171,7 +222,8 @@
                     </div>
       
                  
-                    <div id="kb-chatbot" class="served-by-cb-wpr">
+                    <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
+                       id="kb-chatbot" class="served-by-cb-wpr" style="margin-left: 8px;">
                       <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
                         <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
                           class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)"
@@ -226,9 +278,9 @@
                     <!-- Create a Chatbot that use current KB -->
                     <!-- --------------------------------------- -->
                     <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
-                      {{ 'KbPage.ThisKBisReadyToUse' | translate }}
+                      {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
     
-                      <button class="custom-button xs" style="margin-left: 6px;"
+                      <button class="custom-button xs" style="margin-left: 4px; font-size: 12px;"
                         (click)="createChatbotfromKbOfficialResponderTemplate()">
       
                         <span *ngIf="!esportingKBChatBotTemplate">
@@ -279,6 +331,7 @@
                         [unansweredQuestions]="unansweredQuestions"
                         [namespace]="selectedNamespace"
                         [id_project]="id_project"
+                        (refresh)="loadUnansweredQuestions()"
                         (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)">
                       </modal-unanswered-questions>
                     </ng-container>

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UnansweredQuestionsService } from 'app/services/unanswered-questions.service';
 import { ModalConfirmActionComponent } from '../modal-confirm-action/modal-confirm-action.component';
+import { BrandService } from 'app/services/brand.service';
 
 /**
  * Interfaccia per una domanda senza risposta
@@ -33,18 +34,28 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
   @Output() openAddKnowledgeBaseModal = new EventEmitter<any>();
   /** Evento per aggiungere una FAQ dalla unanswered question */
   @Output() addFaqFromUnanswered = new EventEmitter<{q: UnansweredQuestion, done: (success: boolean) => void}>();
+  @Output() refresh = new EventEmitter<void>();
 
   /** Domanda in fase di lavorazione */
   pendingQuestion: UnansweredQuestion | null = null;
+  hideHelpLink: boolean;
 
   constructor(
     private dialog: MatDialog,
     private logger: LoggerService,
-    private unansweredQuestionsService: UnansweredQuestionsService
-  ) {}
+    private unansweredQuestionsService: UnansweredQuestionsService,
+    public brandService: BrandService
+  ) {
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+  }
 
   ngOnInit(): void {
     // La lista delle domande viene fornita dal componente padre
+  }
+
+  refreshList() {
+    this.refresh.emit();
   }
 
   /**

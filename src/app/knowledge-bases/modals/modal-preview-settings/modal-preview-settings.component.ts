@@ -107,7 +107,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
       if (this.selectedNamespace && this.selectedNamespace.engine) {
-        if ( this.selectedNamespace.engine.type === 'serverless') {
+        if ( this.selectedNamespace.hybrid === true) {
           this.diplaySearchTypeSlider = true;
         } else {
           this.diplaySearchTypeSlider = false;
