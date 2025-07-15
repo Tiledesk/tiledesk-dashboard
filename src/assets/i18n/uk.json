@@ -693,6 +693,11 @@
     "Flows": "Потоки",
     "Models": "Моделі",
     "Optional": "необов'язковий",
+    "DisableMember":"Вимкнути учасника",
+    "TheMemberWillBeDisabled": "Учасника <b>{{pu_name}}</b> буде вимкнено",
+    "TheMemberWillBeRestored":"Учасника <b>{{pu_name}}<b> буде відновлено",
+    "TheGroupWillBeRestored": "Групу <b>{{group_name}}<b> буде відновлено",
+    "Disable":"Вимкнути",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1112,7 +1117,19 @@
         "YouCanGroupAgents": "Ви можете групувати агентів на основі навичок і призначати групи агентів своїм відділам",
         "TheGroupIsAssociatedWithTheDepartment": "Група пов’язана з відділом {{ depts_name }}",
         "TheGroupIsAssociatedWithDepartments": "Група пов’язана з відділами {{ depts_name }}",
-        "DisassociateTheGroup": "Перед видаленням видаліть усі зв’язки з Routing або Departments."
+        "DisassociateTheGroup": "Перед видаленням видаліть усі зв’язки з Routing або Departments.",
+        "DisassociateTheGroupBeforeToDisable": "Видаліть будь-які зв’язки з маршрутизацією або відділами, перш ніж вимикати її.",
+        "TheGroupWilBeDeleted": "Групу <b>{{group_name}}<b> буде видалено", 
+        "TheGroupWilBeDisabled": "Групу <b>{{group_name}}<b> буде вимкнено",
+        "DisableGroup": "Вимкнути групу",
+        "Active": "Активна",
+        "RestoreGroup": "Відновити групу",
+        "AnErrorOccurredWhileDeletingTheGroup": "Сталася помилка під час видалення групи",
+        "TheGroupHasBeenSuccessfullyDeleted": "Групу успішно видалено",
+        "AnErrorOccurredWhileDisablingTheGroup": "Сталася помилка під час вимкнення групи",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Групу успішно вимкнено",
+        "AnErrorOccurredWhileRestoringTheGroup":"Сталася помилка під час відновлення групи",
+        "TheGroupHasBeenSuccessfullyRestored": "Групу успішно відновлено"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Додати групу",

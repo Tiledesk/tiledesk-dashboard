@@ -5,7 +5,7 @@ import { Group } from '../models/group-model';
 import { Router } from '@angular/router';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { URL_creating_groups } from '../utils/util';
+import { avatarPlaceholder, getColorBck, URL_creating_groups } from '../utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
 import { DepartmentService } from 'app/services/department.service';
@@ -38,14 +38,22 @@ export class GroupsComponent implements OnInit {
   add_btn_disabled: boolean;
 
   displayDeleteModal = 'none';
+  displayDisableModal = 'none';
+  displayRestoreModal = 'none';
   id_group_to_delete: string;
   name_group_to_delete: string;
+  id_group_to_disable: string;
+  name_group_to_disable: string;
+  id_group_to_restore: string;
+  name_group_to_restore: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public_Key: any;
   isVisibleGRO: any
   isChromeVerGreaterThan100: boolean;
 
   disassociateTheGroup: string;
+  disassociateTheGroupBeforeToDisableIt: string;
+
   warning: string;
 
   public hideHelpLink: boolean;
@@ -129,9 +137,13 @@ export class GroupsComponent implements OnInit {
    * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID   */
   getGroupsByProjectId() {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      this.logger.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
+      console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
 
-      this.groupsList = groups;
+      if (groups) {
+        this.groupsList = groups;
+        this.createGroupAvatar(this.groupsList)
+
+      }
       // this.faqkbList = faqKb;
 
     }, (error) => {
@@ -142,6 +154,13 @@ export class GroupsComponent implements OnInit {
       this.logger.log('[GROUPS] GET GROUPS * COMPLETE');
     });
 
+  }
+
+  createGroupAvatar(groupsList) {
+    groupsList.forEach(group => {
+      group['groupName_initial'] = avatarPlaceholder(group.name)
+       group['fillColour'] = getColorBck(group.name)
+    });
   }
 
   goToEditAddPage_create() {
@@ -162,16 +181,31 @@ export class GroupsComponent implements OnInit {
   }
 
   openDeleteModal(id_group: string, group_name: string) {
-    // this.displayDeleteModal = 'block';
     this.id_group_to_delete = id_group;
     this.name_group_to_delete = group_name;
     this.logger.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
-    this.getDepartments(this.id_group_to_delete)
-
+    this.getDepartments(this.id_group_to_delete, 'delete')
   }
 
-  getDepartments(selectedGrouId?: string) {
-    this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE ', selectedGrouId)
+  opendisableModal(id_group: string, group_name: string) {
+    this.id_group_to_disable = id_group;
+    this.name_group_to_disable= group_name;
+    this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
+    this.getDepartments(this.id_group_to_disable, 'disable')
+  }
+
+  openRestoreModal(id_group: string, group_name: string){
+    this.displayRestoreModal = 'block';  
+    this.id_group_to_restore = id_group;
+    this.name_group_to_restore= group_name;
+    this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
+  }
+
+ 
+
+  getDepartments(selectedGrouId?: string, reason?: string) {
+    console.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
+    this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE / DISABLE ', selectedGrouId)
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
 
@@ -181,7 +215,11 @@ export class GroupsComponent implements OnInit {
 
       if (deptsArrayWithAssociatedGroup.length === 0) {
         this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
-        this.displayDeleteModal = 'block'; 
+        if (reason === 'delete') {
+          this.displayDeleteModal = 'block'; 
+        } else {
+          this.displayDisableModal = 'block'; 
+        }
       } else {
         this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP !!! ASSOCIATED');
         this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
@@ -192,56 +230,148 @@ export class GroupsComponent implements OnInit {
           deptsNameAssociatedToGroup.push(dept.name)
         });
 
-        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
+        console.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
 
-        if (deptsArrayWithAssociatedGroup.length === 1) {
-          Swal.fire({
-            title: this.warning,
-            text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithTheDepartment', { depts_name: deptsNameAssociatedToGroup.join(', ') }) + '. ' + this.disassociateTheGroup,
-            icon: "warning",
-            showCloseButton: true,
-            showCancelButton: false,
-            // confirmButtonColor: "var(--blue-light)",
-            focusConfirm: false
-          })
-        }
+        const isPlural = deptsNameAssociatedToGroup.length > 1;
+        const translationKey = isPlural 
+          ? 'GroupsPage.TheGroupIsAssociatedWithDepartments' 
+          : 'GroupsPage.TheGroupIsAssociatedWithTheDepartment';
 
-        if (deptsArrayWithAssociatedGroup.length > 1) {
-          Swal.fire({
-            title: this.warning,
-            text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithDepartments', { depts_name: deptsNameAssociatedToGroup.join(', ') }) +'. ' + this.disassociateTheGroup,
-            icon: "warning",
-            showCloseButton: true,
-            showCancelButton: false,
-            // confirmButtonColor: "var(--blue-light)",
-            focusConfirm: false,
-          })
-        }
+        const actionMessage = reason === 'delete' 
+        ? this.disassociateTheGroup 
+        : this.disassociateTheGroupBeforeToDisableIt;
+
+        // const translatedMessage = this.translate.instant(translationKey, { 
+        //   depts_name: deptsNameAssociatedToGroup.join(', ') 
+        // });
+
+        this.showWarningAlert(
+        this.warning,
+        `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
+        );
+
+        // Swal.fire({
+        //   title: this.warning,
+        //   text: `${translatedMessage}. ${this.disassociateTheGroup}`,
+        //   icon: "warning",
+        //   showCloseButton: true,
+        //   showCancelButton: false,
+        //   // confirmButtonColor: "var(--blue-light)",
+        //   focusConfirm: false
+        // })
+        
+
+        // if (deptsArrayWithAssociatedGroup.length > 1) {
+        //   Swal.fire({
+        //     title: this.warning,
+        //     text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithDepartments', { depts_name: deptsNameAssociatedToGroup.join(', ') }) +'. ' + this.disassociateTheGroup,
+        //     icon: "warning",
+        //     showCloseButton: true,
+        //     showCancelButton: false,
+        //     // confirmButtonColor: "var(--blue-light)",
+        //     focusConfirm: false,
+        //   })
+        // }
       }
     })
   }
 
+  private showWarningAlert(title: string, text: string): void {
+    Swal.fire({
+        title,
+        text,
+        icon: 'warning',
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        // confirmButtonColor: 'var(--blue-light)'
+    });
+}
+
+
   onCloseDeleteModal() {
     this.displayDeleteModal = 'none';
+  }
+  onCloseDidableModal () {
+    this.displayDisableModal = 'none';
+  }
+  onCloseRestoreModal() {
+    this.displayRestoreModal = 'none';
   }
 
   deleteGroup() {
     this.displayDeleteModal = 'none';
     this.groupsService.setTrashedToTheGroup(this.id_group_to_delete).subscribe((group) => {
 
+      
+
       this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE ', group);
     }, (error) => {
       this.logger.error('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showWidgetStyleUpdateNotification('An error occurred while deleting the group', 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('GroupsPage.AnErrorOccurredWhileDeletingTheGroup'), 4, 'report_problem');
     }, () => {
       this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
 
       // =========== NOTIFY SUCCESS===========
-      this.notify.showWidgetStyleUpdateNotification('group successfully deleted', 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('GroupsPage.TheGroupHasBeenSuccessfullyDeleted'), 2, 'done');
       // UPDATE THE GROUP LIST
-      this.ngOnInit()
+      // this.ngOnInit()
+       for (var i = 0; i < this.groupsList.length; i++) {
+        if (this.groupsList[i]._id === this.id_group_to_delete) {
+          this.groupsList.splice(i, 1);
+          i--;
+        }
+      }
+
     });
+  }
+
+
+  disableGroup(group_id: string) {
+    this.displayDisableModal = 'none';
+    console.log("[GROUPS] disableGroup group_id: ", group_id);
+    this.groupsService.disableGroup(group_id).subscribe((group) => {
+      console.log("[GROUPS] disableGroup response: ", group);
+    }, (error) => {
+      console.error("[GROUPS] error disabling group: ", error);
+      if (error.status === 403) {
+        // this.notify.showWidgetStyleUpdateNotification('Hey' + error.error.error, 4, 'report_problem')
+        // this.getDepartments(group_id, 'disable') 
+      } else {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("GroupsPage.AnErrorOccurredWhileDisablingTheGroup"), 4, 'report_problem')
+      }
+    }, () => {
+      this.logger.log("[GROUPS] group disabled");
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("GroupsPage.TheGroupHasBeenSuccessfullyDisabled"), 2, 'done')
+      const groupToDisable = this.groupsList.find(g => g._id === group_id);
+      if (groupToDisable) {
+        groupToDisable.enabled = false;
+      }
+    })
+  }
+
+
+  restoreGroup(group_id) {
+    this.displayRestoreModal = 'none';
+    this.groupsService.restoreGroup(group_id).subscribe((group) => {
+      this.logger.log("[GROUPS] restoreGroup response: ", group);
+    }, (error) => {
+      this.logger.error("[GROUPS] error restoring group: ", error);
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("GroupsPage.AnErrorOccurredWhileRestoringTheGroup"), 4, 'report_problem')
+      // if (error.status === 403) {
+      //   this.notify.showWidgetStyleUpdateNotification(error.error.error, 4, 'report_problem')
+      // } else {
+      //   this.notify.showWidgetStyleUpdateNotification("An error occurred enabling group", 4, 'report_problem')
+      // }
+    }, () => {
+      this.logger.log("[GROUPS] group restored");
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("GroupsPage.TheGroupHasBeenSuccessfullyRestored"), 2, 'done')
+      const groupToRestore = this.groupsList.find(g => g._id === group_id);
+      if (groupToRestore) {
+        groupToRestore.enabled = true;
+      }
+    })
   }
 
 
@@ -253,6 +383,12 @@ export class GroupsComponent implements OnInit {
         this.disassociateTheGroup = text['DisassociateTheGroup'];
       });
 
+      this.translate.get('GroupsPage')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        this.logger.log('[GROUPS] getTranslations GroupsPage : ', text)
+        this.disassociateTheGroupBeforeToDisableIt = text['DisassociateTheGroupBeforeToDisable'];
+      });
 
     this.translate.get('Warning')
       .subscribe((text: string) => {
@@ -262,48 +398,6 @@ export class GroupsComponent implements OnInit {
       });
 
   
-  }
-
-  disableGroup(group_id) {
-
-    this.groupsService.disableGroup(group_id).subscribe((group) => {
-      this.logger.log("[GROUPS] disableGroup response: ", group);
-    }, (error) => {
-      this.logger.error("[GROUPS] error disabling group: ", error);
-      if (error.status === 403) {
-        this.notify.showWidgetStyleUpdateNotification(error.error.error, 4, 'report_problem')
-      } else {
-        this.notify.showWidgetStyleUpdateNotification("An error occurred disabling group", 4, 'report_problem')
-      }
-    }, () => {
-      this.logger.log("[GROUPS] group disabled");
-      this.notify.showWidgetStyleUpdateNotification("Group disabled successfully", 2, 'done')
-      const groupToDisable = this.groupsList.find(g => g._id === group_id);
-      if (groupToDisable) {
-        groupToDisable.enabled = false;
-      }
-    })
-  }
-
-  restoreGroup(group_id) {
-
-    this.groupsService.restoreGroup(group_id).subscribe((group) => {
-      this.logger.log("[GROUPS] restoreGroup response: ", group);
-    }, (error) => {
-      this.logger.error("[GROUPS] error restoring group: ", error);
-      if (error.status === 403) {
-        this.notify.showWidgetStyleUpdateNotification(error.error.error, 4, 'report_problem')
-      } else {
-        this.notify.showWidgetStyleUpdateNotification("An error occurred enabling group", 4, 'report_problem')
-      }
-    }, () => {
-      this.logger.log("[GROUPS] group restored");
-      this.notify.showWidgetStyleUpdateNotification("Group enabled successfully", 2, 'done')
-      const groupToRestore = this.groupsList.find(g => g._id === group_id);
-      if (groupToRestore) {
-        groupToRestore.enabled = true;
-      }
-    })
   }
   
 

@@ -692,6 +692,11 @@
     "Flows": "Flussi",
     "Models": "Modelli",
     "Optional": "opzionale",
+    "DisableMember":"Disabilita membro",
+    "TheMemberWillBeDisabled": "Il membro <b>{{pu_name}}</b> verrà disabilitato",
+    "TheMemberWillBeRestored": "Il membro <b>{{pu_name}}</b> verrà ripristinato",
+    "TheGroupWillBeRestored": "Il gruppo <b>{{group_name}}</b> verrà ripristinato",
+    "Disable":"Disabilita",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1111,7 +1116,19 @@
         "YouCanGroupAgents": "Puoi raggruppare agenti in base alle competenze e assegnare gruppi di agenti ai tuoi dipartimenti",
         "TheGroupIsAssociatedWithTheDepartment": "Il gruppo è associato al dipartimento {{ depts_name }}",
         "TheGroupIsAssociatedWithDepartments": "Il gruppo è associato ai dipartimenti {{ depts_name }}",
-        "DisassociateTheGroup": "Rimuovi eventuali associazioni con Routing o Dipartimenti prima di eliminarlo."
+        "DisassociateTheGroup": "Rimuovi eventuali associazioni con Routing o Dipartimenti prima di eliminarlo.",
+        "DisassociateTheGroupBeforeToDisable": "Rimuovi eventuali associazioni con Routing o Dipartimenti prima di disabilitarlo.",
+        "TheGroupWilBeDeleted": "Il gruppo <b>{{group_name}}</b> verrà eliminato", 
+        "TheGroupWilBeDisabled": "Il gruppo <b>{{group_name}}</b> verrà disabilitato",
+        "DisableGroup": "Disabilita gruppo",
+        "Active": "Attivo",
+        "RestoreGroup": "Ripristina gruppo",
+        "AnErrorOccurredWhileDeletingTheGroup": "Si è verificato un errore durante l'eliminazione del gruppo",
+        "TheGroupHasBeenSuccessfullyDeleted": "Il gruppo è stato eliminato correttamente",
+        "AnErrorOccurredWhileDisablingTheGroup": "Si è verificato un errore durante la disattivazione del gruppo",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Il gruppo è stato disattivato correttamente",
+        "AnErrorOccurredWhileRestoringTheGroup":"Si è verificato un errore durante il ripristino del gruppo",
+        "TheGroupHasBeenSuccessfullyRestored": "Il gruppo è stato ripristinato correttamente"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Aggiungi Gruppo",

@@ -692,6 +692,11 @@
     "Flows": "التدفقات",
     "Models": "نماذج",
     "Optional": "اختياري",
+    "DisableMember":"تعطيل العضو",
+    "TheMemberWillBeDisabled": "سيتم تعطيل العضو <b>{{pu_name}}</b>",
+    "TheMemberWillBeRestored": "سيتم استعادة العضو <b>{{pu_name}</b>",
+    "TheGroupWillBeRestored": "سيتم استعادة المجموعة <b>{{group_name}</b>",
+    "Disable":"إبطال",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1112,7 +1117,19 @@
         "YouCanGroupAgents": "يمكنك تجميع الوكلاء بناءً على المهارات وتعيين مجموعات من الوكلاء لأقسامك",
         "TheGroupIsAssociatedWithTheDepartment": "المجموعة مرتبطة بقسم {{ depts_name }}.",
         "TheGroupIsAssociatedWithDepartments": "المجموعة مرتبطة بالأقسام {{ depts_name }}.",
-        "DisassociateTheGroup": "قم بإزالة أي ارتباطات بالتوجيه أو الأقسام قبل حذف المجموعة."
+        "DisassociateTheGroup": "قم بإزالة أي ارتباطات بالتوجيه أو الأقسام قبل حذف المجموعة.",
+        "DisassociateTheGroupBeforeToDisable": "قم بإزالة أي ارتباطات مع التوجيه أو الأقسام قبل تعطيلها.",
+        "TheGroupWilBeDeleted": "سيتم حذف المجموعة <b>{{group_name}</b>", 
+        "TheGroupWilBeDisabled": "سيتم تعطيل المجموعة <b>{{group_name}</b>",
+        "DisableGroup": "تعطيل المجموعة",
+        "Active": "نشط",
+        "RestoreGroup": "استعادة المجموعة",
+        "AnErrorOccurredWhileDeletingTheGroup": "حدث خطأ أثناء حذف المجموعة",
+        "TheGroupHasBeenSuccessfullyDeleted": "تم حذف المجموعة بنجاح",
+        "AnErrorOccurredWhileDisablingTheGroup": "حدث خطأ أثناء تعطيل المجموعة",    
+        "TheGroupHasBeenSuccessfullyDisabled": "تم تعطيل المجموعة بنجاح",
+        "AnErrorOccurredWhileRestoringTheGroup":"حدث خطأ أثناء استعادة المجموعة",
+        "TheGroupHasBeenSuccessfullyRestored": "تم استعادة المجموعة بنجاح"
     },
     "GroupsAddEditPage": {
         "AddGroup": "أضف مجموعة",

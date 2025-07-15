@@ -693,6 +693,11 @@
     "Flows": "Потоки",
     "Models": "Модели",
     "Optional": "необязательный",
+    "DisableMember":"Отключить участника",
+    "TheMemberWillBeDisabled": "Участник <b>{{pu_name}}</b> будет отключен",
+    "TheMemberWillBeRestored":"Участник <b>{{pu_name}}</b> будет восстановлен",
+    "TheGroupWillBeRestored": "Группа <b>{{group_name}}</b> будет восстановлена",
+    "Disable":"Запрещать",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1112,7 +1117,19 @@
         "YouCanGroupAgents": "Вы можете группировать агентов по навыкам и назначать группы агентов в свои отделы",
         "TheGroupIsAssociatedWithTheDepartment": "Группа связана с отделом {{ depts_name }}",
         "TheGroupIsAssociatedWithDepartments": "Группа связана с отделами {{ depts_name }}",
-        "DisassociateTheGroup": "Перед удалением удалите все ассоциации с маршрутизацией или отделами."
+        "DisassociateTheGroup": "Перед удалением удалите все ассоциации с маршрутизацией или отделами.",
+        "DisassociateTheGroupBeforeToDisable": "Перед отключением удалите все связи с маршрутизацией или отделами.",
+        "TheGroupWilBeDeleted": "Группа <b>{{group_name}}</b> будет удалена.", 
+        "TheGroupWilBeDisabled": "Группа <b>{{group_name}}</b> будет отключена.",
+        "DisableGroup": "Отключить группу",
+        "Active": "Активно",
+        "RestoreGroup": "Восстановить группу",
+        "AnErrorOccurredWhileDeletingTheGroup": "Произошла ошибка при удалении группы",
+        "TheGroupHasBeenSuccessfullyDeleted": "Группа успешно удалена",
+        "AnErrorOccurredWhileDisablingTheGroup": "Произошла ошибка при отключении группы",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Группа успешно отключена",
+        "AnErrorOccurredWhileRestoringTheGroup":"Произошла ошибка при восстановлении группы",
+        "TheGroupHasBeenSuccessfullyRestored": "Группа успешно восстановлена"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Добавить группу",

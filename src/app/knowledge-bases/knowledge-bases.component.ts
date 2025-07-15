@@ -248,7 +248,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getTemplates();
     // this.getCommunityTemplates()
     // this.getOSCODE();
-    // this.getFaqKbByProjectId();
+    this.getFaqKbByProjectId();
     // this.trackPage();
     // this.getTranslations();
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
@@ -964,17 +964,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // }
 
   createChatbotfromKbOfficialResponderTemplate() {
+    console.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
+    console.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.myChatbotOtherCount < this.chatBotLimit) {
-          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          console.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.findKbOfficialResponderAndThenExportToJSON()
         } else if (this.myChatbotOtherCount >= this.chatBotLimit) {
-          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  NO chatBotLimit: RUN FORK')
+        this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  NO chatBotLimit: RUN FORK')
         this.findKbOfficialResponderAndThenExportToJSON()
       }
 
@@ -997,7 +999,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             return officialResponder
           }
         });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+        console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
@@ -2255,7 +2257,7 @@ _presentDialogImportContents() {
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
+      console.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
         this.myChatbotOtherCount = faqKb.length
 

@@ -693,6 +693,11 @@
     "Flows": "Токови",
     "Models": "Модели",
     "Optional": "опционо",
+    "DisableMember":"Онемогући члана",
+    "TheMemberWillBeDisabled": "Члан <b>{{pu_name}}</b> ће бити онемогућен",
+    "TheMemberWillBeRestored":"Члан <b>{{pu_name}}<b> биће враћен",
+    "TheGroupWillBeRestored": "Група <b>{{group_name}}<b> ће бити враћена",
+    "Disable":"Онемогући",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1112,7 +1117,19 @@
         "YouCanGroupAgents": "Можете да групишете агенте на основу вештина и да доделите групе агената својим одељењима",
         "TheGroupIsAssociatedWithTheDepartment": "Група је повезана са одељењем {{ дептс_наме }}",
         "TheGroupIsAssociatedWithDepartments": "Група је повезана са {{ дептс_наме }} одељењима",
-        "DisassociateTheGroup": "Уклоните све асоцијације са рутирањем или одељењима пре него што их избришете."
+        "DisassociateTheGroup": "Уклоните све асоцијације са рутирањем или одељењима пре него што их избришете.",
+        "DisassociateTheGroupBeforeToDisable": "Уклоните све везе са рутирањем или одељењима пре него што их онемогућите.",
+        "TheGroupWilBeDeleted": "Група <b>{{group_name}}<b> ће бити обрисана", 
+        "TheGroupWilBeDisabled": "Група <b>{{group_name}}<b> ће бити онемогућена",
+        "DisableGroup": "Онемогући групу",
+        "Active": "Активно",
+        "RestoreGroup": "Врати групу",
+        "AnErrorOccurredWhileDeletingTheGroup": "Дошло је до грешке приликом брисања групе",
+        "TheGroupHasBeenSuccessfullyDeleted": "Група је успешно обрисана",
+        "AnErrorOccurredWhileDisablingTheGroup": "Дошло је до грешке приликом онемогућавања групе",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Група је успешно онемогућена",
+        "AnErrorOccurredWhileRestoringTheGroup":"Дошло је до грешке приликом враћања групе",
+        "TheGroupHasBeenSuccessfullyRestored": "Група је успешно враћена"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Додај групу",

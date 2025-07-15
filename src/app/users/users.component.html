@@ -420,9 +420,10 @@
                                 mat-menu-item
                                 (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
                                 [disabled]="USER_ROLE !== 'owner'">
-                                <mat-icon>delete</mat-icon>
+                                <mat-icon>close</mat-icon>
 
-                                <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span>
+                                <!-- <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span> -->
+                                <span>{{ 'DisableMember' | translate }}</span>
                               </button>
                             </mat-menu>
                           </div>
@@ -915,7 +916,9 @@
             </svg>
           </span>
           <span style="vertical-align: middle; padding-left:8px">
-            {{ "UsersPage.modalDeleteUser" | translate }}
+            <!-- {{ "UsersPage.modalDeleteUser" | translate }} -->
+              {{ "DisableMember" | translate }}
+              
           </span>
         </h4>
 
@@ -929,9 +932,12 @@
 
       <div class="modal-body">
         <p class="modal-body--content">
-          {{ "UsersPage.AreYouSure" | translate }}
+          <!-- {{ "UsersPage.AreYouSure" | translate }}
           <b>{{user_firstname}} {{user_lastname }} </b>
-          {{ "UsersPage.FromTheProject" | translate }}?
+          {{ "UsersPage.FromTheProject" | translate }}? -->
+           {{'AreYouSure' | translate }}?
+        </p>
+        <p [innerHTML]="('TheMemberWillBeDisabled' | translate:{ pu_name: user_fullname }) + '.'">
         </p>
       </div>
 
@@ -942,7 +948,8 @@
         </button>
        
         <button class="btn btn-red" (click)="onCloseDeleteModalHandled()">
-          {{ "UsersPage.modalDeleteUser" | translate }}
+          <!-- {{ "UsersPage.modalDeleteUser" | translate }} -->
+           {{ "Disable" | translate }}
         </button>
       </div>
 
@@ -1048,7 +1055,8 @@
         </button>
        
         <button class="btn btn-tdblu-no-boxshadow" (click)="onCloseRestoreModalHandled()">
-          {{ "UsersPage.RestoreMember" | translate }}
+          <!-- {{ "UsersPage.RestoreMember" | translate }} -->
+           {{ "Restore" | translate }}
         </button>
       </div>
 
