@@ -249,7 +249,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getTemplates();
     // this.getCommunityTemplates()
     // this.getOSCODE();
-    // this.getFaqKbByProjectId();
+    this.getFaqKbByProjectId();
     // this.trackPage();
     // this.getTranslations();
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
