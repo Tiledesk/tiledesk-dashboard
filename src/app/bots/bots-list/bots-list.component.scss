@@ -569,7 +569,7 @@ input[type="checkbox"]:disabled {
 }
 
 .add---content-card-content.aiagents {
-  background: url('/assets/img/ai-agent.svg');
+  background: url('../../../assets/img/ai-agent.svg');
   padding: 20px;
   background-repeat: no-repeat;
     background-size: contain;
@@ -579,7 +579,7 @@ input[type="checkbox"]:disabled {
 }
 
 .add---content-card-content.automations {
-  background: url('/assets/img/automation.svg');
+  background: url('../../../assets/img/automation.svg');
   padding: 20px;
   background-repeat: no-repeat;
     background-size: contain;
@@ -623,6 +623,7 @@ input[type="checkbox"]:disabled {
   font-family: var(--header-font-family) !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
+  margin-right: 25px;
 }
 
 
@@ -889,7 +890,19 @@ input[type="checkbox"]:disabled {
 }
 
 
+.chrome-gt-100 {
+  margin-top: -64px;
+}
 
+.chrome-lt-100 {
+  margin-top: 6px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
 
 /* New chatbot table
 /* ************************************* */

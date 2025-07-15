@@ -3802,6 +3802,18 @@ div:where(.swal2-container) .swal2-select {
   font-size: 1em;
 }
 
+
+.swal2-container .lightSwal .swal2-icon {
+  border-width: 3px;
+  font-size: 6px;
+  font-weight: 700;
+  margin: 28px auto 12px 28px;
+}
+
+.swal2-container .lightSwal .swal2-title {
+  margin-top: -62px;
+}
+
 // .swal2-html-container {
 //   margin-top: 12px !important;
 // }

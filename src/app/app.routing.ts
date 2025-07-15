@@ -856,7 +856,7 @@ const routes: Routes = [
 
   // { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, seems not used
 
-  // Project edit / add - General
+  // Project edit / add - General
   {
     path: 'project/:projectid/project-settings/general',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
@@ -934,7 +934,7 @@ const routes: Routes = [
     path: 'project/:projectid/notification-email',
     loadChildren: () => import('app/project-edit-add/notification-email/notification-email.module').then(m => m.NotificationEmailModule),
     canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner'] }]
+    data: [{ roles: ['owner','admin'] }]
   },
   // { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -1062,6 +1062,12 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
 
+  {
+    path: 'project/:projectid/flows/flow-webhooks-logs/:type/:id',
+    loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
 
   {
     path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',
@@ -1315,9 +1321,6 @@ const routes: Routes = [
 
   // Rasa bot Not more used
   // { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
-
-
-
 
 ];
 

@@ -1,5 +1,29 @@
 # tiledesk-dashboard
 
+### 2.7.116
+- Adds pagination to Flows list
+
+### 2.7.115
+- Improves navigation performance
+
+### 2.7.114
+- Minor improvements and bug fixing
+
+### 2.7.114-rc5
+- changed: added request_id in flow-request-logs row
+
+### 2.7.114-rc4
+- Added: added flow request logs
+
+### 2.7.114-rc2
+- Fixes the bug: changed css module in knowledge-base
+
+### 2.7.114-rc1
+- Added: added flow webhooks logs
+
+### 2.7.113
+- Adds the environment variable "oauth2SigninEnabled"
+
 ### 2.7.112-rc5
 - Added: added unanswered-questions module in knowledge-base
 
