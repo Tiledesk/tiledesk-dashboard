@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.120
+- Fixes the bug: creating an AI Agent does not work on the knowledge bases page
+
 ### 2.7.119
 - Improves Hybrid badges management
 
