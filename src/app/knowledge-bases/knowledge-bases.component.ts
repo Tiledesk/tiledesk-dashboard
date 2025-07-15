@@ -1785,6 +1785,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
       data: {
+        pay: this.payIsVisible,
         hybridActive: this.isActiveHybrid
       },
     })
