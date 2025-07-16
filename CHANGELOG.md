@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.120
+- Fixes the bug: creating an AI Agent does not work on the knowledge bases page
+
+### 2.7.119
+- Improves Hybrid badges management
+
+### 2.7.118
+- Adds the ability to create namespaces where hybrid searches can be performed
+
 ### 2.7.116
 - Adds pagination to Flows list
 
