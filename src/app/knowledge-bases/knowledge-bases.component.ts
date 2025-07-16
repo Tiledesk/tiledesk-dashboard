@@ -964,12 +964,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // }
 
   createChatbotfromKbOfficialResponderTemplate() {
-    console.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
-    console.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
+    this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
+    this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.myChatbotOtherCount < this.chatBotLimit) {
-          console.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.findKbOfficialResponderAndThenExportToJSON()
         } else if (this.myChatbotOtherCount >= this.chatBotLimit) {
           this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
@@ -999,7 +999,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             return officialResponder
           }
         });
-        console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
@@ -2257,7 +2257,7 @@ _presentDialogImportContents() {
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
         this.myChatbotOtherCount = faqKb.length
 

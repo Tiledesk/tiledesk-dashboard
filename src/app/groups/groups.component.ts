@@ -137,7 +137,7 @@ export class GroupsComponent implements OnInit {
    * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID   */
   getGroupsByProjectId() {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
+      this.logger.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
 
       if (groups) {
         this.groupsList = groups;
@@ -204,7 +204,7 @@ export class GroupsComponent implements OnInit {
  
 
   getDepartments(selectedGrouId?: string, reason?: string) {
-    console.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
+    this.logger.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
     this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE / DISABLE ', selectedGrouId)
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
@@ -230,7 +230,7 @@ export class GroupsComponent implements OnInit {
           deptsNameAssociatedToGroup.push(dept.name)
         });
 
-        console.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
 
         const isPlural = deptsNameAssociatedToGroup.length > 1;
         const translationKey = isPlural 
@@ -330,11 +330,11 @@ export class GroupsComponent implements OnInit {
 
   disableGroup(group_id: string) {
     this.displayDisableModal = 'none';
-    console.log("[GROUPS] disableGroup group_id: ", group_id);
+    this.logger.log("[GROUPS] disableGroup group_id: ", group_id);
     this.groupsService.disableGroup(group_id).subscribe((group) => {
-      console.log("[GROUPS] disableGroup response: ", group);
+      this.logger.log("[GROUPS] disableGroup response: ", group);
     }, (error) => {
-      console.error("[GROUPS] error disabling group: ", error);
+      this.logger.error("[GROUPS] error disabling group: ", error);
       if (error.status === 403) {
         // this.notify.showWidgetStyleUpdateNotification('Hey' + error.error.error, 4, 'report_problem')
         // this.getDepartments(group_id, 'disable') 
