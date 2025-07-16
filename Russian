@@ -692,6 +692,11 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+    "DisableMember": "Disable member",
+    "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
+    "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
+    "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
+    "Disable": "Disable",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1055,9 +1060,11 @@
         "TheMemberWithId": "Участник с идентификатором",
         "WillBeRemoved": "будет удален",
         "AreYouSure": "Ты уверен что хочешь удалить",
+        "AreYouSureRestore": "Are you sure you want to restore {{ firstname }} {{ lastname }} in the project?",
         "AreYouSureCancelInvite": "Вы уверены, что хотите отозвать приглашение на",
         "FromTheProject": "из проекта",
         "Confirm": "Подтверждать",
+        "RestoreMember": "Restore Member",
         "TheUserHasBeenInvited": "Пользователь был приглашен.",
         "Continue": "Продолжать",
         "PendingInvitation": "Ожидающие приглашения",
@@ -1125,7 +1132,19 @@
         "YouCanGroupAgents": "Вы можете группировать агентов по навыкам и назначать группы агентов в свои отделы",
         "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
         "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
-        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it.",
+        "DisassociateTheGroupBeforeToDisable": "Remove any associations with Routing or Departments before disabling it.",
+        "TheGroupWilBeDeleted": "The group <b>{{group_name}}</b> will be deleted",
+        "TheGroupWilBeDisabled": "The group <b>{{group_name}}</b> will be disabled",
+        "DisableGroup": "Disable group",
+        "Active": "Active",
+        "RestoreGroup": "Restore group",
+        "AnErrorOccurredWhileDeletingTheGroup": "An error occurred while deleting the group",
+        "TheGroupHasBeenSuccessfullyDeleted": "The group has been successfully deleted",
+        "AnErrorOccurredWhileDisablingTheGroup": "An error occurred while disabling the group",
+        "TheGroupHasBeenSuccessfullyDisabled": "The group has been successfully disabled",
+        "AnErrorOccurredWhileRestoringTheGroup": "An error occurred while restoring the group",
+        "TheGroupHasBeenSuccessfullyRestored": "The group has been successfully restored"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Добавить группу",
@@ -2344,6 +2363,7 @@
     "InviteYourFirstTeammate": "Пригласите своего первого товарища по команде",
     "Enabled": "Включено",
     "Disabled": "Неполноценный",
+    "Restore": "Restore",
     "TheDefaulDeptIsDisabledBecause": "Маршрутизация по умолчанию отключена, поскольку существует по крайней мере еще один отдел, и его статус установлен на «Видимый»",
     "TheDefaulDeptIsDisabledBecause_2": "Отдел по умолчанию отключен, поскольку существует по крайней мере еще один отдел, и его статус установлен на «Видимый»",
     "TheDefaulDeptIsEnabledBecause": "Маршрутизация по умолчанию включена, поскольку другие отделы не видны",
