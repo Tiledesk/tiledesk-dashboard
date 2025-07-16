@@ -402,7 +402,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       
       this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
     })
-    console.log('[KNOWLEDGE-BASES-COMP] ', this.quotas)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] ', this.quotas)
   }
 
 
