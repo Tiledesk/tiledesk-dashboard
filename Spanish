@@ -692,6 +692,11 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+    "DisableMember": "Disable member",
+    "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
+    "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
+    "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
+    "Disable": "Disable",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1055,9 +1060,11 @@
         "TheMemberWithId": "El miembro con Id",
         "WillBeRemoved": "será eliminado",
         "AreYouSure": "¿Está seguro que desea eliminar",
+        "AreYouSureRestore": "Are you sure you want to restore {{ firstname }} {{ lastname }} in the project?",
         "AreYouSureCancelInvite": "¿Está seguro que desea revocar la invitación a",
         "FromTheProject": "del proyecto",
         "Confirm": "Confirmar",
+        "RestoreMember": "Restore Member",
         "TheUserHasBeenInvited": "El usuario ha sido invitado.",
         "Continue": "Continuar",
         "PendingInvitation": "Invitaciones pendientes",
@@ -1125,7 +1132,19 @@
         "YouCanGroupAgents": "Puedes agrupar agentes basados en habilidades y asignar grupos de agentes a tus departamentos",
         "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
         "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
-        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it.",
+        "DisassociateTheGroupBeforeToDisable": "Remove any associations with Routing or Departments before disabling it.",
+        "TheGroupWilBeDeleted": "The group <b>{{group_name}}</b> will be deleted",
+        "TheGroupWilBeDisabled": "The group <b>{{group_name}}</b> will be disabled",
+        "DisableGroup": "Disable group",
+        "Active": "Active",
+        "RestoreGroup": "Restore group",
+        "AnErrorOccurredWhileDeletingTheGroup": "An error occurred while deleting the group",
+        "TheGroupHasBeenSuccessfullyDeleted": "The group has been successfully deleted",
+        "AnErrorOccurredWhileDisablingTheGroup": "An error occurred while disabling the group",
+        "TheGroupHasBeenSuccessfullyDisabled": "The group has been successfully disabled",
+        "AnErrorOccurredWhileRestoringTheGroup": "An error occurred while restoring the group",
+        "TheGroupHasBeenSuccessfullyRestored": "The group has been successfully restored"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Añadir grupo",
@@ -2344,6 +2363,7 @@
     "InviteYourFirstTeammate": "Invita a tu primer compañero",
     "Enabled": "Activado",
     "Disabled": "Deshabilitado",
+    "Restore": "Restore",
     "TheDefaulDeptIsDisabledBecause": "La ruta predeterminada está deshabilitada porque al menos existe otro departamento y su estado está configurado en 'Visible'",
     "TheDefaulDeptIsDisabledBecause_2": "El departamento predeterminado está deshabilitado porque al menos un otro departamento existe y su estado está configurado en 'Visible'",
     "TheDefaulDeptIsEnabledBecause": "La ruta predeterminada está habilitada porque ningún otro departamento es 'Visible'",
