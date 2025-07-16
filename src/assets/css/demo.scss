@@ -1396,8 +1396,16 @@ my-app .main-panel .main-content .card {
 }
 
 .served-by-cb-d {
+  display: flex;
+  align-items: center;
   position: relative;
-  text-align: center
+  border-radius: 4px;
+  padding: 0px 4px 0px 1px;
+  //text-align: center
+
+  &:hover {
+    background-color: #e3e9f68c;
+  }
 }
 
 .served-by-cb-e {
@@ -1405,29 +1413,29 @@ my-app .main-panel .main-content .card {
   // border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 28px;
+  //width: 32px;
+  //height: 32px;
+  //line-height: 32px;
+  //font-size: 28px;
 }
 
 .served-by-cb-e img {
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 1px solid #eee;
+  //border: 1px solid #eee;
   object-fit: cover;
 }
 
 .served-by-cb-name {
-  // font-size: 12px;
-  font-size: 9px;
+  font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  // width: 40px;
-  width: 60px;
   font-weight: 500;
+  margin-left: 2px;
+  margin-top: 2px;
+  margin-right: 8px;
 }
 
 .served-by-cb-e .altenative-avatar-wrap {
@@ -1458,7 +1466,7 @@ my-app .main-panel .main-content .card {
 
 .served-by-cb-e:hover {
   position: relative;
-  top: -3px;
+  //top: -3px;
 }
 
 
