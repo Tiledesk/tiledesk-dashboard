@@ -692,6 +692,11 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+    "DisableMember": "Disable member",
+    "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
+    "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
+    "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
+    "Disable": "Disable",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1055,9 +1060,11 @@
         "TheMemberWithId": "Член з ідентифікатором",
         "WillBeRemoved": "Буде видалено",
         "AreYouSure": "Ви впевнені, що хочете видалити?",
+        "AreYouSureRestore": "Are you sure you want to restore {{ firstname }} {{ lastname }} in the project?",
         "AreYouSureCancelInvite": "Ви впевнені, що хочете відкликати запрошення до",
         "FromTheProject": "З проекту",
         "Confirm": "Підтвердьте",
+        "RestoreMember": "Restore Member",
         "TheUserHasBeenInvited": "Користувача запросили.",
         "Continue": "Продовжуйте",
         "PendingInvitation": "Запрошення в очікуванні",
@@ -1125,7 +1132,19 @@
         "YouCanGroupAgents": "Ви можете групувати агентів на основі навичок і призначати групи агентів своїм відділам",
         "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
         "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
-        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it.",
+        "DisassociateTheGroupBeforeToDisable": "Remove any associations with Routing or Departments before disabling it.",
+        "TheGroupWilBeDeleted": "The group <b>{{group_name}}</b> will be deleted",
+        "TheGroupWilBeDisabled": "The group <b>{{group_name}}</b> will be disabled",
+        "DisableGroup": "Disable group",
+        "Active": "Active",
+        "RestoreGroup": "Restore group",
+        "AnErrorOccurredWhileDeletingTheGroup": "An error occurred while deleting the group",
+        "TheGroupHasBeenSuccessfullyDeleted": "The group has been successfully deleted",
+        "AnErrorOccurredWhileDisablingTheGroup": "An error occurred while disabling the group",
+        "TheGroupHasBeenSuccessfullyDisabled": "The group has been successfully disabled",
+        "AnErrorOccurredWhileRestoringTheGroup": "An error occurred while restoring the group",
+        "TheGroupHasBeenSuccessfullyRestored": "The group has been successfully restored"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Додати групу",
@@ -2344,6 +2363,7 @@
     "InviteYourFirstTeammate": "Запросіть свого першого товариша по команді",
     "Enabled": "Увімкнено",
     "Disabled": "Вимкнено",
+    "Restore": "Restore",
     "TheDefaulDeptIsDisabledBecause": "Маршрутизація за замовчуванням вимкнена, оскільки існує принаймні один інший відділ, а його статус встановлено на «Видимий».",
     "TheDefaulDeptIsDisabledBecause_2": "Відділ за замовчуванням вимкнено, оскільки існує принаймні один інший відділ, а його статус встановлено на «Видимий».",
     "TheDefaulDeptIsEnabledBecause": "Маршрутизація за замовчуванням увімкнена, оскільки жоден інший відділ не «видимий»",
