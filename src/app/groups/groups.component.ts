@@ -231,7 +231,7 @@ export class GroupsComponent implements OnInit {
       });
 
       if (deptsArrayWithAssociatedGroup.length === 0) {
-        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
+        console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
         if (reason === 'delete') {
           this.displayDeleteModal = 'block'; 
         } else {
