@@ -1443,21 +1443,17 @@ export class AuthService {
 
   public siginWithGoogle() {
     // this.logger.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
-    // const url = this.SERVER_BASE_PATH + "auth/google"
-    const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
+    const url = this.SERVER_BASE_PATH + "auth/google"
+    // const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
     window.open(url, '_self');
-
     this.localDbService.setInStorage('swg', 'true')
-
   }
 
   public siginUpWithGoogle() {
-
-    const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
-
+    const url = this.SERVER_BASE_PATH + "auth/google?redirect_url=%23%2Fcreate-project-gs"
+    // const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
     // this.logger.log('siginUpWithGoogle ', url)
     window.open(url, '_self');
-
   }
 
   signinWithOAuth2() {
