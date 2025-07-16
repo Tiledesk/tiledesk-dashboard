@@ -52,7 +52,7 @@
         <div class="row">
           <div class="col-xs-8">
 
-            <div *ngIf="!showSpinner" class="main--wrapper">
+            <div class="main--wrapper">
               <div class="page-title--wrapper">
                 <div class="title--header">
                   <!-- {{ pageName }} -->
@@ -76,117 +76,120 @@
 
               </div>
 
-              <div class="card-list" *ngFor="let group of groupsList | sortBy : 'name'">
-                <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false}" (click)='goToEditAddPage_edit(group?._id)'>
-                  <div class="cl-card-content">
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <div class="card-list-wpr" *ngIf="!showSpinner">
+                <div class="card-list" *ngFor="let group of groupsList | sortBy : 'name'">
+                  <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false}" (click)='goToEditAddPage_edit(group?._id)'>
+                    <div class="cl-card-content">
 
-                    <div class="cl-card-first-column">
+                      <div class="cl-card-first-column">
 
-                      <div class="cl-card-img-wpr">
+                        <div class="cl-card-img-wpr">
 
-                        <div class="group-avatar"
-                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + group?.fillColour + ')'}">
-                          <span class="altenative-projetuser-avatar">
-                            {{ group?.groupName_initial }}
+                          <div class="group-avatar"
+                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + group?.fillColour + ')'}">
+                            <span class="altenative-projetuser-avatar">
+                              {{ group?.groupName_initial }}
+                            </span>
+                          </div>
+
+                        </div>
+
+                        <div class="cl-card-info-wpr">
+
+                          <span class="cl-card-item-name-wpr">
+                            <div class="cl-card-item-name">
+                              <span>
+                                {{ group?.name }}
+                              </span>
+                            </div>
                           </span>
                         </div>
 
                       </div>
 
-                      <div class="cl-card-info-wpr">
+                      <div class="cl-card-second-column">
 
-                        <span class="cl-card-item-name-wpr">
-                          <div class="cl-card-item-name">
-                            <span>
-                              {{ group?.name }}
-                            </span>
-                          </div>
-                        </span>
-                      </div>
+                        <div class="cl-card-stats-wpr">
+                          <div id="pu-status-wpr" class="cl-card-item-stats">
+                            <div id="pu-status" class="cl-card-item-stats-title">
+                              {{ "Status" | translate }}
+                            </div>
 
-                    </div>
+                            <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
 
-                    <div class="cl-card-second-column">
-
-                      <div class="cl-card-stats-wpr">
-                        <div id="pu-status-wpr" class="cl-card-item-stats">
-                          <div id="pu-status" class="cl-card-item-stats-title">
-                            {{ "Status" | translate }}
-                          </div>
-
-                          <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
-
-                            <div style="width: 118px; display: flex; justify-content: center; align-items: center;">
-                              <!-- <span  *ngIf="group.enabled === false" class="material-icons-outlined" style="font-size: 16px;">block</span> -->
-                              <p *ngIf="group.enabled === false" style="margin: 0 4px;">{{ "Disabled" | translate }}</p>
-                              <p *ngIf="group.enabled === true" style="margin: 0 4px;">{{'GroupsPage.Active' | translate }}</p>
+                              <div style="width: 118px; display: flex; justify-content: center; align-items: center;">
+                                <!-- <span  *ngIf="group.enabled === false" class="material-icons-outlined" style="font-size: 16px;">block</span> -->
+                                <p *ngIf="group.enabled === false" style="margin: 0 4px;">{{ "Disabled" | translate }}</p>
+                                <p *ngIf="group.enabled === true" style="margin: 0 4px;">{{'GroupsPage.Active' | translate }}</p>
+                              </div>
                             </div>
                           </div>
+
+                          <div id="pu-role-wpr" class="cl-card-item-stats">
+                              <div class="cl-card-item-stats-title">
+                                {{ "GroupsPage.Members" | translate }}
+                              </div>
+                              <div id="pu-role" class="cl-card-item-stats-values">
+                                {{ group?.members.length }}
+                              </div>
+                            </div>
+
                         </div>
 
-                        <div id="pu-role-wpr" class="cl-card-item-stats">
-                            <div class="cl-card-item-stats-title">
-                              {{ "GroupsPage.Members" | translate }}
+                        <div class="cl-card-action-wpr">
+                            <div class="cl-card-action-group">
+                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button mat-icon-button [matMenuTriggerFor]="moreactions"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>more_vert</mat-icon>
+                                </button>
+
+
+                                <mat-menu #moreactions="matMenu">
+
+                                  <!-- Modifica Gruppo -->
+                                  <button class="mat-menu-btn" mat-menu-item (click)='goToEditAddPage_edit(group?._id)'>
+                                    <mat-icon>edit</mat-icon>
+                                    <span>{{ 'GroupsPage.tooltipEditGroup' | translate }}</span>
+                                  </button>
+
+                                  
+                                  <!-- Disabilita Gruppo -->
+                                  <button class="mat-menu-btn"
+                                    *ngIf="group.enabled !== false"
+                                    mat-menu-item (click)='opendisableModal(group?._id, group?.name)'>
+                                    <mat-icon>close</mat-icon>
+                                    <span>{{'GroupsPage.DisableGroup' | translate }}</span>
+                                  </button>
+
+                                  <!-- Riabilita Gruppo 
+                                  restoreGroup(group?._id)' -->
+                                  <button class="mat-menu-btn"
+                                    *ngIf="group.enabled === false"
+                                    mat-menu-item  (click)='openRestoreModal(group?._id, group?.name)'>
+                                    <mat-icon>undo</mat-icon>
+                                    <span>{{ "GroupsPage.RestoreGroup" | translate }}</span>
+                                  </button>
+
+                                  <!-- Elimima Gruppo -->
+                                  <button class="mat-menu-btn"
+                                    mat-menu-item  (click)='openDeleteModal(group?._id, group?.name)'>
+                                    <mat-icon>delete</mat-icon>
+                                    <span>{{ 'GroupsPage.tooltipDeleteGroup' | translate }}</span>
+                                  </button>
+                                </mat-menu>
+                              </div>
                             </div>
-                            <div id="pu-role" class="cl-card-item-stats-values">
-                              {{ group?.members.length }}
-                            </div>
-                          </div>
+                        </div>
 
-                      </div>
-
-                      <div class="cl-card-action-wpr">
-                          <div class="cl-card-action-group">
-                            <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                              <button mat-icon-button [matMenuTriggerFor]="moreactions"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
-                                #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                                <mat-icon>more_vert</mat-icon>
-                              </button>
-
-
-                              <mat-menu #moreactions="matMenu">
-
-                                <!-- Modifica Gruppo -->
-                                <button class="mat-menu-btn" mat-menu-item (click)='goToEditAddPage_edit(group?._id)'>
-                                  <mat-icon>edit</mat-icon>
-                                  <span>{{ 'GroupsPage.tooltipEditGroup' | translate }}</span>
-                                </button>
-
-                                
-                                <!-- Disabilita Gruppo -->
-                                <button class="mat-menu-btn"
-                                  *ngIf="group.enabled !== false"
-                                  mat-menu-item (click)='opendisableModal(group?._id, group?.name)'>
-                                  <mat-icon>close</mat-icon>
-                                  <span>{{'GroupsPage.DisableGroup' | translate }}</span>
-                                </button>
-
-                                <!-- Riabilita Gruppo 
-                                 restoreGroup(group?._id)' -->
-                                <button class="mat-menu-btn"
-                                  *ngIf="group.enabled === false"
-                                  mat-menu-item  (click)='openRestoreModal(group?._id, group?.name)'>
-                                  <mat-icon>undo</mat-icon>
-                                  <span>{{ "GroupsPage.RestoreGroup" | translate }}</span>
-                                </button>
-
-                                <!-- Elimima Gruppo -->
-                                <button class="mat-menu-btn"
-                                  mat-menu-item  (click)='openDeleteModal(group?._id, group?.name)'>
-                                  <mat-icon>delete</mat-icon>
-                                  <span>{{ 'GroupsPage.tooltipDeleteGroup' | translate }}</span>
-                                </button>
-                              </mat-menu>
-                            </div>
-                          </div>
                       </div>
 
                     </div>
+                  </div> 
 
-                  </div>
-                </div> 
-
+                </div>
               </div>
             </div>
           </div>
@@ -586,6 +589,9 @@
            {{ "Restore" | translate }}
         </button>
       </div>
+    </div>
+  </div>
+</div>
 
 
 
