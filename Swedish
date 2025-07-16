@@ -692,6 +692,11 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+    "DisableMember": "Disable member",
+    "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
+    "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
+    "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
+    "Disable": "Disable",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1055,9 +1060,11 @@
         "TheMemberWithId": "Medlemmen med id",
         "WillBeRemoved": "kommer att tas bort",
         "AreYouSure": "Är du säker på att du vill ta bort",
+        "AreYouSureRestore": "Are you sure you want to restore {{ firstname }} {{ lastname }} in the project?",
         "AreYouSureCancelInvite": "Är du säker på att du vill återkalla inbjudan till",
         "FromTheProject": "från projektet",
         "Confirm": "Bekräfta",
+        "RestoreMember": "Restore Member",
         "TheUserHasBeenInvited": "Användaren har blivit inbjuden.",
         "Continue": "Fortsätta",
         "PendingInvitation": "Väntande inbjudningar",
@@ -1125,7 +1132,19 @@
         "YouCanGroupAgents": "Du kan gruppera agenter baserat på kompetens och tilldela grupper av agenter till dina avdelningar",
         "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
         "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
-        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it.",
+        "DisassociateTheGroupBeforeToDisable": "Remove any associations with Routing or Departments before disabling it.",
+        "TheGroupWilBeDeleted": "The group <b>{{group_name}}</b> will be deleted",
+        "TheGroupWilBeDisabled": "The group <b>{{group_name}}</b> will be disabled",
+        "DisableGroup": "Disable group",
+        "Active": "Active",
+        "RestoreGroup": "Restore group",
+        "AnErrorOccurredWhileDeletingTheGroup": "An error occurred while deleting the group",
+        "TheGroupHasBeenSuccessfullyDeleted": "The group has been successfully deleted",
+        "AnErrorOccurredWhileDisablingTheGroup": "An error occurred while disabling the group",
+        "TheGroupHasBeenSuccessfullyDisabled": "The group has been successfully disabled",
+        "AnErrorOccurredWhileRestoringTheGroup": "An error occurred while restoring the group",
+        "TheGroupHasBeenSuccessfullyRestored": "The group has been successfully restored"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Lägg till grupp",
@@ -2344,6 +2363,7 @@
     "InviteYourFirstTeammate": "Bjud in din första lagkamrat",
     "Enabled": "Aktiverad",
     "Disabled": "Inaktiverad",
+    "Restore": "Restore",
     "TheDefaulDeptIsDisabledBecause": "Standardrutten är inaktiverad eftersom minst en annan avdelning finns och dess status är inställd på \"Synlig\"",
     "TheDefaulDeptIsDisabledBecause_2": "Standardavdelningen är inaktiverad eftersom minst en annan avdelning finns och dess status är inställd på \"Synlig\"",
     "TheDefaulDeptIsEnabledBecause": "Standardrouting är aktiverat eftersom ingen annan avdelning är \"Synlig\"",
