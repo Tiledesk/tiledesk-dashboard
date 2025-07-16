@@ -51,6 +51,7 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
 import { isOnlyEmoji, removeEmojis} from 'app/utils/utils-message';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -68,7 +69,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   featureAvailableFromBPlan: string;
   featureAvailableFromEPlan: string;
   upgradePlan: string;
-  currentUserIsInParticipants: any
 
   objectKeys = Object.keys;
   isVisiblePaymentTab: boolean;
@@ -218,7 +218,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   showSpinnerInAddNoteBtn: boolean = false;
   subscription: Subscription;
-  CURRENT_USER_ROLE: any;
+  CURRENT_USER_ROLE: string;
 
   CHAT_PANEL_MODE: boolean  // = true; // Nikola for test change color
   dshbrdBaseUrl: string;
@@ -1590,15 +1590,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: any) => {
+      if (projectUser) {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', projectUser)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.CURRENT_USER_ROLE = userRole;
-      })
+        this.CURRENT_USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   // -------------------------------------------------------------
@@ -2000,11 +1998,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
     else return days + " " + this.translate.instant('Analytics.Days');
 
+
   }
 
-
-
-  async getWsRequestById$() {
+  getWsRequestById$() {
     this.wsRequestsService.wsRequest$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -2025,8 +2022,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
-
-          //  this.currentUserIdIsInParticipants this.hasmeInParticipants( this.request.participants)
 
           // -----------------------------
           // Request dnis (called number) 
@@ -2104,10 +2099,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 this.usersService.getProjectUserByUserId(this.request['closed_by'])
                   .subscribe((projectUser: any) => {
                     // this.logger.log('projectUser ', projectUser)
-                    if (projectUser && projectUser[0] && projectUser[0].id_user) {
-                      this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'ws-requests-msgs');
+                    if (projectUser && projectUser.id_user) {
+                      this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user, 'ws-requests-msgs');
                       this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
-                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
                     } else {
                       // this.logger.log('[WS-REQUESTS-MSGS] THE REQUEST HAS NOT BEEN CLOSED BY A PROJECT USER');
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + this.request.requester_fullname
@@ -2209,7 +2204,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // User Agent
           // -------------------------------------------------------------------
           const user_agent_result = this.parseUserAgent(this.request.userAgent);
-          //  this.logger.log('user_agent_result  ', user_agent_result)
 
           if (user_agent_result.browser.name) {
             if (user_agent_result.browser.version) {
@@ -2259,24 +2253,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
 
           this.members_array.forEach(member => {
-            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
 
             // ----------------------------------------------------------------------------------------------
             // disable notes and tags if the current user has agent role and is not among the participants
             // ----------------------------------------------------------------------------------------------
+            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT_USER_ID ', this.currentUserID);
 
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
 
             if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
+              this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT USER NOT IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
-              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
             } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
+              this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT USER IS IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
-              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
             }
 
@@ -3045,6 +3036,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
+
+  updateRequestTags(id_request, tagsArray, fromaction) {
+    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
+    this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
+      .subscribe((data: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+      }, (err) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
+        this.getTagContainerElementHeight()
+      });
+  }
+
   // No more used - replace with manageRequestTags
   // updateRequestTags(id_request, tagsArray, fromaction) {
   //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
@@ -3138,7 +3146,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // }
 
   createNewTag = (newTag: string) => {
-    // this.logger.log("Create New TAG Clicked : " + newTag)
+    // console.log("Create New TAG Clicked : " + newTag)
     this.logger.log("Create New TAG Clicked - request tag: ", this.request.tags)
 
     var index = this.request.tags.findIndex(t => t.tag === newTag);
@@ -5607,9 +5615,9 @@ getJoinTooltipMessage(): string {
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
       this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser', projectUser)
       if (projectUser) {
-        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser[0]._id);
+        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser._id);
 
-        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser[0]._id]);
+        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser._id]);
       }
     }, (error) => {
       this.logger.error('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - ERROR ', error);
@@ -6464,6 +6472,8 @@ checkEmojiContent(message: string): void {
     reader.readAsDataURL(file)
   }
 
+ 
+
 
 
   openImagePreviewModal(imagePreview, file) {
@@ -6690,6 +6700,9 @@ checkEmojiContent(message: string): void {
     }
 
   }
+
+ 
+
 
   uploadAttachmentRestRequest(uploadedFiles, calledBy) {
     this.logger.log('uploadAttachmentRestRequest -----> calledBy', calledBy)

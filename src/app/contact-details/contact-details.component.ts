@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectUser } from 'app/models/project-user';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({

@@ -254,18 +254,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   getProjectUserRole() {
     // const user___role =  this.usersService.project_user_role_bs.value;
     // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', user_role);
-        if (user_role) {
-
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: any) => {
+        this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', projectUser);
+        if (projectUser) {
+          if (projectUser.role === 'agent') {
             this.ROLE_IS_AGENT = true;
-
           } else {
             this.ROLE_IS_AGENT = false;
           }
