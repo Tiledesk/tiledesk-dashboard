@@ -1,5 +1,15 @@
 # tiledesk-dashboard
 
+### 2.7.120-rc1
+- Adds the ability to manage the "Update Status" feature for a conversation
+- Adds the ability to manage the "Priority" feature for a conversation
+- Adds the ability to manage the "Followers" feature (e.g., Add Follower) for a conversation
+- Adds the ability to manage the "Smart Assignment" feature (e.g., Convert Online/Convert Offline) for a conversation
+- Adds the ability to manage the "Add/Remove Note" feature for a conversation
+- Adds the ability to manage the "Reassign" feature for a conversation
+- Refactors the groups list
+- Adds the ability to disable/restore a group
+
 ### 2.7.118-rc4
 - Adds the ability to disable a group
 
