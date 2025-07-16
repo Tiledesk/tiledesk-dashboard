@@ -692,6 +692,11 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+    "DisableMember": "Disable member",
+    "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
+    "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
+    "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
+    "Disable": "Disable",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1055,9 +1060,11 @@
         "TheMemberWithId": "Id bo'lgan a'zo",
         "WillBeRemoved": "olib tashlanadi",
         "AreYouSure": "Haqiqatan ham olib tashlamoqchimisiz",
+        "AreYouSureRestore": "Are you sure you want to restore {{ firstname }} {{ lastname }} in the project?",
         "AreYouSureCancelInvite": "Haqiqatan ham taklifni bekor qilmoqchimisiz",
         "FromTheProject": "loyihadan",
         "Confirm": "Tasdiqlang",
+        "RestoreMember": "Restore Member",
         "TheUserHasBeenInvited": "Foydalanuvchi taklif qilindi.",
         "Continue": "Davom eting",
         "PendingInvitation": "Kutilayotgan taklifnomalar",
@@ -1125,7 +1132,19 @@
         "YouCanGroupAgents": "Siz agentlarni malakalar asosida guruhlashingiz va bo'limlaringizga agentlar guruhlarini belgilashingiz mumkin",
         "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
         "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
-        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it.",
+        "DisassociateTheGroupBeforeToDisable": "Remove any associations with Routing or Departments before disabling it.",
+        "TheGroupWilBeDeleted": "The group <b>{{group_name}}</b> will be deleted",
+        "TheGroupWilBeDisabled": "The group <b>{{group_name}}</b> will be disabled",
+        "DisableGroup": "Disable group",
+        "Active": "Active",
+        "RestoreGroup": "Restore group",
+        "AnErrorOccurredWhileDeletingTheGroup": "An error occurred while deleting the group",
+        "TheGroupHasBeenSuccessfullyDeleted": "The group has been successfully deleted",
+        "AnErrorOccurredWhileDisablingTheGroup": "An error occurred while disabling the group",
+        "TheGroupHasBeenSuccessfullyDisabled": "The group has been successfully disabled",
+        "AnErrorOccurredWhileRestoringTheGroup": "An error occurred while restoring the group",
+        "TheGroupHasBeenSuccessfullyRestored": "The group has been successfully restored"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Guruh qo'shish",
@@ -2344,6 +2363,7 @@
     "InviteYourFirstTeammate": "Birinchi jamoadoshingizni taklif qiling",
     "Enabled": "Yoqilgan",
     "Disabled": "O'chirilgan",
+    "Restore": "Restore",
     "TheDefaulDeptIsDisabledBecause": "Birlamchi marshrutlash oʻchirib qoʻyilgan, chunki kamida bitta boshqa boʻlim mavjud va uning holati “Koʻrinadigan” qilib oʻrnatilgan.",
     "TheDefaulDeptIsDisabledBecause_2": "Birlamchi boʻlim oʻchirib qoʻyilgan, chunki kamida bitta boshqa boʻlim mavjud va uning holati “Koʻrinadigan” qilib belgilangan.",
     "TheDefaulDeptIsEnabledBecause": "Standart marshrutlash yoqilgan, chunki boshqa bo'lim \"ko'rinmaydi\"",
