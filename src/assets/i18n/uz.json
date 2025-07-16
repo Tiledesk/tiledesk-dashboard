@@ -730,6 +730,11 @@
     "Models": "Modellar",
     "Optional": "ixtiyoriy",
     "DeleteResolvedConversations": "Yechilgan suhbatlarni oʻchirib tashlang",
+    "DisableMember":"A'zoni o'chirib qo'yish",
+    "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> aʼzosi oʻchirib qoʻyiladi",
+    "TheMemberWillBeRestored":"<b>{{pu_name}}</b> a'zosi tiklanadi",
+    "TheGroupWillBeRestored": "<b>{{group_name}}</b> guruhi tiklanadi",
+    "Disable":"Oʻchirish",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1150,7 +1155,19 @@
         "YouCanGroupAgents": "Siz agentlarni malakalar asosida guruhlashingiz va bo'limlaringizga agentlar guruhlarini belgilashingiz mumkin",
         "TheGroupIsAssociatedWithTheDepartment": "Guruh {{ depts_name }} boʻlimi bilan bogʻlangan",
         "TheGroupIsAssociatedWithDepartments": "Guruh {{ depts_name }} boʻlimlari bilan bogʻlangan",
-        "DisassociateTheGroup": "Marshrutlash yoki bo'limlarni o'chirishdan oldin ular bilan bog'langan barcha aloqalarni olib tashlang."
+        "DisassociateTheGroup": "Marshrutlash yoki bo'limlarni o'chirishdan oldin ular bilan bog'langan barcha aloqalarni olib tashlang.",
+        "DisassociateTheGroupBeforeToDisable": "Marshrutlash yoki bo'limlar bilan bog'lanishni o'chirishdan oldin uni olib tashlang.",
+        "TheGroupWilBeDeleted": "<b>{{group_name}}</b> guruhi oʻchirib tashlanadi", 
+        "TheGroupWilBeDisabled": "<b>{{group_name}}</b> guruhi o'chiriladi",
+        "DisableGroup": "Guruhni o'chirish",
+        "Active": "Faol",
+        "RestoreGroup": "Guruhni tiklash",
+        "AnErrorOccurredWhileDeletingTheGroup": "Guruhni oʻchirishda xatolik yuz berdi",
+        "TheGroupHasBeenSuccessfullyDeleted": "Guruh muvaffaqiyatli o'chirildi",
+        "AnErrorOccurredWhileDisablingTheGroup": "Guruhni o‘chirishda xatolik yuz berdi",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Guruh muvaffaqiyatli o'chirildi",
+        "AnErrorOccurredWhileRestoringTheGroup":"Guruhni tiklashda xatolik yuz berdi",
+        "TheGroupHasBeenSuccessfullyRestored": "Guruh muvaffaqiyatli tiklandi"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Guruh qo'shish",

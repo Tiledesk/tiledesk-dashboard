@@ -729,6 +729,11 @@
     "Models": "Modelos",
     "Optional": "opcional",
     "DeleteResolvedConversations": "Apagar conversas resolvidas",
+    "DisableMember":"Desativar membro",
+    "TheMemberWillBeDisabled": "O membro <b>{{pu_name}}</b> será desativado",
+    "TheMemberWillBeRestored":"O membro <b>{{pu_name}}</b> será restaurado",
+    "TheGroupWillBeRestored": "O grupo <b>{{group_name}}</b> será restaurado",
+    "Disable":"Desativar",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1149,7 +1154,19 @@
         "YouCanGroupAgents": "Você pode agrupar agentes com base em habilidades e atribuir grupos de agentes aos seus departamentos",
         "TheGroupIsAssociatedWithTheDepartment": "O grupo está associado ao departamento {{ depts_name }}",
         "TheGroupIsAssociatedWithDepartments": "O grupo está associado aos departamentos de {{ depts_name }}",
-        "DisassociateTheGroup": "Remova quaisquer associações com Roteamento ou Departamentos antes de excluí-lo."
+        "DisassociateTheGroup": "Remova quaisquer associações com Roteamento ou Departamentos antes de excluí-lo.",
+        "DisassociateTheGroupBeforeToDisable": "Remova quaisquer associações com o Routing ou Departamentos antes de o desativar.",
+        "TheGroupWilBeDeleted": "O grupo <b>{{group_name}}</b> será eliminado", 
+        "TheGroupWilBeDisabled": "O grupo <b>{{group_name}}</b> será desativado",
+        "DisableGroup": "Desativar grupo",
+        "Active": "Ativo",
+        "RestoreGroup": "Restaurar grupo",
+        "AnErrorOccurredWhileDeletingTheGroup": "Ocorreu um erro ao eliminar o grupo",
+        "TheGroupHasBeenSuccessfullyDeleted": "O grupo foi excluído com sucesso",
+        "AnErrorOccurredWhileDisablingTheGroup": "Ocorreu um erro ao desativar o grupo",    
+        "TheGroupHasBeenSuccessfullyDisabled": "O grupo foi desativado com sucesso",
+        "AnErrorOccurredWhileRestoringTheGroup":"Ocorreu um erro ao restaurar o grupo",
+        "TheGroupHasBeenSuccessfullyRestored": "O grupo foi restaurado com sucesso"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Adicionar grupo",

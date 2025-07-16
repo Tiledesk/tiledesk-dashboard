@@ -729,6 +729,11 @@
     "Models": "Модельдер",
     "Optional": "міндетті емес",
     "DeleteResolvedConversations": "Шешілген сөйлесулерді жою",
+    "DisableMember":"Мүшені өшіру",
+    "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> мүшесі өшіріледі",
+    "TheMemberWillBeRestored":"<b>{{pu_name}}</b> мүшесі қалпына келтіріледі",
+    "TheGroupWillBeRestored": "<b>{{group_name}}</b> тобы қалпына келтіріледі",
+    "Disable":"Өшіру",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1165,7 +1170,19 @@
         "YouCanGroupAgents": "Сіз агенттерді дағдыларға негіздей аласыз және агенттер топтарын бөлімдеріңізге тағайындай аласыз",
         "TheGroupIsAssociatedWithTheDepartment": "Топ {{ depts_name }} департаментімен байланысты",
         "TheGroupIsAssociatedWithDepartments": "Топ {{ depts_name }} бөлімдермен байланысты",
-        "DisassociateTheGroup": "Маршруттау немесе Бөлімдерді жою алдында кез келген байланыстарды жойыңыз."
+        "DisassociateTheGroup": "Маршруттау немесе Бөлімдерді жою алдында кез келген байланыстарды жойыңыз.",
+        "DisassociateTheGroupBeforeToDisable": "Маршруттау немесе бөлімдермен байланыстарды өшірмес бұрын оны жойыңыз.",
+        "TheGroupWilBeDeleted": "<b>{{group_name}}</b> тобы жойылады", 
+        "TheGroupWilBeDisabled": "<b>{{group_name}}</b> тобы өшіріледі",
+        "DisableGroup": "Топты өшіру",
+        "Active": "Белсенді",
+        "RestoreGroup": "Топты қалпына келтіру",
+        "AnErrorOccurredWhileDeletingTheGroup": "Топты жою кезінде қате орын алды",
+        "TheGroupHasBeenSuccessfullyDeleted": "Топ сәтті жойылды",
+        "AnErrorOccurredWhileDisablingTheGroup": "Топты өшіру кезінде қате орын алды",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Топ сәтті өшірілді",
+        "AnErrorOccurredWhileRestoringTheGroup":"Топты қалпына келтіру кезінде қате орын алды",
+        "TheGroupHasBeenSuccessfullyRestored": "Топ сәтті қалпына келтірілді"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Топ қосу",

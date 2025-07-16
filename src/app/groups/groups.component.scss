@@ -354,3 +354,28 @@ only screen and (max-width: 760px),
   flex-flow: row;
   margin: 15px 0px 15px 26px;
 }
+
+/* New group list
+/* ******************** */
+.main--wrapper {
+  padding: 0px 15px;
+}
+
+.no-groups-wpr {
+  display: flex;
+  justify-content: center;
+  height: 60px;
+  align-items: center;
+}
+
+.group-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+}

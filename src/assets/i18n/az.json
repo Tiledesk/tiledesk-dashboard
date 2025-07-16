@@ -730,6 +730,11 @@
     "Models": "Modellər",
     "Optional": "isteğe bağlıdır",
     "DeleteResolvedConversations": "Həll edilmiş söhbətləri silin",
+    "DisableMember":"Üzvü deaktiv edin",
+    "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> üzvü deaktiv ediləcək",
+    "TheMemberWillBeRestored":"<b>{{pu_name}}</b> üzvü bərpa olunacaq",
+    "TheGroupWillBeRestored": "<b>{{group_name}}</b> qrupu bərpa olunacaq",
+    "Disable":"Deaktiv edin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1150,7 +1155,19 @@
         "YouCanGroupAgents": "Siz agentləri bacarıqlara əsasən qruplaşdıra və şöbələrinizə agent qrupları təyin edə bilərsiniz",
         "TheGroupIsAssociatedWithTheDepartment": "Qrup {{ depts_name }} şöbəsi ilə əlaqələndirilir",
         "TheGroupIsAssociatedWithDepartments": "Qrup {{ depts_name }} departamentləri ilə əlaqələndirilir",
-        "DisassociateTheGroup": "Marşrutlaşdırma və ya Departamentləri silməzdən əvvəl hər hansı əlaqəni çıxarın."
+        "DisassociateTheGroup": "Marşrutlaşdırma və ya Departamentləri silməzdən əvvəl hər hansı əlaqəni çıxarın.",
+        "DisassociateTheGroupBeforeToDisable": "Marşrutlaşdırma və ya Departamentləri söndürməzdən əvvəl hər hansı əlaqəni silin.",
+        "TheGroupWilBeDeleted": "<b>{{group_name}}</b> qrupu silinəcək", 
+        "TheGroupWilBeDisabled": "<b>{{group_name}}</b> qrupu deaktiv ediləcək",
+        "DisableGroup": "Qrupu deaktiv edin",
+        "Active": "Aktiv",
+        "RestoreGroup": "Qrupu bərpa edin",
+        "AnErrorOccurredWhileDeletingTheGroup": "Qrupu silərkən xəta baş verdi",
+        "TheGroupHasBeenSuccessfullyDeleted": "Qrup uğurla silindi",
+        "AnErrorOccurredWhileDisablingTheGroup": "Qrupu deaktiv edərkən xəta baş verdi",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Qrup uğurla deaktiv edildi",
+        "AnErrorOccurredWhileRestoringTheGroup":"Qrup bərpa edilərkən xəta baş verdi",
+        "TheGroupHasBeenSuccessfullyRestored": "Qrup uğurla bərpa edildi"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Qrup əlavə edin",

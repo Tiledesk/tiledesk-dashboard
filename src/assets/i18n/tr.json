@@ -731,6 +731,11 @@
     "Models": "Modeller",
     "Optional": "isteğe bağlı",
     "DeleteResolvedConversations": "Çözülen konuşmaları sil",
+    "DisableMember":"Üyeyi devre dışı bırak",
+    "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> üyesi devre dışı bırakılacak",
+    "TheMemberWillBeRestored":"<b>{{pu_name}}</b> üyesi geri yüklenecek",
+    "TheGroupWillBeRestored": "<b>{{group_name}}</b> grubu geri yüklenecek",
+    "Disable":"Devre dışı bırakmak",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1151,7 +1156,19 @@
         "YouCanGroupAgents": "Temsilcileri becerilere göre gruplayabilir ve departmanlarınıza temsilci grupları atayabilirsiniz",
         "TheGroupIsAssociatedWithTheDepartment": "Grup {{ depts_name }} departmanıyla ilişkilidir",
         "TheGroupIsAssociatedWithDepartments": "Grup {{ depts_name }} departmanla ilişkilidir",
-        "DisassociateTheGroup": "Silmeden önce Yönlendirme veya Departmanlarla olan tüm ilişkileri kaldırın."
+        "DisassociateTheGroup": "Silmeden önce Yönlendirme veya Departmanlarla olan tüm ilişkileri kaldırın.",
+        "DisassociateTheGroupBeforeToDisable": "Devre dışı bırakmadan önce Yönlendirme veya Departmanlarla olan tüm ilişkileri kaldırın.",
+        "TheGroupWilBeDeleted": "<b>{{group_name}}</b> grubu silinecek", 
+        "TheGroupWilBeDisabled": "<b>{{group_name}}</b> grubu devre dışı bırakılacak",
+        "DisableGroup": "Grubu devre dışı bırak",
+        "Active": "Aktif",
+        "RestoreGroup": "Grubu geri yükle",
+        "AnErrorOccurredWhileDeletingTheGroup": "Grup silinirken bir hata oluştu",
+        "TheGroupHasBeenSuccessfullyDeleted": "Grup başarıyla silindi",
+        "AnErrorOccurredWhileDisablingTheGroup": "Grup devre dışı bırakılırken bir hata oluştu",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Grup başarıyla devre dışı bırakıldı",
+        "AnErrorOccurredWhileRestoringTheGroup":"Grup geri yüklenirken bir hata oluştu",
+        "TheGroupHasBeenSuccessfullyRestored": "Grup başarıyla geri yüklendi"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Grup ekle",

@@ -50,6 +50,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   id_projectUser: string
   user_firstname: string
   user_lastname: string
+  user_fullname: string
   user_id: string
 
   // set to none the property display of the modal
@@ -1031,6 +1032,17 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.user_id = userID
     this.user_firstname = userFirstname
     this.user_lastname = userLastname
+
+    this.user_fullname = ''
+    if (this.user_firstname && this.user_lastname) {
+        this.user_fullname = this.user_firstname + ' ' + this.user_lastname
+    }
+    if (this.user_firstname && !this.user_lastname) {
+        this.user_fullname = this.user_firstname
+    }
+     if (!this.user_firstname && this.user_lastname) {
+        this.user_fullname = this.user_lastname
+    }
 
     this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
   }

@@ -730,6 +730,11 @@
     "Models": "Modeller",
     "Optional": "frivillig",
     "DeleteResolvedConversations": "Ta bort lösta konversationer",
+    "DisableMember":"Inaktivera medlem",
+    "TheMemberWillBeDisabled": "Medlemmen <b>{{pu_name}}</b> kommer att inaktiveras",
+    "TheMemberWillBeRestored":"Medlemmen <b>{{pu_name}}</b> kommer att återställas",
+    "TheGroupWillBeRestored": "Gruppen <b>{{group_name}}</b> kommer att återställas",
+    "Disable":"Inaktivera",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1166,7 +1171,19 @@
         "YouCanGroupAgents": "Du kan gruppera agenter baserat på kompetens och tilldela grupper av agenter till dina avdelningar",
         "TheGroupIsAssociatedWithTheDepartment": "Gruppen är associerad med avdelningen {{ depts_name }}",
         "TheGroupIsAssociatedWithDepartments": "Gruppen är associerad med {{ depts_name }} avdelningar",
-        "DisassociateTheGroup": "Ta bort eventuella kopplingar till routing eller avdelningar innan du tar bort den."
+        "DisassociateTheGroup": "Ta bort eventuella kopplingar till routing eller avdelningar innan du tar bort den.",
+        "DisassociateTheGroupBeforeToDisable": "Ta bort alla kopplingar till routning eller avdelningar innan du inaktiverar det.",
+        "TheGroupWilBeDeleted": "Gruppen <b>{{group_name}}</b> kommer att raderas", 
+        "TheGroupWilBeDisabled": "Gruppen <b>{{group_name}}</b> kommer att inaktiveras",
+        "DisableGroup": "Inaktivera grupp",
+        "Active": "Aktiv",
+        "RestoreGroup": "Återställ grupp",
+        "AnErrorOccurredWhileDeletingTheGroup": "Ett fel uppstod när gruppen raderades",
+        "TheGroupHasBeenSuccessfullyDeleted": "Gruppen har raderats",
+        "AnErrorOccurredWhileDisablingTheGroup": "Ett fel uppstod när gruppen inaktiverades",    
+        "TheGroupHasBeenSuccessfullyDisabled": "Gruppen har inaktiverats",
+        "AnErrorOccurredWhileRestoringTheGroup":"Ett fel uppstod när gruppen återställdes",
+        "TheGroupHasBeenSuccessfullyRestored": "Gruppen har återställts"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Lägg till grupp",
