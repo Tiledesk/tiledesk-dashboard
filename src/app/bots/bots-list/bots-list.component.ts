@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
 import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
@@ -54,6 +54,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   tparams: any;
 
   faqkbList: FaqKb[];
+  pagedFaqkbList: any[] = [];
   myChatbotAllCount: number;
   navigationBaseUrl: string;
   // set to none the property display of the modal
@@ -188,6 +189,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   automationCopilotIsAvailable: boolean;
   t_params: any
 
+  pageSize = 20;
+  currentPage = 1;
+  totalPagesNo_roundToUp: number;
+
   // editBotName: boolean = false;
   constructor(
     private faqKbService: FaqKbService,
@@ -256,21 +261,23 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.roleService.checkRoleForCurrentProject('flows')
     // this.getCommunityTemplates()
     // this.getTemplates()
-    this.getBrowserVersion();
+    // this.getAllNamespaces()
+    // this.getFaqKb();
+    // this.getQueryParams()
+    // this.getBrowserVersion();
+    this.isChromeVerGreaterThan100 = this.checkChromeVersion();
+  
     this.getProfileImageStorage();
     this.getCurrentProject();
     this.getOSCODE();
-    // this.getFaqKb();
     this.getFaqKbByProjectId();
     this.getTranslations();
     this.getFlowWebhooks()
-    // this.getAllNamespaces()
     this.getNavigationBaseUrl()
     this.getProjectPlan();
     this.getUserRole();
     this.getDefaultDeptId();
     this.getLoggedUser()
-    // this.getQueryParams()
   }
 
   // getQueryParams() {
@@ -284,19 +291,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // }
 
   ngOnDestroy() {
+     this.faqkbList = [];
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  // checkChatbotLimit() {
-  //   this.logger.log('[BOTS-LIST] - checkChatbotLimit »»» 1' ,this.chatBotLimit)
-  //   if (this.chatBotLimit || this.chatBotLimit === 0) {
-  //     this.logger.log('[BOTS-LIST] - checkChatbotLimit »»» 2')
-  //     if (this.chatBotCount > this.chatBotLimit || this.chatBotLimit === 0) {
-  //       this.chatbotNumExceedChatbotLimit = true;
-  //       this.logger.log('[BOTS-LIST] - chatbotNumExceedChatbotLimit »»» ', this.chatbotNumExceedChatbotLimit)
-  //     }
-  //   }
-  // }
+
+  checkChromeVersion(): boolean {
+    const ua = navigator.userAgent;
+    const match = ua.match(/Chrome\/(\d+)/);
+    if (match && match[1]) {
+      return parseInt(match[1], 10) > 100;
+    }
+    return false;
+  }
 
   getLoggedUser() {
     this.auth.user_bs
@@ -339,24 +346,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       //   this.logger.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
-  // getAllNamespaces() {
-  //   this.kbService.getAllNamespaces().subscribe((res: any) => {
-  //     if (res) {
-  //       this.kbCount = res.length
-  //       this.logger.log('[BOTS-LIST] - GET ALL NAMESPACES', res);
 
-  //     }
-  //   }, (error) => {
-  //     this.logger.error('[BOTS-LIST]  GET GET ALL NAMESPACES ERROR ', error);
-
-  //   }, () => {
-  //     this.logger.log('[BOTS-LIST]  GET ALL NAMESPACES * COMPLETE *');
-
-  //   });
-  // }
 
   getFlowWebhooks() {
-    this.showSpinner = true;
+   
     this.webhookService.getFlowWebhooks().subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] GET WH RES  ', res);
       if (res) {
@@ -365,74 +358,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     }, (error) => {
       this.logger.error('[BOTS-LIST] GET WH ERROR ', error);
-      this.showSpinner = false;
+    
     }, () => {
       this.logger.log('[BOTS-LIST] GET WH COMPLETE');
-      this.showSpinner = false;
+     
     });
   }
 
-  getCommunityTemplates() {
-
-    this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
-      if (res) {
-        const communityTemplates = res
-        this.logger.log('[BOTS-LIST] - GET COMMUNITY TEMPLATES', communityTemplates);
-        this.allCommunityTemplatesCount = communityTemplates.length;
-        this.logger.log('[[BOTS-LIST] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
-      }
-    }, (error) => {
-      this.logger.error('[BOTS-LIST]  GET COMMUNITY TEMPLATES ERROR ', error);
-
-    }, () => {
-      this.logger.log('[BOTS-LIST]  GET COMMUNITY TEMPLATES COMPLETE');
-
-    });
-  }
-
-  getTemplates() {
-    this.faqKbService.getTemplates().subscribe((res: any) => {
-
-      if (res) {
-        const templates = res
-        //  this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
-        this.allTemplatesCount = templates.length;
-        this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
-
-        // ---------------------------------------------------------------------
-        // Customer Satisfaction templates
-        // ---------------------------------------------------------------------
-        const customerSatisfactionTemplates = templates.filter((obj) => {
-          return obj.mainCategory === "Customer Satisfaction"
-        });
-        this.logger.log('[BOTS-LIST] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
-        if (customerSatisfactionTemplates) {
-          this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
-          this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
-        }
-
-        // ---------------------------------------------------------------------
-        // Customer Increase Sales
-        // ---------------------------------------------------------------------
-        const increaseSalesTemplates = templates.filter((obj) => {
-          return obj.mainCategory === "Increase Sales"
-        });
-        //  this.logger.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
-        if (increaseSalesTemplates) {
-          this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
-          this.logger.log('[BOTS-LIST] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
-        }
-      }
-
-    }, (error) => {
-      this.logger.error('[BOTS-LIST] GET TEMPLATES ERROR ', error);
-      // this.showSpinner = false;
-    }, () => {
-      this.logger.log('[BOTS-LIST] GET TEMPLATES COMPLETE');
-      // this.showSpinner = false;
-      // this.generateTagsBackground(this.templates)
-    });
-  }
 
   renameChatbot(bot) {
     this.botIdToRename = bot._id;
@@ -911,16 +843,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
   // NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
   // ----------------------------------------------------------------
-  getFaqKbByProjectId() {
+ getFaqKbByProjectId() {
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+    this.faqKbService.getFaqKbByProjectId()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((faqKb: any) => {
+     this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
+        this.currentPage = 1
+        this.updatePagedFaqkbList();
+
+        this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
         this.chatBotCount = this.faqkbList.length;
-        // this.myChatbotOtherCount = faqKb.length
 
         if (this.orderBylastUpdated) {
           this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
@@ -1003,21 +940,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.logger.log('[BOTS-LIST] - orderByCreationDate', this.orderByCreationDate);
         });
 
+        // this.faqkbList = this.faqkbList
 
-        // myChatbot:any
-        // myChatbotOtherCount: number;
-
-        // automations:any
-        // automationsCount: number;
-
-
-
-        this.faqkbList = this.faqkbList
         // ---------------------------------------------------------------------
         // Chatbot
         // ---------------------------------------------------------------------
-
-
         this.myChatbot = this.faqkbList.filter((obj) => {
           return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
         });
@@ -1028,7 +955,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         }
 
         // ---------------------------------------------------------------------
-        // Automations (e.g. are the chatbot woth subtipe copilot or webhook)
+        // Automations (e.g. are the chatbot with subtipe copilot or webhook)
         // ---------------------------------------------------------------------
         this.automations = this.faqkbList.filter((obj) => {
           return obj.subtype && ["webhook", "copilot"].includes(obj.subtype);
@@ -1039,58 +966,28 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.logger.log('[BOTS-LIST] - automations COUNT', this.automationsCount);
         }
 
-        // ---------------------------------------------------------------------
-        // Bot forked from Customer Satisfaction templates
-        // ---------------------------------------------------------------------
-        this.customerSatisfactionBots = this.faqkbList.filter((obj) => {
-          return obj.mainCategory === "Customer Satisfaction"
-        });
-        this.logger.log('[BOTS-LIST] - Customer Satisfaction BOTS', this.customerSatisfactionBots);
-        if (this.customerSatisfactionBots) {
-          this.customerSatisfactionBotsCount = this.customerSatisfactionBots.length;
-          this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
-        }
-
-
-        // ---------------------------------------------------------------------
-        // Bot forked from Customer Increase Sales
-        // ---------------------------------------------------------------------
-        this.increaseSalesBots = this.faqkbList.filter((obj) => {
-          return obj.mainCategory === "Increase Sales"
-        });
-        this.logger.log('[BOTS-LIST] - Increase Sales BOTS ', this.increaseSalesBots);
-        if (this.increaseSalesBots) {
-          this.increaseSalesBotsCount = this.increaseSalesBots.length;
-          this.logger.log('[BOTS-LIST] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
-        }
-
-
 
         this.route = this.router.url
-        if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
+        if (this.route.indexOf('/bots/my-chatbots/all') !== -1 || this.route.indexOf('/bots') !== -1) {
           this.faqkbList = this.faqkbList
-          this.pageName = "All"
+          this.pageName = "All";
+          this.currentPage = 1; // <--- reset
+          this.updatePagedFaqkbList();
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
         } else if (this.route.indexOf('/flows/flow-aiagent') !== -1) {
           this.faqkbList = this.myChatbot
           this.pageName = "AIAgents"
+          this.currentPage = 1; // <--- reset
+          this.updatePagedFaqkbList();
           this.logger.log('/flows/flow-aiagent ', this.faqkbList);
         } else if (this.route.indexOf('/flows/flow-automations') !== -1) {
           this.faqkbList = this.automations
-          this.pageName = "Automations"
+          this.pageName = "Automations";
+          this.currentPage = 1; // <--- reset
+          this.updatePagedFaqkbList();
           this.logger.log('/flows/automations ', this.faqkbList);
-        } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
-          this.faqkbList = this.customerSatisfactionBots
-          this.pageName = "CUSTOMER SATISFACTION CHATBOTS"
-          this.logger.log('[BOTS-LIST] ROUTE my-chatbots/customer-satisfaction faqkbList ', this.faqkbList);
-        } else if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
-          this.pageName = "INCREASE SALES CHATBOTS"
-          this.faqkbList = this.increaseSalesBots
-          this.logger.log('[BOTS-LIST] ROUTE my-chatbots/increase-sales faqkbList ', this.faqkbList);
-        }
-
-
-
+        } 
+        
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {
             this.showSpinner = false;
@@ -1115,24 +1012,26 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             }
           }
 
-          for (let bot of this.faqkbList) {
-            // this.logger.log("BOT LIST - GET NUM OF MESSAGE - BOT : ", bot);
-            this.faqKbService.getNumberOfMessages(bot._id, bot.type).subscribe((res: any) => {
-              this.logger.log("[BOTS-LIST] Messages sent from bot: ", res);
-              if (res.length == 0) {
-                bot.message_count = 0;
+
+          const messageRequests = this.faqkbList.map(bot =>
+            this.faqKbService.getNumberOfMessages(bot._id, bot.type)
+          );
+
+          forkJoin(messageRequests)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((results: any[]) => {
+            results.forEach((res, i) => {
+              if (res.length === 0) {
+                this.faqkbList[i].message_count = 0;
               } else {
-                bot.message_count = res[0].totalCount;
+                this.faqkbList[i].message_count = res[0].totalCount;
               }
-            })
-          }
+            });
+          });
         }
       }
 
-      /* this.showSpinner = false moved in getAllFaqByFaqKbId:
-       * in this callback stop the spinner only if there isn't faq-kb and
-       * if there is an error */
-      // this.showSpinner = false;
+     
     }, (error) => {
       this.logger.error('[BOTS-LIST] GET BOTS ERROR ', error);
       this.showSpinner = false;
@@ -1142,7 +1041,45 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.showSpinner = false;
       // this.getAllFaqByFaqKbId();
     });
+  }
 
+    updatePagedFaqkbList() {
+    if (!this.faqkbList || this.faqkbList?.length === 0) {
+      this.totalPagesNo_roundToUp = 1;
+      this.pagedFaqkbList = [];
+      return;
+    }
+
+    const totalPagesNo = this.faqkbList?.length / this.pageSize;
+    this.logger.log('[BOTS-LIST] - TOTAL PAGES NUMBER', totalPagesNo);
+
+    this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+    this.logger.log('[BOTS-LIST]] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+    const start = (this.currentPage - 1) * this.pageSize;
+    this.logger.log('[BOTS-LIST] pagedFaqkbList start ', start )
+    this.logger.log('[BOTS-LIST] pagedFaqkbList end ', start + this.pageSize )
+    this.logger.log('[BOTS-LIST] pagedFaqkbList this.faqkbList ', this.faqkbList.slice(start, start + this.pageSize) )
+    // return this.faqkbList.slice(start, start + this.pageSize);
+    this.pagedFaqkbList = this.faqkbList.slice(start, start + this.pageSize);
+  }
+
+  nextPage() {
+    if (this.currentPage * this.pageSize < this.faqkbList.length) {
+      this.currentPage++;
+      this.updatePagedFaqkbList();
+    }
+  }
+  
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagedFaqkbList();
+    }
+  }
+
+  trackByFaqkbId(_index: number, faqkb: FaqKb) { 
+    return faqkb._id; 
   }
 
   getBotProfileImage(bot) {
@@ -1239,50 +1176,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.rowIndexSelected = undefined;
   }
 
-
-
-  getAllFaqByFaqKbId() {
-    // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-    let i: number;
-    for (i = 0; i < this.faqkbList.length; i++) {
-      this.logger.log('[BOTS-LIST] getFaqByFaqKbId ID FAQ KB ', this.faqkbList[i]._id);
-      this.faqKbId = this.faqkbList[i]._id;
-
-      this.faqService.getAllFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        this.logger.log('[BOTS-LIST] getAllFaqByFaqKbId GET BOT FAQs - FAQs ARRAY ', faq);
-
-        if (faq) {
-          let j: number;
-          for (j = 0; j < faq.length; j++) {
-            // this.logger.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-            // this.logger.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
-
-            // this.logger.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
-            this.faq_faqKbId = faq[j].id_faq_kb;
-
-            for (const faqkb of this.faqkbList) {
-
-              if (faqkb._id === this.faq_faqKbId) {
-                // this.logger.log('+> ID COINCIDONO');
-                faqkb.faqs_number = faq.length
-                // this.logger.log('»»» BOT ID', faqkb._id, 'FAQ LENGHT ', faq.length);
-                // set in the json the value true to the property has_faq
-                faqkb.has_faq = true;
-              }
-            }
-          }
-        }
-      }, (error) => {
-        this.logger.error('[BOTS-LIST] GET BOT FAQs - ERROR ', error)
-        // this.showSpinner = false;
-      }, () => {
-        this.logger.log('[BOTS-LIST] GET BOT FAQs - COMPLETE ');
-        // setTimeout(() => {
-        //   this.showSpinner = false;
-        // }, 100);
-      });
-    }
-  }
 
 
   /**
