@@ -692,6 +692,11 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+    "DisableMember": "Disable member",
+    "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
+    "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
+    "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
+    "Disable": "Disable",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1055,9 +1060,11 @@
         "TheMemberWithId": "المستخدم مع هوية التعريف",
         "WillBeRemoved": "سوف يزال",
         "AreYouSure": "هل أنت متأكد من أنك تريد إزالة",
+        "AreYouSureRestore": "Are you sure you want to restore {{ firstname }} {{ lastname }} in the project?",
         "AreYouSureCancelInvite": "هل أنت متأكد أنك تريد إلغاء الدعوة إلى",
         "FromTheProject": "من المشروع",
         "Confirm": "تأكيد",
+        "RestoreMember": "Restore Member",
         "TheUserHasBeenInvited": "تمت دعوة المستخدم.",
         "Continue": "يكمل",
         "PendingInvitation": "الدعوات المعلقة",
@@ -1125,7 +1132,19 @@
         "YouCanGroupAgents": "يمكنك تجميع الوكلاء بناءً على المهارات وتعيين مجموعات من الوكلاء لأقسامك",
         "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
         "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
-        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it.",
+        "DisassociateTheGroupBeforeToDisable": "Remove any associations with Routing or Departments before disabling it.",
+        "TheGroupWilBeDeleted": "The group <b>{{group_name}}</b> will be deleted",
+        "TheGroupWilBeDisabled": "The group <b>{{group_name}}</b> will be disabled",
+        "DisableGroup": "Disable group",
+        "Active": "Active",
+        "RestoreGroup": "Restore group",
+        "AnErrorOccurredWhileDeletingTheGroup": "An error occurred while deleting the group",
+        "TheGroupHasBeenSuccessfullyDeleted": "The group has been successfully deleted",
+        "AnErrorOccurredWhileDisablingTheGroup": "An error occurred while disabling the group",
+        "TheGroupHasBeenSuccessfullyDisabled": "The group has been successfully disabled",
+        "AnErrorOccurredWhileRestoringTheGroup": "An error occurred while restoring the group",
+        "TheGroupHasBeenSuccessfullyRestored": "The group has been successfully restored"
     },
     "GroupsAddEditPage": {
         "AddGroup": "أضف مجموعة",
@@ -2344,6 +2363,7 @@
     "InviteYourFirstTeammate": "قم بدعوة زميلك الأول في الفريق",
     "Enabled": "ممكن",
     "Disabled": "عاجز",
+    "Restore": "Restore",
     "TheDefaulDeptIsDisabledBecause": "تم تعطيل التوجيه الافتراضي بسبب وجود قسم آخر على الأقل وحالته مضبوطة على \"مرئي\"",
     "TheDefaulDeptIsDisabledBecause_2": "القسم الافتراضي معطّل بسبب وجود قسم آخر على الأقل وحالته معيّنة على \"مرئي\"",
     "TheDefaulDeptIsEnabledBecause": "تم تمكين التوجيه الافتراضي لأنه لا يوجد قسم آخر \"مرئي\"",
