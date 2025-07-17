@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.121
+- Refactors the groups list
+- Adds the ability to disable/restore a group
+
 ### 2.7.120
 - Fixes the bug: creating an AI Agent does not work on the knowledge bases page
 
