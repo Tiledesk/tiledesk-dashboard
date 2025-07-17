@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.123
+- Adds unanswered questions
+- Updated UI of Knowledge Bases page
+
 ### 2.7.122
 - Minor improvements and bug fixing
 
