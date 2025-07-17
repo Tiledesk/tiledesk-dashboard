@@ -736,6 +736,11 @@
     "TheMemberWillBeRestored":"<b>{{pu_name}}</b> üyesi geri yüklenecek",
     "TheGroupWillBeRestored": "<b>{{group_name}}</b> grubu geri yüklenecek",
     "Disable":"Devre dışı bırakmak",
+    "EditLoadDistribution": "Yük Dağıtımını Düzenle",
+    "EditPercentageFor":"Yüzdeyi düzenle",
+    "Percentage": "Yüzde",
+    "CurrentTotal":"Mevcut toplam",
+    "Exceeds100":"%100'ü aşıyor",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

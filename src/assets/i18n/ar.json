@@ -734,6 +734,11 @@
     "TheMemberWillBeRestored": "سيتم استعادة العضو <b>{{pu_name}</b>",
     "TheGroupWillBeRestored": "سيتم استعادة المجموعة <b>{{group_name}</b>",
     "Disable":"إبطال",
+    "EditLoadDistribution": "تعديل توزيع الحمل",
+    "EditPercentageFor":"تعديل النسبة المئوية لـ",
+    "Percentage": "النسبة المئوية",
+    "CurrentTotal":"الإجمالي الحالي",
+    "Exceeds100": "يتجاوز ١٠٠٪",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

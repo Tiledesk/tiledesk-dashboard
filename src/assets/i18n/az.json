@@ -735,6 +735,11 @@
     "TheMemberWillBeRestored":"<b>{{pu_name}}</b> üzvü bərpa olunacaq",
     "TheGroupWillBeRestored": "<b>{{group_name}}</b> qrupu bərpa olunacaq",
     "Disable":"Deaktiv edin",
+    "EditLoadDistribution": "Yük paylanmasını redaktə edin",
+    "EditPercentageFor":"üçün faizi redaktə edin",
+    "Percentage": "Faiz",
+    "CurrentTotal":"Cari cəmi",
+    "Exceeds100":"100%-i keçir",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

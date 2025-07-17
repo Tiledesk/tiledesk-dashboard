@@ -734,6 +734,11 @@
 	"TheMemberWillBeRestored":"Das Mitglied <b>{{pu_name}}</b> wird wiederhergestellt",
     "TheGroupWillBeRestored": "Die Gruppe <b>{{group_name}}</b> wird wiederhergestellt",
 	"Disable":"Deaktivieren",
+	"EditLoadDistribution": "Lastverteilung bearbeiten",
+	"EditPercentageFor":"Prozentsatz bearbeiten für",
+	"Percentage": "Prozentsatz",
+    "CurrentTotal":"Aktueller Gesamtbetrag",
+    "Exceeds100":"Über 100%",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

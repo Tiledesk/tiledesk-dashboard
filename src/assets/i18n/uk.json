@@ -735,6 +735,11 @@
     "TheMemberWillBeRestored":"Учасника <b>{{pu_name}}<b> буде відновлено",
     "TheGroupWillBeRestored": "Групу <b>{{group_name}}<b> буде відновлено",
     "Disable":"Вимкнути",
+    "EditLoadDistribution": "Редагувати розподіл навантаження",
+    "EditPercentageFor":"Редагувати відсоток для",
+    "Percentage": "Відсоток",
+    "CurrentTotal":"Поточний загальний показник",
+    "Exceeds100":"Перевищує 100%",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

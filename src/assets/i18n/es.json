@@ -734,6 +734,11 @@
     "TheMemberWillBeRestored":"Se restaurará el miembro <b>{{pu_name}}</b>",
     "TheGroupWillBeRestored": "Se restaurará el grupo <b>{{group_name}}</b>",
     "Disable":"Desactivar",
+    "EditLoadDistribution": "Editar distribución de carga",
+    "EditPercentageFor":"Editar porcentaje para",
+    "Percentage": "Porcentaje",
+    "CurrentTotal":"Total actual",
+    "Exceeds100":"Supera el 100%",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
