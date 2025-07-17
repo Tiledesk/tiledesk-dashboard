@@ -58,9 +58,12 @@
       <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
         [allCommunityTemplatesCount]="allCommunityTemplatesCount"
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [chatBotCount]="chatBotCount"
-        [myChatbotOtherCount]="myChatbotOtherCount" [automationsCount]="automationsCount"
-        [flowWebhooksCount]="flowWebhooksCount" [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
+        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
+        [chatBotCount]="chatBotCount"
+        [myChatbotOtherCount]="myChatbotOtherCount" 
+        [automationsCount]="automationsCount"
+        [flowWebhooksCount]="flowWebhooksCount" 
+        [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
         [increaseSalesBotsCount]="increaseSalesBotsCount">
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 15px; ">
@@ -629,7 +632,7 @@
                 </div>
 
 
-                <div class="card-list" *ngFor="let faqkb of faqkbList; let i = index; trackBy: trackByFaqkbId">
+                <div class="card-list" *ngFor="let faqkb of pagedFaqkbList; let i = index; trackBy: trackByFaqkbId">
 
                   <div class="cl-card" (click)='goToBotDtls(faqkb)'>
                     <div class="cl-card-content">

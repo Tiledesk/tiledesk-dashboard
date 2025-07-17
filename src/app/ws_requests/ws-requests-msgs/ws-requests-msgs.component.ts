@@ -402,6 +402,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_READ_TAGS: boolean;
   PERMISSION_TO_UPDATE_REQUEST_NOTES: boolean;
   PERMISSION_TO_REASSIGN_REQUEST: boolean;
+  PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST: boolean;
+
 
   /**
    * Constructor
@@ -695,11 +697,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
           } else {
-            this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = false
+            this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = false
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS 2', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
           }
         } else {
-          this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = true
+          this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS ', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
         }
 
@@ -761,6 +763,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.PERMISSION_TO_REASSIGN_REQUEST = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_REASSIGN_REQUEST ', this.PERMISSION_TO_REASSIGN_REQUEST);
+        }
+
+        // PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_ADD)) {
+           
+            this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST 1 ', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
+          } else {
+            this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST 2', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST ', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
         }
 
 
@@ -3794,6 +3811,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           return;
         }
       }
+
+      if (this.actionInModal === 'invite') {
+       if (!this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST) {
+          this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+          return;
+        }
+      }
+
+      
 
 
       console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);

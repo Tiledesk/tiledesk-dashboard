@@ -123,7 +123,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.REQUEST_UPDATE_TAGS, label: 'Able to add / update conversation TAGS' },
         { key: PERMISSIONS.REQUEST_UPDATE_NOTES, label: 'Able to add / remove notes from a conversation' },
         { key: PERMISSIONS.REQUEST_REASSIGN, label: 'Able to reassign a conversation' },
-      
+        { key: PERMISSIONS.REQUEST_ADD, label: 'Able to add a teammate to a conversation' },
         { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
         { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete' }
       ]

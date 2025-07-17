@@ -856,7 +856,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.currentPage = 1
         this.updatePagedFaqkbList();
 
-        this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
+        console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
         this.chatBotCount = this.faqkbList.length;
 
         if (this.orderBylastUpdated) {
@@ -1057,7 +1057,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST]] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
 
     const start = (this.currentPage - 1) * this.pageSize;
-    this.logger.log('[BOTS-LIST] pagedFaqkbList start ', start )
+    console.log('[BOTS-LIST] pagedFaqkbList start ', start )
     this.logger.log('[BOTS-LIST] pagedFaqkbList end ', start + this.pageSize )
     this.logger.log('[BOTS-LIST] pagedFaqkbList this.faqkbList ', this.faqkbList.slice(start, start + this.pageSize) )
     // return this.faqkbList.slice(start, start + this.pageSize);

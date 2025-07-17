@@ -18,6 +18,7 @@ export const PERMISSIONS = {
   REQUEST_UPDATE_TAGS: 'request_update_tags',
   REQUEST_UPDATE_NOTES: 'request_update_notes',
   REQUEST_REASSIGN:'request_reassign',
+  REQUEST_ADD:'request_add',
 
 
   HISTORY_READ: 'history_read',

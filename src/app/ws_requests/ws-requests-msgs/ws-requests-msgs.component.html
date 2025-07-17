@@ -703,9 +703,9 @@
                             </a>
                           </li>
                           <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}">
                             <a (click)='openSelectUsersModal(action = "invite")'
-                              style="padding-left: 15px; padding-right: 15px;">
+                              style="padding-left: 15px; padding-right: 15px;"> 
                               <i class="material-icons" style="padding-right: 5px;">person_add</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
                                 {{ 'VisitorsPage.AddAgent' | translate }}
