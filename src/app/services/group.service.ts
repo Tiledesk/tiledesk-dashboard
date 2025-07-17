@@ -74,10 +74,6 @@ export class GroupService {
         'Authorization': this.TOKEN
       })
     };
-
-    // https://replit.com/@nicolan74/DASHBORDPROMOBANNER
-   
-    // const url= "https://9c17ea53-8432-4560-b14b-8169b389c8a8-00-34l7pm8guu6m6.riker.replit.dev/" + this.project_id + '/groups';
     
     const url = this.GROUPS_URL;
     this.logger.log('[GROUP-SERV] GET GROUPS BY PROJECT ID - URL', url);

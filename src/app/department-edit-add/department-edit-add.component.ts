@@ -24,6 +24,8 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -53,6 +55,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   deptName_toUpdate: string;
   dept_description_toUpdate: string;
+  dept_description_toUpdate_temp: string;
 
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
@@ -173,6 +176,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     public prjctPlanService: ProjectPlanService,
     private roleService: RoleService,
     public brandService: BrandService,
+    private dialog: MatDialog
   ) {
     super(prjctPlanService, notify);
 
@@ -951,8 +955,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       }
 
       if (groups) {
-        this.groupsList = groups;
-
+        // this.groupsList = groups;
+        this.groupsList = groups.filter(group => group.enabled !== false);
+        
         this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
 
@@ -1521,7 +1526,38 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       });
   }
+    
+  
+  openEditLoadDistributionDialog(group) {
+      // prevent goToGroupDetail
+      const dialogRef = this.dialog.open(EditLoadDistributionModalComponent, {
+        width: '400px',
+        data: { 
+          groups: this.groupsParsedArray,
+          group: group
+        }
+      });
 
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.groupsParsedArray = result;
+          this.onGroupPercentageChange(); // update description string
+        }
+      });
+  }
+
+  onGroupPercentageChange() {
+    if (Array.isArray(this.groupsParsedArray)) {
+      const result = this.groupsParsedArray.map(group => ({
+        id: group.id,
+        percentage: group.percentage
+      }));
+
+        // this.dept_description_toUpdate = JSON.stringify(result);
+        this.dept_description_toUpdate_temp = JSON.stringify(result);
+        console.log('[DEPT-EDIT-ADD] 🔄 Updated description:', this.dept_description_toUpdate_temp);
+      }
+  }
 
   edit() {
     this.NOT_HAS_EDITED = true;
@@ -1529,16 +1565,15 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
     updated_btn.blur();
 
+    if (this.dept_description_toUpdate_temp?.trim()) {
+      this.dept_description_toUpdate = this.dept_description_toUpdate_temp;
+    }
+
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - updated_btn ', updated_btn);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-
-
-
-
-
-
+    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
     this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
@@ -1584,6 +1619,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
               console.log('[DEPT-EDIT-ADD] ✅ Parsed group array:', parsedGroups);
               
               this.dept_description_toUpdate = ""
+              this.dept_description_toUpdate_temp = ""
               // Optionally assign to class property
               this.groupsParsedArray = parsedGroups;
               this.displayAssignTo = false;

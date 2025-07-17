@@ -7,12 +7,18 @@ import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateBotComponent } from './create-bot/create-bot.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PendingChangesGuard } from 'app/core/pending-changes.guard';
 import { MomentModule } from 'ngx-moment';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule } from '@angular/common/http';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   // { path: "", component: DepartmentEditAddComponent, canDeactivate: [PendingChangesGuard]},
@@ -23,7 +29,8 @@ const routes: Routes = [
   declarations: [
     DepartmentEditAddComponent,
     CreateGroupComponent,
-    CreateBotComponent
+    CreateBotComponent,
+    EditLoadDistributionModalComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -36,7 +43,13 @@ const routes: Routes = [
     MomentModule,
     NgSelectModule,
     HttpClientModule,
-    UnauthorizedForSettingsModule
+    UnauthorizedForSettingsModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatDialogModule,
+    ReactiveFormsModule
   ]
 })
 export class DepartmentEditAddModule { }

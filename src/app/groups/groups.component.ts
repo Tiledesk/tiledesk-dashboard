@@ -61,6 +61,10 @@ export class GroupsComponent implements OnInit {
   isAuthorized = false;
   permissionChecked = false;
 
+  percentage: number;
+  totalPercentage = 0;
+  overflowGroupId: string | null = null;
+
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
@@ -91,7 +95,7 @@ export class GroupsComponent implements OnInit {
   }
 
 
-   async checkPermissions() {
+  async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('groups')
     console.log('[GROUPS] result ', result)
     this.isAuthorized = result === true;
@@ -152,10 +156,19 @@ export class GroupsComponent implements OnInit {
    * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID   */
   getGroupsByProjectId() {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      this.logger.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
+      console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
+
+
 
       if (groups) {
         this.groupsList = groups;
+
+        // this.groupsList = groups.map(group => ({
+        //   ...group,
+        //   percentage: 0
+        // }));
+
+        console.log('[GROUPS] - GET GROUPS BY PROJECT this.groupsList ', this.groupsList);
         this.createGroupAvatar(this.groupsList)
       }
       // this.faqkbList = faqKb;
@@ -170,10 +183,28 @@ export class GroupsComponent implements OnInit {
 
   }
 
-   createGroupAvatar(groupsList) {
+  // onPercentageChange(changedGroup: Group): void {
+  //   this.totalPercentage = this.groupsList.reduce(
+  //     (sum, group) => sum + (group.percentage || 0),
+  //     0
+  //   );
+
+  //   // If overflow, mark the last changed group
+  //   this.overflowGroupId = this.totalPercentage > 100 ? changedGroup._id : null;
+  // }
+
+  // get totalPercentage(): number {
+  //   return this.groupsList.reduce((sum, group) => sum + (group.percentage || 0), 0);
+  // }
+
+  // isTotalOverLimit(): boolean {
+  //   return this.totalPercentage > 100;
+  // }
+
+  createGroupAvatar(groupsList) {
     groupsList.forEach(group => {
       group['groupName_initial'] = avatarPlaceholder(group.name)
-       group['fillColour'] = getColorBck(group.name)
+      group['fillColour'] = getColorBck(group.name)
     });
   }
 
@@ -208,15 +239,15 @@ export class GroupsComponent implements OnInit {
 
   opendisableModal(id_group: string, group_name: string) {
     this.id_group_to_disable = id_group;
-    this.name_group_to_disable= group_name;
+    this.name_group_to_disable = group_name;
     this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
     this.getDepartments(this.id_group_to_disable, 'disable')
   }
 
-  openRestoreModal(id_group: string, group_name: string){
-    this.displayRestoreModal = 'block';  
+  openRestoreModal(id_group: string, group_name: string) {
+    this.displayRestoreModal = 'block';
     this.id_group_to_restore = id_group;
-    this.name_group_to_restore= group_name;
+    this.name_group_to_restore = group_name;
     this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
   }
 
@@ -233,9 +264,9 @@ export class GroupsComponent implements OnInit {
       if (deptsArrayWithAssociatedGroup.length === 0) {
         console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
         if (reason === 'delete') {
-          this.displayDeleteModal = 'block'; 
+          this.displayDeleteModal = 'block';
         } else {
-          this.displayDisableModal = 'block'; 
+          this.displayDisableModal = 'block';
         }
       } else {
         this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP !!! ASSOCIATED');
@@ -250,21 +281,21 @@ export class GroupsComponent implements OnInit {
         console.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
 
         const isPlural = deptsNameAssociatedToGroup.length > 1;
-        const translationKey = isPlural 
-          ? 'GroupsPage.TheGroupIsAssociatedWithDepartments' 
+        const translationKey = isPlural
+          ? 'GroupsPage.TheGroupIsAssociatedWithDepartments'
           : 'GroupsPage.TheGroupIsAssociatedWithTheDepartment';
 
-        const actionMessage = reason === 'delete' 
-        ? this.disassociateTheGroup 
-        : this.disassociateTheGroupBeforeToDisableIt;
+        const actionMessage = reason === 'delete'
+          ? this.disassociateTheGroup
+          : this.disassociateTheGroupBeforeToDisableIt;
 
         // const translatedMessage = this.translate.instant(translationKey, { 
         //   depts_name: deptsNameAssociatedToGroup.join(', ') 
         // });
 
         this.showWarningAlert(
-        this.warning,
-        `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
+          this.warning,
+          `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
         );
 
         // Swal.fire({
@@ -276,7 +307,7 @@ export class GroupsComponent implements OnInit {
         //   // confirmButtonColor: "var(--blue-light)",
         //   focusConfirm: false
         // })
-        
+
 
         // if (deptsArrayWithAssociatedGroup.length > 1) {
         //   Swal.fire({
@@ -293,15 +324,15 @@ export class GroupsComponent implements OnInit {
     })
   }
 
-   private showWarningAlert(title: string, text: string): void {
+  private showWarningAlert(title: string, text: string): void {
     Swal.fire({
-        title,
-        text,
-        icon: 'warning',
-        showCloseButton: true,
-        showCancelButton: false,
-        focusConfirm: false,
-        // confirmButtonColor: 'var(--blue-light)'
+      title,
+      text,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      // confirmButtonColor: 'var(--blue-light)'
     });
   }
 
@@ -309,7 +340,7 @@ export class GroupsComponent implements OnInit {
     this.displayDeleteModal = 'none';
   }
 
-  onCloseDidableModal () {
+  onCloseDidableModal() {
     this.displayDisableModal = 'none';
   }
   onCloseRestoreModal() {
@@ -344,7 +375,7 @@ export class GroupsComponent implements OnInit {
   }
 
 
- 
+
 
   disableGroup(group_id: string) {
     this.displayDisableModal = 'none';
@@ -391,10 +422,10 @@ export class GroupsComponent implements OnInit {
       }
     })
   }
-  
 
 
-   getTranslations() {
+
+  getTranslations() {
     this.translate.get('GroupsPage')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
@@ -407,7 +438,7 @@ export class GroupsComponent implements OnInit {
         // this.deleteContact_msg = text;
         this.logger.log('[GROUPS] getTranslations GroupsPage : ', text)
         this.disassociateTheGroupBeforeToDisableIt = text['DisassociateTheGroupBeforeToDisable'];
-    });
+      });
 
 
     this.translate.get('Warning')
@@ -417,6 +448,6 @@ export class GroupsComponent implements OnInit {
         this.warning = text;
       });
 
-  
+
   }
 }

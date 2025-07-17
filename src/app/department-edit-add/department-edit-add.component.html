@@ -416,7 +416,27 @@
                                <div class="gropus-wpr" *ngFor="let group of groupsParsedArray" (click)="goToGroupDetail(group.id)"> 
                                 <div class="custom-group-row" >
                                   <span class="group-name">{{ group.name || 'Unknown group' }}</span>
-                                  <span class="group-percentage">{{ group.percentage }}%</span>
+                                  <div (click)="$event.stopPropagation()" style="display: flex; align-items: center;">
+                                    <span class="group-percentage">{{ group.percentage }}%</span> 
+                                    <button mat-icon-button (click)="openEditLoadDistributionDialog(group)" 
+                                      matTooltipClass="custom-mat-tooltip" 
+                                      matTooltip= "{{'EditLoadDistribution' | translate}}"
+                                      #tooltip="matTooltip" 
+                                      matTooltipPosition='above' 
+                                      matTooltipHideDelay="100">
+                                        <mat-icon style="font-size: 16px;">edit</mat-icon>
+                                    </button>
+                                  </div>
+                                  
+                                  <!-- <div (click)="$event.stopPropagation()" style="display: flex; align-items: center;">
+                                   <input type="number"
+                                      min="0"
+                                      max="100"
+                                      [(ngModel)]="group.percentage"
+                                      (ngModelChange)="onGroupPercentageChange()"
+                                      style="width: 60px; text-align: center; margin-left: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                                      <span>%</span>
+                                  </div> -->
                                 </div>
                               </div>
                           </div>

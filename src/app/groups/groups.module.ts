@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: "", component: GroupsComponent },
@@ -31,7 +32,8 @@ const routes: Routes = [
     MatTooltipModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule
   ]
 })
 export class GroupsModule { }

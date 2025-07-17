@@ -1,0 +1,23 @@
+.error-border {
+  .mdc-text-field--outlined {
+    border-color: red !important;
+  }
+}
+
+.error-text {
+  color: red;
+  font-weight: 400;
+}
+
+.error-message {
+  margin-left: 2px;
+}
+
+.total-display {
+    margin-top: -10px;
+    font-size: 12px;
+}
+
+mat-form-field {
+  width: 100%;
+}
