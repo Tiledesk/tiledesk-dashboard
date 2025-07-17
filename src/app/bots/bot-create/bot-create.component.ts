@@ -39,6 +39,7 @@ import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'bot-create',
@@ -188,7 +189,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
 
   ngOnInit() {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
-    // this.logger.log('[BOT-CREATE] »»»» botSubtypeItems on Init ', this.botSubtypeItems)
+    this.logger.log('[BOT-CREATE] »»»» botSubtypeItems on Init ', this.botSubtypeItems)
     this.botSubtype = "chatbot"
     this.getBrowserVersion();
     this.detectBrowserLang();
@@ -279,15 +280,12 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -805,14 +803,11 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
     }
   }
 
-
   onSelectBotSubType(botSubtype) {
     // this.logger.log('[BOTS-CREATE] onSelectBotSubType ', botSubtype) 
     this.botSubtype = botSubtype
     this.logger.log('[BOTS-CREATE] onSelectBotSubType this.botSubtype', this.botSubtype)
   }
-
-
 
   createBlankTilebot() {
     this.logger.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
