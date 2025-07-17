@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.122
+- Minor improvements and bug fixing
+
 ### 2.7.121
 - Refactors the groups list
 - Adds the ability to disable/restore a group
