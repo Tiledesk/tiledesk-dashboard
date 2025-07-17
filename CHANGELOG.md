@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.123-rc1
+- Adds the ability to manage the "Add teammate" feature for a conversation
+- Adds the ability to change the load percentage of groups to the department details page
+
 ### 2.7.120-rc1
 - Adds the ability to manage the "Update Status" feature for a conversation
 - Adds the ability to manage the "Priority" feature for a conversation
