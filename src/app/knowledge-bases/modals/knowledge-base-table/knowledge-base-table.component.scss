@@ -518,7 +518,7 @@ td {
     color: #353f45;
     font-weight: 400;
     // font-family: "Poppins";
-    margin-top: 25px;
+    // margin-top: 25px;
     text-align: center;
     width: 100%;
 }
@@ -545,6 +545,7 @@ td {
 .card.filters-card {
     border-radius: var(--card-border-radius);
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .btn {

@@ -81,7 +81,7 @@ export class KnowledgeBaseService {
       })
     }
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/all";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/all?count=true";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get all NAMESPACES URL ", url);
     return this.httpClient.get(url, httpOptions);
   }

@@ -42,7 +42,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
        this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
       } 
 
-      this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
+      // Recupera i chunks solo se esiste _id
+      if (this.kb._id) {
+        this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
+      } else {
+        this.showSpinner = false;
+      }
   }
 
   getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
