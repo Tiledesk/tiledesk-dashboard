@@ -25,6 +25,7 @@
   "tiledeskPhoneNumber": "${TILEDESK_PHONE_NUMBER}",
   "ticketingEmail": "${TICKETING_EMAIL}", 
   "aiModels":"${AI_MODELS}",
+  "oauth2SigninEnabled": "${OAUTH2_SIGNIN_ENABLED}",
   "firebase": {
     "apiKey": "${FIREBASE_APIKEY}",
     "authDomain": "${FIREBASE_AUTHDOMAIN}",

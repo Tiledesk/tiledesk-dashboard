@@ -171,8 +171,8 @@ input:-webkit-autofill {
   font-size: 15px;
 }
 
-.left-panel-signup-link > span { 
-  color: var(--blue-20); 
+.left-panel-signup-link>span {
+  color: var(--blue-20);
   cursor: pointer;
 }
 
@@ -190,9 +190,9 @@ input:-webkit-autofill {
   margin-bottom: 18px;
 }
 
-.signin-forgot-pswrd  > span { 
-  color: var(--blue-20); 
-  cursor:pointer
+.signin-forgot-pswrd>span {
+  color: var(--blue-20);
+  cursor: pointer
 }
 
 label {
@@ -496,6 +496,8 @@ label {
   height: 56px;
 }
 
+
+
 .google-button:hover {
   border-color: #94c8ff !important;
   background-color: #f4f9ff !important;
@@ -507,3 +509,36 @@ label {
   background-color: #f4f9ff !important;
   opacity: 1 !important;
 }
+
+
+.oAuth2-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0px;
+  border-radius: 5px;
+  border: 1px solid #f0806f;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  width: 100%;
+  background: #fff;
+  color: #f0806f !important;
+  margin-bottom: 20px;
+  height: 56px;
+}
+
+.oAuth2-button:hover {
+  background: rgba(240, 128, 111, .1)
+}
+
+.oAuth2-button>.oAuth2-button-svg-wpr {
+  margin-right: 10px;
+  background: trasparent;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+// .oAuth2-button:hover>.oAuth2-button-svg-wpr {
+//   background: rgba(240, 128, 111, .4) !important;
+
+// }

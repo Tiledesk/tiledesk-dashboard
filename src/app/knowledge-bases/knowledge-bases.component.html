@@ -1,6 +1,13 @@
 
-<p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
+
+<!-- <p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+  {{ 'KnowledgeBases' | translate }}
+</p> -->
+
+<p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+   [class.chrome-gt-100]="isChromeVerGreaterThan100"
+   [class.chrome-lt-100]="!isChromeVerGreaterThan100">
   {{ 'KnowledgeBases' | translate }}
 </p>
 
@@ -100,7 +107,7 @@
           </button>
 
           <div class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
-            Total Contents: {{totalCount}}/{{quotas.kbs}}
+            Total Contents: {{totalCount}}/{{quotas?.kbs}}
           </div>
           
         </div>
@@ -224,38 +231,36 @@
                  
                     <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
                        id="kb-chatbot" class="served-by-cb-wpr" style="margin-left: 8px;">
-                      <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
-                        <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                          class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)"
-                          matTooltipClass="kb-custom-mat-tooltip" matTooltip=" {{'ViewOption' | translate}}"
-                          #tooltip="matTooltip" matTooltipPosition='bottom' matTooltipHideDelay="100">
-      
-                          <div class="served-by-cb-d">
-                            <div size="32" class="served-by-cb-e">
-      
-                              <!-- --------------------------------------------------- -->
-                              <!-- USECASE uploadEngine Firebase -->
-                              <!-- --------------------------------------------------- -->
-                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{chatbot?._id}}%2Fphoto.jpg?alt=media"
-                                alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
-      
-                              <!-- --------------------------------------------------- -->
-                              <!-- USECASE uploadEngine Native -->
-                              <!-- --------------------------------------------------- -->
-                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
-      
+                      <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; margin-bottom: 4px; flex-wrap: wrap;">
+                        <ng-container *ngFor="let chatbot of chatbotsUsingNamespace; let i = index">
+                          <div class="served-by-cb-b" [ngClass]="{'first-served-by': i === 0, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
+                            <div class="served-by-cb-c"
+                              (click)="presentDialogGoToCDS(chatbot)"
+                              matTooltipClass="kb-custom-mat-tooltip"
+                              matTooltip=" {{'ViewOption' | translate}}"
+                              #tooltip="matTooltip"
+                              matTooltipPosition='bottom'
+                              matTooltipHideDelay="100">
+                              <div class="served-by-cb-d">
+                                <div size="32" class="served-by-cb-e">
+                                  <!-- USECASE uploadEngine Firebase -->
+                                  <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                    [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
+                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{chatbot?._id}}%2Fphoto.jpg?alt=media"
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                                  <!-- USECASE uploadEngine Native -->
+                                  <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                    [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                                </div>
+                                <div class="served-by-cb-name">
+                                  {{chatbot.name }}
+                                </div>
+                              </div>
                             </div>
-                            <div class="served-by-cb-name">
-                              {{chatbot.name }}
-                            </div>
-      
                           </div>
-                        </div>
+                        </ng-container>
                       </div>
                     </div>
       
@@ -362,61 +367,6 @@
   (closeBaseModal)="onCloseBaseModal()">
 </modal-page-url>
 
-<!-- <modal-text-file *ngIf="typeKnowledgeBaseModal == 'text-file'" 
-  (saveKnowledgeBase)="onAddKb($event)"
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-text-file> -->
-
-<!-- <modal-site-map *ngIf="typeKnowledgeBaseModal == 'site-map'" 
-  [listSitesOfSitemap]="listSitesOfSitemap"
-  (sendSitemap)="onSendSitemap($event)" 
-  (saveKnowledgeBase)="onAddMultiKb($event)"
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-site-map> -->
-
-<!-- <modal-urls-knowledge-base *ngIf="typeKnowledgeBaseModal == 'urls'"
- (saveKnowledgeBase)="onAddMultiKb($event)"
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-urls-knowledge-base> -->
-<!-- ADD KNOWLEDGE BASE MODAL - END -->
-
-
-<!-- DETAIL KNOWLEDGE BASE MODAL - START -->
-<!-- <modal-detail-knowledge-base *ngIf="baseModalDetail" 
-  [kb]="kbid_selected" 
-  (updateKnowledgeBase)="onUpdateKb($event)"
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-detail-knowledge-base> -->
-<!-- DETAIL KNOWLEDGE BASE MODAL - END -->
-
-<!-- DELETE KNOWLEDGE BASE MODAL - START -->
-<!-- <modal-delete-knowledge-base *ngIf="baseModalDelete" 
-  [kb]="kbid_selected"
-  (deleteKnowledgeBase)="onDeleteKnowledgeBase($event)" 
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-delete-knowledge-base> -->
-<!-- DELETE KNOWLEDGE BASE MODAL - END -->
-
-<!-- DELETE NAMESPACE MODAL - START -->
-<!-- <modal-delete-namespace *ngIf="showDeleteNamespaceModal" 
-  (deleteNamespace)="onDeleteNamespace($event)"
-  (closeModal)="closeDeleteNamespaceModal()" 
-  [selectedNamespace]="selectedNamespace"
-  [kbsList]="kbsList">
-</modal-delete-namespace> -->
-<!-- DELETE NAMESPACE MODAL - END -->
-
-<!-- PREVIEW KNOWLEDGE BASE MODAL - START -->
-<!-- <modal-preview-knowledge-base *ngIf="baseModalPreview" 
-  [selectedNamespace]="selectedNamespace"
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-preview-knowledge-base> -->
-<!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
-
-<!-- <modal-preview-settings *ngIf="baseModalPreviewSettings" 
-  [selectedNamespace]="selectedNamespace"
-  (closeBaseModal)="onCloseBaseModal()">
-</modal-preview-settings> -->
 
 <!-- ERROR KNOWLEDGE BASE MODAL - START -->
 <modal-error-knowledge-base *ngIf="baseModalError" [errorMessage]="errorMessage" (closeBaseModal)="onCloseBaseModal()">
