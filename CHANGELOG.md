@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.124
+- Adds flow webhook logs
+
 ### 2.7.123
 - Adds unanswered questions
 - Updated UI of Knowledge Bases page
