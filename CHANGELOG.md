@@ -2,6 +2,7 @@
 
 ### 2.7.124
 - Adds flow webhook logs
+- Adds flow conversation logs
 
 ### 2.7.123
 - Adds unanswered questions
