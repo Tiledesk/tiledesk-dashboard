@@ -4,6 +4,7 @@ export interface Group {
     createdAt: any;
     name: string;
     members: any;
+    enabled: boolean;
     trashed: boolean;
     id_project: string;
     createdBy: string;

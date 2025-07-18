@@ -42,6 +42,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-questions/modal-unanswered-questions.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -70,7 +72,8 @@ const routes: Routes = [
     ModalHookBotComponent,
     ModalNsLimitReachedComponent,
     ModalConfirmGotoCdsComponent,
-    ModalAddContentComponent
+    ModalAddContentComponent,
+    ModalUnansweredQuestionsComponent
   ],
   imports: [
     ClipboardModule,
@@ -94,7 +97,8 @@ const routes: Routes = [
     MatExpansionModule,
     SatPopoverModule,
     MatChipsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule
   ]
   // ,
   // providers: [

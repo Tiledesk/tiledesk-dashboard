@@ -23,6 +23,7 @@ export class ModalFaqsComponent implements OnInit {
   parse_err: boolean;
   modalChoosefileDisabled: boolean;
   namespaceid: string
+  showBackButton: boolean = true;
 
   kb: KB = {
     _id: null,
@@ -43,6 +44,12 @@ export class ModalFaqsComponent implements OnInit {
     this.logger.log('[MODAL-FAQS] data', data)
     if (data && data.selectedNamespace) {
       this.namespaceid = data.selectedNamespace.id
+    }
+    // Se arriva un oggetto prefillKb, precompila la KB
+    if (data && data.prefillKb) {
+      this.kb = { ...this.kb, ...data.prefillKb };
+      this.displayAddManuallySection = true;
+      this.showBackButton = false;
     }
   }
 

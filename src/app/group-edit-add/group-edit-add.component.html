@@ -476,7 +476,7 @@
                   </thead>
                   <tbody style="font-weight:400">
                     <tr *ngFor="let project_user of projectUsersList">
-                      <td style="text-align: center;">
+                      <td *ngIf="project_user.status === 'active'" style="text-align: center;">
 
                         <!-- *ngIf="!project_user?.is_group_member" -->
                         <div class="checkbox" style="margin: auto !important;">
@@ -489,7 +489,7 @@
                       </td>
 
 
-                      <td style="padding-left:10px;" rel="tooltip" title="{{ project_user?.id_user?._id }}">
+                      <td *ngIf="project_user.status === 'active'" style="padding-left:10px;" rel="tooltip" title="{{ project_user?.id_user?._id }}">
                         <!-- --------------------------------------------------- -->
                         <!-- USECASE uploadEngine Firebase -->
                         <!-- --------------------------------------------------- -->
@@ -509,10 +509,10 @@
                         <span style="font-size:13px">
                           {{project_user?.id_user?.lastname}}</span>
                       </td>
-                      <td style="padding-left:10px; max-width: 150px; font-size:13px">
+                      <td *ngIf="project_user.status === 'active'" style="padding-left:10px; max-width: 150px; font-size:13px">
                         {{ project_user?.role | translate }}
                       </td>
-                      <td style="padding-left:10px;font-size:13px">
+                      <td *ngIf="project_user.status === 'active'" style="padding-left:10px;font-size:13px">
                         {{project_user?.id_user?.email}}
                       </td>
                     </tr>

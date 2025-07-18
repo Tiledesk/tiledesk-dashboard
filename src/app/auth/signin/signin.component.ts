@@ -45,6 +45,7 @@ export class SigninComponent implements OnInit {
   primaryBrandColor: string;
   hideGoogleAuthBtn: string;
   areActivePay: boolean
+  OAUTH2_SIGNIN_ENABLED: boolean 
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -117,6 +118,9 @@ export class SigninComponent implements OnInit {
   signinWithGoogle() {
     this.auth.siginWithGoogle()
   }
+  signinWithOAuth2() {
+     this.auth.signinWithOAuth2()
+  }
 
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user')
@@ -130,6 +134,9 @@ export class SigninComponent implements OnInit {
   }
 
   getOSCODE() {
+    this.OAUTH2_SIGNIN_ENABLED =  this.appConfigService.getConfig().oauth2SigninEnabled;
+    this.logger.log('[SIGN-IN] OAUTH2_SIGNIN_ENABLED ', this.OAUTH2_SIGNIN_ENABLED)
+
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)

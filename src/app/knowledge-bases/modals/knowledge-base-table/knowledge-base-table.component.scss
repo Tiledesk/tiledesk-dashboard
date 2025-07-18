@@ -75,7 +75,7 @@ select.select-status {
     font-size: 15px;
 }
 
-.contents-count > .contents-count-num{ 
+.contents-count>.contents-count-num {
     font-weight: 500;
 }
 
@@ -178,7 +178,7 @@ th.mat-sort-header-sorted {
     // color: rgb(98, 119, 140);
     // background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
     // box-shadow: rgb(212, 217, 230) 0px 1px 0px;
-    background-color:  var(--primary-btn-background);
+    background-color: var(--primary-btn-background);
 
     &:hover {
         // background: linear-gradient(rgba(239, 245, 246, 0.851) 0%, rgb(225, 241, 246) 100%), rgb(255, 255, 255);
@@ -352,12 +352,13 @@ td {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+
     // margin-bottom: -40px;
     button {
         margin-left: 8px;
         margin-top: 0px;
         margin-bottom: 0px;
-       
+
     }
 }
 
@@ -434,7 +435,7 @@ td {
     padding: 0 12px;
     box-shadow: unset !important;
 
-    .preview-icon > svg{
+    .preview-icon>svg {
         // margin-right: 6px;
         fill: #fff;
     }
@@ -517,7 +518,7 @@ td {
     color: #353f45;
     font-weight: 400;
     // font-family: "Poppins";
-    margin-top: 25px;
+    // margin-top: 25px;
     text-align: center;
     width: 100%;
 }
@@ -537,13 +538,14 @@ td {
 //     margin: 40px 0;
 // }
 
-.card.contents-card { 
-    border-radius: var(--card-border-radius) ;
+.card.contents-card {
+    border-radius: var(--card-border-radius);
 }
 
 .card.filters-card {
-    border-radius: var(--card-border-radius) ;
+    border-radius: var(--card-border-radius);
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .btn {
@@ -649,7 +651,7 @@ td {
     align-items: center;
 }
 
-.filters > span > svg { 
+.filters>span>svg {
     fill: var(--icon-color);
     vertical-align: middle;
     margin-right: 18px;
@@ -671,7 +673,7 @@ td {
 .link-to-docs-container {
     display: flex;
     flex-direction: row;
-    justify-content: center; 
+    justify-content: center;
     margin-top: 21px;
 }
 
@@ -782,7 +784,7 @@ td {
     align-items: center;
     // padding: 42px 120px;
     padding: 30px;
-    border-radius: var( --card-border-radius); // 4px;
+    border-radius: var(--card-border-radius); // 4px;
     border: 1px solid #e5effe !important;
     // border: 1px solid rgb(226, 232, 239);
 }
@@ -824,6 +826,7 @@ td {
     min-height: 162px;
     pointer-events: auto;
 }
+
 .add-content-card-wpr:hover {
     box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
 }
@@ -836,11 +839,11 @@ td {
     text-align: left;
 }
 
-.add-content-card-content-icon-wpr > span > svg  {
- fill: var(--sidebar-inactive-icon);
+.add-content-card-content-icon-wpr>span>svg {
+    fill: var(--sidebar-inactive-icon);
 }
 
-.add-content-card-wpr:hover > .add-content-card-content .add-content-card-content-icon-wpr > span > svg {
+.add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg {
     fill: var(--icon-hover-color);
 }
 
@@ -875,42 +878,42 @@ td {
     // background-color: rgb(241, 241, 241);
     // padding: 15px;
     width: 100%;
-  }
+}
 
-  .kb-link-to-docs-wpr > span > svg {
+.kb-link-to-docs-wpr>span>svg {
     fill: var(--blue-light);
-  }
-  
-  .kb-link-to-docs {
+}
+
+.kb-link-to-docs {
     margin-left: 8px;
     vertical-align: middle;
     color: var(--blue-light); // #0f62ff;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
-  }
-  
-  .kb-link-to-docs:hover {
-    text-decoration: underline;
-  }
+}
 
-  ::ng-deep .custom-panel-sat-popover {
+.kb-link-to-docs:hover {
+    text-decoration: underline;
+}
+
+::ng-deep .custom-panel-sat-popover {
     box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
-      0 4px 4px -2px rgb(91 94 105 / 15%);
+        0 4px 4px -2px rgb(91 94 105 / 15%);
     background: #1c2333;
     border-radius: 6px;
     min-height: 48px;
     max-width: 300px !important;
-  }
-  
-  .custom-panel-sat-popover-content-wpr > .custom-panel-sat-popover--title {
+}
+
+.custom-panel-sat-popover-content-wpr>.custom-panel-sat-popover--title {
     color: #fff;
     font-size: 12px;
     text-align: center;
     font-family: var(--header-font-family);
-  }
-  
-  .custom-panel-sat-popover-content-wpr > .custom-panel-sat-popover-contact-us {
+}
+
+.custom-panel-sat-popover-content-wpr>.custom-panel-sat-popover-contact-us {
     color: #fff;
     font-size: 12px;
     line-height: 16px;
@@ -921,8 +924,9 @@ td {
     margin-top: 6px;
     cursor: pointer;
     font-family: var(--header-font-family);
-  }
-  
-  .custom-panel-sat-popover-content-wpr > .custom-panel-sat-popover-contact-us:hover {
-    background:  rgba(82, 89, 99, .8)
-  }
+}
+
+.custom-panel-sat-popover-content-wpr>.custom-panel-sat-popover-contact-us:hover {
+    background: rgba(82, 89, 99, .8)
+}
+
