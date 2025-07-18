@@ -10,7 +10,7 @@
     </div>
 
 
-    <div *ngIf="!selectedNamespace.default" class="delete-namespace-section">
+    <div *ngIf="!selectedNamespace?.default" class="delete-namespace-section">
         <div  *ngIf="kbsList?.length > 0" class="checkbox">
             <label [ngClass]="{'active--label': deleteAlsoNamespace}">
                 <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">

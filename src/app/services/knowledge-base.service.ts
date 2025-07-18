@@ -81,19 +81,19 @@ export class KnowledgeBaseService {
       })
     }
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/all";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/all?count=true";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get all NAMESPACES URL ", url);
     return this.httpClient.get(url, httpOptions);
   }
 
-  createNamespace(namespacename) {
+  createNamespace(namespacename, hybrid) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
-    let body = { name: namespacename }
+    let body = { name: namespacename, hybrid: hybrid }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/"
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add NAMESPACES URL ", url);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);

@@ -38,19 +38,14 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
-import { ShepherdService } from 'angular-shepherd';
-import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
-
-import Step from 'shepherd.js/src/types/step';
+// import { ShepherdService } from 'angular-shepherd';
+// import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
+// import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
-// import {
-//   // provideHighlightOptions,
-//   Highlight,
-//   // HighlightAuto,
-// } from 'ngx-highlightjs';
-// // import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
-const swal = require('sweetalert');
+import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
+import { QuotesService } from 'app/services/quotes.service';
+
 const Swal = require('sweetalert2')
 
 
@@ -168,6 +163,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   chatbotsUsingNamespace: any;
   botid: string;
   nameSpaceId: string;
+  totalCount: Number;
+  quotas: any;
+  isActiveHybrid: boolean = false;
 
 
   storageBucket: string;
@@ -192,6 +190,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   esportingKBChatBotTemplate: boolean = false;
   refreshRateIsEnabled: boolean
 
+  // --- TAB SWITCHER ---
+  selectedTab: 'contents' | 'unanswered' = 'contents';
+  switchTab(tab: 'contents' | 'unanswered') {
+    this.selectedTab = tab;
+    if (tab === 'unanswered') {
+      this.loadUnansweredQuestions();
+    }
+  }
+
+  unansweredQuestions: UnansweredQuestion[] = [];
+  isLoadingUnanswered = false;
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -213,8 +223,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService,
-    private shepherdService: ShepherdService,
-
+    private unansweredQuestionsService: UnansweredQuestionsService,
+    private quotasService: QuotesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -224,75 +234,97 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   ngOnInit(): void {
+
+    performance.mark('kb-parent-init');
+
+    // Misura il tempo dal click nella sidebar all'inizializzazione
+    const clickTime = (window as any).kbNavigationStartTime;
+    if (clickTime) {
+      const currentTime = performance.now();
+      const timeFromClick = currentTime - clickTime;
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
+    } else {
+      // Fallback se non c'è il timestamp del click
+      const currentTime = performance.now();
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
+    }
+
     this.kbsList = [];
-    this.getBrowserVersion();
-    this.getTranslations();
-
-
-    // this.getListOfKb(this.paramsDefault);
-    this.kbFormUrl = this.createConditionGroupUrl();
-    this.kbFormContent = this.createConditionGroupContent();
-    this.trackPage();
+    // this.getBrowserVersion();
+    this.isChromeVerGreaterThan100 = this.checkChromeVersion();
+   
     this.getLoggedUser();
     this.getCurrentProject();
     this.getRouteParams();
-    // this.listenToKbVersion(); // no more used
-    // this.listenSidebarIsOpened();
-    // this.getTemplates();
-    // this.getCommunityTemplates()
-    this.getFaqKbByProjectId();
-    this.getOSCODE();
     this.getProjectPlan();
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
     // this.getAllNamespaces()
     // this.getDeptsByProjectId()
+     // this.listenSidebarIsOpened();
+    // this.getTemplates();
+    // this.getCommunityTemplates()
+    // this.getOSCODE();
+    this.getFaqKbByProjectId();
+    // this.trackPage();
+    // this.getTranslations();
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-
+    this.loadUnansweredQuestions();
   }
 
   ngAfterViewInit() {
     // const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
-
+    setTimeout(() => {
+      this.kbFormUrl = this.createConditionGroupUrl();
+      this.kbFormContent = this.createConditionGroupContent();
+      this.getOSCODE();
+      this.trackPage();
+      this.getTranslations();
+    }, 0);
   }
 
-  presentKBTour() {
-    const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
-    this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
-    if (!tourShowed) {
-      setTimeout(() => {
-        const addButtonEl = <HTMLElement>document.querySelector('#kb-add-content');
-        this.logger.log('[KNOWLEDGE-BASES-COMP] addButtonEl ', addButtonEl)
-        if (addButtonEl) {
-          this.shepherdService.defaultStepOptions = defaultStepOptions;
-          this.shepherdService.modal = true;
-          this.shepherdService.confirmCancel = false;
-          const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
-          if (!this.chatbotsUsingNamespace) {
-            steps.splice(3, 1);
-          } else {
-            steps.splice(4, 1);
-          }
-          this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-          this.shepherdService.start();
-
-          // this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
-          this.localDbService.setInStorage(`tour-shown-${this.CURRENT_USER_ID}`, 'true')
-        }
-      }, this.timer);
+  checkChromeVersion(): boolean {
+    const ua = navigator.userAgent;
+    const match = ua.match(/Chrome\/(\d+)/);
+    if (match && match[1]) {
+      return parseInt(match[1], 10) > 100;
     }
-    // }
+    return false;
   }
 
-  restartTour() {
-    this.timer = 0
-    // this.localDbService.removeFromStorage(`tour-shown-${this.id_project}`)
-    this.localDbService.removeFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
-    // this.ngAfterViewInit()
-    this.presentKBTour()
-    // this.shepherdService.start();
-  }
+  // presentKBTour() {
+  //   const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
+  //   this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
+  //   if (!tourShowed) {
+  //     setTimeout(() => {
+  //       const addButtonEl = <HTMLElement>document.querySelector('#kb-add-content');
+  //       this.logger.log('[KNOWLEDGE-BASES-COMP] addButtonEl ', addButtonEl)
+  //       if (addButtonEl) {
+  //         this.shepherdService.defaultStepOptions = defaultStepOptions;
+  //         this.shepherdService.modal = true;
+  //         this.shepherdService.confirmCancel = false;
+  //         const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+  //         if (!this.chatbotsUsingNamespace) {
+  //           steps.splice(3, 1);
+  //         } else {
+  //           steps.splice(4, 1);
+  //         }
+  //         this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+  //         this.shepherdService.start();
+
+  //         // this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
+  //         this.localDbService.setInStorage(`tour-shown-${this.CURRENT_USER_ID}`, 'true')
+  //       }
+  //     }, this.timer);
+  //   }
+  // }
+
+  // restartTour() {
+  //   this.timer = 0
+  //   this.localDbService.removeFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
+  //   this.presentKBTour()
+  // }
 
   listenToOnSenSitemapEvent() {
     document.addEventListener(
@@ -318,22 +350,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
-
-        // const currentUrl = this.router.url;
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
-        // if (currentUrl.indexOf('/knowledge-bases') !== -1) {
-        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
-        //   const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
-        //   if (storedHasAlreadyVisitedKb) {
-        //     this.hasAlreadyVisitedKb = 'true'
-        //   }
-        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
-        //   this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
-
-        //   this.getAllNamespaces()
-        // }
-
-
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -347,6 +363,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       const isActiveSubscription = project.isActiveSubscription
       const trialExpired = project.trialExpired
       const projectProfileType = project.profile.type
+      this.isActiveHybrid = project.profile?.customization?.hybrid ? true : false;
       this.managePlanRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
       const projectProfile = project.profile
       this.getIfRefreshRateIsEnabledInCustomization(projectProfile)
@@ -369,8 +386,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
 
         this.getAllNamespaces()
+        this.getQuotas();
       }
     });
+  }
+
+  async getQuotas() {
+    this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
+      this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
+    })
   }
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
@@ -541,6 +565,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+        this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
       }
     });
   }
@@ -654,8 +679,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
-  createNewNamespace(namespaceName: string) {
-    this.kbService.createNamespace(namespaceName).subscribe((namespace: any) => {
+  createNewNamespace(namespaceName: string, hybrid: boolean) {
+    this.kbService.createNamespace(namespaceName, hybrid).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
@@ -877,6 +902,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
+      this.loadUnansweredQuestions();
 
     }
   }
@@ -965,17 +991,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // }
 
   createChatbotfromKbOfficialResponderTemplate() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
+    this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.myChatbotOtherCount < this.chatBotLimit) {
-          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.findKbOfficialResponderAndThenExportToJSON()
         } else if (this.myChatbotOtherCount >= this.chatBotLimit) {
-          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  NO chatBotLimit: RUN FORK')
+        this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  NO chatBotLimit: RUN FORK')
         this.findKbOfficialResponderAndThenExportToJSON()
       }
 
@@ -1783,18 +1811,20 @@ _presentDialogImportContents() {
 
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
+      data: {
+        pay: this.payIsVisible,
+        hybridActive: this.isActiveHybrid
+      },
     })
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
 
       if (result && result.namespaceName) {
 
-        const namespaceName = result.namespaceName
+        const namespaceName = result.namespaceName;
+        const hybrid = result.hybrid || false;
 
-        this.createNewNamespace(namespaceName)
+        this.createNewNamespace(namespaceName, hybrid)
       }
     });
   }
@@ -1918,7 +1948,7 @@ _presentDialogImportContents() {
 
   onOpenBaseModalDetail(kb) {
     // this.kbid_selected = kb;
-    // this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+    this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
 
     const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
@@ -1977,27 +2007,51 @@ _presentDialogImportContents() {
   }
 
 
-  openAddKnowledgeBaseModal(type?: string) {
-    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
-    this.typeKnowledgeBaseModal = type;
+  openAddKnowledgeBaseModal(typeOrKb?: any) {
+    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal typeOrKb', typeOrKb);
+    // Se è un oggetto KB (ad esempio da unanswered questions), apri direttamente la modale FAQ con i dati precompilati
+    if (typeOrKb && typeof typeOrKb === 'object' && typeOrKb.type === 'faq') {
+      const dialogRef = this.dialog.open(ModalFaqsComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          selectedNamespace: this.selectedNamespace,
+          prefillKb: typeOrKb
+        },
+      });
+      this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs with prefillKb')
+      dialogRef.afterClosed().subscribe(result => {
+        this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+        if (result && result.isSingle === "true") {
+          if (result.body) {
+            this.onAddKb(result.body)
+          }
+        } else if (result && result.isSingle === "false") {
+          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+          this.getListOfKb(paramsDefault, 'add-multi-faq')
+        }
+      });
+      return;
+    }
+    // Altrimenti, logica classica
+    this.typeKnowledgeBaseModal = typeOrKb;
     this.addKnowledgeBaseModal = 'block';
 
-    if (type === 'text-file') {
+    if (typeOrKb === 'text-file') {
       this.presentModalAddContent()
     }
-    if (type === 'urls') {
+    if (typeOrKb === 'urls') {
       this.presentModalAddURLs()
     }
 
-    if (type === 'site-map') {
+    if (typeOrKb === 'site-map') {
       this.presentModalImportSitemap()
     }
-    if (type === 'file-upload') {
-
+    if (typeOrKb === 'file-upload') {
       this.presentModalUploadFile()
     }
-
-    if (type === 'faq') {
+    if (typeOrKb === 'faq') {
       this.presentModalAddFaqs()
     }
   }
@@ -2007,7 +2061,6 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
-
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
@@ -2026,8 +2079,9 @@ _presentDialogImportContents() {
       data: {
         selectedNamespace: this.selectedNamespace,
       },
-
     });
+    this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs ')
+
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
       if (result && result.isSingle === "true") {
@@ -2464,9 +2518,7 @@ _presentDialogImportContents() {
     }
     params += "&page=" + this.numberPage;
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
-    // } else {
-    //   +"&page=0";
-    // }
+   
     this.logger.log('onLoadNextPage searchParams > search (2):', searchParams.search);
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
@@ -2598,7 +2650,7 @@ _presentDialogImportContents() {
   /**
    * onAddKb
    */
-  onAddKb(body) {
+  onAddKb(body, doneCb?: (success: boolean) => void) {
     this.logger.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
     this.logger.log("onAddKb body:", body);
@@ -2637,6 +2689,7 @@ _presentDialogImportContents() {
       //   this.checkStatusWithRetry(kb);
       // }, 2000);
       //that.onCloseBaseModal();
+      if (doneCb) doneCb(true);
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
       // this.onOpenErrorModal(error);
@@ -2709,8 +2762,10 @@ _presentDialogImportContents() {
           }
         })
       }
+      if (doneCb) doneCb(false);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      this.getAllNamespaces();
       this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
@@ -2876,6 +2931,7 @@ _presentDialogImportContents() {
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
+      this.getAllNamespaces();
       this.trackUserActioOnKB('Deleted Knowledge Base')
     })
   }
@@ -3420,5 +3476,57 @@ _presentDialogImportContents() {
     window.open(url, '_blank');
   }
 
+  onAddFaqFromUnanswered(event: {q: any, done: (success: boolean) => void}) {
+    // Apre la modale FAQ con la domanda precompilata
+    const question = event.q?.question;
+    this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
+    const dialogRef = this.dialog.open(ModalFaqsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        prefillKb: {
+          name: question,
+          content: '',
+          type: 'faq',
+          source: question,
+          id_project: this.id_project,
+          namespace: this.selectedNamespace?.name,
+          _id: ''
+        }
+      },
+    });
+    this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs from unanswered')
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+      // Se la modale è stata chiusa con successo (FAQ salvata)
+      if (result && result.isSingle === "true" && result.body) {
+        // Qui puoi anche attendere la risposta del servizio se serve
+        this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
+        this.onAddKb(result.body, event.done);
+      } else {
+        // Annullato o errore
+        event.done(false);
+      }
+    });
+  }
+
+  loadUnansweredQuestions() {
+    if (!this.id_project || !this.selectedNamespace?.id) return;
+    //this.isLoadingUnanswered = true;
+    this.unansweredQuestionsService.getUnansweredQuestions(this.id_project, this.selectedNamespace.id)
+      .subscribe(
+        (res) => {
+          this.unansweredQuestions = res['questions'];
+          this.isLoadingUnanswered = false;
+        },
+        (err) => {
+          this.isLoadingUnanswered = false;
+          this.unansweredQuestions = [];
+          this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
+        }
+      );
+  }
 
 }

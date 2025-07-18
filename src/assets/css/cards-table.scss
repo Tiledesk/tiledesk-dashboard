@@ -86,6 +86,14 @@
   padding: 10px 10px 10px 0px;
 }
 
+.bg-disabled {
+  background-color: #e8e8e8;
+
+  select {
+    background-color: #e8e8e8
+  }
+}
+
 .cl-card-first-column {
   display: flex;
   align-items: center;

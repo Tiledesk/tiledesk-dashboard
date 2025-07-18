@@ -82,7 +82,7 @@
 <!-- ---------------------------------- -->
 <div mat-dialog-content *ngIf="displayAddManuallySection === true">
   <div class="second-section-subheader">
-    <div class="go-to-first-section-wpr">
+    <div class="go-to-first-section-wpr" *ngIf="showBackButton">
       <div class="go-to-first-section" (click)="goBack()">
         <span class="material-icons-outlined" style="vertical-align: middle;">
           arrow_back
@@ -138,7 +138,7 @@
 <div mat-dialog-content *ngIf="displayUploadFromCSVSection === true">
   <div class="dialog-content-first-to-upload" *ngIf="displayAfterUploadFromCSVSection === false">
     <div class="second-section-subheader">
-      <div class="go-to-first-section-wpr">
+      <div class="go-to-first-section-wpr" *ngIf="showBackButton">
         <div class="go-to-first-section" (click)="goBack()">
           <span class="material-icons-outlined" style="vertical-align: middle;">
             arrow_back

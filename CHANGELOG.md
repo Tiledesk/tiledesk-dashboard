@@ -1,5 +1,34 @@
 # tiledesk-dashboard
 
+### 2.7.123
+- Adds unanswered questions
+- Updated UI of Knowledge Bases page
+
+### 2.7.122
+- Minor improvements and bug fixing
+
+### 2.7.121
+- Refactors the groups list
+- Adds the ability to disable/restore a group
+
+### 2.7.120
+- Fixes the bug: creating an AI Agent does not work on the knowledge bases page
+
+### 2.7.119
+- Improves Hybrid badges management
+
+### 2.7.118
+- Adds the ability to create namespaces where hybrid searches can be performed
+
+### 2.7.116
+- Adds pagination to Flows list
+
+### 2.7.115
+- Improves navigation performance
+
+### 2.7.114
+- Minor improvements and bug fixing
+
 ### 2.7.113
 - Adds the environment variable "oauth2SigninEnabled"
 

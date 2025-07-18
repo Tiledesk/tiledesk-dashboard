@@ -896,10 +896,12 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+       this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
 
       if (groups) {
-        this.groupsList = groups;
+        // this.groupsList = groups;
+        this.groupsList = groups.filter(group => group.enabled !== false);
+        this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', this.groupsList);
 
         this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
