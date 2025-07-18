@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FlowWebhooksLogsComponent } from './flow-webhooks-logs.component';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BotsSidebarModule } from '../bots-list/bots-sidebar/bots-sidebar.module';
+import { SharedModule } from 'app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -18,7 +21,10 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
+    BotsSidebarModule,
+    SharedModule,
+    TranslateModule
   ]
 })
 export class FlowWebhooksLogsModule { } 
