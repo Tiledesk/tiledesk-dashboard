@@ -72,6 +72,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.getBrowserVersion();
     this.getFaqKbByProjectId();
+    this.getFlowWebhooks();
     await this.getServerBaseURL();
     await this.getRouteParams();
   }
@@ -97,6 +98,21 @@ export class FlowWebhooksLogsComponent implements OnInit {
         }
         resolve();
       });
+    });
+  }
+
+  getFlowWebhooks() {
+    this.webhookService.getFlowWebhooks().subscribe((res: any) => {
+      this.logger.log('[FLOW-WEBHOOKS] GET WH RES  ', res);
+      if (res) {
+        this.flowWebhooks = res
+        this.flowWebhooksCount = res.length
+      }
+    }, (error) => {
+      this.logger.error('[FLOW-WEBHOOKS] GET WH ERROR ', error);
+
+    }, () => {
+      this.logger.log('[FLOW-WEBHOOKS] GET WH COMPLETE');
     });
   }
 
