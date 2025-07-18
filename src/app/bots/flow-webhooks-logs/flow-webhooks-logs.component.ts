@@ -52,6 +52,18 @@ export class FlowWebhooksLogsComponent implements OnInit {
   scrollBottom: boolean = null;
   loadingLogs = false;
 
+  chatBotCount: any;
+  myChatbotOtherCount: number;
+  automationsCount: number;
+  customerSatisfactionBotsCount: number;
+  increaseSalesBotsCount: number;
+  allCommunityTemplatesCount: number;
+  flowWebhooks: any;
+  flowWebhooksCount: number;
+  allTemplatesCount: number;
+  customerSatisfactionTemplatesCount: number;
+  increaseSalesTemplatesCount: number;
+
   constructor(
     private auth: AuthService,
     private translate: TranslateService,
@@ -61,11 +73,14 @@ export class FlowWebhooksLogsComponent implements OnInit {
     public appConfigService: AppConfigService,
     public location: Location,
     public notify: NotifyService,
-    private flowWebhooksLogsService: FlowWebhooksLogsService
+    private flowWebhooksLogsService: FlowWebhooksLogsService,
+    private faqKbService: FaqKbService,
   ) { }
 
   async ngOnInit(): Promise<void> {
     await this.getBrowserVersion();
+    this.getFaqKbByProjectId();
+    this.getFlowWebhooks();
     await this.getServerBaseURL();
     await this.getRouteParams();
   }
@@ -99,6 +114,78 @@ export class FlowWebhooksLogsComponent implements OnInit {
         resolve();
       });
     });
+  }
+
+  getFlowWebhooks() {
+    this.webhookService.getFlowWebhooks().subscribe((res: any) => {
+      this.logger.log('[FLOW-WEBHOOKS] GET WH RES  ', res);
+      if (res) {
+        this.flowWebhooks = res
+        this.flowWebhooksCount = res.length
+      }
+    }, (error) => {
+      this.logger.error('[FLOW-WEBHOOKS] GET WH ERROR ', error);
+
+    }, () => {
+      this.logger.log('[FLOW-WEBHOOKS] GET WH COMPLETE');
+    });
+  }
+
+  getFaqKbByProjectId() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      if (faqKb) {
+        this.chatBotCount = faqKb.length
+        // this.myChatbotOtherCount = faqKb.length
+        this.logger.log('[FLOW-WEBHOOKS] - GET BOTS BY PROJECT ID - myChatbotOtherCount', this.myChatbotOtherCount);
+        this.logger.log('[FLOW-WEBHOOKS] - GET BOTS BY PROJECT ID - faqKb', faqKb);
+      }
+
+      const myChatbot = faqKb.filter((obj) => {
+        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
+      });
+      this.logger.log('[FLOW-WEBHOOKS]  - myChatbot', myChatbot);
+      if (myChatbot) {
+        this.myChatbotOtherCount = myChatbot.length;
+        this.logger.log('[FLOW-WEBHOOKS]  - myChatbot COUNT', this.customerSatisfactionTemplatesCount);
+      }
+
+
+      const automations = faqKb.filter((obj) => {
+        return obj.subtype && ["webhook", "copilot"].includes(obj.subtype);
+      });
+      this.logger.log('[FLOW-WEBHOOKS]  - automations', automations);
+      if (automations) {
+        this.automationsCount = automations.length;
+        this.logger.log('[FLOW-WEBHOOKS]  - automations COUNT', this.customerSatisfactionTemplatesCount);
+      }
+
+      const customerSatisfactionBots = faqKb.filter((obj) => {
+        return obj.mainCategory === "Customer Satisfaction"
+      });
+      this.logger.log('[FLOW-WEBHOOKS]  - Customer Satisfaction BOTS', customerSatisfactionBots);
+      if (customerSatisfactionBots) {
+        this.customerSatisfactionBotsCount = customerSatisfactionBots.length;
+        this.logger.log('[FLOW-WEBHOOKS]  - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+      }
+
+      const increaseSalesBots = faqKb.filter((obj) => {
+        return obj.mainCategory === "Increase Sales"
+      });
+      this.logger.log('[FLOW-WEBHOOKS]  - Increase Sales BOTS ', increaseSalesBots);
+      if (increaseSalesBots) {
+        this.increaseSalesBotsCount = increaseSalesBots.length;
+        this.logger.log('[FLOW-WEBHOOKS] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
+      }
+
+
+    }, (error) => {
+      this.logger.error('[FLOW-WEBHOOKS] GET BOTS ERROR ', error);
+
+    }, () => {
+      this.logger.log('[FLOW-WEBHOOKS] GET BOTS COMPLETE');
+
+    });
+
   }
 
   private getServerBaseURL(): Promise<void> {
