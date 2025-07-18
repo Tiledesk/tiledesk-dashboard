@@ -739,6 +739,7 @@
     "Percentage": "النسبة المئوية",
     "CurrentTotal":"الإجمالي الحالي",
     "Exceeds100": "يتجاوز ١٠٠٪",
+    "PercentageGroupName": "النسبة المئوية {{group_name}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

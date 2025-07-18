@@ -739,6 +739,7 @@
     "Percentage": "Porcentagem",
     "CurrentTotal":"Total atual",
     "Exceeds100":"Excede 100%",
+    "PercentageGroupName": "Percentagem {{group_name}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

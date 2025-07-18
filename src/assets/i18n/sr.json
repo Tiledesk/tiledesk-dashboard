@@ -740,6 +740,7 @@
     "Percentage": "Проценат",
     "CurrentTotal":"Тренутни укупан износ",
     "Exceeds100":"Прелази 100%",
+    "PercentageGroupName": "Проценат {{group_name}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

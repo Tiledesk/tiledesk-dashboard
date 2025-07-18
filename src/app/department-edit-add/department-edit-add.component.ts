@@ -26,6 +26,7 @@ import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
+import { EditGroupsLoadDistributionModalComponent } from './edit-groups-load-distribution-modal/edit-groups-load-distribution-modal.component';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -1527,6 +1528,22 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       });
   }
     
+  openEditGroupsLoadDistributionDialog(){
+      const dialogRef = this.dialog.open(EditGroupsLoadDistributionModalComponent, {
+        width: '400px',
+        data: { 
+          groups: this.groupsParsedArray
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.groupsParsedArray = result;
+          this.onGroupPercentageChange(); // update description string
+        }
+      });
+  
+  }
   
   openEditLoadDistributionDialog(group) {
       // prevent goToGroupDetail

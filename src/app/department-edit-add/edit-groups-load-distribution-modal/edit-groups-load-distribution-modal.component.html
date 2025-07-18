@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>{{'EditLoadDistribution' | translate}}</h2>
+<mat-dialog-content>
+  <form [formGroup]="distributionForm">
+    <div *ngFor="let group of data.groups; let i = index" class="percentage-row">
+      <mat-form-field appearance="fill" [class.mat-form-field-invalid]="isTotalExceeded && percentages.at(i).value">
+        <mat-label> {{ 'PercentageGroupName' | translate:{ group_name: group.name}  }} </mat-label>
+        <input matInput 
+               type="number" 
+               [formControl]="percentages.at(i)"
+               min="0"
+               max="100"
+               step="1">
+        <span matSuffix>%</span>
+        <!-- <mat-error *ngIf="percentages.at(i).hasError('required')">
+          Required
+        </mat-error>
+        <mat-error *ngIf="percentages.at(i).hasError('min')">
+          Minimum is 0%
+        </mat-error>
+        <mat-error *ngIf="percentages.at(i).hasError('max')">
+          Maximum is 100%
+        </mat-error> -->
+      </mat-form-field>
+    </div>
+
+    <div class="total--display" [class.error-text]="isTotalExceeded">
+      {{'CurrentTotal' | translate }}: {{ currentTotal }}%
+      <span *ngIf="isTotalExceeded" class="error-message">({{'Exceeds100' | translate}})</span>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-button class="mat-dialog-close-btn" (click)="onCancel()">
+        {{ 'Cancel' | translate}}
+    </button>
+    <button mat-button class="mat-dialog-ok-btn" 
+          (click)="onSave()"
+          [disabled]="isSaveDisabled">
+        {{'Save' | translate}}
+    </button>
+</mat-dialog-actions>

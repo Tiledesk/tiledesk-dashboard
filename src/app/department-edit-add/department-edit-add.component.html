@@ -399,17 +399,46 @@
                         <!-- New section for demo  -->
                         <div class="row" *ngIf="displayAssignTo === false && groupsParsedArray?.length">
                           <div class="col-xs-12">
-                            <h3 class="card_title__underlined" style="margin-top: 25px;">
-                              <span class="card_title__underline">
+                            <div class="card-title-wpr" style="max-width: 538px;
+                                                          display: flex;
+                                                          flex-direction: row;
+                                                          align-items: center;
+                                                          justify-content: space-between;"> 
+                              <h3 class="card_title__underlined" style="margin-top: 25px;">
+                                <span class="card_title__underline">
 
-                                Groups
-                              </span>
-                            </h3>
+                                  {{'Groups' | translate}}
+
+                                  <!-- <button mat-icon-button (click)="openEditGroupsLoadDistributionDialog(group)" 
+                                        matTooltipClass="custom-mat-tooltip" 
+                                        matTooltip= "{{'EditLoadDistribution' | translate}}"
+                                        #tooltip="matTooltip" 
+                                        matTooltipPosition='above' 
+                                        matTooltipHideDelay="100">
+                                          <mat-icon style="font-size: 16px;">edit</mat-icon>
+                                      </button> -->
+
+                                </span>
+                              </h3>
+
+                              <div class="edit-load-distribution-btn-wpr" style="margin-top: 8px;">
+                                 <button class="trasparent-btn" (click)="openEditGroupsLoadDistributionDialog()"> 
+                                  {{'EditLoadDistribution' | translate}}
+                                </button> 
+                              </div>
+
+                            </div>
+
+                               
                           </div>
+
+                          
 
                           <div class="col-xs-12">
                             <div class="section-subtitle" style="height: 5px;"> </div>
                           </div>
+                           
+                           
                         </div>
                           <div class="row" style="margin-top: 12px; max-width: 523px;" *ngIf="displayAssignTo === false && groupsParsedArray?.length" class="groups-container">
                               <!-- groupsParsedArray   {{groupsParsedArray | json}} -->
