@@ -142,10 +142,7 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
             this.PERMISSION_TO_DELETE = true
             console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
           }
-  
-          // if (status.matchedPermissions.includes('lead_update')) {
-          //   // Enable lead update action
-          // }
+
   
           // You can also check status.role === 'owner' if needed
         });

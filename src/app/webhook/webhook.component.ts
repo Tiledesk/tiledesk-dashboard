@@ -104,10 +104,6 @@ export class WebhookComponent implements OnInit {
           }
   
   
-          // if (status.matchedPermissions.includes('lead_update')) {
-          //   // Enable lead update action
-          // }
-  
           // You can also check status.role === 'owner' if needed
         });
     }

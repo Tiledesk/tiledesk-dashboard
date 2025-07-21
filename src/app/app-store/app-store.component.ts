@@ -157,11 +157,6 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           console.log('[APP-STORE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
-
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
-
         // You can also check status.role === 'owner' if needed
       });
   }

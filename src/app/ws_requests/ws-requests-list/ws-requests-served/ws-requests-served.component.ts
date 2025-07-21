@@ -40,7 +40,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number;
   @Input() current_selected_prjct: any;
-  @Input() PERMISSION_TO_UPDATE_REQUEST: boolean;
+
   CHAT_PANEL_MODE: boolean = false;
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
@@ -255,7 +255,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
     // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)

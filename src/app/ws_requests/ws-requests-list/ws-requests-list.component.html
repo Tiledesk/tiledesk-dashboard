@@ -377,11 +377,6 @@
                       </ng-option>
                     </ng-select>
 
-                    <!-- Invisible overlay to block interactions -->
-                    <!-- <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
-                       (click)="handleBlockedSelectClick($event)"
-                      style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                    </div> -->
                   </div>
 
 
@@ -404,11 +399,6 @@
                       </ng-option>
                     </ng-select>
 
-                    <!-- <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
-                  (click)="handleBlockedSelectClick($event)"
-                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                </div> -->
-
                   </div>
 
 
@@ -427,14 +417,7 @@
                         {{ conversationType?.name }}
                       </ng-option>
                     </ng-select>
-
-                    <!-- <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
-                  (click)="handleBlockedSelectClick($event)"
-                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                </div> -->
                   </div>
-
-
                 </div>
               </div>
 
@@ -897,13 +880,12 @@
 
               <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false"
                 [wsRequestsUnserved]="wsRequestsUnserved" [ws_requests_length]="ws_requests?.length"
-                [requestCountResp]="requestCountResp" [PERMISSION_TO_UPDATE_REQUEST]="PERMISSION_TO_UPDATE_REQUEST">
+                [requestCountResp]="requestCountResp">
               </appdashboard-ws-requests-unserved>
               <!-- *ngIf="wsRequestsServed" -->
               <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
                 [wsRequestsServed]="wsRequestsServed" [current_selected_prjct]="current_selected_prjct"
-                [ws_requests_length]="ws_requests?.length" [requestCountResp]="requestCountResp"
-                [PERMISSION_TO_UPDATE_REQUEST]="PERMISSION_TO_UPDATE_REQUEST">
+                [ws_requests_length]="ws_requests?.length" [requestCountResp]="requestCountResp">
               </appdashboard-ws-requests-served>
               <!-- Chiamare il componente qui -->
             </div>

@@ -151,9 +151,6 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
           console.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
         }
         
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });

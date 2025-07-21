@@ -35,7 +35,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   @Input() wsRequestsUnserved: Request[];
   @Input() ws_requests_length: number
   @Input() requestCountResp: any;
-  @Input() PERMISSION_TO_UPDATE_REQUEST: boolean;
   CHAT_PANEL_MODE: boolean = false
 
   countRequestsServedByHumanRr: number
@@ -213,7 +212,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST)
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved length', this.wsRequestsUnserved.length)
     this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)

@@ -565,9 +565,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
+    
 
         // You can also check status.role === 'owner' if needed
       });

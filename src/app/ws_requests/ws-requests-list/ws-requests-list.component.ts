@@ -200,14 +200,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   prjct_profile_name: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
 
-  ROLE: string;
-  PERMISSIONS: any;
-  PERMISSION_TO_UPDATE_REQUEST: boolean;
+
   private permissionReady$ = new BehaviorSubject<boolean>(false);
   hasDefaultRole: boolean;
   CHAT_PANEL_MODE: boolean = false;
 
-  PERMISSION_TO_EDIT_SMART_ASSIGN:  boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+ 
+  PERMISSION_TO_CREATE_TICKET: boolean;
+  PERMISSION_TO_EDIT_SMART_ASSIGN: boolean;
   PERMISSION_TO_EDIT_OPERATING_HOURS: boolean;
 
   customHeight: boolean = true;
@@ -306,19 +308,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         console.log('[WS-REQUESTS-LIST] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
         console.log('[WS-REQUESTS-LIST] - hasDefaultRole', this.hasDefaultRole);
+
+
+        // -------------------------------------
+        // PERMISSION_TO_CREATE_TICKET
+        // -------------------------------------
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
-            console.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_UPDATE)
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CREATE_TICKET)) {
+            console.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_CREATE_TICKET)
             // Enable update action
-            this.PERMISSION_TO_UPDATE_REQUEST = true
-            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
+            this.PERMISSION_TO_CREATE_TICKET = true
+            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE TICKET 1 ', this.PERMISSION_TO_CREATE_TICKET);
           } else {
-            this.PERMISSION_TO_UPDATE_REQUEST = false
-            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
+            this.PERMISSION_TO_CREATE_TICKET = false
+            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE_TICKET 2', this.PERMISSION_TO_CREATE_TICKET);
           }
         } else {
-          this.PERMISSION_TO_UPDATE_REQUEST = true
-          console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          this.PERMISSION_TO_CREATE_TICKET = true
+          console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_CREATE_TICKET ', this.PERMISSION_TO_CREATE_TICKET);
         }
 
 
@@ -2190,7 +2197,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   presentCreateInternalRequestModal() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_CREATE_TICKET) {
       this.selectedPriority = this.priority[2].name;
       this.displayInternalRequestModal = 'block'
       this.hasClickedCreateNewInternalRequest = false;

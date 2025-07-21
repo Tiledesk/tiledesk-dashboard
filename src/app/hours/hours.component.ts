@@ -167,9 +167,6 @@ export class HoursComponent implements OnInit, OnDestroy {
           console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });

@@ -229,9 +229,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
           console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
+     
 
         // You can also check status.role === 'owner' if needed
       });

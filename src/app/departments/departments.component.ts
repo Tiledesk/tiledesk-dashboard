@@ -161,9 +161,6 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
           console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_CREATE_DEPT);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });

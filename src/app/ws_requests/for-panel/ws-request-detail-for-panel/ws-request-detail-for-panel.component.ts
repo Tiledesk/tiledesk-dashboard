@@ -76,7 +76,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   MORE_INFO_ACCORDION_IS_OPENED: boolean = false;
   CHAT_PANEL_MODE: boolean = true;
 
-  PERMISSION_TO_UPDATE_REQUEST: boolean;
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
 
@@ -156,21 +155,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       .subscribe(status => {
         console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
         console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
-        
-        // PERMISSION_TO_UPDATE_REQUEST
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
-            // Enable update action
-            this.PERMISSION_TO_UPDATE_REQUEST = true
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
-          } else {
-            this.PERMISSION_TO_UPDATE_REQUEST = false
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
-          }
-        } else {
-          this.PERMISSION_TO_UPDATE_REQUEST = true
-          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
-        }
+      
 
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
@@ -204,19 +189,10 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
           console.log('[REQUEST-DTLS-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
-
         // You can also check status.role === 'owner' if needed
       });
 
-    // this.rolesService.getUpdateRequestPermission()
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((hasPermission) => {
-    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
-    //     console.log('[REQUEST-DTLS-X-PANEL] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
-    //   });
+    
   }
 
   getCurrentYear() {
