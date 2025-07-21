@@ -715,7 +715,7 @@
 
                           <li class="divider"></li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false }">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST)}">
 
                             <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
@@ -727,7 +727,7 @@
                           </li>
 
                           <li class="divider"></li>
-                          <li>
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : !PERMISSION_TO_SEND_TRANSCRIPT}">
                             <a (click)='displayModalDownloadTranscript()'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">speaker_notes</i>

@@ -7,6 +7,7 @@ export const PERMISSIONS = {
   INBOX_READ: 'inbox_read',
   REQUEST_UPDATE: 'request_update',
   REQUEST_SEND: 'request_send',
+  REQUEST_CREATE_TICKET: 'request_create_ticket',
   REQUEST_CLOSE: 'request_close',
   REQUEST_JOIN: 'request_join',
   REQUEST_REOPEN: 'request_reopen',
@@ -19,6 +20,8 @@ export const PERMISSIONS = {
   REQUEST_UPDATE_NOTES: 'request_update_notes',
   REQUEST_REASSIGN:'request_reassign',
   REQUEST_ADD:'request_add',
+  REQUEST_LEFT: 'request_left',
+  REQUEST_TRANSCRIPT_SEND: 'request_transcript_send',
 
 
   HISTORY_READ: 'history_read',
@@ -31,6 +34,8 @@ export const PERMISSIONS = {
   LEAD_TRASH: 'lead_trash',
   LEAD_DELETE: 'lead_delete',
   LEADS_EXPORT: 'leads_export',
+  LEAD_BAN: 'lead_ban',
+  LEAD_UNBAN: 'lead_unban',
 
   ANALYTICS_READ: 'analytics_read',
   ACTIVITIES_READ: 'activities_read',

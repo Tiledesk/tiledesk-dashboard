@@ -112,7 +112,8 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.INBOX_READ, label: 'Able to view real time and opened' },
         // { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
-        { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
+        // { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
+        { key: PERMISSIONS.REQUEST_CREATE_TICKET, label: 'Able to create a ticket'},
         { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message' },
         { key: PERMISSIONS.REQUEST_JOIN, label: 'Able to join to a conversation' },
         { key: PERMISSIONS.REQUEST_REOPEN, label: 'Able to reopen an archived conversation' },
@@ -124,6 +125,8 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.REQUEST_UPDATE_NOTES, label: 'Able to add / remove notes from a conversation' },
         { key: PERMISSIONS.REQUEST_REASSIGN, label: 'Able to reassign a conversation' },
         { key: PERMISSIONS.REQUEST_ADD, label: 'Able to add a teammate to a conversation' },
+        { key: PERMISSIONS.REQUEST_LEFT, label: 'Able to leave a conversation to which is joined' },
+        { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the transctipt of a conversation' },
         { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
         { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete' }
       ]
@@ -168,6 +171,8 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
        { key: PERMISSIONS.LEADS_READ, label: 'Able to view' },
        { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
+       { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
+        { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' },
        { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
        { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
        { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },

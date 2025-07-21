@@ -290,6 +290,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isAuthorizedBanned = false;
   permissionCheckedBanned = false;
   PERMISSION_TO_VIEW_BANNED: boolean;
+  PERMISSION_TO_UNBAN_VISITOR: boolean;
 
 
   isAuthorizedAdvanced = false;
@@ -540,6 +541,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
 
         // ---------------------------------
+        // PERMISSION_TO_UNBAN_VISITOR
+        // ---------------------------------
+        if (status.role === 'owner') {
+          // Owner always has permission
+          this.PERMISSION_TO_UNBAN_VISITOR = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+
+        } else if (status.role === 'admin' || status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_UNBAN_VISITOR = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UNBAN_VISITOR = status.matchedPermissions.includes(PERMISSIONS.LEAD_UNBAN);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+        }
+
+        // --------------------------------
         // PERMISSION TO VIEW ADVANCED
         // ---------------------------------
         if (status.role === 'owner') {
@@ -558,10 +578,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
         }
 
-
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });
@@ -1331,7 +1347,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
-
   }
 
   goToProjectSettings_Advanced() {
@@ -2818,6 +2833,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   unbanVisitor(bannedUserId: string) {
+    if (!this.PERMISSION_TO_UNBAN_VISITOR) {
+        this.notify.presentDialogNoPermissionToPermomfAction();
+        return;
+    }
     this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', bannedUserId)
     this.projectService.unbanVisitor(bannedUserId).subscribe((res: any) => {
       this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR  - RES ', res)

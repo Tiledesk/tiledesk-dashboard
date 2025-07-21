@@ -1525,11 +1525,11 @@
 
                                       <!-- UNBAN CONTACT click)='unbanVisitor(visitor?._id)'-->
                                       <button type="button" class="btn btn-primary btn-simple btn-xs unban-visitor"
-                                        [disabled]="IS_CURRENT_USER_AGENT === true"
+                                        [disabled]="(USER_ROLE === 'admin'  || USER_ROLE === 'agent') || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin'  && USER_ROLE !== 'agent' && !PERMISSION_TO_UNBAN_VISITOR)"
                                         (click)='unbanVisitor(visitor?.bannedUsers_Id)'
                                         matTooltipClass="custom-mat-tooltip-in-widget-setup"
                                         matTooltip=" {{'Unban' | translate}}" #tooltip="matTooltip"
-                                        matTooltipPosition='right' matTooltipHideDelay="100">
+                                        matTooltipPosition='right' matTooltipHideDelay="100"> 
 
 
                                         <span>

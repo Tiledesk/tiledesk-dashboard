@@ -50,7 +50,7 @@ import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
-import { isOnlyEmoji, removeEmojis} from 'app/utils/utils-message';
+import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -389,7 +389,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
-  PERMISSION_TO_UPDATE_REQUEST: boolean;
+
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_SEND_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
@@ -403,7 +403,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_UPDATE_REQUEST_NOTES: boolean;
   PERMISSION_TO_REASSIGN_REQUEST: boolean;
   PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST: boolean;
-
+  PERMISSION_TO_LEFT_REQUEST: boolean;
+  PERMISSION_TO_SEND_TRANSCRIPT: boolean;
+  PERMISSION_TO_BAN_VISITOR: boolean;
 
   /**
    * Constructor
@@ -581,26 +583,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         console.log('[WS-REQUESTS-MSGS] - Role:', status.role);
         console.log('[WS-REQUESTS-MSGS] - Permissions:', status.matchedPermissions);
 
-        // PERMISSION_TO_UPDATE_REQUEST
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
-            // Enable update action
-            this.PERMISSION_TO_UPDATE_REQUEST = true
-            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
-          } else {
-            this.PERMISSION_TO_UPDATE_REQUEST = false
-            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
-          }
-        } else {
-          this.PERMISSION_TO_UPDATE_REQUEST = true
-          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
-        }
-
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
             console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
-            
+
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
@@ -631,7 +618,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
             console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
-            
+
             this.PERMISSION_TO_JOIN_REQUEST = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
           } else {
@@ -643,11 +630,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
-         // PERMISSION_TO_REOPEN
+        // PERMISSION_TO_REOPEN
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
             console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
-            
+
             this.PERMISSION_TO_REOPEN = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
           } else {
@@ -663,7 +650,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // PERMISSION_TO_UPDATE_REQUEST_STATUS
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_STATUS)) {
- 
+
             this.PERMISSION_TO_UPDATE_REQUEST_STATUS = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_STATUS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
           } else {
@@ -708,7 +695,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // PERMISSION_TO_UPDATE_SMART_ASSIGNMENT
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_SMART_ASSIGNMENT)) {
-           
+
             this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_SMART_ASSIGNMENT 1 ', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
           } else {
@@ -723,7 +710,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // PERMISSION_TO_UPDATE_REQUEST_TAGS
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_TAGS)) {
-           
+
             this.PERMISSION_TO_UPDATE_REQUEST_TAGS = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_TAGS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
           } else {
@@ -738,7 +725,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // PERMISSION_TO_UPDATE_REQUEST_NOTES
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_NOTES)) {
-           
+
             this.PERMISSION_TO_UPDATE_REQUEST_NOTES = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_NOTES 1 ', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
           } else {
@@ -753,7 +740,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // PERMISSION_TO_REASSIGN_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REASSIGN)) {
-           
+
             this.PERMISSION_TO_REASSIGN_REQUEST = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REASSIGN_REQUEST 1 ', this.PERMISSION_TO_REASSIGN_REQUEST);
           } else {
@@ -768,7 +755,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_ADD)) {
-           
+
             this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST 1 ', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
           } else {
@@ -780,12 +767,40 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST ', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
         }
 
+        // PERMISSION_TO_LEFT_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_LEFT)) {
 
+            this.PERMISSION_TO_LEFT_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_LEFT_REQUEST 1 ', this.PERMISSION_TO_LEFT_REQUEST);
+          } else {
+            this.PERMISSION_TO_LEFT_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_LEFT_REQUEST 2', this.PERMISSION_TO_LEFT_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_LEFT_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_LEFT_REQUEST ', this.PERMISSION_TO_LEFT_REQUEST);
+        }
+
+        // PERMISSION_TO_SEND_TRANSCRIPT
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_TRANSCRIPT_SEND)) {
+
+            this.PERMISSION_TO_SEND_TRANSCRIPT = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_TRANSCRIPT 1 ', this.PERMISSION_TO_SEND_TRANSCRIPT);
+          } else {
+            this.PERMISSION_TO_SEND_TRANSCRIPT = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_TRANSCRIPT 2', this.PERMISSION_TO_SEND_TRANSCRIPT);
+          }
+        } else {
+          this.PERMISSION_TO_SEND_TRANSCRIPT = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_SEND_TRANSCRIPT ', this.PERMISSION_TO_SEND_TRANSCRIPT);
+        }
 
         // PERMISSION_TO_READ_TAGS (IN TAGS SECTION )
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ)) {
-           
+
             this.PERMISSION_TO_READ_TAGS = true
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TAGS 1 ', this.PERMISSION_TO_READ_TAGS);
           } else {
@@ -797,25 +812,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TAGS ', this.PERMISSION_TO_READ_TAGS);
         }
 
-     
+
+        // PERMISSION_TO_BAN_VISITOR
+        if (status.role === 'owner') {
+          // Owner always has permission
+          this.PERMISSION_TO_BAN_VISITOR = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+
+        } else if (status.role === 'admin' || status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_BAN_VISITOR = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_BAN_VISITOR = status.matchedPermissions.includes(PERMISSIONS.LEAD_BAN);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+        }
 
 
-
-       
-        
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });
 
-    // this.rolesService.getUpdateRequestPermission()
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((hasPermission) => {
-    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
-    //     console.log('[WS-REQUESTS-MSGS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
-    //   });
   }
 
 
@@ -982,13 +1001,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+          console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+          console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
         this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
@@ -1679,12 +1698,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
           console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
-            const urlsWitheList =  this.current_selected_prjct.id_project.settings.allowed_urls_list
+            const urlsWitheList = this.current_selected_prjct.id_project.settings.allowed_urls_list
             if (urlsWitheList !== undefined) {
               this.URLS_WITHELIST = urlsWitheList;
               console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
             }
-             console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
+            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
@@ -2031,14 +2050,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
-        console.log('[WS-REQUESTS-MSGS] wsrequest status this.request ',  this.request.status)
-          
+        console.log('[WS-REQUESTS-MSGS] wsrequest status this.request ', this.request.status)
+
         if (this.request.status !== 1000) {
           this.roleService.checkRoleForCurrentProject('wsrequest-detail')
         } else {
           this.roleService.checkRoleForCurrentProject('wsrequest-detail-history')
         }
-       
+
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
@@ -3214,7 +3233,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   removeTag(tag: string) {
-    if(!this.PERMISSION_TO_UPDATE_REQUEST_TAGS) {
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_TAGS) {
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
       return;
     }
@@ -3427,7 +3446,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         });
     }
-  
+
   }
 
 
@@ -3483,15 +3502,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // elMainPanel.scrollTo(0,scrollpos)
   }
 
-  // ---------------------------------------------------------------------------------------
-  // @ Priority
-  // ---------------------------------------------------------------------------------------
-  // handlePriorityClick(event: MouseEvent): void {
-  //   if (!this.PERMISSION_TO_UPDATE_REQUEST) {
-  //     event.stopPropagation(); // Prevent ng-select from opening
-  //     this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
-  //   }
-  // }
 
   handleBlockedSelectClick(event: MouseEvent): void {
     event.preventDefault();
@@ -3801,54 +3811,49 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openSelectUsersModal(actionSelected) {
-    console.log(' openSelectUsersModal PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST)
-   
-      this.actionInModal = actionSelected
-      if (this.actionInModal === 'reassign') {
+    this.actionInModal = actionSelected
+    if (this.actionInModal === 'reassign') {
 
-       if (!this.PERMISSION_TO_REASSIGN_REQUEST) {
-          this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-          return;
-        }
+      if (!this.PERMISSION_TO_REASSIGN_REQUEST) {
+        this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+        return;
       }
+    }
 
-      if (this.actionInModal === 'invite') {
-       if (!this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST) {
-          this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-          return;
-        }
+    if (this.actionInModal === 'invite') {
+      if (!this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST) {
+        this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+        return;
       }
+    }
 
-      
-
-
-      console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
-      this.closeMoreOptionDropdown();
+    console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+    this.closeMoreOptionDropdown();
 
 
-      if (this.actionInModal === 'invite') {
-        if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
-          if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
-            let agentFullname = ""
-            if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
-              agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
-            } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
-              agentFullname = this.agents_array[0].firstname
-            }
-            this.presentModalYouCannotAddAgents(agentFullname)
-          } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
-            this.presentModalAddAgent()
-          } else if (this.agents_array.length === 0) {
-            this.presentModalAddAgent()
+    if (this.actionInModal === 'invite') {
+      if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+        if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
+          let agentFullname = ""
+          if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
+            agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
+          } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
+            agentFullname = this.agents_array[0].firstname
           }
-        } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
+          this.presentModalYouCannotAddAgents(agentFullname)
+        } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
+          this.presentModalAddAgent()
+        } else if (this.agents_array.length === 0) {
           this.presentModalAddAgent()
         }
-      } else {
+      } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
         this.presentModalAddAgent()
       }
-      // this.getAllUsersOfCurrentProject();
-   
+    } else {
+      this.presentModalAddAgent()
+    }
+    // this.getAllUsersOfCurrentProject();
+
   }
 
   presentModalAddAgent() {
@@ -4532,7 +4537,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     }
 
-     this.isDropdownOpen = !this.isDropdownOpen;
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
 
@@ -4615,7 +4620,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
-    
+
   }
 
   presentModalReopenConvIsNotPossible() {
@@ -4648,19 +4653,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     })
   }
 
- 
-getJoinTooltipMessage(): string {
-  if (!this.PERMISSION_TO_JOIN_REQUEST) {
-    return this.translate.instant('YonDontHavePermissionsToPerformThisAction');
+
+  getJoinTooltipMessage(): string {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      return this.translate.instant('YonDontHavePermissionsToPerformThisAction');
+    }
+
+    if (this.request?.status !== 1000) {
+      return this.translate.instant('ThisConversationIsNotAssignedToYou');
+    }
+
+    return this.translate.instant('ThisConversationIsClosedReopenItToJoin');
   }
 
-  if (this.request?.status !== 1000) {
-    return this.translate.instant('ThisConversationIsNotAssignedToYou');
-  }
-
-  return this.translate.instant('ThisConversationIsClosedReopenItToJoin');
-}
-  
 
   // JOIN TO CHAT GROUP
   onJoinHandled() {
@@ -4687,7 +4692,7 @@ getJoinTooltipMessage(): string {
     } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
       this.joinChat()
     }
-   
+
   }
 
 
@@ -4723,7 +4728,7 @@ getJoinTooltipMessage(): string {
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - addParticipant TO CHAT GROUP * COMPLETE *');
 
-        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.YouHaveBeenSuccessfullyAddedToTheChat"), 2, 'done');
         this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
         this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
       });
@@ -4731,6 +4736,11 @@ getJoinTooltipMessage(): string {
 
 
   openleaveChatModal() {
+    if (this.PERMISSION_TO_LEFT_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
+
     if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
 
       if (this.agents_array.length === 1) {
@@ -5000,6 +5010,11 @@ getJoinTooltipMessage(): string {
 
 
   displayModalDownloadTranscript() {
+    if (this.PERMISSION_TO_SEND_TRANSCRIPT) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
+
     if (!this.overridePay) {
       if (this.isVisiblePaymentTab) {
 
@@ -5199,7 +5214,7 @@ getJoinTooltipMessage(): string {
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
 
 
-    if (this.CURRENT_USER_ROLE === 'owner') {
+    if (this.CURRENT_USER_ROLE === 'owner' || this.PERMISSION_TO_BAN_VISITOR === true) {
       if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.logger.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
@@ -5222,8 +5237,8 @@ getJoinTooltipMessage(): string {
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
-      // this.presentModalAgentCannotManageAvancedSettings()
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings();
+      // this.presentModalOnlyOwnerCanManageAdvancedProjectSettings();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
     }
 
   }
@@ -5985,28 +6000,28 @@ getJoinTooltipMessage(): string {
   }
 
   onMessageChange(msg: string) {
-    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg) 
+    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
     // if (!this.ALLOW_TO_SEND_EMOJI) {
     //   this.chat_message = removeEmojis(msg);
     // }
     this.checkEmojiContent(msg)
   }
 
-checkEmojiContent(message: string): void {
-  if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
-    const messageWithoutEmojis = removeEmojis(message).trim();
-    this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
-  } else {
-    this.showEmojiWarning = false;
+  checkEmojiContent(message: string): void {
+    if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
+      const messageWithoutEmojis = removeEmojis(message).trim();
+      this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+    } else {
+      this.showEmojiWarning = false;
+    }
   }
-}
 
   extractUrls(text: string): string[] {
     const urlRegex = /https?:\/\/[^\s]+/g;
     return text.match(urlRegex) || [];
   }
 
- 
+
 
   triggerWarning(message: string) {
     this.warningMessage = message;
@@ -6079,9 +6094,9 @@ checkEmojiContent(message: string): void {
           _chat_message = messageWithoutEmojis;
         }
 
-        if(_chat_message === '') {
+        if (_chat_message === '') {
           //  this.chat_message = _chat_message
-            this.chat_message = ''
+          this.chat_message = ''
           return;
         }
 
@@ -6143,14 +6158,6 @@ checkEmojiContent(message: string): void {
             return;
           }
         }
-
-
-        
-
-        // if (!this.ALLOW_TO_SEND_EMOJI && isOnlyEmoji(_chat_message)) {
-        //   // this.notify.presentDialogNoPermissionToPermomfAction();
-        //   return;
-        // }
 
         // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
         // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -6772,7 +6779,7 @@ checkEmojiContent(message: string): void {
   }
 
   smartAssignmentOff() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT) {
       Swal.fire({
         title: this.translationMap.get('AreYouSure') + '?',
         text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
@@ -6838,7 +6845,7 @@ checkEmojiContent(message: string): void {
   }
 
   smartAssignmentOn() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT) {
       Swal.fire({
         title: this.translationMap.get('AreYouSure') + '?',
         text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
