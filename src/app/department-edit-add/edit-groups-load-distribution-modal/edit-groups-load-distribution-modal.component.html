@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{'EditLoadDistribution' | translate}}</h2>
-<mat-dialog-content>
+<mat-dialog-content style="max-height: 300px;">
   <form [formGroup]="distributionForm">
     <div *ngFor="let group of data.groups; let i = index" class="percentage-row">
       <mat-form-field appearance="fill" [class.mat-form-field-invalid]="isTotalExceeded && percentages.at(i).value">
@@ -23,14 +23,20 @@
       </mat-form-field>
     </div>
 
-    <div class="total--display" [class.error-text]="isTotalExceeded">
+    <!-- <div class="total--display" [class.error-text]="isTotalExceeded">
       {{'CurrentTotal' | translate }}: {{ currentTotal }}%
       <span *ngIf="isTotalExceeded" class="error-message">({{'Exceeds100' | translate}})</span>
-    </div>
+    </div> -->
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
+
+    <div class="total--display" [class.error-text]="isTotalExceeded">
+      {{'CurrentTotal' | translate }}: {{ currentTotal }}%
+      <span *ngIf="isTotalExceeded" class="error-message">({{'Exceeds100' | translate}})</span>
+    </div>
+
     <button mat-button class="mat-dialog-close-btn" (click)="onCancel()">
         {{ 'Cancel' | translate}}
     </button>

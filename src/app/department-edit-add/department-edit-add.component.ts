@@ -476,6 +476,11 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   onChangeDeptDescription($event) {
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
+    
+    this.dept_description_toUpdate = $event;
+    this.dept_description_toUpdate_temp = "";
+    this.groupsParsedArray = [];
+    this.displayAssignTo = true;
 
     // let cleaned = $event.trim();
 
@@ -1211,6 +1216,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
             // Step 3: Parse into array
             this.groupsParsedArray = JSON.parse(unescaped);
             this.dept_description_toUpdate = '';
+
+            this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
+
             console.log('[DEPT-EDIT-ADD] Parsed groupsParsedArray:', this.groupsParsedArray);
             this.displayAssignTo = false
             this.getGroupsByProjectId()
@@ -1219,12 +1227,15 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
             console.error('[DEPT-EDIT-ADD] ❌ Error parsing groupsParsedArray:', err);
             this.groupsParsedArray = [];
             this.dept_description_toUpdate = dept.description;
+            this.dept_description_toUpdate_temp = "";
             this.displayAssignTo = true
           }
 
         } else {
           this.groupsParsedArray = [];
+
           this.dept_description_toUpdate = rawDescription;
+          this.dept_description_toUpdate_temp = "";
           this.displayAssignTo = true
         }
 
@@ -1572,17 +1583,53 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
         // this.dept_description_toUpdate = JSON.stringify(result);
         this.dept_description_toUpdate_temp = JSON.stringify(result);
+         this.dept_description_toUpdate = ""; // always clear textarea if using array
         console.log('[DEPT-EDIT-ADD] 🔄 Updated description:', this.dept_description_toUpdate_temp);
       }
   }
+
+  // [{\"id\": \"68480837c19660002ded7b79\", \"percentage\":20},{\"id\": \"68480982c19660002deda58e\", \"percentage\":10}, {\"id\": \"687a6aa364222f002d1c83f9\", \"percentage\":10}, {\"id\": \"687a6ab364222f002d1c8410\", \"percentage\":10}, {\"id\": \"687a6ac064222f002d1c8426\", \"percentage\":10},{\"id\": \"687a6aca64222f002d1c843c\", \"percentage\":10}]
+
+private syncDescriptionVars(description: string) {
+  let rawDescription = description?.trim() || '';
+  if (
+    rawDescription.startsWith('[') ||
+    (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
+    (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))
+  ) {
+    try {
+      if (
+        (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
+        (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
+      ) {
+        rawDescription = rawDescription.slice(1, -1);
+      }
+      const unescaped = rawDescription.replace(/\\"/g, '"');
+      this.groupsParsedArray = JSON.parse(unescaped);
+      this.dept_description_toUpdate = "";
+      this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
+      this.displayAssignTo = false;
+    } catch (err) {
+      this.groupsParsedArray = [];
+      this.dept_description_toUpdate = description;
+      this.dept_description_toUpdate_temp = "";
+      this.displayAssignTo = true;
+    }
+  } else {
+    this.groupsParsedArray = [];
+    this.dept_description_toUpdate = rawDescription;
+    this.dept_description_toUpdate_temp = "";
+    this.displayAssignTo = true;
+  }
+}
 
   edit() {
     this.NOT_HAS_EDITED = true;
     // RESOLVE THE BUG: THE BUTTON UPDATE REMAIN FOCUSED AFTER PRESSED
     const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
     updated_btn.blur();
-
-    if (this.dept_description_toUpdate_temp?.trim()) {
+    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED 1', this.dept_description_toUpdate);
+    if (this.dept_description_toUpdate_temp?.trim()  !== "") {
       this.dept_description_toUpdate = this.dept_description_toUpdate_temp;
     }
 
@@ -1590,7 +1637,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION TEMP WHEN EDIT IS PRESSED 2', this.dept_description_toUpdate_temp);
     this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
@@ -1614,6 +1661,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
         console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES data description ', data['description']);
 
+        if (data && data['description']) {
+            this.syncDescriptionVars(data['description']);
+        }
+
         if (data && data['description'] && typeof data['description'] === 'string' && data['description'].trim().startsWith('[')) {
           let toParse = data['description'].trim();
           let parsedGroups: any[] = [];
@@ -1636,7 +1687,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
               console.log('[DEPT-EDIT-ADD] ✅ Parsed group array:', parsedGroups);
               
               this.dept_description_toUpdate = ""
-              this.dept_description_toUpdate_temp = ""
+              // this.dept_description_toUpdate_temp = ""
+
               // Optionally assign to class property
               this.groupsParsedArray = parsedGroups;
               this.displayAssignTo = false;

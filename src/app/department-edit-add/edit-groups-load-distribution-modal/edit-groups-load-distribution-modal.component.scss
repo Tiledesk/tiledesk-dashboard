@@ -3,9 +3,15 @@
 }
 
 .total--display {
-    margin-top: -20px;
+    margin-top: -70px;
     font-size: 12px;
     margin-bottom: 12px;
+    position: fixed;
+    background: #fff;
+    width: 353px;
+    height: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .error-text {
