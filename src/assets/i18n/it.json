@@ -607,7 +607,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Questa conversazione è chiusa, riaprila per partecipare",
     "PermissionDenied": "Permesso negato",
     "YouDoNotHavePermissions":"Non hai i permessi",
-    "YonDontHavePermissionsToPerformThisAction": "Ci dispiace, ma non hai i permessi per eseguire questa azione.",
+    "YonDontHavePermissionsToPerformThisAction": "Siamo spiacenti, ma non hai i permessi per eseguire questa azione.",
+    "YonDontHavePermissionsToViewThisSection": "Siamo spiacenti, ma non hai i permessi per visualizzare questa sezione.",
     "ThereHasBeenAnErrorProcessing": "Si è verificato un errore durante l'elaborazione della tua richiesta",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Si prega di attendere mentre stiamo elaborando la tua richiesta",
     "CommunityDesc1":"Esplora un mondo di possibilità nella nostra Community, dove scoprirai una vasta gamma di agenti di intelligenza artificiale e idee di automazione pronti all'uso.",
@@ -1493,7 +1494,8 @@
         "DepartmentId": "Id dipartimento",
         "SourcePage": "Origine",
         "Agents": "Agenti",
-        "NoAgent": "Nessun agente"
+        "NoAgent": "Nessun agente",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Sei stato aggiunto correttamente alla chat"
     },
     "Tags": {
         "LeadTags": "Tag del contatto",

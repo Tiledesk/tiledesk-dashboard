@@ -609,6 +609,7 @@
     "PermissionDenied": "Доступ запрещен",
     "YouDoNotHavePermissions":"У вас нет прав",
     "YonDontHavePermissionsToPerformThisAction": "Извините, но у вас нет прав для выполнения этого действия.",
+    "YonDontHavePermissionsToViewThisSection": "К сожалению, у вас нет прав для просмотра этого раздела.",
     "ThereHasBeenAnErrorProcessing": "При обработке вашего запроса произошла ошибка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Пожалуйста, подождите, пока мы обрабатываем ваш запрос",
     "CommunityDesc1":"Исследуйте мир возможностей в нашем Сообществе, где вы откроете для себя огромный массив готовых к использованию агентов ИИ и идей автоматизации.",
@@ -1492,7 +1493,8 @@
         "DepartmentId": "Идентификатор отдела",
         "SourcePage": "Источник",
         "Agents": "Агенты",
-        "NoAgent": "Нет агента"
+        "NoAgent": "Нет агента",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Вы успешно добавлены в чат"
     },
     "Tags": {
         "LeadTags": "Теги контакта",

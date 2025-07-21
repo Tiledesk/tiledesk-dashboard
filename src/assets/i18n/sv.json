@@ -609,6 +609,7 @@
     "PermissionDenied": "Åtkomst nekad",
     "YouDoNotHavePermissions":"Du har inte behörigheter",
     "YonDontHavePermissionsToPerformThisAction": "Vi beklagar, men du har inte behörighet att utföra denna åtgärd.",
+    "YonDontHavePermissionsToViewThisSection": "Vi beklagar, men du har inte behörighet att visa det här avsnittet.",
     "ThereHasBeenAnErrorProcessing": "Det har uppstått ett fel när din förfrågan behandlas",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Vänta medan vi behandlar din förfrågan",
     "CommunityDesc1": "Utforska en värld av möjligheter i vår community, där du kommer att upptäcka ett stort utbud av färdiga AI-agenter och automatiseringsidéer.",
@@ -1508,7 +1509,8 @@
         "DepartmentId": "Avdelnings-ID",
         "SourcePage": "Källa",
         "Agents": "Agenter",
-        "NoAgent": "Ingen agent"
+        "NoAgent": "Ingen agent",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Du har lagts till i chatten"
     },
     "Tags": {
         "LeadTags": "Kontakters Taggar",

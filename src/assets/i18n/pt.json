@@ -608,6 +608,7 @@
     "PermissionDenied": "Permissão negada",
     "YouDoNotHavePermissions":"Não tem permissões",
     "YonDontHavePermissionsToPerformThisAction": "Lamentamos, mas você não tem permissões para realizar esta ação.",
+    "YonDontHavePermissionsToViewThisSection": "Lamentamos, mas não tem permissão para visualizar esta secção.",
     "ThereHasBeenAnErrorProcessing": "Ocorreu um erro ao processar sua solicitação",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Aguarde enquanto processamos sua solicitação",
     "CommunityDesc1":"Explore um mundo de possibilidades na nossa Comunidade, onde descobrirá uma vasta gama de agentes de IA prontos a usar e ideias de automatização.",
@@ -1491,7 +1492,8 @@
         "DepartmentId": "ID do departamento",
         "SourcePage": "Fonte",
         "Agents": "Agentes",
-        "NoAgent": "Nenhum agente"
+        "NoAgent": "Nenhum agente",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Foi adicionado com sucesso ao chat"
     },
     "Tags": {
         "LeadTags": "Tags do contato",

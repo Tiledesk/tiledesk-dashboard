@@ -610,6 +610,7 @@
     "PermissionDenied": "İzin reddedildi",
     "YouDoNotHavePermissions":"Yetkileriniz yok",
     "YonDontHavePermissionsToPerformThisAction": "Üzgünüz, ancak bu işlemi gerçekleştirme izniniz yok.",
+    "YonDontHavePermissionsToViewThisSection": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok.",
     "ThereHasBeenAnErrorProcessing": "İsteğiniz işlenirken bir hata oluştu",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Lütfen isteğinizi işleme koyarken bekleyin",
     "CommunityDesc1":"Topluluğumuzda olasılıklar dünyasını keşfedin; burada kullanıma hazır çok sayıda AI aracı ve otomasyon fikri keşfedeceksiniz.",
@@ -1492,7 +1493,8 @@
         "DepartmentId": "Departman Kimliği",
         "SourcePage": "Kaynak",
         "Agents": "Temsilciler",
-        "NoAgent": "Temsilci yok"
+        "NoAgent": "Temsilci yok",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Sohbete başarıyla eklendiniz"
     },
     "Tags": {
         "LeadTags": "İletişim Etiketleri",

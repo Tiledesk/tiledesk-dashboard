@@ -608,6 +608,7 @@
     "PermissionDenied": "Zugriff verweigert",
 	"YouDoNotHavePermissions":"Sie haben keine Berechtigungen",
     "YonDontHavePermissionsToPerformThisAction": "Es tut uns leid, aber Sie haben keine Berechtigung, diese Aktion auszuführen.",
+	"YonDontHavePermissionsToViewThisSection": "Es tut uns leid, aber Sie sind nicht berechtigt, diesen Abschnitt anzuzeigen.",
 	"ThereHasBeenAnErrorProcessing": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten",
 	"PleaseWaitWhileWeAreProcessingYourRequest": "Bitte warten Sie, während wir Ihre Anfrage bearbeiten",
 	"CommunityDesc1":"Entdecken Sie in unserer Community eine Welt voller Möglichkeiten und entdecken Sie eine große Auswahl an einsatzbereiten KI-Agenten und Automatisierungsideen.",
@@ -1492,7 +1493,8 @@
 		"DepartmentId": "Abteilung Id",
 		"SourcePage": "Urpsrung",
 		"Agents": "Agenten",
-		"NoAgent": "Kein Agent"
+		"NoAgent": "Kein Agent",
+		"YouHaveBeenSuccessfullyAddedToTheChat": "Sie wurden erfolgreich zum Chat hinzugefügt"
 	},
 	"Tags": {
 		"LeadTags": "Kontakt-Tags",

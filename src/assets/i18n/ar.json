@@ -608,6 +608,7 @@
     "PermissionDenied": "تم رفض الإذن",
     "YouDoNotHavePermissions":"ليس لديك الصلاحيات",
     "YonDontHavePermissionsToPerformThisAction": "نأسف، ولكن ليس لديك الصلاحيات لتنفيذ هذا الإجراء.",
+    "YonDontHavePermissionsToViewThisSection": "نحن نأسف، ولكن ليس لديك الأذونات اللازمة لعرض هذا القسم.",
     "ThereHasBeenAnErrorProcessing": "كان هناك خطأ في معالجة طلبك",
     "PleaseWaitWhileWeAreProcessingYourRequest": "يرجى الانتظار بينما نقوم بمعالجة طلبك",
     "CommunityDesc1":"استكشف عالمًا مليئًا بالإمكانيات في مجتمعنا، حيث ستكتشف مجموعة واسعة من وكلاء الذكاء الاصطناعي وأفكار الأتمتة الجاهزة للاستخدام.",
@@ -1492,7 +1493,8 @@
         "DepartmentId": "معرف القسم",
         "SourcePage": "مصدر",
         "Agents": "عملاء",
-        "NoAgent": "لا وكيل"
+        "NoAgent": "لا وكيل",
+         "YouHaveBeenSuccessfullyAddedToTheChat": "لقد تمت إضافتك إلى الدردشة بنجاح"
     },
     "Tags": {
         "LeadTags": "علامات جهة الاتصال",

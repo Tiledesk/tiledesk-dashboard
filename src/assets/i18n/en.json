@@ -608,6 +608,7 @@
     "PermissionDenied": "Permission Denied",
     "YouDoNotHavePermissions":"You don't have permissions",
     "YonDontHavePermissionsToPerformThisAction": "We are sorry, but you don't have permissions to perform this action.",
+    "YonDontHavePermissionsToViewThisSection": "We are sorry, but you don't have permissions to view this section.",
     "ThereHasBeenAnErrorProcessing": "There has been an error processing your request",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Please wait while we are processing your request",
     "CommunityDesc1":"Explore a world of possibilities in our Community, where you'll discover a vast array of ready-to-use AI agents and automation ideas.",
@@ -1491,7 +1492,8 @@
         "DepartmentId": "Department Id",
         "SourcePage": "Source",
         "Agents": "Agents",
-        "NoAgent": "No agent"
+        "NoAgent": "No agent",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "You are successfully added to the chat"
     },
     "Tags": {
         "LeadTags": "Lead Tags",

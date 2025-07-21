@@ -609,6 +609,7 @@
     "PermissionDenied": "Дозвола одбијена",
     "YouDoNotHavePermissions":"Немате дозволе",
     "YonDontHavePermissionsToPerformThisAction": "Жао нам је, али немате дозволе да извршите ову радњу.",
+    "YonDontHavePermissionsToViewThisSection": "Жао нам је, али немате дозволе за преглед овог одељка.",
     "ThereHasBeenAnErrorProcessing": "Дошло је до грешке при обради вашег захтева",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сачекајте док обрађујемо ваш захтев",
     "CommunityDesc1":"Истражите свет могућности у нашој заједници, где ћете открити широку лепезу АИ агената спремних за употребу и идеја за аутоматизацију.",
@@ -1492,7 +1493,8 @@
         "DepartmentId": "Одељење Ид",
         "SourcePage": "Извор",
         "Agents": "Агенти",
-        "NoAgent": "Нема агента"
+        "NoAgent": "Нема агента",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Успешно сте додати у ћаскање"
     },
     "Tags": {
         "LeadTags": "ТАГС контакта",

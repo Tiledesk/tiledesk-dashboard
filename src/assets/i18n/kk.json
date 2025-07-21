@@ -608,6 +608,7 @@
     "PermissionDenied": "Рұқсат жоқ",
     "YouDoNotHavePermissions":"Сізде рұқсаттар жоқ",
     "YonDontHavePermissionsToPerformThisAction": "Кешіріңіз, бірақ сізде бұл әрекетті орындауға рұқсат жоқ.",
+    "YonDontHavePermissionsToViewThisSection": "Кешіріңіз, бірақ сізде бұл бөлімді көруге рұқсаттарыңыз жоқ.",
     "ThereHasBeenAnErrorProcessing": "Сұрауыңызды өңдеу кезінде қате орын алды",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сұрауыңызды өңдеу кезінде күтіңіз",
     "CommunityDesc1": "Қолдануға дайын AI агенттері мен автоматтандыру идеяларының кең ауқымын табатын біздің қауымдастықтағы мүмкіндіктер әлемін зерттеңіз.",
@@ -1507,7 +1508,8 @@
         "DepartmentId": "Бөлім идентификаторы",
         "SourcePage": "Дереккөз",
         "Agents": "Агенттер",
-        "NoAgent": "Агент жоқ"
+        "NoAgent": "Агент жоқ",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Сіз чатқа сәтті қосылдыңыз"
     },
     "Tags": {
         "LeadTags": "контактінің TAG",

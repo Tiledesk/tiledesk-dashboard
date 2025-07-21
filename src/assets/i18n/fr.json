@@ -608,6 +608,7 @@
     "PermissionDenied": "Permission refusée",
     "YouDoNotHavePermissions":"Vous n'avez pas les permissions",
     "YonDontHavePermissionsToPerformThisAction": "Nous sommes désolés, mais vous n'avez pas les autorisations nécessaires pour effectuer cette action.",
+    "YonDontHavePermissionsToViewThisSection": "Nous sommes désolés, mais vous n'avez pas les autorisations pour afficher cette section.",
     "ThereHasBeenAnErrorProcessing": "Une erreur s'est produite lors du traitement de votre demande",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Veuillez patienter pendant le traitement de votre demande",
     "CommunityDesc1":"Explorez un monde de possibilités au sein de notre communauté, où vous découvrirez une vaste gamme d'agents d'IA prêts à l'emploi et d'idées d'automatisation.",
@@ -1491,7 +1492,8 @@
         "DepartmentId": "Identifiant du département",
         "SourcePage": "La source",
         "Agents": "Agents",
-        "NoAgent": "Aucun agent"
+        "NoAgent": "Aucun agent",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Vous avez été ajouté avec succès au chat"
     },
     "Tags": {
         "LeadTags": "Balises du contact",

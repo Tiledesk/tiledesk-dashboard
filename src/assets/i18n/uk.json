@@ -609,6 +609,7 @@
     "PermissionDenied": "Доступ заборонено",
     "YouDoNotHavePermissions":"У вас немає дозволів",
     "YonDontHavePermissionsToPerformThisAction": "Вибачте, але у вас немає дозволу на виконання цієї дії.",
+    "YonDontHavePermissionsToViewThisSection": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok.",
     "ThereHasBeenAnErrorProcessing": "Під час обробки вашого запиту сталася помилка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Будь ласка, зачекайте, поки ми обробимо ваш запит",
     "CommunityDesc1": "Досліджуйте світ можливостей у нашій спільноті, де ви знайдете широкий спектр готових до використання агентів ШІ та ідей автоматизації.",
@@ -1508,7 +1509,8 @@
         "DepartmentId": "Ідентифікатор відділу",
         "SourcePage": "Джерело",
         "Agents": "Агенти",
-        "NoAgent": "Немає агента"
+        "NoAgent": "Немає агента",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Вас успішно додано до чату"
     },
     "Tags": {
         "LeadTags": "Теги контакту",

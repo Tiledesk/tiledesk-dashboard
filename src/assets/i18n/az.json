@@ -609,6 +609,7 @@
     "PermissionDenied": "İcazə rədd edildi",
     "YouDoNotHavePermissions":"İcazələriniz yoxdur",
     "YonDontHavePermissionsToPerformThisAction": "Üzr istəyirik, lakin bu əməliyyatı yerinə yetirmək üçün icazəniz yoxdur.",
+    "YonDontHavePermissionsToViewThisSection": "Üzr istəyirik, lakin bu bölməyə baxmaq icazəniz yoxdur.",
     "ThereHasBeenAnErrorProcessing": "Sorğunuzu emal edərkən xəta baş verdi",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Sorğunuzu emal edərkən gözləyin",
     "CommunityDesc1":"İstifadəyə hazır süni intellekt agentləri və avtomatlaşdırma ideyalarının geniş çeşidini kəşf edəcəyiniz İcmamızda imkanlar dünyasını araşdırın.",
@@ -1492,7 +1493,8 @@
         "DepartmentId": "Departament ID",
         "SourcePage": "Mənbə",
         "Agents": "Agentlər",
-        "NoAgent": "Agent yoxdur"
+        "NoAgent": "Agent yoxdur",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Siz söhbətə uğurla əlavə olundunuz"
     },
     "Tags": {
         "LeadTags": "Əlaqə Teqləri",

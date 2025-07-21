@@ -609,6 +609,7 @@
     "PermissionDenied": "Ruxsat rad etildi",
     "YouDoNotHavePermissions":"Sizda ruxsat yo‘q",
     "YonDontHavePermissionsToPerformThisAction": "Kechirasiz, lekin sizda bu amalni bajarish uchun ruxsat yo'q.",
+    "YonDontHavePermissionsToViewThisSection": "Kechirasiz, lekin sizda bu boʻlimni koʻrish uchun ruxsatingiz yoʻq.",
     "ThereHasBeenAnErrorProcessing": "So‘rovingizni qayta ishlashda xatolik yuz berdi",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Iltimos, so‘rovingiz ko‘rib chiqilguncha kuting",
     "CommunityDesc1":"Hamjamiyatimizda imkoniyatlar dunyosini o‘rganing, u yerda foydalanishga tayyor AI agentlari va avtomatlashtirish g‘oyalarining keng doirasini kashf etasiz.",
@@ -1492,7 +1493,8 @@
         "DepartmentId": "Bo'lim identifikatori",
         "SourcePage": "Manba",
         "Agents": "Agentlar",
-        "NoAgent": "Agent yo'q"
+        "NoAgent": "Agent yo'q",
+        "YouHaveBeenSuccessfullyAddedToTheChat": "Siz chatga muvaffaqiyatli qo'shildingiz"
     },
     "Tags": {
         "LeadTags": "Kontakt teglari",
