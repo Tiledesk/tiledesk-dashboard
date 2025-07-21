@@ -973,7 +973,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
     }, () => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded successfully", 2, 'done')
       // this.getFaqKbByProjectId();
     });
 
