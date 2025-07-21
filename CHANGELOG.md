@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.125-rc1
+- Adds reCAPTCHA in the sign in page
+- Adds the ability to change the load percentage (alls the groups in a dialog) of groups on the department details page
+- Adds the ability to manage the “Leave conversation” feature 
+- Adds the ability to manage the “Send chat transcript” feature 
+- Adds the ability to manage the “Create ticket” feature 
+- Adds the ability to manage the “Ban visitor” feature 
+- Adds the ability to manage the “Unban visitor” feature 
+
 ### 2.7.123-rc1
 - Adds the ability to manage the "Add teammate" feature for a conversation
 - Adds the ability to change the load percentage of groups to the department details page
