@@ -202,9 +202,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   private permissionReady$ = new BehaviorSubject<boolean>(false);
-  hasDefaultRole: boolean;
+ 
   CHAT_PANEL_MODE: boolean = false;
-
+  
+  hasDefaultRole: boolean;
   ROLE: string;
   PERMISSIONS: any;
  
@@ -656,7 +657,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  getProjectUserRole() {
+getProjectUserRole() {
     console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
     this.usersService.project_user_role_bs
       .pipe(
@@ -1741,21 +1742,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 return true
               }
 
-
-
             });
           }
         }
 
-
-
         this.ws_requests.forEach((request) => {
 
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
-
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
-
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
 
           request['ua_browser'] = ua_browser;
@@ -1904,6 +1899,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
             request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
             request['requester_fullname'] = request.lead.fullname;
+
+            if (!isNaN(Number(request.lead.fullname))) {
+              request['fullnameIsNumber'] = true
+            }
           } else {
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';
