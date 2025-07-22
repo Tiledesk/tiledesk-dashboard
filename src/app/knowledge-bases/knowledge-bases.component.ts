@@ -46,6 +46,7 @@ import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -192,7 +193,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
-  refreshRateIsEnabled: boolean
+  refreshRateIsEnabled: boolean;
+
+
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  // PERMISSION_TO_DELETE_CONTENTS: boolean;
+  // PERMISSION_TO_DELETE_NAMESPACE: boolean;
+  
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_ADD_KB: boolean;
+
 
   constructor(
     private auth: AuthService,
@@ -216,7 +228,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private shepherdService: ShepherdService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private rolesService: RolesService
 
   ) {
     super(prjctPlanService, notify);
@@ -231,7 +244,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
-   
+
 
     // this.getListOfKb(this.paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
@@ -253,13 +266,93 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-
+    this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
     // const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
 
   }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval_id);
+    this.unsubscribe$.next();   
+    this.unsubscribe$.complete();
+  }
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+  
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          this.ROLE = status.role;
+          this.PERMISSIONS = status.matchedPermissions;
+          console.log('[KB TABLE] - this.ROLE:', this.ROLE);
+          console.log('[KB TABLE] - this.PERMISSIONS', this.PERMISSIONS);
+          this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+          console.log('[KB TABLE] - hasDefaultRole', this.hasDefaultRole);
+  
+     
+
+
+          // PERMISSION_TO_DELETE
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_DELETE = true;
+            console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_DELETE = false;
+            console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
+            console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          }
+
+           // PERMISSION_TO_DELETE_NAMESPACE
+            // if (status.role === 'owner' || status.role === 'admin') {
+            //   // Owner and Admin always has permission
+            //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
+            //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+    
+            // } else if (status.role === 'agent') {
+            //   // Agent never have permission
+            //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
+            //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+    
+            // } else {
+            //   // Custom roles: permission depends on matchedPermissions
+            //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
+            //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+            // }
+
+          // PERMISSION_TO_ADD_KB
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_ADD_KB = true;
+            console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_ADD_KB = false;
+            console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
+            console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          }
+
+
+
+
+        });
+  
+    }
 
   presentKBTour() {
     const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
@@ -1404,10 +1497,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('Modal preview Backdrop clicked', event);
-       this.hasClickedPreviewModalBackdrop = true
-       const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
-       document.dispatchEvent(customevent);
-     });
+      this.hasClickedPreviewModalBackdrop = true
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
+      document.dispatchEvent(customevent);
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
@@ -1477,6 +1570,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onOpenDeleteNamespaceModal() {
+    if(!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log("onOpenDeleteNamespaceModal called....")
     if (this.selectedNamespace.default && this.kbsList.length === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
@@ -1641,7 +1738,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         t_params: this.t_params,
         id_project: this.id_project,
-        project_name:  this.project_name,
+        project_name: this.project_name,
         payIsVisible: this.payIsVisible
       },
     });
@@ -1671,7 +1768,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         t_params: this.t_params,
         id_project: this.id_project,
-        project_name:  this.project_name,
+        project_name: this.project_name,
         payIsVisible: this.payIsVisible
       },
     });
@@ -1767,9 +1864,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval_id);
-  }
+ 
 
   // No more used
   // listenToKbVersion() {

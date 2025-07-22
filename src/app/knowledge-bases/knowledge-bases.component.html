@@ -142,7 +142,7 @@
               
               
                     <mat-menu #namespaceList="matMenu">
-                      <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item
+                      <button *ngIf="PERMISSION_TO_ADD_KB" style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item
                         (click)="presentModalAddNewNamespace()">
                         <mat-icon>add</mat-icon>
                         <span>{{ 'KbPage.NewNamespace' | translate }}</span>
@@ -233,7 +233,7 @@
                 <div class="buttons-div">
                   <button id="delete-kb" class="btn btn-red" [disabled]="addButtonDisabled" aria-label="Delete"
                     style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
-                    >
+                    [disabled]="!PERMISSION_TO_DELETE">
                     <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
                     <!-- <span class="material-icons-round" style="vertical-align: middle;">
                       delete

@@ -298,6 +298,7 @@
                         <!-- ---------------------------------------- -->
                         <!-- custom--button preview-settings btn-outlined-round-blu-->
                         <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
+                            [disabled]="!PERMISSION_TO_UPDATE_SETTINGS"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
@@ -316,6 +317,7 @@
                         <!-- KB preview custom--button preview btn-outlined-blu-->
                         <!-- ---------------------------------------- -->
                         <button id="kb-preview" class="btn custom--button preview" aria-label="Preview"
+                            [disabled]="!PERMISSION_TO_UPDATE_SETTINGS"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -334,6 +336,7 @@
                         <!-- ---------------------------------------- -->
                         <!-- custom--button add-content -->
                         <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                            [disabled]="!PERMISSION_TO_ADD_CONTENTS"
                             (click)="$event.stopPropagation(); onOpenAddContent()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -573,21 +576,25 @@
                                 </button>
                                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
                                     <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'"
-                                        mat-menu-item (click)="onRunIndexing(kb)">
+                                        mat-menu-item (click)="onRunIndexing(kb)"
+                                        [disabled]="!PERMISSION_TO_REINDEX_CONTENT">
                                         <mat-icon>play_arrow</mat-icon>
                                         <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
-                                    <button mat-menu-item (click)="onCheckStatus(kb)">
+                                    <button mat-menu-item (click)="onCheckStatus(kb)"
+                                        [disabled]="!PERMISSION_TO_CHECK_CONTENT_STATUS">
                                         <mat-icon>published_with_changes</mat-icon>
                                         <span>{{'KbPage.RunCheckStatus' | translate}}</span>
                                     </button>
-                                    <button mat-menu-item (click)="onOpenBaseModalDetail(kb)">
+                                    <button mat-menu-item (click)="onOpenBaseModalDetail(kb)"
+                                        [disabled]="!PERMISSION_TO_UPDATE_CONTENT">
                                         <mat-icon>edit</mat-icon>
                                         <span>{{'Edit' | translate}}</span>
                                     </button>
                                     <button mat-menu-item [disabled]="kb.deleting == true"
-                                        (click)="onOpenBaseModalDelete(kb)">
+                                        (click)="onOpenBaseModalDelete(kb)"
+                                        [disabled]="!PERMISSION_TO_DELETE">
                                         <mat-icon>delete</mat-icon>
                                         <span>{{'KbPage.DeleteKb' | translate}}</span>
                                     </button>

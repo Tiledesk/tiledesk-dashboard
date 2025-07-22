@@ -27,6 +27,18 @@ export const PERMISSIONS = {
   HISTORY_READ: 'history_read',
 
   KB_READ: 'kb_read',
+  KB_CONTENTS_ADD:'kb_contents_add',
+  KB_CONTENT_UPDATE: 'kb_content_update',
+  KB_CONTENT_REINDEX: 'kb_content_reindex',
+  KB_CONTENT_CHECK_STATUS: 'kb_content_check_status',
+  KB_NAMESPACE_ADD:'kb_namespace_add',
+  KB_SETTINGS_EDIT:'kb_settings_edit',
+  KB_DELETE: 'kb_delete',
+  // KB_NAMESPACE_DELETE:'kb_namespace_delete',
+  // KB_CONTENTS_DELETE:'kb_contents_delete',
+
+
+
   FLOWS_READ: 'flows_read',
  
   LEADS_READ: 'leads_read',

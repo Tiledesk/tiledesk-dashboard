@@ -150,6 +150,16 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.KB_READ, label: 'Able to view' },
+        { key: PERMISSIONS.KB_CONTENTS_ADD, label: 'Able to add contents' },
+        { key: PERMISSIONS.KB_CONTENT_UPDATE, label: 'Able to edit content' },
+        { key: PERMISSIONS.KB_CONTENT_REINDEX, label: 'Able to reindex content' },
+        { key: PERMISSIONS.KB_CONTENT_CHECK_STATUS, label: 'Able to check content status' },
+        { key: PERMISSIONS.KB_NAMESPACE_ADD, label: 'Able to add a new Knowledge Base' },
+        { key: PERMISSIONS.KB_SETTINGS_EDIT, label: 'Able to update settings' },
+        { key: PERMISSIONS.KB_DELETE, label: 'Able to delete Knowledge Base and contents' },
+        // { key: PERMISSIONS.KB_CONTENTS_DELETE, label: 'Able to delete only the contents of a Knowledge Base' },
+        // { key: PERMISSIONS.KB_NAMESPACE_DELETE, label: 'Able to delete a Knowledge Base and its contents' },
+        
       ]
     },
     {
