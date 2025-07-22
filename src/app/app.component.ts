@@ -118,7 +118,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                this.logger.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
                 this.currenturl = event.url
 
                 if (this.currenturl === '/projects' || this.currenturl === '/login') {
