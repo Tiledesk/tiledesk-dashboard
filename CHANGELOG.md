@@ -1,12 +1,224 @@
 # tiledesk-dashboard
 
+### 2.7.125-rc1
+- Adds reCAPTCHA in the sign in page
+- Adds the ability to change the load percentage (alls the groups in a dialog) of groups on the department details page
+- Adds the ability to manage the “Leave conversation” feature 
+- Adds the ability to manage the “Send chat transcript” feature 
+- Adds the ability to manage the “Create ticket” feature 
+- Adds the ability to manage the “Ban visitor” feature 
+- Adds the ability to manage the “Unban visitor” feature 
+
+### 2.7.123-rc1
+- Adds the ability to manage the "Add teammate" feature for a conversation
+- Adds the ability to change the load percentage of groups to the department details page
+
+### 2.7.120-rc1
+- Adds the ability to manage the "Update Status" feature for a conversation
+- Adds the ability to manage the "Priority" feature for a conversation
+- Adds the ability to manage the "Followers" feature (e.g., Add Follower) for a conversation
+- Adds the ability to manage the "Smart Assignment" feature (e.g., Convert Online/Convert Offline) for a conversation
+- Adds the ability to manage the "Add/Remove Note" feature for a conversation
+- Adds the ability to manage the "Reassign" feature for a conversation
+- Refactors the groups list
+- Adds the ability to disable/restore a group
+
+### 2.7.118-rc4
+- Adds the ability to disable a group
+
+### 2.7.118-rc3
+- Adds the ability to manage the “join” function for  a conversation 
+- Adds the ability to manage the “reopen” function for  a conversation 
+- Adds the ability to manage the “delete” function for  a conversation 
+
+### 2.7.118-rc2
+- Adds the ability for teammates with owner or admin roles to remove/restore a project member
+
+### 2.7.118-rc1
+- Adds the ability to see in the details of a department multiple groups and their load percentage
+
+### 2.7.116
+- Adds pagination to Flows list
+
+### 2.7.115
+- Improves navigation performance
+
+### 2.7.115-rc4
+- Adds the ability to manage the “resolve” function for  a conversation 
+- Adds the ability to manage the “send message” function
+- Improves the Domains whitelist and the check when sending messages
+
+### 2.7.115-rc3
+- Auto closes the domains whitelist dialog when the user change route
+- Makes the domain list in the dialog "Manage Whitelisted Domains" not editable
+
+### 2.7.115-rc2
+- Changes URLs whitelist in domains whitelist
+
+### 2.7.115-rc1
+- Adds the ability in Project settings > Advanced tab to create a whitelist of URLs
+- Does not allow sending messages containing non whitelisted  URLs on conversation details page
+
+### 2.7.114-rc3
+- Adds the ability in Project settings > Advanced tab to disable sending emojis
+- Updates "emoji-regex” library to 10.4.0
+
+### 2.7.114-rc2
+- Changed: css unanswered-questions module
+
+### 2.7.114-rc1
+- Added: webhook logs (deployed only on stage)
+
+### 2.7.112
+- Adds the ability for teammates with admin roles to edit email templates
+
+### 2.7.112-rc6
+- Adds environment variable "OAUTH2_SIGNIN_ENABLED"
+- Adds the ability to perform OAuth2 sign in
+- Manages read permissions on the click of each sidebar menu item and changes the page the user is redirected to if they do not have permissions
+- Adds Leads section to Role Management page
+- Adds the ability to allow access to the Leads page
+- Adds the ability to manage the the “update” function of a lead (on Lead detail page and on conversation detail page)
+- Adds the ability to manage the “move in the trash” function of a lead (on Leads list page and Lead details page )
+- Adds the ability to manage the “delete” function of a lead 
+- Adds the ability to manage the “export leads” function
+- Adds a control on the conversation list page to access the Smart Assignments and Operating Hours pages
+
+### 2.7.112-rc5
+- Added unanswered-questions module in knowledge-base - improvements (deployed only on stage)
+
+### 2.7.112-rc4
+- Added unanswered-questions module in knowledge-base (deployed only on stage)
+
+### 2.7.112-rc3
+- Adds Project settings section to Role Management page
+- Adds the ability to allow access to the Project settings tabs
+- Adds the ability to manage the the "edit" function on Project Settings > General tab
+- Adds the ability to manage available features in Project Settings > Developer tab
+
+### 2.7.112-rc2
+- Adds Integrations and Apps sections to Role Management page
+- Adds the ability to allow access to the Integrations page
+- Adds the ability to manage the Integrations
+- Adds the ability to allow the access to the Apps page
+- Adds the ability to manage the Apps
+
+### 2.7.112-rc1
+- Adds Operating Hours section to Role Management page
+- Adds the ability to manage access to the Operating Hours page
+- Adds the ability to manage the "edit" function on the Operating Hours page
+- Adds the ability to manage the "create" function on the Operating Hours page
+- Adds the ability to manage the "delete" function on the Operating Hours page
+- Adds the ability to manage access to the Automations Log page
+
+### 2.7.111
+- Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari
+
+### 2.7.111-rc3
+- Adds Tags section in Role Management page
+- Adds the ability to manage access to the Tags page
+- Adds the ability to manage the "edit" function on the Tags page
+- Adds the ability to manage the "create" function on the Tags page
+- Adds the ability to manage the "delete" function on the Tags page
+
+### 2.7.111-rc2
+- Adds the ability to manage the access to the details of a Teammate
+- Adds the ability to manage the invite  of a new Teammate
+- Adds the section Email ticketing and Canned Responses in the manage role page
+- Adds the ability to manage the access to Email ticketing page
+- Adds the ability to manage the "edit" function on the Email ticketing page
+- Adds the ability to manage access to the Canned Responses page
+- Adds the ability to manage the "edit" function on the Canned Responses page
+- Adds the ability to manage the "create" function on the Canned Responses page
+- Adds the ability to manage the "delete" function on the Canned Responses page
+
+### 2.7.111-rc1
+- Adds the section Teammates & Groups in the manage role page
+- Adds the ability to manage the access to Teammates list 
+- Adds the ability to manage the access to Groups list
+- Adds the ability to manage the access to Roles list
+
+### 2.7.110
+- Fixes the bug: "verified" icon displays incorrectly for requesters in the unassigned conversations section
+
+### 2.7.110-rc1
+- Adds Routing and Departments section to Manage Role page with options to enable/disable department list display, enable/disable department details display, and enable/disable department creation
+
+### 2.7.109-rc6
+- Improves the accordions style available on New role page
+
+### 2.7.109-rc5 
+- Updates options on the Add New Role page
+
+### 2.7.109-rc3
+- Minor improvements
+
+### 2.7.109-rc2
+- Move access blocking (based on roles) from RoleGuard to RoleService for some paths
+- Adds a validity check on role names
+- Externalize the keys used in the checkboxes and radio buttons on the role creation or modification page into constants
+- Adds a listener to manage permissions in Flows, Webhooks, Leads, Knowledge bases, Widget set up, Widget translations, Unserved conversations displayed in chat, Conversation list (real time and non-real time), History, Conversation detail, Analytics
+- Manages filters for displaying conversations in the real time conversation list for custom roles (request_read_all, request_read_group, request_read_my)
+
+### 2.7.109-rc1
+- Adds the ability to control how search results are retrieved (Hybrid search) in the AI ​​settings modal window
+- Displays chunks used for the answer in the Knowledge Base preview modal window
+
+### 2.7.108
+- Fixes the bug: AI Agent creation not working in knowledge base page
+
+### 2.7.108-rc1
+- Adds in the New role page the accordion "Conversation Management" and removes the accordions "Apps" and "Data"
+
+### 2.7.107
+- Adds the ability to import or export contents to the Knowledge Base page
+
+### 2.7.107-rc6
+- Removes default roles from the select role combobox on the teammate detail page
+
+### 2.7.107-rc5
+- Renames the roles key "request_read_group_my" to "request_read_my"
+
+### 2.7.107-rc4
+- Adds a loading spinner to the import contents to Knowledge Base modal window
+
+### 2.7.107-rc3
+- Updates role's key
+
+### 2.7.107-rc2
+- Improves the import of Knowledge Base contents
+
+### 2.7.107-rc1
+- Adds the ability to export/import contents on the Knowledge Base page
+
+### 2.7.106
+- Handles the /bots route that can be accidentally accessed
+
+### 2.7.106-rc1
+- Roles CRUD
+
 ### 2.7.105
 - Renames the sidebar menu item "Bot" in "Flows"
 - Moves the menu items Templates from the Flows sidebar in the Templates page
 - Adds in the Flows sidebar the menu items AI Agents, Automations and Webhooks
 - Adds the ability to create Copilot and Webhook type Flows
 
+### 2.7.105-rc4
+- Fixes the bug: Copilot automation block does not work when called from Automations section
+
+### 2.7.105-rc3
+- Makes Copilot automation available from the Business plan and with enablement in customizations
+
+### 2.7.105-rc2
+- Fixes the bug: Twilio voice menu item is not visible in integrations even if it is enabled in customizations
+
+### 2.7.105-rc1
+- Increases the chunks limit that can be selected in the AI ​​Settings modal window on the Knowledge Bases page to 40
+
 ### 2.7.104
+- Improves the widget preview available on the widget setup page
+
+### 2.7.104-rc1
 - Improves the widget preview available on the widget setup page
 
 ### 2.7.103
@@ -30,11 +242,50 @@
 - Fixes Hubspot integration "Invalid" message
 - Sort conversations in History by creation date
 
+### 2.7.98-rc2
+- Renames "voice-twilio" in "voice_twilio"
+
+### 2.7.98-rc1
+- Adds the ability to test Knowledge Bases with the Open AI models: GPT-4.1, GPT-4.1 mini and GPT-4.1 nano
+
 ### 2.7.97
 - Adds the “Update widget” button for all sections of the widget set-up page
 - Adds a preview in the widget set-up page Advanced section
 
+### 2.7.97-rc6
+- Adds the menu item “All” in the Flows sidebar
+
+### 2.7.97-rc5
+- Fixes bug: In Analytics > Metrics > Satisfaction the Average Satisfaction value is displayed with too many decimal
+
+### 2.7.97-rc4
+- Improves Create AI agents and Create Automations UI 
+- Fixes translations
+- Removes the Free plan
+- Fixes Hubspot integration "Invalid" message
+
+### 2.7.97-rc3
+- Fixes the bug: if the remote configuration key is set to true in the environment the app crashes
+
+### 2.7.97-rc2
+- Improves the UI for the creation of the AI Agents and the Automations
+
+### 2.7.97-rc1
+- Adds the “Update widget” button for all sections of the widget set-up page
+- Adds a preview in the widget set-up page Advanced section
+- Other minor improvements
+
 ### 2.7.96
+- Improves Home page performance
+- Implements the HTTP interceptor
+
+### 2.7.96-rc3
+- Minor improvements and bug fixing
+
+### 2.7.96-rc2
+- Removes duplicated code
+
+### 2.7.96-rc1
 - Improves Home page performance
 - Implements the HTTP interceptor
 
@@ -47,8 +298,28 @@
 ### 2.7.93
 - Enables Ollama integration
 
+### 2.7.93-rc3
+- Improves the integration Ollama 
+
+### 2.7.93-rc2
+- Adds the "Mobile Number" mandatory field to the sign up page
+- Adds the ability to change the "Mobile Number" on the user profile page (mandatory for users who signed up with mobile number)
+
+### 2.7.93-rc1 
+- Fixes the message in the automations page displayed when there are no automations
+- Allows selection of chatbot subtypes only from the automations page
+
 ### 2.7.92
 - Fixes badges in integrations indicating which plan the integration is available from 
+
+### 2.7.92-rc2
+- Fixes badges in integrations indicating which plan the integration is available from
+- Enables Ollama integration
+
+### 2.7.92-rc1
+- Renames the sidebar menu item "Bot" in "Flows"
+- Adds in the Flows sidebar the menu items Automations and Webhooks
+- Moves the menu items Templates from the Flows sidebar in the Templates page
 
 ### 2.7.91
 - Minor improvements
@@ -60,6 +331,12 @@
 - Renames the integration Claude in Anthropic
 
 ### 2.7.88
+- Fixes bugs for docker compose
+
+### 2.7.88-rc2
+- Minor improvements
+
+### 2.7.88-rc1
 - Fixes bugs for docker compose
 
 ### 2.7.87
@@ -78,16 +355,49 @@
 - Adds the ability to select the chatbot subtype when creating a chatbot from scratch
 - Adds the chatbot subtype icons
 
+### 2.7.83-rc4
+- Minor improvements and bug fixing
+
+### 2.7.83-rc3
+- Adds the chatbot subtype icons
+
+### 2.7.83-rc2
+- Adds the ability to select the chatbot subtype when creating a chatbot from scratch
+
+### 2.7.83-rc1
+- Updates pricing page
+
 ### 2.7.82
 - Renames Plans
+
+### 2.7.82-rc1
+- Adds live payment links
 
 ### 2.7.81
 - Adds the ability to upload images and files by pasting it into the chat text area in the conversation details
 - Fixes the bug: the text area of ​​the conversation details chat does not adapt to the entered text
 - Preview the image before uploading it to the chat in the conversation details
 
+### 2.7.81-rc2
+- Preview the image before uploading it to the chat in the conversation details
+
+### 2.7.81-rc1
+- Adds the ability to upload images and files by pasting it into the chat text area in the conversation details
+
 ### 2.7.80
 - Manages audio messages in the chat available in the conversation details
+
+### 2.7.79-rc3
+- New Pricing page
+
+### 2.7.79-rc2
+- Manages audio messages in the chat available in the conversation details
+
+### 2.7.79-rc1
+- Adds the ability to enable/disable voice recorder
+
+### 2.7.78
+- Allows access to the Project Settings > Advanced tabs to the on-premise projects
 
 ### 2.7.77
 - Handles error for uploading too large files
@@ -99,7 +409,28 @@
 ### 2.7.75
 - Makes AI integrations available from the Premium plan
 
+### 2.7.77-rc1
+- Handles error for uploading too large files
+
+### 2.7.75-rc2
+- Makes AI integrations available from the Premium plan
+
+### 2.7.75-rc1
+- Requires "Refresh rate" feature to be enabled in order to use it 
+
 ### 2.7.74
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
+
+### 2.7.74-rc3
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
+
+### 2.7.74-rc2
+- Adds Deepseek integration
+- Adds Ollama integration
+
+### 2.7.74-rc1
 - Adds Google Gemini integration
 - Adds Claude integration
 - Adds Croq integration
@@ -108,10 +439,13 @@
 ### 2.7.73
 - Fixes visibility of blocks in Reassign Conversation
 
+### 2.7.73-rc1
+- Fixes visibility of blocks in Reassign Conversation
+
 ### 2.7.72
 - Hides the live announcement Changelog on the login page and project list page
 
-### 2.7.71
+### 2.7.71-rc1
 - Improves full text search in history and non-real-time conversation pages
 - Improves user onboarding
 - Fixes the bug: Live Changelog announcements are displayed during user onboarding
@@ -121,14 +455,30 @@
 - Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
 - Filters the blocks of the chatbots in the "Reassign conversation" page
 
+### 2.7.70-rc2
+- Improves the icon display method on chatbot cards that indicates the chatbot is available to agents
+
+### 2.7.70-rc1
+- Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
+- Filters the blocks of the chatbots in the "Reassign conversation" page
+
+### 2.7.69
+- Improves the widget preview available in the widget setup page
+
 ### 2.7.68
+- Deployed in prod
 - Fixes logo position in widget setup page preview
 
 ### 2.7.67
+- Deployed in prod
 - Improves the widget preview available in the widget setup page
 
 ### 2.7.66
+- Deployed in prod
 - Removes the free plan for the new sign ups
+
+### 2.7.65
+- Minor improvements and bug fixing
 
 ### 2.7.64
 - Fixes the bug: departments are no longer visible in the request list
@@ -137,6 +487,24 @@
 - Adds the ability from the Widget settings > Advanced section to disable sending attachments and emojis
 - Handles the loading of the Changelog script
 
+### 2.7.62
+- Minor improvements and bug fixing
+
+### 2.7.61
+- Handles the loading of the Changelog script
+
+### 2.7.61-rc3
+- Adds the ability from the widget settings > advanced section to disable sending attachments and emojis
+
+### 2.7.61-rc2
+- Improves redirect handling for plans with expired trial
+- Adds a tooltip to the history page to explain the "Include chatbot-only conversations" checkbox
+- Display a message in the right bar of chat conversation details when the plan trial period has expired
+- Improves the "Reassign Conversation to chatbot" modal window displayed in chat
+
+### 2.7.61-rc1
+- Redirect to pricing page if trial has expired
+
 ### 2.7.60
 - Improves the UI
 - Bug fixing
@@ -144,8 +512,18 @@
 ### 2.7.59
 - Improves and fixes the conversations report in Analytics > Metrics > Conversations
 
+### 2.7.59-rc2
+- Improves the UI
+- Bug fixing
+
+### 2.7.59-rc1
+- Minor improvements and bug fixing
+
 ### 2.7.58
 - Minor improvements and bug fixing
+
+### 2.7.58-rc1
+- Improve the conversations report in Analytics > Metrics > Conversations
 
 ### 2.7.57
 - Improves the Changelog notifications
@@ -157,16 +535,40 @@
 - Adds the ability to filter by custom range the tag graph
 - Allows to search for conversations by tags not present in the tag list on the "History" page
 
+### 2.7.54
+- Fixes the bug: Knowledge base table update date is incorrect
+
 ### 2.7.53
 - Minor improvements
+
+### 2.7.52
+- Improves KB table
+
+### 2.7.51
+- Adds the ability to filter by custom range the tag graph
+
+### 2.7.50-rc2
+- Fixes the bug: voice quota limit is not calculated correctly
+
+### 2.7.50-rc1
+- Adds the ability to select the refresh rate for URL(s) type contents
 
 ### 2.7.49
 - Improves the conversations graph and analytics overview on the home page 
 
+### 2.7.49-rc1
+- Adds voice quota usage count
+
 ### 2.7.48
 - Implements a widget to notify customers about Tiledesk updates
 
+### 2.7.48-rc1
+- Implements a widget to notify customers about Tiledesk updates
+
 ### 2.7.47
+- Fixes the bug: Knowledge Base menu item displays with a delay
+
+### 2.7.47-rc1
 - Fixes the bug: Knowledge Base menu item displays with a delay
 
 ### 2.7.46
@@ -176,6 +578,21 @@
 ### 2.7.46-rc6
 - Adds in Analytics > Metrics the conversations tags graph
 - Improves the UI of the sidebar
+
+### 2.7.46-rc5
+- Bug fixing
+
+### 2.7.46-rc4
+- Improves remove conversation tag method
+
+### 2.7.46-rc3
+- Sends a "post" message to the parent when the user resolves a conversation
+
+### 2.7.46-rc2
+- Adds in Analytics > Metrics the conversations tags graph
+
+### 2.7.46-rc1
+- Improves the add FAQs dialog window
 
 ### 2.7.45
 - Improves the app store
@@ -187,11 +604,29 @@
 ### 2.7.43
 - Adds the "Twilio voice" integration 
 
+### 2.7.43-rc1
+- Refactors dashboard UI
+
 ### 2.7.42
 - Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
 
 ### 2.7.41
 - Fixes the bug: onboarding content is not visible on small height screens
+
+### 2.7.41-rc5
+- Refactors dashboard UI (work in progress)
+
+### 2.7.41-rc4
+- Fixes bugs on "Twilio voice" integration 
+
+### 2.7.41-rc3
+- Improves the "Twilio voice" integration 
+
+### 2.7.41-rc2
+- Adds the "Twilio voice" integration 
+
+### 2.7.41-rc1
+- Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
 
 ### 2.7.40
 - Minor improvements and bug fixing
@@ -207,6 +642,9 @@
 
 ### 2.7.37
 - Adds checks to validate Widget footer branding
+
+### 2.7.38-rc2
+- Fix chatbot import validation from json
 
 ### 2.7.36
 - Adds the ability to filter for abandoned conversations in the "Non-real-time conversations" page
@@ -251,7 +689,24 @@
 ### 2.7.33
 - Adds, on the History page, the ability to filter by conversation duration
 
-### 2.7.32
+### 2.7.34-rc4
+- Refactors table in Monitor page 
+- Improves handling of alert windows display
+
+### 2.7.34-rc3
+- AI settings and KB preview bug fixing
+
+### 2.7.34-rc2
+- Minor improvements
+
+### 2.7.34-rc1
+- Adds the ability to select the indexing type for Knowledge Base URL contents
+- Adds to AI models used by knowledge bases the ability to add an advanced context and to visualize the contents sources
+
+### 2.7.33-rc1
+- Adds, on the History page, the ability to filter by conversation duration 
+
+### 2.7.32-rc1
 - Moves the menu item "Apps" from the sidebar to the setting sidebar
 
 ### 2.7.31
@@ -296,8 +751,14 @@
 - Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
 - Improves the method to get the number of conversations in the monitor page
 
+### 2.7.19-rc1
+- Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
+
 ### 2.7.18
 - Minor improvements and bug fixing
+
+### 2.7.18-rc1
+- Improves the method to get the number of conversations in the monitor page
 
 ### 2.7.17
 - Removes the ability to customize the quotas email template
@@ -347,6 +808,9 @@
 - Deploys in production
 - Adds the knowledge base walkthrough on the knowledge base page
 
+### 2.7.7-rc1
+- Adds the knowledge base walkthrough on the knowledge base page
+
 ### 2.7.6
 - Deploys in production
 - Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
@@ -358,9 +822,20 @@
 ### 2.7.4
 - Added Time Slots in Operating Hours page
 
+### 2.7.4-rc1
+- Fix saving operation hours bug
+
 ### 2.7.3
 - Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
 - Improves the knowledge base page
+
+### 2.7.3-rc2
+- Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
+- Improves the knowledge base page 
+- Improves time slots UI
+
+### 2.7.3-rc1
+- Kb onboarding
 
 ### 2.7.2
 - Deploys in production
@@ -375,21 +850,58 @@
 - Adds the ability to edit the "Quota checkpoint notification" email template
 - Adds Twilio SMS channel integration  
 
+### 2.6.45-rc2
+- Improves time slots UI
+- Added translations for time slots
+
+### 2.6.45-rc1
+- Added time slots in Operating Hours
+
 ### 2.6.44
 - Deploys in production
 - Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
 - Improvements and bug fixing
+
+### 2.6.44-rc4
+- Improvements and bug fixing
+
+### 2.6.44-rc3
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+
+### 2.6.44-rc2
+- Fix vxml voice integration visibility
+
+### 2.6.44-rc1
+- Added vxml voice integration
+- Added twilio sms integration
 
 ### 2.6.43
 - Deploys in production
 - Improves the quota usage widget
 - Minor improvements
 
+### 2.6.43-rc2
+- Improves Knowledge Bases page
+
+### 2.6.43-rc1
+- Improves quotes widget
+- Added voice-vxml and sms-twilio channel in analytics
+
 ### 2.6.42
 - Deploys in production
 - Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
 
+### 2.6.42-rc1
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
 ### 2.6.41
+- Deploys in production
+- Displays information about the Voice channel
+
+### 2.6.41-rc2
+- Adds the Voice Channel integration 
+
+### 2.6.41-rc1
 - Deploys in production
 - Displays information about the Voice channel
 

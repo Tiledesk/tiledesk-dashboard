@@ -307,7 +307,8 @@
 }
 
 .horizontal-line {
-    margin-top: 35px !important; 
+    // margin-top: 35px !important; 
+    margin-top: 8px !important; 
 }
 
 .response-time-label {
@@ -325,5 +326,72 @@
 
     span {
         font-weight: 500 !important; 
+    }
+}
+.chunk--wpr .chunk {
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+    color: #787f86;
+    padding: 8px 15px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+.custom-expansion-panel {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+mat-expansion-panel ::ng-deep {
+    background-color: transparent;
+    box-shadow: none;
+    font-family: var(--header-font-family) !important;
+    //color: var(--text-color);
+
+    .mat-expansion-panel-header {
+        padding: 0;
+
+        &:hover {
+            background-color: transparent !important;
+        }
+    }
+
+    .mat-expansion-panel-header-title {
+        //color: var(--text-color);
+        font-weight: 400;
+        font-size: 14px;
+    }
+
+    // .mat-expansion-indicator::after {
+    //     color: var(--blue-20) !important;
+    // }
+
+    .mat-expansion-panel-header-description,
+    .mat-expansion-indicator:after {
+        //color: var(--text-color);
+        margin: 5px;
+    }
+
+    // ::ng-deep .mat-expansion-indicator,
+    // .mat-expansion-indicator:after {
+    //     //color: var(--text-color);
+    // }
+
+    .mat-expansion-panel-header.mat-expanded {
+        height: 48px;
+    }
+
+    .disable_ripple:hover {
+        background: transparent !important;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 !important;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 !important;
     }
 }
