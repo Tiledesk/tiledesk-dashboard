@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.125-rc4
+- Improves the style of the group list on the department detail page
+
 ### 2.7.125-rc3
 - Adds the ability to delete a teammate
 
