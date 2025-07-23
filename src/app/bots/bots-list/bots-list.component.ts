@@ -33,6 +33,8 @@ import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-mod
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -193,6 +195,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   currentPage = 1;
   totalPagesNo_roundToUp: number;
 
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+
   // editBotName: boolean = false;
   constructor(
     private faqKbService: FaqKbService,
@@ -215,7 +222,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private _snackBar: MatSnackBar,
     private webhookService: WebhookService,
     private activatedroute: ActivatedRoute,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private rolesService: RolesService,
     // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
@@ -277,7 +285,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getProjectPlan();
     this.getUserRole();
     this.getDefaultDeptId();
-    this.getLoggedUser()
+    this.getLoggedUser();
+    this.listenToProjectUser()
   }
 
   // getQueryParams() {
@@ -291,10 +300,51 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // }
 
   ngOnDestroy() {
-     this.faqkbList = [];
+    this.faqkbList = [];
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+  
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          this.ROLE = status.role;
+          this.PERMISSIONS = status.matchedPermissions;
+          console.log('[KB TABLE] - this.ROLE:', this.ROLE);
+          console.log('[KB TABLE] - this.PERMISSIONS', this.PERMISSIONS);
+          this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+          console.log('[KB TABLE] - hasDefaultRole', this.hasDefaultRole);
+  
+      
+  
+  
+          // PERMISSION_TO_ADD_FLOWS
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_ADD_FLOWS = true;
+            console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_ADD_FLOWS = false;
+            console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_ADD);
+            console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          }
+  
+        
+  
+        
+
+        });
+  
+    }
 
   checkChromeVersion(): boolean {
     const ua = navigator.userAgent;
