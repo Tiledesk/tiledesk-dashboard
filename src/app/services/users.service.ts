@@ -1036,10 +1036,17 @@ export class UsersService {
    * @param projectUser_id 
    * @returns 
    */
-  public deleteProjectUser(projectUser_id: string) {
+  public deleteProjectUser(projectUser_id: string, soft: boolean) {
 
     let url = this.PROJECT_USER_URL + projectUser_id;
     this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
+    if (soft) {
+      url += '?soft=true';
+      this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
+    }
+    if (!soft) {
+      this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DISABLE URL ', url);
+    }
 
     const httpOptions = {
       headers: new HttpHeaders({
