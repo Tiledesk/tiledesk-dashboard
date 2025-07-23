@@ -40,6 +40,7 @@ export const PERMISSIONS = {
 
 
   FLOWS_READ: 'flows_read',
+  FLOWS_ADD: 'flows_add',
  
   LEADS_READ: 'leads_read',
   LEAD_UPDATE: 'lead_update',

@@ -170,6 +170,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.FLOWS_READ, label: 'Able to view' },
+        { key: PERMISSIONS.FLOWS_ADD, label: 'Able to create a new Flow' },
       ]
     },
     {
