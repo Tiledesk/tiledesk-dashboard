@@ -3,7 +3,10 @@
   <form [formGroup]="distributionForm">
     <div *ngFor="let group of data.groups; let i = index" class="percentage-row">
       <mat-form-field appearance="fill" [class.mat-form-field-invalid]="isTotalExceeded && percentages.at(i).value">
-        <mat-label> {{ 'PercentageGroupName' | translate:{ group_name: group.name}  }} </mat-label>
+        <mat-label> 
+          {{group.name}} 
+          <!-- {{ 'PercentageGroupName' | translate:{ group_name: group.name}  }}  -->
+        </mat-label>
         <input matInput 
                type="number" 
                [formControl]="percentages.at(i)"
