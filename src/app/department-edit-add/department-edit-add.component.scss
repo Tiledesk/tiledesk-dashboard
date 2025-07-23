@@ -799,20 +799,23 @@ select[disabled] {
 }
 
 .custom-group-row {
+  // border: 1px solid #ccc;
+  // background-color: #f9f9f9;
+  box-shadow: var(--card-elevation);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px;
-  border: 1px solid #ccc;
   border-radius: 6px;
   margin-bottom: 8px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   cursor: pointer;
 }
 
 .custom-group-row:hover {
-  background-color: rgba(249, 249, 249, .6);
-  border: 1px solid var(--blue-20);
+  // background-color: rgba(249, 249, 249, .6);
+  // border: 1px solid var(--blue-20);
+  box-shadow: var(--card-light-elevation);
 }
 
 .group-name {
