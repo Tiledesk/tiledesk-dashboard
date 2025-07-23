@@ -20,8 +20,11 @@ declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
-
-type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
+import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber, getCountries, getCountryCallingCode, CountryCode } from 'libphonenumber-js/max' // from 'libphonenumber-js';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { ProjectUser } from 'app/models/project-user';
+;
+type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phoneCountry' | 'phone' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 
 @Component({
@@ -33,6 +36,8 @@ type FormErrors = { [u in UserFields]: string };
 
 export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit {
   @ViewChild('recaptcha', { static: false }) el: ElementRef;
+  @ViewChild('countrySelect') countrySelect!: NgSelectComponent;
+  @ViewChild('phoneInput') phoneInput!: ElementRef<HTMLInputElement>;
 
   tparams: any;
   companyLogo: string;
@@ -81,6 +86,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   isValidAppSumoActivationEmail: boolean;
 
   browser_lang: string;
+  browserLang: any;
   temp_SelectedLangName: string;
   temp_SelectedLangCode: string;
   selectedTranslationLabel: string;
@@ -89,6 +95,13 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   hideGoogleAuthBtn: string;
   USER_ROLE: string;
 
+  mobilePhoneCountryCode: any;
+  phoneRegex = /^\+?[1-9]\d{6,14}$/  // /^\+?[1-9]\d{6,14}$/ // /^\+?[1-9]\d{1,14}$/; // Mobile number validation regex
+  isValidPhoneNumber: boolean;
+  phoneNumber: any = undefined;
+  dialCode: string = '';
+  phone_country: string;
+  // const mobilePhoneRegex = /^\+?[1-9]\d{6,14}$/;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -97,6 +110,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     'password': '',
     'firstName': '',
     'lastName': '',
+    'phoneCountry': '',
+    'phone': '',
     'terms': '',
   };
   validationMessages = {
@@ -110,7 +125,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       'pattern': 'Password must be include at one letter and one number.',
       'minlength': 'Password must be at least 8 characters long.',
       'maxlength': 'Password is too long.',
-
+    },
+    'phoneCountry': {},
+    'phone': {
+      'required': 'Mobile number is required.',
     },
     'firstName': {
       'required': 'First Name is required.',
@@ -122,6 +140,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       'required': 'Please accept Terms and Conditions and Privacy Policy',
     },
   };
+
+  countries: { code: string; name: string; dialCode: string }[] = [];
+  selectedCountry: string;
+  detectedCountry: string;
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -156,7 +179,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
     this.display_dpa = brand['display_dpa_link'];
-    this.dpa_url =  brand['dpa_url'];
+    this.dpa_url = brand['dpa_url'];
     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
@@ -168,20 +191,22 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
     this.getReCaptchaSiteKey()
     this.getUserRole()
-
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
+
+    this.getSupportedCountry()
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -207,15 +232,18 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
 
+
   // 
   // 'email': [{ value: '', disabled: true }, [
   buildForm() {
     this.userForm = this.fb.group({
-      'email': ['', [
-        Validators.required,
-        // Validators.email,
-        Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
+      'email': ['', [Validators.required,
+      // Validators.email,
+      Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
+      'phoneCountry': [''],
+      'phone': ['', [Validators.required]],
+
       'password': ['', [
         // Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
         // Validators.pattern(/[$-/:-?{-~!"^@#`\[\]]/g),
@@ -246,34 +274,19 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
     const form = this.userForm;
 
-  //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+  //  this.logger.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
   //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
   //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
-  //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
+  //  this.logger.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
 
-    
 
-    // this.logger.log('[SIGN-UP] onValueChanged  data', data)
-    // if (data) {
-    //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
-    //   this.logger.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
-    //   if (data.password.length >= 0) {
-    //     this.logger.log('[SIGN-UP] onValueChanged  data password length (2)', data.password.length)
-    //     // document.getElementById("password")
-
-    //     elemPswInput.setAttribute("type", "text");
-    //     elemPswInput.classList.add("secure");
-    //   }
-    //   // else if ( data.password.length == 0) {
-    //   //   this.logger.log('[SIGN-UP] onValueChanged  data password length (3)', data.password.length)
-    //   //   elemPswInput.setAttribute("type", "password");
-    //   //   elemPswInput.classList.remove("secure");
-    //   // }
-    // }
-
+    //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+    //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
+    //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
+    //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms')) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms' || field === 'phone' || field === "phoneCountry")) {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
@@ -290,6 +303,139 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       }
     }
   }
+
+  // formatPhoneNumber() {
+  //   console.log('[SIGN-UP] formatPhoneNumber')
+  //   const phone = this.userForm.get('phone')?.value;
+  //   if (phone) {
+  //     const phoneNumber = parsePhoneNumberFromString(phone, 'IT');
+  //     return phoneNumber ? phoneNumber.formatInternational() : phone;
+  //   }
+  //   return '';
+  // }
+
+  getSupportedCountry() {
+    this.countries = getCountries().map((code) => ({
+      code: code,
+      name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code,
+      dialCode: `+${getCountryCallingCode(code)}`,
+    }));
+
+    if (this.countries.length > 0) {
+     
+      fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
+        .then(response => response.json())
+        .then(data => {
+          const userCountry = data.country;
+          this.logger.log('[SIGN-UP] - Detected country from IP:', userCountry);
+
+          // Find the matching country in your countries list
+          const countryIndex = this.countries.findIndex(c => c.code === userCountry);
+          this.logger.log('[SIGN-UP] - Detected countryIndex:', countryIndex);
+          if (countryIndex !== -1) {
+            this.logger.log('[SIGN-UP] - Auto-selecting country:', this.countries[countryIndex]);
+            this.userForm.patchValue({ phoneCountry: this.countries[countryIndex].code });
+            this.dialCode = this.countries[countryIndex].dialCode;
+            this.onCountryChange(this.countries[countryIndex], 'on-init')
+            this.logger.log('[SIGN-UP] - Detected dialCode:', this.dialCode);
+          } else {
+            this.logger.log('[SIGN-UP] - Country not found in list, using default.');
+
+            this.userForm.patchValue({ phoneCountry: this.countries[0].code });
+            this.dialCode = this.countries[0].dialCode;
+            this.logger.log('this.countries[0].code ', this.countries[0].code)
+            this.onCountryChange(this.countries[0], 'on-init');
+          }
+        })
+    }
+
+    this.logger.log('[SIGN-UP] - PHONE VILDATION SUPPORTED countries', this.countries)
+  }
+
+
+  onCountryChange(country: any, calledBy?:string) {
+    if (country) {
+      this.logger.log('[SIGN-UP] onCountryChange country', country)
+      const selectedCountry = this.countries.find(c => c.code === country.code);
+      this.logger.log('[SIGN-UP] onCountryChange selectedCountry 1 ', selectedCountry)
+
+      if (selectedCountry) {
+        this.logger.log('[SIGN-UP] onCountryChange selectedCountry 2', selectedCountry)
+        this.dialCode = selectedCountry.dialCode;
+        // this.mobilePhoneCountryCode = selectedCountry.code;
+        // console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
+    
+        this.userForm.patchValue({ phone: selectedCountry.dialCode + ' ' });
+        if (calledBy !== 'on-init') {
+          setTimeout(() => {
+            const inputElement = this.phoneInput.nativeElement;
+            inputElement.focus();
+            inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+          }, 100); // Delay to ensure the input is ready
+        }
+      }
+    }
+  }
+
+  formatAsYouType() {
+    let inputValue = this.userForm.get('phone')?.value || '';
+
+    this.logger.log('formatAsYouType inputValue ', inputValue)
+
+    if (!inputValue.trim()) return; // Skip if input is empty
+
+    this.logger.log('[SIGN-UP] - formatAsYouType inputValue.startsWith dialCode', inputValue.startsWith(this.dialCode))
+    if (!inputValue.startsWith(this.dialCode)) {
+      this.logger.log('[SIGN-UP] - formatAsYouType inputValue.startsWith dialCode 2', inputValue.startsWith(this.dialCode))
+      // this.setPhoneInput(this.dialCode + inputValue.replace(/[^0-9]/g, ''));
+      // this.userForm.patchValue({ phone: this.dialCode + ' '});
+      this.userForm.get('phone')?.setValue(this.dialCode + ' '); // Use setValue for phone input
+    }
+
+    // this.mobilePhoneCountryCode
+    if (inputValue.startsWith(this.dialCode)) {
+      const formatter = new AsYouType();
+
+      // Apply formatting
+      const formattedNumber = formatter.input(inputValue);
+
+      // this.userForm.patchValue({ phone: formatter.input(inputValue) });
+      this.userForm.patchValue({ phone: formattedNumber }, { emitEvent: false });
+      this.isValidPhone()
+    }
+  }
+
+
+  isValidPhone() {
+    const mobile = this.userForm.get('phone')?.value;
+    this.logger.log('[SIGN-UP] - isValidPhone mobile value', mobile)
+   
+    // Parse the phone number
+    this.phoneNumber = parsePhoneNumberFromString(mobile);
+    this.logger.log('[SIGN-UP] - isValidPhone parsePhoneNumberFromString phoneNumber', this.phoneNumber)
+   
+    
+    if (this.phoneNumber) {
+      this.phone_country = this.phoneNumber.country;
+      this.logger.log('[SIGN-UP] - isValidPhone parsePhoneNumberFromString phone_country', this.phone_country)
+      this.logger.log('[SIGN-UP] - isValidPhone getType ', this.phoneNumber.getType())
+    }
+   
+
+    this.logger.log('[SIGN-UP] - isValidPhone isValidPhoneNumber ', isValidPhoneNumber(mobile))
+    // if (!phoneNumber || phoneNumber && isValidPhoneNumber(mobile) === false) {
+    if (isValidPhoneNumber(mobile) === false) {
+      // return false; // Invalid phone number
+      this.isValidPhoneNumber = false
+    } else if (isValidPhoneNumber(mobile) === true) {
+      // return true; // Valid phone number
+      this.isValidPhoneNumber = true
+    }
+    // Check if the number is a MOBILE type
+    // return phoneNumber.getType() === 'MOBILE' || phoneNumber.getType() === 'FIXED_LINE_OR_MOBILE';
+
+  }
+
 
 
 
@@ -422,13 +568,6 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.checkCurrentUrlAndSkipWizard();
   }
 
-
-
-  signupWithGoogle() {
-    this.auth.siginUpWithGoogle()
-  }
-
-
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -523,8 +662,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
   getBrowserLang() {
+
     const browserLang = this.translate.getBrowserLang();
     if (browserLang) {
+      this.browserLang = browserLang
+      this.logger.log('[SIGN-UP] GET BROWSER LANG - browserLang ', browserLang)
       if (browserLang === 'it') {
         this.currentLang = 'it'
       } else {
@@ -584,15 +726,22 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     this.logger.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
-    this.auth.showExpiredSessionPopup(true);
+    this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
+    this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
+    this.logger.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
+    this.logger.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
+    this.logger.log('[SIGN-UP] Mobile Number ', this.userForm.value['phone']);
+
+    const mobile_phone = this.userForm.value['phone'].replace(/\s/g, "");
+    this.logger.log('[SIGN-UP] mobile_phone_value ', mobile_phone);
+
 
     // const stringOnlyFirstCharacter = this.userForm.value['firstName'].charAt(0)
     // const stringWithoutFirstCharacter = this.userForm.value['firstName'].slice(1);
 
     // const _first_name = stringOnlyFirstCharacter + stringWithoutFirstCharacter
 
-    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
-
+    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'], mobile_phone)
       .subscribe((signupResponse) => {
         this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
         this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
@@ -620,9 +769,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           if (signupResponse['code'] === 11000) {
 
-            
+
             this.notify.showToast(this.translate.instant('SomethingWentWrongCreatingYourAccount'), 4, 'report_problem')
-           
+
 
             // if (this.currentLang === 'it') {
             //   this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
@@ -671,7 +820,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
       // this.logger.log('autoSignin: ', error);
       if (!error) {
-       
+
 
         // this.logger.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
         // this.logger.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
@@ -719,6 +868,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       }
 
     });
+  }
+
+
+  signupWithGoogle() {
+    this.auth.siginUpWithGoogle()
   }
 
 
@@ -809,6 +963,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   trackSignup(signupResponse) {
+    this.logger.log('trackSignup signupResponse ', signupResponse) 
+    this.logger.log('trackSignup this.phone_country ', this.phone_country) 
     if (!isDevMode()) {
       if (window['analytics']) {
         let userFullname = ''
@@ -822,6 +978,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
           window['analytics'].identify(signupResponse.user._id, {
             name: userFullname,
             email: signupResponse.user.email,
+            mobile_phone: signupResponse.user.phone,
+            phone_country: this.phone_country,
             logins: 5,
           });
         } catch (err) {
@@ -857,6 +1015,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             "first_name": signupResponse.user.firstname,
             "last_name": signupResponse.user.lastname,
             "email": signupResponse.user.email,
+            "mobile_phone": signupResponse.user.phone,
+            'phone_country': this.phone_country,
             "username": userFullname,
             'userId': signupResponse.user._id,
             'method': "Email and Password"

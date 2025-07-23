@@ -9,6 +9,7 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -96,9 +97,11 @@ export class TriggerStaticComponent  implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[TRIGGER-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+        this.logger.log('[TRIGGER-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      }
     });
   }
 

@@ -1,11 +1,13 @@
-<div class="m-header"  (click)="handleClickInside($event)">
+<div class="m-header" (click)="handleClickInside($event)">
   <h1 mat-dialog-title> {{ 'Preview' | translate }} </h1>
-  <div class="m-top-right-icon" >
+  <div class="m-top-right-icon">
 
-    <span *ngIf="!isopenasetting" id="settings" class="material-icons-outlined"  (click)="presentDialogAiSettings(isopenasetting = !isopenasetting)">
+    <span *ngIf="!isopenasetting" id="settings" class="material-icons-outlined"
+      (click)="presentDialogAiSettings(isopenasetting = !isopenasetting)">
       settings
     </span>
-    <span *ngIf="isopenasetting" id="settings" class="material-icons-outlined close-ai-settings" (click)="closeDialogAiSettings(isopenasetting = !isopenasetting)">
+    <span *ngIf="isopenasetting" id="settings" class="material-icons-outlined close-ai-settings"
+      (click)="closeDialogAiSettings(isopenasetting = !isopenasetting)">
       remove
     </span>
 
@@ -17,7 +19,7 @@
       close
     </span>
   </div>
-  
+
 </div>
 <div mat-dialog-content (click)="handleClickInside($event)">
 
@@ -41,16 +43,16 @@
 
   <div *ngIf="show_answer" class="form--container" style="margin-bottom: 0px;">
     <p *ngIf="answer" class="answer-title">
-      {{ 'KbPage.Answer' | translate }} 
-      
+      {{ 'KbPage.Answer' | translate }}
+
       <span *ngIf="qa?.ai_model"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
     </p>
     <div id="answer" class="answer">
-      
-       <!-- <span *ngIf="!aiQuotaExceeded">  -->
-        {{ answer }} 
+
+      <!-- <span *ngIf="!aiQuotaExceeded">  -->
+      {{ answer }}
       <!-- </span>  -->
-       <!-- <span *ngIf="aiQuotaExceeded">
+      <!-- <span *ngIf="aiQuotaExceeded">
        -> {{ answer }}
        </span> -->
       <span *ngIf="qa && (!qa.answer || qa.answer == '')">
@@ -63,6 +65,29 @@
         <span *ngIf="!source_url">{{ qa.source }}</span>
       </span> -->
 
+    </div>
+    <!-- ----------------------------- -->
+    <!-- Chunks Accordion -->
+    <!-- ----------------------------- -->
+  <div class="mat-accordion--wpr" style="margin-top: 3px;">
+    <mat-accordion>
+      <mat-expansion-panel  class="custom-expansion-panel" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Chunks used for the answer ({{contentChunks?.length}})
+          </mat-panel-title>
+          <!-- <mat-panel-description>
+        Currently I am {{panelOpenState ? 'open' : 'closed'}}
+      </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <div class="chunk--wpr" *ngFor="let chunk of contentChunks">
+        
+          <article class="chunk">
+            {{ chunk}}
+          </article>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
     </div>
 
     <hr class="horizontal-line" *ngIf="qa && qa.source">
@@ -77,14 +102,16 @@
     </div>
     <label *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
       <!-- {{ 'KbPage.LabelResponseTime' | translate: translateparam }} -->
-      <span *ngIf="responseTime"> 
-        {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate: translateparam }} </span>
+      <span *ngIf="responseTime">
+        {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate:
+          translateparam }} </span>
       </span>
     </label>
     <label *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
       <!-- {{ 'KbPage.TotalTokensUsage' | translate: {prompt_token_size: prompt_token_size } }} -->
-      <span *ngIf="prompt_token_size"> 
-        {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: prompt_token_size } }} </span>
+      <span *ngIf="prompt_token_size">
+        {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size:
+          prompt_token_size } }} </span>
       </span>
     </label>
   </div>
@@ -93,13 +120,13 @@
 </div>
 
 <div mat-dialog-actions style="justify-content: center;" (click)="handleClickInside($event)">
- 
 
-  <button class="mat-dialog-reuse-last-question-btn" mat-button
-      (click)="reuseLastQuestion()" [disabled]="!hasStoredQuestion">
-      <!-- Re-use last question -->
-      {{"KbPage.ReUseLastQuestion" | translate }}
-      
+
+  <button class="mat-dialog-reuse-last-question-btn" mat-button (click)="reuseLastQuestion()"
+    [disabled]="!hasStoredQuestion">
+    <!-- Re-use last question -->
+    {{"KbPage.ReUseLastQuestion" | translate }}
+
   </button>
 
 </div>
@@ -118,7 +145,7 @@
  <div>
   context > {{ context}} 
  </div> -->
- 
+
 <!-- style="justify-content: center;" -->
 <!-- <div mat-dialog-actions style="justify-content: center;">
   <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
