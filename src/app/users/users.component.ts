@@ -200,34 +200,34 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[DEPTS] - Role:', status.role);
-        console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+        console.log('[USERS] - Role:', status.role);
+        console.log('[USERS] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE)) {
 
             this.PERMISSION_TO_INVITE = true
-            console.log('[DEPTS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+            console.log('[USERS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
           } else {
             this.PERMISSION_TO_INVITE = false
-            console.log('[DEPTS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+            console.log('[USERS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
           }
         } else {
           this.PERMISSION_TO_INVITE = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+          console.log('[USERS] - Project user has a default role ', status.role, 'PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
         }
 
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ_DETAILS)) {
 
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-            console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            console.log('[USERS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           } else {
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-            console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            console.log('[USERS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           }
         } else {
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          console.log('[USERS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 
      
@@ -448,14 +448,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.USER_ROLE = user_role
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role
         this.logger.log('[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
-      })
+      }
+    })
   }
 
   getBrowserVersion() {
