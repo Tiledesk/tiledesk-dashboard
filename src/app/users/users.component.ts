@@ -1067,14 +1067,19 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         // NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
-       console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
-        for (var i = 0; i < this.projectUsersList.length; i++) {
-              if (this.projectUsersList[i].id === this.id_projectUser) {
-                this.projectUsersList.splice(i, 1);
-                i--;
-              }
-        }
-      },
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
+          for (var i = 0; i < this.projectUsersList.length; i++) {
+                if (this.projectUsersList[i].id === this.id_projectUser) {
+                  this.projectUsersList.splice(i, 1);
+                  i--;
+                }
+          }
+
+          console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
+          console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
+          this.projectUsersLength = this.projectUsersList.length;
+        },
+        
     )
   }
 

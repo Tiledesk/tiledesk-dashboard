@@ -423,7 +423,7 @@
                                   </button>
 
                                   <button class="mat-menu-btn"
-                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status !== 'disabled'"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
                                     mat-menu-item
                                     (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
                                     [disabled]="USER_ROLE === 'agent'">
