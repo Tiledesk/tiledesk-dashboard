@@ -1076,6 +1076,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
                 i--;
               }
         }
+
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
+        this.projectUsersLength = this.projectUsersList.length;
       },
     )
   }
