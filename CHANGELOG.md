@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.125-rc3
+- Adds the ability to delete a teammate
+
 ### 2.7.125-rc2
 - Adds the ability to manage the "Add contents to Knowledge Bases" feature 
 - Adds the ability to manage the "Update a Knowledge Base content" feature 
