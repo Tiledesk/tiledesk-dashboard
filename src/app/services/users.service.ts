@@ -1130,15 +1130,21 @@ export class UsersService {
 
 
   /**
-   * DELETE PROJECT-USER (DELETE) 
+   * DELETE (Locically) - to delete from DB use ?hard=true / DISABLED PROJECT-USER (DELETE) 
+   * DELETE note: Locically delete "?soft=true" - fisically "?hard=true"
    * @param projectUser_id 
    * @returns 
    */
-  public deleteProjectUser(projectUser_id: string) {
-
+  public deleteProjectUser(projectUser_id: string, soft: boolean) {
+    this.SERVER_BASE_PATH + this.project._id + '/project_users/';
     let url = this.PROJECT_USER_URL + projectUser_id;
-    this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
-
+    if (soft) {
+      url += '?soft=true';
+      console.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
+    }
+    if (!soft) {
+      console.log('[USER-SERV] - DELETE PROJECT-USER - DISABLE URL ', url);
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',

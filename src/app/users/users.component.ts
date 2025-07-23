@@ -54,7 +54,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   user_id: string
 
   // set to none the property display of the modal
-  display = 'none'
+  displayDeleteModal = 'none'
+  displayDisableModal = 'none'
   displayCancelInvitationModal = 'none'
   displayRestoreModal = 'none';
   project: Project
@@ -1018,14 +1019,13 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
 
-
   openDeleteModal(
     projectUser_id: string,
     userID: string,
     userFirstname: string,
     userLastname: string,
   ) {
-    this.display = 'block'
+    this.displayDeleteModal = 'block'
     this.id_projectUser = projectUser_id
     this.user_id = userID
     this.user_firstname = userFirstname
@@ -1045,72 +1045,18 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
   }
 
-  openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
-    this.displayRestoreModal = 'block';
-    this.id_projectUser = projectUser_id
-    this.user_id = userID
-    this.user_firstname = userFirstname
-    this.user_lastname = userLastname
-  }
-
   onCloseDeleteModalHandled() {
-    this.display = 'none'
+    this.displayDeleteModal = 'none'
     // this.logger.log('Confirm Delete Project-User');
-    this.usersService.deleteProjectUser(this.id_projectUser).subscribe(
+    const soft = true;
+    this.usersService.deleteProjectUser(this.id_projectUser, soft).subscribe(
       (projectUsers: any) => {
-        //  this.logger.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
-        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser,)
+        console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
         // this.ngOnInit();
         if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].page("Temmates list Page, Temmates", {
-
-              });
-            } catch (err) {
-              // this.logger.error('Account Deleted page error', err);
-            }
-
-            let userFullname = ''
-            if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
-              userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
-            } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
-              userFullname = this.CURRENT_USER.firstname
-            }
-
-            try {
-              window['analytics'].identify(this.CURRENT_USER._id, {
-                name: userFullname,
-                email: this.CURRENT_USER.email,
-                plan: this.prjct_profile_name
-
-              });
-            } catch (err) {
-              // this.logger.error('identify in Account Removed  error', err);
-            }
-
-            try {
-              window['analytics'].track('Account Removed User', {
-                "userId": projectUsers.id_user
-              },
-                {
-                  "context": {
-                    "groupId": this.id_project
-                  }
-                });
-            } catch (err) {
-              // this.logger.error('track signin event error', err);
-            }
-
-            try {
-              window['analytics'].group(this.project._id, {
-                name: this.project.name,
-                plan: this.prjct_profile_name,
-              });
-            } catch (err) {
-              // this.logger.error('group Signed Out error', err);
-            }
-          }
+          this.trackDeleteProjectUser(projectUsers)
+         
         }
       }, (error) => {
         this.showSpinner = false
@@ -1123,12 +1069,82 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         // NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
+       console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
+        for (var i = 0; i < this.projectUsersList.length; i++) {
+              if (this.projectUsersList[i].id === this.id_projectUser) {
+                this.projectUsersList.splice(i, 1);
+                i--;
+              }
+        }
+      },
+    )
+  }
+
+
+  openDisableModal(
+    projectUser_id: string,
+    userID: string,
+    userFirstname: string,
+    userLastname: string,
+  ) {
+    this.displayDisableModal = 'block'
+    this.id_projectUser = projectUser_id
+    this.user_id = userID
+    this.user_firstname = userFirstname
+    this.user_lastname = userLastname
+
+    this.user_fullname = ''
+    if (this.user_firstname && this.user_lastname) {
+        this.user_fullname = this.user_firstname + ' ' + this.user_lastname
+    }
+    if (this.user_firstname && !this.user_lastname) {
+        this.user_fullname = this.user_firstname
+    }
+     if (!this.user_firstname && this.user_lastname) {
+        this.user_fullname = this.user_lastname
+    }
+
+    this.logger.log('[USERS] OPEN DISABLE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
+  }
+
+
+
+  onCloseDisableModalHandled() {
+    this.displayDisableModal = 'none'
+    // this.logger.log('Confirm Delete Project-User');
+    const soft = false
+    this.usersService.deleteProjectUser(this.id_projectUser, soft).subscribe(
+      (projectUsers: any) => {
+        //  this.logger.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser,)
+        // this.ngOnInit();
+       
+      }, (error) => {
+        this.showSpinner = false
+        this.logger.error('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - ERROR ', error)
+
+        // NOTIFY ERROR
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('DisableProjectUserErrorNoticationMsg'), 4, 'report_problem')
+      }, () => {
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *')
+        // NOTIFY SUCCESS
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('DisableProjectUserSuccessNoticationMsg'), 2, 'done')
+
         const userToDisable = this.projectUsersList.find(user => user._id === this.id_projectUser);
         if (userToDisable) {
           userToDisable.status = 'disabled';
         }
       },
     )
+  }
+
+
+  openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
+    this.displayRestoreModal = 'block';
+    this.id_projectUser = projectUser_id
+    this.user_id = userID
+    this.user_firstname = userFirstname
+    this.user_lastname = userLastname
   }
 
   onCloseRestoreModalHandled() {
@@ -1148,7 +1164,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   onCloseModal() {
-    this.display = 'none';
+    this.displayDeleteModal = 'none';
+    this.displayDisableModal = 'none';
     this.displayRestoreModal = 'none';
   }
 
@@ -1337,6 +1354,59 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.resendInviteErrorNoticationMsg = text
         // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
       })
+  }
+
+
+  trackDeleteProjectUser(projectUsers) {
+    if (window['analytics']) {
+      try {
+        window['analytics'].page("Temmates list Page, Temmates", {
+
+        });
+      } catch (err) {
+        // this.logger.error('Account Deleted page error', err);
+      }
+
+      let userFullname = ''
+      if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
+        userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
+      } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
+        userFullname = this.CURRENT_USER.firstname
+      }
+
+      try {
+        window['analytics'].identify(this.CURRENT_USER._id, {
+          name: userFullname,
+          email: this.CURRENT_USER.email,
+          plan: this.prjct_profile_name
+
+        });
+      } catch (err) {
+        // this.logger.error('identify in Account Removed  error', err);
+      }
+
+      try {
+        window['analytics'].track('Account Removed User', {
+          "userId": projectUsers.id_user
+        },
+          {
+            "context": {
+              "groupId": this.id_project
+            }
+          });
+      } catch (err) {
+        // this.logger.error('track signin event error', err);
+      }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.prjct_profile_name,
+        });
+      } catch (err) {
+        // this.logger.error('group Signed Out error', err);
+      }
+    }
   }
 
 

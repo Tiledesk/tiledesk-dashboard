@@ -412,7 +412,7 @@
                                   <button class="mat-menu-btn"
                                     *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status !== 'disabled'"
                                     mat-menu-item
-                                    (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                    (click)='openDisableModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
                                     [disabled]="USER_ROLE === 'agent'">
                                     <!-- <mat-icon>delete</mat-icon> -->
                                     <mat-icon>close</mat-icon>
@@ -420,6 +420,19 @@
 
                                    <!-- <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span>  -->
                                     <span>{{ 'DisableMember' | translate }}</span>
+                                  </button>
+
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status !== 'disabled'"
+                                    mat-menu-item
+                                    (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                    [disabled]="USER_ROLE === 'agent'">
+                                    <mat-icon>delete</mat-icon>
+                                    <!-- <mat-icon>close</mat-icon> -->
+                                    
+
+                                    <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span> 
+                                    <!-- <span>{{ 'DisableMember' | translate }}</span> -->
                                   </button>
 
                                 </mat-menu>
@@ -556,344 +569,8 @@
               </div>
             </div>
 
-            <!-- ------------------------------------------------ -->
-            <!-- Old teammates list -->
-            <!-- ------------------------------------------------ -->
-            <div style="display: none;" class="row">
-              <div class="col-md-12">
-                <div class="card card card--no-border"
-                  style="min-height: 195px;margin-top: 15px;box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px !important;padding: 0px 6px;">
-
-
-                  <!-- table-responsive -->
-                  <div class="card-header card-header-custom-bckgrnd"
-                    style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
-
-                    <!-- displayBtn {{displayInviteTeammateBtn}} -> USER_ROLE > {{ USER_ROLE}} -->
-                    <ng-container *ngIf="displayInviteTeammateBtn">
-                      <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
-                        style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
-                        [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
-                        <span class="icon" style="padding-right:8px">
-                          <i class="material-icons">add_circle</i>
-                        </span>
-                        {{ "UsersPage.Invites" | translate }}
-                      </button>
-                    </ng-container>
-
-
-
-                    <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
-                {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
-              </div> -->
-                  </div>
-
-                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
-
-                  <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px; width: 100%;">
-
-                    <table class="table table-hover">
-                      <thead>
-                        <tr style="display: none;">
-
-                          <!-- ------------------------------------- -->
-                          <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                          <!-- ------------------------------------- -->
-                          <!-- <th>
-                            <span style="color: #566787">
-                              <strong>
-                                Project_User Id
-                              </strong>
-                            </span>
-                          </th> -->
-
-
-                          <!-- --------------------------------- -->
-                          <!-- User Avatar -->
-                          <!-- --------------------------------- -->
-                          <th>
-                            <span class="column-th-span" style="white-space: nowrap">
-                              {{ "UsersPage.User" | translate }}
-                            </span>
-                          </th>
-
-
-                          <!-- --------------------------------- -->
-                          <!-- User Fullname -->
-                          <!-- --------------------------------- -->
-                          <th> </th>
-
-
-                          <!-- --------------------------------- -->
-                          <!-- Chat with -->
-                          <!-- --------------------------------- -->
-                          <th> </th>
-
-
-                          <!-- --------------------------------- -->
-                          <!-- Role -->
-                          <!-- --------------------------------- -->
-                          <th>
-                            <span class="column-th-span">
-                              {{ "UsersPage.Role" | translate }}
-                            </span>
-                          </th>
-
-
-                          <!-- ------------------------------------------- -->
-                          <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
-                          <!-- ------------------------------------------- -->
-                          <th>
-                            <span class="column-th-span">
-                              {{ "Status" | translate }}
-                            </span>
-                          </th>
-
-
-                          <!-- --------------------------------- -->
-                          <!-- IS BUSY -->
-                          <!-- --------------------------------- -->
-                          <th>
-                            <span class="column-th-span">
-                              {{ "Actions" | translate }}
-                            </span>
-                          </th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
-                        <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
-
-                          <td (click)="goToEditUser(projectUser?._id)"
-                            style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
-
-                            <div class="user-avatar-wrap">
-
-                              <!-- --------------------------------------------------- -->
-                              <!-- USECASE uploadEngine Firebase -->
-                              <!-- --------------------------------------------------- -->
-
-                              <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-                                class="user-img-in-teammates-list"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                                onerror="this.src='assets/img/no_image_user.png'" />
-
-                              <!-- --------------------------------------------------- -->
-                              <!-- USECASE uploadEngine Native -->
-                              <!-- --------------------------------------------------- -->
-                              <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                                class="user-img-in-teammates-list"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                onerror="this.src='assets/img/no_image_user.png'" />
-
-                              <!-- --------------------------------------------------- -->
-                              <!-- USECASE No profile Image -->
-                              <!-- --------------------------------------------------- -->
-                              <!-- [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }" -->
-                              <div *ngIf="projectUser?.hasImage === false"
-                                style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
-                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
-                                <span class="altenative-projetuser-avatar">
-                                  {{ projectUser?.id_user?.fullname_initial }}
-                                </span>
-                              </div>
-
-                              <div id="teammate-status-icon" class="teammate-status-icon"
-                                [ngClass]="{
-                            'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
-                            'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
-                            'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'}">
-                              </div>
-
-                              <!-- [matTooltip]="projectUser.id_user._id === CURRENT_USER_ID ? ( 'Busy, click to reset' ) : ( 'Busy' ) " -->
-                              <!-- (click)="presentDialogResetBusy(); $event.stopPropagation()" -->
-                              <div *ngIf="projectUser?.isBusy" class="user-is-busy" matTooltipClass="custom-mat-tooltip"
-                                matTooltip=" {{ 'Busy' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                                matTooltipHideDelay="100">
-                                <!-- <span class="tool__tip"> -->
-                                <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
-
-                                <!-- <span class="top">
-                                {{ 'Busy' | translate }}
-                                <i></i>
-                              </span>
-                            </span> -->
-                              </div>
-
-                            </div>
-
-                            <!-- <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
-                      {{ 'Busy' | translate }}
-                    </div> -->
-                          </td>
-
-                          <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
-                          <td (click)="goToEditUser(projectUser?._id)"
-                            style="cursor:pointer; white-space: nowrap;  width: 1%;">
-                            <span class="White__Tooltip">
-                              <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }}
-                              </span>
-                              <span style="font-weight:400; font-size: 13px">
-                                {{ projectUser?.id_user?.lastname }} </span>
-
-                              <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
-                                {{ projectUser?.id_user?.email }}
-                              </span>
-                            </span>
-                          </td>
-
-                          <td>
-                            <span>
-                              <span class="White__Tooltip" matTooltipClass="custom-mat-tooltip"
-                                matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
-                                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                                <i class="material-icons chat-with-agent"
-                                  (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
-                                  chat
-                                </i>
-                                <!-- <span class="White__Tooltiptext"
-                              style="font-size: 12px; white-space: nowrap;font-weight: 100;">
-                              {{"ChatWith" | translate }}:
-                              <span style="display:block">
-                                {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}
-                              </span>
-                            </span> -->
-                              </span>
-                            </span>
-                          </td>
-
-                          <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
-                          <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
-                            <!-- <span class="White__Tooltip"> -->
-                            <span style="font-weight:400; font-size: 13px">
-                              {{ projectUser?.role | translate}}
-                            </span>
-                            <!-- <span class="White__Tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
-                          {{projectUser?.id_user?._id}}</span>
-                      </span> -->
-                            <!-- </span> -->
-                          </td>
-
-
-                          <!-- ------------------------------------------- -->
-                          <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
-                          <!-- ------------------------------------------- -->
-                          <!-- *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" -->
-                          <td>
-
-
-
-                            <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}"
-                              id="{{projectUser?._id}}"
-                              (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id)">
-
-                              <option value="available"
-                                [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                                {{'Available' | translate}}
-                              </option>
-
-                              <option value="unavailable"
-                                [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                                {{'Unavailable' | translate}}
-                              </option>
-
-                              <option value="inactive"
-                                [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
-                                {{'Inactive' | translate}}
-                              </option>
-                            </select>
-                          </td>
-
-
-
-                          <!-- ACTIONS -->
-                          <td class="td-actions text-right">
-                            <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
-                            <span style="position: relative;top: 15px;">
-                              <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                                (click)='goToEditUser(projectUser?._id)' matTooltipClass="custom-mat-tooltip"
-                                matTooltip="{{ 'UsersPage.tootipEditUser' | translate }}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100">
-                                <i class="material-icons">edit</i>
-                                <!-- <span class="White__Tooltiptext" style="text-transform:capitalize">
-                              {{ 'UsersPage.tootipEditUser' | translate }} 
-                            </span> -->
-                              </button>
-
-
-                              <button
-                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                                type="button" class="btn btn-danger btn-simple btn-xs"
-                                (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
-                                matTooltipClass="custom-mat-tooltip"
-                                matTooltip="{{ 'UsersPage.tootipDeleteUser' | translate }}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100">
-                                <i class="material-icons">close</i>
-                              </button>
-                            </span>
-                          </td>
-
-                        </tr>
-
-
-
-                        <!-- -------------------------------------------------------------- -->
-                        <!-- @ Pending invitation -->
-                        <!-- -------------------------------------------------------------- -->
-                        <tr *ngFor="let invites of pendingInvitationList">
-                          <td style="text-align: center; width:1%; white-space:nowrap; ">
-                            <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
-                              query_builder
-                            </i>
-                          </td>
-
-                          <td>
-                            <span style="font-weight:400">
-                              {{ invites?.email }}
-                            </span>
-                            <span
-                              style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
-                              {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
-                            </span>
-                          </td>
-
-                          <td>
-                            <span style="font-weight:400;font-weight:400; font-size: 13px">
-                              {{ "UsersPage.InvitedToBecome" | translate }}
-                              <span style="text-transform:capitalize">
-                                {{ invites?.role | translate }}
-                              </span>
-                            </span>
-                          </td>
-
-                          <td> </td>
-                          <td> </td>
-
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title=""
-                              class="btn btn-primary btn-simple btn-xs White__Tooltip"
-                              (click)='resendInvite(invites?._id)'>
-                              <i class="material-icons">send</i>
-                              <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
-                                {{ "UsersPage.ResendInvite" | translate }}
-                              </span>
-                            </button>
-                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs "
-                              (click)='openCancelInvitationModal(invites?._id, invites?.email )'
-                              style="margin-left: 4px;">
-                              <i class="material-icons">close</i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+           
+          
 
           </ng-container>
 
@@ -908,8 +585,72 @@
   </div>
 </div>
 
+
 <!-- ============ USERS DELETE MODAL ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title warning">
+          <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
+          <span class="modal-header-icon-wpr">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
+          <span style="vertical-align: middle; padding-left:8px">
+           {{ "UsersPage.modalDeleteUser" | translate }}
+              <!-- {{ "DisableMember" | translate }} -->
+          </span>
+        </h4>
+
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
+          {{ "UsersPage.TheMemberWithId" | translate }}
+          <code>{{user_id}}</code>
+          {{ "UsersPage.WillBeRemoved" | translate }}
+        </h4> -->
+
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-body--content">
+         <!--  {{ "UsersPage.AreYouSure" | translate }}
+          <b>{{user_firstname}} {{user_lastname }} </b>
+          {{ "UsersPage.FromTheProject" | translate }}? -->
+           {{'AreYouSure' | translate }}?
+        </p>
+        <p [innerHTML]="('TheMemberWillBeDeleted' | translate:{ pu_name: user_fullname }) + '.'">
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
+
+          {{ "Cancel" | translate }}
+        </button>
+
+        <button class="btn btn-red" (click)="onCloseDeleteModalHandled()">
+          {{ "UsersPage.modalDeleteUser" | translate }}
+             <!-- {{ "Disable" | translate }} -->
+        </button>
+      </div>
+
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!-- ============ USERS DISABLE MODAL ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDisableModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
@@ -957,7 +698,7 @@
           {{ "Cancel" | translate }}
         </button>
 
-        <button class="btn btn-red" (click)="onCloseDeleteModalHandled()">
+        <button class="btn btn-red" (click)="onCloseDisableModalHandled()">
           <!-- {{ "UsersPage.modalDeleteUser" | translate }} -->
              {{ "Disable" | translate }}
         </button>
