@@ -787,13 +787,13 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.UPDATE_USER_ERROR = false;
         this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification(this.translationsMap.get('YourProfileHasBeenUploaded'), 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('YourProfileHasBeenUploaded'), 2, 'done');
 
       } else if (response === 'error') {
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = true;
         // =========== NOTIFY ERROR ===========
-        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurred'), 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorHasOccurred'), 4, 'report_problem')
       }
     });
   }
