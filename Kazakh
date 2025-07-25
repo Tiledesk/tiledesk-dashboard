@@ -202,6 +202,8 @@
     "ChangeAvailabilityErrorNoticationMsg": "Күйді жаңарту кезінде қате орын алды",
     "RemoveProjectUserSuccessNoticationMsg": "Командатасы сәтті жойылды",
     "RemoveProjectUserErrorNoticationMsg": "Командаласты жою кезінде қате орын алды",
+    "DisableProjectUserSuccessNoticationMsg": "Teammate successfully disabled",
+    "DisableProjectUserErrorNoticationMsg": "An error occurred while disabling the teammate",
     "EditContactSuccessNoticationMsg": "Контакт сәтті жаңартылды",
     "EditContactErrorNoticationMsg": "Контактіні жаңарту кезінде қате орын алды",
     "DeleteLeadSuccessNoticationMsg": "Контакт сәтті жойылды",
@@ -693,10 +695,13 @@
     "Models": "Models",
     "Optional": "optional",
     "DisableMember": "Disable member",
+    "TheMemberWillBeDeleted": "The member <b> {{pu_name}}</b> will be deleted",
     "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
     "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
     "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
     "Disable": "Disable",
+    "AnErrorOccurredWhileRestoringTheTeammate": "An error occurred while restoring the teammate",
+    "TeammateRestoredSuccessfully": "Teammate restored successfully",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
