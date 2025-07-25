@@ -502,12 +502,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
-        
-
-      
-
-      
-
       });
 
   }
