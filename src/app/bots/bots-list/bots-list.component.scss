@@ -903,6 +903,30 @@ input[type="checkbox"]:disabled {
   margin-top: 16px;
 }
 
+.add---content-card-wpr.add---content-card-wpr-disabled {
+  cursor: not-allowed;
+}
+
+.add---content-card-wpr.add---content-card-wpr-disabled:hover {
+  box-shadow: none !important;
+  background-color: inherit; // prevent color changes if any
+}
+
+.add--content-card-wpr.add---content-card-wpr-disabled {
+  cursor: not-allowed;
+}
+
+.add--content-card-wpr.add---content-card-wpr-disabled:hover {
+  box-shadow: none !important;
+  background-color: inherit; // prevent color changes if any
+}
+
+.select-flow-btn.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 
 
 /* New chatbot table

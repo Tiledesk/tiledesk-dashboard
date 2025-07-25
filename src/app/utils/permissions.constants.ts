@@ -40,7 +40,14 @@ export const PERMISSIONS = {
 
 
   FLOWS_READ: 'flows_read',
-  FLOWS_ADD: 'flows_add',
+  FLOW_ADD: 'flow_add',
+  FLOW_EDIT: 'flow_edit',
+  FLOW_TEST: 'flow_test',
+  FLOW_DUPLICATE: 'flow_duplicate',
+  FLOW_DELETE: 'flow_delete',
+  FLOW_SHARE: 'flow_share',
+  FLOW_EXPORT: 'flow_export',
+  // FLOW_VIEW_MESSAGE_GRAPH: 'flow_view_message_graph',
  
   LEADS_READ: 'leads_read',
   LEAD_UPDATE: 'lead_update',

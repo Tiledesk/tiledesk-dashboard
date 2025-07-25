@@ -170,7 +170,14 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.FLOWS_READ, label: 'Able to view' },
-        { key: PERMISSIONS.FLOWS_ADD, label: 'Able to create a new Flow' },
+        { key: PERMISSIONS.FLOW_ADD, label: 'Able to create a new Flow' },
+        { key: PERMISSIONS.FLOW_EDIT, label: 'Able to edit a Flow' },
+        { key: PERMISSIONS.FLOW_DELETE, label: 'Able to delete' },
+        { key: PERMISSIONS.FLOW_TEST, label: 'Able to test' },
+        { key: PERMISSIONS.FLOW_DUPLICATE, label: 'Able to duplicate' },
+        { key: PERMISSIONS.FLOW_SHARE, label: 'Able to share' },
+        { key: PERMISSIONS.FLOW_EXPORT, label: 'Able to export' },
+        // { key: PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH, label: 'Able to view messages graph' },
       ]
     },
     {
@@ -358,8 +365,8 @@ export class UsersNewRoleComponent implements OnInit {
 
     {
       key: 'SectionsAccess',
-      title: 'Sections Access',
-      parentLabel: 'Sections Access',
+      title: 'Reports',
+      parentLabel: 'Reports',
       type: 'checkbox',
       expanded: false,
       children: [

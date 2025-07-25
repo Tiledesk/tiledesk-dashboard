@@ -55,7 +55,8 @@
 
     <div class="content-wpr" style="display: flex;">
       <!-- [kbCount]="kbCount" -->
-      <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+      <appdashboard-bots-sidebar 
+        [allTemplatesCount]="allTemplatesCount"
         [allCommunityTemplatesCount]="allCommunityTemplatesCount"
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
@@ -80,7 +81,9 @@
           <div class="col-xs-12">
             <!-- createBlankTilebot() -->
             <button *ngIf="isChatbotRoute !== 'all'" class="btn btn-tdblu-no-boxshadow pull-right"
-              (click)="presentDialogCreateFlows(isChatbotRoute)" style="margin-right: 25px">
+              [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
+              [disabled]="!PERMISSION_TO_ADD_FLOWS"
+              (click)="PERMISSION_TO_ADD_FLOWS && presentDialogCreateFlows(isChatbotRoute)" style="margin-right: 25px">
               <!-- Create from scratch -->
               <!-- {{'isChatbotRoute' | translate}} -->
 
@@ -96,12 +99,16 @@
       
 
             <div class="dropdown pull-right" *ngIf="isChatbotRoute === 'all'">
-              <a  class="btn dropdown-toggle select-flow-btn" data-toggle="dropdown"   (click)="isOpenSelecFlowTypeDropdown(isOpen = !isOpen)">
+              <a  class="btn dropdown-toggle select-flow-btn" data-toggle="dropdown" 
+                [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
+                (click)="PERMISSION_TO_ADD_FLOWS && isOpenSelecFlowTypeDropdown(isOpen = !isOpen)">
                 {{'NewFlow' | translate}}
-                  <b class="caret"  [ngClass]="{'caret-rotate-0': is0penSelectFlowDropDown === false, 'caret-rotate-180': is0penSelectFlowDropDown === true }"
-                   style="position: relative; left: 8px;"></b>
+                  <b class="caret"  
+                    [ngClass]="{'caret-rotate-0': is0penSelectFlowDropDown === false, 'caret-rotate-180': is0penSelectFlowDropDown === true }"
+                    style="position: relative; left: 8px;">
+                  </b>
               </a>
-              <ul class="dropdown-menu dropdown-menu-custom">
+              <ul *ngIf="PERMISSION_TO_ADD_FLOWS" class="dropdown-menu dropdown-menu-custom">
                 <li (click)="presentDialogCreateFlows(true)">
                   <a>
                     {{'AIAgents' | translate}}
@@ -193,8 +200,18 @@
 
                   <span class="span-32"> </span>
 
+                 <!-- PERMISSION_TO_ADD_FLOWS -> {{ PERMISSION_TO_ADD_FLOWS }} -->
                   <div class="add---content-cards-wpr">
-                    <div class="add---content-card-wpr" (click)="presentDialogCreateFlows(true)" matRipple>
+                    <div class="add---content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && presentDialogCreateFlows(true)" 
+                      matRipple 
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
                       <div class="add---content-card-content aiagents">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -223,7 +240,16 @@
                       </div>
                     </div>
 
-                    <div class="add---content-card-wpr" (click)="presentDialogCreateFlows(false)" matRipple>
+                    <div class="add---content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && presentDialogCreateFlows(false)" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
                       <div class="add---content-card-content automations">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -253,107 +279,6 @@
 
                   </div>
 
-                  
-
-                  <div style="display: none;" class="add--content-cards-wpr">
-                    <!-- --------------------------------- -->
-                    <!-- Webhook -->
-                    <!-- --------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('webhook')" matRipple>
-                      <div class="add-content-card-content">
-                        <div class="add-content-card-content-icon-wpr">
-                          <span>
-                            <svg version="1.1" id="webhooks" xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
-                              style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
-
-                              <g>
-                                <path d="M28.2,25.2c-2.5,4.5-4.8,8.7-7.2,13c-0.6,1.1-1,2-0.4,3.4c1.4,3.8-0.5,7.6-4.2,8.6c-3.4,1-6.7-1.5-7.4-5.3
-                                      c-0.6-3.4,1.9-6.8,5.4-7.4c0.3,0,0.6,0,1.1-0.1l5.4-9.7c-3.4-3.6-5.4-7.9-5-13.1c0.3-3.7,1.7-6.9,4.2-9.6c4.8-5.2,12-6,17.7-2.1
-                                      c5.4,3.7,7.9,11,5.8,17.2c-1.6-0.4-3.2-1-4.9-1.5c0.6-3.4,0.2-6.5-2-9.2c-1.4-1.7-3.3-2.7-5.3-3C27.2,5.8,23,8.7,21.8,13
-                                      C20.3,18.1,22.5,22.1,28.2,25.2L28.2,25.2z" />
-                                <path
-                                  d="M35.2,20c1.7,3.3,3.5,6.6,5.2,9.9c8.8-2.9,15.5,2.3,17.8,7.9c2.9,6.7,1,14.8-4.7,19
-                                      c-5.8,4.3-13.1,3.5-18.2-1.9c1.3-1.2,2.7-2.3,4.1-3.6c5.1,3.5,9.5,3.4,12.8-0.9c2.8-3.5,2.8-8.8-0.1-12.4
-                                      c-3.3-4.1-7.8-4.2-13.2-0.3c-2.2-4.3-4.5-8.5-6.7-12.8c-0.7-1.5-1.5-2.2-3.2-2.6c-2.8-0.5-4.5-3.1-4.6-5.9
-                                      c-0.1-2.8,1.4-5.3,3.8-6.4c2.3-1,5.2-0.2,6.8,2c1.3,1.8,1.7,3.8,1.1,6C35.7,18.7,35.5,19.2,35.2,20L35.2,20z" />
-                                <path d="M39.3,46.7H28.8c-1.1,4.5-3.2,8.1-7,10.4c-3,1.8-6.1,2.3-9.5,1.8C6.1,57.9,0.9,52,0.5,45.1
-                                      c-0.5-7.7,4.4-14.5,10.9-16c0.4,1.7,1,3.5,1.4,5.3c-6,3.3-8.1,7.5-6.4,12.6c1.5,4.6,5.7,7,10.2,6.1c4.7-1,7-5.1,6.7-11.8
-                                      c4.4,0,8.8,0,13.2,0c1.7,0,3.1-0.2,4.4-1.8c2.1-2.7,6.1-2.5,8.3,0.1c2.3,2.6,2.2,6.7-0.2,9.3c-2.3,2.3-6.2,2.2-8.4-0.3
-                                      C40.2,48,39.8,47.5,39.3,46.7L39.3,46.7z" />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                        <span class="span-6"> </span>
-                        <p class="add-content-card-content-title">
-                          Webhook
-                        </p>
-                        <span class="span-8"> </span>
-                        <p class="add-content-card-content-subtitle">
-                          {{'WebhookDesc' | translate}}
-                        </p>
-                      </div>
-                    </div>
-
-                    <!-- --------------------------------- -->
-                    <!-- Copilot -->
-                    <!-- --------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('copilot')" matRipple>
-                      <div class="add-content-card-content">
-                        <div class="add-content-card-content-icon-wpr">
-                          <span>
-                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
-                              style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
-
-                              <path d="M33.7,10.9L30,0.5l-3.7,10.4c-2.4,7-8.3,12.9-15.3,15.3L0.5,30l10.4,3.7c7,2.4,12.9,8.3,15.3,15.3L30,59.5
-                                  l3.7-10.4c2.4-7,8.3-12.9,15.3-15.3L59.5,30l-10.4-3.7C42,23.7,36.3,18,33.7,10.9z" />
-                            </svg>
-                          </span>
-                        </div>
-                        <span class="span-6"> </span>
-                        <p class="add-content-card-content-title">
-                          Copilot
-                        </p>
-                        <span class="span-8"> </span>
-                        <p class="add-content-card-content-subtitle">
-                          {{'CopilotDesc' | translate}}
-                        </p>
-                      </div>
-                    </div>
-
-                    <!-- -------------------------------- -->
-                    <!-- Import Automations -->
-                    <!-- -------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
-                      <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
-                        id="upload-chatbot-from-json" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json">
-                      <div class="add-content-card-content">
-                        <div class="add-content-card-content-icon-wpr">
-                          <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                              <path
-                                d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h100v80H260Zm220-280Z" />
-                            </svg>
-                          </span>
-                        </div>
-                        <span class="span-6"> </span>
-                        <p class="add-content-card-content-title">
-                          <!-- Import automation -->
-                          <!-- {{'ImportAutomation' | translate}} -->
-                          {{'KbPage.Import' | translate}}
-                        </p>
-                        <span class="span-8"> </span>
-                        <p class="add-content-card-content-subtitle">
-                          {{'AutomationImportDesc' | translate}}
-                        </p>
-                      </div>
-                    </div>
-
-
-                  </div>
-
 
                 </div>
 
@@ -377,7 +302,16 @@
                   <span class="span-32"> </span>
 
                   <div class="add--content-cards-wpr">
-                    <div class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('chatbot')" matRipple>
+                    <div class="add--content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddBotFromScratch('chatbot')" 
+                    matRipple
+                    [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                    [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                    matTooltipClass="custom-mat-tooltip"
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above'
+                    matTooltipHideDelay="100"
+                    [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                    [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
 
                       <!-- <div class="add-content-card-content"> -->
 
@@ -415,7 +349,17 @@
                     <!-- Voice Chatbot (Twilio) -->
                     <!-- ------------------------------------ -->
                     <div *ngIf="diplayTwilioVoiceChabotCard" class="add--content-card-wpr"
-                      (click)="presentModalAddBotFromScratch('voice_twilio')" matRipple>
+                      (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddBotFromScratch('voice_twilio')" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
+
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -448,7 +392,17 @@
                     <!-- Voice Chatbot (VXML) -->
                     <!-- ------------------------------------ -->
                     <div *ngIf="diplayVXMLVoiceChabotCard" class="add--content-card-wpr"
-                      (click)="presentModalAddBotFromScratch('voice')" matRipple>
+                      (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddBotFromScratch('voice')" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
+
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -480,7 +434,17 @@
                     <!-- -------------------------------- -->
                     <!-- Import Chatbot -->
                     <!-- -------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
+                    <div class="add--content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && fileInput.click()" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
+
                       <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
                         id="upload-chatbot-from-json" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json">
                       <div class="add-content-card-content">
@@ -535,7 +499,18 @@
                     <!-- --------------------------------- -->
                     <!-- Webhook -->
                     <!-- --------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('webhook')" matRipple>
+                    <div class="add--content-card-wpr" 
+                      (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddBotFromScratch('webhook')" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
+
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -575,7 +550,18 @@
                     <!-- --------------------------------- -->
                     <!-- Copilot -->
                     <!-- --------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="presentModalAddCopilot('copilot')" matRipple>
+                    <div class="add--content-card-wpr" 
+                      (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddCopilot('copilot')" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
+
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -602,7 +588,18 @@
                     <!-- -------------------------------- -->
                     <!-- Import Automations -->
                     <!-- -------------------------------- -->
-                    <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
+                    <div class="add--content-card-wpr" 
+                      (click)="PERMISSION_TO_ADD_FLOWS && fileInput.click()" 
+                      matRipple
+                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
+                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
+                      matTooltipClass="custom-mat-tooltip"
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above'
+                      matTooltipHideDelay="100"
+                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
+                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
+
                       <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
                         id="upload-chatbot-from-json" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json">
                       <div class="add-content-card-content">
@@ -634,7 +631,14 @@
 
                 <div class="card-list" *ngFor="let faqkb of pagedFaqkbList; let i = index; trackBy: trackByFaqkbId">
 
+                  <!-- matTooltipClass="custom-mat-tooltip"
+                       #tooltip="matTooltip"
+                       matTooltipPosition='above'
+                       matTooltipHideDelay="100"
+                       [matTooltip]="!PERMISSION_TO_EDIT_FLOWS ? ('YouDoNotHavePermissionToEditFlows' | translate) : ''"
+                       [matTooltipDisabled]="PERMISSION_TO_EDIT_FLOWS" -->
                   <div class="cl-card" (click)='goToBotDtls(faqkb)'>
+                    
                     <div class="cl-card-content">
 
                       <div class="cl-card-first-column">
@@ -789,9 +793,12 @@
                           <div class="cl-card-action-group">
                             <ng-container
                               *ngIf="!faqkb?.subtype || (faqkb?.subtype !== 'webhook' && faqkb?.subtype !== 'copilot')">
-                              <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr">
-                                <button id="btn-{{faqkb._id}}" mat-icon-button
-                                  (click)="$event.stopPropagation();openBotMsgsStats(faqkb)"
+                              <!-- [disabled]="!PERMISSION_TO_VIEW_ANALYTICS" -->
+                              <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button id="btn-{{faqkb._id}}" 
+                                  mat-icon-button
+                                  (click)="openBotMsgsStats(faqkb)"
+                                  
                                   matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{ 'BotsAddEditPage.Messages' | translate }}" 
                                   #tooltip="matTooltip"
@@ -803,14 +810,20 @@
                             </ng-container>
 
                             <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                              <button id="share-btn-{{faqkb._id}}" mat-icon-button [matMenuTriggerFor]="menu"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'Share' | translate}}"
-                                #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                              <button id="share-btn-{{faqkb._id}}" 
+                                mat-icon-button 
+                                [matMenuTriggerFor]="menu"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{'Share' | translate}}"
+                                #tooltip="matTooltip" 
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100">
                                 <mat-icon>share</mat-icon>
                               </button>
                               <mat-menu #menu="matMenu">
                                 <button class="mat-menu-btn" mat-menu-item
-                                  (click)='shareWithLink(faqkb._id, faqkb?.name)'>
+                                  (click)='PERMISSION_TO_SHARE_FLOW && shareWithLink(faqkb._id, faqkb?.name)'
+                                   [disabled]="!PERMISSION_TO_SHARE_FLOW">
                                   <mat-icon>link</mat-icon>
                                   <span>
                                     <!-- Share with link -->
@@ -818,7 +831,9 @@
                                   </span>
                                 </button>
 
-                                <button class="mat-menu-btn" mat-menu-item (click)='exportChatbotToJSON(faqkb)'>
+                                <button class="mat-menu-btn" mat-menu-item 
+                                  (click)='PERMISSION_TO_EXPORT_FLOW && exportChatbotToJSON(faqkb)'
+                                  [disabled]="!PERMISSION_TO_EXPORT_FLOW">
                                   <mat-icon>file_download</mat-icon>
                                   <span>
                                     <!-- Export -->
@@ -849,16 +864,18 @@
                                 </button> -->
 
                                 <button class="mat-menu-btn" mat-menu-item
-                                  (click)="openTestSiteInPopupWindow(faqkb?._id)">
+                                  (click)="PERMISSION_TO_TEST_FLOW && openTestSiteInPopupWindow(faqkb?._id)" 
+                                  [disabled]="!PERMISSION_TO_TEST_FLOW">
                                   <mat-icon>visibility</mat-icon>
                                   <span>
-                                    <!-- Test it out -->
+                                   
                                     {{ 'TestItOut' | translate }}
                                   </span>
                                 </button>
 
                                 <button class="mat-menu-btn" mat-menu-item
-                                  (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'>
+                                  (click)='PERMISSION_TO_DUPLICATE_FLOW && duplicateChatbot(faqkb?._id,  faqkb?.name)'
+                                  [disabled]="!PERMISSION_TO_DUPLICATE_FLOW">
                                   <mat-icon>content_copy</mat-icon>
                                   <span>
                                     {{ 'Duplicate' | translate }}
@@ -866,7 +883,8 @@
                                   <!-- <span>Duplicate</span> -->
                                 </button>
                                 <button class="mat-menu-btn" *ngIf="!faqkb?.is_system_identity_bot" mat-menu-item
-                                  (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type,faqkb?.subtype)'>
+                                  [disabled]="!PERMISSION_TO_DELETE_FLOW"
+                                  (click)='PERMISSION_TO_DELETE_FLOW && openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type,faqkb?.subtype)'>
                                   <mat-icon>delete</mat-icon>
                                   <!-- <span>{{ 'BotsPage.tooltipDeleteBot' | translate }}</span> -->
                                   <span>

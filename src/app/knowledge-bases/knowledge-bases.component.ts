@@ -204,7 +204,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   
   PERMISSION_TO_DELETE: boolean;
   PERMISSION_TO_ADD_KB: boolean;
-
+  PERMISSION_TO_ADD_FLOWS: boolean;
 
   constructor(
     private auth: AuthService,
@@ -288,10 +288,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[KB TABLE] - this.ROLE:', this.ROLE);
-        console.log('[KB TABLE] - this.PERMISSIONS', this.PERMISSIONS);
+        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
+        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('[KB TABLE] - hasDefaultRole', this.hasDefaultRole);
+        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
 
     
 
@@ -345,6 +345,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
           console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+        }
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
 
 

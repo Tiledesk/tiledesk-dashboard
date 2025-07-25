@@ -411,7 +411,7 @@
                   {{ 'KbPage.ThisKBisReadyToUse' | translate }}
 
                   <!-- esportingKBChatBotTemplate >  {{ esportingKBChatBotTemplate}} -->
-                  <button class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
+                  <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
                     
                     <span *ngIf="!esportingKBChatBotTemplate">
                    
