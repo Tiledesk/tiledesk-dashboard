@@ -202,6 +202,8 @@
     "ChangeAvailabilityErrorNoticationMsg": "Se ha producido un error al actualizar el estado",
     "RemoveProjectUserSuccessNoticationMsg": "Compañero de equipo eliminado correctamente",
     "RemoveProjectUserErrorNoticationMsg": "Se ha producido un error al eliminar el compañero",
+    "DisableProjectUserSuccessNoticationMsg": "Teammate successfully disabled",
+    "DisableProjectUserErrorNoticationMsg": "An error occurred while disabling the teammate",
     "EditContactSuccessNoticationMsg": "Contacto actualizado correctamente",
     "EditContactErrorNoticationMsg": "Se ha producido un error al actualizar el contacto",
     "DeleteLeadSuccessNoticationMsg": "Contacto eliminado correctamente",
@@ -693,10 +695,13 @@
     "Models": "Models",
     "Optional": "optional",
     "DisableMember": "Disable member",
+    "TheMemberWillBeDeleted": "The member <b> {{pu_name}}</b> will be deleted",
     "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
     "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
     "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
     "Disable": "Disable",
+    "AnErrorOccurredWhileRestoringTheTeammate": "An error occurred while restoring the teammate",
+    "TeammateRestoredSuccessfully": "Teammate restored successfully",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
