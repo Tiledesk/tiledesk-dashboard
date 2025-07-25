@@ -163,7 +163,7 @@ import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/u
 
 const routes: Routes = [
 
-   // no-auth page
+  // no-auth page
   {
     // path: 'project/:projectid/wsrequests-no-auth',
     path: 'project/:projectid/:callingpage/no-auth',
@@ -1336,6 +1336,77 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
 
+  // ---------------------------
+  // Templates
+  // ---------------------------
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/all',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+   {
+    path: 'project/:projectid/bots/templates/all',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+   },
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/customer-satisfaction',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+  {
+    path: 'project/:projectid/bots/templates/customer-satisfaction',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/increase-sales',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/bots/templates/increase-sales',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard],
+   
+  },
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/community',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  {
+    path: 'project/:projectid/bots/templates/community',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
 
 
   // Used in app-store to create an External chatbot - Check moved in Roles service
@@ -1372,47 +1443,7 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
 
-  // ---------------------------
-  // Templates
-  // ---------------------------
-  {
-    path: 'project/:projectid/bots/templates/all',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
 
-  {
-    path: 'project/:projectid/bots/templates/customer-satisfaction',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/bots/templates/increase-sales',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/bots/templates/community',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
-
-
-  {
-    path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
 
  
 
