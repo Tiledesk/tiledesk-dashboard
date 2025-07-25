@@ -133,7 +133,7 @@
     <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
       <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip"
         matTooltip="{{ 'KnowledgeBases' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="KB_ROUTE_IS_ACTIVE ">
+        matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="KB_ROUTE_IS_ACTIVE || KB_ROUTE_IS_ACTIVE_NO_AUTH">
         <a id="bot-anchor" #botbtn (click)="goToNewKnowledgeBases()">
 
           <!-- <i class="material-symbols-outlined sidebar-icons">
@@ -162,6 +162,8 @@
         matTooltipHideDelay="100" 
         routerLinkActive="item-active" 
         [class.item-active]="MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
+        MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ||
+        EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ||
         FLOW_AUTOMATION_ROUTE_IS_ACTIVE ||
         FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ||
         MY_BOTS_IS_ROUTE_IS_ACTIVE || 
@@ -360,6 +362,9 @@
         DEPTS_ROUTE_IS_ACTIVE || 
         TEAMMATES_ROUTE_IS_ACTIVE || 
         GROUPS_ROUTE_IS_ACTIVE || 
+        ROLES_ROUTE_IS_ACTIVE || 
+        EDIT_ROLE_ROUTE_IS_ACTIVE ||
+        ADD_ROLE_ROUTE_IS_ACTIVE ||
         WIDGET_SETUP_ROUTE_IS_ACTIVE ||
         PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
         OPERATING_HOURS_ROUTE_IS_ACTIVE ||

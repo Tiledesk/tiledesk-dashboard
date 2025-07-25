@@ -184,6 +184,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EDIT_DEPT_ROUTE_IS_ACTIVE: boolean;
   TEAMMATES_ROUTE_IS_ACTIVE: boolean;
   GROUPS_ROUTE_IS_ACTIVE: boolean;
+  ROLES_ROUTE_IS_ACTIVE: boolean;
+  EDIT_ROLE_ROUTE_IS_ACTIVE: boolean;
+  ADD_ROLE_ROUTE_IS_ACTIVE: boolean;
   CREATE_GROUP_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
@@ -216,6 +219,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   BOTS_DEMO_ROUTE_IS_ACTIVE: boolean;
   // Chatbot sidebar
   MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
+  MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH: boolean;
+  EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
   FLOW_AUTOMATION_ROUTE_IS_ACTIVE: boolean;
   FLOW_WEBHOOKS_ROUTE_IS_ACTIVE: boolean;
@@ -226,6 +231,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
+  KB_ROUTE_IS_ACTIVE_NO_AUTH: boolean;
   CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
   SUPPORT_ROUTE_IS_ACTIVE: boolean;
   NORT_CONV_ROUTE_IS_ACTIVE: boolean;
@@ -1251,6 +1257,33 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - EDIT_GROUP_ROUTE_IS_ACTIVE ', this.EDIT_GROUP_ROUTE_IS_ACTIVE);
         }
 
+         if (event.url.indexOf('/roles') !== -1) {
+          this.ROLES_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - ROLES_ROUTE_IS_ACTIVE ', this.ROLES_ROUTE_IS_ACTIVE);
+        } else {
+          this.ROLES_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - ROLES_ROUTE_IS_ACTIVE ', this.ROLES_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/edit-role') !== -1) {
+          this.EDIT_ROLE_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - EDIT_ROLE_ROUTE_IS_ACTIVE ', this.EDIT_ROLE_ROUTE_IS_ACTIVE);
+        } else {
+          this.EDIT_ROLE_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - EDIT_ROLE_ROUTE_IS_ACTIVE ', this.EDIT_ROLE_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/create-new-role') !== -1) {
+          this.ADD_ROLE_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - ADD_ROLE_ROUTE_IS_ACTIVE ', this.ADD_ROLE_ROUTE_IS_ACTIVE);
+        } else {
+          this.ADD_ROLE_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - ADD_ROLE_ROUTE_IS_ACTIVE ', this.ADD_ROLE_ROUTE_IS_ACTIVE);
+        }
+
+        
+
+        
 
         if (event.url.indexOf('/widget-set-up') !== -1) {
           this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true;
@@ -1270,12 +1303,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         if (event.url.indexOf('flows/no-auth') !== -1) {
-          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH);
         } else {
-          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH);
         }
+
+        if (event.url.indexOf('/external') !== -1) {
+          this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ', this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE);
+        } else {
+          this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ', this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE);
+        }
+        
 
         
 
@@ -1591,11 +1633,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         if (event.url.indexOf('/kb/no-auth') !== -1) {
-          this.KB_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          this.KB_ROUTE_IS_ACTIVE_NO_AUTH = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE_NO_AUTH ', this.KB_ROUTE_IS_ACTIVE_NO_AUTH);
         } else {
-          this.KB_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          this.KB_ROUTE_IS_ACTIVE_NO_AUTH = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE_NO_AUTH ', this.KB_ROUTE_IS_ACTIVE_NO_AUTH);
         }
         
 
