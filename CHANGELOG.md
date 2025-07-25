@@ -1,5 +1,15 @@
 # tiledesk-dashboard
 
+### 2.7.125-rc5
+- Adds the ability to manage the "Add a new Flow” feature 
+- Adds the ability to manage the "Edit a Flow" feature 
+- Adds the ability to manage the "Test a Flow" feature 
+- Adds the ability to manage the "Duplicate a Flow" feature 
+- Adds the ability to manage the "Delete a Flow" feature 
+- Adds the ability to manage the "Export a Flow" feature 
+- Adds the ability to manage the "Share a Flow" feature 
+- Adds the ability to the teammates with Admin role to manage in "Project setting" the Banned Visitors and the Advanced features
+
 ### 2.7.125-rc4
 - Improves the style of the group list on the department detail page
 
