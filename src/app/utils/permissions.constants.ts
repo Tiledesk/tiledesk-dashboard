@@ -47,6 +47,9 @@ export const PERMISSIONS = {
   FLOW_DELETE: 'flow_delete',
   FLOW_SHARE: 'flow_share',
   FLOW_EXPORT: 'flow_export',
+  FLOW_WEBHOOK_COPY:"flow_webhook_copy",
+  FLOW_WEBHOOK_EDIT:"flow_webhook_edit",
+  FLOW_WEBHOOK_DELETE:"flow_webhook_delete",
   // FLOW_VIEW_MESSAGE_GRAPH: 'flow_view_message_graph',
  
   LEADS_READ: 'leads_read',

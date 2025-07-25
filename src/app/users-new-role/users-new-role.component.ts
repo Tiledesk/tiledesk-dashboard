@@ -177,6 +177,9 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.FLOW_DUPLICATE, label: 'Able to duplicate' },
         { key: PERMISSIONS.FLOW_SHARE, label: 'Able to share' },
         { key: PERMISSIONS.FLOW_EXPORT, label: 'Able to export' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_COPY, label: 'Able to copy Webhooks URLs' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_EDIT, label: 'Able to enable / disable a Webhook' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_DELETE, label: 'Able to delete a Webhook' },
         // { key: PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH, label: 'Able to view messages graph' },
       ]
     },
