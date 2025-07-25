@@ -524,13 +524,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ---------------------------------
         // PERMISSION TO VIEW BANNED
         // ---------------------------------
-        if (status.role === 'owner') {
+        if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_VIEW_BANNED = true;
           console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
 
-        } else if (status.role === 'admin' || status.role === 'agent') {
-          // Admin and agent never have permission
+        } else if (status.role === 'agent') {
+         // Agent never have permission
           this.PERMISSION_TO_VIEW_BANNED = false;
           console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
 
@@ -543,13 +543,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ---------------------------------
         // PERMISSION_TO_UNBAN_VISITOR
         // ---------------------------------
-        if (status.role === 'owner') {
-          // Owner always has permission
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
           this.PERMISSION_TO_UNBAN_VISITOR = true;
           console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
 
-        } else if (status.role === 'admin' || status.role === 'agent') {
-          // Admin and agent never have permission
+        } else if (status.role === 'agent') {
+         // Agent never have permission
           this.PERMISSION_TO_UNBAN_VISITOR = false;
           console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
 
@@ -562,13 +562,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // --------------------------------
         // PERMISSION TO VIEW ADVANCED
         // ---------------------------------
-        if (status.role === 'owner') {
-          // Owner always has permission
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
           this.PERMISSION_TO_VIEW_ADVANCED = true;
           console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
 
-        } else if (status.role === 'admin' || status.role === 'agent') {
-          // Admin and agent never have permission
+        } else if (status.role === 'agent') {
+          // Agent never have permission
           this.PERMISSION_TO_VIEW_ADVANCED = false;
           console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
 
@@ -1314,7 +1314,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_BannedVisitors() {
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      if (this.USER_ROLE === 'owner' || this.PERMISSION_TO_VIEW_BANNED ) {
+      if ((this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_BANNED )) {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
           if (this.subscription_is_active === true) {
@@ -1351,7 +1351,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_Advanced() {
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      if (this.USER_ROLE === 'owner' || this.PERMISSION_TO_VIEW_ADVANCED ) {
+      console.log('[PRJCT-EDIT-ADD] goToProjectSettings_Advanced USER_ROLE' , this.USER_ROLE, ' PERMISSION_TO_VIEW_ADVANCED ', this.PERMISSION_TO_VIEW_ADVANCED) 
+      if ((this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_ADVANCED )) {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
           if (this.subscription_is_active === true) {
