@@ -609,6 +609,8 @@
 	"ThisConversationIsClosedReopenItToJoin":"Diese Unterhaltung ist geschlossen, öffnen Sie sie erneut, um beizutreten",
     "PermissionDenied": "Zugriff verweigert",
 	"YouDoNotHavePermissions":"Sie haben keine Berechtigungen",
+	"YouDoNotHavePermissionToEditFlows":"Sie haben keine Berechtigung zum Bearbeiten von Flows",
+	"YonDontHavePermissionsToViewReports":"Es tut uns leid, aber Sie haben keine Berechtigung, Berichte anzuzeigen.",
     "YonDontHavePermissionsToPerformThisAction": "Es tut uns leid, aber Sie haben keine Berechtigung, diese Aktion auszuführen.",
 	"YonDontHavePermissionsToViewThisSection": "Es tut uns leid, aber Sie sind nicht berechtigt, diesen Abschnitt anzuzeigen.",
 	"ThereHasBeenAnErrorProcessing": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten",

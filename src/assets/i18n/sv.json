@@ -610,6 +610,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Denna konversation är stängd, öppna den igen för att gå med",
     "PermissionDenied": "Åtkomst nekad",
     "YouDoNotHavePermissions":"Du har inte behörigheter",
+    "YouDoNotHavePermissionToEditFlows":"Du har inte behörighet att redigera flöden",
+    "YonDontHavePermissionsToViewReports":"Vi beklagar, men du har inte behörighet att visa rapporter.",
     "YonDontHavePermissionsToPerformThisAction": "Vi beklagar, men du har inte behörighet att utföra denna åtgärd.",
     "YonDontHavePermissionsToViewThisSection": "Vi beklagar, men du har inte behörighet att visa det här avsnittet.",
     "ThereHasBeenAnErrorProcessing": "Det har uppstått ett fel när din förfrågan behandlas",

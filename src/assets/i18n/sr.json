@@ -610,6 +610,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Овај разговор је затворен, поново га отворите да бисте се придружили",
     "PermissionDenied": "Дозвола одбијена",
     "YouDoNotHavePermissions":"Немате дозволе",
+    "YouDoNotHavePermissionToEditFlows":"Немате дозволу за уређивање токова",
+    "YonDontHavePermissionsToViewReports":"Жао нам је, али немате дозволу за преглед извештаја.",
     "YonDontHavePermissionsToPerformThisAction": "Жао нам је, али немате дозволе да извршите ову радњу.",
     "YonDontHavePermissionsToViewThisSection": "Жао нам је, али немате дозволе за преглед овог одељка.",
     "ThereHasBeenAnErrorProcessing": "Дошло је до грешке при обради вашег захтева",

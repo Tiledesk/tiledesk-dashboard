@@ -609,6 +609,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Бұл әңгіме жабық, қосылу үшін қайта ашыңыз",
     "PermissionDenied": "Рұқсат жоқ",
     "YouDoNotHavePermissions":"Сізде рұқсаттар жоқ",
+    "YouDoNotHavePermissionToEditFlows":"Ағындарды өңдеуге рұқсатыңыз жоқ",
+    "YonDontHavePermissionsToViewReports":"Кешіріңіз, бірақ есептерді көруге рұқсатыңыз жоқ.",
     "YonDontHavePermissionsToPerformThisAction": "Кешіріңіз, бірақ сізде бұл әрекетті орындауға рұқсат жоқ.",
     "YonDontHavePermissionsToViewThisSection": "Кешіріңіз, бірақ сізде бұл бөлімді көруге рұқсаттарыңыз жоқ.",
     "ThereHasBeenAnErrorProcessing": "Сұрауыңызды өңдеу кезінде қате орын алды",

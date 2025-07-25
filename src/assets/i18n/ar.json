@@ -609,6 +609,8 @@
     "ThisConversationIsClosedReopenItToJoin":"هذه المحادثة مغلقة، أعد فتحها للانضمام",
     "PermissionDenied": "تم رفض الإذن",
     "YouDoNotHavePermissions":"ليس لديك الصلاحيات",
+    "YouDoNotHavePermissionToEditFlows":"ليس لديك إذن لتحرير التدفقات",
+    "YonDontHavePermissionsToViewReports":"نحن نأسف، ولكن ليس لديك الإذن لعرض التقارير.",
     "YonDontHavePermissionsToPerformThisAction": "نأسف، ولكن ليس لديك الصلاحيات لتنفيذ هذا الإجراء.",
     "YonDontHavePermissionsToViewThisSection": "نحن نأسف، ولكن ليس لديك الأذونات اللازمة لعرض هذا القسم.",
     "ThereHasBeenAnErrorProcessing": "كان هناك خطأ في معالجة طلبك",

@@ -609,6 +609,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Cette conversation est fermée, rouvrez-la pour rejoindre",
     "PermissionDenied": "Permission refusée",
     "YouDoNotHavePermissions":"Vous n'avez pas les permissions",
+    "YouDoNotHavePermissionToEditFlows":"Vous n'avez pas l'autorisation de modifier les flux",
+    "YonDontHavePermissionsToViewReports":"Nous sommes désolés, mais vous n'avez pas l'autorisation de consulter les rapports.",
     "YonDontHavePermissionsToPerformThisAction": "Nous sommes désolés, mais vous n'avez pas les autorisations nécessaires pour effectuer cette action.",
     "YonDontHavePermissionsToViewThisSection": "Nous sommes désolés, mais vous n'avez pas les autorisations pour afficher cette section.",
     "ThereHasBeenAnErrorProcessing": "Une erreur s'est produite lors du traitement de votre demande",

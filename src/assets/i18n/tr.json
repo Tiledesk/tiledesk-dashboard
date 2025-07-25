@@ -611,6 +611,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Bu konuşma kapalı, katılmak için yeniden açın",
     "PermissionDenied": "İzin reddedildi",
     "YouDoNotHavePermissions":"Yetkileriniz yok",
+    "YouDoNotHavePermissionToEditFlows":"Akışları düzenleme izniniz yok",
+    "YonDontHavePermissionsToViewReports":"Üzgünüz, raporları görüntüleme yetkiniz yok.",
     "YonDontHavePermissionsToPerformThisAction": "Üzgünüz, ancak bu işlemi gerçekleştirme izniniz yok.",
     "YonDontHavePermissionsToViewThisSection": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok.",
     "ThereHasBeenAnErrorProcessing": "İsteğiniz işlenirken bir hata oluştu",

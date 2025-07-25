@@ -610,6 +610,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Ця розмова закрита, відкрийте її знову, щоб приєднатися",
     "PermissionDenied": "Доступ заборонено",
     "YouDoNotHavePermissions":"У вас немає дозволів",
+    "YouDoNotHavePermissionToEditFlows":"У вас немає дозволу на редагування потоків",
+    "YonDontHavePermissionsToViewReports":"Вибачте, але у вас немає дозволу на перегляд звітів.",
     "YonDontHavePermissionsToPerformThisAction": "Вибачте, але у вас немає дозволу на виконання цієї дії.",
     "YonDontHavePermissionsToViewThisSection": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok.",
     "ThereHasBeenAnErrorProcessing": "Під час обробки вашого запиту сталася помилка",

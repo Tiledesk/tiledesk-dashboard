@@ -610,6 +610,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Этот разговор закрыт, откройте его снова, чтобы присоединиться",
     "PermissionDenied": "Доступ запрещен",
     "YouDoNotHavePermissions":"У вас нет прав",
+    "YouDoNotHavePermissionToEditFlows":"У вас нет разрешения на редактирование потоков",
+    "YonDontHavePermissionsToViewReports":"К сожалению, у вас нет разрешения на просмотр отчетов.",
     "YonDontHavePermissionsToPerformThisAction": "Извините, но у вас нет прав для выполнения этого действия.",
     "YonDontHavePermissionsToViewThisSection": "К сожалению, у вас нет прав для просмотра этого раздела.",
     "ThereHasBeenAnErrorProcessing": "При обработке вашего запроса произошла ошибка",

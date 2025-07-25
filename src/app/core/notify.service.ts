@@ -170,6 +170,35 @@ export class NotifyService {
   }
 
 
+   presentDialogNoPermissionToEditFlow(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO EDIT FLOWS CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YouDoNotHavePermissionToEditFlows'),
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+  presentDialogNoPermissionToViewReports(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO VIEW REPORTS CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YonDontHavePermissionsToViewReports'),
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+
    presentDialogNoPermissionToViewThisSection(CHAT_PANEL_MODE?: boolean) {
     console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
 

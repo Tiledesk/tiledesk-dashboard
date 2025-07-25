@@ -610,6 +610,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Bu suhbat yopiq, qo'shilish uchun qayta oching",
     "PermissionDenied": "Ruxsat rad etildi",
     "YouDoNotHavePermissions":"Sizda ruxsat yo‘q",
+    "YouDoNotHavePermissionToEditFlows":"Oqimlarni tahrirlash uchun sizda ruxsat yo‘q",
+    "YonDontHavePermissionsToViewReports":"Kechirasiz, lekin sizda hisobotlarni ko‘rish uchun ruxsat yo‘q.",
     "YonDontHavePermissionsToPerformThisAction": "Kechirasiz, lekin sizda bu amalni bajarish uchun ruxsat yo'q.",
     "YonDontHavePermissionsToViewThisSection": "Kechirasiz, lekin sizda bu boʻlimni koʻrish uchun ruxsatingiz yoʻq.",
     "ThereHasBeenAnErrorProcessing": "So‘rovingizni qayta ishlashda xatolik yuz berdi",

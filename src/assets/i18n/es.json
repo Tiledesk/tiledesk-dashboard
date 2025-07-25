@@ -609,6 +609,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Esta conversación está cerrada, ábrela de nuevo para unirte.",
     "PermissionDenied": "Permiso denegado",
     "YouDoNotHavePermissions":"No tiene permisos",
+    "YouDoNotHavePermissionToEditFlows":"No tienes permiso para editar flujos",
+    "YonDontHavePermissionsToViewReports":"Lo sentimos, pero no tienes permiso para ver los informes.",
     "YonDontHavePermissionsToPerformThisAction": "Lo sentimos, pero no tienes permisos para realizar esta acción",
     "YonDontHavePermissionsToViewThisSection": "Lo sentimos, pero no tienes permisos para ver esta sección.",
     "ThereHasBeenAnErrorProcessing": "Se produjo un error al procesar su solicitud.",

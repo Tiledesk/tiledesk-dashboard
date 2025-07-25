@@ -610,6 +610,8 @@
     "ThisConversationIsClosedReopenItToJoin":"Bu söhbət bağlıdır, qoşulmaq üçün yenidən açın",
     "PermissionDenied": "İcazə rədd edildi",
     "YouDoNotHavePermissions":"İcazələriniz yoxdur",
+    "YouDoNotHavePermissionToEditFlows":"Axınları redaktə etmək icazəniz yoxdur",
+    "YonDontHavePermissionsToViewReports":"Üzr istəyirik, lakin hesabatlara baxmaq icazəniz yoxdur.",
     "YonDontHavePermissionsToPerformThisAction": "Üzr istəyirik, lakin bu əməliyyatı yerinə yetirmək üçün icazəniz yoxdur.",
     "YonDontHavePermissionsToViewThisSection": "Üzr istəyirik, lakin bu bölməyə baxmaq icazəniz yoxdur.",
     "ThereHasBeenAnErrorProcessing": "Sorğunuzu emal edərkən xəta baş verdi",
