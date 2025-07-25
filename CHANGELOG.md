@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.125
+- Adds the ability to delete a teammate 
+
 ### 2.7.124
 - Adds flow webhook logs
 - Adds flow conversation logs
