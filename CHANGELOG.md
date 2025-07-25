@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.125-rc6
+- Adds the ability to manage the “Copy Webhook URL” feature 
+- Adds the ability to manage the “Enable/disable Webhook” feature 
+- Adds the ability to manage the “Delete Webhook” feature 
+
 ### 2.7.125-rc5
 - Adds the ability to manage the "Add a new Flow” feature 
 - Adds the ability to manage the "Edit a Flow" feature 
