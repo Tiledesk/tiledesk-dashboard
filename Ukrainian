@@ -202,6 +202,8 @@
     "ChangeAvailabilityErrorNoticationMsg": "Під час оновлення статусу сталася помилка",
     "RemoveProjectUserSuccessNoticationMsg": "Напарника успішно видалено",
     "RemoveProjectUserErrorNoticationMsg": "Під час видалення товариша по команді сталася помилка",
+    "DisableProjectUserSuccessNoticationMsg": "Teammate successfully disabled",
+    "DisableProjectUserErrorNoticationMsg": "An error occurred while disabling the teammate",
     "EditContactSuccessNoticationMsg": "Контакт успішно оновлено",
     "EditContactErrorNoticationMsg": "Під час оновлення контакту сталася помилка",
     "DeleteLeadSuccessNoticationMsg": "Контакт успішно видалено",
@@ -693,10 +695,13 @@
     "Models": "Models",
     "Optional": "optional",
     "DisableMember": "Disable member",
+    "TheMemberWillBeDeleted": "The member <b> {{pu_name}}</b> will be deleted",
     "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
     "TheMemberWillBeRestored": "The member <b> {{pu_name}}</b> will be restored",
     "TheGroupWillBeRestored": "The group <b>{{group_name}}</b> will be restored",
     "Disable": "Disable",
+    "AnErrorOccurredWhileRestoringTheTeammate": "An error occurred while restoring the teammate",
+    "TeammateRestoredSuccessfully": "Teammate restored successfully",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
