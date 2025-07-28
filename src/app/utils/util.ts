@@ -109,6 +109,13 @@ export function getColorBck(requester_fullname) {
 }
 
 
+export function isValidEmail(email: string): boolean {
+  if (!email) return false;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+
 export function htmlEntities(str) {
     return String(str)
         .replace(/&/g, '&amp;')

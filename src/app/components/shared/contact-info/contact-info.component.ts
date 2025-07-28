@@ -149,7 +149,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       if (this.contact_details.email) {
         this.contactNewEmail = this.contact_details.email
-        this.logger.log('[CONTACT-INFO] contactNewEmail ', this.contactNewEmail);
+         this.logger.log('[CONTACT-INFO] contactNewEmail ', this.contactNewEmail);
         this.contactEmailChanged.emit(this.contactNewEmail)
       }
 

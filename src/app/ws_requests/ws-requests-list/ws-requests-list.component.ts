@@ -4,7 +4,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -1162,7 +1162,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      // console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1269,14 +1269,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    // console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    //  this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
 
       .subscribe((wsrequests) => {
-        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        //  this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1567,7 +1567,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         this.ws_requests.forEach((request) => {
 
-          // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
+          this.logger.log('[WS-REQUESTS-LIST] - request ', request) 
+
+          if (request.lead.email && !isValidEmail(request.lead.email)) {
+              request.lead.email = null; // Or 'N/A', depending on what you want to display
+          }
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
@@ -1796,7 +1800,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         // ----------------------------------------- 
         if (this.ws_requests) {
   
-          // this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+          this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {

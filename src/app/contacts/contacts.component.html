@@ -480,7 +480,8 @@
 
                             <span class="column-td" style="margin-left: 10px;"
                               [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
-                              {{ contact?.fullname }}
+                             <!-- {{ contact?.fullname }} -->
+                             {{ contact?.fullname?.length > 40 ? (contact?.fullname | slice:0:37) + '...' : contact?.fullname}}
                             </span>
 
                             <span *ngIf="!contact?.fullname" class="column-td"

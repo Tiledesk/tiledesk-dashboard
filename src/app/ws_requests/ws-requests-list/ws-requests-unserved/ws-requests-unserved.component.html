@@ -412,7 +412,11 @@
                 <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
                 <hr class='ng2-tooltip-divider-line'>
                 <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
-                  <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p>
+                  <p class='ng2-comment-sender'>  
+                    <!-- {{ request?.msgsArray[0]?.senderFullname}}  -->
+                    {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
+
+                  </p>
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
                 </div>
 
@@ -813,7 +817,8 @@
                     'requester-not-has-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone,
                     'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.phone === request?.lead?.fullname)
                     }">
-                    {{ request?.lead?.fullname}}
+                    <!-- {{ request?.lead?.fullname}} -->
+                    {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
                   </span>
 
                   <span *ngIf="!request?.lead?.fullname"

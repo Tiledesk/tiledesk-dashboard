@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -141,7 +141,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectUserRole();
     this.getProjectPlan();
     this.selectedContactTAG
-    // console.log('oninit this.selectedContactTAG', this.selectedContactTAG)
+    //  this.logger.log('oninit this.selectedContactTAG', this.selectedContactTAG)
 
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
 
@@ -453,10 +453,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   validateEmail(appSumoActivationEmail) {
     var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
     if (appSumoActivationEmail.match(validateEmailRegex)) {
-      // console.log('Valid email address!')
+      //  this.logger.log('Valid email address!')
       return true;
     } else {
-      // console.log('Invalid email address!')
+      //  this.logger.log('Invalid email address!')
       return false;
     }
   }
@@ -492,7 +492,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.fullText) {
 
       this.fullTextIsAValidEmail = this.validateEmail(this.fullText)
-      // console.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
+      //  this.logger.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
 
 
       if (this.fullTextIsAValidEmail === false) {
@@ -652,33 +652,33 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       allContacts.forEach(contact => {
         this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.tags.length > 0) {
-          // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
+          //  this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
           contact.tags.forEach((tag: string) => {
             this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
             let index = this.tagsArray.findIndex(x => x.name == tag)
-            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
+            //  this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
             if (index === -1) {
               this.tagsArray.push({ 'name': tag });
             } else {
-              // console.log("object already exists ")
+              //  this.logger.log("object already exists ")
             }
           });
         }
-        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > TAG ARRAY ', this.tagsArray);
+        //  this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > TAG ARRAY ', this.tagsArray);
         this.tagsArray = this.tagsArray.slice(0)
 
 
-        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
+        //  this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.email) {
-          // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > email ', contact.email);
+          //  this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > email ', contact.email);
           this.emailArray.push({ 'name': contact.email });
         }
 
-        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > EMAIL ARRAY ', this.emailArray);
+        //  this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > EMAIL ARRAY ', this.emailArray);
         this.emailArray = this.emailArray.slice(0);
       });
 
-      // console.log('[CONTACTS-COMP] - GET ALL LEADS - RES  ', allContacts);
+      //  this.logger.log('[CONTACTS-COMP] - GET ALL LEADS - RES  ', allContacts);
     }, (error) => {
       this.logger.error('[CONTACTS-COMP] - GET ALL LEADS - ERROR  ', error);
 
@@ -699,7 +699,16 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[CONTACTS-COMP] - GET LEADS RESPONSE ', leads_object);
 
       this.contacts = leads_object['leads'];
-      this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+
+       this.contacts.forEach(contact => {
+        
+        if (contact.email && !isValidEmail(contact.email)) {
+          contact.email = null; // Or 'N/A', depending on what you want to display
+        }
+
+      });
+
 
 
       const contactsCount = leads_object['count'];
@@ -1147,7 +1156,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.dwnldCSV()
 
-        // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
+        //  this.logger.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
       } else {
         this.notify._displayContactUsModal(true, 'upgrade_plan');
       }

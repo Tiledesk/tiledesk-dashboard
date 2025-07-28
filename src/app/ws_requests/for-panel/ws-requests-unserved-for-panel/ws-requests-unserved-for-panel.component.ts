@@ -5,7 +5,7 @@ import { LocalDbService } from '../../../services/users-local-db.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
-import { avatarPlaceholder, getColorBck } from '../../../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail } from '../../../utils/util';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
@@ -241,9 +241,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         }
 
         // if (event.data.action === 'hasArchived' && event.data.calledBy === 'ws_unserved_for_panel') {
-        //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
-        //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
-        //   console.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
+        //    this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message event ", event.data.action);
+        //    this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] message parameter ", event.data.parameter);
+        //    this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] currentUserID ", this.currentUserID);
         // }
       }
       // && window['tiledesk_widget_hide']
@@ -267,7 +267,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
                 //         window.tiledesk.signInWithCustomToken(token);
                 //     }
                 //     else {
-                //         console.log("No user found.");
+                //          this.logger.log("No user found.");
                 //     }
                 // });
               });
@@ -287,7 +287,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   onJoinHandledinWsRequestsUnsevedForPanel(id_request: string, currentUserID: string, postmessage?: string) {
     // this.getFirebaseToken(() => {
-    // console.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
+    //  this.logger.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
@@ -300,7 +300,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
 
-        // console.log('[WS-SHARED] - onJoinHandled data ', data)
+        //  this.logger.log('[WS-SHARED] - onJoinHandled data ', data)
         this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
       }, (err) => {
         this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
@@ -370,6 +370,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   displayDetails(request) {
     this.OPEN_REQUEST_DETAILS = true;
+
+    if (request.lead.email && !isValidEmail(request.lead.email)) {
+      request.lead.email = null; // Or 'N/A', depending on what you want to display
+    }
+
     this.selectedRequest = request
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - displayDetails OPEN_REQUEST_DETAILS? ', this.OPEN_REQUEST_DETAILS, 'SELECTED REQUEST ', this.selectedRequest);
   }
@@ -632,7 +637,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         }
         if (this.ws_requests) {
           this.ws_requests.forEach((request) => {
-            // console.log('[WS-REQUESTS-UNSERVED-X-PANEL] forEach request', request);
+            // this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] forEach request', request);
             const user_agent_result = this.parseUserAgent(request.userAgent)
             const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
             request['ua_browser'] = ua_browser;
@@ -657,7 +662,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
               request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
               request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
             } else {
-              // console.log('here y getContactById')
+              // this.logger.log('here y getContactById')
               this.getContactById(request)
               request['requester_fullname_initial'] = 'N/A';
               request['requester_fullname_fillColour'] = '#6264a7';
@@ -686,7 +691,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         // Sort requests and manage spinner
         // -------------------------------------------------------
         if (this.ws_requests) {
-          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
+          //  this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
@@ -845,7 +850,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
       wsrequests.forEach(request => {
         if (request && request.department) {
-          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - addDeptObject', request)
+          //  this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - addDeptObject', request)
           const deptHasName = request.department.hasOwnProperty('name')
           if (deptHasName) {
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)

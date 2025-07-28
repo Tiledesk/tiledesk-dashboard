@@ -1,4 +1,4 @@
-import { CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal } from './../../utils/util';
+import { CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal, isValidEmail } from './../../utils/util';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges, isDevMode } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -2070,8 +2070,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           // Contact
           // ---------------------------------------------------------
+
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
+
+            if (this.request.lead.email && !isValidEmail(this.request.lead.email)) {
+              this.request.lead.email = null; // Or 'N/A', depending on what you want to display
+            }
+
             this.contact_details = this.request.lead;
             this.logger.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
@@ -2408,6 +2414,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ * COMPLETE *')
       });
   }
+
+ 
 
   onChangeContactEmail(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event)
@@ -6062,7 +6070,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     }
   }
-  
+
   onFileSelected($event) {
     this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
