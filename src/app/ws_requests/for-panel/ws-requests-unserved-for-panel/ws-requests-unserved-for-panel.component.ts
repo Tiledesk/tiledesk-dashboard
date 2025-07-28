@@ -5,7 +5,7 @@ import { LocalDbService } from '../../../services/users-local-db.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
-import { avatarPlaceholder, getColorBck } from '../../../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail } from '../../../utils/util';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
@@ -434,6 +434,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   displayDetails(request) {
     this.OPEN_REQUEST_DETAILS = true;
+    if (request.lead.email && !isValidEmail(request.lead.email)) {
+      request.lead.email = null; // Or 'N/A', depending on what you want to display
+    }
     this.selectedRequest = request
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - displayDetails OPEN_REQUEST_DETAILS? ', this.OPEN_REQUEST_DETAILS, 'SELECTED REQUEST ', this.selectedRequest);
   }

@@ -1,4 +1,4 @@
-import { CHANNELS_NAME } from './../../utils/util';
+import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -1611,6 +1611,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
               request['ua_os'] = ua_os;
+
+              if (request.lead && request.lead.email) {
+                if (!isValidEmail(request.lead.email)) {
+                    request.lead.email = null; // or 'N/A' if you prefer direct substitution
+                 }
+              }
               // -------------------------------------------------------------------
               // Contact's avatar
               // -------------------------------------------------------------------

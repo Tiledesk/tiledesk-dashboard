@@ -3685,6 +3685,7 @@ span .conv-svg-icon {
   margin-bottom: 0px;
   font-size: var(--conv-details-contact-fullname-font-size);
   max-width: 224px;
+  white-space: nowrap;
 }
 
 .contact-info--name:not(:focus) {

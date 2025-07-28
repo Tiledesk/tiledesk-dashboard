@@ -854,7 +854,8 @@
                             <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
                               <h3 id="edit-fullname-contact-info--name" *ngIf="request?.lead?.fullname"
                                 class="contact-info--name">
-                                {{request?.lead?.fullname}}
+                               <!-- {{request?.lead?.fullname}} -->  
+                                {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:27) + '...' : request?.lead?.fullname }}
                               </h3>
                               <!-- -->
                               <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"

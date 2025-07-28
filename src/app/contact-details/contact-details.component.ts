@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../services/contacts.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail } from '../utils/util';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -678,6 +678,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
         if (lead) {
           this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          if (lead.email && !isValidEmail(lead.email)) {
+            lead.email = null; // Or 'N/A', depending on what you want to display
+          }
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {

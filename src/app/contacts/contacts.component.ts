@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -828,6 +828,13 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+      this.contacts.forEach(contact => {
+        
+        if (contact.email && !isValidEmail(contact.email)) {
+          contact.email = null; // Or 'N/A', depending on what you want to display
+        }
+
+      });
 
 
       const contactsCount = leads_object['count'];

@@ -4,7 +4,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -1749,6 +1749,9 @@ getProjectUserRole() {
         this.ws_requests.forEach((request) => {
 
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
+          if (request.lead.email && !isValidEmail(request.lead.email)) {
+            request.lead.email = null; // Or 'N/A', depending on what you want to display
+          }
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
