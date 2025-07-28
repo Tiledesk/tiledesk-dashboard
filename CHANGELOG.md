@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.126
+- Truncate the requester's name if it is too long
+- Do not display the requester's email if it is invalid
+
 ### 2.7.125
 - Adds the ability to delete a teammate 
 
