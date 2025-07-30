@@ -1872,7 +1872,9 @@
                           'requester-not-has-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone,
                           'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.phone === request?.lead?.fullname || request?.fullnameIsNumber)
                           }">
-                          {{ request?.lead?.fullname}}
+                          <!-- {{ request?.lead?.fullname}} -->
+                          {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
+
                         </span>
       
                         <span *ngIf="!request?.lead?.fullname"

@@ -544,9 +544,9 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
       .subscribe((projectUser: any) => {
         this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser > projectUser id', projectUser._id);
+          this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser > projectUser id', projectUser[0]._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
         }
       }, (error) => {
         this.logger.error('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID - ERROR ', error);

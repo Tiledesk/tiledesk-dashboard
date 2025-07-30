@@ -5660,9 +5660,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
       this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser', projectUser)
       if (projectUser) {
-        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser._id);
+        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser[0]._id);
 
-        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser._id]);
+        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser[0]._id]);
       }
     }, (error) => {
       this.logger.error('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - ERROR ', error);
