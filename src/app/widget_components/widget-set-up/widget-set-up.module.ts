@@ -11,11 +11,18 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarComponent } from 'app/components/settings-sidebar/settings-sidebar.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { UnauthorizedForSettingsComponent } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.component';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelist-modal/widget-domains-withelist-modal.component';
 
 const routes: Routes = [
   { path: "", component: WidgetSetUp},
@@ -28,6 +35,7 @@ const routes: Routes = [
     WidgetHomeComponent,
     WidgetChatComponent,
     WidgetPrechatFormComponent,
+    WidgetDomainsWithelistModalComponent
     // UnauthorizedForSettingsComponent
     // SettingsSidebarComponent,
   ],
@@ -41,7 +49,14 @@ const routes: Routes = [
     FormsModule,
     MatTooltipModule,
     SettingsSidebarModule,
-    UnauthorizedForSettingsModule
+    UnauthorizedForSettingsModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule
   ],
    exports: [
     // ColorPickerModule

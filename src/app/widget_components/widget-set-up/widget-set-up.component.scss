@@ -731,6 +731,13 @@ input[type="text"]:disabled {
   gap: 3px;
 }
 
+.widget-domains-withelist-button-onoffswitch-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
 .info-icon---wpr {
   position: relative;
   top: -1px;
