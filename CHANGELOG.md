@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc1
+- Adds the option to allow the widget to be displayed only on withelitest domains in the widget setup page
+
 ### 2.7.125-rc6
 - Adds the ability to manage the “Copy Webhook URL” feature 
 - Adds the ability to manage the “Enable/disable Webhook” feature 
