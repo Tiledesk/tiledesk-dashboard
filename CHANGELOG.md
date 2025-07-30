@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc2
+- Fixes the bug: viewing a teammate's profile by clicking on his avatar doesn't work
+
 ### 2.7.127-rc1
 - Adds the option to allow the widget to be displayed only on withelitest domains in the widget setup page
 
