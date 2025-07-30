@@ -2686,6 +2686,22 @@ button.buttonRounded:hover {
 //   margin-right: 6px;
 // }
 
+.configure-urls-whitelist-btn {
+    border: 1px solid var(--blue-20);
+    border-radius: 9999px;
+    background: var(--blue-20);
+    color: #fff;
+    font-family: 'Poppins';
+    font-size: 12px;
+    padding: 4px 8px;
+    text-transform: none;
+    box-shadow: unset;
+}
+
+.configure-urls-whitelist-btn-wpr {
+    margin-top: 12px;
+}
+
 
 pre {
   font-family: monospace;
