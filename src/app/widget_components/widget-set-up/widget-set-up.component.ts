@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, 
 import { Location } from '@angular/common';
 import { ColorPickerService } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,6 +38,8 @@ import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import emojiRegex from 'emoji-regex';
+import { MatDialog } from '@angular/material/dialog';
+import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelist-modal/widget-domains-withelist-modal.component';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -48,6 +50,7 @@ import emojiRegex from 'emoji-regex';
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
+  private routerSubscription: Subscription;
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   prjct_profile_name_for_segment: string;
@@ -363,6 +366,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   public preChatForm: boolean;
   public nativeRating: boolean;
+  public allowedLoadingDomain: string[] = [];
+  public isEnabledAllowedLoadingDomain: boolean;
   public showAttachmentButton: boolean;
   public showEmojiButton: boolean;
   public showAudioRecorderButton: boolean;
@@ -423,7 +428,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
-    public localDbService: LocalDbService
+    public localDbService: LocalDbService,
+    public dialog: MatDialog,
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -486,6 +492,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
     this.listenToUpladAttachmentProgress()
    
+  }
+
+  ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      const test = <HTMLElement>document.querySelector('.' + this.fragment)
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
+      test.scrollIntoView();
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
+    }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   listenToUpladAttachmentProgress() {
@@ -1254,24 +1282,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  ngAfterViewInit(): void {
-    try {
-      // name of the class of the html div = . + fragment
-      const test = <HTMLElement>document.querySelector('.' + this.fragment)
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
-      test.scrollIntoView();
-      // document.querySelector('#' + this.fragment).scrollIntoView();
-      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
-    } catch (e) {
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
-    }
-  }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
 
   // il testo della modale '"Non è impostata nessuna lingua predefinita' e dato che potrebbe essere visualizzata 
@@ -2611,6 +2622,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.nativeRating = false;
         }
 
+        // -----------------------------------------
+        // Widget domains whithelist is enabled
+        // -----------------------------------------
+        if (project.widget.isEnabledAllowedLoadingDomain) {
+          this.isEnabledAllowedLoadingDomain = true;
+          console.log('[WIDGET-SET-UP] isEnabledAllowedLoadingDomain ', this.isEnabledAllowedLoadingDomain) 
+        } else {
+          this.isEnabledAllowedLoadingDomain = false;
+          console.log('[WIDGET-SET-UP] isEnabledAllowedLoadingDomain ', this.isEnabledAllowedLoadingDomain) 
+        }
+
+        if (project.widget.allowedLoadingDomain) {
+          this.allowedLoadingDomain = project.widget.allowedLoadingDomain;
+          console.log('[WIDGET-SET-UP] allowedLoadingDomain ', this.allowedLoadingDomain) 
+        } else {
+          this.allowedLoadingDomain = [];
+          console.log('[WIDGET-SET-UP] allowedLoadingDomain ', this.allowedLoadingDomain) 
+        }
+
+
+
+
         // ----------------------------------------------------
         // Display / hide  Attachment Button (if widget object)
         // ----------------------------------------------------
@@ -2855,6 +2888,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.nativeRating = false;
+
+        // -----------------------------------------------------------------------
+        // @ allowedLoadingDomain
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.isEnabledAllowedLoadingDomain = false;
+        this.allowedLoadingDomain = []
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > isEnabledAllowedLoadingDomain: ', this.isEnabledAllowedLoadingDomain);
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedLoadingDomain: ', this.allowedLoadingDomain);
+ 
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -4523,6 +4566,73 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.widgetService.updateWidgetProject(this.widgetObj)
     this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
   }
+
+
+  // -----------------------------------------------------------------------
+  //  @ Widget doamin withelist
+  // -----------------------------------------------------------------------
+  // allowedLoadingDomain: any;
+  // isEnabledAllowedLoadingDomain: boolean;
+  toggleWidgetDomainsWhithelist(event) {
+    if (event.target.checked) {
+      this.isEnabledAllowedLoadingDomain = true;
+      // *** ADD PROPERTY
+      this.widgetObj['isEnabledAllowedLoadingDomain'] = this.isEnabledAllowedLoadingDomain;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget Domains Whithe list ', event.target.checked)
+    } else {
+      this.isEnabledAllowedLoadingDomain = false;
+
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['isEnabledAllowedLoadingDomain'];
+
+      console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist allowedLoadingDomain length ', this.widgetObj)
+      if (this.allowedLoadingDomain?.length === 0 ) {
+        delete this.widgetObj['allowedLoadingDomain'];
+      }
+
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLED Widget Domains Whithe list', event.target.checked)
+      
+    }
+
+    console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist widgetObj ', this.widgetObj)
+  }
+
+    onOpenUrlsWhitelist() {
+      const dialogRef = this.dialog.open(WidgetDomainsWithelistModalComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '500px',
+        disableClose: true,
+        data: this.allowedLoadingDomain
+        
+    });
+
+      // Auto-close dialog on route change
+      this.routerSubscription = this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart) {
+          dialogRef.close();
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result: string[]) => {
+        if (result) {
+          this.allowedLoadingDomain = result;
+          // Save to backend or localStorage as needed
+          console.log("[WIDGET-SET-UP] - allowedLoadingDomain afterClosed: ", this.allowedLoadingDomain)
+
+          this.widgetObj['allowedLoadingDomain'] = this.allowedLoadingDomain;
+          this.widgetService.updateWidgetProject(this.widgetObj)
+          console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist widgetObj ', this.widgetObj)
+        }
+
+        if (this.routerSubscription) {
+          this.routerSubscription.unsubscribe();
+        }
+      });
+    }
 
 
   // onPastePrechatFormJSON(event: ClipboardEvent) {
