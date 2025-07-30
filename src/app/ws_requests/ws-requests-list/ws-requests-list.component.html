@@ -37,10 +37,17 @@
       <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
         <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
           (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow"
-          style="font-size: 12px;  margin-left: 15px;height: 36px;">
+          style="font-size: 12px;  margin-left: 15px;height: 36px;"
+          [disabled]="!PERMISSION_TO_CREATE_TICKET"
+          matTooltipClass="conv-custom-mat-tooltip"
+          #tooltip="matTooltip"
+          matTooltipPosition='above'
+          matTooltipHideDelay="100"
+          [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
+          [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
 
           <span aria-hidden="true" class="material-icons"
-            style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+            style="vertical-align: middle; margin-bottom: 0px; margin-top: 1px;">
             add_circle
           </span>
           {{ 'CreateTicket' | translate }}

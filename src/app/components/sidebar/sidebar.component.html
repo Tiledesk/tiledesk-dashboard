@@ -204,7 +204,12 @@
         #tooltip="matTooltip" 
         matTooltipPosition='right' 
         matTooltipHideDelay="100"
-        [ngClass]="{'is-active': MONITOR_ROUTE_IS_ACTIVE || CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE}">
+        [ngClass]="{'is-active': MONITOR_ROUTE_IS_ACTIVE || 
+          CONV_DETAIL_ROUTE_IS_ACTIVE || 
+          CONV_DEMO_ROUTE_IS_ACTIVE || 
+          NORT_CONV_ROUTE_IS_ACTIVE || 
+          MONITOR_NO_AUTH_ROUTE_IS_ACTIVE
+        }">
         <!-- routerLink="project/{{ project._id }}/wsrequests" -->
         <a class="customAncor" 
           [routerLink]="PERMISSION_TO_VIEW_MONITOR ? ['/project', project._id, 'wsrequests'] : null"
@@ -336,7 +341,8 @@
     <!-- ----------------------------- -->
     <div id="history" *ngIf="project" routerLinkActive="item-active" (click)="stopScroll()"
       matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip"
-      matTooltipPosition='right' matTooltipHideDelay="100">
+      matTooltipPosition='right' matTooltipHideDelay="100"
+      [class.item-active]="HISTORY_NO_AUTH_ROUTE_IS_ACTIVE">
       <a class="customAncor" 
       [routerLink]="PERMISSION_TO_VIEW_HISTORY ? ['/project', project._id, 'history'] : null"
       (click)="handleHistoryClick($event)">

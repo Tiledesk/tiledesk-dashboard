@@ -737,7 +737,7 @@
                             </a>
                           </li>
                           <li class="divider"></li>
-                          <li>
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : !PERMISSION_TO_BAN_VISITOR}">
                             <a (click)='displayModalBanVisitor(request?.lead?.lead_id, request?.lead?.attributes?.ipAddress)'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">not_interested</i>

@@ -205,6 +205,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE: boolean;
   CONV_DEMO_ROUTE_IS_ACTIVE: boolean;
   MONITOR_ROUTE_IS_ACTIVE: boolean;
+  MONITOR_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
+  HISTORY_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
+  
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
   CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
@@ -1501,6 +1504,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.MONITOR_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/wsrequests/no-auth') !== -1) {
+          this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
+        } else {
+          this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
+        }
+
+         if (event.url.indexOf('/history/no-auth') !== -1) {
+          this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
+        } else {
+          this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
+        }
+
+        
+
+        
 
         // if (event.url.indexOf('/messages') !== -1) {
         if (event.url.indexOf('/messages') !== -1) {

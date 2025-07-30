@@ -28,6 +28,12 @@ export class UnauthorizedForSidebarComponent implements OnInit {
         this.pageName = 'RequestMsgsPage.RequestDetails'
       }
 
+      if (this.callingPage === 'history') {
+        this.pageName = 'History'
+      }
+
+      
+
       if (this.callingPage === 'contacts') {
         this.pageName = 'Contacts'
       }

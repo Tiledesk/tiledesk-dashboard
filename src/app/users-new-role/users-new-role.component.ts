@@ -111,36 +111,36 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.INBOX_READ, label: 'Able to view real time and opened' },
-        // { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
         // { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
         { key: PERMISSIONS.REQUEST_CREATE_TICKET, label: 'Able to create a ticket'},
         { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message' },
         { key: PERMISSIONS.REQUEST_JOIN, label: 'Able to join to a conversation' },
+        { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
         { key: PERMISSIONS.REQUEST_REOPEN, label: 'Able to reopen an archived conversation' },
+        { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete an archived conversation' },
         { key: PERMISSIONS.REQUEST_UPDATE_STATUS, label: 'Able to update the status of a conservation' },
         { key: PERMISSIONS.REQUEST_UPDATE_PRIORITY, label: 'Able to update the priority of a conservation' },
         { key: PERMISSIONS.REQUEST_UPDATE_FOLLOWERS, label: 'Able to add teammates as followers of a conversation' },
         { key: PERMISSIONS.REQUEST_UPDATE_SMART_ASSIGNMENT, label: 'Able to convert a conversation to offline / online' },
-        { key: PERMISSIONS.REQUEST_UPDATE_TAGS, label: 'Able to add / update conversation TAGS' },
+        { key: PERMISSIONS.REQUEST_UPDATE_TAGS, label: 'Able to add / remove conversation TAGS' },
         { key: PERMISSIONS.REQUEST_UPDATE_NOTES, label: 'Able to add / remove notes from a conversation' },
         { key: PERMISSIONS.REQUEST_REASSIGN, label: 'Able to reassign a conversation' },
         { key: PERMISSIONS.REQUEST_ADD, label: 'Able to add a teammate to a conversation' },
         { key: PERMISSIONS.REQUEST_LEFT, label: 'Able to leave a conversation to which is joined' },
-        { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the chat transcript' },
-        { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
-        { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete' }
+        { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the chat transcript' }
       ]
     },
-    {
-      key: 'historyManagement',
-      title: 'History',
-      parentLabel: 'Select all',
-      type: 'checkbox',
-      expanded: false,
-      children: [
-        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
-      ]
-    },
+    // {
+    //   key: 'historyManagement',
+    //   title: 'History',
+    //   parentLabel: 'Select all',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+    //   ]
+    // },
 
     {
       key: 'knowledgeBasesManagement',
