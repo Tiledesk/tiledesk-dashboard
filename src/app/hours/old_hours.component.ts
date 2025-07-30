@@ -19,6 +19,7 @@ import { FormControl } from "@angular/forms";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
 import { v4 as uuidv4 } from 'uuid';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-hours',
@@ -181,7 +182,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.getCurrentProject();
     this.getOSCODE();
     // this.daysList = this.days
-   
+
 
     // this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
     // this.logger.log('[HOURS] - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
@@ -227,19 +228,20 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-  } 
+  }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -626,7 +628,7 @@ export class HoursComponent implements OnInit, OnDestroy {
       const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
       this.projectService
         .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
-        .subscribe((project: any)=> {
+        .subscribe((project: any) => {
           this.logger.log('[HOURS] - UPDATED PROJECT ', project);
           this.logger.log('[HOURS] - UPDATED PROJECT this.activeOperatingHours', this.activeOperatingHours);
           project['role'] = this.USER_ROLE;
@@ -646,20 +648,20 @@ export class HoursComponent implements OnInit, OnDestroy {
 
 
         }, (error) => {
-            this.logger.error('[HOURS] - UPDATE PROJECT - ERROR ', error);
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.UPDATE_HOURS_ERROR = true;
-            this.notify.showWidgetStyleUpdateNotification('An error has occurred updating operating hours', 4, 'report_problem')
-          },() => {
-            this.logger.log('[HOURS] - UPDATE PROJECT * COMPLETE *');
+          this.logger.error('[HOURS] - UPDATE PROJECT - ERROR ', error);
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.UPDATE_HOURS_ERROR = true;
+          this.notify.showWidgetStyleUpdateNotification('An error has occurred updating operating hours', 4, 'report_problem')
+        }, () => {
+          this.logger.log('[HOURS] - UPDATE PROJECT * COMPLETE *');
 
-            setTimeout(() => {
-              this.SHOW_CIRCULAR_SPINNER = false
-            }, 300);
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
 
-            this.UPDATE_HOURS_ERROR = false;
-            this.notify.showWidgetStyleUpdateNotification('operating hours has been successfully updated', 2, 'done');
-          });
+          this.UPDATE_HOURS_ERROR = false;
+          this.notify.showWidgetStyleUpdateNotification('operating hours has been successfully updated', 2, 'done');
+        });
 
     } else {
       // the timezone name is null
@@ -813,7 +815,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     console.log("onSelectGeneralOperatingHours clicked")
     this.getProjectById();
   }
-  
+
   onSelectSlot(slot) {
     console.log("onSelectSlot slot: ", slot)
     this.isActiveOperatingHours = slot.active;
@@ -868,7 +870,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   // SLOTS SECTION - END
-  
+
 
 
 
