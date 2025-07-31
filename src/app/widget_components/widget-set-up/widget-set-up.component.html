@@ -3457,25 +3457,25 @@
 														</span>
 													</label>
 													<div class="col-sm-12">
-														<div class="widget-domains-withelist-button-onoffswitch-wrapper">
+														<div class="widget-domains-blacklist-button-onoffswitch-wrapper">
 															<div class="nw-onoffswitch-wrapper" style="clear: both;">
 																<div class="nw-onoffswitch">
-																	<input (change)="toggleWidgetDomainsWhithelist($event)"
-																		type="checkbox" name="nw-widget-whithelist-switch"
+																	<input (change)="toggleWidgetDomainsBlacklist($event)"
+																		type="checkbox" name="nw-widget-blacklist-switch"
 																		class="nw-onoffswitch-checkbox"
-																		id="nw-widget-whithelist-switch" tabindex="0"
-																		[checked]="isEnabledAllowedLoadingDomain">
+																		id="nw-widget-blacklist-switch" tabindex="0"
+																		[checked]="hideOnSpecificDomain">
 																	<label class="nw-onoffswitch-label"
-																		for="nw-widget-whithelist-switch"></label>
+																		for="nw-widget-blacklist-switch"></label>
 																</div>
 															</div>
 
 															<div class="on-off-enabled-disabled-lbl-wpr">
-																<div *ngIf="!isEnabledAllowedLoadingDomain">
+																<div *ngIf="!hideOnSpecificDomain">
 
 																	{{ 'Disabled' | translate }}
 																</div>
-																<div *ngIf="isEnabledAllowedLoadingDomain">
+																<div *ngIf="hideOnSpecificDomain">
 
 																	{{ 'Enabled' | translate }}
 
@@ -3484,8 +3484,8 @@
 														</div>
 														
 
-														<div class="configure-urls-whitelist-btn-wpr" style="height: 50px;">
-																<button *ngIf="isEnabledAllowedLoadingDomain === true"  class="btn configure-urls-whitelist-btn" (click)="onOpenUrlsWhitelist()">
+														<div class="configure-urls-blacklist-btn-wpr" style="height: 50px;">
+																<button *ngIf="hideOnSpecificDomain === true"  class="btn configure-urls-blacklist-btn" (click)="onOpenDomainsBlacklist()">
 																	{{'Configure' | translate}}
 																</button>
 														</div>
