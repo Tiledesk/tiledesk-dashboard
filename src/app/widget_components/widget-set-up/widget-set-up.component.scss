@@ -731,7 +731,7 @@ input[type="text"]:disabled {
   gap: 3px;
 }
 
-.widget-domains-withelist-button-onoffswitch-wrapper {
+.widget-domains-blacklist-button-onoffswitch-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2657,7 +2657,7 @@ button.buttonRounded:hover {
   max-width: 570px;
 }
 
-.configure-urls-whitelist-btn {
+.configure-urls-blacklist-btn {
     border: 1px solid var(--blue-20);
     border-radius: 9999px;
     background: var(--blue-20);
@@ -2669,7 +2669,7 @@ button.buttonRounded:hover {
     box-shadow: unset;
 }
 
-.configure-urls-whitelist-btn-wpr {
+.configure-urls-blacklist-btn-wpr {
     margin-top: 12px;
 }
 
