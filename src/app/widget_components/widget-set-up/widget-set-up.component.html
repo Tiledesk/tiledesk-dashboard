@@ -3434,7 +3434,8 @@
 													</svg>
 												</div>
 												<h4 class="widget-section-header__title-underlined">
-													Domains allowed to display the widget
+													<!-- Hide on specific domains -->
+													 {{'HideOnSpecificDomains' | translate}}
 												</h4>
 											</div>
 											<div class="widget-section-arrow">
@@ -3449,10 +3450,10 @@
 												<div class="form-group"
 													style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 													<label class="col-sm-12 control-label widget-settings-control-head-label">
-														<!-- Domains allowed to display the widget -->
+														
 														<span class="widget-settings-control-subhead-label">
-															By enabling this option, the widget will be displayed only if the
-															URL belongs to the domain whitelist
+															<!-- By enabling this option, the widget will not be displayed on pages where the URL matches a domain in the list -->
+															  {{'HideOnSpecificDomainsDesc' | translate}}
 														</span>
 													</label>
 													<div class="col-sm-12">
@@ -3481,11 +3482,11 @@
 																</div>
 															</div>
 														</div>
-														<!-- isEnabledAllowedLoadingDomain	{{isEnabledAllowedLoadingDomain}} -->
+														
 
 														<div class="configure-urls-whitelist-btn-wpr" style="height: 50px;">
 																<button *ngIf="isEnabledAllowedLoadingDomain === true"  class="btn configure-urls-whitelist-btn" (click)="onOpenUrlsWhitelist()">
-																	{{'ConfigureWhitelist' | translate}}
+																	{{'Configure' | translate}}
 																</button>
 														</div>
 													</div>

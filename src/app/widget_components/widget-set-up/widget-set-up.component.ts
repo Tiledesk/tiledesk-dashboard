@@ -369,7 +369,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   public preChatForm: boolean;
   public nativeRating: boolean;
-  public allowedLoadingDomain: string[] = [];
+  public hideOnSpecificDomainList: string[] = [];
   public isEnabledAllowedLoadingDomain: boolean;
   public showAttachmentButton: boolean;
   public showEmojiButton: boolean;
@@ -2686,7 +2686,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         // -----------------------------------------
-        // Widget domains whithelist is enabled
+        // Widget domains blocklist is enabled
         // -----------------------------------------
         if (project.widget.isEnabledAllowedLoadingDomain) {
           this.isEnabledAllowedLoadingDomain = true;
@@ -2696,12 +2696,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           console.log('[WIDGET-SET-UP] isEnabledAllowedLoadingDomain ', this.isEnabledAllowedLoadingDomain) 
         }
 
-        if (project.widget.allowedLoadingDomain) {
-          this.allowedLoadingDomain = project.widget.allowedLoadingDomain;
-          console.log('[WIDGET-SET-UP] allowedLoadingDomain ', this.allowedLoadingDomain) 
+        if (project.widget.hideOnSpecificDomainList) {
+          this.hideOnSpecificDomainList = project.widget.hideOnSpecificDomainList;
+          console.log('[WIDGET-SET-UP] hideOnSpecificDomainList ', this.hideOnSpecificDomainList) 
         } else {
-          this.allowedLoadingDomain = [];
-          console.log('[WIDGET-SET-UP] allowedLoadingDomain ', this.allowedLoadingDomain) 
+          this.hideOnSpecificDomainList = [];
+          console.log('[WIDGET-SET-UP] hideOnSpecificDomainList ', this.hideOnSpecificDomainList) 
         }
 
         // ----------------------------------------------------
@@ -2950,13 +2950,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.nativeRating = false;
 
         // -----------------------------------------------------------------------
-        // @ allowedLoadingDomain
+        // @ isEnabledAllowedLoadingDomain
+        // @ hideOnSpecificDomainList
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.isEnabledAllowedLoadingDomain = false;
-        this.allowedLoadingDomain = []
+        this.hideOnSpecificDomainList = []
         console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > isEnabledAllowedLoadingDomain: ', this.isEnabledAllowedLoadingDomain);
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedLoadingDomain: ', this.allowedLoadingDomain);
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hideOnSpecificDomainList: ', this.hideOnSpecificDomainList);
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -4629,7 +4630,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   // -----------------------------------------------------------------------
-  //  @ Widget doamin withelist
+  //  @ Widget doamin blocklist
   // -----------------------------------------------------------------------
   // allowedLoadingDomain: any;
   // isEnabledAllowedLoadingDomain: boolean;
@@ -4646,9 +4647,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // *** REMOVE PROPERTY
       delete this.widgetObj['isEnabledAllowedLoadingDomain'];
 
-      console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist allowedLoadingDomain length ', this.widgetObj)
-      if (this.allowedLoadingDomain?.length === 0 ) {
-        delete this.widgetObj['allowedLoadingDomain'];
+      console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist hideOnSpecificDomainList length ', this.widgetObj)
+      if (this.hideOnSpecificDomainList?.length === 0 ) {
+        delete this.widgetObj['hideOnSpecificDomainList'];
       }
 
       this.widgetService.updateWidgetProject(this.widgetObj)
@@ -4666,7 +4667,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         hasBackdrop: true,
         width: '500px',
         disableClose: true,
-        data: this.allowedLoadingDomain
+        data: this.hideOnSpecificDomainList
         
     });
 
@@ -4679,11 +4680,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   
       dialogRef.afterClosed().subscribe((result: string[]) => {
         if (result) {
-          this.allowedLoadingDomain = result;
+          this.hideOnSpecificDomainList = result;
           // Save to backend or localStorage as needed
-          console.log("[WIDGET-SET-UP] - allowedLoadingDomain afterClosed: ", this.allowedLoadingDomain)
+          console.log("[WIDGET-SET-UP] - hideOnSpecificDomainList afterClosed: ", this.hideOnSpecificDomainList)
 
-          this.widgetObj['allowedLoadingDomain'] = this.allowedLoadingDomain;
+          this.widgetObj['hideOnSpecificDomainList'] = this.hideOnSpecificDomainList;
           this.widgetService.updateWidgetProject(this.widgetObj)
           console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist widgetObj ', this.widgetObj)
         }
