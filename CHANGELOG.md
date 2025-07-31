@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc4
+- Minor improvements and bug fixing
+
 ### 2.7.127-rc3
 - Adds, on the widget setup page, the ability to add domains in a blacklist. The widget will not displayed on pages where the URL matches a blacklisted domain.
 
