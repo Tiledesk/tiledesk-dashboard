@@ -478,7 +478,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         } else {
           // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
+          this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.KB_READ);
           console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
         }
 

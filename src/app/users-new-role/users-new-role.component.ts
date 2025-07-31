@@ -155,7 +155,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.KB_CONTENT_REINDEX, label: 'Able to reindex content' },
         { key: PERMISSIONS.KB_CONTENT_CHECK_STATUS, label: 'Able to check content status' },
         { key: PERMISSIONS.KB_NAMESPACE_ADD, label: 'Able to add a new Knowledge Base' },
-        { key: PERMISSIONS.KB_SETTINGS_EDIT, label: 'Able to update settings' },
+        { key: PERMISSIONS.KB_SETTINGS_EDIT, label: 'Able to update and test AI settings' },
         { key: PERMISSIONS.KB_DELETE, label: 'Able to delete Knowledge Base and contents' },
         // { key: PERMISSIONS.KB_CONTENTS_DELETE, label: 'Able to delete only the contents of a Knowledge Base' },
         // { key: PERMISSIONS.KB_NAMESPACE_DELETE, label: 'Able to delete a Knowledge Base and its contents' },
@@ -178,8 +178,8 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.FLOW_SHARE, label: 'Able to share' },
         { key: PERMISSIONS.FLOW_EXPORT, label: 'Able to export' },
         { key: PERMISSIONS.FLOW_WEBHOOK_COPY, label: 'Able to copy Webhooks URL' },
-        { key: PERMISSIONS.FLOW_WEBHOOK_EDIT, label: 'Able to enable/disable Webhook' },
-        { key: PERMISSIONS.FLOW_WEBHOOK_DELETE, label: 'Able to delete Webhook' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_EDIT, label: 'Able to enable/disable Webhooks' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_DELETE, label: 'Able to delete Webhooks' },
         // { key: PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH, label: 'Able to view messages graph' },
       ]
     },
@@ -192,11 +192,11 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
        { key: PERMISSIONS.LEADS_READ, label: 'Able to view' },
        { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
-       { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
-       { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' },
        { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
        { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
        { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },
+       { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
+       { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' }
       ]
     },
     // {

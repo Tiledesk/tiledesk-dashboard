@@ -39,7 +39,16 @@
 
                         <div class="add-content-cards-wpr">
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('urls')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('urls')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
 
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
@@ -62,7 +71,17 @@
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('site-map')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('site-map')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
+
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -84,7 +103,17 @@
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('faq')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('faq')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
+
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -105,7 +134,17 @@
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('text-file')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('text-file')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
+
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -126,7 +165,16 @@
                             </div>
 
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('file-upload')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('file-upload')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -300,8 +348,10 @@
                         <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
                             [disabled]="!PERMISSION_TO_UPDATE_SETTINGS"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
-                            matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            matTooltipClass="kb-custom-mat-tooltip" 
+                            matTooltip="AI settings" #tooltip="matTooltip"
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                     width="24px" fill="#fff" style="vertical-align: middle;">
