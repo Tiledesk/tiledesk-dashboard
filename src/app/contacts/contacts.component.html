@@ -660,7 +660,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-default btn-simple btn-xs"
-                                  [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_UPDATE_LEAD === false" 
+                                  [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_RESTORE_LEAD === false" 
                                   (click)='restore_contact(contact?._id)'
                                   matTooltipClass="custom-mat-tooltip" 
                                   matTooltip="{{ 'RestoreContact' | translate }}"

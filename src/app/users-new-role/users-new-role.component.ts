@@ -191,10 +191,11 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
        { key: PERMISSIONS.LEADS_READ, label: 'Able to view' },
-       { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
-       { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
-       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
        { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },
+       { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
+       { key: PERMISSIONS.LEAD_RESTORE, label: 'Able to restore' },
+       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
+       { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
        { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
        { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' }
       ]

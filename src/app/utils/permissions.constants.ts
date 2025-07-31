@@ -54,6 +54,7 @@ export const PERMISSIONS = {
  
   LEADS_READ: 'leads_read',
   LEAD_UPDATE: 'lead_update',
+  LEAD_RESTORE: 'lead_restore',
   LEAD_TRASH: 'lead_trash',
   LEAD_DELETE: 'lead_delete',
   LEADS_EXPORT: 'leads_export',
