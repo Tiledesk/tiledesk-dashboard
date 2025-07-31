@@ -55,6 +55,7 @@
                 [allCommunityTemplatesCount]="allCommunityTemplatesCount"
                 [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
                 [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
+                [chatBotCount]="chatBotCount"
                 [myChatbotOtherCount]="myChatbotOtherCount"
                 [chatBotCount]="chatBotCount"
                 [automationsCount]="automationsCount" 
@@ -90,7 +91,7 @@
                     <div class="tmplt-header-center">
 
                         <div class="tmplt-header-center-nav">
-                            <button class="" [ngClass]="{'tmplt-header-active-category': BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category': !BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE}" (click)="goToBotAllTemplates()">
+                            <button *ngIf="displayTemplatesCategory" class="" [ngClass]="{'tmplt-header-active-category': BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category': !BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE}" (click)="goToBotAllTemplates()">
                                 <div class="" [ngClass]="{'tmplt-header-active-category-icon-wpr': BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category-icon-wpr' : !BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE}">
         
                                     <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
@@ -199,7 +200,8 @@
 
 
                 <div class="page-content--wpr">
-                    <div class="template-page-title">
+                    <!-- [ngStyle]="{'margin-top':!displayTemplatesCategory ? '0px' : '26px' }" -->
+                    <div class="template-page-title" >
                         <div *ngIf="COMMUNITY_TEMPLATE" style="text-align: center;">
                             {{'CommunityTemplates' | translate}}
                         </div>

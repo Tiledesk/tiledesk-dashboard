@@ -9,6 +9,7 @@ import { UsersService } from '../../services/users.service';
 import { NotifyService } from '../../core/notify.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-ws-shared',

@@ -285,7 +285,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
 
   getCurrentRoute() {
     this.route = this.router.url
-    if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
+    if (this.route.indexOf('/bots/my-chatbots/all') !== -1 || this.route.indexOf('/bots') !== -1) {
       this.BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE = true
       // this.logger.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE)
     } else {
