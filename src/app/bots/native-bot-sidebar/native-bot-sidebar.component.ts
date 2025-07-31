@@ -10,6 +10,7 @@ import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service'
+import { ProjectUser } from 'app/models/project-user'
 @Component({
   selector: 'appdashboard-native-bot-sidebar',
   templateUrl: './native-bot-sidebar.component.html',
@@ -124,14 +125,12 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         //  console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 

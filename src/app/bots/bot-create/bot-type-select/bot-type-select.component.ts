@@ -51,7 +51,7 @@ export class BotTypeSelectComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-TYPE-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      // this.logger.log("[BOT-TYPE-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -81,36 +81,36 @@ export class BotTypeSelectComponent implements OnInit {
 
         if (dgf[1] === "F") {
           this.dgfIsVisible = false;
-        //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+        //   this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         } else {
           this.dgfIsVisible = true;
-          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+          //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         }
       }
       if (key.includes("NAT")) {
         // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let nat = key.split(":");
-        // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
+        //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
 
         if (nat[1] === "F") {
           this.natIsVisible = false;
-          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         } else {
           this.natIsVisible = true;
-          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         }
       }
 
       if (key.includes("RAS")) {
         // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let rasa = key.split(":");
-        // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa key&value',rasa);
+        //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa key&value',rasa);
         if (rasa[1] === "F") {
           this.rasaIsVisible = false;
-          //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+          //   this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
         } else {
           this.rasaIsVisible = true;
-          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+          //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
         }
       }
 
@@ -120,10 +120,10 @@ export class BotTypeSelectComponent implements OnInit {
         // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
         if (tb[1] === "F") {
           this.tilebotIsVisible = false;
-          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa tilebotIsVisible', this.tilebotIsVisible);
+          //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa tilebotIsVisible', this.tilebotIsVisible);
         } else {
           this.tilebotIsVisible = true;
-          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa tilebotIsVisible', this.tilebotIsVisible);
+          //  this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa tilebotIsVisible', this.tilebotIsVisible);
         }
       }
     });
@@ -158,7 +158,7 @@ export class BotTypeSelectComponent implements OnInit {
 
 
   goToCreateBot(type: string) {
-    //  console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    //   this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
     if (type !== 'native' && type !== 'tilebot') {
       this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
     } else if (type === 'native') {
@@ -166,7 +166,7 @@ export class BotTypeSelectComponent implements OnInit {
       // this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
 
     } else if (type === 'tilebot') {
-      // console.log('[BOT-TYPE-SELECT] HERE Y ')
+      //  this.logger.log('[BOT-TYPE-SELECT] HERE Y ')
       this.router.navigate(['project/' + this.projectId + '/tilebot/prebuilt']);
     }
   }

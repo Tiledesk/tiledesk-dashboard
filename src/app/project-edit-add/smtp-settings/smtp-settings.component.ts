@@ -35,7 +35,7 @@ export class SmtpSettingsComponent implements OnInit {
   public anErrorHasOccurredMsg: string;
   isChromeVerGreaterThan100: boolean
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-  
+
   constructor(
     public projectService: ProjectService,
     private auth: AuthService,
@@ -60,11 +60,11 @@ export class SmtpSettingsComponent implements OnInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
 
   getTranslations() {
@@ -230,9 +230,9 @@ export class SmtpSettingsComponent implements OnInit {
   sendTestEmail(recipientemail) {
     this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security
     // this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd,
-    this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name,  this.smtp_port,this.smtp_connetion_security,  this.smtp_usermame, this.smtp_pswd)
+    this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name, this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd)
       .subscribe((res: any) => {
-      //  console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
+        //  console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
         if (res && res.error && res.error.code === "EAUTH") {
           this.notify.showWidgetStyleUpdateNotification(this.authenticationFailedMsg, 4, 'report_problem');
         }
@@ -279,6 +279,12 @@ export class SmtpSettingsComponent implements OnInit {
 
             }, () => {
               this.logger.log('[CONTACTS-DTLS] in swal willResetToDefault * COMPLETE *');
+              // this.smtp_host_name = undefined;
+              // this.smtp_port = undefined;
+              // this.sender_email_address = undefined;
+              // this.smtp_usermame = undefined;
+              // this.smtp_pswd = undefined;
+              // this.smtp_connetion_security = undefined
 
             });
         } else {
@@ -294,8 +300,8 @@ export class SmtpSettingsComponent implements OnInit {
   // ----------
 
   updateSMTPConfiguration() {
-    const update_smtp_configuration = <HTMLElement>document.querySelector('.update-smtp-configuration');
-    update_smtp_configuration.blur();
+    // const update_smtp_configuration = <HTMLElement>document.querySelector('.update-smtp-configuration');
+    // update_smtp_configuration.blur();
     // console.log('[SMTP-SETTINGS] - HAS CLICKED SAVE SMTP SETTINGS')
     // console.log('[SMTP-SETTINGS] - smtp_host_name', this.smtp_host_name)
     // console.log('[SMTP-SETTINGS] - smtp_port', this.smtp_port)
