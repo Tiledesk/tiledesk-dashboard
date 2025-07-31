@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc3
+- Adds, on the widget setup page, the ability to add domains in a blacklist. The widget will not displayed on pages where the URL matches a blacklisted domain.
+
 ### 2.7.127-rc2
 - Fixes the bug: viewing a teammate's profile by clicking on his avatar doesn't work
 
