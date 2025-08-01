@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc6
+- Implements keycloak logout (step 1)
+
 ### 2.7.127-rc5
 - Fixes the bug: In conversation details chat, the combobox for selecting Public Reply or Private Note does not work
 
