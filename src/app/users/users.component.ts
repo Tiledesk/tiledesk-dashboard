@@ -217,7 +217,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         }
 
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ_DETAILS)) {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ)) {
 
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
             console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);

@@ -86,7 +86,7 @@
                           <span class="input-group-btn">
                           
                             <button id="copy-ticketing-email" class="btn btn-tdblu-no-boxshadow copy-btn"
-                              (click)="copyTicketingEmail()">
+                              (click)="copyTicketingEmail()" [disabled]="!PERMISSION_TO_UPDATE">
                               <span class="material-icons">
                                 content_copy
                               </span>
@@ -141,7 +141,12 @@
                             <!-- Invisible overlay to block interactions -->
                           <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE"
                               (click)="handleBlockedSelectClick($event)"
-                              style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
+                              style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;max-width: 295px;"
+                              matTooltipClass="custom-mat-tooltip"
+                              [matTooltip]="!PERMISSION_TO_UPDATE ? ('YouDoNotHavePermissions' | translate) : null"
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above' 
+                              matTooltipHideDelay="100">
                           </div>
                         </div>
                       </div>
@@ -169,7 +174,7 @@
                             (copy)="disableCopy($event)">
                             <span class="input-group-btn">
                               <button id="copy-ticketing-email" class="btn btn-tdblu-no-boxshadow copy-btn"
-                                (click)="copyTicketingEmailDept()">
+                                (click)="copyTicketingEmailDept()" [disabled]="!PERMISSION_TO_UPDATE">
                                 <span class="material-icons">
                                   content_copy
                                 </span>

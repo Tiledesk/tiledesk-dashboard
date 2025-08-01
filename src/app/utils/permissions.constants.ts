@@ -73,7 +73,7 @@ export const PERMISSIONS = {
   DEPARTMENT_CREATE_READ: 'department_create_read',
 
   TEAMMATES_READ: 'teammates_read',
-  TEAMMATES_READ_DETAILS: 'teammates_detail_read',
+  TEAMMATES_DETAILS_READ: 'teammates_detail_read',
   TEAMMATES_CREATE: 'teammates_create',
   ROLES_READ: 'roles_read',
   GROUPS_READ: 'groups_read',

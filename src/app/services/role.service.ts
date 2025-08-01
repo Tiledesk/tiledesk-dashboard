@@ -118,13 +118,7 @@ export class RoleService {
             // return hasPermission;
           }
 
-          // Widget Translations
-          if (calledby === 'widget-multilanguage') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
-            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
-            console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
-            return hasPermission;
-          }
+         
 
 
           // Analytics
@@ -154,16 +148,17 @@ export class RoleService {
 
           // Widget Translations
           if (calledby === 'widget-multilanguage') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
-            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
 
+
           // Widget installations
           if (calledby === 'widget-installation') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
-            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -198,7 +193,7 @@ export class RoleService {
 
           // Teammate detail
           if (calledby === 'teammate-edit') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TEAMMATES_READ_DETAILS);
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ);
             console.log('[ROLE-SERV] - teammate-edit hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -648,15 +643,15 @@ export class RoleService {
           }
 
           if (calledby === 'widget-multilanguage') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
-            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
 
           if (calledby === 'widget-installation') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
-            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -688,7 +683,7 @@ export class RoleService {
 
           // Teammate details 
           if (calledby === 'teammate-edit') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TEAMMATES_READ_DETAILS);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ);
             console.log('[ROLE-SERV] - teammate-edit hasPermission ', hasPermission)
             return hasPermission;
           }

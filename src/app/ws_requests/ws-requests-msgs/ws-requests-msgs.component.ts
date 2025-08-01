@@ -406,6 +406,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_LEFT_REQUEST: boolean;
   PERMISSION_TO_SEND_TRANSCRIPT: boolean;
   PERMISSION_TO_BAN_VISITOR: boolean;
+  PERMISSION_TO_UPDATE_LEAD: boolean;
 
   /**
    * Constructor
@@ -582,6 +583,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe(status => {
         console.log('[WS-REQUESTS-MSGS] - Role:', status.role);
         console.log('[WS-REQUESTS-MSGS] - Permissions:', status.matchedPermissions);
+
+        // ---------------------------
+        // PERMISSION_TO_UPDATE_LEAD 
+        // --------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
+
+            this.PERMISSION_TO_UPDATE_LEAD = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          } else {
+            this.PERMISSION_TO_UPDATE_LEAD = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_LEAD = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+        }
 
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
@@ -6921,11 +6939,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // --------------------------------------------------
 
   openAddContactNameForm($event) {
+    console.log('[WS-REQUESTS-MSGS] - openAddContactNameForm PERMISSION_TO_UPDATE_LEAD', this.PERMISSION_TO_UPDATE_LEAD)
+    if (this.PERMISSION_TO_UPDATE_LEAD === false)  {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     $event.stopPropagation();
     this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
-    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
+    this.logger.log('[WS-REQUESTS-MSGS] - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-    this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+    this.logger.log('[WS-REQUESTS-MSGS] elemDropDown EDIT CONTACT NAME ', elemDropDown)
     if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
 
       elemDropDown.classList.add("dropdown__menu-form--active");

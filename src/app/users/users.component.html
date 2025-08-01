@@ -162,7 +162,7 @@
                       <!-- btn-primary -->
                       <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
                         style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
-                        [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+                        [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
                         <!-- <span class="icon" style="padding-right:8px">
                       <i class="material-icons">add_circle</i>
                     </span> -->

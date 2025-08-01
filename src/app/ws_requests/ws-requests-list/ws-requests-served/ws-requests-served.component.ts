@@ -98,8 +98,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   CHANNELS_NAME = CHANNELS_NAME;
 
 
-  PERMISSION_TO_ARCHIVE_REQUEST: boolean
-  PERMISSION_TO_JOIN_REQUEST: boolean
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
 
   /**
    * Constructor
@@ -224,6 +225,20 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
             this.PERMISSION_TO_JOIN_REQUEST = true
             console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
           }
+
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ)) {
+
+              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+              console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            } else {
+              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+              console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            }
+          } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
   
   
          
@@ -665,6 +680,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToAgentProfile(member_id) {
+    if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+      this.notify.presentDialogNoPermissionToEditFlow();
+      return
+    }
+
+
     this.logger.log('[WS-REQUESTS-LIST][SERVED]  goToAgentProfile ', member_id)
 
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);

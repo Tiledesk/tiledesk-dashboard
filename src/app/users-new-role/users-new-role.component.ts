@@ -212,14 +212,14 @@ export class UsersNewRoleComponent implements OnInit {
     // },
     {
       key: 'widgetSettings',
-      title: 'Widget',
-      parentLabel: 'Widget',
+      title: 'Widget set up',
+      parentLabel: 'Widget set up',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view Widget appearance & settings' },
-        { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
-        { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
+        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view' },
+        // { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
+        // { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },
         // { key: 'leadData', label: 'Can export Lead, User, Company data' },
         // { key: 'importData', label: 'Can import contacts, companies and tickets' },
@@ -228,13 +228,13 @@ export class UsersNewRoleComponent implements OnInit {
     },
      {
       key: 'routingAndDepts',
-      title: 'Routing & Depts',
+      title: 'Routing & Departments',
       parentLabel: 'Select all',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view list' },
-        { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to view detail'},
+        { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view' },
+        { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to edit'},
         { key: PERMISSIONS.DEPARTMENT_CREATE_READ, label: 'Able to create'},
       ]
     },
@@ -246,11 +246,11 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates list' },
-        { key: PERMISSIONS.TEAMMATES_READ_DETAILS, label: 'Able to view Teammate detail' },
+        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates' },
+        { key: PERMISSIONS.TEAMMATES_DETAILS_READ, label: 'Able to view Teammates profile' },
         { key: PERMISSIONS.TEAMMATES_CREATE, label: 'Able to invite a new Teammate' },
-        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'},
         { key: PERMISSIONS.ROLES_READ, label: 'Able to view Roles'},
+        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'}
       ]
     },
     {
@@ -261,7 +261,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.EMAIL_TICKETING_READ, label: 'Able to view' },
-        { key: PERMISSIONS.EMAIL_TICKETING_UPDATE, label: 'Able to edit' },
+        { key: PERMISSIONS.EMAIL_TICKETING_UPDATE, label: 'Able to generate a department\'s email address' },
       ]
     },
      {

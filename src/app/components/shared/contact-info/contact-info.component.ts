@@ -402,7 +402,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   onBlockedInputClick(event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.notify.presentDialogNoPermissionToPermomfAction();
+    this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
   }
 
 
@@ -603,7 +603,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // When the user select a tag from the combo-box 
   addTag(tag) {
     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
-      this.notify.presentDialogNoPermissionToPermomfAction();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
     this.logger.log('[CONTACT-INFO] - ADD TAG > tag: ', tag);
@@ -625,7 +625,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   createNewTag = (newTag: string) => {
     let self = this;
      if (self.PERMISSION_TO_UPDATE_LEAD === false) {
-      self.notify.presentDialogNoPermissionToPermomfAction();
+      self.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
 
@@ -663,7 +663,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   removeTag(tag: string) {
     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
-      this.notify.presentDialogNoPermissionToPermomfAction();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
 
@@ -798,7 +798,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   editContactAddress() {
     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
-      this.notify.presentDialogNoPermissionToPermomfAction();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
     
@@ -879,7 +879,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   addContactCustomProperty() {
     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
-      this.notify.presentDialogNoPermissionToPermomfAction();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
     this.logger.log('[CONTACT-INFO] - ADD CONTACT PROPERTY ');
@@ -1107,7 +1107,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   onKey(propertyName, propertylabel, event) {
      if (this.PERMISSION_TO_UPDATE_LEAD === false) {
-      this.notify.presentDialogNoPermissionToPermomfAction();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
     this.logger.log('[CONTACT-INFO] - onKey propertyName', propertyName);
