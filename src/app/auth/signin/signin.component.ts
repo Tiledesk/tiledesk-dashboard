@@ -322,7 +322,7 @@ export class SigninComponent implements OnInit {
         grecaptcha.ready(() => {
           grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
             // Add your logic to submit to your backend server here.
-            console.log('[SIGN-IN] grecaptcha token', token)
+            // console.log('[SIGN-IN] grecaptcha token', token)
             if (token) {
               this.signin()
             }
