@@ -317,7 +317,7 @@ export class SigninComponent implements OnInit {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
         // this.localDbService.removeFromStorage('signedup')
-        // this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
+        console.log('[SIGN-IN] SSO (Signin) - user', user , ' EXIST_STORED_ROUTE ', this.EXIST_STORED_ROUTE);
         // this.localDbService.removeFromStorage('hpea');
         
         this.trackSignin(user)
