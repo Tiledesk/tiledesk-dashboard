@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc5
+- Fixes the bug: In conversation details chat, the combobox for selecting Public Reply or Private Note does not work
+
 ### 2.7.127-rc4
 - Minor improvements and bug fixing
 
