@@ -6033,6 +6033,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
       const messageWithoutEmojis = removeEmojis(message).trim();
       this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+       if ( this.showEmojiWarning === true) { 
+        this.triggerEmojiWarning();
+       }
     } else {
       this.showEmojiWarning = false;
     }

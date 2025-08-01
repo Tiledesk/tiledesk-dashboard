@@ -439,6 +439,23 @@
                         </span>
                       </span>
                     </div>
+
+                     <div class="warning-message-cointainer" style="position: relative;"> 
+                      <!-- For emojis -->
+                      <!-- showEmojiWarning {{showEmojiWarning}} -->
+                      <div class="emoji-warning-container">
+                        <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
+                          {{'EmojisNotAllowed' | translate}}
+                        </div>
+                      </div>
+
+                      <!-- For not allowed URLs -->
+                      <div class="warning-container">
+                        <div class="warning-message" [class.visible]="warningMessage">
+                          {{ warningMessage }}
+                        </div>
+                      </div>
+                    </div>
                   
                       
 
