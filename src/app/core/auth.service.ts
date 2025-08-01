@@ -94,6 +94,8 @@ export class AuthService {
   customRedirectAfterLogout: boolean;
   afterLogoutRedirectURL: string
   isActivePAY: boolean;
+  keycloakURLToRedirectAfterLogout:string;
+  redirectToKeycloakURLAfterLogout:boolean;
 
   constructor(
     private _httpClient: HttpClient,
@@ -127,6 +129,8 @@ export class AuthService {
       this.logger.log('[AUTH-SERV] afterLogoutRedirectURL ', this.afterLogoutRedirectURL)
     }
 
+     this.getKeycloakURLToRedirectAfterLogout()
+
     this.logger.log('[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ', this.version)
     this.APP_IS_DEV_MODE = isDevMode()
     // this.logger.log('[AUTH-SERV] ====== isDevMode ', this.APP_IS_DEV_MODE);
@@ -143,6 +147,14 @@ export class AuthService {
     this.checkIfExpiredSessionModalIsOpened()
     this.getAppConfigAnBuildUrl()
     // this.getProjectPlan()
+  }
+
+
+  getKeycloakURLToRedirectAfterLogout() {
+    this.keycloakURLToRedirectAfterLogout = this.appConfigService.getConfig().logoutURL
+    this.redirectToKeycloakURLAfterLogout =  typeof this.keycloakURLToRedirectAfterLogout === 'string' && this.keycloakURLToRedirectAfterLogout.trim() !== '';
+    console.log('[AUTH-SERV] keycloakURLToRedirectAfterLogout ', this.keycloakURLToRedirectAfterLogout)
+    console.log('[AUTH-SERV] redirectToKeycloakURLAfterLogout ', this.redirectToKeycloakURLAfterLogout)
   }
 
   getPAYValue() {
@@ -1385,12 +1397,21 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            that.router.navigate(['/login'])
+            // that.router.navigate(['/login']) // nk commented
             // if ( this.customRedirectAfterLogout  === false) {
             //   that.router.navigate(['/login'])
             // } else {
             //   window.open( this.afterLogoutRedirectURL, '_self');
             // }
+
+             if (this.redirectToKeycloakURLAfterLogout  === false) {
+              console.log('[AUTH-SERV] HERE firebaseSignout 1 ', '/login')
+              that.router.navigate(['/login'])
+            } else {
+              // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
+              console.log('[AUTH-SERV] HERE firebaseSignout 1 ', 'REDIRECT')
+              location.replace( this.keycloakURLToRedirectAfterLogout);
+            }
           }
         },
         function (error) {
@@ -1398,12 +1419,21 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            that.router.navigate(['/login'])
+            // that.router.navigate(['/login']) // nk commented
             // if ( this.customRedirectAfterLogout  === false) {
             //   that.router.navigate(['/login'])
             // } else {
             //   window.open( this.afterLogoutRedirectURL, '_self');
             // }
+
+            if ( this.redirectToKeycloakURLAfterLogout  === false) {
+              console.log('[AUTH-SERV] HERE firebaseSignout 2 ', '/login')
+              that.router.navigate(['/login'])
+            } else {
+              // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
+              console.log('[AUTH-SERV] HERE firebaseSignout 2 ', 'REDIRECT')
+              location.replace( this.keycloakURLToRedirectAfterLogout);
+            }
           }
         },
       )
@@ -1413,12 +1443,25 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] signoutNoFirebase called By (1)', calledby)
     if (calledby !== 'autologin') {
       this.logger.log('[AUTH-SERV] signoutNoFirebase called By (2)', calledby)
-      this.router.navigate(['/login'])
+      // this.router.navigate(['/login']) // nk commented
       // if ( this.customRedirectAfterLogout  === false) {
       //   this.router.navigate(['/login'])
       // } else {
       //   window.open( this.afterLogoutRedirectURL, '_self');
       // }
+
+       if ( this.redirectToKeycloakURLAfterLogout  === false) {
+        console.log('[AUTH-SERV] HERE signoutNoFirebase ', '/login')
+        this.router.navigate(['/login'])
+       
+      } else {
+        // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
+        console.log('[AUTH-SERV] HERE signoutNoFirebase ', 'REDIRECT')
+        // location.replace( this.keycloakURLToRedirectAfterLogout);
+        this.router.navigateByUrl('/', { replaceUrl: true }).then(() => {
+          location.replace(this.keycloakURLToRedirectAfterLogout);
+        });
+      }
     }
   }
 
