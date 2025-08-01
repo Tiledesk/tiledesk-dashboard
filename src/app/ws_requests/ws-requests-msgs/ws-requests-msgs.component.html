@@ -440,15 +440,12 @@
                       </span>
                     </div>
                   
-                      
-
-                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
-                      [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-
+                    <div class="warning-message-cointainer" style="position: relative;"> 
                       <!-- For emojis -->
+                      <!-- showEmojiWarning {{showEmojiWarning}} -->
                       <div class="emoji-warning-container">
                         <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
-                         {{'EmojisNotAllowed' | translate}}
+                          {{'EmojisNotAllowed' | translate}}
                         </div>
                       </div>
 
@@ -458,6 +455,12 @@
                           {{ warningMessage }}
                         </div>
                       </div>
+                    </div>
+
+                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
+                      [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+
+                     
                     
                       <textarea #sendMessageTexarea class="send-message-texarea" 
                         [(ngModel)]="chat_message"

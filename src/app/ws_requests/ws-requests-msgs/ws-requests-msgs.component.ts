@@ -6023,6 +6023,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
       const messageWithoutEmojis = removeEmojis(message).trim();
       this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+      // console.log('[WS-REQUESTS-MSGS] checkEmojiContent showEmojiWarning ', this.showEmojiWarning)
+      if ( this.showEmojiWarning === true) {
+        this.triggerEmojiWarning();
+      }
+      
     } else {
       this.showEmojiWarning = false;
     }
@@ -6044,10 +6049,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   triggerEmojiWarning() {
+     console.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning ')
     this.showEmojiWarning = true;
     setTimeout(() => {
       this.showEmojiWarning = false;
     }, 3000); // 3000 =3 seconds
+     console.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning - showEmojiWarning ', this.showEmojiWarning)
   }
 
   sendChatMessage() {
