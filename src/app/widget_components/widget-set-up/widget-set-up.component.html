@@ -3327,8 +3327,7 @@
 											</svg>
 										</div>
 										<h4 class="widget-section-header__title-underlined">
-											 <!-- Domains allowed to display the widget  -->
-											{{'HideOnSpecificDomains' | translate}}
+										   {{'HideOnSpecificPages' | translate}}
 										</h4>
 									</div>
 									<div class="widget-section-arrow">
@@ -3345,29 +3344,29 @@
 											<label class="col-sm-12 control-label widget-settings-control-head-label">
 												
 												<span class="widget-settings-control-subhead-label">
-													{{'HideOnSpecificDomainsDesc' | translate}}
+													{{'HideOnSpecificPagesDesc' | translate}}
 												</span>
 											</label>
 											<div class="col-sm-12">
-												<div class="widget-domains-blacklist-button-onoffswitch-wrapper">
+												<div class="widget-pattern-blacklist-button-onoffswitch-wrapper">
 													<div class="nw-onoffswitch-wrapper" style="clear: both;">
 														<div class="nw-onoffswitch">
-															<input (change)="toggleWidgetDomainsBlacklist($event)"
-																type="checkbox" name="nw-widget-blacklist-switch"
+															<input (change)="toggleWidgetPatternBlacklist($event)"
+																type="checkbox" name="nw-widget-pattern-switch"
 																class="nw-onoffswitch-checkbox"
-																id="nw-widget-blacklist-switch" tabindex="0"
+																id="nw-widget-pattern-switch" tabindex="0"
 																[checked]="hideOnSpecificDomain">
 															<label class="nw-onoffswitch-label"
-																for="nw-widget-blacklist-switch"></label>
+																for="nw-widget-pattern-switch"></label>
 														</div>
 													</div>
 
 													<div class="on-off-enabled-disabled-lbl-wpr">
-														<div *ngIf="!hideOnSpecificDomain">
+														<div *ngIf="!hideOnSpecificUrl">
 
 															{{ 'Disabled' | translate }}
 														</div>
-														<div *ngIf="hideOnSpecificDomain">
+														<div *ngIf="hideOnSpecificUrl">
 
 															{{ 'Enabled' | translate }}
 
@@ -3377,8 +3376,8 @@
 												
 
 												<div class="configure-urls-blacklist-btn-wpr" style="height: 50px;">
-														<button *ngIf="hideOnSpecificDomain === true"  class="btn configure-urls-blacklist-btn" (click)="onOpenDomainsBlacklist()">
-															{{'Configure' | translate}}
+														<button *ngIf="hideOnSpecificUrl === true"  class="btn configure-urls-blacklist-btn" (click)="onOpenPatternBlacklist()">
+															{{'ConfigureList' | translate}}
 														</button>
 												</div>
 											</div>
