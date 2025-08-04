@@ -16,6 +16,7 @@ import { HomeInviteTeammateErrorModalComponent } from './home-invite-teammate-er
 import { TranslateService } from '@ngx-translate/core';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-home-create-teammate',
@@ -171,15 +172,12 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[HOME-CREATE-TEAMMATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-CREATE-TEAMMATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getLoggedUser() {
