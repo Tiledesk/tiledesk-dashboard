@@ -11,24 +11,15 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class WidgetDomainsWithelistModalComponent implements OnInit {
   newUrl: string = '';
   urlError: string | null = null;
-  whitelistedUrls: string[] = [];
+  // whitelistedUrls: string[] = [];
+
+  blacklistPatterns: string[] = [];
 
   formArray: FormArray = new FormArray([]);
-  urlForm: FormGroup;
+  regexForm: FormGroup;
   submitted = false;
 
-  strongUrlValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const domain = control.value;
-   
-      if (typeof domain !== 'string' || !domain.trim()) {
-        return { strongUrl: true };
-      }
 
-      const pattern = /^(?:\*\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/; // Accepts: *.example.com, example.com, sub.example.com
-      return pattern.test(domain.trim()) ? null : { strongUrl: true };
-    };
-  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,71 +29,125 @@ export class WidgetDomainsWithelistModalComponent implements OnInit {
   ) { 
     console.log(' UrlsWhitelistComponent data ', data)
     if (data) {
-      this.whitelistedUrls = data
+      this.blacklistPatterns = data
     }
   }
 
   ngOnInit(): void {
-     this.urlForm = this.fb.group({
-      url: ['', [Validators.required, this.strongUrlValidator()]]
+     this.regexForm = this.fb.group({
+      // pattern: ['', [Validators.required, this.regexValidator()]]
+      pattern: ['', [Validators.required]]
     });
 
-    // Initialize list if editing existing URLs
-    this.whitelistedUrls.forEach(url => {
-      this.formArray.push(new FormControl(url, [Validators.required, this.strongUrlValidator()]));
+   // Initialize list if editing existing patterns
+    this.blacklistPatterns.forEach(pattern => {
+      // this.formArray.push(new FormControl(pattern, [Validators.required, this.regexValidator()]));
+      this.formArray.push(new FormControl(pattern, [Validators.required]));
     });
   }
 
-   addUrl(): void {
-    this.submitted = true;
-    let input = this.urlForm.get('url')?.value;
-
-    if (input) {
-      input = input.trim().toLowerCase();
-
-      // Extract domain from full URL if needed
+   /**
+   * ✅ Validator for checking valid regex syntax
+   */
+  regexValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value?.trim();
+      if (!value) return { invalidRegex: true };
       try {
-        if (input.startsWith('http://') || input.startsWith('https://')) {
-          const urlObj = new URL(input);
-          input = urlObj.hostname;
-        }
-      } catch (e) {
-        // fallback: strip protocols manually if URL constructor fails
-        input = input.replace(/(^\w+:|^)\/\//, '');
+        new RegExp(value);
+        return null; // valid regex
+      } catch {
+        return { invalidRegex: true };
       }
+    };
+  }
 
-      const isDuplicate = this.formArray.controls.some(ctrl =>
-        ctrl.value?.trim().toLowerCase() === input
-      );
+  addPattern(): void {
+    this.submitted = true;
+    let input = this.regexForm.get('pattern')?.value?.trim();
 
-      if (isDuplicate) {
-        this.urlForm.get('url')?.setErrors({ duplicate: true });
-        return;
-      }
+    if (!input) {
+      this.regexForm.markAllAsTouched();
+      return;
+    }
 
-      if (this.urlForm.valid) {
-        this.formArray.push(new FormControl(input, [Validators.required,
-          this.strongUrlValidator()
-        ]));
+    // Check duplicates
+    const isDuplicate = this.formArray.controls.some(ctrl => ctrl.value?.trim() === input);
+    if (isDuplicate) {
+      this.regexForm.get('pattern')?.setErrors({ duplicate: true });
+      return;
+    }
 
-        this.urlForm.reset();
-        this.urlControl.setErrors(null);
-        this.urlControl.markAsPristine();
-        this.urlControl.markAsUntouched();
-        this.submitted = false;
-      } else {
-        this.urlForm.markAllAsTouched();
-      }
+    if (this.regexForm.valid) {
+      this.formArray.push(new FormControl(input, [Validators.required]));
+      this.regexForm.reset();
+      this.patternControl.setErrors(null);
+      this.patternControl.markAsPristine();
+      this.patternControl.markAsUntouched();
+      this.submitted = false;
+    } else {
+      this.regexForm.markAllAsTouched();
     }
   }
 
-   get urlControl(): FormControl {
-    return this.urlForm.get('url') as FormControl;
+  get patternControl(): FormControl {
+    return this.regexForm.get('pattern') as FormControl;
   }
+
+  //  addUrl(): void {
+  //   this.submitted = true;
+  //   let input = this.urlForm.get('url')?.value;
+
+  //   if (input) {
+  //     input = input.trim().toLowerCase();
+
+  //     // Extract domain from full URL if needed
+  //     try {
+  //       if (input.startsWith('http://') || input.startsWith('https://')) {
+  //         const urlObj = new URL(input);
+  //         input = urlObj.hostname;
+  //       }
+  //     } catch (e) {
+  //       // fallback: strip protocols manually if URL constructor fails
+  //       input = input.replace(/(^\w+:|^)\/\//, '');
+  //     }
+
+  //     const isDuplicate = this.formArray.controls.some(ctrl =>
+  //       ctrl.value?.trim().toLowerCase() === input
+  //     );
+
+  //     if (isDuplicate) {
+  //       this.urlForm.get('url')?.setErrors({ duplicate: true });
+  //       return;
+  //     }
+
+  //     if (this.urlForm.valid) {
+  //       this.formArray.push(new FormControl(input, [Validators.required,
+  //         this.strongUrlValidator()
+  //       ]));
+
+  //       this.urlForm.reset();
+  //       this.urlControl.setErrors(null);
+  //       this.urlControl.markAsPristine();
+  //       this.urlControl.markAsUntouched();
+  //       this.submitted = false;
+  //     } else {
+  //       this.urlForm.markAllAsTouched();
+  //     }
+  //   }
+  // }
+
+  //  get urlControl(): FormControl {
+  //   return this.urlForm.get('url') as FormControl;
+  // }
+
+  // removeUrl(index: number) {
+  //   this.blacklistPatterns.splice(index, 1);
+  // }
 
    hasChanges(): boolean {
     const currentValues = this.formArray.value.map((v: string) => v.trim().toLowerCase());
-    const originalValues = this.whitelistedUrls.map((v: string) => v.trim().toLowerCase());
+    const originalValues = this.blacklistPatterns.map((v: string) => v.trim().toLowerCase());
 
     // Sort both arrays for consistent comparison
     currentValues.sort();
@@ -112,9 +157,7 @@ export class WidgetDomainsWithelistModalComponent implements OnInit {
   }
 
 
-  removeUrl(index: number) {
-    this.whitelistedUrls.splice(index, 1);
-  }
+  
 
   onSave(): void {
     this.logger.warn('this.formArray ', this.formArray);
