@@ -11,6 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from 'app/services/users.service';
 import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
+import { BrandService } from 'app/services/brand.service';
+import { URL_understanding_custom_roles_and_permissions } from 'app/utils/util';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -19,7 +21,7 @@ const Swal = require('sweetalert2')
   styleUrls: ['./users-roles.component.scss']
 })
 export class UsersRolesComponent implements OnInit, OnDestroy {
-
+  CUSTOM_ROLES_AND_PERMISSIONS_DOCS_URL = URL_understanding_custom_roles_and_permissions
   private unsubscribe$: Subject<any> = new Subject<any>();
   IS_OPEN_SETTINGS_SIDEBAR: boolean
   isChromeVerGreaterThan100: boolean
@@ -35,6 +37,7 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
 
   isAuthorized = false;
   permissionChecked = false;
+  public hideHelpLink: boolean;
 
   constructor(
     private router: Router,
@@ -46,8 +49,11 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private usersService: UsersService,
     private roleService: RoleService,
+    public brandService: BrandService,
   
   ) {
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
     // this.roles = [{ "name":"role1", "permissions":["lead_create","request_read_group"]}, { "name":"role2", "permissions":["request_read_group"]}]
 
   }
