@@ -970,6 +970,7 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation
+export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
