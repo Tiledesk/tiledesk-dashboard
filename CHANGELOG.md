@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc7
+- Changes the widget domain blacklist to the widget regex blacklist
+
 ### 2.7.127-rc6
 - Implements keycloak logout (step 1)
 
