@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.127
+- Improves Knowledge Base page sidebar
+- Fixes the bug: Teammates' availability status not updating in the conversation list (Monitor)
+
 ### 2.7.126
 - Truncate the requester's name if it is too long
 - Do not display the requester's email if it is invalid
