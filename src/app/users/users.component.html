@@ -403,7 +403,7 @@
                                     *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status === 'disabled'"
                                     mat-menu-item
                                     (click)='openRestoreModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
-                                    [disabled]="USER_ROLE !== 'owner'">
+                                    [disabled]="USER_ROLE === 'agent'">
                                     <mat-icon>undo</mat-icon>
 
                                     <span>{{ "UsersPage.RestoreMember" | translate }}</span>
