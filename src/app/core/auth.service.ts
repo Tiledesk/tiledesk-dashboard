@@ -314,7 +314,7 @@ export class AuthService {
 
     if (calledBy === 'navbar') {
       this.hasChangedProjectFroList$.next(false)
-      this.logger.log('[AUTH-SERV][HAS CHANGED PROJECT FROM LIST] PUBLISH ')
+      this.logger.log('[AUTH-SERV][HAS CHANGED PROJECT FROM NAVBAR] PUBLISH ')
     }
 
 
@@ -592,7 +592,7 @@ export class AuthService {
    * @param first_name
    * @param last_name
    */
-  public signup(email: string, password: string, first_name: string, last_name: string): Observable<any> {
+  public signup(email: string, password: string, first_name: string, last_name: string, mobile_number ): Observable<any> {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -606,8 +606,9 @@ export class AuthService {
       password: password,
       firstname: first_name,
       lastname: last_name,
+      phone: mobile_number
     }
-    this.logger.log('[AUTH-SERV] - SIGNUP POST REQUEST BODY ', body)
+     this.logger.log('[AUTH-SERV] - SIGNUP POST REQUEST BODY ', body)
 
     const url = this.SIGNUP_BASE_URL
     this.logger.log('[AUTH-SERV] - SIGNUP URL ', url)
@@ -639,7 +640,7 @@ export class AuthService {
     };
 
     const body = { email: email, password: password }
-    this.logger.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body)
+    // console.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body)
 
     // const url = this.SIGNIN_BASE_URL
     const url = baseUrl + 'auth/signin';
@@ -649,7 +650,7 @@ export class AuthService {
       .post(url, JSON.stringify(body), httpOptions)
       .toPromise()
       .then((res) => {
-        this.logger.log('[AUTH-SERV] SIGNIN RES: ', res)
+      //  console.log('[AUTH-SERV] SIGNIN RES: ', res)
         const jsonRes = res
         const user: User = jsonRes['user']
 
