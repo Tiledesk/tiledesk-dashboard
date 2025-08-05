@@ -458,6 +458,7 @@
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
+
                         <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
                             <div>
                                 <span style="margin: 0px;">{{'Name' | translate }}</span>
@@ -558,6 +559,7 @@
                                 matTooltipHideDelay="100" 
                                 [matTooltipDisabled]="isAvailableRefreshRateFeature">
                                 
+                            
                                 <span *ngIf="kb.refresh_rate === 'never' ">
                                     {{'Never' | translate}}
                                 </span>
@@ -572,6 +574,8 @@
                                 <span *ngIf="kb.refresh_rate === 'monthly' ">
                                     {{'Monthly' | translate}}
                                 </span>
+
+                                
                             </span>
                             <span *ngIf="kb.type !== 'url'">
                                 —
