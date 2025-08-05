@@ -4594,7 +4594,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist hideOnSpecificUrlList length ', this.hideOnSpecificUrlList?.length)
       if (this.hideOnSpecificUrlList?.length === 0 ) {
-        delete this.widgetObj['hideOnSpecificDomainList'];
+        delete this.widgetObj['hideOnSpecificUrlList'];
       }
 
       this.widgetService.updateWidgetProject(this.widgetObj)
