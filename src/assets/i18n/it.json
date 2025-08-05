@@ -1839,6 +1839,8 @@
         "LearnMoreAboutOH": "Scopri di più sugli orari di apertura"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Le tue Knowledge Bases",
+        "NoKnowledgeBases": "Nessuna Knowledge Bases",
         "LearnMoreAboutKB": "Scopri di più sulla Knowledge Base",
         "WelcomeToKB": "Benvenuto nella Knowledge Base di {{company_name}}",
         "GetStartedByAddingContents": "Inizia aggiungendo contenuti",
@@ -2028,6 +2030,8 @@
         "HybridSearchDescr":"Controlla come vengono recuperati i risultati combinando la similarità semantica con la corrispondenza esatta delle parole chiave.",
         "ChunksUsedForTheAnswer": "Chunk utilizzati per la risposta",
         "ThisKBIsEnabledForHybridSearch":  "Questa Knowledge Base è abilitata per la ricerca ibrida",
+        "ThisKBUsesSemanticSearch":"Questa Knowledge Base utilizza la ricerca semantica",
+        "ThisIsTheDefaultKB": "Questa è la Knowledge Base predefinita",
         "-----------------------------": "-----------------------------",
         "Next": "Avanti",
         "Back": "Indietro",

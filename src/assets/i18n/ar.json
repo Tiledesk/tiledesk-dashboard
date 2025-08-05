@@ -1839,6 +1839,8 @@
          "LearnMoreAboutOH": "تعرف على المزيد حول ساعات العمل"
     },
     "KbPage": {
+        "YourKnowledgeBases": "قواعد المعرفة",
+        "NoKnowledgeBases": "لا توجد قواعد معرفة",
         "LearnMoreAboutKB": "تعرف على المزيد حول قاعدة المعرفة",
         "WelcomeToKB": "مرحبًا بك في قاعدة معارف {{company_name}}",
         "GetStartedByAddingContents": "ابدأ بإضافة محتويات",
@@ -2029,6 +2031,8 @@
         "HybridSearchDescr":"يتحكم في كيفية استرداد النتائج من خلال الجمع بين التشابه الدلالي ومطابقة الكلمات الرئيسية الدقيقة.",
         "ChunksUsedForTheAnswer": "الأجزاء المستخدمة للإجابة",
         "ThisKBIsEnabledForHybridSearch":  "قاعدة المعارف هذه مُفعّلة للبحث الهجين",
+        "ThisKBUsesSemanticSearch":"تستخدم قاعدة المعارف هذه البحث الدلالي",
+        "ThisIsTheDefaultKB": "هذه هي قاعدة المعارف الافتراضية",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "هذا كل شئ"
     },

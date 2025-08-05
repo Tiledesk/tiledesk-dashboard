@@ -1839,6 +1839,8 @@
         "LearnMoreAboutOH": "Узнать больше о часах работы"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Ваши базы знаний",
+        "NoKnowledgeBases": "Без баз знаний",
         "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",
         "WelcomeToKB": "Добро пожаловать в базу знаний {{company_name}}",
         "GetStartedByAddingContents": "Начните с добавления содержимого",
@@ -2028,6 +2030,8 @@
         "HybridSearchDescr":"Управляет тем, как извлекаются результаты, объединяя семантическое сходство с точным соответствием ключевых слов.",
         "ChunksUsedForTheAnswer": "Части, используемые для ответа",
         "ThisKBIsEnabledForHybridSearch":  "Эта База знаний включена для гибридного поиска",
+        "ThisKBUsesSemanticSearch":"Эта база знаний использует семантический поиск",
+        "ThisIsTheDefaultKB": "Это база знаний по умолчанию",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Вот и все"
     },

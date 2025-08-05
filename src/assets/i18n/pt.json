@@ -1838,6 +1838,8 @@
         "LearnMoreAboutOH": "Saiba mais sobre o horário de funcionamento"
     },
     "KbPage": {
+        "YourKnowledgeBases": "As Suas Bases de Conhecimento",
+        "NoKnowledgeBases": "Sem Bases de Conhecimento",
         "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",
         "WelcomeToKB": "Bem-vindo à base de dados de conhecimento da {{nome_empresa}}",
         "GetStartedByAddingContents": "Comece por adicionar conteúdo",
@@ -2028,6 +2030,8 @@
         "HybridSearchDescr":"Controla a forma como os resultados são recuperados, combinando a semelhança semântica com a correspondência exata de palavras-chave.",
         "ChunksUsedForTheAnswer": "Chunks utilizados para a resposta",
         "ThisKBIsEnabledForHybridSearch":  "Esta Base de Conhecimento está habilitada para pesquisa híbrida",
+        "ThisKBUsesSemanticSearch":"Esta Base de Conhecimentos utiliza a pesquisa semântica",
+        "ThisIsTheDefaultKB": "Esta é a Base de Conhecimentos padrão",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Isso é tudo"
     },

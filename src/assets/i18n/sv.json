@@ -1840,6 +1840,8 @@
         "LearnMoreAboutOH": "Läs mer om öppettider"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Dina kunskapsbaser",
+        "NoKnowledgeBases": "Inga kunskapsbaser",
         "LearnMoreAboutKB": "Läs mer om Knowledge Base",
         "WelcomeToKB": "Välkommen till {{company_name}} kunskapsbas",
         "GetStartedByAddingContents": "Kom igång genom att lägga till innehåll",
@@ -2030,6 +2032,8 @@
         "HybridSearchDescr":"Styr hur resultat hämtas genom att kombinera semantisk likhet med exakt sökordsmatchning.",
         "ChunksUsedForTheAnswer": "Chunks som används för svaret",
         "ThisKBIsEnabledForHybridSearch":  "Denna kunskapsbas är aktiverad för hybridsökning",
+        "ThisKBUsesSemanticSearch":"Denna kunskapsbas använder semantisk sökning",
+        "ThisIsTheDefaultKB": "Detta är standardkunskapsbasen",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

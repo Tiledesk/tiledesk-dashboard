@@ -1839,6 +1839,8 @@
 		 "LearnMoreAboutOH": "Erfahren Sie mehr über die Öffnungszeiten"
 	},
 	"KbPage": {
+		"YourKnowledgeBases": "Ihre Wissensdatenbanken",
+        "NoKnowledgeBases": "Keine Wissensdatenbanken",
 		"LearnMoreAboutKB": "Erfahren Sie mehr über die Knowledge Base",
 		"WelcomeToKB": "Willkommen bei der Wissensdatenbank von {{company_name}}",
 		"GetStartedByAddingContents": "Beginnen Sie mit dem Hinzufügen von Inhalten",
@@ -2028,6 +2030,8 @@
         "HybridSearchDescr":"Steuert die Ergebnissuche durch die Kombination semantischer Ähnlichkeit mit exakter Keyword-Übereinstimmung.",
 		"ChunksUsedForTheAnswer": "Für die Antwort verwendete Chunks",
         "ThisKBIsEnabledForHybridSearch":  "Diese Wissensdatenbank ist für die Hybridsuche aktiviert",
+		"ThisKBUsesSemanticSearch":"Diese Wissensdatenbank nutzt die semantische Suche",
+        "ThisIsTheDefaultKB": "Dies ist die Standard-Wissensdatenbank",
 		"-----------------------------": "-----------------------------",
         "ThatsIsAll": "Das ist alles"
 	},

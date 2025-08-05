@@ -1839,6 +1839,8 @@
         "LearnMoreAboutOH": "Сазнајте више о радном времену"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Ваше базе знања",
+        "NoKnowledgeBases": "Нема база знања",
         "LearnMoreAboutKB": "Сазнајте више о Бази знања",
         "WelcomeToKB": "Добро пожаловать в базу знаний {{company_name}}",
         "GetStartedByAddingContents": "Започните додавањем садржаја",
@@ -2029,6 +2031,8 @@
         "HybridSearchDescr":"Контролише начин преузимања резултата комбиновањем семантичке сличности са тачним подударањем кључних речи.",
         "ChunksUsedForTheAnswer": "Делови коришћени за одговор",
         "ThisKBIsEnabledForHybridSearch":  "Ова база знања је омогућена за хибридну претрагу",
+        "ThisKBUsesSemanticSearch":"Ова база знања користи семантичку претрагу",
+        "ThisIsTheDefaultKB": "Ово је подразумевана база знања",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "То је све"
     },

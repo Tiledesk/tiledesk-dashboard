@@ -1839,6 +1839,8 @@
         "LearnMoreAboutOH": "Çalışma saatleri hakkında daha fazla bilgi edinin"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Bilgi Tabanlarınız",
+        "NoKnowledgeBases": "Bilgi Tabanı Yok",
         "LearnMoreAboutKB": "Bilgi Tabanı hakkında daha fazla bilgi edinin",
         "WelcomeToKB": "{{company_name}} Bilgi Bankasına Hoş Geldiniz",
         "GetStartedByAddingContents": "İçerik ekleyerek başlayın",
@@ -2029,6 +2031,8 @@
          "HybridSearchDescr":"Anlamsal benzerliği tam anahtar kelime eşleşmesiyle birleştirerek sonuçların nasıl alınacağını kontrol eder.",
          "ChunksUsedForTheAnswer": "Cevap için kullanılan parçalar",
          "ThisKBIsEnabledForHybridSearch":  "Bu Bilgi Tabanı karma arama için etkinleştirilmiştir",
+         "ThisKBUsesSemanticSearch":"Bu Bilgi Tabanı anlamsal arama kullanır",
+         "ThisIsTheDefaultKB": "Bu, varsayılan Bilgi Tabanıdır",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Hepsi bu kadar"
     },

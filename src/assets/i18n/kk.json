@@ -1838,6 +1838,8 @@
         "LearnMoreAboutOH": "Жұмыс уақыты туралы көбірек біліңіз"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Сіздің білім қорларыңыз",
+        "NoKnowledgeBases": "Білім базасы жоқ",
         "LearnMoreAboutKB": "Білім қоры туралы көбірек біліңіз",
         "WelcomeToKB": "{{company_name}} білім қорына қош келдіңіз",
         "GetStartedByAddingContents": "Мазмұнды қосу арқылы бастаңыз",
@@ -2028,6 +2030,8 @@
         "HybridSearchDescr":"Семантикалық ұқсастықты кілт сөзбен дәл сәйкестендіру арқылы нәтижелерді алу жолын басқарады.",
         "ChunksUsedForTheAnswer": "Жауап үшін пайдаланылған бөліктер",
         "ThisKBIsEnabledForHybridSearch":  "Бұл білім қоры гибридті іздеу үшін қосылған",
+        "ThisKBUsesSemanticSearch":"Бұл білім қоры семантикалық іздеуді пайдаланады",
+        "ThisIsTheDefaultKB": "Бұл әдепкі білім қоры",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"
     },

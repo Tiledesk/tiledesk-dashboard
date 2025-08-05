@@ -1838,6 +1838,8 @@
         "LearnMoreAboutOH": "Ish vaqti haqida ko'proq bilib oling"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Sizning bilim bazalaringiz",
+        "NoKnowledgeBases": "Bilim bazalari yo'q",
         "LearnMoreAboutKB": "Bilimlar bazasi haqida ko'proq bilib oling",
         "WelcomeToKB": "{{company_name}} bilimlar bazasiga xush kelibsiz",
         "GetStartedByAddingContents": "Tarkibni qo'shish bilan boshlang",
@@ -2028,6 +2030,8 @@
          "HybridSearchDescr":"Semantik o'xshashlikni kalit so'z bilan aniq moslashtirish orqali natijalar qanday olinishini boshqaradi.",
          "ChunksUsedForTheAnswer": "Javob uchun ishlatiladigan bo'laklar",
          "ThisKBIsEnabledForHybridSearch":  "Ushbu bilimlar bazasi gibrid qidiruv uchun yoqilgan",
+         "ThisKBUsesSemanticSearch":"Ushbu bilimlar bazasi semantik qidiruvdan foydalanadi",
+         "ThisIsTheDefaultKB": "Bu standart bilimlar bazasi",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },

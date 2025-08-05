@@ -1839,6 +1839,8 @@
         "LearnMoreAboutOH": "İş saatları haqqında daha çox məlumat əldə edin"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Bilik Bazalarınız",
+        "NoKnowledgeBases": "Bilik bazası yoxdur",
         "LearnMoreAboutKB": "Bilik bazası haqqında ətraflı məlumat əldə edin",
         "WelcomeToKB": "{{company_name}} Bilik Bazasına xoş gəlmisiniz",
         "GetStartedByAddingContents": "Məzmun əlavə etməklə başlayın",
@@ -2029,6 +2031,8 @@
         "HybridSearchDescr":"Semantik oxşarlığı dəqiq açar söz uyğunluğu ilə birləşdirərək nəticələrin necə alındığına nəzarət edir.",
         "ChunksUsedForTheAnswer": "Cavab üçün istifadə olunan parçalar",
         "ThisKBIsEnabledForHybridSearch":  "Bu Bilik Bazası hibrid axtarış üçün aktiv edilib",
+        "ThisKBUsesSemanticSearch":"Bu Bilik bazası semantik axtarışdan istifadə edir",
+        "ThisIsTheDefaultKB": "Bu, standart Bilik Bazasıdır",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hamısı budur"
     },

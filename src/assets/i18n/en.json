@@ -1838,6 +1838,8 @@
         "LearnMoreAboutOH": "Learn more about operating hours"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Your Knowledge Bases",
+        "NoKnowledgeBases": "No Knowledge Bases",
         "LearnMoreAboutKB": "Learn more about Knowledge Base",
         "WelcomeToKB": "Welcome to {{company_name}} Knowledge Base",
         "GetStartedByAddingContents": "Get started by adding contents",
@@ -2028,6 +2030,8 @@
         "HybridSearchDescr":"Controls how results are retrieved by combining semantic similarity with exact keyword matching.",
         "ChunksUsedForTheAnswer": "Chunks used for the answer",
         "ThisKBIsEnabledForHybridSearch":  "This Knowledge Base is enabled for hybrid search",
+        "ThisKBUsesSemanticSearch":"This Knowledge Base uses semantic search",
+        "ThisIsTheDefaultKB": "This is the default Knowledge Base",
         "-----------------------------": "-----------------------------",
         "Next": "Next",
         "Back": "Back",

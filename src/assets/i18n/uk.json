@@ -1839,6 +1839,8 @@
         "LearnMoreAboutOH": "Дізнайтеся більше про години роботи"
     },
     "KbPage": {
+        "YourKnowledgeBases": "Ваші бази знань",
+        "NoKnowledgeBases": "Баз знань немає",
         "LearnMoreAboutKB": "Дізнайтеся більше про базу знань",
         "WelcomeToKB": "Вітаємо в базі знань {{company_name}}",
         "GetStartedByAddingContents": "Почніть із додавання вмісту",
@@ -2029,6 +2031,8 @@
         "HybridSearchDescr":"Контролює спосіб отримання результатів, поєднуючи семантичну схожість із точним збігом ключових слів.",
         "ChunksUsedForTheAnswer": "Фрагменти, використані для відповіді",
         "ThisKBIsEnabledForHybridSearch":  "Ця база знань увімкнена для гібридного пошуку",
+        "ThisKBUsesSemanticSearch":"Ця база знань використовує семантичний пошук",
+        "ThisIsTheDefaultKB": "Це база знань за замовчуванням",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ось і все"
     },
