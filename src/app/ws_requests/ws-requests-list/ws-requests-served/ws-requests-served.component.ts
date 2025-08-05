@@ -680,10 +680,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToAgentProfile(member_id) {
-    if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
-      this.notify.presentDialogNoPermissionToEditFlow();
-      return
-    }
+    // if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+    //   this.notify.presentDialogNoPermissionToEditFlow();
+    //   return
+    // }
 
 
     this.logger.log('[WS-REQUESTS-LIST][SERVED]  goToAgentProfile ', member_id)
