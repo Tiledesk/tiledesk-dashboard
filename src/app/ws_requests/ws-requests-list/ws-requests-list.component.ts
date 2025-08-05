@@ -676,8 +676,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           projectuser['user_available_rt'] = projectUser_from_ws_subscription['user_available'];
           projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
-          if (projectUser_from_ws_subscription['profileStatus']) {
-            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // if (projectUser_from_ws_subscription['profileStatus']) {
+          //  projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // }
+          if ('profileStatus' in projectUser_from_ws_subscription) {
+            // console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
           }
 
         }
