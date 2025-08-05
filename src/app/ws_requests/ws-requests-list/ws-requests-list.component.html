@@ -487,7 +487,10 @@
 
                           
                                 <div class="teammates-no-picture-status-icon"
-                                  [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                                  [ngClass]="{
+                                        'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                        'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                        'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
                                 </div>
 
                               </div>
