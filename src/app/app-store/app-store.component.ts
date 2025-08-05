@@ -21,6 +21,8 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 // const swal = require('sweetalert');
+import { ProjectUser } from 'app/models/project-user';
+const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-app-store',
@@ -321,16 +323,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
 
