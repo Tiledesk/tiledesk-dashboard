@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc8
+- Fixes the bug: teammates with admin role can't restore teammates
+
 ### 2.7.127-rc7
 - Changes the widget domain blacklist to the widget regex blacklist
 
