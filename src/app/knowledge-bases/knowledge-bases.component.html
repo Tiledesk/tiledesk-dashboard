@@ -32,24 +32,37 @@
         <!-- Sidebar sinistra -->
         <div class="kb-sidebar" style="width: 260px; min-width: 200px; max-width: 320px; border-right: 1px solid #e0e0e0; padding: 20px 0; height: 100vh; position: sticky; top: 0; overflow-y: auto;">
           <div class="sidebar-title" >
-            Your Knowledge Bases
-            <!--{{ 'KnowledgeBases' | translate }}-->
+         
+            {{ 'KbPage.YourKnowledgeBases' | translate }}
           </div>
-          <ul class="kb-list" style="list-style: none; padding: 0; margin: 0;">
+
+           <button class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
+            <mat-icon style="vertical-align: middle;">add</mat-icon>
+            <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
+          </button>
+
+
+          <!-- SKELETON LOADER -->
+          <ul *ngIf="isLoadingNamespaces" class="kb-list" style="list-style: none; padding: 0; margin: 0;">
+            <!-- style="padding: 9px 0px 9px 9px;" -->
+            <li *ngFor="let skeleton of [1]" >
+              <div class="skeleton-item" style="display: flex; align-items: center; gap: 3px;">
+                <div class="skeleton-text" style="flex: 1; height: 42px; background: #eee;"></div>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="kb-list" style="list-style: none; padding: 0; margin: 0;" *ngIf="!isLoadingNamespaces && namespaces?.length > 0">
             <li *ngFor="let ns of namespaces"
                 (click)="onSelectNamespace(ns)"
                 [ngClass]="{'active': ns === selectedNamespace}"
                 style="cursor: pointer; padding: 9px 0px 9px 9px; border-left: 4px solid transparent; transition: background 0.2s, border-color 0.2s;"
                 [style.background]="ns === selectedNamespace ? '#e3e9f6' : 'transparent'"
-                [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'">
+                [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'"
+                [style.fontWeight]="ns === selectedNamespace ? '400' : '300'">
               <div style="display: flex; align-items: center; width: 100%;">
 
                 <div style="display: flex; align-items: center; justify-content: flex-end; min-width: 0; margin-bottom: 2px;">
-                  <!-- <span *ngIf="ns?.default" 
-                        class="kb-default-badge" 
-                        style="display: inline-flex; justify-content: center; align-items: center; width: 18px; height: 18px; border-radius: 50%; font-weight: bold; font-size: 11px; margin-left: 8px;">
-                    D
-                  </span> -->
                   
                   <span *ngIf="ns?.hybrid === true" 
                     class="hybrid-search-icon" 
@@ -63,7 +76,7 @@
                   <span *ngIf="!ns?.hybrid" 
                       class="standard-search-icon"
                       matTooltipClass="kb-custom-mat-tooltip"
-                      matTooltip="This Knowledge Base uses semantic search" 
+                      matTooltip="{{ 'KbPage.ThisKBUsesSemanticSearch' | translate }}" 
                       #tooltip="matTooltip" 
                       matTooltipPosition='after'
                       matTooltipShowDelay="600"
@@ -73,7 +86,7 @@
                   <span *ngIf="ns?.default" 
                     class="material-icons-round" 
                     matTooltipClass="kb-custom-mat-tooltip"
-                    matTooltip="This is the default Knowledge Base" 
+                    matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}" 
                     #tooltip="matTooltip" 
                     matTooltipPosition='after'
                     matTooltipShowDelay="600"
@@ -83,31 +96,32 @@
                   </span>
                 </div>
 
-                <div style="flex: 1 1 0; font-size: 15px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <div style="flex: 1 1 0; font-size: 14px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;font-family: var(--header-font-family)">
                   {{ ns.name }}
                 </div>
                 
 
                 <div *ngIf="ns.count" class="counter-badge">{{ns.count}}</div>
+                <div *ngIf="!ns.count" class="counter-badge">0</div>
 
                 <div style="flex: 0 0 32px; display: flex; align-items: center; justify-content: center; margin-left: 12px;">
                   <mat-icon *ngIf="ns === selectedNamespace" style="color: #0f62ff;">chevron_right</mat-icon>
                 </div>
               </div>
             </li>
-            <li *ngIf="!namespaces || namespaces.length === 0" style="padding: 12px 24px; color: #888;">
+            <!-- <li *ngIf="!namespaces || namespaces?.length === 0" style="padding: 12px 24px; color: #888;">
               {{ 'KbPage.NoKnowledgeBases' | translate }}
-            </li>
+            </li> -->
             
           </ul>
 
-          <button class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px);" (click)="presentModalAddNewNamespace()">
+          <!-- <button class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px);" (click)="presentModalAddNewNamespace()">
             <mat-icon style="vertical-align: middle;">add</mat-icon>
-            <span style="vertical-align: middle;">New Knowledge Base</span>
-          </button>
+            <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
+          </button> -->
 
-          <div class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
-            Total Contents: {{totalCount}}/{{quotas?.kbs}}
+          <div  *ngIf="!isLoadingNamespaces" class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
+            {{'KbPage.TotalContents' | translate }}: {{totalCount}}/{{quotas?.kbs}}
           </div>
           
         </div>
@@ -132,7 +146,7 @@
                           (mouseout)="onMouseOut()">
                           <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
                             style="padding: 0px;" (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
-                            matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                            matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='after'
                             matTooltipHideDelay="100">
                             <div class="selected-namespace">
                               {{selectedNamespace?.name}}

@@ -201,7 +201,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   unansweredQuestions: UnansweredQuestion[] = [];
   isLoadingUnanswered = false;
-
+  isLoadingNamespaces = true;
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -552,6 +552,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getAllNamespaces() {
+    this.isLoadingNamespaces = true;
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
@@ -560,12 +561,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP]  GET GET ALL NAMESPACES ERROR ', error);
-
+      this.isLoadingNamespaces = false; 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
         this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
+        this.isLoadingNamespaces = false;
       }
     });
   }
