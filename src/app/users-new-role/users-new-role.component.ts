@@ -302,8 +302,8 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.HOURS_READ, label: 'Able to view' },
         { key: PERMISSIONS.HOURS_UPDATE, label: 'Able to edit' },
-        { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' },
         { key: PERMISSIONS.HOURS_CREATE, label: 'Able to create' },
+        { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' }
       ]
     },
 
