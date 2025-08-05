@@ -776,10 +776,18 @@ getProjectUserRole() {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-       this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription id_user ', projectUser_from_ws_subscription['id_user']);
+      
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+       
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS $UBSC TO WS PROJECT-USERS projectuser[_id] ', projectuser['_id'])
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS projectUser_from_ws_subscription[_id] ', projectUser_from_ws_subscription['_id'])
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF')
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> user_available ', projectUser_from_ws_subscription['user_available'])
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus ', projectUser_from_ws_subscription['profileStatus'])
           // projectUser_from_ws_subscription['email'] = projectuser['id_user']['email']
           // projectUser_from_ws_subscription['firstname'] = projectuser['id_user']['firstname']
           // projectUser_from_ws_subscription['lastname'] = projectuser['id_user']['lastname']
@@ -788,8 +796,14 @@ getProjectUserRole() {
           projectuser['user_available_rt'] = projectUser_from_ws_subscription['user_available'];
           projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
-          if (projectUser_from_ws_subscription['profileStatus']) {
-            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // if (projectUser_from_ws_subscription['profileStatus']) {
+          //   console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus_rt ', projectuser['profileStatus_rt'])
+          //   projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // }
+
+          if ('profileStatus' in projectUser_from_ws_subscription) {
+            console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
           }
 
         }

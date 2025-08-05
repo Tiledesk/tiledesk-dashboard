@@ -449,8 +449,10 @@
                     <div #widgetsContent class="middle-nw">
                       <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
                         <!-- *ngIf="ONLY_MY_REQUESTS === false" -->
+                         
                         <ng-container class="all-teammates">
                           <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
+                               <!-- user_available_rt  {{agent?.user_available_rt}} - profileStatus_rt {{agent?.profileStatus_rt}} -->
 
                             <div class="served-by-conv-c" matTooltipClass="conv-custom-mat-tooltip"
                               matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
@@ -495,6 +497,7 @@
                                     </span>
 
                                     <!-- [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }" -->
+                               
                                     <div class="teammates-no-picture-status-icon"
                                        [ngClass]="{
                                         'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
