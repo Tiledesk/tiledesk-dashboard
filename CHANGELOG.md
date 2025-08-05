@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.127-rc9
+- Fixes the bug: Teammates' availability status not updating in the conversation list (Monitor)
+- Changes the URL of the "Learn more about default roles" link
+
 ### 2.7.127-rc8
 - Fixes the bug: teammates with admin role can't restore teammates
 
