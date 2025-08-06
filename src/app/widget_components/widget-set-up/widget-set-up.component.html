@@ -3313,7 +3313,7 @@
 
 
 								<!-- ------------------------------------------------------ -->
-								<!-- Widget domain whitelist (click)="hasOpenedAdvancedSettigs()" -->
+								<!-- Widget regex whitelist (click)="hasOpenedAdvancedSettigs()" -->
 								<!-- ------------------------------------------------------ -->
 								<button type="button" class="widget-section-accordion widget-section-header">
 									<div class="widget-section-title">
@@ -3327,7 +3327,8 @@
 											</svg>
 										</div>
 										<h4 class="widget-section-header__title-underlined">
-										   {{'HideOnSpecificPages' | translate}}
+										 <!--  {{'HideOnSpecificPages' | translate}} -->
+											{{'DisplayOnSpecificPages' | translate}}
 										</h4>
 									</div>
 									<div class="widget-section-arrow">
@@ -3344,29 +3345,30 @@
 											<label class="col-sm-12 control-label widget-settings-control-head-label">
 												
 												<span class="widget-settings-control-subhead-label">
-													{{'HideOnSpecificPagesDesc' | translate}}
+												 <!--	{{'HideOnSpecificPagesDesc' | translate}} -->
+													{{'DisplayOnSpecificPagesDesc' | translate}}
 												</span>
 											</label>
 											<div class="col-sm-12">
-												<div class="widget-pattern-blacklist-button-onoffswitch-wrapper">
+												<div class="widget-pattern-withelist-button-onoffswitch-wrapper">
 													<div class="nw-onoffswitch-wrapper" style="clear: both;">
 														<div class="nw-onoffswitch">
-															<input (change)="toggleWidgetPatternBlacklist($event)"
+															<input (change)="toggleWidgetPatternWithelist($event)"
 																type="checkbox" name="nw-widget-pattern-switch"
 																class="nw-onoffswitch-checkbox"
 																id="nw-widget-pattern-switch" tabindex="0"
-																[checked]="hideOnSpecificUrl">
+																[checked]="allowedOnSpecificUrl">
 															<label class="nw-onoffswitch-label"
 																for="nw-widget-pattern-switch"></label>
 														</div>
 													</div>
 
 													<div class="on-off-enabled-disabled-lbl-wpr">
-														<div *ngIf="!hideOnSpecificUrl">
+														<div *ngIf="!allowedOnSpecificUrl">
 
 															{{ 'Disabled' | translate }}
 														</div>
-														<div *ngIf="hideOnSpecificUrl">
+														<div *ngIf="allowedOnSpecificUrl">
 
 															{{ 'Enabled' | translate }}
 
@@ -3375,10 +3377,10 @@
 												</div>
 												
 
-												<div class="configure-urls-blacklist-btn-wpr" style="height: 50px;">
-														<button *ngIf="hideOnSpecificUrl === true"  class="btn configure-urls-blacklist-btn" (click)="onOpenPatternBlacklist()">
-															{{'ConfigureList' | translate}}
-														</button>
+												<div class="configure-urls-pattern-btn-wpr" style="height: 50px;">
+													<button *ngIf="allowedOnSpecificUrl === true"  class="btn configure-urls-withelist-btn" (click)="onOpenPatternWithelist()">
+														{{'ConfigureList' | translate}}
+													</button>
 												</div>
 											</div>
 										</div>
