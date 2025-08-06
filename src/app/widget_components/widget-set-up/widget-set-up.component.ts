@@ -373,9 +373,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // public hideOnSpecificDomainList: string[] = [];
   // public hideOnSpecificDomain: boolean;
 
-  hideOnSpecificUrlList: string[] = [];
-  hideOnSpecificUrl: boolean;
-  // public isEnabledAllowedLoadingDomain: boolean;
+  // hideOnSpecificUrlList: string[] = [];
+  // hideOnSpecificUrl: boolean;
+
+  public allowedOnSpecificUrlList: string[] = [];
+  public allowedOnSpecificUrl: boolean;
 
   public showAttachmentButton: boolean;
   public showEmojiButton: boolean;
@@ -2692,25 +2694,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         // --------------------------------------------
-        // Widget pattern blacklist enabled / disabled
+        // Widget regex whitelist enabled / disabled
         // --------------------------------------------
-        if (project.widget.hideOnSpecificUrl) {
-          this.hideOnSpecificUrl = true;
-          console.log('[WIDGET-SET-UP] hideOnSpecificUrl ', this.hideOnSpecificUrl) 
+        if (project.widget.allowedOnSpecificUrl) {
+          this.allowedOnSpecificUrl = true;
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         } else {
-          this.hideOnSpecificUrl = false;
-          console.log('[WIDGET-SET-UP] hideOnSpecificUrl ', this.hideOnSpecificUrl) 
+          this.allowedOnSpecificUrl = false;
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         }
 
         // --------------------------------------------
-        // Widget pattern blacklist array
+        // Widget regex whitelist array
         // --------------------------------------------
-        if (project.widget.hideOnSpecificUrlList) {
-          this.hideOnSpecificUrlList = project.widget.hideOnSpecificUrlList;
-          console.log('[WIDGET-SET-UP] hideOnSpecificUrlList ', this.hideOnSpecificUrlList) 
+        if (project.widget.allowedOnSpecificUrlList) {
+          this.allowedOnSpecificUrlList = project.widget.allowedOnSpecificUrlList;
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         } else {
-          this.hideOnSpecificUrlList = [];
-          console.log('[WIDGET-SET-UP] hideOnSpecificUrlList ', this.hideOnSpecificUrlList) 
+          this.allowedOnSpecificUrlList = [];
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         }
 
         // ----------------------------------------------------
@@ -2959,14 +2961,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.nativeRating = false;
 
         // -----------------------------------------------------------------------
-        // @ hideOnSpecificUrl
-        // @ hideOnSpecificUrlList
+        // @ allowedOnSpecificUrl
+        // @ allowedOnSpecificUrlList
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        this.hideOnSpecificUrl = false;
-        this.hideOnSpecificUrlList = []
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hideOnSpecificUrl: ', this.hideOnSpecificUrl);
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hideOnSpecificUrlList: ', this.hideOnSpecificUrlList);
+        this.allowedOnSpecificUrl = false;
+        this.allowedOnSpecificUrlList = []
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -4639,42 +4641,42 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   // -----------------------------------------------------------------------
-  //  @ Widget pattern blacklist
+  //  @ Widget pattern whitelist
   // -----------------------------------------------------------------------
-  toggleWidgetPatternBlacklist(event) {
+  toggleWidgetPatternWithelist(event) {
     if (event.target.checked) {
-      this.hideOnSpecificUrl = true;
+      this.allowedOnSpecificUrl = true;
       // *** ADD PROPERTY
-      this.widgetObj['hideOnSpecificUrl'] = this.hideOnSpecificUrl;
+      this.widgetObj['allowedOnSpecificUrl'] = this.allowedOnSpecificUrl;
       this.widgetService.updateWidgetProject(this.widgetObj)
-      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN blacklist ', event.target.checked)
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist ', event.target.checked)
     } else {
-      this.hideOnSpecificUrl = false;
+      this.allowedOnSpecificUrl = false;
 
       // *** REMOVE PROPERTY
-      delete this.widgetObj['hideOnSpecificUrl'];
+      delete this.widgetObj['allowedOnSpecificUrl'];
 
-      console.log('[WIDGET-SET-UP] - toggleWidgetPatternBlacklist hideOnSpecificUrlList length ', this.hideOnSpecificUrlList?.length)
-      if (this.hideOnSpecificUrlList?.length === 0 ) {
-        delete this.widgetObj['hideOnSpecificUrlList'];
+      console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist allowedOnSpecificUrlList length ', this.allowedOnSpecificUrlList?.length)
+      if (this.allowedOnSpecificUrlList?.length === 0 ) {
+        delete this.widgetObj['allowedOnSpecificUrlList'];
       }
 
       this.widgetService.updateWidgetProject(this.widgetObj)
 
-      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN blacklist', event.target.checked)
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist', event.target.checked)
       
     }
 
-    console.log('[WIDGET-SET-UP] - toggleWidgetPatternBlacklist widgetObj ', this.widgetObj)
+    console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist widgetObj ', this.widgetObj)
   }
 
-    onOpenPatternBlacklist() {
+    onOpenPatternWithelist() {
       const dialogRef = this.dialog.open(WidgetDomainsWithelistModalComponent, {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
         width: '500px',
         disableClose: true,
-        data: this.hideOnSpecificUrlList
+        data: this.allowedOnSpecificUrlList
         
     });
 
@@ -4687,13 +4689,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   
       dialogRef.afterClosed().subscribe((result: string[]) => {
         if (result) {
-          this.hideOnSpecificUrlList = result;
+          this.allowedOnSpecificUrlList = result;
           // Save to backend or localStorage as needed
-          console.log("[WIDGET-SET-UP] - hideOnSpecificUrlList afterClosed: ", this.hideOnSpecificUrlList)
+          console.log("[WIDGET-SET-UP] - allowedOnSpecificUrlList afterClosed: ", this.allowedOnSpecificUrlList)
 
-          this.widgetObj['hideOnSpecificUrlList'] = this.hideOnSpecificUrlList;
+          this.widgetObj['allowedOnSpecificUrlList'] = this.allowedOnSpecificUrlList;
           this.widgetService.updateWidgetProject(this.widgetObj)
-          console.log('[WIDGET-SET-UP] - toggleWidgetDomainsWhithelist widgetObj ', this.widgetObj)
+          console.log('[WIDGET-SET-UP] - onOpenPatternWithelist  afterClosed widgetObj ', this.widgetObj)
         }
 
         if (this.routerSubscription) {
