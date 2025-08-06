@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.128-rc1
+- Changes the regex blacklist in the regex whitelist
+
 ### 2.7.127-rc9
 - Fixes the bug: Teammates' availability status not updating in the conversation list (Monitor)
 - Changes the URL of the "Learn more about default roles" link
