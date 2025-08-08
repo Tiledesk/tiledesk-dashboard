@@ -192,4 +192,8 @@ export class AutomationsComponent implements OnInit {
       this.getTransactions();
     }
   }
+
+  goToNewBroadcast() {
+     this.router.navigate(['project/' + this.project._id + '/new-broadcast']);
+  }
 }

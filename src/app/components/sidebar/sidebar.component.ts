@@ -217,6 +217,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
+   NEW_BROADCAST_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
   BOTS_DEMO_ROUTE_IS_ACTIVE: boolean;
