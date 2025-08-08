@@ -1,0 +1,65 @@
+<div class="m-header">
+  <h1 mat-dialog-title>
+    Import from CSV
+
+  </h1>
+  <div class="m-top-right-icon">
+    <span class="material-icons-outlined" (click)="onCloseBaseModal()">
+      close
+    </span>
+  </div>
+</div>
+
+<div mat-dialog-content>
+
+    <div class="info-container">
+        <i class="material-icons-outlined info-icon">help_outline</i>
+        <div class="info-text">
+          <!-- <p>{{ 'KbPage.TheFileMustContainTheQAColumns' | translate }}</p>
+     
+          <p>{{ 'KbPage.TheColumnsMustBeSeparatedByTheDelimiter' | translate }}</p> -->
+          <div class="download---example-csv-wpr"> 
+            <span>  As a starting point you can download the CSV of the template you selected </span>
+            <button class="download--example-csv"  (click)="downlaodCSV()"> {{ selected_template_name }} </button>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+
+  <div class="btn-before-upload-wpr" *ngIf="displayAfterUploadFromCSVSection === false">
+    <input style="display:inline" 
+        name="fileChangeUploadCSV" 
+        id="fileChangeUploadCSV" 
+        class="inputfile" 
+        type="file"
+        (change)="fileChangeUploadCSV($event)" accept=".csv" />
+     
+    <label class="btn btn-tdblu-no-boxshadow" for="fileChangeUploadCSV"
+      style="height: 36px; padding: 8px 20px !important;">
+     
+       {{ 'FaqPage.ChooseFile' | translate }} 
+    </label>
+  </div>
+
+  <div class="btn-after-upload-wpr" *ngIf="displayAfterUploadFromCSVSection === true">
+
+    <button *ngIf="parse_err === true" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
+      {{ "Close" | translate }}
+    </button>
+
+    <button *ngIf="parse_err === false" class="mat-dialog-ok-btn" mat-button (click)="onDone()">
+      {{ "Done" | translate }}
+    </button>
+
+    <button *ngIf="parse_err === undefined" class="mat-dialog-traspatent-btn" mat-button disabled>
+      {{ "Processing" | translate }}
+    </button>
+
+  </div>
+</div>
+
+
+
+<!-- <button (click)="downlaodCSV()"> Download CSV </button> -->
