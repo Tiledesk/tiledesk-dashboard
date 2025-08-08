@@ -83,4 +83,36 @@ export class AutomationsService {
 
     return this.httpClient.get(url, httpOptions);
   }
+
+  getWATemplates() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH  + "modules/whatsapp/api/templates/"  + this.project_id;
+    this.logger.debug('[AUTOMATIONS.SERVICE] - get WA templates url ' + url);
+
+    return this.httpClient.get(url, httpOptions);
+  }
+
+   public uploadFaqCsv(formData: any) {
+    const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    // const url = this.SERVER_BASE_PATH  + "modules/whatsapp/api/tiledesk/broadcast/csv";
+    const url = "https://73acaf35017f.ngrok-free.app/api/tiledesk/broadcast/csv";
+    
+    this.logger.log('[KNOWLEDGE BASE SERVICE] UPLOAD FAQS CSV - URL ', url);
+
+    return this.httpClient
+      .post(url, formData, options)
+  }
+
 }

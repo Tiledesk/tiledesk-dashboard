@@ -832,6 +832,13 @@ const routes: Routes = [
     loadChildren: () => import('app/automations/automations.module').then(m => m.AutomationsModule),
     canActivate: [AuthGuard, ProjectProfileGuard],
   },
+
+  // Automations create
+  {
+    path: 'project/:projectid/new-broadcast',
+    loadChildren: () => import('app/automation-create/automation-create.module').then(m => m.AutomationCreateModule),
+    canActivate: [AuthGuard],
+  },
   // { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
   // Automations demo page

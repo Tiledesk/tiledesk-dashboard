@@ -1,47 +1,72 @@
-<span class="navbar-brand navbar-brand-sidebar-settings"
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
+<p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+  [class.chrome-gt-100]="isChromeVerGreaterThan100" 
+  [class.chrome-lt-100]="!isChromeVerGreaterThan100">
+  WhatsApp broadcasts
+</p>
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
- 
-  <div class="page-title--sidebar-settings"
+
+  <!-- <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     {{ 'AutomationsLog' | translate }}
-  </div>
-  
+     
+  </div> -->
+
   <div class="container-fluid" style="padding-right: 5px;padding-left: 10px;">
 
-    <div class="content-wpr" style="display: flex;">
+    <!-- <div class="broadcast-content-wpr" style="display: flex;"> -->
+    <div class="row">
 
-      <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
-      
-      <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
+      <div class="col-sm-12">
+
+        <!-- <appdashboard-settings-sidebar></appdashboard-settings-sidebar> -->
+
+        <!-- <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;"> -->
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-        <div class="card-content" *ngIf="!showSpinner && showAutomationsList" style="padding-top: 10px;">
+        <!-- style="padding-top: 10px;" -->
+        <div class="card-content" *ngIf="!showSpinner && showAutomationsList" >
 
           <div class="filters">
             <!-- // to do -->
           </div>
 
           <div class="automation-header">
-            <p>Last Automations</p>
-            <!--  custom-button -->
+            <div>
+              <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
+                <span class="material-icons-round button-icon">sync</span>
+                Reload
+              </button>
+            </div>
+            <div>
+              <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToNewBroadcast()">
+                <!-- <span class="material-icons-round button-icon">sync</span> -->
+                New broadcast
+              </button>
+            </div>
+
+          </div>
+
+          <!-- <div class="automation-sub-header">
             <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
               <span class="material-icons-round button-icon">sync</span>
-              Reload</button>
-          </div>
+              Reload
+            </button>
+          </div> -->
 
           <div *ngIf="transactions.length === 0" class="no-automations">
             <span class="material-icons-outlined automation-icon">hdr_auto</span>
-            <p>You haven't created any automation yet.</p>
+            <p>You haven't created any broadcast yet.</p>
             <!-- <a>Create one now</a> -->
           </div>
 
@@ -94,7 +119,7 @@
         <div class="card-content" *ngIf="!showSpinner && showAutomationDetail" style="padding-top: 10px;">
           <button class="custom-button" (click)="backToAutomations()">
             <span class="material-icons-round button-icon">navigate_before</span>
-            Back to Automations</button>
+            Back to broadcasts</button>
 
           <div class="automation-stats">
             <p class="subtitle">Automation Stats</p>
@@ -163,8 +188,8 @@
 
 
       </div>
-
-
     </div>
+
+
   </div>
 </div>

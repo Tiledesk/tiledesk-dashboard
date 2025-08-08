@@ -408,7 +408,6 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 
 
-
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
 // import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
@@ -724,7 +723,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
     LogoutModalComponent,
-    UnauthorizedToUpgradeComponent,
+    UnauthorizedToUpgradeComponent
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,

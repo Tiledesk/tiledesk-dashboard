@@ -1,0 +1,209 @@
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span> -->
+
+<p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+    [class.chrome-gt-100]="isChromeVerGreaterThan100" [class.chrome-lt-100]="!isChromeVerGreaterThan100">
+    <span (click)="goBack()" class="go--back" style="cursor: pointer;">
+        WhatsApp broadcasts
+    </span>
+    <i class="material-icons" style="vertical-align: middle !important; font-size: 20px;">
+        keyboard_arrow_right
+    </i>
+    <span class="active-breadcrumb">
+        New broadcast
+    </span>
+
+</p>
+
+<div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
+
+    <!-- <div class="page-title--sidebar-settings"
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+     Broadcast
+  </div> -->
+
+    <div class="container-fluid" style="padding-right: 5px;padding-left: 25px;">
+
+        <!-- <div class="content-wpr" style="display: flex;">
+
+      <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
+      
+      <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;"> -->
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <!-- style="padding-top: 10px;" -->
+                <div class="card-content">
+
+                    <div class="b-flex-container">
+
+                        <div class="b-left-columns-container">
+
+                            <div class="b-left--columns">
+
+
+
+                                <div class="choose-wa-tmplt-label-and-select-wpr" style=" ">
+                                    <div class="template-select-label"> Choose a template </div>
+
+                                    <div class="select-and-btn-wpr">
+
+                                        <ng-select id="template-select" [clearable]="false" [searchable]=false
+                                            [(ngModel)]="templateName" [items]="templates_list" bindLabel="name"
+                                            bindValue="name" placeholder="Choose a template" style="width: 250px;"
+                                            (change)="onSelectTemplate()">
+                                        </ng-select>
+
+
+
+                                        <div class="upload-csv-btn-wpr">
+                                            <button class="button--only--text" (click)="openUploadCSVDialog()"
+                                                [disabled]="!selected_template"
+                                                [ngClass]="{'button--only--text-disabled': !selected_template}">
+                                                Import from CSV
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="contacts-columns" style="">
+                                    <div class="contacts-columns-header-wpr">
+                                        <div class="contacts-columns-header">
+                                            Contacts List
+                                        </div>
+
+                                        <div class="button-wpr">
+                                            <button (click)="sendToServer()">
+                                                Send
+                                            </button>
+                                        </div>
+                                    </div>
+                                      <!-- parsedCsvData >  {{parsedCsvData | json}} -->
+                                    <ng-container *ngIf="parsedCsvData?.length">
+                                        <div class="csv-table-scroll-wrapper">
+                                            <table mat-table [dataSource]="parsedCsvData" class="custom-csv-table">
+                                                <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+                                                    <th mat-header-cell *matHeaderCellDef>{{ col }}</th>
+                                                    <td mat-cell *matCellDef="let element">{{ element[col] }}</td>
+                                                </ng-container>
+
+                                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- <button mat-button (click)="sendToServer()">Send to Server</button> -->
+                                    </ng-container>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <!-- Preview -->
+                        <div class="b-right-column">
+                            <div class="preview-template-header">
+                                Template preview
+                            </div>
+
+                            <div class="no-template-selected-container" *ngIf="!selected_template">
+                               <div class="no-template-selected">
+                                    No template selected
+                               </div>
+                               
+                            </div>
+
+                            <div id="preview-container" class="preview-container" *ngIf="selected_template">
+                                <div class="inner-preview-container">
+                                    <div class="message-cloud">
+
+                                        <!-- // Header -->
+                                        <div class="header-preview">
+                                            <span *ngIf="header_component?.format === 'TEXT'">
+                                                {{ header_component?.text }}
+                                            </span>
+
+                                            <span *ngIf="header_component?.format === 'IMAGE'">
+                                                <img [src]="header_params[0].image.link"
+                                                    (error)="onHeaderImageError($event)" />
+                                            </span>
+                                            <span *ngIf="header_component?.format === 'DOCUMENT'">
+                                                <div class="pdf-preview">
+                                                    <p>PDF</p>
+                                                </div>
+                                                <!-- // doesn't works properly -> check ASAP -->
+                                                <!-- <iframe [src]="sanitizedUrl" frameBorder="0" scrolling="no" height="100%" width="100%" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe> -->
+                                            </span>
+                                            <span *ngIf="header_component?.format === 'LOCATION'">
+                                                <div class="location-preview">
+                                                    <!-- <p>{{'CDSCanvas.Location' | translate }}</p> -->
+                                                    Location
+                                                </div>
+                                                <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3047.4846825263085!2d18.16983501538924!3d40.198280279391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x134423b7392e6d13%3A0x60b481aa8d84673!2sEurofood%20SRL!5e0!3m2!1sit!2sit!4v1685097718757!5m2!1sit!2sit" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                                            </span>
+                                        </div>
+
+                                        <!-- // Body -->
+                                        <div class="body-preview">
+                                            <span>{{ body_component?.text }}</span>
+                                        </div>
+
+                                        <!-- // Footer -->
+                                        <div class="footer-preview">
+                                            <span>{{ footer_component?.text }}</span>
+                                        </div>
+
+                                        <!-- // Call to action preview -->
+                                        <div *ngIf="buttons_component && (buttons_component.buttons[0].type === 'URL' || buttons_component.buttons[0].type === 'PHONE_NUMBER')"
+                                            class="call-to-action-preview">
+
+                                            <!-- <hr style="background-color: #eeeeee; margin-bottom: 0px;"> -->
+                                            <button *ngFor="let btn of buttons_component.buttons"
+                                                class="btn whatsapp-call-to-action">
+                                                <span *ngIf="btn.type === 'URL'"
+                                                    class="material-icons-outlined call-to-action-icon">open_in_new</span>
+                                                <span *ngIf="btn.type === 'PHONE_NUMBER'"
+                                                    class="material-icons-round call-to-action-icon">phone</span>
+                                                {{ btn.text }}
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="message-cloud-buttons-container"
+                                        *ngIf="buttons_component && buttons_component.buttons[0].type === 'QUICK_REPLY'">
+                                        <div class="message-cloud-buttons">
+                                            <button *ngFor="let btn of buttons_component.buttons" fill="clear"
+                                                class="message-cloud-button"><span
+                                                    class="_2VWlB">{{btn.text}}</span></button>
+                                            <!-- <button class="vGQwA"><span class="_2VWlB">no sad. asdj asdjh asd asdgahsgda </span></button>
+                                            <button class="vGQwA"><span class="_2VWlB">Non voglio ricevere più messaggi</span></button> -->
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- ./ preview -->
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
