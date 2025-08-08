@@ -85,7 +85,7 @@ export class SigninComponent implements OnInit {
     this.company_site_url = brand['COMPANY_SITE_URL'];
     this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
     this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
-    this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
+    this.hideGoogleAuthBtn = null;// = brand['display_google_auth_btn'];
   }
 
   ngOnInit() {

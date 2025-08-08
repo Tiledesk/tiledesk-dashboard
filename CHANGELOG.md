@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.128
+- Minor improvements and bug fixing
+
 ### 2.7.127
 - Improves Knowledge Base page sidebar
 - Fixes the bug: Teammates' availability status not updating in the conversation list (Monitor)
