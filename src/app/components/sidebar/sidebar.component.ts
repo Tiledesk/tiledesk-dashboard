@@ -1634,6 +1634,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/new-broadcast') !== -1) {
+          this.NEW_BROADCAST_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - NEW_BROADCAST_ROUTE_IS_ACTIVE ', this.NEW_BROADCAST_ROUTE_IS_ACTIVE);
+        } else {
+          this.NEW_BROADCAST_ROUTE_IS_ACTIVE = false;
+         this.logger.log('[SIDEBAR] NavigationEnd - NEW_BROADCAST_ROUTE_IS_ACTIVE ', this.NEW_BROADCAST_ROUTE_IS_ACTIVE);
+        }
+
 
 
         // if (event.url.indexOf('/knowledge-bases-pre') ) {

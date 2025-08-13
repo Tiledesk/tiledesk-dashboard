@@ -61,7 +61,7 @@ export class AutomationsComponent implements OnInit {
     this.initializeFilters();
     this.getTransactions();
     this.getCurrentProject();
-    this.checkPermissions()
+    // this.checkPermissions()
   }
 
   async checkPermissions() {
