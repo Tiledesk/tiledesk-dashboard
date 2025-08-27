@@ -441,7 +441,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   askAI(body, startTime) {
     this.openaiService.askGpt(body).subscribe((response: any) => {
 
-      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
+      console.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       response['ai_model'] = this.selectedModel
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)

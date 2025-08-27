@@ -8,6 +8,11 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
 import { Location } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+const Swal = require('sweetalert2')
+
 @Component({
   selector: 'appdashboard-automation-create',
   templateUrl: './automation-create.component.html',
@@ -15,13 +20,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AutomationCreateComponent implements OnInit {
 
+  private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean
   templates_list = [];
-
+  projectId: string;
   phone_number_id: string;
   selected_template: any;
   selected_template_name: any;
+  selected_template_lang: any;
   templateName: string;
   csvOutput: any;
 
@@ -46,6 +53,7 @@ export class AutomationCreateComponent implements OnInit {
   csvFile: File;
   parsedCsvData: any;
   displayedColumns: string[] = [];
+  automation_id: string;
 
   template = {
     "name": "promo_mensile",
@@ -112,25 +120,43 @@ export class AutomationCreateComponent implements OnInit {
     public dialog: MatDialog,
     public location: Location,
     public sanitizer: DomSanitizer,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('automations')
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
-    // this.getWATemplates()
-    this.templates_list = this.fakeTmplt
-    console.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates fake ", this.templates_list);
-
-
+    this.getWATemplates();
+    this.getCurrentProject();
+    // this.templates_list = this.fakeTmplt
+    // console.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates fake ", this.templates_list);
   }
+
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getCurrentProject() {
+      this.auth.project_bs
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((project) => {
+          if (project) {
+            this.projectId = project._id;
+            console.log('[AUTOMATION-CREATE] - projectId ', this.projectId)
+          }
+        });
+    }
 
   downloadFile(data, filename) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
     const dwldLink = document.createElement('a');
     const url = URL.createObjectURL(blob);
     const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
-    this.logger.log('[FAQ-COMP] isSafariBrowser ', isSafariBrowser)
+    this.logger.log('[AUTOMATION-CREATE] isSafariBrowser ', isSafariBrowser)
     if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
       dwldLink.setAttribute('target', '_blank');
 
@@ -160,8 +186,8 @@ export class AutomationCreateComponent implements OnInit {
 
   getWATemplates() {
     this.automationsService.getWATemplates().subscribe((templates: any) => {
-      // console.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates ", templates);
-      console.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates fake ", this.fakeTmplt);
+      console.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates ", templates);
+      // console.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates fake ", this.fakeTmplt);
       this.templates_list = templates
 
       // .map(t => {
@@ -191,8 +217,10 @@ export class AutomationCreateComponent implements OnInit {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
     console.log('[AUTOMATION-CREATE] onSelectTemplate selected_template', this.selected_template)
     this.selected_template_name = this.selected_template.name
+    this.selected_template_lang = this.selected_template.language
+
     console.log('[AUTOMATION-CREATE] onSelectTemplate selected_template_name', this.selected_template_name)
-    const phoneNumbers = ['3484506627'];
+    const phoneNumbers = ['3931234567'] // ['3484506627'];
     this.csvOutput = this.generateCSVFromWhatsAppTemplate(this.selected_template, phoneNumbers);
 
     console.log('[AUTOMATION-CREATE] csvOutput', this.csvOutput)
@@ -202,7 +230,28 @@ export class AutomationCreateComponent implements OnInit {
     this.createTemplatePreview()
   }
 
+  // formatWaText(text?: string): SafeHtml {
+  //   if (!text) { return ''; }
+  //   // 1) escape HTML
+  //   let s = text.replace(/&/g, '&amp;')
+  //               .replace(/</g, '&lt;')
+  //               .replace(/>/g, '&gt;');
+  //   // 2) convert line breaks
+  //   s = s.replace(/\n/g, '<br/>');
+  //   // 3) WhatsApp-style -> HTML
+  //   s = s.replace(/\*(.+?)\*/g, '<strong>$1</strong>')   // *bold*
+  //        .replace(/_(.+?)_/g, '<em>$1</em>')             // _italic_
+  //        .replace(/~(.+?)~/g, '<s>$1</s>');              // ~strike~
+  //   return this.sanitizer.bypassSecurityTrustHtml(s);
+  // }
+
   createTemplatePreview() {
+
+    // Cursor
+    this.header_params = [];
+    this.body_params = [];
+    this.buttons_params = [];
+    this.previsioning_url = null;
 
     let temp_template = JSON.parse(JSON.stringify(this.selected_template));
     this.header_component = temp_template.components.find(c => c.type === 'HEADER');
@@ -220,31 +269,49 @@ export class AutomationCreateComponent implements OnInit {
     if (this.header_component) {
       this.header_component_temp = JSON.parse(JSON.stringify(this.header_component));
       if (this.header_component.format === 'TEXT') {
-        if (this.header_component.example &&
-          this.header_component.example.header_text) {
-          this.header_component.example.header_text.forEach((p, i) => {
-            this.header_params.push({ index: i + 1, type: this.header_component.format, text: null })
-          })
-        }
+        // if (this.header_component.example &&
+        //   this.header_component.example.header_text) {
+        //   this.header_component.example.header_text.forEach((p, i) => {
+        //     this.header_params.push({ index: i + 1, type: this.header_component.format, text: null })
+        //   })
+        // }
+        const headerValues = this.header_component.example?.header_text || [];
+        headerValues.forEach((val, i) => {
+          const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
+          this.header_component.text = (this.header_component.text || '').replace(re, val);
+          this.header_params.push({ index: i + 1, type: 'TEXT', text: val });
+        });
       }
       else if (this.header_component.format === 'IMAGE') {
-        if (this.header_component.example &&
-          this.header_component.example.header_handle) {
-          this.header_component.example.header_handle.forEach((p, i) => {
-            this.header_params.push({ index: i + 1, type: this.header_component.format, image: { link: null } })
-          })
-
-        }
+        const links = this.header_component.example?.header_handle || [];
+        links.forEach((link, i) => {
+          this.header_params.push({ index: i + 1, type: 'IMAGE', image: { link } });
+        });
       }
       else if (this.header_component.format === 'DOCUMENT') {
-        if (this.header_component.example &&
-          this.header_component.example.header_handle) {
-          this.fileUploadAccept = ".pdf"
-          this.src = this.header_component.example.header_handle[0];
-          this.sanitizeUrl(this.header_component.example.header_handle[0]);
-          this.header_component.example.header_handle.forEach((p, i) => {
-            this.header_params.push({ index: i + 1, type: this.header_component.format, document: { link: null } })
-          })
+        // if (this.header_component.example &&
+        //   this.header_component.example.header_handle) {
+        //   this.fileUploadAccept = ".pdf"
+        //   this.src = this.header_component.example.header_handle[0];
+        //   this.sanitizeUrl(this.header_component.example.header_handle[0]);
+        //   this.header_component.example.header_handle.forEach((p, i) => {
+        //     this.header_params.push({ index: i + 1, type: this.header_component.format, document: { link: null } })
+        //   })
+        // }
+        const handles = this.header_component.example?.header_handle || [];
+        if (handles.length) {
+          this.fileUploadAccept = '.pdf';
+          this.src = handles[0];                  // URL del PDF per eventuale anteprima
+          this.sanitizeUrl(handles[0]);           // prepara sanitizedUrl se usi l’iframe
+
+          // Prefilla i parametri del documento (utile se devi mostrare/modificare i param)
+          handles.forEach((link, i) => {
+            this.header_params.push({
+              index: i + 1,
+              type: 'DOCUMENT',
+              document: { link }
+            });
+          });
         }
       }
       else if (this.header_component.format === 'LOCATION') {
@@ -256,53 +323,51 @@ export class AutomationCreateComponent implements OnInit {
     }
 
     if (this.body_component) {
-      this.body_component_temp = JSON.parse(JSON.stringify(this.body_component));
-      if (this.body_component.example) {
-        this.body_component.example.body_text[0].forEach((p, i) => {
-          this.body_params.push({ index: i + 1, type: "text", text: null })
-        })
-      }
+      // this.body_component_temp = JSON.parse(JSON.stringify(this.body_component));
+      // if (this.body_component.example) {
+      //   this.body_component.example.body_text[0].forEach((p, i) => {
+      //     this.body_params.push({ index: i + 1, type: "text", text: null })
+      //   })
+      // }
+      const bodyValues = this.body_component.example?.body_text?.[0] || [];
+      bodyValues.forEach((val, i) => {
+        const colLabel = `[body_${i}]`;   // etichetta colonna CSV
+        const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
+        this.body_component.text = (this.body_component.text || '').replace(re, `${val} [body_${i}]`);
+        this.body_params.push({ index: i + 1, type: 'text', text: val });
+      });
     }
 
-    if (this.url_button_component) {
-      this.url_button_component_temp = JSON.parse(JSON.stringify(this.url_button_component));
-      if (this.url_button_component.example) {
-        this.url_button_component.example.forEach((p, i) => {
-          this.buttons_params.push({ index: i + 1, type: "text", text: null })
-          this.previsioning_url = this.url_button_component.url;
-        })
+    // if (this.url_button_component) {
+    //   this.url_button_component_temp = JSON.parse(JSON.stringify(this.url_button_component));
+    //   if (this.url_button_component.example) {
+    //     this.url_button_component.example.forEach((p, i) => {
+    //       this.buttons_params.push({ index: i + 1, type: "text", text: null })
+    //       this.previsioning_url = this.url_button_component.url;
+    //     })
+    //   }
+    // }
+    if (this.url_button_component?.example?.[0]) {
+      const originalUrl = this.url_button_component.url || '';
+      const exampleUrl = this.url_button_component.example[0];
+
+      if (originalUrl.includes('{{1}}')) {
+        const [prefix, suffix] = originalUrl.split('{{1}}');
+        let paramText = '';
+        if (exampleUrl.startsWith(prefix) && exampleUrl.endsWith(suffix)) {
+          paramText = exampleUrl.slice(prefix.length, exampleUrl.length - suffix.length);
+        }
+        this.buttons_params = [{ index: 1, type: 'text', text: paramText }];
+        this.url_button_component.url = originalUrl.replace('{{1}}', paramText);
+
+        const bi = this.buttons_component.buttons.findIndex(b => b.type === 'URL');
+        if (bi > -1) this.buttons_component.buttons[bi] = this.url_button_component;
+        this.previsioning_url = this.url_button_component.url;
       }
     }
-
-    this.body_params.forEach((param, i) => {
-      let index = i + 1;
-      let regex = '{{' + index + '}}';
-      if (param.text) {
-        this.body_component.text = this.body_component.text.replace(regex, param.text);
-      }
-    })
-
-    this.header_params.forEach((param, i) => {
-      let index = i + 1;
-      let regex = '{{' + index + '}}';
-      if (param.text) {
-        this.header_component.text = this.header_component.text.replace(regex, param.text);
-      }
-    })
-
-    this.buttons_params.forEach((param, i) => {
-      //this.logger.log("buttons_params - param: ", param);
-      let index = i + 1;
-      let regex = '{{' + index + '}}';
-      if (param.text) {
-        this.url_button_component.url = this.url_button_component.url.replace(regex, param.text);
-      }
-      let button_index = this.buttons_component.buttons.findIndex(b => b.type === 'URL');
-      this.buttons_component.buttons[button_index] = this.url_button_component;
-      this.previsioning_url = this.url_button_component.url;
-    })
 
   }
+
   sanitizeUrl(url) {
     this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
@@ -432,27 +497,115 @@ export class AutomationCreateComponent implements OnInit {
     this.location.back();
   }
 
-  sendToServer() {
-    if (!this.csvFile) return;
-
-    const formData = new FormData();
-    formData.set('delimiter', ';');
-    formData.append('uploadFile', this.csvFile, this.csvFile.name);
-    this.automationsService.uploadFaqCsv(formData).subscribe(data => {
-      console.log('[AUTOMATION-CREATE] UPLOAD CSV DATA ', data);
-      if (data) {
-        // this.parse_done = true;
-      }
-
-    }, (error) => {
-      this.logger.error('[AUTOMATION-CREATE] UPLOAD CSV - ERROR ', error);
 
 
-    }, () => {
-     console.log('[[AUTOMATION-CREATE] UPLOAD CSV * COMPLETE *');
+  presentDialogBeforeToSendToServer() {
 
-    });
+    Swal.fire({
+      title: this.translate.instant('AreYouSure'),
+      text: this.translate.instant('ByPressingTheSendButtonYouWillSendTheMessageTo', { contacts_num: this.parsedCsvData.length, template_name: this.selected_template_name }),//`By pressing the Send button you will send a message to ${this.parsedCsvData.length} contact using the template ${this.selected_template_name}`, // "By pressing the Send button you will send the message to {{contacts_num}} using the template {{template_name}}" ,
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: true,
+      showDenyButton: false,
+      confirmButtonText: this.translate.instant('Send'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+
+          if (!this.csvFile) return;
+          console.log('[AUTOMATION-CREATE] SEND TO SERVER csvFile ', this.csvFile);
+          console.log('[AUTOMATION-CREATE] SEND TO SERVER id_project ', this.projectId);
+          console.log('[AUTOMATION-CREATE] SEND TO SERVER selected_template_lang ', this.selected_template_lang);
+          console.log('[AUTOMATION-CREATE] SEND TO SERVER selected_template_name ', this.selected_template_name);
+          const formData = new FormData();
+          formData.append('delimiter', ';');
+          formData.append('id_project', this.projectId);
+          formData.append('template_name', this.selected_template_name);
+          formData.append('template_language', this.selected_template_lang);
+          formData.append('uploadFile', this.csvFile, this.csvFile.name);
+          this.automationsService.uploadCsv(formData).subscribe(res => {
+            console.log('[AUTOMATION-CREATE] SEND TO SERVER res', res);
+            if (res) {
+              this.automation_id = res['automation_id']
+              console.log('[AUTOMATION-CREATE] SEND TO SERVER automation_id', this.automation_id);
+            }
+
+          }, (error) => {
+            this.logger.error('[AUTOMATION-CREATE] SEND TO SERVER- ERROR ', error);
+            this.logger.error('[AUTOMATION-CREATE] SEND TO SERVER- ERROR ERROR ERROR', error.error.error);
+            let error_msg = ""
+            if(error.error.error === 'WhatsApp not configured or missing business_account_id.') {
+              error_msg = this.translate.instant('WhatsAppNotConfiguredOrMissingBusinessAccountID') //'WhatsApp not configured or missing business_account_id.'
+            } else {
+              error_msg = this.translate.instant('HoursPage.ErrorOccurred')
+            }
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: error_msg,
+              icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
+            });
+
+          }, () => {
+            console.log('[AUTOMATION-CREATE] SEND TO SERVER * COMPLETE *');
+
+            this.parsedCsvData = undefined
+
+            Swal.fire({
+              title: this.translate.instant('Done') + "!",
+              text: this.translate.instant('TheBroadcastHasStarted'), // "The broadcast has started. You can check its status on the dedicated page.",
+              icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+              
+            }).then((okpressed) => {
+              console.log('[AUTOMATION-CREATE] okpressed')
+              // this.router.navigate(['project/' + this.projectId + '/automations/'], { queryParams: { id: this.automation_id } });
+            });
+          });
+
+        } else {
+          console.log('[AUTOMATION-CREATE] (else)')
+        }
+      });
   }
+
+  // sendToServer() {
+  //   if (!this.csvFile) return;
+  //   console.log('[AUTOMATION-CREATE] SEND TO SERVER csvFile ', this.csvFile);
+  //   const formData = new FormData();
+  //   formData.append('delimiter', ';');
+  //   formData.append('id_project', '64425d26aaa97d0013819905');
+  //   formData.append('template_name', this.templateName);
+  //   formData.append('template_language', 'it');
+  //   formData.append('uploadFile', this.csvFile, this.csvFile.name);
+  //   this.automationsService.uploadCsv(formData).subscribe(data => {
+  //     console.log('[AUTOMATION-CREATE] SEND TO SERVER ', data);
+  //     if (data) {
+  //       // this.parse_done = true;
+  //     }
+
+  //   }, (error) => {
+  //     this.logger.error('[AUTOMATION-CREATE] SEND TO SERVER- ERROR ', error);
+
+
+  //   }, () => {
+  //     console.log('[AUTOMATION-CREATE] SEND TO SERVER * COMPLETE *');
+
+  //   });
+  // }
 
 
 }

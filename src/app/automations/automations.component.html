@@ -7,9 +7,13 @@
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span> -->
 <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
-  [class.chrome-gt-100]="isChromeVerGreaterThan100" 
-  [class.chrome-lt-100]="!isChromeVerGreaterThan100">
-  WhatsApp broadcasts
+  [class.chrome-gt-100]="isChromeVerGreaterThan100" [class.chrome-lt-100]="!isChromeVerGreaterThan100">
+  <!-- WhatsApp broadcasts -->
+  <span *ngIf="showAutomationsList"> {{ 'WhatsAppBroadcasts' | translate}} </span> 
+   <i *ngIf="showAutomationDetail" class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="backToAutomations()">
+    keyboard_arrow_left
+  </i>
+  <span *ngIf="showAutomationDetail"> Broadcast details </span> 
 </p>
 
 
@@ -35,44 +39,135 @@
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
         <!-- style="padding-top: 10px;" -->
-        <div class="card-content" *ngIf="!showSpinner && showAutomationsList" >
+        <div class="automations-content" *ngIf="!showSpinner && showAutomationsList">
 
-          <div class="filters">
-            <!-- // to do -->
-          </div>
+          <div class="fixed-items">
 
-          <div class="automation-header">
-            <div>
+            <div class="filters">
+              <!-- // to do -->
+            </div>
+
+            <div class="automation-header">
+              <div> </div>
+              <!-- <div>
               <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
                 <span class="material-icons-round button-icon">sync</span>
                 Reload
               </button>
+            </div> -->
+              <div>
+                <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToNewBroadcast()">
+                  {{'NewBroadcast' | translate}}
+                </button>
+              </div>
             </div>
-            <div>
-              <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToNewBroadcast()">
-                <!-- <span class="material-icons-round button-icon">sync</span> -->
-                New broadcast
+
+            <div class="automation-list-header-wpr" *ngIf="transactions.length > 0">
+
+              <div class="automation-list-title">
+                {{'DeliveredBroadcasts' | translate }} ( {{transactions?.length }} )
+              </div>
+
+              <button class="wa-only-icon-btn" (click)="reload('automations')">
+                <span class="material-icons-round button-icon"
+                  style="vertical-align: middle; font-size: 20px;">sync</span>
+                <span style="vertical-align: middle; font-weight: 400; ">{{'Reload' | translate}} </span>
               </button>
             </div>
-
           </div>
 
-          <!-- <div class="automation-sub-header">
-            <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
-              <span class="material-icons-round button-icon">sync</span>
-              Reload
-            </button>
-          </div> -->
+          <div class="card-list-wpr"> 
+            <div class="card-list"
+              *ngFor="let transaction of transactions; let i = index; trackBy: trackByTransactionId; let isLast = last">
+
+              <div class="cl-card" (click)='onAutomationSelect(transaction.transaction_id, transaction.createdAt, transaction.template_name)'>
+
+                <div class="cl-card-content">
+
+                  <div class="cl-card-first-column">
+                    <div class="cl-card-info-wpr">
+
+                      <span class="cl-card-item-name-wpr">
+
+                        <div class="cl-card-item-name">
+                          {{ transaction.template_name }}
+                        </div>
+
+                      </span>
+
+                      <div class="cl-card-item-description-wpr">
+
+                        <div class="cl-card-item-transaction">
+                          {{ transaction.transaction_id }}
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="cl-card-second-column">
+
+                    <div class="cl-card-stats-wpr">
+
+                      <div class="cl-card-automation-stats">
+
+                        <div class="cl-card-item-stats-title">
+                          {{'Status' | translate }}
+                        </div>
+
+                        <div class="cl-card-item-stats-values">
+
+                          <div *ngIf="transaction.status === 'pending'" class="automation-status">
+                            <span class="material-icons circle pending-circle">circle</span>
+                            <p>{{'Pending' | translate }}</p>
+                          </div>
+
+                          <div *ngIf="transaction.status === 'completed'" class="automation-status">
+                            <span class="material-icons circle completed-circle">circle</span>
+                            <p>{{'Completed' | translate }}</p>
+                          </div>
+
+                          <div *ngIf="transaction.status === 'aborted'" class="automation-status">
+                            <span class="material-icons circle aborted-circle">circle</span>
+                            <p> {{'Aborted' | translate }}</p>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="cl-card-automation-stats-second-column">
+
+                        <div class="cl-card-item-stats-title">
+                          {{'SentDate' | translate }}
+                        </div>
+
+                        <div class="cl-card-item-stats-values automations-stats">
+                          <!-- {{ transaction.createdAt | date:'E, d MMM, HH:mm:ss'}} -->
+                          {{ transaction.createdAt | amDateFormat: 'llll'}}
+                   
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
           <div *ngIf="transactions.length === 0" class="no-automations">
-            <span class="material-icons-outlined automation-icon">hdr_auto</span>
-            <p>You haven't created any broadcast yet.</p>
-            <!-- <a>Create one now</a> -->
+            
+            <p>
+              {{'YouHaveNotCreatedAnyBroadcastsYet' | translate }}
+            </p>
+           
           </div>
 
-          <div class="automation-list">
 
-            <div class="automation" *ngFor="let transaction of transactions"
+          <div class="automation-list" style="display: none;">
+
+            <div class="automation" *ngFor="let transaction of transactions; trackBy: trackByTransactionId"
               (click)="onAutomationSelect(transaction.transaction_id)">
               <div class="automation-title-id">
                 <p class="automation-title">{{ transaction.template_name }}</p>
@@ -111,76 +206,91 @@
             </div>
 
           </div>
-
-
-
         </div>
 
-        <div class="card-content" *ngIf="!showSpinner && showAutomationDetail" style="padding-top: 10px;">
-          <button class="custom-button" (click)="backToAutomations()">
+        <div class="card-content" *ngIf="!showSpinner && showAutomationDetail" style="padding: 10px 25px;">
+          <!-- <button class="custom-button" (click)="backToAutomations()">
             <span class="material-icons-round button-icon">navigate_before</span>
-            Back to broadcasts</button>
+              {{'BackToBroadcasts' | translate }}
+          </button> -->
 
           <div class="automation-stats">
-            <p class="subtitle">Automation Stats</p>
+            <p class="subtitle">
+              <!-- Automation Stats -->
+              {{'BroadcastStats' | translate }}
+            </p>
 
             <div class="stats">
               <span class="stat">
                 <span class="material-icons-round counter-icon complete">done_all</span>
-                <label>Read:</label> <span>{{ read_count }}</span>
+                <label>{{'Read' | translate }}:</label> <span>{{ read_count }}</span>
               </span>
               <span class="stat">
                 <span class="material-icons-round counter-icon pending">done_all</span>
-                <label>Delivered:</label> {{ delivered_count }}
+                <label>{{'Delivered' | translate }}:</label> {{ delivered_count }}
               </span>
               <span class="stat">
                 <span class="material-icons-round counter-icon pending">done</span>
-                <label>Sent:</label> {{ sent_count }}
+                <label>{{'Sent' | translate }}:</label> {{ sent_count }}
               </span>
               <span class="stat">
                 <span class="material-icons-round counter-icon pending">schedule</span>
-                <label>Accepted:</label> {{ accepted_count }}
+                <label>{{'Accepted' | translate }}:</label> {{ accepted_count }}
               </span>
               <span class="stat">
                 <span class="material-icons-round counter-icon error">error_outline</span>
-                <label>Rejected:</label> {{ failed_count }}
+                <label>{{'Rejected' | translate }}:</label> {{ rejected_count }}
               </span>
               <span class="stat">
                 <span class="material-icons-round counter-icon error">error_outline</span>
-                <label>Failed:</label> {{ rejected_count }}
+                <label>{{'Failed' | translate }}:</label> {{  failed_count }}
               </span>
             </div>
 
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h4>{{ logs.length }} Messages</h4>
+            <h4 style="font-weight: 400; font-family: var(--header-font-family);">{{ logs.length }} {{'RequestMsgsPage.Messages' | translate }}</h4>
             <button class="custom-button" (click)="reload('logs')">
               <span class="material-icons-round button-icon">sync</span>
-              Reload</button>
+              {{'Reload' | translate}}
+            </button>
           </div>
 
           <div class="logs-list">
 
-            <mat-expansion-panel *ngFor="let log of logs" style="border-radius: 0px;">
+            <mat-expansion-panel *ngFor="let log of logs" style="border-radius: 0px;" class="broadcast-logs-accordion">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <label>To:</label> {{log.json_message.to}}
+                  <label>
+                    <!-- To: -->
+                    {{'SentTo' | translate}}:
+                  </label> 
+                  {{log.json_message.to}}
                 </mat-panel-title>
                 <mat-panel-description>
                   <div class="status-chip">
-                    <span *ngIf="log.error" class="material-icons-round warning-icon">warning</span>
-                    {{ log.status }}
+                    <span *ngIf="log.error" class="material-icons-round warning-icon">error_outline</span>
+                    {{ log.status | translate}}
                   </div>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <label>Sending date:</label> {{ log.timestamp | date:'E, d MMM, HH:mm:ss'}}
+              <label style="font-family:var(--header-font-family);">
+                {{'SentDate' | translate}}:
+              </label>
+              <!-- {{ log.timestamp | date:'E, d MMM, HH:mm:ss'}} -->
+              <span style="text-transform: capitalize;">
+                 {{ log.timestamp | amDateFormat:'llll' }}
+              </span>
+            
               <div class="error-box" *ngIf="log.error">
-                <p class="error-label">Error</p>
+                <p class="error-label">
+                  {{'Error' | translate}}
+                </p>
                 {{ log.error }}
               </div>
             </mat-expansion-panel>
-            <div class="end-list">End of list</div>
+            <!-- <div class="end-list">End of list</div> -->
 
 
           </div>

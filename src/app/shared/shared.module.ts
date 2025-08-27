@@ -9,6 +9,8 @@ import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
 import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
 import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { WaToMarkdownPipe } from 'app/wa-to-markdown.pipe';
+import { FormatColLabelsPipe } from 'app/format-col-labels-pipe';
 
 
 
@@ -25,6 +27,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
     HtmlEntitiesEncodePipe,
     SanitizeHtmlPipe,
     SelectOptionsTranslatePipe, 
+    WaToMarkdownPipe,
+    FormatColLabelsPipe
   ],
   exports: [
     LoadingSpinnerComponent,
@@ -34,6 +38,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
     HtmlEntitiesEncodePipe,
     SanitizeHtmlPipe,
     SelectOptionsTranslatePipe,
+    WaToMarkdownPipe,
+    FormatColLabelsPipe,
     ColorPickerModule
   ],
   providers: [ 

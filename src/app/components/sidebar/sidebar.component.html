@@ -284,15 +284,16 @@
     <!-- ----------------------------- -->
     <!-- WA broadcasts  -->
     <!-- ----------------------------- -->
-   <ng-container *ngIf="USER_ROLE !== 'agent' ">
+   <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleAUT">
     <!-- routerLinkActive="item-active"  -->
         <div id="bot-anchor-wpr" *ngIf="project" 
           matTooltipClass="sb-mat-tooltip"
-          matTooltip="WhatsApp broadcasts"  
+          matTooltip="{{ 'WhatsAppBroadcasts' | translate}}"  
           #tooltip="matTooltip" 
           matTooltipPosition='right' 
           matTooltipHideDelay="100"
-          [class.item-active]="NEW_BROADCAST_ROUTE_IS_ACTIVE || AUTOMATIONS_ROUTE_IS_ACTIVE">
+          (click)="goToAutomations()"
+          [class.item-active]="NEW_BROADCAST_ROUTE_IS_ACTIVE || AUTOMATIONS_ROUTE_IS_ACTIVE || AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE || AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE">
           <a id="bot-anchor" class="customAncor" routerLink="project/{{ project._id }}/automations">
             <span class="bot-icon-wpr">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" height="24" width="24">

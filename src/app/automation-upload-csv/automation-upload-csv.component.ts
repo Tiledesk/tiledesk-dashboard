@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NotifyService } from 'app/core/notify.service';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 @Component({
@@ -15,12 +16,14 @@ export class AutomationUploadCsvComponent implements OnInit {
   csvColumnsDelimiter = ';'
   parsedData: any;
   file: File
+  contactsGreaterThen3000: boolean = false;
 
   constructor(
      @Inject(MAT_DIALOG_DATA) public data: any,
       public dialogRef: MatDialogRef<AutomationUploadCsvComponent>,
       private logger: LoggerService,
-      private automationsService:  AutomationsService
+      private automationsService:  AutomationsService,
+      public notify: NotifyService,
   ) { 
     console.log('[AUTOMATION-UPLOAD-CSV] data', data)
     this.csvOutput = data.csvOutput
@@ -101,25 +104,45 @@ export class AutomationUploadCsvComponent implements OnInit {
   //    }
   // }
   fileChangeUploadCSV(event) {
-  this.displayAfterUploadFromCSVSection = true;
-  const fileList: FileList = event.target.files;
+    this.displayAfterUploadFromCSVSection = true;
+    const fileList: FileList = event.target.files;
 
-  if (fileList.length > 0) {
-    const file: File = fileList[0];
-    this.file = fileList[0];
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      this.file = fileList[0];
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const csvText = reader.result as string;
-      this.parsedData = this.parseCSV(csvText);
-      console.log('[AUTOMATION-UPLOAD-CSV] parsedData ', this.parsedData)
-      this.parse_err = false;
-      // 👇 Send the file + parsed data back to the parent
-      // this.dialogRef.close({ file, parsedData });
-    };
+      if (this.file.type !== "text/csv") {
+        this.onCloseBaseModal()
+        this.notify.presenModalAttachmentFileTypeNotSupported()
+        return
+      }
+       
+      console.log('[AUTOMATION-UPLOAD-CSV] fileChangeUploadCSV file:', this.file);
+      const reader = new FileReader();
 
-    reader.readAsText(file);
-  }
+      reader.onerror = (error) => {
+          console.error('[AUTOMATION-UPLOAD-CSV] Errore nella lettura del file:', error);
+          this.parse_err = true;
+      };
+
+      reader.onload = () => {
+        const csvText = reader.result as string;
+        this.parsedData = this.parseCSV(csvText);
+        console.log('[AUTOMATION-UPLOAD-CSV] parsedData ', this.parsedData)
+        console.log('[AUTOMATION-UPLOAD-CSV] parsedData length', this.parsedData.length)
+        this.parse_err = false;
+        if(this.parsedData.length > 3000) {
+
+          this.contactsGreaterThen3000 = true
+          return
+        }
+
+        // 👇 Send the file + parsed data back to the parent
+        // this.dialogRef.close({ file, parsedData });
+      };
+
+      reader.readAsText(file);
+    }
 }
 
 parseCSV(csvText: string): any[] {

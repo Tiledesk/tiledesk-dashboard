@@ -52,7 +52,7 @@ export class FlowWebhooksComponent implements OnInit {
     private webhookService: WebhookService,
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
-     public notify: NotifyService,
+    public notify: NotifyService,
   ) { }
 
 

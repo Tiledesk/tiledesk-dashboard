@@ -8,38 +8,29 @@
 </span> -->
 
 <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
-    [class.chrome-gt-100]="isChromeVerGreaterThan100" [class.chrome-lt-100]="!isChromeVerGreaterThan100">
-    <span (click)="goBack()" class="go--back" style="cursor: pointer;">
-        WhatsApp broadcasts
-    </span>
-    <i class="material-icons" style="vertical-align: middle !important; font-size: 20px;">
-        keyboard_arrow_right
+    [class.chrome-gt-100]="isChromeVerGreaterThan100" 
+    [class.chrome-lt-100]="!isChromeVerGreaterThan100">
+    <!-- <span (click)="goBack()" class="go--back" style="cursor: pointer;">
+       {{ 'WhatsAppBroadcasts' | translate}}
+    </span> -->
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+        keyboard_arrow_left
     </i>
-    <span class="active-breadcrumb">
-        New broadcast
+    <span>
+        {{ 'NewBroadcast' | translate}}    
     </span>
 
 </p>
 
 <div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
 
-    <!-- <div class="page-title--sidebar-settings"
-    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-     Broadcast
-  </div> -->
 
     <div class="container-fluid" style="padding-right: 5px;padding-left: 25px;">
-
-        <!-- <div class="content-wpr" style="display: flex;">
-
-      <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
-      
-      <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;"> -->
 
         <div class="row">
 
             <div class="col-sm-12">
-                <!-- style="padding-top: 10px;" -->
+               
                 <div class="card-content">
 
                     <div class="b-flex-container">
@@ -48,16 +39,18 @@
 
                             <div class="b-left--columns">
 
-
-
-                                <div class="choose-wa-tmplt-label-and-select-wpr" style=" ">
-                                    <div class="template-select-label"> Choose a template </div>
+                                <div class="choose-wa-tmplt-label-and-select-wpr">
+                                    <div class="template-select-label">  {{ 'ChooseTemplate' | translate}} </div>
 
                                     <div class="select-and-btn-wpr">
 
-                                        <ng-select id="template-select" [clearable]="false" [searchable]=false
-                                            [(ngModel)]="templateName" [items]="templates_list" bindLabel="name"
-                                            bindValue="name" placeholder="Choose a template" style="width: 250px;"
+                                        <ng-select id="template-select" 
+                                            [clearable]="false" 
+                                            [searchable]=false
+                                            [(ngModel)]="templateName" 
+                                            [items]="templates_list" bindLabel="name"
+                                            bindValue="name" 
+                                            placeholder="{{ 'ChooseTemplate' | translate}}" style="width: 250px;"
                                             (change)="onSelectTemplate()">
                                         </ng-select>
 
@@ -67,27 +60,31 @@
                                             <button class="button--only--text" (click)="openUploadCSVDialog()"
                                                 [disabled]="!selected_template"
                                                 [ngClass]="{'button--only--text-disabled': !selected_template}">
-                                                Import from CSV
+                                                {{'ImportFromCSV' | translate}}
                                             </button>
                                         </div>
                                     </div>
 
                                 </div>
 
-                                <div class="contacts-columns" style="">
+                                <div class="contacts-columns">
                                     <div class="contacts-columns-header-wpr">
                                         <div class="contacts-columns-header">
-                                            Contacts List
+                                            {{'ContactsList' | translate}} <span *ngIf="parsedCsvData?.length > 0"> ( {{parsedCsvData?.length }} ) </span> 
                                         </div>
 
                                         <div class="button-wpr">
-                                            <button (click)="sendToServer()">
-                                                Send
+                                           <!-- (click)="sendToServer()" -->
+                                            <button class="btn send-wa-btn" (click)="presentDialogBeforeToSendToServer()" [disabled]="!parsedCsvData">
+                                                {{'StartBroadcast' | translate}}
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff" style="vertical-align: middle;">
+                                                    <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z"/></svg> -->
+                                                
                                             </button>
                                         </div>
                                     </div>
                                       <!-- parsedCsvData >  {{parsedCsvData | json}} -->
-                                    <ng-container *ngIf="parsedCsvData?.length">
+                                    <!-- <ng-container *ngIf="parsedCsvData?.length">
                                         <div class="csv-table-scroll-wrapper">
                                             <table mat-table [dataSource]="parsedCsvData" class="custom-csv-table">
                                                 <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
@@ -100,25 +97,39 @@
                                             </table>
                                         </div>
 
-                                        <!-- <button mat-button (click)="sendToServer()">Send to Server</button> -->
-                                    </ng-container>
+                               
+                                    </ng-container> -->
+                                    <div *ngIf="!parsedCsvData" class="no-file-uploaded">
+                                    
+                                        <div> {{'ToStartBroadcast' | translate}} </div>    
+                                        <div> {{'HereYouWillSeePreviewOfYourContacts' | translate}} </div>                             
+                                    </div>
 
+                                    <div *ngIf="parsedCsvData?.length > 0" class="csv-table-scroll-wrapper">
+                                        <table mat-table [dataSource]="parsedCsvData" class="custom-csv-table">
+                                            <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+                                            <th mat-header-cell *matHeaderCellDef>{{ col }}</th>
+                                            <td mat-cell *matCellDef="let element">{{ element[col] }}</td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                        </table>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
-
-
-
-                        <!-- Preview -->
+                        <!-- -------------------------------------------------- -->
+                        <!-- Template Preview -->
+                        <!-- -------------------------------------------------- -->
                         <div class="b-right-column">
                             <div class="preview-template-header">
-                                Template preview
+                                {{'TemplatePreview' | translate}}
                             </div>
 
                             <div class="no-template-selected-container" *ngIf="!selected_template">
                                <div class="no-template-selected">
-                                    No template selected
+                                    {{'NoTemplateSelected' | translate}}
                                </div>
                                
                             </div>
@@ -129,8 +140,11 @@
 
                                         <!-- // Header -->
                                         <div class="header-preview">
-                                            <span *ngIf="header_component?.format === 'TEXT'">
+                                            <!-- <span *ngIf="header_component?.format === 'TEXT'">
                                                 {{ header_component?.text }}
+                                            </span> -->
+                                            <span *ngIf="header_component?.format === 'TEXT'"
+                                                [innerHTML]="header_component?.text | htmlEntitiesEncode | waToMarkdown | marked">
                                             </span>
 
                                             <span *ngIf="header_component?.format === 'IMAGE'">
@@ -146,21 +160,25 @@
                                             </span>
                                             <span *ngIf="header_component?.format === 'LOCATION'">
                                                 <div class="location-preview">
-                                                    <!-- <p>{{'CDSCanvas.Location' | translate }}</p> -->
-                                                    Location
+                                                  {{'Location' | translate }}
                                                 </div>
                                                 <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3047.4846825263085!2d18.16983501538924!3d40.198280279391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x134423b7392e6d13%3A0x60b481aa8d84673!2sEurofood%20SRL!5e0!3m2!1sit!2sit!4v1685097718757!5m2!1sit!2sit" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
                                             </span>
                                         </div>
 
-                                        <!-- // Body -->
+                                       <!-- Body -->
                                         <div class="body-preview">
-                                            <span>{{ body_component?.text }}</span>
+                                            <!-- | sanitizeHtml -->
+                                            <span [innerHTML]="body_component?.text | waToMarkdown | marked | formatColLabels "></span>
+                                            
                                         </div>
 
                                         <!-- // Footer -->
-                                        <div class="footer-preview">
+                                        <!-- <div class="footer-preview">
                                             <span>{{ footer_component?.text }}</span>
+                                        </div> -->
+                                        <div class="footer-preview">
+                                            <span [innerHTML]="footer_component?.text | htmlEntitiesEncode | waToMarkdown | marked"></span>
                                         </div>
 
                                         <!-- // Call to action preview -->
@@ -195,14 +213,8 @@
                             </div>
                             <!-- ./ preview -->
                         </div>
-
-
                     </div>
-
-
-
                 </div>
-
             </div>
         </div>
     </div>

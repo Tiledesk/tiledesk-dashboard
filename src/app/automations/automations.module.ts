@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MomentModule } from 'ngx-moment';
+import 'moment/locale/it';
 
 const routes: Routes = [
   { path: "", component: AutomationsComponent},
@@ -22,7 +24,8 @@ const routes: Routes = [
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MomentModule
   ]
 })
 export class AutomationsModule { }
