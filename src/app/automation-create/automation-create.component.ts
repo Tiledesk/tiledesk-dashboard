@@ -349,6 +349,10 @@ export class AutomationCreateComponent implements OnInit {
   }
 
   openUploadCSVDialog() {
+    this.logger.log('[AUTOMATION-CREATE] AutomationUploadCsv this.selected_template ',this.selected_template)
+    if (!this.selected_template) {
+      return
+    }
     const dialogRef = this.dialog.open(AutomationUploadCsvComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -472,6 +476,10 @@ export class AutomationCreateComponent implements OnInit {
 
 
   presentDialogBeforeToSendToServer() {
+    this.logger.log('[AUTOMATION-CREATE] SEND TO SERVER selected_template ', this.selected_template);
+    if (!this.selected_template) {
+      return
+    }
 
     Swal.fire({
       title: this.translate.instant('AreYouSure'),
