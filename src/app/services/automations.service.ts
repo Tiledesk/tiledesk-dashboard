@@ -109,7 +109,7 @@ export class AutomationsService {
     const url = this.SERVER_BASE_PATH  + "modules/whatsapp/api/tiledesk/broadcast/csv";
     // const url = "https://73acaf35017f.ngrok-free.app/api/tiledesk/broadcast/csv";
     
-    console.log('[KNOWLEDGE BASE SERVICE] UPLOAD FAQS CSV - URL ', url);
+    this.logger.log('[KNOWLEDGE BASE SERVICE] UPLOAD FAQS CSV - URL ', url);
 
     return this.httpClient
       .post(url, formData, options)

@@ -25,7 +25,7 @@ export class AutomationUploadCsvComponent implements OnInit {
       private automationsService:  AutomationsService,
       public notify: NotifyService,
   ) { 
-    console.log('[AUTOMATION-UPLOAD-CSV] data', data)
+    this.logger.log('[AUTOMATION-UPLOAD-CSV] data', data)
     this.csvOutput = data.csvOutput
     this.selected_template_name = data.selected_template_name + '.csv'
   }
@@ -74,19 +74,19 @@ export class AutomationUploadCsvComponent implements OnInit {
   // fileChangeUploadCSV(event) {
   //   this.logger.log('[AUTOMATION-UPLOAD-CSV] UPLOAD CSV DATA - parse_err', this.parse_err);
   //   this.displayAfterUploadFromCSVSection = true;
-  //   console.log('[AUTOMATION-UPLOAD-CSV] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
+  //   this.logger.log('[AUTOMATION-UPLOAD-CSV] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
   //   const fileList: FileList = event.target.files;
   //   if (fileList.length > 0) {
   //     const file: File = fileList[0];
   //     const formData: FormData = new FormData();
   //     formData.set('delimiter', this.csvColumnsDelimiter);
   //     formData.append('uploadFile', file, file.name);
-  //     console.log('[AUTOMATION-UPLOAD-CSV] FORM DATA ', formData)
+  //     this.logger.log('[AUTOMATION-UPLOAD-CSV] FORM DATA ', formData)
   //     this.parse_err = false;
   //     this.automationsService.uploadFaqCsv(formData)
 
   //       .subscribe(data => {
-  //         console.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
+  //         this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
   //         if (data) {
   //           // this.parse_done = true;
   //         }
@@ -117,19 +117,19 @@ export class AutomationUploadCsvComponent implements OnInit {
         return
       }
        
-      console.log('[AUTOMATION-UPLOAD-CSV] fileChangeUploadCSV file:', this.file);
+      this.logger.log('[AUTOMATION-UPLOAD-CSV] fileChangeUploadCSV file:', this.file);
       const reader = new FileReader();
 
       reader.onerror = (error) => {
-          console.error('[AUTOMATION-UPLOAD-CSV] Errore nella lettura del file:', error);
+          this.logger.error('[AUTOMATION-UPLOAD-CSV] Errore nella lettura del file:', error);
           this.parse_err = true;
       };
 
       reader.onload = () => {
         const csvText = reader.result as string;
         this.parsedData = this.parseCSV(csvText);
-        console.log('[AUTOMATION-UPLOAD-CSV] parsedData ', this.parsedData)
-        console.log('[AUTOMATION-UPLOAD-CSV] parsedData length', this.parsedData.length)
+        this.logger.log('[AUTOMATION-UPLOAD-CSV] parsedData ', this.parsedData)
+        this.logger.log('[AUTOMATION-UPLOAD-CSV] parsedData length', this.parsedData.length)
         this.parse_err = false;
         if(this.parsedData.length > 3000) {
 

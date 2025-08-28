@@ -74,7 +74,7 @@ export class AutomationsComponent implements OnInit {
    getQueryParams() {
     this.route.queryParamMap
       .subscribe(params => {
-        console.log('[AUTOMATION COMP.]  queryParams', params['params']);
+        this.logger.log('[AUTOMATION COMP.]  queryParams', params['params']);
         
         if (params['params']['id']) {
           this.showAutomationsList = false;
@@ -90,7 +90,7 @@ export class AutomationsComponent implements OnInit {
 
   setMomentLocale() {
       this.browserLang = this.translate.getBrowserLang();
-      // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
+      // this.logger.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
   
       let stored_preferred_lang = undefined
       if (this.auth.user_bs && this.auth.user_bs.value) {
@@ -157,7 +157,7 @@ export class AutomationsComponent implements OnInit {
 
   getTransactions() {
     this.automationsService.getTransactions('whatsapp').subscribe((transactions: []) => {
-      console.log("[AUTOMATION COMP.] Transactions: ", transactions);
+      this.logger.log("[AUTOMATION COMP.] Transactions: ", transactions);
       this.transactions = transactions;
       this.transactions.sort(function compare(a, b) {
         if (a.createdAt > b.createdAt) {
@@ -178,7 +178,7 @@ export class AutomationsComponent implements OnInit {
   onAutomationSelect(automation_id: string, createdAt: string, template_name:any) {
     this.selected_template_name = template_name;
     this.selected_automation_created_at = createdAt;
-    console.log("[AUTOMATION COMP.] onAutomationSelect createdAt: ", this.selected_automation_created_at, 'template_name ',  this.selected_template_name);
+    this.logger.log("[AUTOMATION COMP.] onAutomationSelect createdAt: ", this.selected_automation_created_at, 'template_name ',  this.selected_template_name);
     this.selected_automation_id = automation_id;
     this.showSpinner = true;
     this.getLogs(this.selected_automation_id);
@@ -186,7 +186,7 @@ export class AutomationsComponent implements OnInit {
 
   getLogs(automation_id: string) {
     this.automationsService.getTransactionLogs(automation_id).subscribe((logs: []) => {
-      console.log("[AUTOMATION COMP.] Logs: ", logs);
+      this.logger.log("[AUTOMATION COMP.] Logs: ", logs);
       this.logs = logs;
       this.showAutomationsList = false;
       this.showAutomationDetail = true;
