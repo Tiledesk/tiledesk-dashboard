@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.129
+- Adds the ability to create WhatsApp Broadcasts
+
 ### 2.7.128
 - Minor improvements and bug fixing
 
