@@ -743,6 +743,8 @@
     "SorryThereWasProblemUploadingTheFile": "Üzgünüz, dosya yüklenirken bir sorun oluştu.",
     "ContactsUploadedSuccessfully": "Kişiler başarıyla yüklendi",
     "BroadcastDetails": "Yayın detayları",
+    "WhatsAppNotConfigured": "WhatsApp yapılandırılmadı",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Yayın oluşturulamıyor çünkü WhatsApp Business bu proje için yüklenmemiş",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

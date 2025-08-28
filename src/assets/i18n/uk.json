@@ -742,6 +742,8 @@
     "SorryThereWasProblemUploadingTheFile": "Вибачте, виникла проблема під час завантаження файлу.",
     "ContactsUploadedSuccessfully": "Контакти успішно завантажено",
     "BroadcastDetails": "Деталі розсилки",
+    "WhatsAppNotConfigured": "WhatsApp не налаштовано",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Неможливо створити розсилку, оскільки WhatsApp Business не встановлено для цього проекту",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

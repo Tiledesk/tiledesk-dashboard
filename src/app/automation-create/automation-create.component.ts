@@ -151,12 +151,40 @@ export class AutomationCreateComponent implements OnInit {
     }, (error) => {
 
       this.logger.error("[AUTOMATION-CREATE] - GET WA TEMPLATES - ERROR: ", error)
+      console.log(error.error.message)
+      if (error.error.message.includes('WhatsApp not installed for the project_id')  ) {
+        console.log('[AUTOMATION-CREATE] - WA not installed');
+        this.presentDialogWANotInstalledFoTheCurrentProject()
+      }
 
     }, () => {
 
       this.logger.log('[AUTOMATION-CREATE] - GET WA TEMPLATES * COMPLETE *');
 
     });
+  }
+
+  presentDialogWANotInstalledFoTheCurrentProject() {
+     Swal.fire({
+      title: this.translate.instant('WhatsAppNotConfigured'),
+      text: this.translate.instant('UnableToCreateBroadcastWAIsNotInstalled'),
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+      showConfirmButton: true,
+      showDenyButton: false,
+      confirmButtonText: this.translate.instant('OnboardPage.Configure'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+        if (result.isConfirmed) { 
+          this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
+        }
+
+    })
   }
 
   onSelectTemplate() {

@@ -741,6 +741,8 @@
     "SorryThereWasProblemUploadingTheFile": "Кешіріңіз, файлды жүктеу кезінде мәселе туындады.",
     "ContactsUploadedSuccessfully": "Байланыстар сәтті жүктелді",
     "BroadcastDetails": "Хабар тарату туралы мәліметтер",
+    "WhatsAppNotConfigured": "WhatsApp бапталмаған",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Хабар таратуды жасау мүмкін емес, себебі WhatsApp Business осы жобаға орнатылмаған",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

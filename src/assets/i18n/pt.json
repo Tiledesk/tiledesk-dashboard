@@ -741,6 +741,8 @@
     "SorryThereWasProblemUploadingTheFile": "Desculpe, houve um problema ao carregar o ficheiro.",
     "ContactsUploadedSuccessfully": "Contactos carregados com sucesso",
     "BroadcastDetails": "Detalhes do broadcast",
+    "WhatsAppNotConfigured": "WhatsApp não configurado",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Não é possível criar o broadcast porque o WhatsApp Business não está instalado para este projeto",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

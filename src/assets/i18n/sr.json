@@ -742,6 +742,8 @@
     "SorryThereWasProblemUploadingTheFile": "Жао нам је, дошло је до проблема при отпремању датотеке.",
     "ContactsUploadedSuccessfully": "Контакти су успешно отпремљени",
     "BroadcastDetails": "Детаљи емисије",
+    "WhatsAppNotConfigured": "WhatsApp није конфигурисан",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Није могуће креирати емисију јер WhatsApp Business није инсталиран за овај пројекат",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

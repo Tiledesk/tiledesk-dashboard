@@ -743,6 +743,8 @@
     "SorryThereWasProblemUploadingTheFile": "Tyvärr, det uppstod ett problem vid uppladdning av filen.",
     "ContactsUploadedSuccessfully": "Kontakter uppladdade framgångsrikt",
     "BroadcastDetails": "Sändningsdetaljer",
+    "WhatsAppNotConfigured": "WhatsApp inte konfigurerad",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Kan inte skapa sändning eftersom WhatsApp Business inte är installerat för detta projekt",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

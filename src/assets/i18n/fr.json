@@ -741,6 +741,8 @@
     "SorryThereWasProblemUploadingTheFile": "Désolé, il y a eu un problème lors du téléchargement du fichier.",
     "ContactsUploadedSuccessfully": "Contacts téléchargés avec succès",
     "BroadcastDetails": "Détails de diffusion",
+    "WhatsAppNotConfigured": "WhatsApp non configuré",
+    "UnableToCreateBroadcastWAIsNotInstalled": "Impossible de créer la diffusion car WhatsApp Business n'est pas installé pour ce projet",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

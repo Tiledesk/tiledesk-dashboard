@@ -741,6 +741,8 @@
     "SorryThereWasProblemUploadingTheFile": "عذرًا، حدثت مشكلة أثناء تحميل الملف.",
     "ContactsUploadedSuccessfully": "تم تحميل جهات الاتصال بنجاح",
     "BroadcastDetails": "تفاصيل البث",
+     "WhatsAppNotConfigured": "WhatsApp غير مهيأ",
+    "UnableToCreateBroadcastWAIsNotInstalled": "غير قادر على إنشاء البث لأن WhatsApp Business غير مثبت لهذا المشروع",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
