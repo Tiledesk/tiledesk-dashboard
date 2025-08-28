@@ -741,6 +741,7 @@
     "SorryYourCSVFileContainsMoreThan3000Contacts": "Kechirasiz, CSV faylingiz 3000 dan ortiq kontaktni o'z ichiga oladi.",
     "SorryThereWasProblemUploadingTheFile": "Kechirasiz, faylni yuklashda muammo yuzaga keldi.",
     "ContactsUploadedSuccessfully": "Kontaktlar muvaffaqiyatli yuklandi",
+    "BroadcastDetails": "Efir tafsilotlari",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

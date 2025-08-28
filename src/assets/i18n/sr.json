@@ -741,6 +741,7 @@
     "SorryYourCSVFileContainsMoreThan3000Contacts": "Жао нам је, ваша CSV датотека садржи више од 3000 контаката.",
     "SorryThereWasProblemUploadingTheFile": "Жао нам је, дошло је до проблема при отпремању датотеке.",
     "ContactsUploadedSuccessfully": "Контакти су успешно отпремљени",
+    "BroadcastDetails": "Детаљи емисије",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

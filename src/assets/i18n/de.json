@@ -740,6 +740,7 @@
     "SorryYourCSVFileContainsMoreThan3000Contacts": "Entschuldigung, Ihre CSV-Datei enthält mehr als 3000 Kontakte.",
     "SorryThereWasProblemUploadingTheFile": "Entschuldigung, beim Hochladen der Datei ist ein Problem aufgetreten.",
     "ContactsUploadedSuccessfully": "Kontakte erfolgreich hochgeladen",
+	"BroadcastDetails": "Broadcast-Details",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

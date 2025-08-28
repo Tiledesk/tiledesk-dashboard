@@ -742,6 +742,7 @@
     "SorryYourCSVFileContainsMoreThan3000Contacts": "Tyvärr, din CSV-fil innehåller mer än 3000 kontakter.",
     "SorryThereWasProblemUploadingTheFile": "Tyvärr, det uppstod ett problem vid uppladdning av filen.",
     "ContactsUploadedSuccessfully": "Kontakter uppladdade framgångsrikt",
+    "BroadcastDetails": "Sändningsdetaljer",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
