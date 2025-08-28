@@ -31,6 +31,8 @@ export class AutomationsComponent implements OnInit {
 
   channel: string;
   selected_automation_id: any;
+  selected_template_name: string;
+  selected_automation_created_at: string;
   transactions = [];
   logs = [];
 
@@ -174,6 +176,9 @@ export class AutomationsComponent implements OnInit {
   }
 
   onAutomationSelect(automation_id: string, createdAt: string, template_name:any) {
+    this.selected_template_name = template_name;
+    this.selected_automation_created_at = createdAt;
+    console.log("[AUTOMATION COMP.] onAutomationSelect createdAt: ", this.selected_automation_created_at, 'template_name ',  this.selected_template_name);
     this.selected_automation_id = automation_id;
     this.showSpinner = true;
     this.getLogs(this.selected_automation_id);
