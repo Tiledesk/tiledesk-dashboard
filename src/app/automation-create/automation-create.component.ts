@@ -151,9 +151,9 @@ export class AutomationCreateComponent implements OnInit {
     }, (error) => {
 
       this.logger.error("[AUTOMATION-CREATE] - GET WA TEMPLATES - ERROR: ", error)
-      console.log(error.error.message)
+       this.logger.log(error.error.message)
       if (error.error.message.includes('WhatsApp not installed for the project_id')  ) {
-        console.log('[AUTOMATION-CREATE] - WA not installed');
+        this.logger.log('[AUTOMATION-CREATE] - WA not installed');
         this.presentDialogWANotInstalledFoTheCurrentProject()
       }
 
