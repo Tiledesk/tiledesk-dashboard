@@ -6,7 +6,7 @@
     <div class="m-top-right-icon" *ngIf="!wasOpenedFromThePreviewKBModal">
         <span class="material-icons-outlined" (click)="onNoClick()">
             <!-- play_arrow -->
-            close
+           close
         </span>
     </div>
 </div>
@@ -381,6 +381,48 @@
     </sat-popover>
 
     <div class="checkbox-container">
+        <!-- Chunk only -->
+        <div class="checkbox">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+            [satPopoverAnchor]="chunkonly"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close()"
+            (click)="chunkonly.close()">
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
+                <span class="setting-label">
+                    <!-- {{'KbPage.AdvancedContext' | translate}} -->
+                      Chunk only
+                </span> 
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
+                <span class="setting-label">
+                    <!-- {{'KbPage.AdvancedContext' | translate}} -->
+                     Chunk only
+                </span> 
+            </label>
+            <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToAdvancedContextDoc()">
+                {{'LearnMore' | translate}}
+            </div> -->
+        </div>
+        <sat-popover id="ai-settings-label" 
+            #chunkonly 
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+               
+                <!-- {{'KbPage.AdvancedContextDesc1' | translate}} <br>
+                {{'KbPage.AdvancedContextDesc2' | translate}} -->
+                
+            </div>
+            <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToAdvancedContextDoc()">
+                {{'LearnMore' | translate}}
+            </div> -->
+        </div>
+        </sat-popover>
 
         <div class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
@@ -405,10 +447,10 @@
         </div>
 
         <sat-popover id="ai-settings-label" 
-        #advancedContext 
-        horizontalAlign="before"
-        verticalAlign="center"
-        panelClass="cb-details-popover" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
+            #advancedContext 
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -421,7 +463,7 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
-    </sat-popover>
+        </sat-popover>
 
         <div class="checkbox">
             <!--  -->
@@ -448,24 +490,24 @@
         </div>
 
         <sat-popover id="ai-settings-label" 
-        #contentsSources 
-        horizontalAlign="before"
-        verticalAlign="center"
-        panelClass="cb-details-popover" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
-        <div class="sat-popover-content-wpr">
-            <div class="sat-popover-arrow"></div>
-            <div class="sat-popover-content">
-                {{'KbPage.GetContentsSourcesDesc1' | translate}} <br>
-                {{'KbPage.GetContentsSourcesDesc2' | translate}} <br>
-                {{'KbPage.GetContentsSourcesDesc3' | translate}} <br>
-                
-            </div>
+            #contentsSources 
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    {{'KbPage.GetContentsSourcesDesc1' | translate}} <br>
+                    {{'KbPage.GetContentsSourcesDesc2' | translate}} <br>
+                    {{'KbPage.GetContentsSourcesDesc3' | translate}} <br>
+                    
+                </div>
 
-            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToContentsSourcesDoc()">
-                {{'LearnMore' | translate}}
+                <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToContentsSourcesDoc()">
+                    {{'LearnMore' | translate}}
+                </div>
             </div>
-        </div>
-    </sat-popover>
+        </sat-popover>
 
     </div>
 
