@@ -191,7 +191,21 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap";
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    console.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    console.log("[KNOWLEDGE BASE SERVICE] - body ", body);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
+  }
+
+  importSitemap(body: any, namespaceid:string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap/import?namespace=" + namespaceid
+    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", url);
+    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", body);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 

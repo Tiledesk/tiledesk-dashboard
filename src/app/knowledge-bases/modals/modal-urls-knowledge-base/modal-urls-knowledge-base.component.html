@@ -14,6 +14,30 @@
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
             class="custom--expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
+                <mat-panel-title> Sitemap </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="expansion-panel-content">
+
+                <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+
+                    <input matInput type="url" [(ngModel)]="siteMap">
+                </mat-form-field>
+
+                 <button class="fetch-button" (click)="fetchSiteMap()">
+                    Fetch
+                </button>
+                
+
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+
+
+    <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            class="custom--expansion-panel">
+            <mat-expansion-panel-header class="disable_ripple">
                 <mat-panel-title> {{'KbPage.AdvancedOptions' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
@@ -185,17 +209,19 @@
         </ng-container>
     </div>
 
-    <div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">
-        <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
-            {{ "Cancel" | translate }}
+</div>
 
-        </button>
-        <!-- [mat-dialog-close]="newKb.url" -->
-        <button
-            [disabled]="buttonDisabled || listOfUrls.length === 0 || selectedScrapeType === 4 && extract_tags.length === 0 "
-            class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()">
-            <!-- Create namespace -->
-            {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
+<div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
+        {{ "Cancel" | translate }}
 
-        </button>
-    </div>
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button
+        [disabled]="buttonDisabled || listOfUrls.length === 0 || selectedScrapeType === 4 && extract_tags.length === 0 "
+        class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()">
+        <!-- Create namespace -->
+        {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
+
+    </button>
+</div>

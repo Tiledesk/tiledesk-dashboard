@@ -36,6 +36,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
       this.name = this.kb.name;
       this.source = this.kb.source;
+      console.log('[MODAL-DETAIL-KB] source ', this.source)
       this.content = this.kb.content;
 
       if (this.kb.type === 'faq') {

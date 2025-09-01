@@ -2138,17 +2138,19 @@ _presentDialogImportContents() {
         t_params: this.t_params,
         id_project: this.id_project,
         project_name: this.project_name,
-        payIsVisible: this.payIsVisible
+        payIsVisible: this.payIsVisible,
+        selectedNamespace: this.selectedNamespace,
       },
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
       // if (body) {
       //   this.onAddMultiKb(body)
       // }
       if (body) {
         if (!body.hasOwnProperty('upgrade_plan')) {
-          this.onAddMultiKb(body)
+          // this.onAddMultiKb(body)
+          this.importSitemap(body)
         } else {
           this.logger.log('Property "upgrade_plan" exist');
           this.goToPricing()
@@ -2609,7 +2611,7 @@ _presentDialogImportContents() {
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
+      console.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         Swal.fire({
           title: this.warningTitle,
@@ -2775,10 +2777,97 @@ _presentDialogImportContents() {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
   }
+
+  importSitemap(body) {
+   console.log('[KNOWLEDGE-BASES-COMP] importSitemap body', body)
+
+    let error = this.msgErrorAddUpdateKb;
+    console.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
+
+    this.kbService.importSitemap(body, this.selectedNamespace['id']).subscribe((kbs: any) => {
+
+     console.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
+
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+
+      this.kbsListCount = this.kbsListCount + kbs.length;
+      this.refreshKbsList = !this.refreshKbsList;
+
+    }, (err) => { 
+      console.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
+      if (err.error && err.error.plan_limit) {
+        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
+        error = this.msgErrorAddUpdateKbLimit
+      }
+
+        if (this.payIsVisible === true) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.upgrade,
+          cancelButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+        }).then((result: any) => {
+
+          if (result.isConfirmed) {
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'free') {
+                this.router.navigate(['project/' + this.id_project + '/pricing']);
+              } else {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            }
+          }
+        })
+      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false
+        })
+      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+        // this.logger.log('here 1')
+        Swal.fire({
+          title: this.warningTitle,
+          text: error + '. ' + this.contactUsToUpgrade,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          // confirmButtonColor: "var(--blue-light)",
+          canecelButtonText: this.cancel,
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
+        })
+      }
+
+    }, () => {
+
+      console.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*: "
+        
+      );
+    })
+  }
+
 
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
@@ -2786,7 +2875,7 @@ _presentDialogImportContents() {
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addMultiKb(body, this.selectedNamespace.id).subscribe((kbs: any) => {
-      this.logger.log("onAddMultiKb:", kbs);
+      console.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
