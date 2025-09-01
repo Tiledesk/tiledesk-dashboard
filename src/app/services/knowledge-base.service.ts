@@ -165,6 +165,19 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
+  importSitemap(body: any, namespaceid:string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap/import?namespace=" + namespaceid
+    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", url);
+    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", body);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
+  }
+
   addKb(body: any) {
     this.logger.log('addKb body ', body)
     const httpOptions = {

@@ -299,6 +299,9 @@
                             <ng-option value="pdf">
                                 PDF
                             </ng-option>
+                            <ng-option value="sitemap">
+                                Sitemap
+                            </ng-option>
                             <!-- <ng-option value="txt">
                         TXT
                     </ng-option> -->
@@ -517,6 +520,12 @@
                                     style="font-size: 16px; color: white;">link</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
                             </div>
+                             <div *ngIf="kb.type == 'sitemap'" class="chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #ff6154; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span id="description" class="material-icons-outlined"
+                                    style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
+                            </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
@@ -534,23 +543,30 @@
                         <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
                         <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
                         <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
+                        <ng-container *ngIf="kb.type !== 'sitemap'"> 
                             <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                class="material-icons-outlined status-icon">done</span>
+                                class="material-icons-outlined status-icon"  style="vertical-align: middle;">done</span>
                             <span *ngIf="kb.status == 100" id="done"
-                                class="material-icons-outlined status-icon">done_all</span>
+                                class="material-icons-outlined status-icon"  style="vertical-align: middle;">done_all</span>
                             <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                class="material-icons-outlined status-icon animated-icon">cached</span>
+                                class="material-icons-outlined status-icon animated-icon"  style="vertical-align: middle;">cached</span>
                             <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                class="material-icons-outlined status-icon status-done">done_all</span>
+                                class="material-icons-outlined status-icon status-done"  style="vertical-align: middle;">done_all</span>
                             <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                class="material-icons-outlined status-icon status-error">error</span>
+                                class="material-icons-outlined status-icon status-error"  style="vertical-align: middle;">error</span>
                         </td>
+                        <ng-container *ngIf="kb.type === 'sitemap'"> 
+                            <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                remove
+                            </span>
+                        </ng-container>
+
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
-                            <span *ngIf="kb.type === 'url'"
+                            <span *ngIf="kb.type === 'url' || kb.type === 'sitemap'"
                                 matTooltipClass="custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
@@ -573,8 +589,10 @@
                                     {{'Monthly' | translate}}
                                 </span>
                             </span>
-                            <span *ngIf="kb.type !== 'url'">
-                                —
+                            <span *ngIf="kb.type !== 'url' && kb.type !== 'sitemap'">
+                                 <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                    remove
+                                </span>
                             </span>
 
                             
@@ -611,9 +629,26 @@
                                 {{kb.content | slice:0:500 }}
 
                             </div>
-                            <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="max-width: 100%;">
 
-                                {{kb.source }}
+                              <span *ngIf="!kb.sitemap_origin"> 
+                               {{kb.source }}
+                             </span>  
+                             <!-- || kb.type === 'sitemap' -->
+                             <span *ngIf="kb.sitemap_origin"> 
+                               <span style="background: #ff6154;
+                                    color: #fff;
+                                    border-radius: 9999px;
+                                    padding: 0 5px;
+                                    font-size: 9px;
+                                    font-weight: 400;
+                                    margin-right: 3px;"> 
+                                    Sitemap
+                                </span> 
+                                {{kb.sitemap_origin }}
+                                <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
+                                <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
+                             </span>
 
                             </div>
                         </td>

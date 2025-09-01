@@ -1,7 +1,7 @@
 
 <h1 mat-dialog-title>{{ 'KbPage.TitleSitemap' | translate }} </h1>
 
-<div *ngIf="!isSitemapLoaded" mat-dialog-content>
+<!-- <div *ngIf="!isSitemapLoaded" mat-dialog-content>
 
     <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
@@ -29,14 +29,21 @@
     <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled" (click)="onSendSitemap()">
         {{ 'OnboardPage.Next' | translate }}
     </button>
-</div>
+</div> -->
+<!-- *ngIf="isSitemapLoaded" -->
+<div  mat-dialog-content >
 
-<div *ngIf="isSitemapLoaded" mat-dialog-content >
-
-    <div class="info-container">
+  <!--  <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
             <span>{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
+        </div>
+    </div> -->
+
+     <div class="info-container">
+        <i class="material-icons-outlined info-icon">help_outline</i>
+        <div class="info-text">
+          <p>{{ 'KbPage.InfoSitemap' | translate }}</p>
         </div>
     </div>
 
@@ -148,7 +155,7 @@
         </mat-expansion-panel>
     </mat-accordion> 
 
-    <div class="form-container">
+    <!-- <div class="form-container">
         <div class="input-container">
         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
         <textarea type="text" class="custom-textarea" 
@@ -162,6 +169,16 @@
             {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
         </span>
         </div>
+    </div> -->
+
+    <div class="form-container">
+        <!-- <form [formGroup]="kbForm"> -->
+            <div class="input-container">
+                <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
+                <input type="url" name="url" class="custom-input" [(ngModel)]="siteMap"
+                    placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)">
+            </div>
+        <!-- </form> -->
     </div>
 
     <!-- ----------------------------------------------- -->
@@ -221,14 +238,15 @@
 
 
 </div>
-
-<div *ngIf="isSitemapLoaded" mat-dialog-actions style="justify-content: center;">  
+<!-- *ngIf="isSitemapLoaded" -->
+<div  mat-dialog-actions style="justify-content: center;">  
     <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
         {{ "Cancel" | translate }}
     </button>
 
-    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" (click)="onSaveKnowledgeBase()">
-        {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
+    <button class="mat-dialog-ok-btn" mat-button [disabled]="!siteMap || selectedScrapeType === 4 && extract_tags.length === 0" (click)="onSaveKnowledgeBase()">
+        {{ 'KbPage.Import' | translate }} 
+       <!--  {{countSitemap}} URL -->
     </button>
 </div>
 
