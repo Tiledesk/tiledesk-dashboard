@@ -452,7 +452,7 @@
                                 style="display: flex; align-items: center; justify-content: center; background-color: #ff6154; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">{{'KbPage.AddKbSitemap' | translate}}</span>
                             </div>
                             
                             <div *ngIf="kb.type == 'faq'" class="chip"
@@ -563,7 +563,7 @@
                                     font-size: 9px;
                                     font-weight: 400;
                                     margin-right: 3px;"> 
-                                    {{'AddKbSitemap' | translate}}
+                                   {{'KbPage.AddKbSitemap' | translate}}
                                 </span> 
                                 <span matTooltipClass="kb-custom-mat-tooltip" 
                                     matTooltip="{{'URLAutomaticallySynchronized' | translate}}" 
@@ -602,7 +602,7 @@
                                         <span>{{'RequestMsgsPage.Details' | translate}}</span>
                                     </button>
 
-                                    <button mat-menu-item [disabled]="kb.deleting == true"
+                                    <button *ngIf="kb.type !== 'sitemap'" mat-menu-item [disabled]="kb.deleting == true"
                                         (click)="onOpenBaseModalDelete(kb)">
                                         <mat-icon>delete</mat-icon>
                                         <span>{{'KbPage.DeleteKb' | translate}}</span>

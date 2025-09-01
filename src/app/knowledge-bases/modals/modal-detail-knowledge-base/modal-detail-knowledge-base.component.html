@@ -112,7 +112,22 @@
         </div>
         
         <div class="sitemap-refresh-rate-value">
-            {{kb.refresh_rate}}
+            <!-- {{kb.refresh_rate}} -->
+
+            <span *ngIf="kb.refresh_rate === 'never' ">
+                {{'Never' | translate}}
+            </span>
+            <span *ngIf="kb.refresh_rate === 'daily' ">
+                {{'Daily' | translate}}
+            </span>
+
+            <span *ngIf="kb.refresh_rate === 'weekly' ">
+                {{'Weekly' | translate}}
+            </span>
+
+            <span *ngIf="kb.refresh_rate === 'monthly' ">
+                {{'Monthly' | translate}}
+            </span>
         </div>
 
     </ng-container>

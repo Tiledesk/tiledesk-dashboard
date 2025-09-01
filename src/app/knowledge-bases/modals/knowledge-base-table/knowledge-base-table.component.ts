@@ -158,7 +158,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
 
     this.logger.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
-    console.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
+    this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
     this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
@@ -267,14 +267,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   onLoadByFilter(filterValue?: string, column?: string) {
     this.hasFiltered = true;
-    console.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
-    console.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
-    console.log('[KB TABLE] >>> filterType ', this.filterType)
+    this.logger.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
+    this.logger.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
+    this.logger.log('[KB TABLE] >>> filterType ', this.filterType)
     // let status = '';
     // let search = '';
-    console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
-    console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
-    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
     
     if (column == 'status') {
       this.searchParams.status = filterValue;

@@ -1340,8 +1340,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             error: (error) => {
               let errorMessage = ""
               if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
-                // console.log('[KB IMPORT] error.error.error :', error.error.error);
-                // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
+                // this.logger.log('[KB IMPORT] error.error.error :', error.error.error);
+                // this.logger.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
                 const planLimit = error.error.plan_limit;
                 errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
               } else {
@@ -1974,7 +1974,7 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
-    if (kb.type !== 'sitemap') {
+    // if (kb.type !== 'sitemap') {
       const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
@@ -1989,9 +1989,9 @@ _presentDialogImportContents() {
           this.onDeleteKnowledgeBase(kb)
         }
       });
-    } else if (kb.type === 'sitemap') {
-      this.presentDialogComfimDeleteSitemap(kb)
-    }
+    // } else if (kb.type === 'sitemap') {
+    //   this.presentDialogComfimDeleteSitemap(kb)
+    // }
   }
 
   presentDialogComfimDeleteSitemap(kb) {
@@ -2011,7 +2011,7 @@ _presentDialogImportContents() {
       // buttons: ["Cancel", "Delete"],
       // dangerMode: true,
     }).then((result) => {
-        // console.log('XXXX ' , result) 
+        // this.logger.log('XXXX ' , result) 
         if (result.isDenied) { 
         
         } else {
@@ -2172,7 +2172,7 @@ _presentDialogImportContents() {
       },
     });
     dialogRef.afterClosed().subscribe(body => {
-      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
       // if (body) {
       //   this.onAddMultiKb(body)
       // }
@@ -2640,7 +2640,7 @@ _presentDialogImportContents() {
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      console.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
+      this.logger.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         Swal.fire({
           title: this.warningTitle,
@@ -2810,14 +2810,14 @@ _presentDialogImportContents() {
   }
 
   importSitemap(body) {
-   console.log('[KNOWLEDGE-BASES-COMP] importSitemap body', body)
+   this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap body', body)
 
     let error = this.msgErrorAddUpdateKb;
-    console.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
 
     this.kbService.importSitemap(body, this.selectedNamespace['id']).subscribe((kbs: any) => {
 
-     console.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
+     this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
 
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
@@ -2828,7 +2828,7 @@ _presentDialogImportContents() {
       this.refreshKbsList = !this.refreshKbsList;
 
     }, (err) => { 
-      console.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
+      this.logger.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
       if (err.error && err.error.plan_limit) {
         this.getTranslatedStringKbLimitReached(err.error.plan_limit);
         error = this.msgErrorAddUpdateKbLimit
@@ -2891,7 +2891,7 @@ _presentDialogImportContents() {
 
     }, () => {
 
-      console.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*: "
+      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*: "
         
       );
     })
@@ -2904,7 +2904,7 @@ _presentDialogImportContents() {
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addMultiKb(body, this.selectedNamespace.id).subscribe((kbs: any) => {
-      console.log("onAddMultiKb:", kbs);
+      this.logger.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
