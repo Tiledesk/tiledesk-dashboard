@@ -744,6 +744,11 @@
     "BroadcastDetails": "Детали рассылки",
     "WhatsAppNotConfigured": "WhatsApp не настроен",
     "UnableToCreateBroadcastWAIsNotInstalled": "Невозможно создать рассылку, потому что WhatsApp Business не установлен для этого проекта",
+    "HelpsURLs": "Введите веб-страницы из общедоступных URL-адресов в текстовое поле ниже, разделяя их переводом строки, или импортируйте их из карты сайта.",
+    "URLAutomaticallySynchronized": "Этот URL-адрес автоматически синхронизируется из карты сайта",
+    "ImportURLsFromSitemap": "Импортировать URL-адреса из карты сайта",
+    "Fetch": "Получить",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "Удаление карты сайта также удалит все связанные с ней URL-адреса, и вы больше не сможете использовать ИИ для их содержимого.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

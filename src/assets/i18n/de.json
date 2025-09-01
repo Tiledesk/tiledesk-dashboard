@@ -743,6 +743,11 @@
 	"BroadcastDetails": "Broadcast-Details",
 	"WhatsAppNotConfigured": "WhatsApp nicht konfiguriert",
     "UnableToCreateBroadcastWAIsNotInstalled": "Broadcast kann nicht erstellt werden, da WhatsApp Business für dieses Projekt nicht installiert ist",
+	"HelpsURLs": "Geben Sie Webseiten von öffentlichen URLs in das Textfeld unten ein, getrennt durch einen Zeilenumbruch, oder importieren Sie sie aus einer Sitemap.",
+    "URLAutomaticallySynchronized": "Diese URL wird automatisch aus der Sitemap synchronisiert",
+    "ImportURLsFromSitemap": "URLs aus Sitemap importieren",
+    "Fetch": "Abrufen",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "Das Löschen der Sitemap löscht auch alle damit verbundenen URLs und Sie können KI nicht mehr auf deren Inhalt verwenden.",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -744,6 +744,11 @@
     "BroadcastDetails": "Efir tafsilotlari",
     "WhatsAppNotConfigured": "WhatsApp sozlanmagan",
     "UnableToCreateBroadcastWAIsNotInstalled": "Efir yaratib bo'lmaydi, chunki WhatsApp Business ushbu loyiha uchun o'rnatilmagan",
+    "HelpsURLs": "Quyidagi matn maydoniga ochiq URL-manzillardan veb-sahifalarni kiriting, qator boshidan ajrating yoki ularni xaritadan import qiling.",
+    "URLAutomaticallySynchronized": "Ushbu URL xaritadan avtomatik ravishda sinxronlanadi",
+    "ImportURLsFromSitemap": "URL-larni xaritadan import qilish",
+    "Fetch": "Olish",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "Xaritani o'chirish unga bog'liq barcha URL-larni ham o'chiradi va siz endi ularning tarkibida SUNIdan foydalana olmaysiz.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

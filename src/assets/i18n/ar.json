@@ -743,6 +743,11 @@
     "BroadcastDetails": "تفاصيل البث",
      "WhatsAppNotConfigured": "WhatsApp غير مهيأ",
     "UnableToCreateBroadcastWAIsNotInstalled": "غير قادر على إنشاء البث لأن WhatsApp Business غير مثبت لهذا المشروع",
+      "HelpsURLs": "أدخل صفحات الويب من عناوين URL العامة في منطقة النص أدناه، مفصولة بفاصل أسطر، أو استوردها من خريطة الموقع.",
+    "URLAutomaticallySynchronized": "يتم مزامنة عنوان URL هذا تلقائيًا من خريطة الموقع",
+    "ImportURLsFromSitemap": "استورد عناوين URL من خريطة الموقع",
+    "Fetch": "جلب",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "سيؤدي حذف خريطة الموقع أيضًا إلى حذف جميع عناوين URL المرتبطة بها ولن تتمكن بعد الآن من استخدام الذكاء الاصطناعي على محتواها.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

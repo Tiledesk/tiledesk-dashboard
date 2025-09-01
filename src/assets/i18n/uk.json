@@ -744,6 +744,11 @@
     "BroadcastDetails": "Деталі розсилки",
     "WhatsAppNotConfigured": "WhatsApp не налаштовано",
     "UnableToCreateBroadcastWAIsNotInstalled": "Неможливо створити розсилку, оскільки WhatsApp Business не встановлено для цього проекту",
+    "HelpsURLs": "Введіть веб-сторінки з публічних URL-адрес у текстове поле нижче, розділені знаком нового рядка, або імпортуйте їх з карти сайту.",
+    "URLAutomaticallySynchronized": "Ця URL-адреса автоматично синхронізується з карти сайту",
+    "ImportURLsFromSitemap": "Імпортувати URL-адреси з карти сайту",
+    "Fetch": "Отримати",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "Видалення карти сайту також видалить усі пов'язані URL-адреси, і ви більше не зможете використовувати ШІ для їхнього вмісту.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

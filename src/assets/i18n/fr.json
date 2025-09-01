@@ -743,6 +743,11 @@
     "BroadcastDetails": "Détails de diffusion",
     "WhatsAppNotConfigured": "WhatsApp non configuré",
     "UnableToCreateBroadcastWAIsNotInstalled": "Impossible de créer la diffusion car WhatsApp Business n'est pas installé pour ce projet",
+     "HelpsURLs": "Entrez les pages Web à partir d'URL publiques dans la zone de texte ci-dessous, séparées par un retour à la ligne, ou importez-les à partir d'un sitemap.",
+    "URLAutomaticallySynchronized": "Cette URL est automatiquement synchronisée depuis le sitemap",
+    "ImportURLsFromSitemap": "Importer les URLs depuis le sitemap",
+    "Fetch": "Récupérer",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "La suppression du sitemap supprimera également toutes les URL associées et vous ne pourrez plus utiliser l'IA sur leur contenu.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

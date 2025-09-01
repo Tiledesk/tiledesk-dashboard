@@ -743,6 +743,11 @@
     "BroadcastDetails": "Хабар тарату туралы мәліметтер",
     "WhatsAppNotConfigured": "WhatsApp бапталмаған",
     "UnableToCreateBroadcastWAIsNotInstalled": "Хабар таратуды жасау мүмкін емес, себебі WhatsApp Business осы жобаға орнатылмаған",
+     "HelpsURLs": "Төмендегі мәтін аймағына жалпыға болатын URL-мекенжайларынан веб-беттерді енгізіңіз, жолдың басымен бөліңіз немесе оларды картадан импорттаңыз.",
+    "URLAutomaticallySynchronized": "Бұл URL картадан автоматты түрде синхрондалады",
+    "ImportURLsFromSitemap": "URL-мекенжайларын картадан импорттау",
+    "Fetch": "Алу",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "Картаны жою онымен байланысты барлық URL-мекенжайларын да жояды және сіз олардың мазмұнында ЖИ-ны пайдалана алмайсыз.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
