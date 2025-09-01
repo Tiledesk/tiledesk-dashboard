@@ -1974,21 +1974,50 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
+    if (kb.type !== 'sitemap') {
+      const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          kb: kb
+        },
+      });
+      dialogRef.afterClosed().subscribe(kb => {
+        this.logger.log('[Modal DELETE KB] kb: ', kb);
+        if (kb) {
+          this.onDeleteKnowledgeBase(kb)
+        }
+      });
+    } else if (kb.type === 'sitemap') {
+      this.presentDialogComfimDeleteSitemap(kb)
+    }
+  }
 
-    const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        kb: kb
-      },
-    });
-    dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal DELETE KB] kb: ', kb);
-      if (kb) {
-        this.onDeleteKnowledgeBase(kb)
-      }
-    });
+  presentDialogComfimDeleteSitemap(kb) {
+     kb.deleting = false;
+     Swal.fire({
+      title: this.translate.instant('AreYouSure'),
+      text: this.translate.instant('DeletingTheSitemapWillAlsoDeleteAllURLs'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+        // console.log('XXXX ' , result) 
+        if (result.isDenied) { 
+        
+        } else {
+          kb.deleting = false;
+        }
+      })
   }
 
 
@@ -2001,7 +2030,7 @@ _presentDialogImportContents() {
     });
 
     dialogRef.afterClosed().subscribe(type => {
-      this.logger.log('[Modal ADD CONTENT] type: ', type);
+      this.logger.log('[KNOWLEDGE BASES COMP] type: ', type);
       if (type) {
         this.openAddKnowledgeBaseModal(type)
       }

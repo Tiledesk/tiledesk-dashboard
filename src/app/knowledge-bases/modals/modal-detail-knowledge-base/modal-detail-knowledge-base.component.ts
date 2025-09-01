@@ -44,7 +44,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       } 
 
       // Recupera i chunks solo se esiste _id
-      if (this.kb._id) {
+      if (this.kb._id && this.kb.type !== 'sitemap') {
         this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
       } else {
         this.showSpinner = false;
@@ -52,6 +52,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
+    
     this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
       if (chunks) {
         

@@ -16,14 +16,25 @@
             <div *ngIf="kb.type === 'url' ">
                 <span *ngIf="!kb.sitemap_origin" class="input-label">{{ 'KbPage.Url' | translate }}</span>
                 <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span>
-                <a class="input-label link-page" [href]="source" target="_blank">
+                <a *ngIf="!kb.sitemap_origin" class="input-label link-page" [href]="source" target="_blank">
                     <span class="material-icons-outlined">
                         open_in_new
                     </span>
                 </a>
+                <a *ngIf="kb.sitemap_origin" class="input-label link-page" [href]="kb.sitemap_origin" target="_blank">
+                    <span class="material-icons-outlined">
+                        open_in_new
+                    </span>   
+                </a>
+
+                 <!-- <span *ngIf="kb.sitemap_origin" class="material-icons-outlined" style="font-size: 14px;vertical-align: middle;cursor: pointer;">
+                    mode_edit
+                 </span> -->
+
 
                 <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input">
-                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input">
+                
+                <input disabled *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input">
 
             </div>
 
@@ -36,7 +47,7 @@
                     </span>
                 </a>
 
-                <input  [(ngModel)]="source" type="url" name="url" class="custom-input">
+                <input disabled [(ngModel)]="source" type="url" name="url" class="custom-input">
 
             </div>
             <!-- ------------------------------------ -->
@@ -60,34 +71,51 @@
 
     </div>
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
-        <div class="chunk-title-and-count">
-            <div class="chunk-title">
-                Chunks
+   
+    <ng-container *ngIf="kb.type !== 'sitemap'"> 
+        <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
+            <div class="chunk-title-and-count">
+                <div class="chunk-title">
+                    Chunks
+                </div>
+                <div class="chunk-count">
+                    {{chunksCount}}
+                </div>
             </div>
-            <div class="chunk-count">
-                {{chunksCount}}
+
+            <div class="chunk-error" *ngIf="getChunksError"> 
+                <span class="material-icons-outlined">
+                    error
+                </span>
+                {{ 'AnErrorHasOccurred' | translate }}
+            </div>
+            
+            <div class="content-chunks" style="display: flex; flex-wrap: nowrap; flex-direction: column; gap: 12px">
+                
+                <div class="chunk-wpr" *ngFor="let chunk of chunks">
+                    <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
+                    <article class="chunk" >
+                        {{ chunk.text}}
+                    </article>
+                </div>
+
             </div>
         </div>
+    </ng-container>
 
-        <div class="chunk-error" *ngIf="getChunksError"> 
-            <span class="material-icons-outlined">
-                error
-            </span>
-            {{ 'AnErrorHasOccurred' | translate }}
+    <ng-container *ngIf="kb.type === 'sitemap'">
+  
+        <hr style="margin-top: 0px;margin-bottom: 12px;">
+
+        <div class="sitemap-refresh-rate-label" style="font-weight: 400;">
+            {{'KbPage.RefreshRate' | translate}}
         </div>
         
-        <div class="content-chunks" style="display: flex;     flex-wrap: nowrap;    flex-direction: column; gap: 12px">
-            
-            <div class="chunk-wpr" *ngFor="let chunk of chunks">
-                <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
-                <article class="chunk" >
-                    {{ chunk.text}}
-                </article>
-            </div>
-
+        <div class="sitemap-refresh-rate-value">
+            {{kb.refresh_rate}}
         </div>
-    </div>
+
+    </ng-container>
 
 
 </div>
@@ -102,7 +130,7 @@
         {{ "Update" | translate }}
     </button>
 
-    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
+    <button *ngIf="kb._id && kb.type === 'url' || kb._id && kb.type === 'sitemap'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>

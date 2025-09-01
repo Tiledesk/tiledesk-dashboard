@@ -563,9 +563,16 @@
                                     font-size: 9px;
                                     font-weight: 400;
                                     margin-right: 3px;"> 
-                                    Sitemap
+                                    {{'AddKbSitemap' | translate}}
                                 </span> 
-                                {{kb.sitemap_origin }}
+                                <span matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'URLAutomaticallySynchronized' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='right' 
+                                    matTooltipHideDelay="100">
+                                        {{kb.sitemap_origin }}
+                                    </span>
+                                
                                 <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
                                 <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
                              </span>  
@@ -586,19 +593,22 @@
                                         <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
-                                    <button mat-menu-item (click)="onCheckStatus(kb)">
+                                    <button  *ngIf="kb.type !== 'sitemap'" mat-menu-item (click)="onCheckStatus(kb)">
                                         <mat-icon>published_with_changes</mat-icon>
                                         <span>{{'KbPage.RunCheckStatus' | translate}}</span>
                                     </button>
                                     <button mat-menu-item (click)="onOpenBaseModalDetail(kb)">
-                                        <mat-icon>edit</mat-icon>
-                                        <span>{{'Edit' | translate}}</span>
+                                        <mat-icon>find_in_page</mat-icon>
+                                        <span>{{'RequestMsgsPage.Details' | translate}}</span>
                                     </button>
+
                                     <button mat-menu-item [disabled]="kb.deleting == true"
                                         (click)="onOpenBaseModalDelete(kb)">
                                         <mat-icon>delete</mat-icon>
                                         <span>{{'KbPage.DeleteKb' | translate}}</span>
                                     </button>
+
+                                
 
 
                                 </mat-menu>
