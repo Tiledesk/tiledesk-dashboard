@@ -158,8 +158,21 @@ export class KnowledgeBaseService {
   }
 
 
+  getKbId(kbid) {
+    console.log("[KNOWLEDGE BASE SERVICE] - getKbId ", kbid);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kbid;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - getKbId URL ", url);
+    return this.httpClient.get(url, httpOptions);
+  }
 
   getListOfKb(params?) {
+    console.log("[KNOWLEDGE BASE SERVICE] - getListOfKb ", params);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -167,7 +180,7 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb" + params;
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - getListOfKb ", url);
     return this.httpClient.get(url, httpOptions);
   }
 

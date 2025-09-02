@@ -132,6 +132,22 @@
       
       
             <div class="kb-container-wpr">
+
+               <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
+                    <span>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                            width="24px" fill="none" style="vertical-align: middle;">
+                            <path
+                                d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                        </svg>
+
+                    </span>
+
+                    <span class="kb-link-to-docs" (click)="goToKbDoc()">
+                        {{'KbPage.LearnMoreAboutKB' | translate}}
+                    </span>
+                  </div>
       
               <div class="kb-content-container">
                 <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -139,6 +155,8 @@
                 <div class="card-content" *ngIf="!showSpinner">
       
                   <div class="header">
+
+
       
                     <div style="display: flex; flex-direction: column;">
                       <div class="selected-namespace-content">
@@ -174,7 +192,7 @@
                           #tooltip="matTooltip" 
                           matTooltipPosition='after'
                           matTooltipHideDelay="100">
-                          Default
+                          {{'KbPage.Default' | translate }}
                         </div>
                         <div class="hybrid-search-badge" *ngIf="selectedNamespace?.hybrid === true"
                               matTooltipClass="kb-custom-mat-tooltip"
@@ -190,7 +208,7 @@
                             #tooltip="matTooltip" 
                             matTooltipPosition='after'
                             matTooltipHideDelay="100">
-                            Standard
+                            {{'KbPage.Standard' | translate }}
                         </div>
                       </div>
                     </div>
@@ -317,14 +335,18 @@
                   <div class="kb-switch-field">
                     <input type="radio" id="tab-contents" name="kb-tab-switch" [checked]="selectedTab === 'contents'" (change)="switchTab('contents')">
                     <label for="tab-contents">
-                      <span>Contents</span>
+                      <span>{{'KbPage.Contents' | translate }}</span>
                     </label>
                     <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
                     <label for="tab-unanswered">
-                      <span>Unanswered questions</span>
+                      <span>{{'KbPage.UnansweredQuestions' | translate }}</span>
                     </label>
                   </div>
                   <!-- TAB SWITCHER END -->
+
+                 
+
+
       
                   <!-- START TABLE -->
                   <div [@fadeInOut] *ngIf="selectedTab === 'contents'">
@@ -340,7 +362,8 @@
                       (openBaseModalPreview)="onOpenBaseModalPreview()" (onOpenAddContents)="onOpenAddContent()"
                       (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
                       (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
-                      (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                      (runIndexing)="onRunIndexing($event)" 
+                      (loadPage)="onLoadPage($event)"
                       (loadByFilter)="onLoadByFilter($event)">
                     </knowledge-base-table>
                   </div>

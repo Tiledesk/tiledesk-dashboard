@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BrandService } from 'app/services/brand.service';
+import { URL_hybrid_search_doc, URL_standard_search_doc } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-modal-add-namespace',
@@ -12,6 +13,7 @@ export class ModalAddNamespaceComponent implements OnInit {
   selectedNamespaceType: string = "standard";
   hybridActive: boolean = false;
   salesEmail: string;
+  hideHelpLink: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,6 +24,7 @@ export class ModalAddNamespaceComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit(): void {
@@ -40,6 +43,16 @@ export class ModalAddNamespaceComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  goToHybridSearchDoc() {
+      const url = URL_hybrid_search_doc;
+      window.open(url, '_blank');
+  }
+
+  goToStandardSearchDoc(){
+      const url = URL_standard_search_doc;
+      window.open(url, '_blank');
   }
 
 }

@@ -6,6 +6,8 @@ import { KB_DEFAULT_PARAMS, URL_kb } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { SatPopover } from '@ncstate/sat-popover';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { R } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'knowledge-base-table',
@@ -68,7 +70,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private logger: LoggerService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private kbService: KnowledgeBaseService,
   ) {
     this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
     const brand = brandService.getBrand(); 
@@ -78,9 +81,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetFilter()
-
-
-
   }
 
   resetFilter() {
@@ -96,6 +96,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
       "search": '',
     }
   }
+
+ 
 
   contacUsViaEmail() {
     this.logger.log('[KB TABLE] - Satpopover ', this.refresRate)
@@ -158,7 +160,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
 
     this.logger.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
-    this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
+    console.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
     this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
@@ -274,7 +276,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // let search = '';
     this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
     this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
-    this.logger.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
     
     if (column == 'status') {
       this.searchParams.status = filterValue;
@@ -321,8 +323,26 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.openBaseModalDelete.emit(kb);
   }
 
-  onOpenBaseModalDetail(kb) {
-    // this.logger.log("OPEN DETAIL:: ",kb);
+
+ getkbById(kbid) {
+    console.log('[KB TABLE] - GET KB BY ID -  kbid', kbid);
+    this.kbService.getKbId(kbid).subscribe((kb: any) => {
+      console.log('[KB TABLE] - GET DEPTS RES ', kb);
+      
+      if (kb) {
+        this.onOpenBaseModalDetail(kb)
+      }
+
+    }, error => {
+      this.logger.error('[KB TABLE] - GET KB BY ID - ERROR: ', error);
+    }, () => {
+      this.logger.log('[KB TABLE] - GET KB BY ID * COMPLETE *')
+    });
+  }
+
+
+  onOpenBaseModalDetail(kb: any ) {
+    console.log("[KB TABLE] - OPEN DETAIL kb:  ",kb);
     this.openBaseModalDetail.emit(kb);
   }
 

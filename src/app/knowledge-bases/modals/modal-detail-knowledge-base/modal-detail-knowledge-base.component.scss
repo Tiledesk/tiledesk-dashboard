@@ -293,3 +293,13 @@
 .chunk-error > span {
     vertical-align: middle;
 }
+
+.sitemap-refresh-wpr {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+}
+
+.sitemap-refresh-rate-value {
+    font-style: italic;
+}

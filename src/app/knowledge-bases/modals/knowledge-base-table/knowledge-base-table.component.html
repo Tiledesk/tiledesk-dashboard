@@ -135,13 +135,8 @@
                     </div>
 
 
-                    <div class="link-to-docs-container">
-                        <!-- <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
-                            [matMenuTriggerFor]="menu">
-                            {{ 'KbPage.Add' | translate }}
-                        </button> -->
-
-
+                    <!-- <div class="link-to-docs-container">
+            
                         <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
                             <span>
 
@@ -158,8 +153,7 @@
                             </span>
                         </div>
 
-                        
-                    </div>
+                    </div> -->
                 </div>
               
             </div>
@@ -555,14 +549,8 @@
                                {{kb.source }}
                              </span>  
                              <!-- || kb.type === 'sitemap' -->
-                             <span *ngIf="kb.sitemap_origin"> 
-                               <span style="background: #ff6154;
-                                    color: #fff;
-                                    border-radius: 9999px;
-                                    padding: 0 5px;
-                                    font-size: 9px;
-                                    font-weight: 400;
-                                    margin-right: 3px;"> 
+                             <span *ngIf="kb.sitemap_origin" (click)="$event.stopPropagation(); getkbById(kb.sitemap_origin_id)"> 
+                               <span class="sitemap-badge"> 
                                    {{'KbPage.AddKbSitemap' | translate}}
                                 </span> 
                                 <span matTooltipClass="kb-custom-mat-tooltip" 
@@ -601,8 +589,8 @@
                                         <mat-icon>find_in_page</mat-icon>
                                         <span>{{'RequestMsgsPage.Details' | translate}}</span>
                                     </button>
-
-                                    <button *ngIf="kb.type !== 'sitemap'" mat-menu-item [disabled]="kb.deleting == true"
+                                     <!-- *ngIf="kb.type !== 'sitemap'" -->
+                                    <button mat-menu-item [disabled]="kb.deleting == true"
                                         (click)="onOpenBaseModalDelete(kb)">
                                         <mat-icon>delete</mat-icon>
                                         <span>{{'KbPage.DeleteKb' | translate}}</span>

@@ -107,27 +107,29 @@
   
         <hr style="margin-top: 0px;margin-bottom: 12px;">
 
-        <div class="sitemap-refresh-rate-label" style="font-weight: 400;">
-            {{'KbPage.RefreshRate' | translate}}
-        </div>
-        
-        <div class="sitemap-refresh-rate-value">
-            <!-- {{kb.refresh_rate}} -->
+        <div class="sitemap-refresh-wpr"> 
+            <div class="sitemap-refresh-rate-label" style="font-weight: 400;">
+                {{'KbPage.RefreshRate' | translate}}:
+            </div>
+            
+            <div class="sitemap-refresh-rate-value">
+                <!-- {{kb.refresh_rate}} -->
 
-            <span *ngIf="kb.refresh_rate === 'never' ">
-                {{'Never' | translate}}
-            </span>
-            <span *ngIf="kb.refresh_rate === 'daily' ">
-                {{'Daily' | translate}}
-            </span>
+                <span *ngIf="kb.refresh_rate === 'never' ">
+                    {{'Never' | translate}}
+                </span>
+                <span *ngIf="kb.refresh_rate === 'daily' ">
+                    {{'Daily' | translate}}
+                </span>
 
-            <span *ngIf="kb.refresh_rate === 'weekly' ">
-                {{'Weekly' | translate}}
-            </span>
+                <span *ngIf="kb.refresh_rate === 'weekly' ">
+                    {{'Weekly' | translate}}
+                </span>
 
-            <span *ngIf="kb.refresh_rate === 'monthly' ">
-                {{'Monthly' | translate}}
-            </span>
+                <span *ngIf="kb.refresh_rate === 'monthly' ">
+                    {{'Monthly' | translate}}
+                </span>
+            </div>
         </div>
 
     </ng-container>

@@ -1948,7 +1948,7 @@ _presentDialogImportContents() {
     });
   }
 
-  onOpenBaseModalDetail(kb) {
+  onOpenBaseModalDetail(kb, type) {
     // this.kbid_selected = kb;
     this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
@@ -1974,7 +1974,7 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
-    // if (kb.type !== 'sitemap') {
+    if (kb.type !== 'sitemap') {
       const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
@@ -1989,16 +1989,16 @@ _presentDialogImportContents() {
           this.onDeleteKnowledgeBase(kb)
         }
       });
-    // } else if (kb.type === 'sitemap') {
-    //   this.presentDialogComfimDeleteSitemap(kb)
-    // }
+    } else if (kb.type === 'sitemap') {
+      this.presentDialogComfimDeleteSitemap(kb)
+    }
   }
 
   presentDialogComfimDeleteSitemap(kb) {
      kb.deleting = false;
      Swal.fire({
-      title: this.translate.instant('AreYouSure'),
-      text: this.translate.instant('DeletingTheSitemapWillAlsoDeleteAllURLs'),
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
@@ -2013,7 +2013,7 @@ _presentDialogImportContents() {
     }).then((result) => {
         // this.logger.log('XXXX ' , result) 
         if (result.isDenied) { 
-        
+          this.onDeleteKnowledgeBase(kb)
         } else {
           kb.deleting = false;
         }
@@ -2995,7 +2995,7 @@ _presentDialogImportContents() {
     // this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
     this.kbService.deleteKb(data).subscribe((response: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
+      console.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
         // this.updateStatusOfKb(kb._id, 0);
@@ -3025,6 +3025,7 @@ _presentDialogImportContents() {
         this.kbsListCount = this.kbsListCount - 1;
         this.refreshKbsList = !this.refreshKbsList;
         this.hasRemovedKb = true;
+        console.log('')
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
