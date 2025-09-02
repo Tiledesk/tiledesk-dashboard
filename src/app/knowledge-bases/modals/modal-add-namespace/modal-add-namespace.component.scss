@@ -165,3 +165,24 @@
     cursor: pointer;
   }
 }
+
+.learn-more-container {
+    margin-top: 6px;
+}
+
+.learn-more-container > .material-icons-outlined {
+    color: var(--blue-light);
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.learn-more-container > .learn-more-link {
+    color: var(--blue-light);
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.learn-more-container:hover > .learn-more-link { 
+  text-decoration: underline;
+}
