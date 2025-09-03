@@ -743,6 +743,16 @@
     "BroadcastDetails": "Broadcast details",
     "WhatsAppNotConfigured": "WhatsApp not configured",
     "UnableToCreateBroadcastWAIsNotInstalled": "Unable to create broadcast because WhatsApp Business is not installed for this project",
+    "HelpsURLs": "Enter web pages from public URLs into the text area below, separated by a carriage return, or import them from a sitemap.",
+    "URLAutomaticallySynchronized": "This URL is automatically synchronized from the sitemap",
+    "ImportURLsFromSitemap": "Import URLs from sitemap",
+    "Fetch": "Fetch",
+    "DeletingTheSitemapWillAlsoDeleteAllURLs": "Deleting the sitemap will also delete all URLs associated with it and you will no longer be able to use AI on their content.",
+    "SitemapHasBeenDeleted": "Sorry, the sitemap has been deleted",
+    "AddQuestionToKB": "Add question to Knowledge Base",
+    "DiscardQuestion": "Discard question",
+    "AreYouSureYouWantToDiscard": "Are you sure you want to discard this question",
+    "Discard": "Discard",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
