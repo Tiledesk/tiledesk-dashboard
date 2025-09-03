@@ -28,10 +28,15 @@
       <div *ngFor="let q of unansweredQuestions" class="uq-list-item">
         <span class="uq-question-text">{{ q.question }}</span>
         <span class="uq-actions">
-          <button class="uq-btn uq-btn-icon" mat-icon-button matTooltipClass="kb-custom-mat-tooltip" matTooltip="Add question to KB" (click)="onOpenAddKnowledgeBaseModal(q)">
+          <button class="uq-btn uq-btn-icon" mat-icon-button 
+            matTooltipClass="kb-custom-mat-tooltip" 
+            [matTooltip]="'AddQuestionToKB' | translate" (click)="onOpenAddKnowledgeBaseModal(q)">
             <mat-icon class="add-icon">add_circle_outline</mat-icon>
           </button>
-          <button class="uq-btn uq-btn-icon" mat-icon-button matTooltipClass="kb-custom-mat-tooltip" matTooltip="Discard question" (click)="onDiscardQuestion(q)">
+          <button class="uq-btn uq-btn-icon" mat-icon-button 
+            matTooltipClass="kb-custom-mat-tooltip" 
+            [matTooltip]="'DiscardQuestion' | translate" 
+            (click)="onDiscardQuestion(q)">
             <mat-icon class="delete-icon">delete_outline</mat-icon>
           </button>
         </span>
