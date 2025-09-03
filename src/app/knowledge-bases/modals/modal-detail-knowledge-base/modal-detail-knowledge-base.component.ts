@@ -121,4 +121,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     // this.updateKnowledgeBase.emit(this.kb);
   }
 
+  onDeleteKnowledgeBase() {
+    this.dialogRef.close({'kb': this.kb, 'method': 'delete'})
+  }
+
 }

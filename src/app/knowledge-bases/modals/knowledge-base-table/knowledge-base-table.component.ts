@@ -327,7 +327,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
  getkbById(kbid) {
     console.log('[KB TABLE] - GET KB BY ID -  kbid', kbid);
     this.kbService.getKbId(kbid).subscribe((kb: any) => {
-      console.log('[KB TABLE] - GET DEPTS RES ', kb);
+      console.log('[KB TABLE] - GET KB BY ID RES ', kb);
       
       if (kb) {
         this.onOpenBaseModalDetail(kb)

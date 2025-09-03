@@ -4,6 +4,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { UnansweredQuestionsService } from 'app/services/unanswered-questions.service';
 import { ModalConfirmActionComponent } from '../modal-confirm-action/modal-confirm-action.component';
 import { BrandService } from 'app/services/brand.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Interfaccia per una domanda senza risposta
@@ -44,7 +45,8 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
     private dialog: MatDialog,
     private logger: LoggerService,
     private unansweredQuestionsService: UnansweredQuestionsService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private translate: TranslateService,
   ) {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -84,10 +86,10 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalConfirmActionComponent, {
       width: '400px',
       data: {
-        title: 'Discard Question',
-        message: 'Are you sure you want to discard this question?',
-        confirmText: 'Discard',
-        cancelText: 'Cancel'
+        title: this.translate.instant('DiscardQuestion'), //'Discard Question',
+        message: this.translate.instant('AreYouSureYouWantToDiscard'), // 'Are you sure you want to discard this question?',
+        confirmText: this.translate.instant('Discard'), //'Discard',
+        cancelText: this.translate.instant('Cancel') //'Cancel'
       }
     });
     dialogRef.afterClosed().subscribe(result => {

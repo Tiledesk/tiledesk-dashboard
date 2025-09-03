@@ -534,7 +534,13 @@
 
                         <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
                             <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
+                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="'URLAutomaticallySynchronized' | translate" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="!kb.sitemap_origin">
                                 {{ kb.name }}
                             </div>
 
@@ -549,22 +555,14 @@
                                {{kb.source }}
                              </span>  
                              <!-- || kb.type === 'sitemap' -->
-                             <span *ngIf="kb.sitemap_origin" (click)="$event.stopPropagation(); getkbById(kb.sitemap_origin_id)"> 
-                               <span class="sitemap-badge"> 
+                             <span *ngIf="kb.sitemap_origin" > 
+                               <span class="sitemap-badge" (click)="$event.stopPropagation(); getkbById(kb.sitemap_origin_id)"> 
                                    {{'KbPage.AddKbSitemap' | translate}}
                                 </span> 
-                                <span matTooltipClass="kb-custom-mat-tooltip" 
-                                    matTooltip="{{'URLAutomaticallySynchronized' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='right' 
-                                    matTooltipHideDelay="100">
-                                        {{kb.sitemap_origin }}
-                                    </span>
-                                
-                                <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
-                                <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
+                                <span (click)="$event.stopPropagation(); getkbById(kb.sitemap_origin_id)">
+                                    {{kb.sitemap_origin }}
+                                </span>
                              </span>  
-
                             </div>
                         </td>
 

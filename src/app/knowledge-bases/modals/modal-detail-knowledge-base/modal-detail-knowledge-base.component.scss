@@ -298,8 +298,14 @@
     display: flex;
     flex-direction: row;
     gap: 6px;
+    margin-bottom: 12px;
 }
 
 .sitemap-refresh-rate-value {
     font-style: italic;
 }
+
+.btn-red-custom:hover {
+    background: var(--red-btn-background-color) !important;
+    box-shadow: unset !important;
+}   

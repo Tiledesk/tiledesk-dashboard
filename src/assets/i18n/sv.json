@@ -750,6 +750,11 @@
     "ImportURLsFromSitemap": "Importera URL:er från webbplatskarta",
     "Fetch": "Hämta",
     "DeletingTheSitemapWillAlsoDeleteAllURLs": "Radering av webbplatskartan raderar även alla tillhörande URL:er och du kommer inte längre kunna använda AI på deras innehåll.",
+    "SitemapHasBeenDeleted": "Tyvärr, webbplatskartan har raderats",
+    "AddQuestionToKB": "Lägg till fråga till Kunskapsbasen",
+    "DiscardQuestion": "Kassera fråga",
+    "AreYouSureYouWantToDiscard": "Är du säker på att du vill kassera den här frågan",
+    "Discard": "Kassera",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
