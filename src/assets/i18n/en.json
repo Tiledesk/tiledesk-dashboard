@@ -748,6 +748,11 @@
     "ImportURLsFromSitemap": "Import URLs from sitemap",
     "Fetch": "Fetch",
     "DeletingTheSitemapWillAlsoDeleteAllURLs": "Deleting the sitemap will also delete all URLs associated with it and you will no longer be able to use AI on their content.",
+    "SitemapHasBeenDeleted": "Sorry, the sitemap has been deleted",
+    "AddQuestionToKB": "Add question to Knowledge Base",
+    "DiscardQuestion": "Discard question",
+    "AreYouSureYouWantToDiscard": "Are you sure you want to discard this question",
+    "Discard": "Discard",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

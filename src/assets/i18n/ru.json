@@ -749,6 +749,11 @@
     "ImportURLsFromSitemap": "Импортировать URL-адреса из карты сайта",
     "Fetch": "Получить",
     "DeletingTheSitemapWillAlsoDeleteAllURLs": "Удаление карты сайта также удалит все связанные с ней URL-адреса, и вы больше не сможете использовать ИИ для их содержимого.",
+    "SitemapHasBeenDeleted": "Извините, карта сайта была удалена",
+    "AddQuestionToKB": "Добавить вопрос в Базу Знаний",
+    "DiscardQuestion": "Отклонить вопрос",
+    "AreYouSureYouWantToDiscard": "Вы уверены, что хотите отклонить этот вопрос",
+    "Discard": "Отклонить",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

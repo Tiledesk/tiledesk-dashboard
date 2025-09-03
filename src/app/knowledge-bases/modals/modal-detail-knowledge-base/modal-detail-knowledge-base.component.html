@@ -152,6 +152,11 @@
         {{ "Update" | translate }}
     </button>
 
+     <button *ngIf="kb._id && kb.type === 'sitemap'" class="btn btn-red btn-red-custom"
+        mat-button (click)="onDeleteKnowledgeBase()" style="height: 36px; line-height: 20px;">
+        {{ "Delete" | translate }}
+    </button>
+
     <button *ngIf="kb._id && (kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx')" class="mat-dialog-ok-btn"
         [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
