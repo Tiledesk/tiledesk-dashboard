@@ -151,6 +151,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.KB_READ, label: 'Able to view' },
         { key: PERMISSIONS.KB_CONTENTS_ADD, label: 'Able to add contents' },
+        { key: PERMISSIONS.KB_CONTENTS_EXPORT, label: 'Able to export contents' },
         { key: PERMISSIONS.KB_CONTENT_UPDATE, label: 'Able to edit content' },
         { key: PERMISSIONS.KB_CONTENT_REINDEX, label: 'Able to reindex content' },
         { key: PERMISSIONS.KB_CONTENT_CHECK_STATUS, label: 'Able to check content status' },

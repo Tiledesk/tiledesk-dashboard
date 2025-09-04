@@ -203,13 +203,7 @@
 
 
 
-                    <div class="link-to-docs-container">
-                        <!-- <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
-                            [matMenuTriggerFor]="menu">
-                            {{ 'KbPage.Add' | translate }}
-                        </button> -->
-
-
+                    <!-- <div class="link-to-docs-container">
                         <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
                             <span>
 
@@ -225,16 +219,7 @@
                                 {{'KbPage.LearnMoreAboutKB' | translate}}
                             </span>
                         </div>
-
-                        <!-- *ngIf="hasAlreadyVisitedKb === 'false'" -->
-                        <!-- <div  class="getting-started-add-content">
-                            <div class="getting-started-add-content-text"> {{ 'KbPage.GetStartedByAddingContents' | translate }}  </div> 
-                            <button class="btn custom-button-round add-content center" style="box-shadow: unset;"
-                            [matMenuTriggerFor]="menu"> 
-                            <span class="material-icons-round">add</span>
-                        </button>
-                        </div> -->
-                    </div>
+                    </div> -->
                 </div>
                 <!-- <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
                     <add-content-menu class="mat-menu"
@@ -300,11 +285,11 @@
                                 PDF
                             </ng-option>
                             <ng-option value="sitemap">
-                                Sitemap
+                                {{'KbPageAddKbSitemap'| transtate}}
                             </ng-option>
                             <!-- <ng-option value="txt">
-                        TXT
-                    </ng-option> -->
+                                TXT
+                            </ng-option> -->
                             <ng-option value="docx">
                                 DOCX
                             </ng-option>
@@ -540,27 +525,28 @@
                             (click)="onOpenBaseModalDetail(kb)">
                             <!-- <loading-spinner *ngIf="kb.status < -1 || kb.status > 4" class="custom-spinner"></loading-spinner> -->
                             <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
-                        <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
-                        <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
-                        <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
-                        <ng-container *ngIf="kb.type !== 'sitemap'"> 
-                            <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                class="material-icons-outlined status-icon"  style="vertical-align: middle;">done</span>
-                            <span *ngIf="kb.status == 100" id="done"
-                                class="material-icons-outlined status-icon"  style="vertical-align: middle;">done_all</span>
-                            <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                class="material-icons-outlined status-icon animated-icon"  style="vertical-align: middle;">cached</span>
-                            <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                class="material-icons-outlined status-icon status-done"  style="vertical-align: middle;">done_all</span>
-                            <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                class="material-icons-outlined status-icon status-error"  style="vertical-align: middle;">error</span>
+                            <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
+                            <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
+                            <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
+                            <ng-container *ngIf="kb.type !== 'sitemap'"> 
+                                <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
+                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done</span>
+                                <span *ngIf="kb.status == 100" id="done"
+                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done_all</span>
+                                <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
+                                    class="material-icons-outlined status-icon animated-icon"  style="vertical-align: middle;">cached</span>
+                                <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
+                                    class="material-icons-outlined status-icon status-done"  style="vertical-align: middle;">done_all</span>
+                                <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
+                                    class="material-icons-outlined status-icon status-error"  style="vertical-align: middle;">error</span>
+                            
+                            </ng-container>
+                            <ng-container *ngIf="kb.type === 'sitemap'"> 
+                                <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                    remove
+                                </span>
+                            </ng-container>
                         </td>
-                        <ng-container *ngIf="kb.type === 'sitemap'"> 
-                            <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
-                                remove
-                            </span>
-                        </ng-container>
-
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
@@ -643,7 +629,7 @@
                                     font-size: 9px;
                                     font-weight: 400;
                                     margin-right: 3px;"> 
-                                    Sitemap
+                                    {{'KbPageAddKbSitemap'| transtate}}
                                 </span> 
                                 {{kb.sitemap_origin }}
                                 <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>

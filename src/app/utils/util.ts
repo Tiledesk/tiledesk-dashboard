@@ -970,6 +970,8 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation
+export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
+export const URL_hybrid_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/hybrid-search'
 export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
 export const URL_understanding_default_roles = 'https://guide.tiledesk.com/understanding-default-roles' // 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
@@ -1015,6 +1017,6 @@ export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanc
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
 export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
-export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
-
+// export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
+export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 

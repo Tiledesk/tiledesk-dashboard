@@ -81,19 +81,19 @@ export class KnowledgeBaseService {
       })
     }
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/all";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/all?count=true";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get all NAMESPACES URL ", url);
     return this.httpClient.get(url, httpOptions);
   }
 
-  createNamespace(namespacename) {
+  createNamespace(namespacename, hybrid) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
-    let body = { name: namespacename }
+    let body = { name: namespacename, hybrid: hybrid }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/"
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add NAMESPACES URL ", url);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
@@ -113,8 +113,6 @@ export class KnowledgeBaseService {
   }
 
   public uploadFaqCsv(formData: any, namespaceid) {
-   
-
     const options = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -128,6 +126,38 @@ export class KnowledgeBaseService {
     return this.httpClient
       .post(url, formData, options)
   }
+
+  public importContents(formData: any, namespaceid) {
+    const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/import/" + namespaceid;
+    this.logger.log('[KNOWLEDGE BASE SERVICE] IMPORT CONTENTS URL - URL ', url);
+
+    return this.httpClient
+      .post(url, formData, options)
+  }
+
+  public exportContents(namespaceid) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/export/" + namespaceid;
+    this.logger.log('[KNOWLEDGE BASE SERVICE] EXPORT CONTENTS - URL ', url);
+
+    return this.httpClient
+      .get(url, httpOptions)
+  }
+
+
 
   getListOfKb(params?) {
     const httpOptions = {
@@ -162,19 +192,6 @@ export class KnowledgeBaseService {
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
-  }
-
-  importSitemap(body: any, namespaceid:string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap/import?namespace=" + namespaceid
-    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", url);
-    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", body);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
@@ -223,7 +240,7 @@ export class KnowledgeBaseService {
         'Authorization': this.TOKEN
       })
     }
-    
+
     const url = this.SERVER_BASE_PATH + id_project + "/kb/namespace/" + namespaceid + "/chunks/" + contentid;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get content chunks URL ", url);
     return this.httpClient.get(url, httpOptions);
@@ -261,7 +278,7 @@ export class KnowledgeBaseService {
     return this.httpClient.delete(url, httpOptions);
   }
 
-  hasChagedAiSettings(aisetting){
+  hasChagedAiSettings(aisetting) {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - hasChagedAiSettings", aisetting);
     this.editedAiSettings$.next(aisetting)
   }

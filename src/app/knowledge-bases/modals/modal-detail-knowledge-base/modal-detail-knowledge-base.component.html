@@ -114,4 +114,14 @@
         [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
+
+    <!-- Pulsante SALVA per nuova KB -->
+    <button *ngIf="!kb._id && kb.type === 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
+        mat-button (click)="onUpdateKnowledgeBase()">
+        {{ "Save" | translate }}
+    </button>
+    <button *ngIf="!kb._id && kb.type !== 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || (!content && !source)"
+        mat-button (click)="onUpdateKnowledgeBase()">
+        {{ "Save" | translate }}
+    </button>
 </div>

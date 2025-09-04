@@ -34,6 +34,7 @@ export const PERMISSIONS = {
   KB_NAMESPACE_ADD:'kb_namespace_add',
   KB_SETTINGS_EDIT:'kb_settings_edit',
   KB_DELETE: 'kb_delete',
+  KB_CONTENTS_EXPORT: 'kb_contents_export',
   // KB_NAMESPACE_DELETE:'kb_namespace_delete',
   // KB_CONTENTS_DELETE:'kb_contents_delete',
 
