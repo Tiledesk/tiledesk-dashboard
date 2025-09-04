@@ -2044,7 +2044,7 @@
         "UnansweredQuestionsDesc": "Det här är frågor som användare ställt men som din kunskapsbas inte kunde besvara. Du kan lägga till dem i din KB eller kassera dem.",
         "StandardKbDesc": "Hittar resultat baserat på betydelsen av din fråga - bästa möjliga ansträngning med AI-förståelse.",
         "HybridKbDesc": "Kombinerar menings- och nyckelordsmatchning för mer exakta och kompletta resultat.",
-        "WantTryTheHybridSearch": "Vill du prova den nya Hybridsökningsfunktionen",
+        "WantTryTheHybridSearch": "Vill du prova den nya hybridsökningsfunktionen?",
         "DeletingTheSitemapNotDeleteTheContents": "Radering av webbplatskartan raderar inte automatiskt de tillhörande innehållen.",
         "------": "------",
         "NoContentAdded": "Du har inget innehåll ännu",
