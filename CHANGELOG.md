@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.131-rc1
+- Align the knowledge base code with the one in the master
+
 ### 2.7.128-rc1
 - Changes the regex blacklist in the regex whitelist
 
