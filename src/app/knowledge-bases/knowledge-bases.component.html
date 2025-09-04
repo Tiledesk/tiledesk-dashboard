@@ -342,7 +342,7 @@
                   <!-- TAB SWITCHER END -->
       
                   <!-- START TABLE -->
-                  <div [@fadeInOut] *ngIf="selectedTab === 'contents'">
+                  <div *ngIf="selectedTab === 'contents'">
                     <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
                       [hasRemovedKb]="hasRemovedKb" [hasUpdatedKb]="hasUpdatedKb" [getKbCompleted]="getKbCompleted"
                       [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
@@ -359,7 +359,7 @@
                       (loadByFilter)="onLoadByFilter($event)">
                     </knowledge-base-table>
                   </div>
-                  <div [@fadeInOut] *ngIf="selectedTab === 'unanswered'">
+                  <div *ngIf="selectedTab === 'unanswered'">
                     <ng-container *ngIf="!isLoadingUnanswered; else loadingUnanswered">
                       <modal-unanswered-questions 
                         [unansweredQuestions]="unansweredQuestions"

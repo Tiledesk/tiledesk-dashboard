@@ -408,6 +408,7 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { RolesService } from './services/roles.service';
 import { KeycloakService } from './services/keycloak.service';
+import { UnansweredQuestionsService } from './services/unanswered-questions.service';
 
 
 
@@ -859,6 +860,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SleekplanApiService,
     RolesService,
     KeycloakService,
+    UnansweredQuestionsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

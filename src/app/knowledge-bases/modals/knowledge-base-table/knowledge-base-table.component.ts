@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, Output, EventEmitter, SimpleChanges, ElementRef, HostListener } from '@angular/core';
 // import { MatTableDataSource } from '@angular/material/table';
 // import { MatSort, Sort } from '@angular/material/sort';
 // import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
@@ -21,7 +21,7 @@ import { NotifyService } from 'app/core/notify.service';
 })
 
 
-export class KnowledgeBaseTableComponent implements OnInit {
+export class KnowledgeBaseTableComponent implements OnInit, OnDestroy {
   @ViewChild('refresRate') refresRate!: SatPopover;
   @Input() salesEmail:string
   @Input() project_name:string;
@@ -91,18 +91,20 @@ export class KnowledgeBaseTableComponent implements OnInit {
     private rolesService: RolesService,
     public notify: NotifyService
   ) {
-    this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
+   console.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
     this.companyName = brand["BRAND_NAME"] 
   }
 
   ngOnInit(): void {
+    console.log('[KB TABLE] ngOnInit - Component initializing');
     this.resetFilter()
     this.listenToProjectUser()
   }
 
   ngOnDestroy(): void {
+    console.log('[KB TABLE] ngOnDestroy - Component destroying');
     this.unsubscribe$.next();   
     this.unsubscribe$.complete();
   }
@@ -289,7 +291,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.logger.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
+    console.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
     this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
@@ -354,6 +356,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
     if (this.kbsList.length > 0) {
       this.SHOW_TABLE = true;
+      console.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
     }  
     // else {
     //   this.SHOW_TABLE = false;
@@ -427,7 +430,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.directionDesc = this.directionDesc * -1;
     this.searchParams.direction = this.directionDesc;
     this.isLoading = true;
-    this.loadByFilter.next(this.searchParams);
+    this.loadByFilter.emit(this.searchParams);
     // this.logger.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
   }
 
@@ -456,7 +459,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
     this.timeoutId = setTimeout(() => {
       this.isLoading = true;
-      this.loadByFilter.next(this.searchParams);
+      this.loadByFilter.emit(this.searchParams);
       // this.logger.log('[KB TABLE] onOrderBy onLoadByFilter searchParams ', this.searchParams)
     }, 1000);
   }

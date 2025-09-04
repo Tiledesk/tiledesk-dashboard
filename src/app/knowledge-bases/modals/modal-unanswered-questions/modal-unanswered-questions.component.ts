@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UnansweredQuestionsService } from 'app/services/unanswered-questions.service';
@@ -24,7 +24,7 @@ export interface UnansweredQuestion {
   templateUrl: './modal-unanswered-questions.component.html',
   styleUrls: ['./modal-unanswered-questions.component.scss']
 })
-export class ModalUnansweredQuestionsComponent implements OnInit {
+export class ModalUnansweredQuestionsComponent implements OnInit, OnDestroy {
   /** Namespace attivo */
   @Input() namespace: any;
   /** ID del progetto */
@@ -54,6 +54,10 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     // La lista delle domande viene fornita dal componente padre
+  }
+
+  ngOnDestroy(): void {
+    // Cleanup se necessario
   }
 
   refreshList() {

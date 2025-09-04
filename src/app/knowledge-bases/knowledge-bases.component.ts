@@ -208,6 +208,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
   switchTab(tab: 'contents' | 'unanswered') {
+    console.log('[KNOWLEDGE-BASES] switchTab to:', tab);
     this.selectedTab = tab;
     if (tab === 'unanswered') {
       this.loadUnansweredQuestions();
@@ -2713,7 +2714,7 @@ _presentDialogImportContents() {
 
 
   getListOfKb(params?: any, calledby?: any) {
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+   console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
@@ -2721,7 +2722,7 @@ _presentDialogImportContents() {
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
     this.kbService.getListOfKb(params).subscribe((resp: any) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
+      console.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
       this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
