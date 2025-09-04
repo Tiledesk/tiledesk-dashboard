@@ -2041,7 +2041,7 @@
         "UnansweredQuestionsDesc": "These are the questions that users asked but your knowledge base could not answer. You can add them to your KB or discard them.",
         "StandardKbDesc": "Finds results based on the meaning of your query — best effort using AI understanding.",
         "HybridKbDesc": "Combines meaning and keyword matching for more accurate and complete results.",
-        "WantTryTheHybridSearch": "Want to try the new Hybrid Search feature",
+        "WantTryTheHybridSearch": "Want to try the new Hybrid Search feature?",
         "DeletingTheSitemapNotDeleteTheContents": "Deleting the sitemap does not automatically delete the contents associated with it.",
         "------": "------",
         "NoContentAdded": "You don't have any contents yet",

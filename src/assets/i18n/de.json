@@ -2041,7 +2041,7 @@
 		"UnansweredQuestionsDesc": "Dies sind die Fragen, die Benutzer gestellt haben, aber Ihre Wissensdatenbank konnte sie nicht beantworten. Sie können sie zu Ihrer KB hinzufügen oder verwerfen.",
 		"StandardKbDesc": "Findet Ergebnisse basierend auf der Bedeutung Ihrer Abfrage - bester Versuch mit KI-Verständnis.",
 		"HybridKbDesc": "Kombiniert Bedeutungs- und Schlüsselwortabgleich für genauere und vollständigere Ergebnisse.",
-		"WantTryTheHybridSearch": "Möchten Sie die neue Hybrid-Suche-Funktion ausprobieren",
+		"WantTryTheHybridSearch": "Möchten Sie die neue Hybridsuchfunktion ausprobieren?",
 		"DeletingTheSitemapNotDeleteTheContents": "Das Löschen der Sitemap löscht die damit verbundenen Inhalte nicht automatisch.",
 		"------": "------",
 		"NoContentAdded": "Sie haben noch keine Inhalte",

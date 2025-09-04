@@ -2043,7 +2043,7 @@
         "UnansweredQuestionsDesc": "Bunlar istifadəçilərin soruşduğu, lakin bilik bazanızın cavab verə bilmədiyi suallardır. Onları KB-nizə əlavə edə və ya atabilərsiniz.",
         "StandardKbDesc": "Sorğunuzun mənasına əsaslanaraq nəticələri tapır - Sİ anlayışından istifadə edərək ən yaxşı səy.",
         "HybridKbDesc": "Daha dəqiq və tam nəticələr üçün məna və açar söz uyğunlaşdırmasını birləşdirir.",
-        "WantTryTheHybridSearch": "Yeni Hibrid Axtarış funksiyasını sınamaq istəyirsiniz",
+        "WantTryTheHybridSearch": "Yeni Hibrid Axtarış funksiyasını sınamaq istəyirsiniz?",
         "DeletingTheSitemapNotDeleteTheContents": "Xəritəni silmək onunla əlaqəli məzmunları avtomatik olaraq silmir.",
         "------": "------",
         "NoContentAdded": "Hələ heç bir məzmununuz yoxdur",
