@@ -9,8 +9,7 @@
             matRipple
             [ngClass]="{'selected-option': selectedNamespaceType === 'standard'}"
             (click)="selectedNamespaceType = 'standard'"
-            style="transition: border-color 0.2s;"
-        >
+            style="transition: border-color 0.2s;">
             <div class="add-content-card-content">
                 <div class="add-content-card-content-icon-wpr">
                     <span>
@@ -44,6 +43,7 @@
         <div *ngIf="data.pay"
             class="add--content-card-wpr" 
             matRipple
+            [matRippleDisabled]="!hybridActive"
             [ngClass]="{
                 'selected-option': selectedNamespaceType === 'hybrid',
                 'disabled-option': !hybridActive
@@ -52,8 +52,7 @@
             [style.transition]="'border-color 0.2s'"
             [style.boxShadow]="!hybridActive ? 'none' : null"
             [style.cursor]="!hybridActive ? 'not-allowed' : 'pointer'"
-            [style.opacity]="!hybridActive ? 0.5 : 1"
-        >
+            [style.opacity]="!hybridActive ? 0.5 : 1">
             <div class="add-content-card-content">
                 <div class="add-content-card-content-icon-wpr">
                     <span>
