@@ -109,6 +109,8 @@
     "TotalAITokensUsage": "Токендерді AI толық пайдалануы",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
     "Email": "Электронды пошта",
+    "Voice":"Дауыс",
+    "TotalVoiceUsage": "Дауысты жалпы қолдану",
     "RequestsForAgent": "Агентке арналған әңгімелер",
     "RequestsForTeammate": "Әріптеске арналған әңгімелер",
     "RequestsForDept": "Бөлімге арналған әңгімелер",
@@ -207,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "{{role_name}} рөлін жою мүмкін емес, себебі ол әріптеске тағайындалған",
     "RemoveTheRoleAssignment":"Рөл тағайындауын жоймас бұрын оны жойыңыз.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"Алдын ала анықталған рөлдерді өзгерту немесе жою мүмкін емес.",
+    "SelectARole":"Рөлді таңдаңыз",
     "Greetings": "Сәлем",
     "Callout": "Шақыру",
     "openUserProfile": "Профиль суретін орнатыңыз",
@@ -815,6 +818,11 @@
     "CurrentTotal":"Ағымдағы жалпы",
     "Exceeds100":"100% асады",
     "PercentageGroupName": "Пайыз {{group_name}}",
+    "MobileNumber":"Мобильді нөмір",
+    "InvalidMobileNumber": "Ұялы телефон нөмірі жарамсыз",
+    "AccessDenied":"Кіруге тыйым салынды",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Сіз бұл жобаның серіктесі емес сияқтысыз",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Сізге рұқсат беру үшін жоба әкімшісіне хабарласыңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2651,6 +2659,7 @@
     "CustomizeThePreChatForm": "Алдын ала сөйлесу пішінін теңшеңіз",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Өрістерді жою немесе қосу арқылы алдын ала чат пішінінде тұтынушылардан сұрайтын ақпаратты теңшеңіз",
     "InvalidJSON": "Жарамсыз JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Таңдалған файлда жарамды JSON жоқ.",
     "EmailNotAvailable": "Электрондық пошта қолжетімді емес",
     "Project": "Жоба",
     "YourProjects": "Сіздің жобаларыңыз",

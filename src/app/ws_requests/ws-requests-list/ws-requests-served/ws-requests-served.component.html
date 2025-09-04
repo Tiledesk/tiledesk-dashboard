@@ -641,19 +641,19 @@
                     {{ request?.requester_fullname_initial }}
                   </span>
                   <span
-                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO ) && request?.lead?.fullname === request?.lead?.phone"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO ) && (request?.lead?.fullname === request?.lead?.phone || request?.fullnameIsNumber)"
                     class="material-icons-outlined"
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
                   </span>
-                  <span
+                  <!-- <span
                     *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone"
                     class="material-icons-outlined"
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
-                  </span>
+                  </span> -->
                   <span
-                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.fullname !== request?.lead?.phone && !request?.fullnameIsNumber) "
                     style="color: #ffffff;">
                     {{ request?.requester_fullname_initial }}
                   </span>
@@ -712,12 +712,20 @@
                       </span>
                     </span>
                     <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name == CHANNELS_NAME.VOICE_TWILIO">
-                      <span *ngIf="request?.lead?.phone !== request?.lead?.fullname"
+                      <span *ngIf="!request?.lead?.email && (request?.lead?.phone !== request?.lead?.fullname)"
                         matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'RequesterPhoneNumber' | translate }}"
                         #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                         {{request?.lead?.phone}}
                       </span>
                     </span>
+                    <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name == CHANNELS_NAME.VOICE_TWILIO">
+                      <span *ngIf="request?.lead?.email"
+                        matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'Email' | translate }}"
+                        #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                        {{request?.lead?.email}}
+                      </span>
+                    </span>
+
                   </span>
                 </div>
               </div>
