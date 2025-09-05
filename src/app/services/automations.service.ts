@@ -99,7 +99,7 @@ export class AutomationsService {
     return this.httpClient.get(url, httpOptions);
   }
 
-   public uploadFaqCsv(formData: any) {
+   public uploadCsv(formData: any) {
     const options = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -107,8 +107,8 @@ export class AutomationsService {
       })
     };
 
-    // const url = this.SERVER_BASE_PATH  + "modules/whatsapp/api/tiledesk/broadcast/csv";
-    const url = "https://73acaf35017f.ngrok-free.app/api/tiledesk/broadcast/csv";
+    const url = this.SERVER_BASE_PATH  + "modules/whatsapp/api/tiledesk/broadcast/csv";
+    // const url = "https://73acaf35017f.ngrok-free.app/api/tiledesk/broadcast/csv";
     
     this.logger.log('[KNOWLEDGE BASE SERVICE] UPLOAD FAQS CSV - URL ', url);
 

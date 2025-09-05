@@ -59,3 +59,20 @@
 .download--example-csv:hover {
     background-color: var(--only-text-btn-hover-background);
 }
+
+.after-upload-msg-container {
+    text-align: center;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.after-upload-msg-container>div {
+    &.success {
+        color: #73AF55;
+    }
+
+    &.error {
+        color: #D06079;
+    }
+}

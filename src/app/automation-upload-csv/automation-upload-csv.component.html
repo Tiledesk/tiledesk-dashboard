@@ -1,6 +1,6 @@
 <div class="m-header">
   <h1 mat-dialog-title>
-    Import from CSV
+    {{'ImportFromCSV' | translate}}
 
   </h1>
   <div class="m-top-right-icon">
@@ -11,20 +11,32 @@
 </div>
 
 <div mat-dialog-content>
-
     <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
-          <!-- <p>{{ 'KbPage.TheFileMustContainTheQAColumns' | translate }}</p>
-     
-          <p>{{ 'KbPage.TheColumnsMustBeSeparatedByTheDelimiter' | translate }}</p> -->
           <div class="download---example-csv-wpr"> 
-            <span>  As a starting point you can download the CSV of the template you selected </span>
+            <span>  {{'AsStartingPointYouCanDownloadTheCSV' | translate}} </span>
             <button class="download--example-csv"  (click)="downlaodCSV()"> {{ selected_template_name }} </button>
+            <span style="display: block; color: #D06079"> {{'PleaseNoteThatYouCanUploadMax3000Contacts' | translate}}</span>
           </div>
         </div>
       </div>
 </div>
+
+  <div class="after-upload-msg-container" *ngIf="displayAfterUploadFromCSVSection === true">
+   
+    <div *ngIf="contactsGreaterThen3000 === true && parse_err === false" class="error">
+      {{'SorryYourCSVFileContainsMoreThan3000Contacts' | translate }}
+    </div>
+
+    <div *ngIf="contactsGreaterThen3000 === false && parse_err === true" class="error">
+      {{'SorryThereWasProblemUploadingTheFile' | translate }}
+    </div>
+
+    <div *ngIf="contactsGreaterThen3000 === false && parse_err === false" class="success">
+      {{'ContactsUploadedSuccessfully' | translate }}
+    </div>
+  </div>
 
 <div mat-dialog-actions style="justify-content: center;">
 
@@ -45,17 +57,19 @@
 
   <div class="btn-after-upload-wpr" *ngIf="displayAfterUploadFromCSVSection === true">
 
-    <button *ngIf="parse_err === true" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
+ 
+
+    <button *ngIf="parse_err === true || contactsGreaterThen3000 === true" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
       {{ "Close" | translate }}
     </button>
 
-    <button *ngIf="parse_err === false" class="mat-dialog-ok-btn" mat-button (click)="onDone()">
-      {{ "Done" | translate }}
+    <button *ngIf="parse_err === false && contactsGreaterThen3000 === false" class="mat-dialog-ok-btn" mat-button (click)="onDone()">
+      {{ "Continue" | translate }}
     </button>
 
-    <button *ngIf="parse_err === undefined" class="mat-dialog-traspatent-btn" mat-button disabled>
+    <!-- <button *ngIf="parse_err === undefined" class="mat-dialog-traspatent-btn" mat-button disabled>
       {{ "Processing" | translate }}
-    </button>
+    </button> -->
 
   </div>
 </div>
