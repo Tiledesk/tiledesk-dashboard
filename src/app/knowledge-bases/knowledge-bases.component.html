@@ -154,6 +154,8 @@
                 <div class="card-content" *ngIf="!showSpinner">
       
                   <div class="header">
+
+
       
                     <div style="display: flex; flex-direction: column;">
                       <div class="selected-namespace-content">
@@ -340,6 +342,10 @@
                     </label>
                   </div>
                   <!-- TAB SWITCHER END -->
+
+                 
+
+
       
                   <!-- START TABLE -->
                   <div [@fadeInOut] *ngIf="selectedTab === 'contents'">
@@ -355,7 +361,8 @@
                       (openBaseModalPreview)="onOpenBaseModalPreview()" (onOpenAddContents)="onOpenAddContent()"
                       (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
                       (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
-                      (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                      (runIndexing)="onRunIndexing($event)" 
+                      (loadPage)="onLoadPage($event)"
                       (loadByFilter)="onLoadByFilter($event)">
                     </knowledge-base-table>
                   </div>
