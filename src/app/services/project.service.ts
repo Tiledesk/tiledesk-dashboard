@@ -871,6 +871,93 @@ export class ProjectService {
     return promise;
   }
 
+  
+  // --------------------------------------------------------------------------------------
+  // ALLOW TO SEND EMOJI 
+  // --------------------------------------------------------------------------------------
+  switchAllowToSendEmoji (status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV] ALLOW TO SEND EMOJI status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allow_send_emoji": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+  // --------------------------------------------------------------------------------------
+  // SWITCH ALLOWED URL
+  // --------------------------------------------------------------------------------------
+  switchAllowedURLS (status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV] SWITCH ALLOWED URL status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_urls": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+  // --------------------------------------------------------------------------------------
+  // SAVE URLs Whitelist
+  // --------------------------------------------------------------------------------------
+  saveURLsWhitelist (urlWhitelist) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV] SAVE URLs Whitelist urlWhitelist", urlWhitelist)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_urls_list": urlWhitelist }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+  // --------------------------------------------------------------------------------------
+  // SAVE AGENTS CHAT ALLOWED EXTENTIONS
+  // --------------------------------------------------------------------------------------
+  saveAgentsChatAllowedExtensions (allowed_upload_extentions) {
+    let promise = new Promise((resolve, reject) => {
+      console.log("[PROJECT-SERV] SAVE allowed_upload_extentions", allowed_upload_extentions)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_upload_extentions": allowed_upload_extentions }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+
+
   // -------------------------------------
   // New home service
   // -------------------------------------

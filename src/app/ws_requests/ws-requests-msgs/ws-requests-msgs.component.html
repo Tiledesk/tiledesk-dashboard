@@ -432,15 +432,32 @@
                             </span>
                           </span>
                         </div>
-                        <!-- height:46px -->
-                        <!-- style="  margin-bottom: 8px;" -->
-                        <!-- (keydown.enter)="onKeydownEnter($event)" -->
-                        <!-- (ngModelChange)="onChangeTextInSendMsg($event)" -->
-                        <!-- (paste)="onPasteInSendMsg($event)" -->
+
+
+                        <div class="warning-message-cointainer" style="position: relative;"> 
+                          <!-- For emojis -->
+                          <!-- showEmojiWarning {{showEmojiWarning}} -->
+                          <div class="emoji-warning-container">
+                            <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
+                              {{'EmojisNotAllowed' | translate}}
+                            </div>
+                          </div>
+
+                          <!-- For not allowed URLs -->
+                          <div class="warning-container">
+                            <div class="warning-message" [class.visible]="warningMessage">
+                              {{ warningMessage }}
+                            </div>
+                          </div>
+                        </div>
+
                         <div class="col-xs-12 h-100 plr-0" 
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
-                            placeholder="Write your message" (input)="resizeTextArea()"
+                          <textarea #sendMessageTexarea class="send-message-texarea" 
+                            [(ngModel)]="chat_message"
+                            placeholder="Write your message" 
+                            (input)="resizeTextArea()"
+                            (ngModelChange)="onMessageChange($event)"
                             (paste)="onPasteInSendMsg($event)">  </textarea>
 
 

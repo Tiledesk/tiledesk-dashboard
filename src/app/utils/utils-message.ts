@@ -7,6 +7,8 @@ import {
     TYPE_SUPPORT_GROUP
 } from './constants';
 
+import emojiRegex from 'emoji-regex';
+
 /** */
 export function isImage(message: any) {
   if (message && message.type && message.type === 'image' && message.metadata && message.metadata.src) {
@@ -214,5 +216,16 @@ export function getProjectIdSelectedConversation(conversationWith: string): stri
     projectId = conversationWith_segments[2]
   }
   return projectId
+}
+
+export function removeEmojis (text: string): string {
+  const regex = emojiRegex();
+  return text.replace(regex, '');
+}
+
+export function isOnlyEmoji(text: string): boolean {
+  const cleaned = text.trim();
+  const regex = emojiRegex();
+  return cleaned !== '' && cleaned.replace(regex, '') === '';
 }
 
