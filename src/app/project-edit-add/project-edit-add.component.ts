@@ -168,8 +168,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   automatic_unavailable_status_on: boolean;
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
+
   isAllowedSendEmoji: boolean;
   isEnabledAllowedURLs: boolean;
+  urlWhitelist: string[] = [];
+  currentWhitelist: string[] = [];
+
+  selectedOption: string; //= 'all';
+  newExtension: string = '';
+  extensions: string[] = [];
+  allowed_upload_extentions: string;
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
 
   // unavailable_status_on: boolean;
 
@@ -300,8 +309,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ROLE: string
   public widgetObj = {};
 
-  urlWhitelist: string[] = [];
-  currentWhitelist: string[] = [];
+
   /**
    * 
    * @param projectService 
@@ -3045,7 +3053,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist (else) ', this.currentWhitelist) 
           }
 
-          
+          if (project.settings.allowed_upload_extentions !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            
+            if (project.settings.allowed_upload_extentions === '*/*') {
+              this.selectedOption = 'all';
+              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+            } else {
+              this.selectedOption = 'custom'
+              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.extensions = project.settings.allowed_upload_extentions.split(',').map(v => v.trim());
+              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
+            }
+          } else {
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.selectedOption = 'custom'
+            this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
+          }
 
          
 
@@ -3075,7 +3101,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.areHideChatbotAttributesInConvDtls = false;
           this.isAllowedSendEmoji = true;
           this.isEnabledAllowedURLs = false;
-          this.currentWhitelist = []
+          this.currentWhitelist = [];
+          this.selectedOption = 'custom'
+          this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
+          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
@@ -3323,6 +3353,50 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
 
+  }
+
+  
+  addExtension(): void {
+    const ext = this.newExtension.trim().toLowerCase();
+
+    if (ext && !this.extensions.includes(ext)) {
+      this.extensions.push(ext);
+      this.newExtension = '';
+    }
+     console.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
+      // this.getExtensionsForBackend()
+  }
+
+  removeExtension(index: number): void {
+    this.extensions.splice(index, 1);
+    console.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
+    // if(this.extensions.length === 0) {
+    //   this.selectedOption = 'all'
+    // }
+    // this.getExtensionsForBackend()
+  }
+
+  saveAllowedExtensions() {
+    console.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
+    console.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
+
+    if(this.selectedOption === 'all') { 
+      this.allowed_upload_extentions = '*/*'
+    } else {
+      this.allowed_upload_extentions = this.extensions.join(',')
+    }
+    console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
+
+    this.projectService.saveAgentsChatAllowedExtensions(this.allowed_upload_extentions).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS  RESULT: ", result)
+
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
   }
 
 
