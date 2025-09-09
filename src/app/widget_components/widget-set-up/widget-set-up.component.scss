@@ -2693,14 +2693,15 @@ button.buttonRounded:hover {
     color: #fff;
     font-family: 'Poppins';
     font-size: 12px;
-    padding: 4px 8px;
+    padding: 4px 16px;
     text-transform: none;
     box-shadow: unset;
+    height: 40px;
 }
 
-.configure-urls-pattern-btn-wpr {
-    margin-top: 6px;
-}
+// .configure-urls-pattern-btn-wpr {
+//    margin-top: 6px;
+// }
 
 
 pre {
@@ -3376,6 +3377,162 @@ pre {
 .unauthorized-page-subtitle {
     color: var(--secondary-text-color);
 }
+
+/* Allowed extentions
+/* ************************* */
+.option-description {
+    font-weight: 400;
+    margin-bottom: 6px;
+    margin-top: 5px;
+}
+.extensions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 300px;
+  margin-right: 6px;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fixed-input {
+  width: 100px;
+  text-align: center;
+  background-color: #f3f3f3;
+}
+
+.extensions-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  max-width: 400px;
+  min-height: 49px;
+}
+
+.extensions-box.no-extentions  { 
+  border: 1px solid #ba1a1a;
+}
+
+.extension-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 8px;
+  border-radius: 12px;
+  background: #e3e9f6;
+  font-size: 14px;
+  font-family: var(--header-font-family);
+}
+
+.extension-chip button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #333;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.extension-chip button .material-icons { 
+    font-size: 16px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    font-weight: 500;
+}
+
+.extension-chip button:hover .material-icons { 
+   color: var(--delete-icon-color);
+}
+
+.add-extensions-input {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-right: unset !important;
+}
+
+.option-row > .add-extensions-btn {
+  background: var(--blue-20) !important;
+  border: 1px solid var(--blue-20);
+  height: 36px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-left: -8px;
+  cursor: pointer;
+}
+
+.option-row > .add-extensions-btn.add-extensions-btn-disabled  { 
+  cursor: not-allowed;
+  opacity: .8;
+}
+
+.option-row > .add-extensions-btn:hover {
+  opacity: .8;
+}
+
+.option-row > .add-extensions-btn > .material-icons {
+  vertical-align: middle;
+  color: #fff;
+}
+
+/* Nasconde il radio nativo */
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--blue-20);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  margin: 0 6px 0 0;
+  vertical-align: middle;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Cerchio riempito quando selezionato */
+input[type="radio"]:checked {
+  border-color: var(--blue-20);
+  background-color: var(--blue-20);
+}
+
+/* Puntino bianco dentro */
+input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* Hover effect */
+input[type="radio"]:hover {
+  border-color: var(--blue-20);
+}
+
+/* Disabilitato */
+input[type="radio"]:disabled {
+  border-color: #ccc;
+  background: #f2f2f2;
+  cursor: not-allowed;
+}
+
+
 
 // .delete-custom-launcher-logo:hover {
 //   background: #8d021f;

@@ -419,6 +419,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   showSpinnerAttachmentUploading: boolean = false;
 
+  selectedOption: string; // = 'all';
+  newExtension: string = '';
+  extensions: string[] = [];
+  allowedUploadExtentions: string;
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
+
   isAuthorized = false;
   permissionChecked = false; // To avoid showing the content before check completes
   private accordionInitialized = false;
@@ -2733,6 +2739,26 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAttachmentButton ', this.showAttachmentButton);
 
+
+        if (project.widget.hasOwnProperty('allowedUploadExtentions')) {
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
+          
+          if (project.widget.allowedUploadExtentions === '*/*') {
+
+            this.selectedOption = 'all';
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+          } else {
+            this.selectedOption = 'custom'
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            this.extensions = project.widget.allowedUploadExtentions.split(',').map(v => v.trim());
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
+          }
+        } else {
+          this.selectedOption = 'custom'
+          this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
+        }
+
         // ----------------------------------------------------
         // Display / hide Emoji Button (if widget object)
         // ----------------------------------------------------
@@ -2969,6 +2995,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.allowedOnSpecificUrlList = []
         console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
         console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+
+        // -----------------------------------------------------------------------
+        // @ allowedUploadExtentions
+        // -----------------------------------------------------------------------
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
+        this.selectedOption = 'custom'
+        this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -4552,6 +4586,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   // -----------------------------------------------------------------------
+  //  @ Allowed extentions
+  // -----------------------------------------------------------------------
+  addExtension(): void {
+    const ext = this.newExtension.trim().toLowerCase();
+
+    if (ext && !this.extensions.includes(ext)) {
+      this.extensions.push(ext);
+      this.newExtension = '';
+    }
+     console.log('[WIDGET-SET-UP] add extensions', this.extensions)
+      // this.getExtensionsForBackend()
+  }
+
+  removeExtension(index: number): void {
+    this.extensions.splice(index, 1);
+    console.log('[WIDGET-SET-UP] extensions remove', this.extensions)
+    // if(this.extensions.length === 0) {
+    //   this.selectedOption = 'all'
+    // }
+    // this.getExtensionsForBackend()
+  }
+
+  // -----------------------------------------------------------------------
   //  @ Emoji Button
   // -----------------------------------------------------------------------
   toggleDiplayEmojiButton(event) {
@@ -4632,6 +4689,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       delete this.widgetObj['showAudioRecorderFooterButton'];
       // this.widgetService.updateWidgetProject(this.widgetObj)
       // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+
+    this.widgetObj['allowedUploadExtentions'] = this.allowedUploadExtentions;
+    console.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
+
+     console.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
+     if(this.selectedOption === 'all') {
+       this.widgetObj['allowedUploadExtentions'] = '*/*'
+     } else {
+      
+      this.widgetObj['allowedUploadExtentions'] = this.extensions.join(',')
     }
 
     this.widgetService.updateWidgetProject(this.widgetObj)
