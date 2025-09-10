@@ -799,7 +799,10 @@ export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: st
     { name: "GPT-3 (DaVinci)",                  value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
     { name: "GPT-3.5 Turbo",                    value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",            status: "active"    },
     { name: "OpenAI o1-mini",                   value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",                  status: "active"    },
-    { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    }
+    { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    },
+    { name: "GPT-5",                            value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
+    { name: "GPT-5-mini",                       value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
+    { name: "GPT-5-nano",                       value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    }
 ]
 
 export const CHANNELS_NAME = {

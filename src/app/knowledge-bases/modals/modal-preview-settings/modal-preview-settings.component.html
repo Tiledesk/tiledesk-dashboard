@@ -40,7 +40,8 @@
         </label>
         <ng-select appendTo="body" [items]="model_list" bindLabel="name" bindValue="value"
             placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" [clearable]="false" [searchable]="false"
-            [(ngModel)]="selectedModel" (change)="onSelectModel(selectedModel)">
+            [(ngModel)]="selectedModel" 
+            (change)="onSelectModel(selectedModel)">
 
             <ng-template ng-label-tmp let-item="item">
                 <div style="display: flex; flex-direction: row; align-items: center;">
@@ -186,7 +187,8 @@
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
                 <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="temperature"
-                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units">
+                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units" [disabled]="temperature_slider_disabled"
+                    [ngClass]="{'mat-slider-disabled': temperature_slider_disabled}">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
