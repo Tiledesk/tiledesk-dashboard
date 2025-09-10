@@ -757,7 +757,10 @@
     "Flows": "Akışlar",
     "Models": "Modeller",
     "Optional": "isteğe bağlı",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Çözülen konuşmaları sil",
+=======
+>>>>>>> master
     "DisableMember":"Üyeyi devre dışı bırak",
     "TheMemberWillBeDeleted": "<b> {{pu_name}}</b> üyesi silinecek",
     "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> üyesi devre dışı bırakılacak",
@@ -817,12 +820,15 @@
     "DiscardQuestion": "Soruyu at",
     "AreYouSureYouWantToDiscard": "Bu soruyu atmak istediğinizden emin misiniz",
     "Discard": "At",
+<<<<<<< HEAD
     "EditLoadDistribution": "Yük Dağıtımını Düzenle",
     "EditPercentageFor":"Yüzdeyi düzenle",
     "Percentage": "Yüzde",
     "CurrentTotal":"Mevcut toplam",
     "Exceeds100":"%100'ü aşıyor",
     "PercentageGroupName": "Yüzde {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1175,7 +1181,10 @@
         "FromTheProject": "projeden",
         "Confirm": "Teyit etmek",
         "RestoreMember": "Üyeyi Geri Yükle",
+<<<<<<< HEAD
         "DisableMember": "Üyeyi devre dışı bırak",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Kullanıcı davet edildi.",
         "Continue": "Devam et",
         "PendingInvitation": "Bekleyen davetler",
@@ -2044,7 +2053,11 @@
         "Import": "İçe aktarmak",
         "AddKbURL": "webbadresser",
         "AddKbText": "Oformatterad text",
+<<<<<<< HEAD
         "AddKbSitemap": "Site haritası",
+=======
+        "AddKbSitemap": "Webbplatskarta",
+>>>>>>> master
         "LoadMore": "Daha fazlasını yükle",
         "Loading": "yükleniyor",
         "YouCanAddKBUrlsLimit": "URL'ler şu değerden küçük olmalıdır: ",
@@ -2109,7 +2122,11 @@
         "Standard": "Standart",
         "TotalQuestions": "Toplam sorular",
         "UnansweredQuestions": "Cevaplanmamış sorular",
+<<<<<<< HEAD
         "Contents": "İçerikler",
+=======
+         "Contents": "İçerikler",
+>>>>>>> master
         "UnansweredQuestionsDesc": "Bunlar kullanıcıların sorduğu ancak bilgi tabanınızın cevaplayamadığı sorulardır. Onları KB'nize ekleyebilir veya atabilirsiniz.",
         "StandardKbDesc": "Sorgunuzun anlamına dayalı sonuçlar bulur - AI anlayışını kullanarak en iyi çaba.",
         "HybridKbDesc": "Daha doğru ve tam sonuçlar için anlam ve anahtar kelime eşleştirmesini birleştirir.",
@@ -2642,6 +2659,7 @@
     "CustomizeThePreChatForm": "Sohbet öncesi formu özelleştirin",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Müşterilerden talep ettiğiniz bilgileri ön sohbet formunda alan kaldırarak veya ekleyerek özelleştirin",
     "InvalidJSON": "Geçersiz JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Seçilen dosya geçerli JSON içermiyor.",
     "EmailNotAvailable": "E-posta kullanılamıyor",
     "Project": "Proje",
     "YourProjects": "Projeleriniz",

@@ -756,7 +756,10 @@
     "Flows": "Oqim",
     "Models": "Modellar",
     "Optional": "ixtiyoriy",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Yechilgan suhbatlarni oʻchirib tashlang",
+=======
+>>>>>>> master
     "DisableMember":"A'zoni o'chirib qo'yish",
     "TheMemberWillBeDeleted": "<b> {{pu_name}}</b> a'zosi o'chirib tashlanadi",
     "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> aʼzosi oʻchirib qoʻyiladi",
@@ -815,12 +818,15 @@
     "DiscardQuestion": "Savolni tashlash",
     "AreYouSureYouWantToDiscard": "Bu savolni tashlashni xohlaysizmi",
     "Discard": "Tashlash",
+<<<<<<< HEAD
     "EditLoadDistribution": "Yuk taqsimotini tahrirlash",
     "EditPercentageFor":"uchun foizni tahrirlash",
     "Percentage": "Foiz",
     "CurrentTotal":"Joriy jami",
     "Exceeds100":"100% dan oshadi",
     "PercentageGroupName": "Foiz {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1173,7 +1179,10 @@
         "FromTheProject": "loyihadan",
         "Confirm": "Tasdiqlang",
         "RestoreMember": "A'zoni tiklash",
+<<<<<<< HEAD
         "DisableMember": "A'zoni o'chirib qo'yish",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Foydalanuvchi taklif qilindi.",
         "Continue": "Davom eting",
         "PendingInvitation": "Kutilayotgan taklifnomalar",
@@ -2134,6 +2143,7 @@
         "RestartTour": "Turni qayta boshlash",
         "TheLLMYourAgentWillUse":"Agentingiz ma'lumotlarni olish va kompilyatsiya qilish uchun foydalanadigan katta til modeli (LLM).",
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Bitta javob yaratish uchun ishlatilishi mumkin bo'lgan tokenlarning maksimal soni",
+<<<<<<< HEAD
         "ControlTheRandomnessOfTheAnswer":"LLM taqdim etgan javobning tasodifiyligini nazorat qiling.",
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Javobni yaratish uchun LLM ga kontekst sifatida qancha maʼlumot manbasi boʻlaklari uzatilishini aniqlaydi. LLM chalkashmaslik uchun 2-4 ni tavsiya qilamiz.",
         "TheMaximumSupportedChunksNumberDependsByTheModel":"Maksimal qo'llab-quvvatlanadigan bo'laklar soni modelga bog'liq.",
@@ -2164,6 +2174,38 @@
         "ThisIsTheDefaultKB": "Bu standart bilimlar bazasi",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ana xolos"
+=======
+         "ControlTheRandomnessOfTheAnswer":"LLM taqdim etgan javobning tasodifiyligini nazorat qiling.",
+         "DeterminesHowManyChunksWillBePassedToTheLLM":"Javobni yaratish uchun LLM ga kontekst sifatida qancha maʼlumot manbasi boʻlaklari uzatilishini aniqlaydi. LLM chalkashmaslik uchun 2-4 ni tavsiya qilamiz.",
+         "TheMaximumSupportedChunksNumberDependsByTheModel":"Maksimal qo'llab-quvvatlanadigan bo'laklar soni modelga bog'liq.",
+         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Tizimga javoblaringizni yaratishda o'ynashi kerak bo'lgan rolni bering.",
+         "Deterministic":"Deterministik",
+         "Random":"Tasodifiy",
+         "AdvancedOptions":"Kengaytirilgan variantlar",
+         "IndexingType":"Indekslash turi",
+         "ExtractTags": "Chiqarish teglari (majburiy)",
+         "TypeAndPressEnter": "kiriting va Enter tugmasini bosing",
+         "UnwantedTags": "Keraksiz teglar",
+         "UnwantedClassnames":"Keraksiz sinf nomlari",
+         "AdvancedContext":"Kengaytirilgan kontekst",
+         "AdvancedContextDesc1":"Bu erda siz eng ko'p nazoratga egasiz. Ehtiyot bo'ling, mahalliy so'rov butunlay o'chiriladi.",
+         "AdvancedContextDesc2":"Agar u qoniqarli javob topmasa, unga <NOANS> bilan javob berishni buyuring va har doim {context} bilan yoping.",
+         "GetContentsSources": "Tarkib manbalarini oling",
+         "GetContentsSourcesDesc1":"Javobni yaratishda foydalaniladigan hujjatlarning aniq manbalarini olish uchun ushbu parametrdan foydalaning.",
+         "GetContentsSourcesDesc2": "Shuni yodda tutingki, bu odatiy KB olishdan ko'ra ko'proq tokenlarni iste'mol qiladi.",
+         "GetContentsSourcesDesc3":"Agar kerak bo'lsa, iqtiboslarni olish uchun maksimal tokenlar kvotasi avtomatik ravishda o'rnatiladi.",
+         "Hybrid": "Gibrid",
+         "HybridSearch": "Gibrid qidiruv",
+         "FullText":"To'liq matn",
+         "Semantic": "Semantik",
+         "HybridSearchDescr":"Semantik o'xshashlikni kalit so'z bilan aniq moslashtirish orqali natijalar qanday olinishini boshqaradi.",
+         "ChunksUsedForTheAnswer": "Javob uchun ishlatiladigan bo'laklar",
+         "ThisKBIsEnabledForHybridSearch":  "Ushbu bilimlar bazasi gibrid qidiruv uchun yoqilgan",
+         "ThisKBUsesSemanticSearch":"Ushbu bilimlar bazasi semantik qidiruvdan foydalanadi",
+         "ThisIsTheDefaultKB": "Bu standart bilimlar bazasi",
+         "-----------------------------": "-----------------------------",
+         "ThatsIsAll": "Ana xolos"
+>>>>>>> master
     },
     "Never":" Hech qachon",
     "Daily":"har kuni",
@@ -2640,6 +2682,7 @@
     "CustomizeThePreChatForm": "Oldindan suhbat shaklini moslashtiring",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Maydonlarni olib tashlash yoki qo'shish orqali chatdan oldingi shaklda mijozlardan so'ragan ma'lumotlarni moslashtiring",
     "InvalidJSON": "Yaroqsiz JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Tanlangan faylda yaroqli JSON mavjud emas.",
     "EmailNotAvailable": "Elektron pochta mavjud emas",
     "Project": "Loyiha",
     "YourProjects": "Sizning loyihalaringiz",

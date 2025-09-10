@@ -419,9 +419,16 @@
                 <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
                 <hr class='ng2-tooltip-divider-line'>
                 <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
+<<<<<<< HEAD
                   <p class='ng2-comment-sender'> 
                    <!-- {{ request?.msgsArray[0]?.senderFullname}} -->  
                    {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
+=======
+                  <p class='ng2-comment-sender'>  
+                    <!-- {{ request?.msgsArray[0]?.senderFullname}}  -->
+                    {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
+
+>>>>>>> master
                   </p>
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
                 </div>
@@ -786,8 +793,13 @@
                     {{ request?.requester_fullname_initial }}
                   </span>
 
+<<<<<<< HEAD
                   <!-- -->
                   <div class="verified-user-icon-wpr"  *ngIf="request?.requester_is_verified === true">
+=======
+                  <!--  -->
+                  <div class="verified-user-icon-wpr" *ngIf="request?.requester_is_verified === true">
+>>>>>>> master
                     <svg class="requester-verified--icon" version="1.1" id="Livello_1"
                       xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                       viewBox="0 0 26.6 26.6" width="17" height="17" xml:space="preserve">
@@ -823,8 +835,13 @@
                     'requester-not-has-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone,
                     'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.phone === request?.lead?.fullname)
                     }">
+<<<<<<< HEAD
                       <!--  {{ request?.lead?.fullname}} --> 
                       {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
+=======
+                    <!-- {{ request?.lead?.fullname}} -->
+                    {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
+>>>>>>> master
                   </span>
 
                   <span *ngIf="!request?.lead?.fullname"

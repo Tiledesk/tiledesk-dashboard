@@ -219,7 +219,11 @@
     "ChangeAvailabilityErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento dello stato",
     "RemoveProjectUserSuccessNoticationMsg": "Membro rimosso con successo",
     "RemoveProjectUserErrorNoticationMsg": "Si è verificato un errore durante la rimozione del membro",
+<<<<<<< HEAD
     "DisableProjectUserSuccessNoticationMsg": "Membro di squadra disabilitato correttamente",
+=======
+     "DisableProjectUserSuccessNoticationMsg": "Membro disabilitato correttamente",
+>>>>>>> master
     "DisableProjectUserErrorNoticationMsg": "Si è verificato un errore durante la disabilitazione del membro",
     "EditContactSuccessNoticationMsg": "Contatto aggiornato con successo",
     "EditContactErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento del contatto",
@@ -755,10 +759,16 @@
     "Flows": "Flussi",
     "Models": "Modelli",
     "Optional": "opzionale",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Elimina conversazioni risolte",
     "DisableMember":"Disabilita membro",
     "TheMemberWillBeDeleted": "Il membro <b> {{pu_name}}</b> verrà eliminato",
     "TheMemberWillBeDisabled": "Il membro <b> {{pu_name}}</b> verrà disabilitato",
+=======
+    "DisableMember":"Disabilita membro",
+    "TheMemberWillBeDeleted": "Il membro <b> {{pu_name}}</b> verrà eliminato",
+    "TheMemberWillBeDisabled": "Il membro <b>{{pu_name}}</b> verrà disabilitato",
+>>>>>>> master
     "TheMemberWillBeRestored": "Il membro <b>{{pu_name}}</b> verrà ripristinato",
     "TheGroupWillBeRestored": "Il gruppo <b>{{group_name}}</b> verrà ripristinato",
     "Disable":"Disabilita",
@@ -815,12 +825,15 @@
     "DiscardQuestion": "Scarta domanda",
     "AreYouSureYouWantToDiscard": "Sei sicuro di voler scartare questa domanda",
     "Discard": "Scarta",
+<<<<<<< HEAD
     "EditLoadDistribution": "Modifica distribuzione del carico",
     "EditPercentageFor":"Modifica percentuale per",
     "Percentage": "Percentuale",
     "CurrentTotal":"Totale attuale",
     "Exceeds100": "Supera il 100%",
     "PercentageGroupName": "Percentuale {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1173,7 +1186,10 @@
         "FromTheProject": "dal progetto",
         "Confirm": "Conferma",
         "RestoreMember": "Ripristina membro",
+<<<<<<< HEAD
         "DisableMember": "Disabilita membro",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "L'utente è stato invitato.",
         "Continue": "Continua",
         "PendingInvitation": "Inviti in sospeso",
@@ -2651,6 +2667,7 @@
     "CustomizeThePreChatForm": "Personalizza il modulo di pre-chat",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Personalizza le informazioni che richiedi ai clienti nel modulo di pre-chat rimuovendo o aggiungendo campi",
     "InvalidJSON": "JSON non valido",
+    "TheSelectedFileDoesNotContainValidJSON":"Il file selezionato non contiene JSON valido.",
     "EmailNotAvailable": "Email non disponibile",
     "Project": "Progetto",
     "YourProjects": "I tuoi progetti",

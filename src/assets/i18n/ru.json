@@ -756,7 +756,10 @@
     "Flows": "Потоки",
     "Models": "Модели",
     "Optional": "необязательный",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Удалить решенные разговоры",
+=======
+>>>>>>> master
     "DisableMember":"Отключить участника",
     "TheMemberWillBeDeleted": "Участник <b> {{pu_name}}</b> будет удален",
     "TheMemberWillBeDisabled": "Участник <b>{{pu_name}}</b> будет отключен",
@@ -816,12 +819,15 @@
     "DiscardQuestion": "Отклонить вопрос",
     "AreYouSureYouWantToDiscard": "Вы уверены, что хотите отклонить этот вопрос",
     "Discard": "Отклонить",
+<<<<<<< HEAD
     "EditLoadDistribution": "Редактировать распределение нагрузки",
     "EditPercentageFor":"Процент редактирования для",
     "Percentage": "Процент",
     "CurrentTotal":"Текущий итог",
     "Exceeds100":"Превышает 100%",
     "PercentageGroupName": "Процент {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1174,7 +1180,10 @@
         "FromTheProject": "из проекта",
         "Confirm": "Подтверждать",
         "RestoreMember": "Восстановить участника",
+<<<<<<< HEAD
         "DisableMember": "Desativar membro",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Пользователь был приглашен.",
         "Continue": "Продолжать",
         "PendingInvitation": "Ожидающие приглашения",
@@ -2641,6 +2650,7 @@
     "CustomizeThePreChatForm": "Настройте форму предварительного чата",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Настройте информацию, которую вы запрашиваете у клиентов в форме предварительного чата, удаляя или добавляя поля",
     "InvalidJSON": "Неверный JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Выбранный файл не содержит допустимого JSON.",
     "EmailNotAvailable": "Электронная почта недоступна",
     "Project": "Проект",
     "YourProjects": "Ваши проекты",

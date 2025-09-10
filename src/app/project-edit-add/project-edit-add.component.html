@@ -179,6 +179,37 @@
                           </div>
 
                         </div>
+<<<<<<< HEAD
+=======
+                        <!-- <span *ngIf="projectName_toUpdate?.length > 0 && projectName_toUpdate?.length < 4"
+                          style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+                          {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+                        </span> -->
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label class="col-sm-2 custom-label">
+                        {{ "ProjectEditPage.ProjectId" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
+                      </div>
+                    </div>
+
+                    <!-- ----------------------------------- -->
+                    <!-- Button update project name -->
+                    <!-- ----------------------------------- -->
+                    <div class="row">
+                      <div class="col-sm-2"></div>
+                      <div class="col-sm-8">
+                        <button id="update-project-name" class="btn btn-tdblu-no-boxshadow" (click)="edit()"
+                          [disabled]="DISABLE_UPDATE_BTN === true || projectName_toUpdate?.length < 2"
+                          style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                          {{ "ProjectEditPage.Update" | translate }}
+                        </button>
+
+>>>>>>> master
                       </div>
 
 

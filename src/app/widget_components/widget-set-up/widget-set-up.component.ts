@@ -37,12 +37,16 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+<<<<<<< HEAD
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import emojiRegex from 'emoji-regex';
 import { MatDialog } from '@angular/material/dialog';
 import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelist-modal/widget-domains-withelist-modal.component';
+=======
+import emojiRegex from 'emoji-regex';
+>>>>>>> master
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -2235,7 +2239,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.calloutTitleForPreview = calloutTitle;
     this.callout_emoticon = null;
     // const emojiRegex = require('emoji-regex');
+<<<<<<< HEAD
     
+=======
+>>>>>>> master
 
     const regex = emojiRegex();
     let match;

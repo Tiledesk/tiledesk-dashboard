@@ -797,12 +797,19 @@ getProjectUserRole() {
           projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
           // if (projectUser_from_ws_subscription['profileStatus']) {
+<<<<<<< HEAD
           //   console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus_rt ', projectuser['profileStatus_rt'])
           //   projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
           // }
 
           if ('profileStatus' in projectUser_from_ws_subscription) {
             console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+=======
+          //  projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // }
+          if ('profileStatus' in projectUser_from_ws_subscription) {
+            // console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+>>>>>>> master
             projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
           }
 
@@ -1292,7 +1299,7 @@ getProjectUserRole() {
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      // console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1405,6 +1412,7 @@ getProjectUserRole() {
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
+<<<<<<< HEAD
     console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     // this.wsRequestsService.wsRequestsList$
     //   .pipe(
@@ -1412,6 +1420,10 @@ getProjectUserRole() {
     //   )
 
     this.permissionReady$
+=======
+    //  this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    this.wsRequestsService.wsRequestsList$
+>>>>>>> master
       .pipe(
         filter(ready => ready),         // ✅ only continue when true
         take(1),                        // ✅ only use the first `true`
@@ -1419,9 +1431,13 @@ getProjectUserRole() {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequests) => {
+<<<<<<< HEAD
         console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         console.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.ROLE ', this.ROLE);
         console.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.PERMISSIONS ', this.PERMISSIONS);
+=======
+        //  this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+>>>>>>> master
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1762,10 +1778,19 @@ getProjectUserRole() {
 
         this.ws_requests.forEach((request) => {
 
+<<<<<<< HEAD
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
           if (request.lead.email && !isValidEmail(request.lead.email)) {
             request.lead.email = null; // Or 'N/A', depending on what you want to display
           }
+=======
+          this.logger.log('[WS-REQUESTS-LIST] - request ', request) 
+
+          if (request.lead.email && !isValidEmail(request.lead.email)) {
+              request.lead.email = null; // Or 'N/A', depending on what you want to display
+          }
+
+>>>>>>> master
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
@@ -1995,8 +2020,13 @@ getProjectUserRole() {
         //  Sort requests
         // ----------------------------------------- 
         if (this.ws_requests) {
+<<<<<<< HEAD
 
           // this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+=======
+  
+          this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+>>>>>>> master
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {

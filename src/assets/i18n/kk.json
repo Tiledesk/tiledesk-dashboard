@@ -755,7 +755,10 @@
     "Flows": "Ағындар",
     "Models": "Модельдер",
     "Optional": "міндетті емес",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Шешілген сөйлесулерді жою",
+=======
+>>>>>>> master
     "DisableMember":"Мүшені өшіру",
     "TheMemberWillBeDeleted": "<b> {{pu_name}}</b> мүшесі жойылады",
     "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> мүшесі өшіріледі",
@@ -815,12 +818,15 @@
     "DiscardQuestion": "Сұрақты тастау",
     "AreYouSureYouWantToDiscard": "Бұл сұрақты тастағыңыз келетініне сенімдісіз бе",
     "Discard": "Тастау",
+<<<<<<< HEAD
     "EditLoadDistribution": "Жүктемені бөлуді өңдеу",
     "EditPercentageFor":"үшін пайызды өңдеу",
     "Percentage": "Пайыз",
     "CurrentTotal":"Ағымдағы жалпы",
     "Exceeds100":"100% асады",
     "PercentageGroupName": "Пайыз {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1189,7 +1195,10 @@
         "FromTheProject": "жобадан",
         "Confirm": "Растау",
         "RestoreMember": "Мүшені қалпына келтіру",
+<<<<<<< HEAD
         "DisableMember": "Мүшені өшіру",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Пайдаланушы шақырылды.",
         "Continue": "Жалғастыру",
         "PendingInvitation": "Күтудегі шақырулар",
@@ -2110,7 +2119,11 @@
         "TheColumnsMustBeSeparatedByTheDelimiter": "Бағандар «Бөлінетін бағандар» енгізу өрісінде көрсетілген бөлгішпен бөлінуі керек",
         "AsStartingPointYouCanDownloadTheExampleFile": "Бастапқы нүкте ретінде мысал файлын жүктеп алуға болады",
         "RefreshRate": "Жаңарту жылдамдығы",
+<<<<<<< HEAD
         "URLsSyncFrequency": "URL(лар) синхрондау жиілігі",
+=======
+        "URLsSyncFrequency":"URL(лар) синхрондау жиілігі",
+>>>>>>> master
         "ImportContents": "Мазмұнды импорттау",
         "ExportContents": "Мазмұнды экспорттау",
         "OnlyUrlTextFaqWillBeExported":"Тек URL(лар), мәтін және жиі қойылатын сұрақтар түріндегі мазмұндар экспортталады. PDF және DOCX мазмұны экспортталмайды.",
@@ -2167,9 +2180,15 @@
         "AdvancedContextDesc1": "Мұнда сізде ең көп бақылау бар. Сақ болыңыз, жергілікті шақыру толығымен қайта жазылады.",
         "AdvancedContextDesc2": "Сұрау қанағаттанарлық жауап таппаған кезде <NOANS> арқылы жауап беруге нұсқау беріңіз және әрқашан {context} арқылы жабыңыз.",
         "GetContentsSources": "Мазмұн көздерін алыңыз",
+<<<<<<< HEAD
         "GetContentsSourcesDesc1": "Жауапты жасау үшін пайдаланылған құжаттардың нақты көздерін алу үшін осы опцияны пайдаланыңыз.",
         "GetContentsSourcesDesc2": "Бұл әдеттегі КБ алудан гөрі көбірек таңбалауыштарды тұтынатынын есте сақтаңыз.",
         "GetContentsSourcesDesc3": "Қажет болса, дәйексөздерді алу үшін максималды белгілер квотасы автоматты түрде реттеледі.",
+=======
+        "GetContentsSourcesDesc1":"Жауапты жасау үшін пайдаланылған құжаттардың нақты көздерін алу үшін осы опцияны пайдаланыңыз.",
+        "GetContentsSourcesDesc2":"Бұл әдеттегі КБ алудан гөрі көбірек таңбалауыштарды тұтынатынын есте сақтаңыз.",
+        "GetContentsSourcesDesc3":"Қажет болса, дәйексөздерді алу үшін максималды белгілер квотасы автоматты түрде реттеледі.",
+>>>>>>> master
         "Hybrid": "Гибридті",
         "HybridSearch": "Гибридті іздеу",
         "FullText":"Толық мәтін",
@@ -2657,6 +2676,7 @@
     "CustomizeThePreChatForm": "Алдын ала сөйлесу пішінін теңшеңіз",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Өрістерді жою немесе қосу арқылы алдын ала чат пішінінде тұтынушылардан сұрайтын ақпаратты теңшеңіз",
     "InvalidJSON": "Жарамсыз JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Таңдалған файлда жарамды JSON жоқ.",
     "EmailNotAvailable": "Электрондық пошта қолжетімді емес",
     "Project": "Жоба",
     "YourProjects": "Сіздің жобаларыңыз",

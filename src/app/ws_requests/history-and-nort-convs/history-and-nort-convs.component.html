@@ -1393,7 +1393,13 @@
                       <hr class='ng2-tooltip-divider-line'>
                       <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
                         <p class='ng2-comment-sender'> 
+<<<<<<< HEAD
                         <!--   {{ request?.msgsArray[0]?.senderFullname}} -->
+=======
+                          
+                          <!-- {{ request?.msgsArray[0]?.senderFullname}}  -->
+
+>>>>>>> master
                           {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
                         </p>
                         <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
@@ -1770,6 +1776,7 @@
                       <span class="requester-email"
                         [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
                         {{ request?.lead?.email }}
+                       <!-- {{ isValidEmail(request?.lead?.email)? request?.lead?.email: 'N/A'   }} -->
                       </span>
 
                       <span class="requester-email-undefined"

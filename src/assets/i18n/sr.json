@@ -756,7 +756,10 @@
     "Flows": "Токови",
     "Models": "Модели",
     "Optional": "опционо",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Обриши решене разговоре",
+=======
+>>>>>>> master
     "DisableMember":"Онемогући члана",
     "TheMemberWillBeDeleted": "Члан <b> {{pu_name}}<b> ће бити обрисан",
     "TheMemberWillBeDisabled": "Члан <b>{{pu_name}}</b> ће бити онемогућен",
@@ -816,12 +819,15 @@
     "DiscardQuestion": "Одбаци питање",
     "AreYouSureYouWantToDiscard": "Да ли сте сигурни да желите да одбаците ово питање",
     "Discard": "Одбаци",
+<<<<<<< HEAD
     "EditLoadDistribution": "Уреди расподелу оптерећења",
     "EditPercentageFor":"Измени проценат за",
     "Percentage": "Проценат",
     "CurrentTotal":"Тренутни укупан износ",
     "Exceeds100":"Прелази 100%",
     "PercentageGroupName": "Проценат {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1174,7 +1180,10 @@
         "FromTheProject": "из пројекта",
         "Confirm": "Потврди",
         "RestoreMember": "Врати члана",
+<<<<<<< HEAD
         "DisableMember": "Онемогући члана",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Корисник је позван.",
         "Continue": "Настави",
         "PendingInvitation": "Позивнице на чекању",
@@ -2642,6 +2651,7 @@
     "CustomizeThePreChatForm": "Прилагодите образац пре ћаскања",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Прилагодите информације које тражите од клијената у обрасцу пре ћаскања тако што ћете уклонити или додати поља",
     "InvalidJSON": "Неважећи ЈСОН",
+    "TheSelectedFileDoesNotContainValidJSON":"Изабрана датотека не садржи важећи JSON.",
     "EmailNotAvailable": "Е-пошта није доступна",
     "Project": "Пројекат",
     "YourProjects": "Ваши пројекти",

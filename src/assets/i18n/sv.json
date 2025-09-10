@@ -755,9 +755,14 @@
     "Flows": "Flöden",
     "Models": "Modeller",
     "Optional": "frivillig",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Ta bort lösta konversationer",
     "DisableMember":"Inaktivera medlem",
      "TheMemberWillBeDeleted": "Medlemmen <b> {{pu_name}}</b> kommer att raderas",
+=======
+    "DisableMember":"Inaktivera medlem",
+    "TheMemberWillBeDeleted": "Medlemmen <b> {{pu_name}}</b> kommer att raderas",
+>>>>>>> master
     "TheMemberWillBeDisabled": "Medlemmen <b>{{pu_name}}</b> kommer att inaktiveras",
     "TheMemberWillBeRestored":"Medlemmen <b>{{pu_name}}</b> kommer att återställas",
     "TheGroupWillBeRestored": "Gruppen <b>{{group_name}}</b> kommer att återställas",
@@ -815,12 +820,15 @@
     "DiscardQuestion": "Kassera fråga",
     "AreYouSureYouWantToDiscard": "Är du säker på att du vill kassera den här frågan",
     "Discard": "Kassera",
+<<<<<<< HEAD
     "EditLoadDistribution": "Redigera lastfördelning",
     "EditPercentageFor":"Redigera procentandel för",
     "Percentage": "Procentandel",
     "CurrentTotal":"Nuvarande totalsumma",
     "Exceeds100":"Överstiger 100%",
     "PercentageGroupName": "Procentandel {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1189,7 +1197,10 @@
         "FromTheProject": "från projektet",
         "Confirm": "Bekräfta",
         "RestoreMember": "Återställ medlem",
+<<<<<<< HEAD
         "DisableMember": "Inaktivera medlem",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Användaren har blivit inbjuden.",
         "Continue": "Fortsätta",
         "PendingInvitation": "Väntande inbjudningar",
@@ -2110,7 +2121,11 @@
         "TheColumnsMustBeSeparatedByTheDelimiter": "Kolumnerna måste separeras med avgränsaren som anges i inmatningsfältet \"Kolumner avgränsade av\".",
         "AsStartingPointYouCanDownloadTheExampleFile": "Som utgångspunkt kan du ladda ner exempelfilen",
         "RefreshRate": "Uppdateringshastighet",
+<<<<<<< HEAD
         "URLsSyncFrequency": "URL(er) synkroniseringsfrekvens",
+=======
+        "URLsSyncFrequency":"URL(er) synkroniseringsfrekvens",
+>>>>>>> master
         "ImportContents": "Importera innehåll",
         "ExportContents": "Exportera innehåll",
         "OnlyUrlTextFaqWillBeExported":"Endast URL(er), text och innehåll av typen FAQ kommer att exporteras. PDF- och DOCX-innehåll kommer inte att exporteras.",
@@ -2168,8 +2183,13 @@
         "AdvancedContextDesc2": "Se till att instruera din uppmaning att svara med <NOANS> när den inte hittar ett tillfredsställande svar och stäng alltid med {context}",
         "GetContentsSources": "Skaffa innehållskällor",
         "GetContentsSourcesDesc1": "Använd det här alternativet för att få korrekta dokumentkällor som används för att generera svaret.",
+<<<<<<< HEAD
         "GetContentsSourcesDesc2": "Tänk på att detta förbrukar fler tokens än vanlig KB-hämtning.",
         "GetContentsSourcesDesc3": "Max-tokens kvot kommer att justeras automatiskt för att få citat om det behövs.",
+=======
+        "GetContentsSourcesDesc2":"Tänk på att detta förbrukar fler tokens än vanlig KB-hämtning.",
+        "GetContentsSourcesDesc3":"Max-tokens kvot kommer att justeras automatiskt för att få citat om det behövs.",
+>>>>>>> master
         "Hybrid": "Hybrid",
         "HybridSearch": "Hybridsökning",
         "FullText":"Fulltext",
@@ -2657,6 +2677,7 @@
     "CustomizeThePreChatForm": "Anpassa förchattformuläret",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Anpassa informationen du begär från kunder i förchattformuläret genom att ta bort eller lägga till fält",
     "InvalidJSON": "Ogiltig JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Den valda filen innehåller inte giltig JSON.",
     "EmailNotAvailable": "E-post inte tillgänglig",
     "Project": "Projekt",
     "YourProjects": "Dina projekt",

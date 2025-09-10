@@ -696,10 +696,13 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
         if (lead) {
           this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+
+
           if (lead.email && !isValidEmail(lead.email)) {
             lead.email = null; // Or 'N/A', depending on what you want to display
           }
           this.contact_details = lead;
+
 
           if (this.contact_details && this.contact_details.lead_id) {
             this.lead_id = this.contact_details.lead_id;

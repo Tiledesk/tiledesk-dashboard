@@ -10,6 +10,7 @@
     </div>
 
 
+<<<<<<< HEAD
     <!-- <ng-container *ngIf="PERMISSION_TO_DELETE_NAMESPACE">  -->
         <div *ngIf="!selectedNamespace.default" class="delete-namespace-section">
             <div  *ngIf="kbsList?.length > 0" class="checkbox">
@@ -27,6 +28,16 @@
                 </label>
                 <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder=" {{ 'KbPage.NamespaceName' | translate }}" [disabled]="!deleteAlsoNamespace">
             </div>
+=======
+    <div *ngIf="!selectedNamespace?.default" class="delete-namespace-section">
+        <div  *ngIf="kbsList?.length > 0" class="checkbox">
+            <label [ngClass]="{'active--label': deleteAlsoNamespace}">
+                <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">
+               
+                <!-- Also delete the namespace -->
+                {{ 'KbPage.AlsoDeleteTheNamespace' | translate }}
+            </label>
+>>>>>>> master
         </div>
     <!-- </ng-container> -->
 

@@ -228,8 +228,13 @@ export class GroupService {
       })
     };
 
+<<<<<<< HEAD
      this.logger.log("this.TOKEN: ", this.TOKEN)
      this.logger.log("httpOptions: ", httpOptions)
+=======
+    this.logger.log("this.TOKEN: ", this.TOKEN)
+    this.logger.log("httpOptions: ", httpOptions)
+>>>>>>> master
 
     const url = this.GROUPS_URL + 'enable/' + id_group;
     this.logger.log('[GROUP-SERV] - GET GROUP BY ID - URL', url);

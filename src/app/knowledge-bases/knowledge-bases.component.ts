@@ -227,6 +227,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       { _id: '68b92286f81418001303bfcf', question: 'Where can I find my invoices?' }
     ]
 
+ 
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,

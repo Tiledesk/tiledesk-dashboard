@@ -482,7 +482,30 @@
                                   'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                   'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                   'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
+<<<<<<< HEAD
                                   </div>
+=======
+                              </div>
+                            </div>
+
+                            <!-- ---------------------------------------- -->
+                            <!-- Usecase No profile image -->
+                            <!-- ---------------------------------------- -->
+                            <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
+                              <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
+                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
+
+                                <span class="altenative-conv-avatar" style="line-height: 40px;">
+                                  {{ agent?.id_user?.fullname_initial }}
+                                </span>
+
+                          
+                                <div class="teammates-no-picture-status-icon"
+                                  [ngClass]="{
+                                        'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                        'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                        'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
+>>>>>>> master
                                 </div>
 
                                 <!-- ---------------------------------------- -->

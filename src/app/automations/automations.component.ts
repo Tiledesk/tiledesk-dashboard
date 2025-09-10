@@ -273,7 +273,7 @@ export class AutomationsComponent implements OnInit {
     this.showAutomationDetail = false;
   }
 
-  reload(target) {
+  _reload(target) {
     this.showSpinner = true;
     if (target === 'logs') {
       this.getLogs(this.selected_automation_id);
@@ -287,7 +287,8 @@ export class AutomationsComponent implements OnInit {
     }
   }
 
-  _reload(target) {
+ 
+  reload(target) {
  
   this.showSpinner = true;
 

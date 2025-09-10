@@ -755,12 +755,19 @@
     "Flows": "Flux",
     "Models": "Modèles",
     "Optional": "facultatif",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Supprimer les conversations résolues",
+=======
+>>>>>>> master
     "DisableMember":"Désactiver le membre",
     "TheMemberWillBeDeleted": "Le membre <b> {{pu_name}}</b> sera supprimé",
     "TheMemberWillBeDisabled": "Le membre <b>{{pu_name}}</b> sera désactivé",
     "TheMemberWillBeRestored":"Le membre <b>{{pu_name}}</b> sera restauré",
     "TheGroupWillBeRestored": "Le groupe <b>{{group_name}}</b> sera restauré",
+<<<<<<< HEAD
+=======
+    "Disable":"Désactiver",
+>>>>>>> master
     "AnErrorOccurredWhileRestoringTheTeammate":"Une erreur s'est produite lors de la restauration du coéquipier",
     "TeammateRestoredSuccessfully": "Restauration réussie du coéquipier",
     "WhatsAppBroadcasts": "Diffusions WhatsApp",
@@ -814,6 +821,7 @@
     "DiscardQuestion": "Rejeter la question",
     "AreYouSureYouWantToDiscard": "Êtes-vous sûr de vouloir rejeter cette question",
     "Discard": "Rejeter",
+<<<<<<< HEAD
     "Disable":"Désactiver",
     "EditLoadDistribution": "Modifier la répartition de la charge",
     "EditPercentageFor":"Modifier le pourcentage pour",
@@ -821,6 +829,8 @@
     "CurrentTotal":"Total actuel",
     "Exceeds100":"Dépasse 100%",
     "PercentageGroupName": "Pourcentage {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1173,7 +1183,10 @@
         "FromTheProject": "à partir du projet",
         "Confirm": "Confirmer",
         "RestoreMember": "Restaurer le membre",
+<<<<<<< HEAD
         "DisableMember": "Désactiver le membre",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "L'utilisateur a été invité.",
         "Continue": "Continuez",
         "PendingInvitation": "Invitations en attente",
@@ -2641,6 +2654,7 @@
     "CustomizeThePreChatForm": "Personnalisez le formulaire de pré-chat",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Personnalisez les informations que vous demandez aux clients dans le formulaire de pré-chat en supprimant ou en ajoutant des champs",
     "InvalidJSON": "JSON invalide",
+    "TheSelectedFileDoesNotContainValidJSON":"Le fichier sélectionné ne contient pas de JSON valide.",
     "EmailNotAvailable": "E-mail non disponible",
     "Project": "Projet",
     "YourProjects": "Tes projets",

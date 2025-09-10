@@ -755,7 +755,10 @@
     "Flows": "التدفقات",
     "Models": "نماذج",
     "Optional": "اختياري",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "حذف المحادثات المحلولة",
+=======
+>>>>>>> master
     "DisableMember":"تعطيل العضو",
     "TheMemberWillBeDeleted": "سيتم حذف العضو <b> {{pu_name}}</b>",
     "TheMemberWillBeDisabled": "سيتم تعطيل العضو <b>{{pu_name}}</b>",
@@ -780,7 +783,11 @@
     "Rejected": "المرفوضة",
     "Failed": "الفاشلة",
     "SentTo": "تم الإرسال إلى",
+<<<<<<< HEAD
     "read": "مقروء",
+=======
+      "read": "مقروء",
+>>>>>>> master
     "delivered": "تم التوصيل",
     "sent": "تم الإرسال",
     "accepted": "مقبول",
@@ -815,12 +822,15 @@
     "DiscardQuestion": "تجاهل السؤال",
     "AreYouSureYouWantToDiscard": "هل أنت متأكد أنك تريد تجاهل هذا السؤال",
     "Discard": "تجاهل",
+<<<<<<< HEAD
     "EditLoadDistribution": "تعديل توزيع الحمل",
     "EditPercentageFor":"تعديل النسبة المئوية لـ",
     "Percentage": "النسبة المئوية",
     "CurrentTotal":"الإجمالي الحالي",
     "Exceeds100": "يتجاوز ١٠٠٪",
     "PercentageGroupName": "النسبة المئوية {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1174,7 +1184,10 @@
         "FromTheProject": "من المشروع",
         "Confirm": "تأكيد",
         "RestoreMember": "استعادة العضو",
+<<<<<<< HEAD
         "DisableMember": "تعطيل العضو",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "تمت دعوة المستخدم.",
         "Continue": "يكمل",
         "PendingInvitation": "الدعوات المعلقة",
@@ -1243,7 +1256,11 @@
         "TheGroupIsAssociatedWithTheDepartment": "المجموعة مرتبطة بقسم {{ depts_name }}.",
         "TheGroupIsAssociatedWithDepartments": "المجموعة مرتبطة بالأقسام {{ depts_name }}.",
         "DisassociateTheGroup": "قم بإزالة أي ارتباطات بالتوجيه أو الأقسام قبل حذف المجموعة.",
+<<<<<<< HEAD
          "DisassociateTheGroupBeforeToDisable": "قم بإزالة أي ارتباطات مع التوجيه أو الأقسام قبل تعطيلها.",
+=======
+        "DisassociateTheGroupBeforeToDisable": "قم بإزالة أي ارتباطات مع التوجيه أو الأقسام قبل تعطيلها.",
+>>>>>>> master
         "TheGroupWilBeDeleted": "سيتم حذف المجموعة <b>{{group_name}</b>", 
         "TheGroupWilBeDisabled": "سيتم تعطيل المجموعة <b>{{group_name}</b>",
         "DisableGroup": "تعطيل المجموعة",
@@ -2642,6 +2659,7 @@
     "CustomizeThePreChatForm": "تخصيص نموذج ما قبل الدردشة",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "خصص المعلومات التي تطلبها من العملاء في نموذج ما قبل الدردشة عن طريق إزالة الحقول أو إضافتها",
     "InvalidJSON": "JSON غير صالح",
+    "TheSelectedFileDoesNotContainValidJSON":"الملف المحدد لا يحتوي على JSON صالح.",
     "EmailNotAvailable": "البريد الإلكتروني غير متوفر",
     "Project": "المشروع",
     "YourProjects": "مشاريعك",

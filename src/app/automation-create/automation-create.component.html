@@ -48,11 +48,9 @@
                                             [clearable]="false" 
                                             [searchable]=false
                                             [(ngModel)]="templateName" 
-                                            [items]="templates_list" 
-                                            bindLabel="name"
+                                            [items]="templates_list" bindLabel="name"
                                             bindValue="name" 
-                                            placeholder="{{ 'ChooseTemplate' | translate}}" 
-                                            style="width: 250px;"
+                                            placeholder="{{ 'ChooseTemplate' | translate}}" style="width: 250px;"
                                             (change)="onSelectTemplate()">
                                         </ng-select>
 

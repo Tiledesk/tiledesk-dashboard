@@ -1,5 +1,89 @@
 # tiledesk-dashboard
 
+### 2.7.130
+- Adds links to documentations
+- Adds translations
+
+
+### 2.7.129
+- Adds the ability to create WhatsApp Broadcasts
+
+### 2.7.128
+- Minor improvements and bug fixing
+
+### 2.7.127
+- Improves Knowledge Base page sidebar
+- Fixes the bug: Teammates' availability status not updating in the conversation list (Monitor)
+
+### 2.7.126
+- Truncate the requester's name if it is too long
+- Do not display the requester's email if it is invalid
+
+### 2.7.125
+- Adds the ability to delete a teammate 
+
+### 2.7.124
+- Adds flow webhook logs
+- Adds flow conversation logs
+
+### 2.7.123
+- Adds unanswered questions
+- Updated UI of Knowledge Bases page
+
+### 2.7.122
+- Minor improvements and bug fixing
+
+### 2.7.121
+- Refactors the groups list
+- Adds the ability to disable/restore a group
+
+### 2.7.120
+- Fixes the bug: creating an AI Agent does not work on the knowledge bases page
+
+### 2.7.119
+- Improves Hybrid badges management
+
+### 2.7.118
+- Adds the ability to create namespaces where hybrid searches can be performed
+
+### 2.7.116
+- Adds pagination to Flows list
+
+### 2.7.115
+- Improves navigation performance
+
+### 2.7.114
+- Minor improvements and bug fixing
+
+### 2.7.113
+- Adds the environment variable "oauth2SigninEnabled"
+
+### 2.7.112
+- Adds the ability for teammates with admin roles to edit email templates
+
+### 2.7.111
+- Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari
+
+### 2.7.110
+- Fixes the bug: "verified" icon displays incorrectly for requesters in the unassigned conversations section
+
+### 2.7.109
+- Adds the ability to control how search results are retrieved (Hybrid search) in the AI ​​settings modal window
+- Displays chunks used for the answer in the Knowledge Base preview modal window
+
+### 2.7.109-rc4
+- Moves the "Default" badge at the bottom of Knowledge Bases select and adds the "Hybrid search" badge
+- Translates hybrid search strings
+
+### 2.7.108
+- Fixes the bug: AI Agent creation not working in knowledge base page
+
+### 2.7.107
+- Adds the ability to import or export contents to the Knowledge Base page
+
+### 2.7.106
+- Handles the /bots route that can be accidentally accessed
+
 ### 2.7.105
 - Renames the sidebar menu item "Bot" in "Flows"
 - Moves the menu items Templates from the Flows sidebar in the Templates page

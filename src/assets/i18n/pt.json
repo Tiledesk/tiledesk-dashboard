@@ -755,14 +755,21 @@
     "Flows": "Fluxos",
     "Models": "Modelos",
     "Optional": "opcional",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Apagar conversas resolvidas",
+=======
+>>>>>>> master
     "DisableMember":"Desativar membro",
     "TheMemberWillBeDeleted": "O membro <b> {{pu_name}}</b> será eliminado",
     "TheMemberWillBeDisabled": "O membro <b>{{pu_name}}</b> será desativado",
     "TheMemberWillBeRestored":"O membro <b>{{pu_name}}</b> será restaurado",
     "TheGroupWillBeRestored": "O grupo <b>{{group_name}}</b> será restaurado",
     "Disable":"Desativar",
+<<<<<<< HEAD
      "AnErrorOccurredWhileRestoringTheTeammate":"Ocorreu um erro ao restaurar o colega de equipa",
+=======
+    "AnErrorOccurredWhileRestoringTheTeammate":"Ocorreu um erro ao restaurar o colega de equipa",
+>>>>>>> master
     "TeammateRestoredSuccessfully": "Companheiro de equipa restaurado com sucesso",
     "WhatsAppBroadcasts": "Transmissões WhatsApp",
     "NewBroadcast": "Nova transmissão",
@@ -815,12 +822,15 @@
     "DiscardQuestion": "Descartar pergunta",
     "AreYouSureYouWantToDiscard": "Tem a certeza de que quer descartar esta pergunta",
     "Discard": "Descartar",
+<<<<<<< HEAD
     "EditLoadDistribution": "Editar Distribuição de Carga",
     "EditPercentageFor":"Editar percentagem para",
     "Percentage": "Porcentagem",
     "CurrentTotal":"Total atual",
     "Exceeds100":"Excede 100%",
     "PercentageGroupName": "Percentagem {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1173,7 +1183,10 @@
         "FromTheProject": "do projeto",
         "Confirm": "Confirme",
         "RestoreMember": "Restaurar membro",
+<<<<<<< HEAD
         "DisableMember": "Desativar membro",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "O usuário foi convidado.",
         "Continue": "Continuar",
         "PendingInvitation": "Convites pendentes",
@@ -2043,7 +2056,11 @@
         "Import": "Importar",
         "AddKbURL": "URLs",
         "AddKbText": "Texto simples",
+<<<<<<< HEAD
         "AddKbSitemap": "Sitemap",
+=======
+         "AddKbSitemap": "Sitemap",
+>>>>>>> master
         "LoadMore": "Carregue mais",
         "Loading": "carregando",
         "YouCanAddKBUrlsLimit": "Os URLs devem ser menores que ",
@@ -2641,6 +2658,7 @@
     "CustomizeThePreChatForm": "Personalize o formulário pré-chat",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Personalize as informações que você solicita aos clientes no formulário pré-chat removendo ou adicionando campos",
     "InvalidJSON": "JSON inválido",
+    "TheSelectedFileDoesNotContainValidJSON":"O ficheiro selecionado não contém JSON válido.",
     "EmailNotAvailable": "E-mail não disponível",
     "Project": "Projeto",
     "YourProjects": "Seus projetos",

@@ -4,6 +4,7 @@
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Chatbots </span>
 </span> -->
+
 <span class="navbar-brand navbar-brand-sidebar-settings"
   [class.chrome-gt-100]="isChromeVerGreaterThan100"
   [class.chrome-lt-100]="!isChromeVerGreaterThan100"
@@ -67,12 +68,13 @@
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
         [increaseSalesBotsCount]="increaseSalesBotsCount">
       </appdashboard-bots-sidebar>
+
+
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 15px; ">
 
         <!-- -------------------------------------------------------------------- -->
         <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
         <!-- -------------------------------------------------------------------- -->
-
         <ng-container *ngIf="chatBotLimit || chatBotLimit === 0 ">
           <appdashboard-chatbot-alert *ngIf="chatBotCount > chatBotLimit && isVisiblePAY"></appdashboard-chatbot-alert>
         </ng-container>
@@ -279,12 +281,9 @@
 
                   </div>
 
-
+                
                 </div>
 
-                <!-- ----------------------------- -->
-                <!-- ./ All Flows -->
-                <!-- ----------------------------- -->
 
                 <!-- ----------------------------- -->
                 <!-- AI agents -->

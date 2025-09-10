@@ -756,7 +756,10 @@
     "Flows": "Потоки",
     "Models": "Моделі",
     "Optional": "необов'язковий",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Видалити вирішені розмови",
+=======
+>>>>>>> master
     "DisableMember":"Вимкнути учасника",
     "TheMemberWillBeDeleted": "Учасника <b> {{pu_name}}<b> буде видалено",
     "TheMemberWillBeDisabled": "Учасника <b>{{pu_name}}</b> буде вимкнено",
@@ -815,12 +818,15 @@
     "DiscardQuestion": "Відхилити питання",
     "AreYouSureYouWantToDiscard": "Ви впевнені, що хочете відхилити це питання",
     "Discard": "Відхилити",
+<<<<<<< HEAD
     "EditLoadDistribution": "Редагувати розподіл навантаження",
     "EditPercentageFor":"Редагувати відсоток для",
     "Percentage": "Відсоток",
     "CurrentTotal":"Поточний загальний показник",
     "Exceeds100":"Перевищує 100%",
     "PercentageGroupName": "Відсоток {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -1189,7 +1195,10 @@
         "FromTheProject": "З проекту",
         "Confirm": "Підтвердьте",
         "RestoreMember": "Відновити учасника",
+<<<<<<< HEAD
         "DisableMember": "Вимкнути учасника",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "Користувача запросили.",
         "Continue": "Продовжуйте",
         "PendingInvitation": "Запрошення в очікуванні",
@@ -2110,7 +2119,11 @@
         "TheColumnsMustBeSeparatedByTheDelimiter": "Стовпці мають бути розділені роздільником, указаним у полі введення «Стовпці, розділені»",
         "AsStartingPointYouCanDownloadTheExampleFile": "Як відправну точку ви можете завантажити файл прикладу",
         "RefreshRate": "частота оновлення",
+<<<<<<< HEAD
         "URLsSyncFrequency": "Частота синхронізації URL",
+=======
+        "URLsSyncFrequency":"Частота синхронізації URL",
+>>>>>>> master
         "ImportContents": "Імпорт вмісту",
         "ExportContents": "Експорт вмісту",
         "OnlyUrlTextFaqWillBeExported":"Експортовано буде лише URL-адреси, текст та вміст типу поширених запитань. Вміст PDF та DOCX експортуватися не буде.",
@@ -2167,9 +2180,15 @@
         "AdvancedContextDesc1": "Тут ви маєте найбільший контроль. Будьте обережні, власне підказка буде повністю перезаписано.",
         "AdvancedContextDesc2": "Переконайтеся, що запит відповідає <NOANS>, якщо він не знаходить задовільної відповіді, і завжди закривається {context}",
         "GetContentsSources": "Отримати джерела вмісту",
+<<<<<<< HEAD
         "GetContentsSourcesDesc1": "Використовуйте цей параметр, щоб отримати точні джерела документів, використаних для створення відповіді.",
         "GetContentsSourcesDesc2": "Майте на увазі, що це споживає більше токенів, ніж звичайне отримання KB.",
         "GetContentsSourcesDesc3": "Максимальна квота токенів буде автоматично скоригована для отримання цитат, якщо це необхідно.",
+=======
+        "GetContentsSourcesDesc1":"Використовуйте цей параметр, щоб отримати точні джерела документів, використаних для створення відповіді.",
+        "GetContentsSourcesDesc2":"Майте на увазі, що це споживає більше токенів, ніж звичайне отримання KB.",
+        "GetContentsSourcesDesc3":"Максимальна квота токенів буде автоматично скоригована для отримання цитат, якщо це необхідно.",
+>>>>>>> master
         "Hybrid": "Гібрид",
         "HybridSearch": "Гібридний пошук",
         "FullText":"Повний текст",
@@ -2657,6 +2676,7 @@
     "CustomizeThePreChatForm": "Налаштуйте форму попереднього чату",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Налаштуйте інформацію, яку ви запитуєте від клієнтів у формі попереднього чату, видаляючи або додаючи поля",
     "InvalidJSON": "Недійсний JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Вибраний файл не містить дійсного JSON.",
     "EmailNotAvailable": "Електронна пошта недоступна",
     "Project": "Проект",
     "YourProjects": "Ваші проекти",

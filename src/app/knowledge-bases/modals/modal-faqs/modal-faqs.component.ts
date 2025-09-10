@@ -22,7 +22,11 @@ export class ModalFaqsComponent implements OnInit {
   parse_done: boolean;
   parse_err: boolean;
   modalChoosefileDisabled: boolean;
+<<<<<<< HEAD
   namespaceid: string;
+=======
+  namespaceid: string
+>>>>>>> master
   showBackButton: boolean = true;
 
   kb: KB = {
@@ -45,7 +49,11 @@ export class ModalFaqsComponent implements OnInit {
     if (data && data.selectedNamespace) {
       this.namespaceid = data.selectedNamespace.id
     }
+<<<<<<< HEAD
 
+=======
+    // Se arriva un oggetto prefillKb, precompila la KB
+>>>>>>> master
     if (data && data.prefillKb) {
       this.kb = { ...this.kb, ...data.prefillKb };
       this.displayAddManuallySection = true;

@@ -63,7 +63,7 @@
 
     </div>
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    <div *ngIf="!showSpinner" class="content-chunks-wpr">
+    <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
         <div class="chunk-title-and-count">
             <div class="chunk-title">
                 Chunks
@@ -100,17 +100,17 @@
         {{ "Cancel" | translate }}
     </button>
 
-    <button *ngIf="kb.type === 'text' || kb.type === 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
+    <button *ngIf="kb._id && (kb.type === 'text' || kb.type === 'faq')" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
 
-    <button *ngIf="kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
+    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
 
-    <button *ngIf="kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx'" class="mat-dialog-ok-btn"
+    <button *ngIf="kb._id && (kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx')" class="mat-dialog-ok-btn"
         [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>

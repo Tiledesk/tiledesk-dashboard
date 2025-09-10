@@ -755,7 +755,10 @@
     "Flows": "Flows",
     "Models": "Models",
     "Optional": "optional",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Delete resolved conversations",
+=======
+>>>>>>> master
     "DisableMember":"Disable member",
     "TheMemberWillBeDeleted": "The member <b> {{pu_name}}</b> will be deleted",
     "TheMemberWillBeDisabled": "The member <b> {{pu_name}}</b> will be disabled",
@@ -815,12 +818,15 @@
     "DiscardQuestion": "Discard question",
     "AreYouSureYouWantToDiscard": "Are you sure you want to discard this question",
     "Discard": "Discard",
+<<<<<<< HEAD
     "EditLoadDistribution": "Edit load distribution",
     "EditPercentageFor":"Edit percentage for",
     "Percentage": "Percentage",
     "CurrentTotal":"Current total",
     "Exceeds100": "Exceeds 100%",
     "PercentageGroupName": "Percentage {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1173,7 +1179,10 @@
         "FromTheProject": "from the project",
         "Confirm": "Confirm",
         "RestoreMember": "Restore Member",
+<<<<<<< HEAD
         "DisableMember": "Disable member",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "The user has been invited.",
         "Continue": "Continue",
         "PendingInvitation": "Pending Invitations",
@@ -2653,6 +2662,7 @@
     "CustomizeThePreChatForm": "Customize the pre-chat form",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Customize the information you request from customers in the pre-chat form by removing or adding fields",
     "InvalidJSON": "Invalid JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"The selected file does not contain valid JSON.",
     "EmailNotAvailable": "Email not available",
     "Project": "Project",
     "YourProjects": "Your Projects",

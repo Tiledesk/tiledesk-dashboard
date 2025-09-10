@@ -230,7 +230,6 @@ export class GroupsComponent implements OnInit {
   }
 
   openDeleteModal(id_group: string, group_name: string) {
-    // this.displayDeleteModal = 'block';
     this.id_group_to_delete = id_group;
     this.name_group_to_delete = group_name;
     this.logger.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
@@ -308,7 +307,6 @@ export class GroupsComponent implements OnInit {
         //   focusConfirm: false
         // })
 
-
         // if (deptsArrayWithAssociatedGroup.length > 1) {
         //   Swal.fire({
         //     title: this.warning,
@@ -339,6 +337,7 @@ export class GroupsComponent implements OnInit {
   onCloseDeleteModal() {
     this.displayDeleteModal = 'none';
   }
+ 
 
   onCloseDidableModal() {
     this.displayDisableModal = 'none';
@@ -350,6 +349,8 @@ export class GroupsComponent implements OnInit {
   deleteGroup() {
     this.displayDeleteModal = 'none';
     this.groupsService.setTrashedToTheGroup(this.id_group_to_delete).subscribe((group) => {
+
+      
 
       this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE ', group);
     }, (error) => {
@@ -424,7 +425,6 @@ export class GroupsComponent implements OnInit {
   }
 
 
-
   getTranslations() {
     this.translate.get('GroupsPage')
       .subscribe((text: string) => {
@@ -439,7 +439,6 @@ export class GroupsComponent implements OnInit {
         this.logger.log('[GROUPS] getTranslations GroupsPage : ', text)
         this.disassociateTheGroupBeforeToDisableIt = text['DisassociateTheGroupBeforeToDisable'];
       });
-
 
     this.translate.get('Warning')
       .subscribe((text: string) => {

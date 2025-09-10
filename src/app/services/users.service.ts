@@ -14,7 +14,11 @@ import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
+<<<<<<< HEAD
 import { of } from 'rxjs';
+=======
+import { J } from '@angular/cdk/keycodes';
+>>>>>>> master
 interface NewUser {
   displayName: string;
   email: string;
@@ -850,6 +854,8 @@ export class UsersService {
     this.user_is_available_bs.next(user_available);
     this.user_is_busy$.next(user_isbusy);
     this.projectUser_bs.next(projctuser);
+    this.logger.log('[USER-SERV] - projctuser ', projctuser);
+    localStorage.setItem('current_project_user', JSON.stringify(projctuser))
   }
 
 
@@ -1022,7 +1028,11 @@ export class UsersService {
       })
     };
 
+<<<<<<< HEAD
     const body = { 'user_available': user_is_available, 'profileStatus': profilestatus, 'status': status };
+=======
+    const body = { 'user_available': user_is_available,  'profileStatus': profilestatus, 'status': status };
+>>>>>>> master
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
     return this._httpClient
@@ -1136,6 +1146,7 @@ export class UsersService {
    * @returns 
    */
   public deleteProjectUser(projectUser_id: string, soft: boolean) {
+<<<<<<< HEAD
     this.SERVER_BASE_PATH + this.project._id + '/project_users/';
     let url = this.PROJECT_USER_URL + projectUser_id;
     if (soft) {
@@ -1145,6 +1156,19 @@ export class UsersService {
     if (!soft) {
       console.log('[USER-SERV] - DELETE PROJECT-USER - DISABLE URL ', url);
     }
+=======
+
+    let url = this.PROJECT_USER_URL + projectUser_id;
+    this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
+    if (soft) {
+      url += '?soft=true';
+      this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
+    }
+    if (!soft) {
+      this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DISABLE URL ', url);
+    }
+
+>>>>>>> master
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',

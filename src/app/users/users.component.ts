@@ -1018,7 +1018,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
   openDeleteModal(
     projectUser_id: string,
     userID: string,
@@ -1051,8 +1054,13 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     const soft = true;
     this.usersService.deleteProjectUser(this.id_projectUser, soft).subscribe(
       (projectUsers: any) => {
+<<<<<<< HEAD
         console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
         console.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
+=======
+        this.logger.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
+>>>>>>> master
         // this.ngOnInit();
         if (!isDevMode()) {
           this.trackDeleteProjectUser(projectUsers)
@@ -1069,6 +1077,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         // NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
+<<<<<<< HEAD
        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
         for (var i = 0; i < this.projectUsersList.length; i++) {
               if (this.projectUsersList[i].id === this.id_projectUser) {
@@ -1081,6 +1090,21 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
         this.projectUsersLength = this.projectUsersList.length;
       },
+=======
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
+          for (var i = 0; i < this.projectUsersList.length; i++) {
+                if (this.projectUsersList[i].id === this.id_projectUser) {
+                  this.projectUsersList.splice(i, 1);
+                  i--;
+                }
+          }
+
+          this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
+          this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
+          this.projectUsersLength = this.projectUsersList.length;
+        },
+        
+>>>>>>> master
     )
   }
 
@@ -1108,10 +1132,23 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.user_fullname = this.user_lastname
     }
 
+<<<<<<< HEAD
     this.logger.log('[USERS] OPEN DISABLE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
   }
 
 
+=======
+    this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',  this.id_projectUser, ' - (Firstname: ',  userFirstname, '; Lastname: ',    userLastname,  ')')
+  }
+
+  openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
+    this.displayRestoreModal = 'block';
+    this.id_projectUser = projectUser_id
+    this.user_id = userID
+    this.user_firstname = userFirstname
+    this.user_lastname = userLastname
+  }
+>>>>>>> master
 
   onCloseDisableModalHandled() {
     this.displayDisableModal = 'none'
@@ -1142,6 +1179,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     )
   }
 
+<<<<<<< HEAD
 
   openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
     this.displayRestoreModal = 'block';
@@ -1151,15 +1189,23 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.user_lastname = userLastname
   }
 
+=======
+>>>>>>> master
   onCloseRestoreModalHandled() {
     this.displayRestoreModal = 'none';
     this.usersService.updateProjectUser(this.id_projectUser, false, "", 'active').subscribe((projectUser: any) => {
 
     }, (error) => {
       this.logger.error('[USERS] ON-CLOSE-RESTORE-MODAL - RESTORE PROJECT USERS - ERROR ', error)
+<<<<<<< HEAD
       this.notify.showWidgetStyleUpdateNotification("An error occurred restoring teammate", 4, 'report_problem')
     }, () => {
       this.notify.showWidgetStyleUpdateNotification("Teammate successfully restored", 2, 'done')
+=======
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileRestoringTheTeammate") , 4, 'report_problem')
+    }, () => {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("TeammateRestoredSuccessfully"), 2, 'done')
+>>>>>>> master
       const userToEnable = this.projectUsersList.find(user => user._id === this.id_projectUser);
       if (userToEnable) {
         userToEnable.status = 'active';

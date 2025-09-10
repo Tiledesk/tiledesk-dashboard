@@ -755,7 +755,10 @@
 	"Flows": "Fließt",
 	"Models": "Modelle",
 	"Optional": "optional",
+<<<<<<< HEAD
 	"DeleteResolvedConversations": "Gelöste Konversationen löschen",
+=======
+>>>>>>> master
 	"DisableMember":"Mitglied deaktivieren",
 	"TheMemberWillBeDeleted": "Das Mitglied <b> {{pu_name}}</b> wird gelöscht",
 	"TheMemberWillBeDisabled": "Das Mitglied <b>{{pu_name}}</b> wird deaktiviert",
@@ -814,12 +817,15 @@
     "DiscardQuestion": "Frage verwerfen",
     "AreYouSureYouWantToDiscard": "Sind Sie sicher, dass Sie diese Frage verwerfen möchten",
     "Discard": "Verwerfen",
+<<<<<<< HEAD
 	"EditLoadDistribution": "Lastverteilung bearbeiten",
 	"EditPercentageFor":"Prozentsatz bearbeiten für",
 	"Percentage": "Prozentsatz",
     "CurrentTotal":"Aktueller Gesamtbetrag",
     "Exceeds100":"Über 100%",
 	"PercentageGroupName": "Prozentsatz {{group_name}}",
+=======
+>>>>>>> master
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1172,7 +1178,10 @@
 		"FromTheProject": "für das Projekt",
 		"Confirm": "Bestätigen",
 		"RestoreMember": "Mitglied wiederherstellen",
+<<<<<<< HEAD
 		"DisableMember": "Mitglied deaktivieren",
+=======
+>>>>>>> master
 		"TheUserHasBeenInvited": "Der Teamkollege wurde eingeladen.",
 		"Continue": "Weiter",
 		"PendingInvitation": "Offene Einladungen",
@@ -2639,6 +2648,7 @@
 	"CustomizeThePreChatForm": "Passen Sie das Pre-Chat-Formular an",
 	"CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Passen Sie die Informationen an, die Sie von Kunden im Pre-Chat-Formular anfordern, indem Sie Felder entfernen oder hinzufügen",
 	"InvalidJSON": "Ungültige JSON",
+	"TheSelectedFileDoesNotContainValidJSON":"Die ausgewählte Datei enthält kein gültiges JSON.",
 	"EmailNotAvailable": "E-Mail nicht verfügbar",
 	"Project": "Projekt",
 	"YourProjects": "Ihre Projekte",

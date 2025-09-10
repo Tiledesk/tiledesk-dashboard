@@ -756,7 +756,10 @@
     "Flows": "Axınlar",
     "Models": "Modellər",
     "Optional": "isteğe bağlıdır",
+<<<<<<< HEAD
     "DeleteResolvedConversations": "Həll edilmiş söhbətləri silin",
+=======
+>>>>>>> master
     "DisableMember":"Üzvü deaktiv edin",
     "TheMemberWillBeDeleted": "<b> {{pu_name}}</b> üzvü silinəcək",
     "TheMemberWillBeDisabled": "<b>{{pu_name}}</b> üzvü deaktiv ediləcək",
@@ -816,12 +819,15 @@
     "DiscardQuestion": "Sualı at",
     "AreYouSureYouWantToDiscard": "Bu sualı atmaq istədiyinizə əminsiniz",
     "Discard": "At",
+<<<<<<< HEAD
     "EditLoadDistribution": "Yük paylanmasını redaktə edin",
     "EditPercentageFor":"üçün faizi redaktə edin",
     "Percentage": "Faiz",
     "CurrentTotal":"Cari cəmi",
     "Exceeds100":"100%-i keçir",
     "PercentageGroupName": "Faiz {{group_name}}",
+=======
+>>>>>>> master
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1174,7 +1180,10 @@
         "FromTheProject": "layihədən",
         "Confirm": "Təsdiq edin",
         "RestoreMember": "Üzvü bərpa et",
+<<<<<<< HEAD
         "DisableMember": "Üzvü deaktiv edin",
+=======
+>>>>>>> master
         "TheUserHasBeenInvited": "İstifadəçi dəvət olunub.",
         "Continue": "Davam et",
         "PendingInvitation": "Gözləyən Dəvətlər",
@@ -2642,6 +2651,7 @@
     "CustomizeThePreChatForm": "Əvvəlcədən söhbət formasını fərdiləşdirin",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Sahələri silməklə və ya əlavə etməklə, söhbət öncəsi formada müştərilərdən tələb etdiyiniz məlumatları fərdiləşdirin",
     "InvalidJSON": "Yanlış JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Seçilmiş faylda etibarlı JSON yoxdur.",
     "EmailNotAvailable": "E-poçt mövcud deyil",
     "Project": "Layihə",
     "YourProjects": "Layihələriniz",

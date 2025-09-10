@@ -107,18 +107,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
   isChromeVerGreaterThan100: boolean;
 
-  allTemplatesCount: number;
-  allCommunityTemplatesCount: number;
-  customerSatisfactionTemplatesCount: number;
-  increaseSalesTemplatesCount: number;
-  customerSatisfactionBotsCount: number;
+
   flowWebhooksCount: number;
-
-  increaseSalesBotsCount: number;
-  kbCount: number;
-
-  customerSatisfactionBots: any;
-  increaseSalesBots: any;
 
   myChatbot: any
   myChatbotOtherCount: number;
@@ -168,6 +158,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   orderByChatbotName: boolean = false;
   pageName: string;
   isVisiblePAY: boolean;
+  isVisibleCOP: boolean;
   chatbotNumExceedChatbotLimit: boolean = false;
 
   isAllFlowRoute: boolean
@@ -208,6 +199,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   
+ 
 
   // editBotName: boolean = false;
   constructor(
@@ -247,7 +239,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.currentRoute = this.router.url;
     this.logger.log('[BOTS-LIST] - currentRoute ', this.currentRoute)
 
-    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1) {
+    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1 || this.currentRoute.indexOf('/bots') !== -1 ) {
       this.isChatbotRoute = 'all'
 
       this.logger.log('[BOTS-LIST] - currentRoute isChatbotRoute ', this.isChatbotRoute)
@@ -1310,6 +1302,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }
   }
 
+  
+
   trackByFaqkbId(_index: number, faqkb: FaqKb) { 
     return faqkb._id; 
   }
@@ -1380,6 +1374,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.isVisiblePAY = true;
         }
       }
+
+      if (key.includes("COP")) {
+        let cop = key.split(":");
+        this.logger.log('PUBLIC-KEY [BOTS-LIST] - cop key&value', cop);
+        if (cop[1] === "F") {
+          this.isVisibleCOP = false;
+          this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
+        } else {
+          this.isVisibleCOP = true;
+          this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
+        }
+      }
+
+
     })
 
     if (!this.public_Key.includes("PAY")) {
@@ -1389,6 +1397,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
     }
+
+    if (!this.public_Key.includes("COP")) {
+      this.isVisibleCOP = false;
+      this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
+    }
+
   }
 
   goToBotExternalUrl(botExternalUrl) {
@@ -1407,6 +1421,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.text_is_truncated = true;
     this.rowIndexSelected = undefined;
   }
+
 
 
 
@@ -1976,6 +1991,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     let dialogWidth = '800px';
 
     if (isChatbotRoute && !showTwilio && !showVXML) {
+      dialogWidth = '550px';
+    }
+
+    if (!isChatbotRoute && !this.isVisibleCOP) {
       dialogWidth = '550px';
     }
 

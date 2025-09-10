@@ -1561,6 +1561,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
 
+ 
+
   // GET REQUEST COPY - START
   getRequests() {
     this.logger.log('getRequests queryString', this.queryString)
@@ -1617,6 +1619,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                     request.lead.email = null; // or 'N/A' if you prefer direct substitution
                  }
               }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
               // -------------------------------------------------------------------
               // Contact's avatar
               // -------------------------------------------------------------------
