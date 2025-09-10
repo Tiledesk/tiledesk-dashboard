@@ -217,7 +217,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
-   NEW_BROADCAST_ROUTE_IS_ACTIVE: boolean;
+  AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE: boolean;
+  AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE: boolean;
+  NEW_BROADCAST_ROUTE_IS_ACTIVE: boolean;
+  AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
   BOTS_DEMO_ROUTE_IS_ACTIVE: boolean;
@@ -1634,6 +1637,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'automations-demo') {
+          this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/automations?id') !== -1) {
+          this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE);
+        } else {
+          this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE);
+        }
+
         if (event.url.indexOf('/new-broadcast') !== -1) {
           this.NEW_BROADCAST_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - NEW_BROADCAST_ROUTE_IS_ACTIVE ', this.NEW_BROADCAST_ROUTE_IS_ACTIVE);
@@ -1641,6 +1660,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.NEW_BROADCAST_ROUTE_IS_ACTIVE = false;
          this.logger.log('[SIDEBAR] NavigationEnd - NEW_BROADCAST_ROUTE_IS_ACTIVE ', this.NEW_BROADCAST_ROUTE_IS_ACTIVE);
         }
+        
+        if (event.url.indexOf('/automations/no-auth') !== -1) {
+          this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE);
+        } else {
+          this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE);
+        }
+
+        
+        
 
 
 

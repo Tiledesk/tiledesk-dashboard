@@ -262,12 +262,12 @@
     <!-- -------------------------------------------------------- -->
     <!--  Automation log  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleAUT && USER_ROLE !== 'agent'">
+    <!-- <ng-container *ngIf="isVisibleAUT && USER_ROLE !== 'agent'">
       <li [ngClass]="{'active-item': AUTOMATIONS_ROUTE_IS_ACTIVE}" (click)="goToAutomations()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Automations" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">hdr_auto</i> -->
+         
           <span *ngIf="IS_OPEN === true || IS_OPEN === false">
             <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
               class="settings-sidebar-icons">
@@ -280,7 +280,7 @@
           </p>
         </a>
       </li>
-    </ng-container>
+    </ng-container> -->
 
 
     <!-- -------------------------------------------------------- -->

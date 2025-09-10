@@ -57,6 +57,18 @@ export class UnauthorizedForSidebarComponent implements OnInit {
       if (this.callingPage === 'activities') {
         this.pageName = 'Activities'
       }
+
+      if (this.callingPage === 'automations') {
+        this.pageName = 'WhatsAppBroadcasts'
+      }
+
+      if (this.callingPage === 'new-broadcast') {
+        this.pageName = 'NewBroadcast'
+      }
+
+      
+
+      
      
 
       

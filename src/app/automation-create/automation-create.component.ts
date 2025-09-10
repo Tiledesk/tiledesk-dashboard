@@ -71,7 +71,7 @@ export class AutomationCreateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.roleService.checkRoleForCurrentProject('automations')
+    this.roleService.checkRoleForCurrentProject('new-broadcast')
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.getWATemplates();

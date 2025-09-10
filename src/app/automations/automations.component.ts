@@ -3,12 +3,15 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
+import { NotifyService } from 'app/core/notify.service';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'appdashboard-automations',
@@ -43,8 +46,14 @@ export class AutomationsComponent implements OnInit {
   rejected_count: any;
   failed_count: any;
 
-   browserLang: string;
-   currentLang: string;
+  browserLang: string;
+  currentLang: string;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_CREATE: boolean;
 
   constructor(
     private auth: AuthService,
@@ -53,7 +62,9 @@ export class AutomationsComponent implements OnInit {
     private router: Router,
     private roleService: RoleService,
     public translate: TranslateService,
-     public route: ActivatedRoute,
+    public route: ActivatedRoute,
+    private rolesService: RolesService,
+    public notify: NotifyService,
   ) { 
    
   }
@@ -68,7 +79,48 @@ export class AutomationsComponent implements OnInit {
     this.getTransactions();
     this.getCurrentProject();
     this.setMomentLocale();
+    this.listenToProjectUser()
     // this.getQueryParams()
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();   
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('[AUTOMATION] - this.ROLE:', this.ROLE);
+        console.log('[AUTOMATION] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('[AUTOMATION] - hasDefaultRole', this.hasDefaultRole);
+
+        // PERMISSION_TO_CREATE
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_CREATE = true;
+          console.log('[AUTOMATION] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_CREATE = false;
+          console.log('[AUTOMATION] - Project user is agent (2)', 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_CREATE = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_CREATE);
+          console.log('[AUTOMATION] - Custom role (3)', status.role, 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
+        }
+
+      }
+    );
+  
   }
 
    getQueryParams() {
@@ -268,7 +320,11 @@ export class AutomationsComponent implements OnInit {
 
 
   goToNewBroadcast() {
-     this.router.navigate(['project/' + this.project._id + '/new-broadcast']);
+    if (!this.PERMISSION_TO_CREATE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+    this.router.navigate(['project/' + this.project._id + '/new-broadcast']);
   }
 
   trackByTransactionId(_index: number, automation: any) { 

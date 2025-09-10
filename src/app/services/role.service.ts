@@ -119,12 +119,33 @@ export class RoleService {
           }
 
          
-
-
           // Analytics
           if (calledby === 'analytics') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
+          // Automations Log
+          if (calledby === 'automations') {
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+            // console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            // return hasPermission;
+            if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ)) {
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
+          // Automations > New broadcast
+          if (calledby === 'new-broadcast') {
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+            // console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            // return hasPermission;
+            
+             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_CREATE)) {
               // this.router.navigate([`project/${projectId}/unauthorized`])
                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
@@ -244,13 +265,6 @@ export class RoleService {
           if (calledby === 'hours') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.HOURS_READ);
             console.log('[ROLE-SERV] - hours hasPermission ', hasPermission)
-            return hasPermission;
-          }
-
-          // Automations Log
-          if (calledby === 'automations') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
-            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -449,11 +463,11 @@ export class RoleService {
           }
 
           // Automations Log
-          if (calledby === 'automations') {
-            const hasPermission = true
-            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
-            return hasPermission;
-          }
+          // if (calledby === 'automations') {
+          //   const hasPermission = true
+          //   console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+          //   return hasPermission;
+          // }
 
           // Integrations
           if (calledby === 'integrations') {
@@ -627,6 +641,32 @@ export class RoleService {
             }
           }
 
+          // Automations Log
+          if (calledby === 'automations') {
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+            // console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            // return hasPermission;
+            console.log('[ROLE-SERV] - here yes 2')
+            if (!_projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ)) {
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
+          // Automations > New broadcast
+          if (calledby === 'new-broadcast') {
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+            // console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            // return hasPermission;
+            console.log('[ROLE-SERV] - here yes 2')
+            if (!_projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_CREATE)) {
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
+          
+
           // Activities
           if (calledby === 'activities') {
             console.log('[ROLE-SERV] - here yes 2')
@@ -737,12 +777,6 @@ export class RoleService {
             return hasPermission;
           }
 
-          // Automations Log
-          if (calledby === 'automations') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
-            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
-            return hasPermission;
-          }
 
           // Integrations
           if (calledby === 'integrations') {
@@ -937,12 +971,12 @@ export class RoleService {
             return hasPermission;
           }
 
-          // Automations Log
-          if (calledby === 'automations') {
-            const hasPermission = true;
-            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
-            return hasPermission;
-          }
+          // // Automations Log
+          // if (calledby === 'automations') {
+          //   const hasPermission = true;
+          //   console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+          //   return hasPermission;
+          // }
 
           // Integrations
           if (calledby === 'integrations') {

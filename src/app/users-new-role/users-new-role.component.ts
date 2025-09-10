@@ -142,6 +142,18 @@ export class UsersNewRoleComponent implements OnInit {
     //   ]
     // },
 
+      {
+      key: 'WhatsAppBroadcasts',
+      title: 'WhatsApp Broadcasts',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view' },
+        { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' }
+      ]
+    },
+
     {
       key: 'knowledgeBasesManagement',
       title: 'Knowledge bases',
@@ -379,7 +391,7 @@ export class UsersNewRoleComponent implements OnInit {
         
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
-        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
         
 
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },

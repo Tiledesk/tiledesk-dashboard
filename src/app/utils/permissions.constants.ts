@@ -23,8 +23,10 @@ export const PERMISSIONS = {
   REQUEST_LEFT: 'request_left',
   REQUEST_TRANSCRIPT_SEND: 'request_transcript_send',
 
-
   HISTORY_READ: 'history_read',
+
+  AUTOMATIONSLOG_READ: "automationslog_read",
+  AUTOMATIONSLOG_CREATE: "automationslog_create",
 
   KB_READ: 'kb_read',
   KB_CONTENTS_ADD:'kb_contents_add',
@@ -98,8 +100,6 @@ export const PERMISSIONS = {
   HOURS_UPDATE: 'hours_update',
   HOURS_DELETE: 'hours_delete',
   HOURS_CREATE: 'hours_create',
-
-  AUTOMATIONSLOG_READ: "automationslog_read",
 
   INTEGRATIONS_READ: 'integrations_read',
   INTEGRATIONS_UPDATE: 'integrations_update',
