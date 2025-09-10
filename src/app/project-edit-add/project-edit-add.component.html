@@ -2152,7 +2152,7 @@
                           <div class="save-allowed-extentions-btn-wpr"> 
                             <button class="btn btn-tdblu-no-boxshadow"
                               style="margin-top: 16px; font-size: 12px; letter-spacing: 1px;"
-                              (click)="saveAllowedExtensions()" [disabled]="extensions.length === 0">
+                              (click)="saveAllowedExtensions()" [disabled]="selectedOption === 'custom' && extensions.length === 0">
                               {{ 'Save' | translate }}
                             </button>
                           </div>
