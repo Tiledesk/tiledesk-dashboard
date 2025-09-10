@@ -1,10 +1,3 @@
-<!-- <div class="add-header-container">
-  <div class="upgrade-title">Unanswered questions</div>
-  <span class="span-6"></span>
-  <div class="upgrade-subtitle">These are the questions that users asked but your knowledge base could not answer. You can add them to your KB or discard them.</div>
-  <span class="span-32"></span>
-</div> -->
-
 <div class="add-content-container unanswered-questions-modal">
  
   <div class="preview-count-left">
@@ -30,7 +23,8 @@
         <span class="uq-actions">
           <button class="uq-btn uq-btn-icon" mat-icon-button 
             matTooltipClass="kb-custom-mat-tooltip" 
-            [matTooltip]="'AddQuestionToKB' | translate" (click)="onOpenAddKnowledgeBaseModal(q)">
+            [matTooltip]="'AddQuestionToKB' | translate" 
+            (click)="onOpenAddKnowledgeBaseModal(q)">
             <mat-icon class="add-icon">add_circle_outline</mat-icon>
           </button>
           <button class="uq-btn uq-btn-icon" mat-icon-button 

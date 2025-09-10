@@ -781,6 +781,7 @@
     "BroadcastDetails": "Efir tafsilotlari",
     "WhatsAppNotConfigured": "WhatsApp sozlanmagan",
     "UnableToCreateBroadcastWAIsNotInstalled": "Efir yaratib bo'lmaydi, chunki WhatsApp Business ushbu loyiha uchun o'rnatilmagan",
+    "HelpsURLs": "Quyidagi matn maydoniga ochiq URL-manzillardan veb-sahifalarni kiriting, qator boshidan ajrating yoki ularni xaritadan import qiling.",
     "URLAutomaticallySynchronized": "Ushbu URL xaritadan avtomatik ravishda sinxronlanadi",
     "ImportURLsFromSitemap": "URL-larni xaritadan import qilish",
     "Fetch": "Olish",

@@ -6,6 +6,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
 @Component({
@@ -59,11 +60,14 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   t_params: any;
   salesEmail: string;
 
+  siteMap:string;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
     private logger: LoggerService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private kbService: KnowledgeBaseService
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-URLS] data: ", data);
@@ -97,6 +101,49 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     //   this.listOfUrls = this.listSitesOfSitemap.join('\n');
     //   this.countSitemap = this.listSitesOfSitemap.length;
     // } 
+  }
+
+  fetchSiteMap() {
+    console.log('[ModalSiteMapComponent] sitemap: ', this.siteMap);
+    const body = {sitemap: this.siteMap}
+    this.kbService.addSitemap(body).subscribe((resp: any) => {
+      console.log("[ModalSiteMapComponent] addSitemap:", resp);
+      console.log("[ModalSiteMapComponent] addSitemap sites:", resp.sites);
+
+
+      if(resp.sites.length > 0){
+       
+        this.listOfUrls = resp.sites.join('\n');
+        // console.log('[ModalSiteMapComponent] listOfUrls: ', this.listOfUrls);
+        this.countSitemap = resp.sites.length;
+
+        if(this.countSitemap > KB_LIMIT_CONTENT) {
+           this.buttonDisabled = true;
+           this.errorLimit = true;
+        } else {
+          this.errorLimit = false;
+          this.buttonDisabled = false;
+        }
+     }
+      // this.listOfUrls = resp.sites;
+    //   let listSitesOfSitemap = resp.sites.split("\n").filter(function(row) {
+    //   return row.trim() !== '';
+    // });
+    // var lines = resp.sites.split('\n');
+    // if (lines.length > KB_LIMIT_CONTENT) {
+    //   this.errorLimit = true;
+    //   this.buttonDisabled = true;
+    //   this.listOfUrls = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
+    //   // this.logger.log("onChangeInput: ",this.listOfUrls);
+    // } else {
+    //   this.errorLimit = false;
+    //   this.buttonDisabled = false;
+    // }
+    // this.countSitemap = listSitesOfSitemap.length;
+
+    })
+
+   
   }
 
   /** */
