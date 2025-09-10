@@ -186,7 +186,8 @@
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
                 <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="temperature"
-                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units">
+                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units" [disabled]="temperature_slider_disabled"
+                    [ngClass]="{'mat-slider-disabled': temperature_slider_disabled}">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
