@@ -31,7 +31,7 @@
         <!--  -->
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
             (click)="aiModel.close()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
@@ -115,7 +115,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close();chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
                     (click)="maxTokens.close()">
                    
                     {{ 'KbPage.MaxTokens'| translate}}
@@ -169,7 +169,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
                     (click)="aiModeltemperature.close()">
                    
                     {{ 'KbPage.Temperature'| translate}}
@@ -221,6 +221,74 @@
         </div>
     </sat-popover>
 
+
+    <!-- ----------------------------------------------- -->
+    <!-- Search type -->
+    <!-- ----------------------------------------------- -->
+    <div class="row-container" *ngIf="diplaySearchTypeSlider">
+        <div class="label-and-slider-value">
+            <div class="label-wpr">
+        
+                <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
+                    [satPopoverAnchor]="aiSearchType"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (click)="aiSearchType.close()">
+                   
+                    <!-- {{ 'KbPage.Temperature'| translate}} -->
+                      Search type
+                </label>
+                <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                    <!-- {{ 'KbPage.Temperature'| translate}} -->
+                    Search type
+                </label>
+            </div>
+            <div class="slider-value">
+                {{alpha}}
+            </div>
+        </div>
+        <div class="field-box  max-tokens-field-box">
+            <div class="action-wait-slider">
+                <div class="action-wait-range">0</div>
+                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="alpha"
+                    (change)="updateSliderValue($event.value, 'alpha')" aria-label="units">
+                </mat-slider>
+                <div class="action-wait-range">1</div>
+            </div>
+           
+        </div>
+
+        <div class="max-token-slider-description-wpr">
+            <div class="max-token-slider-description">
+                <!-- {{'KbPage.Deterministic' | translate }} -->
+                Full text
+            </div>
+            <div class="max-token-slider-description">
+                <!-- {{'KbPage.Random' | translate }} -->
+                 Semantic
+            </div>
+        </div>
+
+    </div>
+
+    <sat-popover #aiSearchType horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
+        (opened)="searchTypePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+               
+           
+                Controls how results are retrieved by combining semantic similarity with exact keyword matching.
+                <!-- Full text (0): Matches based on exact text content.
+                Semantic (1): Uses meaning and context to find more relevant results. -->
+               
+            </div>
+
+            <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
+                {{'LearnMore' | translate}}
+            </div> -->
+        </div>
+    </sat-popover>
+
     <!-- ----------------------------------------------- -->
     <!-- Chunk Limit -->
     <!-- ----------------------------------------------- -->
@@ -231,7 +299,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close()"
                     (click)="chunkLimit.close()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
@@ -281,7 +349,7 @@
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close()"
+                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close()"
                 (click)="systemContext.close()">
                
                 {{ 'KbPage.SystemContext'| translate}}
@@ -319,7 +387,7 @@
         <div class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="advancedContext"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close()"
             (click)="advancedContext.close()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)">
                 <span class="setting-label">
@@ -361,7 +429,7 @@
             <!--  -->
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="contentsSources"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open() "
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open() "
             (click)="contentsSources.close()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)">
                 <span class="setting-label">
