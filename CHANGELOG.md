@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.131-rc2
+- Adds WhatsApp Broadcasts permissions
+
 ### 2.7.131-rc1
 - Align the knowledge base code with the one in the master
 
