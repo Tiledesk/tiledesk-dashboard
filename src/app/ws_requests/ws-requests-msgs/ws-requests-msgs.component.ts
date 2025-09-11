@@ -1399,28 +1399,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (allowSendEmoji !== undefined) {
           this.ALLOW_TO_SEND_EMOJI = allowSendEmoji;
-          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
         } else {
           this.ALLOW_TO_SEND_EMOJI = true;
-          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
         }
 
         // Is Enabled URLs Whitelist
         const isEnabledURLsWhitelist = this.current_selected_prjct.id_project.settings.allowed_urls;
         if (isEnabledURLsWhitelist !== undefined) {
           this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
-          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
             const urlsWitheList = this.current_selected_prjct.id_project.settings.allowed_urls_list
             if (urlsWitheList !== undefined) {
               this.URLS_WITHELIST = urlsWitheList;
-              console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+              this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
             }
-            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
+            this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
-          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
         }
 
       } else {
@@ -5602,7 +5602,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onMessageChange(msg: string) {
-    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
+    this.logger.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
     // if (!this.ALLOW_TO_SEND_EMOJI) {
     //   this.chat_message = removeEmojis(msg);
     // }
@@ -5638,12 +5638,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   triggerEmojiWarning() {
-     console.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning ')
+     this.logger.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning ')
     this.showEmojiWarning = true;
     setTimeout(() => {
       this.showEmojiWarning = false;
     }, 3000); // 3000 =3 seconds
-     console.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning - showEmojiWarning ', this.showEmojiWarning)
+     this.logger.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning - showEmojiWarning ', this.showEmojiWarning)
   }
 
 
@@ -5704,7 +5704,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       
         if (this.IS_ENABLED_URLS_WHITELIST) {
         const urlsInMessage = this.extractUrls(_chat_message);
-        console.log('urlsInMessage ++++ :', urlsInMessage);
+        this.logger.log('urlsInMessage ++++ :', urlsInMessage);
 
         const nonWhitelistedDomains = urlsInMessage.filter((url) => {
         try {
@@ -5734,7 +5734,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         });
 
         if (nonWhitelistedDomains.length > 0) {
-          console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+          this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
           this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
           return;
         }

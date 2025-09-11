@@ -1233,13 +1233,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WIDGET-SET-UP] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WIDGET-SET-UP] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
 
@@ -2342,7 +2342,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
       // this.logger.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
-      console.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
+      this.logger.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -2639,10 +2639,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // --------------------------------------------
         if (project.widget.allowedOnSpecificUrl) {
           this.allowedOnSpecificUrl = true;
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         } else {
           this.allowedOnSpecificUrl = false;
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         }
 
         // --------------------------------------------
@@ -2650,10 +2650,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // --------------------------------------------
         if (project.widget.allowedOnSpecificUrlList) {
           this.allowedOnSpecificUrlList = project.widget.allowedOnSpecificUrlList;
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         } else {
           this.allowedOnSpecificUrlList = [];
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         }
 
         // ----------------------------------------------------
@@ -2676,22 +2676,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
         if (project.widget.hasOwnProperty('allowedUploadExtentions')) {
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
           
           if (project.widget.allowedUploadExtentions === '*/*') {
 
             this.selectedOption = 'all';
-            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
           } else {
             this.selectedOption = 'custom'
-            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
             this.extensions = project.widget.allowedUploadExtentions.split(',').map(v => v.trim());
-            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
           }
         } else {
           this.selectedOption = 'custom'
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
         }
 
         // } else {
@@ -2931,8 +2931,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.allowedOnSpecificUrl = false;
         this.allowedOnSpecificUrlList = []
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -2943,10 +2943,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         // @ allowedUploadExtentions
         // -----------------------------------------------------------------------
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
         this.selectedOption = 'custom'
         this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
         // -----------------------------------------------------------------------
         // @ Emoji Button - WIDGET UNDEFINED
         // -----------------------------------------------------------------------
@@ -4509,7 +4509,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // *** REMOVE PROPERTY
       delete this.widgetObj['allowedOnSpecificUrl'];
 
-      console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist allowedOnSpecificUrlList length ', this.allowedOnSpecificUrlList?.length)
+      this.logger.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist allowedOnSpecificUrlList length ', this.allowedOnSpecificUrlList?.length)
       if (this.allowedOnSpecificUrlList?.length === 0 ) {
         delete this.widgetObj['allowedOnSpecificUrlList'];
       }
@@ -4520,7 +4520,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       
     }
 
-    console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist widgetObj ', this.widgetObj)
+    this.logger.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist widgetObj ', this.widgetObj)
   }
 
   onOpenPatternWithelist() {
@@ -4544,11 +4544,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       if (result) {
         this.allowedOnSpecificUrlList = result;
         // Save to backend or localStorage as needed
-        console.log("[WIDGET-SET-UP] - allowedOnSpecificUrlList afterClosed: ", this.allowedOnSpecificUrlList)
+        this.logger.log("[WIDGET-SET-UP] - allowedOnSpecificUrlList afterClosed: ", this.allowedOnSpecificUrlList)
 
         this.widgetObj['allowedOnSpecificUrlList'] = this.allowedOnSpecificUrlList;
         this.widgetService.updateWidgetProject(this.widgetObj)
-        console.log('[WIDGET-SET-UP] - onOpenPatternWithelist  afterClosed widgetObj ', this.widgetObj)
+        this.logger.log('[WIDGET-SET-UP] - onOpenPatternWithelist  afterClosed widgetObj ', this.widgetObj)
       }
 
       if (this.routerSubscription) {
@@ -4605,13 +4605,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.extensions.push(ext);
       this.newExtension = '';
     }
-     console.log('[WIDGET-SET-UP] add extensions', this.extensions)
+     this.logger.log('[WIDGET-SET-UP] add extensions', this.extensions)
       // this.getExtensionsForBackend()
   }
 
   removeExtension(index: number): void {
     this.extensions.splice(index, 1);
-    console.log('[WIDGET-SET-UP] extensions remove', this.extensions)
+    this.logger.log('[WIDGET-SET-UP] extensions remove', this.extensions)
     // if(this.extensions.length === 0) {
     //   this.selectedOption = 'all'
     // }
@@ -4713,9 +4713,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
 
     this.widgetObj['allowedUploadExtentions'] = this.allowedUploadExtentions;
-    console.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
+    this.logger.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
 
-     console.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
+     this.logger.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
      if(this.selectedOption === 'all') {
        this.widgetObj['allowedUploadExtentions'] = '*/*'
      } else {
@@ -4724,7 +4724,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
      }
 
     this.widgetService.updateWidgetProject(this.widgetObj)
-    console.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
   }
 
 

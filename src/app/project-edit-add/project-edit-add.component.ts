@@ -2657,12 +2657,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allow_send_emoji !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
             this.isAllowedSendEmoji = project.settings.allow_send_emoji
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
           } else {
             this.isAllowedSendEmoji = true;
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
           }
 
           if (project.settings.allowed_urls !== undefined) {
@@ -2675,7 +2675,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
            if (project.settings.allowed_urls_list !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
             this.currentWhitelist = project.settings.allowed_urls_list
             this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist ', this.currentWhitelist) 
           } else {
@@ -2684,23 +2684,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allowed_upload_extentions !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
             
             if (project.settings.allowed_upload_extentions === '*/*') {
               this.selectedOption = 'all';
-              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
             } else {
               this.selectedOption = 'custom'
-              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
               this.extensions = project.settings.allowed_upload_extentions.split(',').map(v => v.trim());
-              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
             }
           } else {
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
             this.selectedOption = 'custom'
             this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
           }
 
 
@@ -2732,8 +2732,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.currentWhitelist = [];
           this.selectedOption = 'custom'
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
-          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
+          this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
+          this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
@@ -2818,10 +2818,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   // -------
   toggleAllowSendEmoji(event) {
-    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
     this.isAllowedSendEmoji = event.target.checked;
     this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
 
@@ -2833,10 +2833,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleAllowedURLs(event){
-    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
     this.isEnabledAllowedURLs = event.target.checked;
     this.projectService.switchAllowedURLS(this.isEnabledAllowedURLs).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs RESULT: ", result)
+      this.logger.log("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs RESULT: ", result)
      
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
@@ -2906,13 +2906,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.extensions.push(ext);
       this.newExtension = '';
     }
-     console.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
+     this.logger.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
       // this.getExtensionsForBackend()
   }
 
   removeExtension(index: number): void {
     this.extensions.splice(index, 1);
-    console.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
+    this.logger.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
     // if(this.extensions.length === 0) {
     //   this.selectedOption = 'all'
     // }
@@ -2920,18 +2920,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   saveAllowedExtensions() {
-    console.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
-    console.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
+    this.logger.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
+    this.logger.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
 
     if(this.selectedOption === 'all') { 
       this.allowed_upload_extentions = '*/*'
     } else {
       this.allowed_upload_extentions = this.extensions.join(',')
     }
-    console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
+    this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
 
     this.projectService.saveAgentsChatAllowedExtensions(this.allowed_upload_extentions).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS  RESULT: ", result)
+    this.logger.log("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS  RESULT: ", result)
 
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
