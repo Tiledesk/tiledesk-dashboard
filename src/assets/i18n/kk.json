@@ -2093,6 +2093,12 @@
         "ThisKBIsEnabledForHybridSearch":  "Бұл білім қоры гибридті іздеу үшін қосылған",
         "ThisKBUsesSemanticSearch":"Бұл білім қоры семантикалық іздеуді пайдаланады",
         "ThisIsTheDefaultKB": "Бұл әдепкі білім қоры",
+        "SynchronizedSitemap":"Синхрондалған сайт картасы",
+        "SynchronizedSitemapAvailableFromThe": "Синхрондалған сайт картасы функциясы {{plan_name}} жоспарынан қолжетімді",
+        "AddsURLSAndSitemapDescription": "Білім Базаңызға нақты веб-беттерді, блог мақалаларын немесе sitemap қосады",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "Бұл жаңа мүмкіндікті сынап көргіңіз келе ме?",
+        "ImportFromWebsites": "Websites-тен импорттау",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"
     },

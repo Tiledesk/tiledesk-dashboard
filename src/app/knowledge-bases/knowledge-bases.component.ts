@@ -1349,8 +1349,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
               error: (error) => {
                 let errorMessage = ""
                 if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
-                  // console.log('[KB IMPORT] error.error.error :', error.error.error);
-                  // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
+                  // this.logger.log('[KB IMPORT] error.error.error :', error.error.error);
+                  // this.logger.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
                   const planLimit = error.error.plan_limit;
                   errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
                 } else {
@@ -1971,8 +1971,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     });
     dialogRef.afterClosed().subscribe(kb => {
-      console.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
-      console.log('[Modal KB DETAILS] Dialog kb : ', kb);
+      this.logger.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
+      this.logger.log('[Modal KB DETAILS] Dialog kb : ', kb);
       if (typeof kb !== 'object') {
         this.onUpdateKb(kb)
       } else {
@@ -3008,7 +3008,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
     this.kbService.deleteKb(data).subscribe((response: any) => {
-      console.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
         // this.updateStatusOfKb(kb._id, 0);
@@ -3038,7 +3038,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.kbsListCount = this.kbsListCount - 1;
         this.refreshKbsList = !this.refreshKbsList;
         this.hasRemovedKb = true;
-        console.log('')
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,

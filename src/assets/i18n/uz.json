@@ -2093,6 +2093,12 @@
          "ThisKBIsEnabledForHybridSearch":  "Ushbu bilimlar bazasi gibrid qidiruv uchun yoqilgan",
          "ThisKBUsesSemanticSearch":"Ushbu bilimlar bazasi semantik qidiruvdan foydalanadi",
          "ThisIsTheDefaultKB": "Bu standart bilimlar bazasi",
+         "SynchronizedSitemap":"Sinxronlashtirilgan sayt xaritasi",
+        "SynchronizedSitemapAvailableFromThe": "Sinxronlashtirilgan sayt xaritasi funksiyasi {{plan_name}} rejasidan mavjud",
+        "AddsURLSAndSitemapDescription": "Bilim Bazangizga specific veb-sahifalar, blog maqolalari yoki sitemap qo'shadi",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "Ushbu yangi funksiyani sinab ko'rmoqchimisiz?",
+        "ImportFromWebsites": "Websites-dan import qilish",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },

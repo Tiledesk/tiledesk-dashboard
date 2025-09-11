@@ -159,7 +159,7 @@ export class KnowledgeBaseService {
 
 
   getKbId(kbid) {
-    console.log("[KNOWLEDGE BASE SERVICE] - getKbId ", kbid);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - getKbId ", kbid);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ export class KnowledgeBaseService {
   }
 
   getListOfKb(params?) {
-    console.log("[KNOWLEDGE BASE SERVICE] - getListOfKb ", params);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - getListOfKb ", params);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -204,8 +204,8 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap";
-    console.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-    console.log("[KNOWLEDGE BASE SERVICE] - body ", body);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - body ", body);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
@@ -217,8 +217,8 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap/import?namespace=" + namespaceid
-    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", url);
-    console.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", body);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", body);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 

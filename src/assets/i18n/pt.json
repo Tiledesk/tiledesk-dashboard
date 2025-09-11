@@ -2093,6 +2093,12 @@
         "ThisKBIsEnabledForHybridSearch":  "Esta Base de Conhecimento está habilitada para pesquisa híbrida",
         "ThisKBUsesSemanticSearch":"Esta Base de Conhecimentos utiliza a pesquisa semântica",
         "ThisIsTheDefaultKB": "Esta é a Base de Conhecimentos padrão",
+        "SynchronizedSitemap":"Sitemap sincronizado",
+        "SynchronizedSitemapAvailableFromThe": "A funcionalidade de sitemap sincronizado está disponível a partir do plano {{plan_name}}",
+        "AddsURLSAndSitemapDescription": "Adiciona páginas web específicas, artigos de blog ou sitemap à sua Base de Conhecimento",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "Quer experimentar esta nova funcionalidade?",
+        "ImportFromWebsites": "Importar de Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Isso é tudo"
     },

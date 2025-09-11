@@ -2094,6 +2094,12 @@
         "ThisKBIsEnabledForHybridSearch":  "قاعدة المعارف هذه مُفعّلة للبحث الهجين",
         "ThisKBUsesSemanticSearch":"تستخدم قاعدة المعارف هذه البحث الدلالي",
         "ThisIsTheDefaultKB": "هذه هي قاعدة المعارف الافتراضية",
+        "SynchronizedSitemap":"خريطة الموقع المتزامنة",
+        "SynchronizedSitemapAvailableFromThe": "ميزة خريطة الموقع المتزامنة متاحة من خطة {{plan_name}}",
+        "AddsURLSAndSitemapDescription": "يضيف صفحات ويب محددة أو مقالات مدونة أو خريطة موقع إلى قاعدة المعرفة الخاصة بك",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "هل تريد تجربة هذه الميزة الجديدة؟",
+        "ImportFromWebsites": "استيراد من Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "هذا كل شئ"
     },

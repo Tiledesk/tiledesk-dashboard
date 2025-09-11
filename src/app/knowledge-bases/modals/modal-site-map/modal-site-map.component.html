@@ -186,20 +186,50 @@
         </form>
     </div> -->
 
-    <div class="form-container">
-        <!-- <form [formGroup]="kbForm"> -->
-            <div class="input-container">
-                <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
-                <input type="url" name="url" class="custom-input" [(ngModel)]="siteMap"
-                    placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)">
+    <div class="form--container">
+      
+        <div class="input-container">
+            <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
+            <input type="url" name="url" class="custom-input" [(ngModel)]="siteMap"
+                placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)" [disabled]="!refreshRateIsEnabled">
+        </div>
+       
+        <ng-container *ngIf="payIsVisible">
+            <div *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled" class="upsell-for-refresh-rate">
+                <span class="material-icons-outlined" style="font-size: 20px;">bolt</span>
+                <span class="upsell-text">  {{ 'KbPage.WantToTryThisNewFeature' | translate }}
+                    <a class="upsell-text-link" (click)="contacUsViaEmail()"> {{'ContactUs' | translate}}!</a>
+                </span>
             </div>
-        <!-- </form> -->
+        </ng-container>
+
+         <div class="refresh-rate--upgrade-plan" *ngIf="isAvailableRefreshRateFeature === false">
+            <div class="refresh-rate--upgrade-plan-title">
+                <!-- Synchronized sitemap feature is available from the Business plan -->
+                {{ 'KbPage.SynchronizedSitemapAvailableFromThe' | translate: t_params }}
+            </div>
+
+                <!-- matTooltipClass="custom-mat-tooltip" 
+                matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='above' 
+                matTooltipHideDelay="100" -->
+            <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
+                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()">
+                <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                    upgrade
+                </span>
+                <span>
+                    {{ 'Pricing.UpgradePlan' | translate }}
+                </span>
+            </button>
+        </div>
     </div>
 
     <!-- ----------------------------------------------- -->
     <!-- Refresh rate - How often will the URL(s) sync -->
     <!-- ----------------------------------------------- -->
-    <div class="refresh-rate-wpr">
+    <div class="refresh-rate-wpr" *ngIf="refreshRateIsEnabled" >
         <div class="refresh-rate-select">
             <span class="input-label">
                
@@ -220,14 +250,15 @@
             <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
             </span>
+
         </div>
 
+        
 
-        <div class="refresh-rate-upgrade-plan">
+
+        <!-- <div class="refresh-rate-upgrade-plan">
             <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
-                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
-                matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
-                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()">
                 <span class="material-icons-outlined get--feature-upgrade-plan-icon">
                     upgrade
                 </span>
@@ -246,7 +277,7 @@
                     </div> 
                 </div>
             </div>
-        </ng-container>
+        </ng-container> -->
 
 
     </div>

@@ -2095,6 +2095,12 @@
         "ThisKBIsEnabledForHybridSearch":  "Denna kunskapsbas är aktiverad för hybridsökning",
         "ThisKBUsesSemanticSearch":"Denna kunskapsbas använder semantisk sökning",
         "ThisIsTheDefaultKB": "Detta är standardkunskapsbasen",
+        "SynchronizedSitemap":"Synkroniserad webbplatskarta",
+        "SynchronizedSitemapAvailableFromThe": "Synkroniserad webbplatskart-funktion är tillgänglig från {{plan_name}}-planen",
+        "AddsURLSAndSitemapDescription": "Lägger till specifika webbsidor, bloggartiklar eller sitemap till din Kunskapsbas",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "Vill du prova den här nya funktionen?",
+        "ImportFromWebsites": "Importera från Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

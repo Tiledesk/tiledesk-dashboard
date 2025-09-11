@@ -160,7 +160,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
 
     this.logger.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
-    console.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
+    this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
     this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
@@ -276,7 +276,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // let search = '';
     this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
     this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
-    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
     
     if (column == 'status') {
       this.searchParams.status = filterValue;
@@ -325,9 +325,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
  getkbById(kbid) {
-    console.log('[KB TABLE] - GET KB BY ID -  kbid', kbid);
+    this.logger.log('[KB TABLE] - GET KB BY ID -  kbid', kbid);
     this.kbService.getKbId(kbid).subscribe((kb: any) => {
-      console.log('[KB TABLE] - GET KB BY ID RES ', kb);
+      this.logger.log('[KB TABLE] - GET KB BY ID RES ', kb);
       
       if (kb) {
         this.onOpenBaseModalDetail(kb)
@@ -342,7 +342,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   onOpenBaseModalDetail(kb: any ) {
-    console.log("[KB TABLE] - OPEN DETAIL kb:  ",kb);
+    this.logger.log("[KB TABLE] - OPEN DETAIL kb:  ",kb);
     this.openBaseModalDetail.emit(kb);
   }
 

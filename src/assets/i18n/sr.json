@@ -2094,6 +2094,12 @@
         "ThisKBIsEnabledForHybridSearch":  "Ова база знања је омогућена за хибридну претрагу",
         "ThisKBUsesSemanticSearch":"Ова база знања користи семантичку претрагу",
         "ThisIsTheDefaultKB": "Ово је подразумевана база знања",
+        "SynchronizedSitemap":"Синхронизована мапа сајта",
+        "SynchronizedSitemapAvailableFromThe": "Функција синхронизоване мапе сајта доступна је из {{plan_name}} плана",
+        "AddsURLSAndSitemapDescription": "Додаје specific веб странице, блог чланке или sitemap у вашу Базу Знања",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "Желите ли да испробате ову нову функцију?",
+        "ImportFromWebsites": "Увоз са Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "То је све"
     },

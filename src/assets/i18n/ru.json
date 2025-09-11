@@ -2093,6 +2093,12 @@
         "ThisKBIsEnabledForHybridSearch":  "Эта База знаний включена для гибридного поиска",
         "ThisKBUsesSemanticSearch":"Эта база знаний использует семантический поиск",
         "ThisIsTheDefaultKB": "Это база знаний по умолчанию",
+        "SynchronizedSitemap":"Синхронизированная карта сайта",
+        "SynchronizedSitemapAvailableFromThe": "Функция синхронизированной карты сайта доступна с тарифа {{plan_name}}",
+        "AddsURLSAndSitemapDescription": "Добавляет specific веб-страницы, статьи блога или sitemap в вашу Базу Знаний",
+        "Websites": "Websites",
+        "WantToTryThisNewFeature": "Хотите попробовать эту новую функцию?",
+        "ImportFromWebsites": "Импорт с Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Вот и все"
     },

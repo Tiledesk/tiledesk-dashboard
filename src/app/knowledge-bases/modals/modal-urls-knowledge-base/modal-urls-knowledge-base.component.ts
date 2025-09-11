@@ -104,17 +104,17 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   }
 
   fetchSiteMap() {
-    console.log('[ModalSiteMapComponent] sitemap: ', this.siteMap);
+    this.logger.log('[ModalSiteMapComponent] sitemap: ', this.siteMap);
     const body = {sitemap: this.siteMap}
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      console.log("[ModalSiteMapComponent] addSitemap:", resp);
-      console.log("[ModalSiteMapComponent] addSitemap sites:", resp.sites);
+      this.logger.log("[ModalSiteMapComponent] addSitemap:", resp);
+      this.logger.log("[ModalSiteMapComponent] addSitemap sites:", resp.sites);
 
 
       if(resp.sites.length > 0){
        
         this.listOfUrls = resp.sites.join('\n');
-        // console.log('[ModalSiteMapComponent] listOfUrls: ', this.listOfUrls);
+        // this.logger.log('[ModalSiteMapComponent] listOfUrls: ', this.listOfUrls);
         this.countSitemap = resp.sites.length;
 
         if(this.countSitemap > KB_LIMIT_CONTENT) {

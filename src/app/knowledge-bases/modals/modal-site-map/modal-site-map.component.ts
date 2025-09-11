@@ -51,7 +51,7 @@ export class ModalSiteMapComponent implements OnInit {
   unwanted_classnames = [];
 
   refresh_rate: Array<any> = [ 
-    { name: "Never", value: 'never' },
+    // { name: "Never", value: 'never' },
     { name: "Daily", value: 'daily' },
     { name: "Weekly", value: 'weekly' },
     { name: "Monthly", value: 'monthly'}
@@ -59,6 +59,7 @@ export class ModalSiteMapComponent implements OnInit {
 
   // selectedRefreshRate = 0;
   selectedRefreshRate: any;
+  
   isAvailableRefreshRateFeature: boolean;
   refreshRateIsEnabled : boolean;
   id_project: string;
@@ -85,6 +86,10 @@ export class ModalSiteMapComponent implements OnInit {
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-SITEMAP] data: ", data);
+   
+    this.selectedRefreshRate = this.refresh_rate[2].value
+    this.logger.log("[MODALS-SITEMAP] this.refresh_rate[2]: ", this.refresh_rate[2].value);
+
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
       this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
@@ -93,7 +98,7 @@ export class ModalSiteMapComponent implements OnInit {
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
       this.selectedNamespace = data.selectedNamespace
-      console.log("[MODALS-SITEMAP] data > selectedNamespace: ", this.selectedNamespace);
+      this.logger.log("[MODALS-SITEMAP] data > selectedNamespace: ", this.selectedNamespace);
       this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
       this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
       this.logger.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
@@ -206,7 +211,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
-    console.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
+    this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
 
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });
