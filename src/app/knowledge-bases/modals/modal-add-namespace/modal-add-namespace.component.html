@@ -10,7 +10,6 @@
             [ngClass]="{'selected-option': selectedNamespaceType === 'standard'}"
             (click)="selectedNamespaceType = 'standard'"
             style="transition: border-color 0.2s;">
-
             <div class="add-content-card-content">
                 <div class="add-content-card-content-icon-wpr">
                     <span>
@@ -22,14 +21,15 @@
                 <span class="span-6"> </span>
                 <p class="add-content-card-content-title">
                     {{'KbPage.Standard' | translate }}
-              
+                   
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    <!-- Finds results based on the meaning of your query — best effort using AI understanding. -->
-                      {{'KbPage.StandardKbDesc' | translate }}
+                   <!-- Finds results based on the meaning of your query — best effort using AI understanding. -->
+           
+                    {{'KbPage.StandardKbDesc' | translate }}
                 </p>
-                 <div *ngIf="hideHelpLink" class="learn-more-container" (click)="goToStandardSearchDoc()">
+                <div *ngIf="hideHelpLink" class="learn-more-container" (click)="goToStandardSearchDoc()">
                     <span class="material-icons-outlined">
                         import_contacts
                     </span>
@@ -43,6 +43,7 @@
         <div *ngIf="data.pay"
             class="add--content-card-wpr" 
             matRipple
+            [matRippleDisabled]="!hybridActive"
             [ngClass]="{
                 'selected-option': selectedNamespaceType === 'hybrid',
                 'disabled-option': !hybridActive
@@ -65,12 +66,12 @@
                 <span class="span-6"> </span>
                 <p class="add-content-card-content-title">
                     {{ 'KbPage.Hybrid' | translate }}
-                    
+                 
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    <!-- Combines meaning and keyword matching for more accurate and complete results. -->
-                    {{'KbPage.HybridKbDesc' | translate }}
+                   <!--  Combines meaning and keyword matching for more accurate and complete results. -->
+                     {{'KbPage.HybridKbDesc' | translate }}
                 </p>
                 <div  *ngIf="hideHelpLink" class="learn-more-container" (click)="goToHybridSearchDoc()">
                     <span class="material-icons-outlined">
@@ -87,8 +88,8 @@
     <div class="upsell" *ngIf="!hybridActive && data.pay">
         <span class="material-icons-outlined">bolt</span>
         <span class="upsell-text">
-            <!-- Want to try the new Hybrid Search feature?  -->
-             {{'KbPage.WantTryTheHybridSearch' | translate }}
+           <!-- Want to try the new <b>Hybrid Search</b> feature? -->
+            {{'KbPage.WantTryTheHybridSearch' | translate }}
             <a class="upsell-text-link" (click)="contactUs()">{{'ContactUs' | translate}}!</a></span>
     </div>
 

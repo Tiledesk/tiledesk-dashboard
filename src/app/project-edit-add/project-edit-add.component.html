@@ -2044,21 +2044,186 @@
                     </div>
                   </div>
 
-                  <!-- <div class="input-wrapper" style="max-width: 992px;">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <div class="c-alert-x-long-string">
-                          <span>
-                            <i class="material-icons">info </i>
-                            <span>
-                              {{'EnablingThisOptionHidesChatbotAttributes' | translate }}
-                            </span>
+                  <!-- ----------------------------------- -->
+                  <!-- Allow to send emoji -->
+                  <!-- ----------------------------------- -->
+                  <div class="row" style="margin-top: 40px;">
+                    <div class="col-md-6">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+
+                          {{'TeammatesCanSendEmojis' | translate}}
+                        </span>
+                      </h3>
+                    </div>
+
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                        {{'ByEnablingThisOptionTeammatesWillBeAbleToSendEmojis' | translate }}
+                        
+                      </p>
+                    </div>
+
+                    <!-- SWITCH BUTTON -->
+                    <div class="col-md-6">
+
+                      <span class="span-12"></span>
+
+                      <div class="label--switch-wpr">
+                        <label>
+                          {{ 'Enable' | translate}}
+                        </label>
+                        <div class="onoffswitch">
+
+                          <input (change)="toggleAllowSendEmoji($event)" type="checkbox"
+                            name="allow-send-emoji" class="onoffswitch-checkbox"
+                            id="allow-send-emoji"
+                            [checked]="isAllowedSendEmoji">
+                          <label class="onoffswitch-label" for="allow-send-emoji">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+
+                  <!-- ----------------------------------- -->
+                  <!-- Allowed URLs -->
+                  <!-- ----------------------------------- -->
+                  <div class="row" style="margin-top: 40px;">
+                    <div class="col-md-6">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+
+                          {{'AllowedDomains' | translate}}
+                        </span>
+                      </h3>
+                    </div>
+
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                        {{'ByEnablingThisOptionTeammateCanOnlySendURLBelongingWhitelist' | translate }}
+                        
+                      </p>
+                    </div>
+
+                    <!-- SWITCH BUTTON -->
+                    <div class="col-md-6">
+
+                      <span class="span-12"></span>
+
+                      <div class="label--switch-wpr">
+                        <label>
+                          {{ 'Enable' | translate}}
+                        </label>
+                        <div class="onoffswitch">
+
+                          <input (change)="toggleAllowedURLs($event)" type="checkbox"
+                            name="allowed-urls" class="onoffswitch-checkbox"
+                            id="allowed-urls"
+                            [checked]="isEnabledAllowedURLs">
+                          <label class="onoffswitch-label" for="allowed-urls">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div *ngIf="isEnabledAllowedURLs" class="configure-urls-whitelist-btn-wpr">
+
+                        <button class="btn configure-urls-whitelist-btn" (click)="onOpenUrlsWhitelist()">
+                            {{'ConfigureWhitelist' | translate}}
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- ----------------------------------- -->
+                  <!-- Allowed file extentions -->
+                  <!-- ----------------------------------- -->
+                  <div class="row" style="margin-top: 40px;">
+                    <div class="col-md-6">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+
+                          	{{'AllowedFileExtensions' | translate}}
+                        </span>
+                      </h3>
+                    </div>
+
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                       {{'AllowedFileExtensionsAgentChatDesc' | translate}}
+                      </p>
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <span class="span-12"></span>
+
+                      <div class="extensions--container">
+
+                        <!-- Option ALL -->
+                        <div class="option--row">
+                          <input type="radio"  name="extOption" value="all" [(ngModel)]="selectedOption">
+                          <input type="text" [value]="'AllExtensions' | translate" disabled class="fixed--input" />
+                        </div>
+
+                        <!-- Option Custom -->
+                        <div class="option--row">
+                          <input type="radio" name="extOption" value="custom" [(ngModel)]="selectedOption">
+
+                          <input type="text"
+                            class="add-extensions--input"
+                            [(ngModel)]="newExtension"
+                            placeholder="{{'AddExtension' | translate}} (e.g. .pdf)"
+                            [disabled]="selectedOption !== 'custom'"
+                            (keyup.enter)="addExtension()"/>
+                            
+                          <button type="button"
+                            class="add-extensions-btn"
+                            (click)="addExtension()"
+                            [disabled]="selectedOption !== 'custom'"
+                            [ngClass]="{'add-extensions-btn-disabled': selectedOption !== 'custom'}">
+                            
+                            <i class="material-icons" >add</i>
+                          </button>
+                        </div>
+
+                        <!-- Extension container -->
+                        <div *ngIf="selectedOption === 'custom'" class="extensions-box"
+                          [ngClass]="{'no-extentions': extensions.length === 0 }">
+                          <span *ngFor="let ext of extensions; let i = index" class="extension-chip">
+                          {{ ext }}
+                          <button type="button" (click)="removeExtension(i)">
+                            <i  class="material-icons"> close </i>
+                          </button>
                           </span>
                         </div>
-                        <span class="span-20"> </span>
+
+                      </div>
+
+                     
+                      <div class="save-allowed-extentions-btn-wpr"> 
+                        <button class="btn btn-tdblu-no-boxshadow"
+													style="margin-top: 16px; font-size: 12px; letter-spacing: 1px;"
+													(click)="saveAllowedExtensions()" [disabled]="selectedOption === 'custom' && extensions.length === 0">
+													{{ 'Save' | translate }}
+												</button>
                       </div>
                     </div>
-                  </div> -->
+                  </div>
 
 
                 </span> <!-- /. Advanced ROUTE -->

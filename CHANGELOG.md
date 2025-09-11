@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.130
+- Adds links to documentations
+- Adds translations
+
+
 ### 2.7.129
 - Adds the ability to create WhatsApp Broadcasts
 

@@ -46,7 +46,7 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
     private logger: LoggerService,
     private unansweredQuestionsService: UnansweredQuestionsService,
     public brandService: BrandService,
-    private translate: TranslateService,
+    private translate: TranslateService
   ) {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];

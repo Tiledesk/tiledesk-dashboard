@@ -1,0 +1,45 @@
+.full-width {
+    width: 100%;
+}
+
+// url-input
+
+::ng-deep .mat-list-base[dense] .mat-list-item .mat-list-item-content {
+    padding: 0px !important;
+}
+
+::ng-deep .mat-icon-button {
+    width: 24px;
+    height: 24px;
+    line-height: 14px;
+}
+
+// ::ng-deep .mat-icon-button:hover {
+//     color: var(--red-color) !important;
+// }
+
+
+::ng-deep .mat-icon-button:hover>span>.delete-url-icon {
+    color: var(--red-color) !important;
+}
+
+::ng-deep .scrollable-list {
+  max-height: 330px;
+  overflow-y: auto;
+}
+
+::ng-deep .show-error .mat-mdc-form-field-outline {
+  border-color: #f44336 !important; /* red */
+}
+
+::ng-deep .show-error .mat-mdc-form-field-outline-thick {
+  border-color: #f44336 !important;
+}
+
+
+.no-urls-message {
+  text-align: center;
+  color: #888;
+  margin-top: 1rem;
+  font-style: italic;
+}

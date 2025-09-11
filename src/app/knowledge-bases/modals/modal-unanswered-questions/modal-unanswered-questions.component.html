@@ -6,7 +6,7 @@
             <mat-icon>refresh</mat-icon>
         </button>
     </div>
-    <div class="contents-count">  {{'KbPage.TotalQuestions' | translate }}: <span class="contents-count-num">{{ unansweredQuestions.length }}</span>
+    <div class="contents-count"> {{'KbPage.TotalQuestions' | translate }}: <span class="contents-count-num">{{ unansweredQuestions?.length }}</span>
     </div>
   </div>
 
@@ -23,8 +23,7 @@
         <span class="uq-actions">
           <button class="uq-btn uq-btn-icon" mat-icon-button 
             matTooltipClass="kb-custom-mat-tooltip" 
-            [matTooltip]="'AddQuestionToKB' | translate" 
-            (click)="onOpenAddKnowledgeBaseModal(q)">
+            [matTooltip]="'AddQuestionToKB' | translate" (click)="onOpenAddKnowledgeBaseModal(q)">
             <mat-icon class="add-icon">add_circle_outline</mat-icon>
           </button>
           <button class="uq-btn uq-btn-icon" mat-icon-button 
