@@ -4758,7 +4758,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   openleaveChatModal() {
-    if (this.PERMISSION_TO_LEFT_REQUEST) {
+    if (!this.PERMISSION_TO_LEFT_REQUEST) {
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return;
     }
