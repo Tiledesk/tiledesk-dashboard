@@ -119,8 +119,8 @@
             <div class="right-column" (click)="displayDetails(request)">
               <div class="lead-name">
                 <div class="lead--name">
+                  <!-- {{ request?.lead?.fullname }} -->
                    {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
-                  <!--  {{ request?.lead?.fullname }} -->
                   <span *ngIf="!request?.lead?.fullname">
                     N/A
                   </span>

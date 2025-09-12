@@ -3,23 +3,8 @@
 
         <div style="width: 100%;">
             <div class="lock-container">
-                <!-- <img src="assets/img/int/getstarted.svg" alt=""> -->
                 <div class="no-bot-msg">
-                    <!-- <div class="add-content-btn-wpr">
-                        <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
-                            [matMenuTriggerFor]="menu"> 
-                            {{ 'KbPage.Add' | translate }} 
-                        </button>
-                    </div> -->
-                    <!--  Welcome to Tiledesk Knowledge Base  -->
-                    <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-msg">
-                        👋 {{'KbPage.WelcomeToKB' | translate:{company_name: companyName} }}
-                    </div> -->
-                    <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-sub-msg">
-                        You've just created your first AI Assistant
-                    </div> -->
-                    <!-- <span class="upgrade-title">{{'KbPage.NoContentAdded' | translate }}</span> -->
-
+                    
                     <!-- ---------------------------------- -->
                     <!-- New -->
                     <!-- ---------------------------------- -->
@@ -62,11 +47,14 @@
                                         </span>
                                     </div>
                                     <span class="span-6"> </span>
-                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbURL' | translate }}
+                                    <p class="add-content-card-content-title"> 
+                                        <!-- {{'KbPage.AddKbURL' | translate }} -->
+                                        {{'KbPage.Websites' | translate }} 
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        {{'KbPage.AddsURLSDescription' | translate }}
+                                        <!-- {{'KbPage.AddsURLSDescription' | translate }} -->
+                                        {{'KbPage.AddsURLSAndSitemapDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -93,7 +81,9 @@
                                         </span>
                                     </div>
                                     <span class="span-6"> </span>
-                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbSitemap' | translate }}
+                                    <p class="add-content-card-content-title"> 
+                                        <!-- {{'KbPage.AddKbSitemap' | translate }} -->
+                                        {{'KbPage.SynchronizedSitemap' | translate }}
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
@@ -221,11 +211,7 @@
                         </div>
                     </div> -->
                 </div>
-                <!-- <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
-                    <add-content-menu class="mat-menu"
-                        (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
-                    </add-content-menu>
-                </mat-menu> -->
+              
             </div>
         </div>
     </div>
@@ -258,11 +244,21 @@
                             (ngModelChange)="onLoadByFilter($event, 'status')">
                             <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
                             <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
-                            <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
-                            <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
-                            <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
-                            <ng-option value="300"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
-                            <ng-option value="400"> {{ 'KbPage.StatusError' | translate }}</ng-option>
+                            <ng-option value="-1"> 
+                                {{ 'KbPage.StatusNotStarted' | translate }}
+                            </ng-option>
+                            <ng-option value="100"> 
+                                {{ 'KbPage.StatusQueued' | translate }}
+                            </ng-option>
+                            <ng-option value="200"> 
+                                {{ 'KbPage.StatusStarted' | translate }}
+                            </ng-option>
+                            <ng-option value="300"> 
+                                {{ 'KbPage.StatusFinished' | translate }}
+                            </ng-option>
+                            <ng-option value="400"> 
+                                {{ 'KbPage.StatusError' | translate }}
+                            </ng-option>
                         </ng-select>
                     </div>
 
@@ -394,11 +390,7 @@
 
 
         <div *ngIf="!isLoading || SHOW_MORE_BTN" #tableBody class="table-body card-content table-responsive">
-            <!-- <div class="btn-preview">
-            <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
-              <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
-            </button>
-        </div> -->
+         
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -464,14 +456,14 @@
                     <tr *ngIf="kbsList?.length == 0">
                         <td colspan="5" style="width: 100%; ">
                             <div class="ellipsis-text" style="width: 100%;
-                        display: inline-block;
-                        text-align: center;
-                        padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                                display: inline-block;
+                                text-align: center;
+                                padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
 
-                    <tr *ngFor="let kb of kbsList">
+                    <tr *ngFor="let kb of kbsList; trackBy: trackByKbId">
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
 
@@ -517,8 +509,7 @@
                                     style="font-size: 16px; color: white;">quiz</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">FAQ</span>
                             </div>
-                            <!-- <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span> -->
-                            <!-- <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span> -->
+           
                         </td>
 
                         <td style="min-width: 50px; width: 50px; text-align:center;"
@@ -553,7 +544,7 @@
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
                             <span *ngIf="kb.type === 'url' || kb.type === 'sitemap'"
-                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
                                 matTooltipPosition='below' 
@@ -576,6 +567,7 @@
                                 </span>
                             </span>
                             <span *ngIf="kb.type !== 'url' && kb.type !== 'sitemap'">
+                                <!-- — -->
                                  <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
                                     remove
                                 </span>
@@ -588,24 +580,16 @@
                             {{ kb.updatedAt | amTimeAgo }}
                         </td>
 
-                        <!-- <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                        <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}" class="ellipsis-text" style="max-width: 100%; font-size: 16px;">{{ kb.name }}</div>
-                        
-                        <div *ngIf="kb.type === 'text'" class="subtitle ellipsis-text" style="max-width: 100%;">
-                           
-                            {{kb.content | slice:0:500 }}
-
-                        </div>
-                        <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
-          
-                            {{kb.source }}
-
-                        </div>
-                    </td> -->
 
                         <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
                             <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
+                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="'URLAutomaticallySynchronized' | translate" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="!kb.sitemap_origin">
                                 {{ kb.name }}
                             </div>
 
@@ -663,12 +647,15 @@
                                         <mat-icon>edit</mat-icon>
                                         <span>{{'Edit' | translate}}</span>
                                     </button>
+                                     <!-- *ngIf="kb.type !== 'sitemap'" -->
                                     <button mat-menu-item [disabled]="kb.deleting == true"
                                         (click)="onOpenBaseModalDelete(kb)"
                                         [disabled]="!PERMISSION_TO_DELETE">
                                         <mat-icon>delete</mat-icon>
                                         <span>{{'KbPage.DeleteKb' | translate}}</span>
                                     </button>
+
+                                
 
 
                                 </mat-menu>
