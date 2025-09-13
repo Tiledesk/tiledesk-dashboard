@@ -289,6 +289,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getAllNamespaces()
     // this.getDeptsByProjectId()
      // this.listenSidebarIsOpened();
+    // this.listenSidebarIsOpened();
     // this.getTemplates();
     // this.getCommunityTemplates()
     // this.getOSCODE();
@@ -550,9 +551,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   async getQuotas() {
     this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
+      
       this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
     })
+    this.logger.log('[KNOWLEDGE-BASES-COMP] ', this.quotas)
   }
+
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
@@ -2109,7 +2113,7 @@ _presentDialogImportContents() {
     });
   }
 
-  onOpenBaseModalDetail(kb) {
+  onOpenBaseModalDetail(kb, type) {
     // this.kbid_selected = kb;
     this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
@@ -2123,9 +2127,13 @@ _presentDialogImportContents() {
       },
     });
     dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal KB DETAILS] Dialog kb: ', kb);
-      if (kb) {
+      this.logger.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
+      this.logger.log('[Modal KB DETAILS] Dialog kb : ', kb);
+      if (typeof kb !== 'object') {
         this.onUpdateKb(kb)
+      } else {
+         
+        this.onOpenBaseModalDelete(kb.kb)
       }
     });
   }
@@ -2135,21 +2143,50 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
+    if (kb.type !== 'sitemap') {
+      const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          kb: kb
+        },
+      });
+      dialogRef.afterClosed().subscribe(kb => {
+        this.logger.log('[Modal DELETE KB] kb: ', kb);
+        if (kb) {
+          this.onDeleteKnowledgeBase(kb)
+        }
+      });
+    } else if (kb.type === 'sitemap') {
+      this.presentDialogComfimDeleteSitemap(kb)
+    }
+  }
 
-    const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        kb: kb
-      },
-    });
-    dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal DELETE KB] kb: ', kb);
-      if (kb) {
-        this.onDeleteKnowledgeBase(kb)
-      }
-    });
+  presentDialogComfimDeleteSitemap(kb) {
+     kb.deleting = false;
+     Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+        // this.logger.log('XXXX ' , result) 
+        if (result.isDenied) { 
+          this.onDeleteKnowledgeBase(kb)
+        } else {
+          kb.deleting = false;
+        }
+      })
   }
 
 
@@ -2162,7 +2199,7 @@ _presentDialogImportContents() {
     });
 
     dialogRef.afterClosed().subscribe(type => {
-      this.logger.log('[Modal ADD CONTENT] type: ', type);
+      this.logger.log('[KNOWLEDGE BASES COMP] type: ', type);
       if (type) {
         this.openAddKnowledgeBaseModal(type)
       }
@@ -2299,7 +2336,8 @@ _presentDialogImportContents() {
         t_params: this.t_params,
         id_project: this.id_project,
         project_name: this.project_name,
-        payIsVisible: this.payIsVisible
+        payIsVisible: this.payIsVisible,
+        selectedNamespace: this.selectedNamespace,
       },
     });
     dialogRef.afterClosed().subscribe(body => {
@@ -2309,7 +2347,8 @@ _presentDialogImportContents() {
       // }
       if (body) {
         if (!body.hasOwnProperty('upgrade_plan')) {
-          this.onAddMultiKb(body)
+          // this.onAddMultiKb(body)
+          this.importSitemap(body)
         } else {
           this.logger.log('Property "upgrade_plan" exist');
           this.goToPricing()
@@ -2934,10 +2973,97 @@ _presentDialogImportContents() {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
   }
+
+  importSitemap(body) {
+   this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap body', body)
+
+    let error = this.msgErrorAddUpdateKb;
+    this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
+
+    this.kbService.importSitemap(body, this.selectedNamespace['id']).subscribe((kbs: any) => {
+
+     this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
+
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+
+      this.kbsListCount = this.kbsListCount + kbs.length;
+      this.refreshKbsList = !this.refreshKbsList;
+
+    }, (err) => { 
+      this.logger.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
+      if (err.error && err.error.plan_limit) {
+        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
+        error = this.msgErrorAddUpdateKbLimit
+      }
+
+        if (this.payIsVisible === true) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.upgrade,
+          cancelButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+        }).then((result: any) => {
+
+          if (result.isConfirmed) {
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'free') {
+                this.router.navigate(['project/' + this.id_project + '/pricing']);
+              } else {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            }
+          }
+        })
+      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false
+        })
+      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+        // this.logger.log('here 1')
+        Swal.fire({
+          title: this.warningTitle,
+          text: error + '. ' + this.contactUsToUpgrade,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          // confirmButtonColor: "var(--blue-light)",
+          canecelButtonText: this.cancel,
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
+        })
+      }
+
+    }, () => {
+
+      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*: "
+        
+      );
+    })
+  }
+
 
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
@@ -3680,7 +3806,6 @@ _presentDialogImportContents() {
       .subscribe(
         (res) => {
           this.unansweredQuestions = res['questions'];
-          // this.unansweredQuestions = this.fakeUnansered
           this.isLoadingUnanswered = false;
         },
         (err) => {

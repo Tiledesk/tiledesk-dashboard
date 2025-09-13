@@ -657,7 +657,7 @@ export class AuthService {
           // used in signOut > removeInstanceId
           this.userId = user._id;
 
-          // console.log('[AUTH-SERV] isActivePAY in signin ', this.isActivePAY)
+          // this.logger.log('[AUTH-SERV] isActivePAY in signin ', this.isActivePAY)
           // this.sleekplanSso(user, this.isActivePAY)
 
         }
@@ -1059,29 +1059,29 @@ export class AuthService {
 
 
     // Force reload the page
-    // console.log('Reloading page to reset Sleekplan state.');
+    // this.logger.log('Reloading page to reset Sleekplan state.');
     // window.location.reload();
 
     // this.removeSleekScript();
     // this.sleekplanService.hasLogout()
     // if (window.hasOwnProperty('SLEEK_USER')) { 
-    //   console.log('[AUTH-SERV] SLEEK_USER window ', window['SLEEK_USER']);
+    //   this.logger.log('[AUTH-SERV] SLEEK_USER window ', window['SLEEK_USER']);
     //   delete window['SLEEK_USER'];
-    //   console.log('[AUTH-SERV] SLEEK_USER has been removed from the window object.');
+    //   this.logger.log('[AUTH-SERV] SLEEK_USER has been removed from the window object.');
     //   // this.deleteCookie('_sleek_product');
-    //   // console.log('Current cookies:', document.cookie);
+    //   // this.logger.log('Current cookies:', document.cookie);
     // } else {
-    //   console.warn('SLEEK_USER does not exist on the window object.');
+    //   this.logger.warn('SLEEK_USER does not exist on the window object.');
     // }
 
     // if (window.hasOwnProperty('SLEEK_PRODUCT_ID')) { 
-    //   console.log('[AUTH-SERV] SLEEK_PRODUCT_ID window ', window['SLEEK_PRODUCT_ID']);
+    //   this.logger.log('[AUTH-SERV] SLEEK_PRODUCT_ID window ', window['SLEEK_PRODUCT_ID']);
     //   delete window['SLEEK_PRODUCT_ID'];
-    //   console.log('[AUTH-SERV] SLEEK_PRODUCT_ID has been removed from the window object.');
+    //   this.logger.log('[AUTH-SERV] SLEEK_PRODUCT_ID has been removed from the window object.');
     //   // this.deleteCookie('_sleek_product');
-    //   // console.log('Current cookies:', document.cookie);
+    //   // this.logger.log('Current cookies:', document.cookie);
     // } else {
-    //   console.warn('SLEEK_PRODUCT_ID does not exist on the window object.');
+    //   this.logger.warn('SLEEK_PRODUCT_ID does not exist on the window object.');
     // }
   }
 
@@ -1233,6 +1233,7 @@ export class AuthService {
 
     this.user_bs.next(null)
     this.project_bs.next(null)
+    
     this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
@@ -1244,6 +1245,8 @@ export class AuthService {
     localStorage.removeItem('user')
     localStorage.removeItem('project')
     localStorage.removeItem('role')
+    localStorage.removeItem('current_project_user')
+
 
     // if (calledby !== 'autologin') {
     this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
@@ -1504,8 +1507,6 @@ export class AuthService {
     console.log('[AUTH-SERV] signinWithOAuth2 url ', url)
     window.open(url, '_self');
   }
-
-
 
 
 }
