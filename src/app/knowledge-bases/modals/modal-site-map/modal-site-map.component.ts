@@ -226,6 +226,9 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   onSaveKnowledgeBase(){
+   if(!this.refreshRateIsEnabled) {
+    return
+   } 
     // if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
     //   this.errorLimit = true;
     // } else {
