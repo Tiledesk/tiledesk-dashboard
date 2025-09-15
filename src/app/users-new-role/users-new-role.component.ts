@@ -128,7 +128,8 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.REQUEST_REASSIGN, label: 'Able to reassign a conversation' },
         { key: PERMISSIONS.REQUEST_ADD, label: 'Able to add a teammate to a conversation' },
         { key: PERMISSIONS.REQUEST_LEFT, label: 'Able to leave a conversation to which is joined' },
-        { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the chat transcript' }
+        { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the chat transcript' },
+        { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
       ]
     },
     // {
@@ -142,17 +143,7 @@ export class UsersNewRoleComponent implements OnInit {
     //   ]
     // },
 
-      {
-      key: 'WhatsAppBroadcasts',
-      title: 'WhatsApp Broadcasts',
-      parentLabel: 'Select all',
-      type: 'checkbox',
-      expanded: false,
-      children: [
-        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view' },
-        { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' }
-      ]
-    },
+
 
     {
       key: 'knowledgeBasesManagement',
@@ -162,7 +153,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.KB_READ, label: 'Able to view' },
-        { key: PERMISSIONS.KB_CONTENTS_ADD, label: 'Able to add contents' },
+        { key: PERMISSIONS.KB_CONTENTS_ADD, label: 'Able to add contents (by manual creation or via import)' },
         { key: PERMISSIONS.KB_CONTENTS_EXPORT, label: 'Able to export contents' },
         { key: PERMISSIONS.KB_CONTENT_UPDATE, label: 'Able to edit content' },
         { key: PERMISSIONS.KB_CONTENT_REINDEX, label: 'Able to reindex content' },
@@ -188,12 +179,24 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.FLOW_DELETE, label: 'Able to delete' },
         { key: PERMISSIONS.FLOW_TEST, label: 'Able to test' },
         { key: PERMISSIONS.FLOW_DUPLICATE, label: 'Able to duplicate' },
-        { key: PERMISSIONS.FLOW_SHARE, label: 'Able to share' },
+        { key: PERMISSIONS.FLOW_SHARE, label: 'Able to share via link' },
         { key: PERMISSIONS.FLOW_EXPORT, label: 'Able to export' },
         { key: PERMISSIONS.FLOW_WEBHOOK_COPY, label: 'Able to copy Webhooks URL' },
         { key: PERMISSIONS.FLOW_WEBHOOK_EDIT, label: 'Able to enable/disable Webhooks' },
         { key: PERMISSIONS.FLOW_WEBHOOK_DELETE, label: 'Able to delete Webhooks' },
         // { key: PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH, label: 'Able to view messages graph' },
+      ]
+    },
+
+    {
+      key: 'WhatsAppBroadcasts',
+      title: 'WhatsApp Broadcasts',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view' },
+        { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' }
       ]
     },
     {
@@ -207,10 +210,27 @@ export class UsersNewRoleComponent implements OnInit {
        { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },
        { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
        { key: PERMISSIONS.LEAD_RESTORE, label: 'Able to restore' },
-       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
+       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to permanently delete' },
        { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
-       { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
-       { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' }
+      ]
+    },
+
+    {
+      key: 'SectionsAccess',
+      title: 'Reports',
+      parentLabel: 'Reports',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
+        { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
+        
+
+        // { key: 'profilePages', label: 'Can access lead and user profile pages' },
+        // { key: 'leadData', label: 'Can export Lead, User, Company data' },
+        // { key: 'importData', label: 'Can import contacts, companies and tickets' },
+        // { key: 'manageTags', label: 'Can manage tags' },
       ]
     },
     // {
@@ -362,6 +382,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ, label: 'Able to view Notifications' },
         { key: PERMISSIONS.PROJECTSETTINGS_SECURITY_READ, label: 'Able to view Security' },
         { key: PERMISSIONS.PROJECTSETTINGS_BANNED_READ, label: 'Able to view Banned visitors' },
+        { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' },
         { key: PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ, label: 'Able to view Advanced' },
       ]
     },
@@ -380,26 +401,7 @@ export class UsersNewRoleComponent implements OnInit {
     // },
 
 
-    {
-      key: 'SectionsAccess',
-      title: 'Reports',
-      parentLabel: 'Reports',
-      type: 'checkbox',
-      expanded: false,
-      children: [
-
-        
-        { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
-        { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
-        // { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
-        
-
-        // { key: 'profilePages', label: 'Can access lead and user profile pages' },
-        // { key: 'leadData', label: 'Can export Lead, User, Company data' },
-        // { key: 'importData', label: 'Can import contacts, companies and tickets' },
-        // { key: 'manageTags', label: 'Can manage tags' },
-      ]
-    },
+  
 
 
     // {

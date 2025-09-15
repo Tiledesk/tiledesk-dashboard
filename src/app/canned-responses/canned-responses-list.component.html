@@ -145,7 +145,7 @@
                               onerror="this.src='assets/img/no_image_user.png'" />
 
                             <span class="td-tag-table">
-                              <span *ngIf="response.createdBy_user">
+                              <span *ngIf="response.createdBy_user" style="    white-space: nowrap;">
                                 {{ response?.createdBy_user?.firstname }} {{ response?.createdBy_user?.lastname }}
                               </span>
 
@@ -157,8 +157,9 @@
 
 
                           <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                              (click)='presentResponseModal_inEditMode(response?._id)'>
+                            <button [disabled]="response?.createdBy_user?._id !== currentUserId" type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                              (click)='presentResponseModal_inEditMode(response?._id, response?.createdBy_user?._id)'>
+                            
                               <i class="material-icons">edit</i>
                             </button>
 

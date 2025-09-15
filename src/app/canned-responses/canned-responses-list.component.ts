@@ -37,7 +37,7 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
   baseUrl: string;
   isChromeVerGreaterThan100: boolean
   public hideHelpLink: boolean;
-
+  currentUserId: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
   isAuthorized = false;
   permissionChecked = false;
@@ -74,11 +74,21 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
     this.getBrowserVersion();
     this.checkPermissions();
     this.listenToProjectUser()
+    this.getCurrentUser()
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+   getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('[CANNED-RES-LIST] - LoggedUser ', user);
+
+      if (user && user._id) {
+        this.currentUserId = user._id;
+      }
+    });
   }
 
   async checkPermissions() {
@@ -295,16 +305,22 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  presentResponseModal_inEditMode(cannedresponseid: string) {
+  presentResponseModal_inEditMode(cannedresponseid: string, createdby: string) {
     if (!this.PERMISSION_TO_UPDATE) {
       this.notify.presentDialogNoPermissionToPermomfAction()
       return
     }
-      this.getScrollPos();
-      this.selectCannedResponseId = cannedresponseid;
-      this.displayModal_AddEditResponse = 'block';
-      this.modalMode = 'edit';
-      console.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
+    if (createdby !== this.currentUserId) {
+      return
+    }
+
+    console.log('[CANNED-RES-LIST] - createdby ', createdby, ' currentUserId ' , this.currentUserId);
+    
+    this.getScrollPos();
+    this.selectCannedResponseId = cannedresponseid;
+    this.displayModal_AddEditResponse = 'block';
+    this.modalMode = 'edit';
+    console.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
     
   }
 

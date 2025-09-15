@@ -2299,7 +2299,8 @@ _presentDialogImportContents() {
         t_params: this.t_params,
         id_project: this.id_project,
         project_name: this.project_name,
-        payIsVisible: this.payIsVisible
+        payIsVisible: this.payIsVisible,
+        selectedNamespace: this.selectedNamespace
       },
     });
     dialogRef.afterClosed().subscribe(body => {

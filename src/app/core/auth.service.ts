@@ -1403,12 +1403,14 @@ export class AuthService {
             // } else {
             //   window.open( this.afterLogoutRedirectURL, '_self');
             // }
-
-             if (this.redirectToKeycloakURLAfterLogout  === false) {
+            
+            // ----------------------------------------
+            // KeycloakURLAfterLogout
+            // ----------------------------------------
+            if (this.redirectToKeycloakURLAfterLogout  === false) {
               console.log('[AUTH-SERV] HERE firebaseSignout 1 ', '/login')
               that.router.navigate(['/login'])
             } else {
-              // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
               console.log('[AUTH-SERV] HERE firebaseSignout 1 ', 'REDIRECT')
               location.replace( this.keycloakURLToRedirectAfterLogout);
             }
@@ -1419,13 +1421,14 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            // that.router.navigate(['/login']) // nk commented
+            that.router.navigate(['/login']) // nk commented
             // if ( this.customRedirectAfterLogout  === false) {
             //   that.router.navigate(['/login'])
             // } else {
             //   window.open( this.afterLogoutRedirectURL, '_self');
             // }
 
+            // ----------------------------------------
             if ( this.redirectToKeycloakURLAfterLogout  === false) {
               console.log('[AUTH-SERV] HERE firebaseSignout 2 ', '/login')
               that.router.navigate(['/login'])

@@ -708,8 +708,9 @@
                               </span>
                             </a>
                           </li>
-
+                       
                           <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST}">
+                          <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_REASSIGN_REQUEST}"> -->
                             <a (click)='openSelectUsersModal(action = "reassign")'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
@@ -719,8 +720,9 @@
                               </span>
                             </a>
                           </li>
-                          <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+
                           <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}">
+                           <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}"> -->
                             <a (click)='openSelectUsersModal(action = "invite")'
                               style="padding-left: 15px; padding-right: 15px;"> 
                               <i class="material-icons" style="padding-right: 5px;">person_add</i>

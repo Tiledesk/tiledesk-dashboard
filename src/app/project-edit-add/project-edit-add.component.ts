@@ -1402,7 +1402,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // this.router.navigate(['project/' + this.id_project + '/notification-email'])
     this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
 
-    if (this.USER_ROLE === 'owner') {
+    if (this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin') {
       if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         // this.logger.log('goToCustomizeNotificationEmailPage HERE 1 ')
         if (this.subscription_is_active === true) {
