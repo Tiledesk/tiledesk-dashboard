@@ -1989,40 +1989,78 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
           }
 
+        //  this.members_array.forEach(member => {
+        //    this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
+        //
+        //    // ----------------------------------------------------------------------------------------------
+        //    // disable notes and tags if the current user has agent role and is not among the participants
+        //    // ----------------------------------------------------------------------------------------------
+        //    
+        //    this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+        //    this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
+        //    
+        //    if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
+        //      this.DISABLE_ADD_NOTE_AND_TAGS = true;
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+        //      this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
+        //    } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
+        //      this.DISABLE_ADD_NOTE_AND_TAGS = false;
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+        //      this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
+        //    }
+        //    
+        //    this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member ', member);
+        //    this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member is bot?', member.includes('bot_'));
+        //    
+        //    
+        //    if (member.includes('bot_')) {
+        //      this.bot_participant_id = member.substr(4);
+        //      this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
+        //      
+        //    } else {
+        //      this.bot_participant_id = ''
+        //    }
+        //  });
+
+          // ----------------------------------------------------------------------------------------------
+          // check bot participants
+          // ----------------------------------------------------------------------------------------------
           this.members_array.forEach(member => {
-            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
-
-            // ----------------------------------------------------------------------------------------------
-            // disable notes and tags if the current user has agent role and is not among the participants
-            // ----------------------------------------------------------------------------------------------
-
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
-
-            if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
-              this.DISABLE_ADD_NOTE_AND_TAGS = true;
-              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
-              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
-            } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
-              this.DISABLE_ADD_NOTE_AND_TAGS = false;
-              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
-              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
-            }
-
+            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member);
             this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member ', member);
             this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member is bot?', member.includes('bot_'));
-
 
             if (member.includes('bot_')) {
               this.bot_participant_id = member.substr(4);
               this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
-
             } else {
-              this.bot_participant_id = ''
+              this.bot_participant_id = '';
             }
           });
+
+          // ----------------------------------------------------------------------------------------------
+          // disable notes and tags if the current user has agent role and is not among the participants
+          // ----------------------------------------------------------------------------------------------
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+
+          if (this.CURRENT_USER_ROLE === 'agent') {
+            const isCurrentUserParticipant = this.members_array.includes(this.currentUserID);
+
+            if (isCurrentUserParticipant) {
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANTS AND IS AGENT');
+              this.DISABLE_ADD_NOTE_AND_TAGS = false;
+              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
+            } else {
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANTS AND IS AGENT');
+              this.DISABLE_ADD_NOTE_AND_TAGS = true;
+              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
+            }
+
+            this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+          }
 
           // ---------------------------------------------------------
           // @ Tags
