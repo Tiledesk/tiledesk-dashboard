@@ -158,11 +158,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   isAuthorized = false;
   permissionChecked = false;
   displayAssignTo: boolean = true;
-  groupsParsedArray: any[] = []
-
-  // groupsLoadPercentageFake = [{"id":"68480837c19660002ded7b79","percentage":23},{"id":"68480982c19660002deda58e","percentage":7},{"id":"687a6aa364222f002d1c83f9","percentage":30},{"id":"687a6ab364222f002d1c8410","percentage":20},{"id":"687a6ac064222f002d1c8426","percentage":12},{"id":"687a6aca64222f002d1c843c","percentage":8}]
-  groupsLoadPercentage: any[] = []
-
+  groupsParsedArray: any
   tags: any;
 
   constructor(
@@ -481,13 +477,44 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   onChangeDeptDescription($event) {
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
     
-    // this.dept_description_toUpdate = $event;
-    // this.dept_description_toUpdate_temp = "";
-    // this.groupsParsedArray = [];
-    // this.displayAssignTo = true;
+    this.dept_description_toUpdate = $event;
+    this.dept_description_toUpdate_temp = "";
+    this.groupsParsedArray = [];
+    this.displayAssignTo = true;
 
-    this.NOT_HAS_EDITED = false 
- 
+    // let cleaned = $event.trim();
+
+    // // Step 1: Remove surrounding quotes
+    // if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+    //   (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+    //   cleaned = cleaned.slice(1, -1);
+    // }
+
+    // // Step 2: Fix escaped quotes
+    // if (cleaned.includes('\\"')) {
+    //   cleaned = cleaned.replace(/\\"/g, '"');
+    // }
+
+    // // Step 3: Try parsing
+    // try {
+    //   const parsed = JSON.parse(cleaned);
+    //   if (Array.isArray(parsed)) {
+    //     console.log('✅ Parsed array:', parsed);
+    //     this.displayAssignTo = false;
+    //     console.log('✅ displayAssignTo:', this.displayAssignTo);
+    //     this.groupsParsedArray = parsed;
+    //     this.getGroupsByProjectId()
+    //   } else {
+    //     this.displayAssignTo = true;
+    //     console.log('⚠️ displayAssignTo:', this.displayAssignTo);
+    //   }
+    // } catch (err) {
+    //   console.log('❌ Parsing failed:', err.message);
+    //   this.displayAssignTo = true;
+    //   console.log('❌ displayAssignTo:', this.displayAssignTo);
+    // }
+
+
   }
 
 
@@ -923,7 +950,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       if (Array.isArray(this.groupsParsedArray)) {
         this.groupsParsedArray = this.groupsParsedArray.map(item => {
-          const matchedGroup = groups.find(group => group._id === item.group_id);
+          const matchedGroup = groups.find(group => group._id === item.id);
           return {
             ...item,
             name: matchedGroup ? matchedGroup.name : 'Unknown group'
@@ -1164,65 +1191,53 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
-        this.dept_description_toUpdate = dept.description;
+        // this.dept_description_toUpdate = dept.description;
 
-       this.groupsParsedArray = dept.groups
-      //  this.groupsParsedArray = this.groupsLoadPercentageFake 
+        let rawDescription = dept.description?.trim() || '';
+        console.log('[DEPT-EDIT-ADD] Raw dept description:', rawDescription);
 
-       if (this.groupsParsedArray?.length > 0) {
-          this.displayAssignTo = false
-          this.getGroupsByProjectId()
-       } else {
-         this.displayAssignTo = true
-       }
+        // Check if the string starts with [ or is a quoted escaped JSON string
+        if (rawDescription.startsWith('[') ||
+          (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
+          (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))) {
 
-     
+          try {
+            // Step 1: Remove surrounding quotes if any
+            if (
+              (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
+              (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
+            ) {
+              rawDescription = rawDescription.slice(1, -1);
+            }
 
-        // let rawDescription = dept.description?.trim() || '';
-        // console.log('[DEPT-EDIT-ADD] Raw dept description:', rawDescription);
+            // Step 2: Unescape JSON string (replace \" with ")
+            const unescaped = rawDescription.replace(/\\"/g, '"');
 
-        // // Check if the string starts with [ or is a quoted escaped JSON string
-        // if (rawDescription.startsWith('[') ||
-        //   (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
-        //   (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))) {
+            // Step 3: Parse into array
+            this.groupsParsedArray = JSON.parse(unescaped);
+            this.dept_description_toUpdate = '';
 
-        //   try {
-        //     // Step 1: Remove surrounding quotes if any
-        //     if (
-        //       (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
-        //       (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
-        //     ) {
-        //       rawDescription = rawDescription.slice(1, -1);
-        //     }
+            this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
 
-        //     // Step 2: Unescape JSON string (replace \" with ")
-        //     const unescaped = rawDescription.replace(/\\"/g, '"');
+            console.log('[DEPT-EDIT-ADD] Parsed groupsParsedArray:', this.groupsParsedArray);
+            this.displayAssignTo = false
+            this.getGroupsByProjectId()
 
-        //     // Step 3: Parse into array
-        //     this.groupsParsedArray = JSON.parse(unescaped);
-        //     this.dept_description_toUpdate = '';
+          } catch (err) {
+            console.error('[DEPT-EDIT-ADD] ❌ Error parsing groupsParsedArray:', err);
+            this.groupsParsedArray = [];
+            this.dept_description_toUpdate = dept.description;
+            this.dept_description_toUpdate_temp = "";
+            this.displayAssignTo = true
+          }
 
-        //     this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
+        } else {
+          this.groupsParsedArray = [];
 
-        //     console.log('[DEPT-EDIT-ADD] Parsed groupsParsedArray:', this.groupsParsedArray);
-        //     this.displayAssignTo = false
-        //     this.getGroupsByProjectId()
-
-        //   } catch (err) {
-        //     console.error('[DEPT-EDIT-ADD] ❌ Error parsing groupsParsedArray:', err);
-        //     this.groupsParsedArray = [];
-        //     this.dept_description_toUpdate = dept.description;
-        //     this.dept_description_toUpdate_temp = "";
-        //     this.displayAssignTo = true
-        //   }
-
-        // } else {
-        //   this.groupsParsedArray = [];
-
-        //   this.dept_description_toUpdate = rawDescription;
-        //   this.dept_description_toUpdate_temp = "";
-        //   this.displayAssignTo = true
-        // }
+          this.dept_description_toUpdate = rawDescription;
+          this.dept_description_toUpdate_temp = "";
+          this.displayAssignTo = true
+        }
 
         // console.log('[DEPT-EDIT-ADD] Final dept_description_toUpdate:', this.dept_description_toUpdate)
         console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - dept_description_toUpdate : ', this.dept_description_toUpdate);
@@ -1554,7 +1569,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.groupsParsedArray = result;
-          this.onGroupPercentageChange(); 
+          this.onGroupPercentageChange(); // update description string
         }
       });
   }
@@ -1562,54 +1577,51 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   onGroupPercentageChange() {
     if (Array.isArray(this.groupsParsedArray)) {
       const result = this.groupsParsedArray.map(group => ({
-        _id: group._id,
-        group_id: group.group_id,
+        id: group.id,
         percentage: group.percentage
       }));
 
-        
-      // this.dept_description_toUpdate_temp = JSON.stringify(result);
-      //  this.dept_description_toUpdate = ""; // always clear textarea if using array
-      
-      this.groupsLoadPercentage = result
-      console.log('[DEPT-EDIT-ADD] 🔄 Updated groupsLoadPercentage:', this.groupsLoadPercentage);
+        // this.dept_description_toUpdate = JSON.stringify(result);
+        this.dept_description_toUpdate_temp = JSON.stringify(result);
+         this.dept_description_toUpdate = ""; // always clear textarea if using array
+        console.log('[DEPT-EDIT-ADD] 🔄 Updated description:', this.dept_description_toUpdate_temp);
       }
   }
 
   // [{\"id\": \"68480837c19660002ded7b79\", \"percentage\":20},{\"id\": \"68480982c19660002deda58e\", \"percentage\":10}, {\"id\": \"687a6aa364222f002d1c83f9\", \"percentage\":10}, {\"id\": \"687a6ab364222f002d1c8410\", \"percentage\":10}, {\"id\": \"687a6ac064222f002d1c8426\", \"percentage\":10},{\"id\": \"687a6aca64222f002d1c843c\", \"percentage\":10}]
 
-// private syncDescriptionVars(description: string) {
-//   let rawDescription = description?.trim() || '';
-//   if (
-//     rawDescription.startsWith('[') ||
-//     (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
-//     (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))
-//   ) {
-//     try {
-//       if (
-//         (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
-//         (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
-//       ) {
-//         rawDescription = rawDescription.slice(1, -1);
-//       }
-//       const unescaped = rawDescription.replace(/\\"/g, '"');
-//       this.groupsParsedArray = JSON.parse(unescaped);
-//       this.dept_description_toUpdate = "";
-//       this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
-//       this.displayAssignTo = false;
-//     } catch (err) {
-//       this.groupsParsedArray = [];
-//       this.dept_description_toUpdate = description;
-//       this.dept_description_toUpdate_temp = "";
-//       this.displayAssignTo = true;
-//     }
-//   } else {
-//     this.groupsParsedArray = [];
-//     this.dept_description_toUpdate = rawDescription;
-//     this.dept_description_toUpdate_temp = "";
-//     this.displayAssignTo = true;
-//   }
-// }
+private syncDescriptionVars(description: string) {
+  let rawDescription = description?.trim() || '';
+  if (
+    rawDescription.startsWith('[') ||
+    (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
+    (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))
+  ) {
+    try {
+      if (
+        (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
+        (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
+      ) {
+        rawDescription = rawDescription.slice(1, -1);
+      }
+      const unescaped = rawDescription.replace(/\\"/g, '"');
+      this.groupsParsedArray = JSON.parse(unescaped);
+      this.dept_description_toUpdate = "";
+      this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
+      this.displayAssignTo = false;
+    } catch (err) {
+      this.groupsParsedArray = [];
+      this.dept_description_toUpdate = description;
+      this.dept_description_toUpdate_temp = "";
+      this.displayAssignTo = true;
+    }
+  } else {
+    this.groupsParsedArray = [];
+    this.dept_description_toUpdate = rawDescription;
+    this.dept_description_toUpdate_temp = "";
+    this.displayAssignTo = true;
+  }
+}
 
   edit() {
     this.NOT_HAS_EDITED = true;
@@ -1617,9 +1629,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
     updated_btn.blur();
     console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED 1', this.dept_description_toUpdate);
-    // if (this.dept_description_toUpdate_temp?.trim()  !== "") {
-    //   this.dept_description_toUpdate = this.dept_description_toUpdate_temp;
-    // }
+    if (this.dept_description_toUpdate_temp?.trim()  !== "") {
+      this.dept_description_toUpdate = this.dept_description_toUpdate_temp;
+    }
 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - updated_btn ', updated_btn);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
@@ -1645,57 +1657,55 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.bot_only,
       this.selectedGroupId,
       this.dept_routing,
-      this.groupsLoadPercentage,
-      this.tags,
-      ).subscribe((data) => {
-        console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
-        // console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES data description ', data['description']);
+      this.tags).subscribe((data) => {
+        this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
+        console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES data description ', data['description']);
 
-        // if (data && data['description']) {
-        //     this.syncDescriptionVars(data['description']);
-        // }
+        if (data && data['description']) {
+            this.syncDescriptionVars(data['description']);
+        }
 
-        // if (data && data['description'] && typeof data['description'] === 'string' && data['description'].trim().startsWith('[')) {
-        //   let toParse = data['description'].trim();
-        //   let parsedGroups: any[] = [];
+        if (data && data['description'] && typeof data['description'] === 'string' && data['description'].trim().startsWith('[')) {
+          let toParse = data['description'].trim();
+          let parsedGroups: any[] = [];
 
-        //   try {
-        //     // Remove wrapping quotes if any
-        //     if (
-        //       (toParse.startsWith('"') && toParse.endsWith('"')) ||
-        //       (toParse.startsWith("'") && toParse.endsWith("'"))
-        //     ) {
-        //       toParse = toParse.slice(1, -1);
-        //     }
+          try {
+            // Remove wrapping quotes if any
+            if (
+              (toParse.startsWith('"') && toParse.endsWith('"')) ||
+              (toParse.startsWith("'") && toParse.endsWith("'"))
+            ) {
+              toParse = toParse.slice(1, -1);
+            }
 
-        //     // Unescape \" to "
-        //     toParse = toParse.replace(/\\"/g, '"');
+            // Unescape \" to "
+            toParse = toParse.replace(/\\"/g, '"');
 
-        //     const parsed = JSON.parse(toParse);
-        //     if (Array.isArray(parsed)) {
-        //       parsedGroups = parsed;
-        //       console.log('[DEPT-EDIT-ADD] ✅ Parsed group array:', parsedGroups);
+            const parsed = JSON.parse(toParse);
+            if (Array.isArray(parsed)) {
+              parsedGroups = parsed;
+              console.log('[DEPT-EDIT-ADD] ✅ Parsed group array:', parsedGroups);
               
-        //       this.dept_description_toUpdate = ""
-        //       // this.dept_description_toUpdate_temp = ""
+              this.dept_description_toUpdate = ""
+              // this.dept_description_toUpdate_temp = ""
 
-        //       // Optionally assign to class property
-        //       this.groupsParsedArray = parsedGroups;
-        //       this.displayAssignTo = false;
-        //       this.getGroupsByProjectId()
+              // Optionally assign to class property
+              this.groupsParsedArray = parsedGroups;
+              this.displayAssignTo = false;
+              this.getGroupsByProjectId()
 
-        //     } else {
-        //       console.log('[DEPT-EDIT-ADD] ⚠️ Parsed result is not an array:', parsed);
-        //       this.displayAssignTo = true;
-        //     }
-        //   } catch (error) {
-        //     console.error('[DEPT-EDIT-ADD] ❌ Error parsing description:', error);
-        //     this.displayAssignTo = true;
-        //   }
-        // } else {
-        //   console.log('[DEPT-EDIT-ADD] ℹ️ Description is missing or does not start with "["');
-        //   this.displayAssignTo = true;
-        // }
+            } else {
+              console.log('[DEPT-EDIT-ADD] ⚠️ Parsed result is not an array:', parsed);
+              this.displayAssignTo = true;
+            }
+          } catch (error) {
+            console.error('[DEPT-EDIT-ADD] ❌ Error parsing description:', error);
+            this.displayAssignTo = true;
+          }
+        } else {
+          console.log('[DEPT-EDIT-ADD] ℹ️ Description is missing or does not start with "["');
+          this.displayAssignTo = true;
+        }
 
 
       }, (error) => {
