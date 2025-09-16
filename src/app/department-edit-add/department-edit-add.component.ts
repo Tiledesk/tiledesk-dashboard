@@ -1571,8 +1571,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       // this.dept_description_toUpdate_temp = JSON.stringify(result);
       //  this.dept_description_toUpdate = ""; // always clear textarea if using array
       
-      this.groupsLoadPercentage = result
-      console.log('[DEPT-EDIT-ADD] 🔄 Updated groupsLoadPercentage:', this.groupsLoadPercentage);
+      // this.groupsLoadPercentage = result
+      this.groupsParsedArray = result
+      console.log('[DEPT-EDIT-ADD] 🔄 Updated groupsParsedArray:', this.groupsParsedArray);
+      this.getGroupsByProjectId()
       }
   }
 
@@ -1624,13 +1626,16 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - updated_btn ', updated_btn);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
-    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION TEMP WHEN EDIT IS PRESSED 2', this.dept_description_toUpdate_temp);
+    // console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    // console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION TEMP WHEN EDIT IS PRESSED 2', this.dept_description_toUpdate_temp);
     this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
-    console.log('[DEPT-EDIT-ADD] - EDIT - TAGS WHEN EDIT IS PRESSED ', this.tags)
+    // console.log('[DEPT-EDIT-ADD] - EDIT - TAGS WHEN EDIT IS PRESSED ', this.tags)
+    console.log('[DEPT-EDIT-ADD] - EDIT - WHEN EDIT IS PRESSED  this.groupsLoadPercentage ', this.groupsParsedArray)
+   
+
 
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
@@ -1645,7 +1650,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.bot_only,
       this.selectedGroupId,
       this.dept_routing,
-      this.groupsLoadPercentage,
+      this.groupsParsedArray,
       this.tags,
       ).subscribe((data) => {
         console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
