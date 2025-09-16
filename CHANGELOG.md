@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.134-AR
+- Add the percentage of group load in the department details
+
 ### 2.7.131
 - Adds the ability to manage which pages the widget can appear on in Widget Settings
 - Adds the ability to manage the file types users can upload from the widget in Widget Settings
