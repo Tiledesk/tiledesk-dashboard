@@ -276,7 +276,7 @@ export class DepartmentService {
    * @param id
    * @param deptName
    */
-  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string, tags?:any) {
+  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string,  groups:any, tags?:any) {
   console.log('[DEPTS-SERV] UPDATE DEPT - tags ', tags);
     const httpOptions = {
       headers: new HttpHeaders({
@@ -289,7 +289,7 @@ export class DepartmentService {
     // url += id;
     this.logger.log('[DEPTS-SERV] UPDATE DEPT - URL ', url);
 
-    const body = { 'name': deptName, 'description': deptDescription, 'id_group': id_group, 'routing': routing };
+    const body = { 'name': deptName, 'description': deptDescription, 'id_group': id_group, 'routing': routing, groups: groups };
     if (id_bot) {
       body['id_bot'] = id_bot;
       body['bot_only'] = bot_only;

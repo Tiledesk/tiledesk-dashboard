@@ -442,7 +442,7 @@
                         </div>
                           <div class="row" style="margin-top: 12px; max-width: 523px;" *ngIf="displayAssignTo === false && groupsParsedArray?.length" class="groups-container">
                               <!-- groupsParsedArray   {{groupsParsedArray | json}} -->
-                               <div class="gropus-wpr" *ngFor="let group of groupsParsedArray" (click)="goToGroupDetail(group.id)"> 
+                               <div class="gropus-wpr" *ngFor="let group of groupsParsedArray" (click)="goToGroupDetail(group.group_id)"> 
                                 <div class="custom-group-row" >
                                   <!-- {{ group?.name || 'Unknown group' }} -->
                                   <span class="group-name">{{ group?.name }}</span>
