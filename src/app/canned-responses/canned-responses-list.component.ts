@@ -212,7 +212,7 @@ export class CannedResponsesListComponent implements OnInit {
     this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
   }
 
-  presentResponseModal_inEditMode(cannedresponseid: string) {
+  presentResponseModal_inEditMode(cannedresponseid: string, createdby) {
     if (createdby !== this.currentUserId) {
       return
     }
