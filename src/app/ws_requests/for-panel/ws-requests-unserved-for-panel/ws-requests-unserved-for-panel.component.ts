@@ -30,6 +30,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -118,6 +119,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
 
+  isAuthorized = false;
+  permissionChecked = false;
+
   /**
    * 
    * @param wsRequestsService 
@@ -153,7 +157,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public contactsService: ContactsService,
     public logger: LoggerService,
     public webSocketJs: WebSocketJs,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private roleService: RoleService,
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -176,6 +181,16 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
     this.getUserRole();
     this.listenToProjectUser()
+    this.checkPermissions()
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('unserved-for-panel')
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] isAuthorized ', this.isAuthorized)
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {

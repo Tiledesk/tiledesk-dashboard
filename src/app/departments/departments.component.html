@@ -297,7 +297,17 @@
                                   </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
                                 </span>
 
-                                <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
+                                <!-- USE CASE 2: THE DEPT HAS GROUP load balancing  -->
+                                <span *ngIf="dept?.hasGroupsName">
+                                  <span style="color: #7695a5; font-size: 12px; font-weight:400; text-transform: lowercase; position: relative; top: -2px;">
+                                    {{ 'Groups' | translate }}:
+                                  </span> 
+                                  <span style="font-weight:400;font-size:13px;width: 150px; display: inline-block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;top: 4px;"> 
+                                    {{ dept?.hasGroupsName }} 
+                                  </span>
+                                </span>
+
+                                <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
                                 <!-- dept?.routing !== 'fixed' &&  -->
                                 <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
                                   <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' |
@@ -312,9 +322,10 @@
                                   </span>
                                 </span>
 
-                                <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
+                                <!-- USE CASE 4: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
                                 <!-- dept?.routing !== 'fixed' &&  -->
-                                <span *ngIf="!dept?.hasGroupName" style="font-size:13px">
+                                <span *ngIf="!dept?.hasGroupName && !dept?.hasGroupsName" style="font-size:13px">
+        
                                   {{ 'DepartmentsPage.AllUsers' | translate }}
                                 </span>
 
@@ -652,9 +663,19 @@
                                   </span>
                                 </span>
 
-                                <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
+                                <!-- USE CASE 3: THE DEPT HAS GROUP load balancing  -->
+                                <span *ngIf="dept?.hasGroupsName">
+                                  <span style="color: #7695a5; font-size: 12px; font-weight:400; text-transform: lowercase; position: relative; top: -2px;">
+                                    {{ 'Groups' | translate }}:
+                                  </span> 
+                                  <span style="font-weight:400;font-size:13px; width: 150px;display: inline-block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;top: 4px;">
+                                     {{ dept?.hasGroupsName }} 
+                                  </span>
+                                </span>
+
+                                <!-- USE CASE 4: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
                                 <!-- dept?.routing !== 'fixed' &&  -->
-                                <span *ngIf="!dept?.hasGroupName" style="font-size:13px">
+                                <span *ngIf="!dept?.hasGroupName && !dept?.hasGroupsName" style="font-size:13px">
                                   {{ 'DepartmentsPage.AllUsers' | translate }}
                                 </span>
 

@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
+
 @Component({
   selector: 'departments',
   templateUrl: './departments.component.html',
@@ -279,7 +280,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
    * note: the project id is passed get and passed by deptService */
   getDeptsByProjectId() {
     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
-      this.logger.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
+      console.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       if (departments) {
         let count = 0;
@@ -354,6 +355,10 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
             if (dept.id_group !== null && dept.id_group !== undefined) {
               this.getGroupById(dept.id_group)
+            }
+
+            if(dept.groups && dept.groups.length > 0) {
+              this.getGroupsById(dept, dept.groups)
             }
 
             if (dept.id_bot !== null && dept.id_bot !== undefined) {
@@ -534,6 +539,33 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
       this.logger.log('[DEPTS] --> GROUP GET BY ID - COMPLETE')
     });
   }
+
+ getGroupsById(dept, groups) {
+  let groupsName = []
+  groups.forEach(group => {
+    console.log('[DEPTS] GROUPS foreach  group', group) 
+
+     this.groupsService.getGroupById(group.group_id).subscribe((group: any) => {
+
+      console.log('[DEPTS] GROUPS getGroupById RES ', group) 
+      
+      groupsName.push(group.name)
+
+      if (groupsName.length > 0) {
+        dept.hasGroupsName =  groupsName.join(', ').trim()
+        console.log('[DEPTS] GROUPS dept.hasGroupsName ', dept.hasGroupsName) 
+      }
+
+      console.log('[DEPTS] GROUPS groupsName ', groupsName) 
+
+      }, error => {
+      this.logger.error('[DEPTS] --> GROUP GET BY ID - ERROR', error);
+    }, () => {
+      this.logger.log('[DEPTS] --> GROUP GET BY ID - COMPLETE')
+    });
+    
+  });
+ }
 
   /**
    * !!! USED ONLY FOR TESTING THE CALLBACK RUNNED BY THE OLD WIDGET VERSION

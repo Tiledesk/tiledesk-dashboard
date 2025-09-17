@@ -282,6 +282,13 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Unserved for panel
+          if (calledby === 'unserved-for-panel') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ);
+            console.log('[ROLE-SERV] - unserved-for-panel hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           // Project settings > General
           if (calledby === 'project-settings-general') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_READ);
@@ -482,6 +489,14 @@ export class RoleService {
             console.log('[ROLE-SERV] - app-store hasPermission ', hasPermission)
             return hasPermission;
           }
+
+          // Unserved for panel
+          if (calledby === 'unserved-for-panel') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - unserved-for-panel hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
           // Project settings > General
           if (calledby === 'project-settings-general') {
@@ -792,6 +807,13 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Unserved for panel
+          if (calledby === 'unserved-for-panel') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ);
+            console.log('[ROLE-SERV] - unserved-for-panel hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           // Project settings > General
           if (calledby === 'project-settings-general') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_READ);
@@ -991,6 +1013,14 @@ export class RoleService {
             console.log('[ROLE-SERV] - integrations hasPermission ', hasPermission)
             return hasPermission;
           }
+
+          // Unserved for panel
+          if (calledby === 'unserved-for-panel') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - unserved-for-panel hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
           // Project settings > General
           if (calledby === 'project-settings-general') {
