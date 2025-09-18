@@ -44,6 +44,8 @@ import emojiRegex from 'emoji-regex';
 import { MatDialog } from '@angular/material/dialog';
 import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelist-modal/widget-domains-withelist-modal.component';
 
+
+
 @Component({
   selector: 'appdashboard-widget-set-up',
   templateUrl: './widget-set-up.component.html',
@@ -370,14 +372,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public preChatForm: boolean;
   public nativeRating: boolean;
 
-  // public hideOnSpecificDomainList: string[] = [];
-  // public hideOnSpecificDomain: boolean;
-
-  // hideOnSpecificUrlList: string[] = [];
-  // hideOnSpecificUrl: boolean;
-
   public allowedOnSpecificUrlList: string[] = [];
   public allowedOnSpecificUrl: boolean;
+
 
   public showAttachmentButton: boolean;
   public showEmojiButton: boolean;
@@ -1322,13 +1319,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WIDGET-SET-UP] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WIDGET-SET-UP] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
 
@@ -1361,6 +1358,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     });
   }
 
+
+  // il testo della modale '"Non è impostata nessuna lingua predefinita' e dato che potrebbe essere visualizzata 
+  // all'init della pagina nn può stare nel base compo
 
 
   // scroll to multilanguage section
@@ -2986,6 +2986,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.nativeRating = false;
 
+         // -----------------------------------------------------------------------
+        // @ allowedOnSpecificUrl
+        // @ allowedOnSpecificUrlList
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.allowedOnSpecificUrl = false;
+        this.allowedOnSpecificUrlList = []
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+
         // -----------------------------------------------------------------------
         // @ allowedOnSpecificUrl
         // @ allowedOnSpecificUrlList
@@ -3010,6 +3020,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.showAttachmentButton = true;
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showAttachmentButton ', this.showAttachmentButton);
 
+        // -----------------------------------------------------------------------
+        // @ allowedUploadExtentions
+        // -----------------------------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
+        this.selectedOption = 'custom'
+        this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
         // -----------------------------------------------------------------------
         // @ Emoji Button - WIDGET UNDEFINED
         // -----------------------------------------------------------------------
@@ -4556,6 +4573,70 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
   }
 
+   // -----------------------------------------------------------------------
+  //  @ Widget pattern whitelist
+  // -----------------------------------------------------------------------
+  toggleWidgetPatternWithelist(event) {
+    if (event.target.checked) {
+      this.allowedOnSpecificUrl = true;
+      // *** ADD PROPERTY
+      this.widgetObj['allowedOnSpecificUrl'] = this.allowedOnSpecificUrl;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist ', event.target.checked)
+    } else {
+      this.allowedOnSpecificUrl = false;
+
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['allowedOnSpecificUrl'];
+
+      this.logger.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist allowedOnSpecificUrlList length ', this.allowedOnSpecificUrlList?.length)
+      if (this.allowedOnSpecificUrlList?.length === 0 ) {
+        delete this.widgetObj['allowedOnSpecificUrlList'];
+      }
+
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist', event.target.checked)
+      
+    }
+
+    this.logger.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist widgetObj ', this.widgetObj)
+  }
+
+  onOpenPatternWithelist() {
+    const dialogRef = this.dialog.open(WidgetDomainsWithelistModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '500px',
+      disableClose: true,
+      data: this.allowedOnSpecificUrlList
+      
+    });
+
+    // Auto-close dialog on route change
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        dialogRef.close();
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string[]) => {
+      if (result) {
+        this.allowedOnSpecificUrlList = result;
+        // Save to backend or localStorage as needed
+        this.logger.log("[WIDGET-SET-UP] - allowedOnSpecificUrlList afterClosed: ", this.allowedOnSpecificUrlList)
+
+        this.widgetObj['allowedOnSpecificUrlList'] = this.allowedOnSpecificUrlList;
+        this.widgetService.updateWidgetProject(this.widgetObj)
+        this.logger.log('[WIDGET-SET-UP] - onOpenPatternWithelist  afterClosed widgetObj ', this.widgetObj)
+      }
+
+      if (this.routerSubscription) {
+        this.routerSubscription.unsubscribe();
+      }
+    });
+  }
+
   // -----------------------------------------------------------------------
   //  @ Attachment Button
   // -----------------------------------------------------------------------
@@ -4578,12 +4659,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.showAttachmentButton = true;
 
       // *** REMOVE PROPERTY
-      // delete this.widgetObj['showAttachmentFooterButton'];
-      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // delete this.widgetObj['allowedLoadingDomain'];
+      // delete this.widgetObj['allowedOnSpecificUrlList'];
+      // delete this.widgetObj['allowedUploadExtentions'];
+      // delete this.widgetObj['hideOnSpecificDomainList'];
+      // delete this.widgetObj['hideOnSpecificUrl'];
+      // delete this.widgetObj['hideOnSpecificUrlList'];
+      // delete  this.widgetObj['hideOnSpecificDomain']; 
+      
+
+      this.widgetService.updateWidgetProject(this.widgetObj)
 
       this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
     }
   }
+
 
   // -----------------------------------------------------------------------
   //  @ Allowed extentions
@@ -4595,18 +4685,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.extensions.push(ext);
       this.newExtension = '';
     }
-     console.log('[WIDGET-SET-UP] add extensions', this.extensions)
+     this.logger.log('[WIDGET-SET-UP] add extensions', this.extensions)
       // this.getExtensionsForBackend()
   }
 
   removeExtension(index: number): void {
     this.extensions.splice(index, 1);
-    console.log('[WIDGET-SET-UP] extensions remove', this.extensions)
+    this.logger.log('[WIDGET-SET-UP] extensions remove', this.extensions)
     // if(this.extensions.length === 0) {
     //   this.selectedOption = 'all'
     // }
     // this.getExtensionsForBackend()
   }
+
+
 
   // -----------------------------------------------------------------------
   //  @ Emoji Button
@@ -4653,6 +4745,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   // this.showAudioRecorderButton
   // showAudioRecorderFooterButton
+
+  // getExtensionsForBackend() {
+  //   if (this.selectedOption === 'all') {
+  //     // return '*/*';
+  //     this.allowedUploadExtentions = '*/*';
+  //   } else {
+  //     console.log('[WIDGET-SET-UP] ExtensionsForBackend ', this.extensions.join(','))
+  //     // return this.extensions.join(',');
+  //     this.allowedUploadExtentions = this.extensions.join(',');
+  //   }
+  // }
 
   saveWidgetAdvancedSetting() {
     this.logger.log('[WIDGET-SET-UP] showAttachmentButton ', this.showAttachmentButton)
@@ -4708,69 +4811,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
 
-  // -----------------------------------------------------------------------
-  //  @ Widget pattern whitelist
-  // -----------------------------------------------------------------------
-  toggleWidgetPatternWithelist(event) {
-    if (event.target.checked) {
-      this.allowedOnSpecificUrl = true;
-      // *** ADD PROPERTY
-      this.widgetObj['allowedOnSpecificUrl'] = this.allowedOnSpecificUrl;
-      this.widgetService.updateWidgetProject(this.widgetObj)
-      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist ', event.target.checked)
-    } else {
-      this.allowedOnSpecificUrl = false;
+ 
 
-      // *** REMOVE PROPERTY
-      delete this.widgetObj['allowedOnSpecificUrl'];
-
-      console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist allowedOnSpecificUrlList length ', this.allowedOnSpecificUrlList?.length)
-      if (this.allowedOnSpecificUrlList?.length === 0 ) {
-        delete this.widgetObj['allowedOnSpecificUrlList'];
-      }
-
-      this.widgetService.updateWidgetProject(this.widgetObj)
-
-      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist', event.target.checked)
-      
-    }
-
-    console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist widgetObj ', this.widgetObj)
-  }
-
-    onOpenPatternWithelist() {
-      const dialogRef = this.dialog.open(WidgetDomainsWithelistModalComponent, {
-        backdropClass: 'cdk-overlay-transparent-backdrop',
-        hasBackdrop: true,
-        width: '500px',
-        disableClose: true,
-        data: this.allowedOnSpecificUrlList
-        
-    });
-
-      // Auto-close dialog on route change
-      this.routerSubscription = this.router.events.subscribe(event => {
-        if (event instanceof NavigationStart) {
-          dialogRef.close();
-        }
-      });
-  
-      dialogRef.afterClosed().subscribe((result: string[]) => {
-        if (result) {
-          this.allowedOnSpecificUrlList = result;
-          // Save to backend or localStorage as needed
-          console.log("[WIDGET-SET-UP] - allowedOnSpecificUrlList afterClosed: ", this.allowedOnSpecificUrlList)
-
-          this.widgetObj['allowedOnSpecificUrlList'] = this.allowedOnSpecificUrlList;
-          this.widgetService.updateWidgetProject(this.widgetObj)
-          console.log('[WIDGET-SET-UP] - onOpenPatternWithelist  afterClosed widgetObj ', this.widgetObj)
-        }
-
-        if (this.routerSubscription) {
-          this.routerSubscription.unsubscribe();
-        }
-      });
-    }
+ 
 
 
   // onPastePrechatFormJSON(event: ClipboardEvent) {
