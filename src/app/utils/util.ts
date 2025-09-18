@@ -1022,4 +1022,5 @@ export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/a
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
+export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"
 

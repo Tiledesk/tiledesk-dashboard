@@ -37,8 +37,24 @@
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-        <ng-container *ngIf="permissionChecked">
+       
+        
+      <ng-container *ngIf="permissionChecked">
           <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
+
+            <!-- For this department, you can assign multiple groups and determine the load percentage. -->
+            <div *ngIf="allowMultipleGroups" class="link-to-docs-wpr">
+              <div class="row link-to-docs">
+                <div  class="col-md-12">
+                  <span>
+                    <svg  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="none">
+                      <path  d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z"></path>
+                    </svg>
+                  </span>
+                  <a  class="custom-anchor-to-docs" (click)="goGroupAssignmentDocs()"> Learn more about group assignment and load balancing </a>
+                </div>
+              </div>
+            </div>
 
             <div class="row">
               <div class="col-sm-8 col-md-8 no_padding_left_col">
@@ -395,6 +411,12 @@
 
                                   {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
                                 </span>
+
+                              </span>
+
+                              <span *ngIf="selectedGroupId?.length === 1 && allowMultipleGroups"
+                                style="display: block; font-size:12px; color:red; font-weight: 400;margin-top:3px">
+                                For load distribution you must select at least 2 departments
                               </span>
 
                             </div>
@@ -532,7 +554,7 @@
                         <span *ngIf="has_selected_bot === true">
                           <!-- btn-primary  -->
                           <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
-                            [disabled]="BOT_NOT_SELECTED === true">
+                            [disabled]="BOT_NOT_SELECTED === true || allowMultipleGroups && selectedGroupId?.length === 1">
                             <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                             {{ "DeptsAddEditPage.UpdateDept" | translate }}
                             <!-- </span> -->
@@ -545,11 +567,11 @@
                         <!-- [disabled]='GROUP_ID_NOT_EXIST' -->
                         <span *ngIf="has_selected_bot !== true">
                           <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
-                            >
+                            [disabled]="allowMultipleGroups && selectedGroupId?.length === 1">
                          
                             {{ "DeptsAddEditPage.UpdateDept" | translate }}
   
-
+                      
                           </button>
                         </span>
                       </div>

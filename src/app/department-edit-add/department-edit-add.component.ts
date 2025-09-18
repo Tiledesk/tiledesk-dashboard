@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, group_assignment_doc, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { LoggerService } from '../services/logger/logger.service';
@@ -43,7 +43,7 @@ const Swal = require('sweetalert2')
 // , ComponentCanDeactivate
 export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  public group_assignment_doc_url = group_assignment_doc
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
 
@@ -314,6 +314,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       this.logger.log('[DEPT-EDIT-ADD] ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
       this.ROUTING_PAGE_MODE = false;
+      this.getCurrentProject();
 
     } else if (this.router.url.indexOf('/edit') !== -1) {
       this.checkEditPermissions();
@@ -324,23 +325,23 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.ROUTING_PAGE_MODE = false;
 
       // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
-      this.getParamsAndDeptById();
+      // this.getParamsAndDeptById();
+      this.getCurrentProject();
+    } 
+    // else if (this.router.url.indexOf('/routing') !== -1) {
 
+    //   this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
+    //   this.EDIT_VIEW = true;
+    //   this.SHOW_OPTION_FORM = false; // to check if is used
+    //   this.showSpinner = true;
 
-    } else if (this.router.url.indexOf('/routing') !== -1) {
+    //   this.ROUTING_PAGE_MODE = true;
 
-      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
-      this.EDIT_VIEW = true;
-      this.SHOW_OPTION_FORM = false; // to check if is used
-      this.showSpinner = true;
+    //   // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
+    //   this.getParamsAndDeptById();
+    // }
 
-      this.ROUTING_PAGE_MODE = true;
-
-      // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
-      this.getParamsAndDeptById();
-    }
-
-    this.getCurrentProject();
+    
 
     /**
      * ======================= GET FAQ-KB LIST =========================
@@ -356,6 +357,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.getBrowserVersion()
     this.getProjectPlan();
     this.getOSCODE();
+  }
+
+  ngAfterViewInit() {
+    
   }
 
 
@@ -378,6 +383,53 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.permissionChecked = true;
     console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
     console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
+
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project
+          this.projectId = project._id;
+          this.getProjectById(this.projectId)
+        }
+        // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
+      });
+  }
+
+  
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - this.EDIT_VIEW: ', this.EDIT_VIEW);
+      this.allowMultipleGroups = project.profile?.customization?.allowMultipleGroups ? true : false;
+      
+      if (this.EDIT_VIEW)  {
+     // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
+      this.getParamsAndDeptById();
+      }
+     
+      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
+    }, error => {
+      this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID * COMPLETE * ');
+    
+    });
+  }
+
+   getParamsAndDeptById() {
+    this.id_dept = this.route.snapshot.params['deptid'];
+    this.logger.log('[DEPT-EDIT-ADD] - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
+    if (this.id_dept) {
+      this.getDeptById();
+
+    }
 
   }
 
@@ -719,21 +771,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
 
-  getParamsAndDeptById() {
-    this.id_dept = this.route.snapshot.params['deptid'];
-    this.logger.log('[DEPT-EDIT-ADD] - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
-    if (this.id_dept) {
-      this.getDeptById();
-
-      // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
-      /* GET OPERATORS OF A DEPT */
-      // this.getDeptByIdToTestChat21AssigneesFunction()
-    }
-
-  }
-
-  ngAfterViewInit() {
-  }
+  
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -1088,35 +1126,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   }
 
-  getCurrentProject() {
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        if (project) {
-          this.project = project
-          this.projectId = project._id;
-          this.getProjectById(this.projectId)
-        }
-        // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
-      });
-  }
-
-  getProjectById(projectId) {
-    this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-     
-      this.allowMultipleGroups = project.profile?.customization?.allowMultipleGroups ? true : false;
-   
-      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
-    }, error => {
-      this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT BY ID - ERROR ', error);
-    }, () => {
-      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID * COMPLETE * ');
-    
-    });
-  }
+  
 
 
 
@@ -1211,12 +1221,20 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.groupsParsedArray = dept?.groups
 
         if (this.allowMultipleGroups) {
+      
           this.selectedGroupId = dept?.groups?.map(item => item.group_id);
+        
+        // } else  if (this.selectedGroupId?.length === 0 ) {
+        //   this.selectedGroupId.push(dept.id_group) 
+        //   console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - here yes : ', this.selectedGroupId);
+        //  }
+         
         } else if (!this.allowMultipleGroups) {
           this.selectedGroupId = dept.id_group;
         }
 
         console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - selectedGroupId: ', this.selectedGroupId);
+        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
         //  this.groupsParsedArray = this.groupsLoadPercentageFake 
 
         if (this.groupsParsedArray?.length > 0) {
@@ -1515,7 +1533,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.selectedBotId,
       this.bot_only,
       this.selectedGroupId,
-      this.ROUTING_SELECTED)
+      this.ROUTING_SELECTED,
+      this.groupsParsedArray,
+      this.allowMultipleGroups,)
       .subscribe((department) => {
         this.logger.log('[DEPT-EDIT-ADD] - createDepartment - POST DATA DEPT', department);
       }, (error) => {
@@ -1663,6 +1683,11 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     });
   }
 
+
+  goGroupAssignmentDocs() {
+    const url = this.group_assignment_doc_url;
+    window.open(url, '_blank');
+  }
 
 
 }

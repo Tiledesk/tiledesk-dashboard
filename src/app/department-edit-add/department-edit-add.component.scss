@@ -853,3 +853,35 @@ select[disabled] {
 .trasparent-btn:hover {
   background-color: var(--only-text-btn-hover-background);
 }
+
+.link-to-docs-wpr {
+  margin-bottom: 16px;
+}
+
+.link-to-docs-wpr > div > div > span > svg {
+  fill: var(--blue-20);
+  vertical-align: middle;
+} 
+
+.link-to-docs {
+  // background-color: rgb(241, 241, 241);
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-left: -14px;
+  // padding-bottom: 12px;
+  // padding-top: 12px;
+  padding: 10px 0px;
+}
+
+.custom-anchor-to-docs {
+  color: var(--blue-20); // #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+  text-decoration: underline;
+}
