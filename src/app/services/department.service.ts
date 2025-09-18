@@ -276,8 +276,29 @@ export class DepartmentService {
    * @param id
    * @param deptName
    */
-  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string,  groups:any, tags?:any) {
-  console.log('[DEPTS-SERV] UPDATE DEPT - tags ', tags);
+  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string,  groups:any, allowMultipleGroups:any, tags?:any) {
+    console.log('[DEPTS-SERV] UPDATE DEPT - groups ', groups);
+    console.log('[DEPTS-SERV] UPDATE DEPT - id_group ', id_group);
+    console.log('[DEPTS-SERV] UPDATE DEPT - allowMultipleGroups ', allowMultipleGroups);
+    if(allowMultipleGroups) {
+      if(groups?.length > 1 && id_group?.length > 1) {
+        id_group = null
+      }
+      if (groups?.length === 0 && id_group?.length === 0) {
+        id_group = null
+        groups = []
+      }
+      if (groups?.length === 1 && id_group?.length === 1) {
+        id_group = id_group[0]
+        groups = []
+        console.log('[DEPTS-SERV] UPDATE DEPT - id_group 2 ', id_group);
+      }
+    } else {
+      if(groups?.length > 0){
+         groups = []
+      }
+    }
+    
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

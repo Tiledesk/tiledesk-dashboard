@@ -3573,6 +3573,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   onChangeSelectedPriority(selectedPriority) {
+    if(!this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
     this.selectedPriority = selectedPriority;
 

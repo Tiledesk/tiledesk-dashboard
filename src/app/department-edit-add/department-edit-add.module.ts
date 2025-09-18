@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditGroupsLoadDistributionModalComponent } from './edit-groups-load-distribution-modal/edit-groups-load-distribution-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 const routes: Routes = [
   // { path: "", component: DepartmentEditAddComponent, canDeactivate: [PendingChangesGuard]},
@@ -51,7 +52,8 @@ const routes: Routes = [
     MatButtonModule,
     MatTooltipModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatMenuModule
   ]
 })
 export class DepartmentEditAddModule { }

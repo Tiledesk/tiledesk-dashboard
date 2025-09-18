@@ -27,6 +27,7 @@ import { BrandService } from 'app/services/brand.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
 import { EditGroupsLoadDistributionModalComponent } from './edit-groups-load-distribution-modal/edit-groups-load-distribution-modal.component';
+import { ProjectService } from 'app/services/project.service';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -40,7 +41,7 @@ const Swal = require('sweetalert2')
   // host: { '[@slideInOutAnimation]': '' }
 })
 // , ComponentCanDeactivate
-export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
+export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   @Input() ws_requestslist_deptIdSelected: string;
@@ -62,7 +63,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   botsList: any;
   selectedBotId: string;
   selectedChatbot: string;
-  selectedGroupId: string;
+  selectedGroupId: any;
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
 
@@ -165,6 +166,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   tags: any;
 
+  allowMultipleGroups: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -181,7 +184,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     public prjctPlanService: ProjectPlanService,
     private roleService: RoleService,
     public brandService: BrandService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private projectService: ProjectService
   ) {
     super(prjctPlanService, notify);
 
@@ -196,49 +200,49 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------
   // @HostListener('window:beforeunload')
 
-  @HostListener('window:beforeunload', ['$event'])
-  onbeforeunload(event) {
-    if (this.NOT_HAS_EDITED === false) {
-      event.preventDefault();
-      event.returnValue = false;
-    }
-  }
-  canDeactivate(): Observable<boolean> | boolean {
-    // insert logic to check if there are pending changes here;
-    // returning true will navigate without confirmation
-    // returning false will show a confirm dialog before navigating away
+  // @HostListener('window:beforeunload', ['$event'])
+  // onbeforeunload(event) {
+  //   if (this.NOT_HAS_EDITED === false) {
+  //     event.preventDefault();
+  //     event.returnValue = false;
+  //   }
+  // }
+  // canDeactivate(): Observable<boolean> | boolean {
+  //   // insert logic to check if there are pending changes here;
+  //   // returning true will navigate without confirmation
+  //   // returning false will show a confirm dialog before navigating away
 
-    if (this.NOT_HAS_EDITED === true) {
-      return true;
+  //   if (this.NOT_HAS_EDITED === true) {
+  //     return true;
 
-    } else if (this.NOT_HAS_EDITED === false) {
+  //   } else if (this.NOT_HAS_EDITED === false) {
 
 
-      return Swal.fire({
-        title: this.areYouSureMsg,
-        text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
-        icon: "warning",
-        showCloseButton: false,
-        showCancelButton: true,
-        confirmButtonText: this.translate.instant('YesImSure'),
-        // confirmButtonColor: "var(--blue-light)",
-        focusConfirm: false,
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
+  //     return Swal.fire({
+  //       title: this.areYouSureMsg,
+  //       text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
+  //       icon: "warning",
+  //       showCloseButton: false,
+  //       showCancelButton: true,
+  //       confirmButtonText: this.translate.instant('YesImSure'),
+  //       // confirmButtonColor: "var(--blue-light)",
+  //       focusConfirm: false,
+  //       reverseButtons: true
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
 
-          return true;
+  //         return true;
 
-        } else {
-          this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
+  //       } else {
+  //         this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
 
-          return false;
+  //         return false;
 
-        }
-      });
-    }
-  }
+  //       }
+  //     });
+  //   }
+  // }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -480,14 +484,14 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   onChangeDeptDescription($event) {
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
-    
+
     // this.dept_description_toUpdate = $event;
     // this.dept_description_toUpdate_temp = "";
     // this.groupsParsedArray = [];
     // this.displayAssignTo = true;
 
-    this.NOT_HAS_EDITED = false 
- 
+    this.NOT_HAS_EDITED = false
+
   }
 
 
@@ -659,7 +663,25 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
 
-      this.NOT_HAS_EDITED = false;
+      if (this.allowMultipleGroups) { 
+        this.selectedGroupId = [...this.selectedGroupId, this.new_group_created_id];
+        console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR selectedGroupId', this.selectedGroupId);
+        console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR groupsParsedArray', this.groupsParsedArray);
+
+        // 2. Crea una mappa con le percentuali già salvate
+        const currentMap = new Map(
+          this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+        );
+
+        // 3. Ricostruisci groupsParsedArray mantenendo le percentuali esistenti
+        this.groupsParsedArray = this.selectedGroupId.map(id => ({
+          group_id: id,
+          percentage: currentMap.get(id) ?? 0 // se esiste mantiene il valore, altrimenti 0
+        }));
+
+        console.log('[DEBUG] groupsParsedArray aggiornato:', this.groupsParsedArray);
+      }
+      // this.NOT_HAS_EDITED = false;
 
       this.getGroupsByProjectId();
       // this.HAS_COMPLETED_GET_GROUPS = true
@@ -913,9 +935,14 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getGroupsByProjectId() {
     if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-      this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
+      console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR new_group_created_id', this.new_group_created_id);
 
-      this.selectedGroupId = this.new_group_created_id;
+      if (!this.allowMultipleGroups) {
+        this.selectedGroupId = this.new_group_created_id;
+      }
+
+
+
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
@@ -935,8 +962,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       if (groups) {
         // this.groupsList = groups;
+
         this.groupsList = groups.filter(group => group.enabled !== false);
-        
+
         this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
 
@@ -1031,35 +1059,33 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   _setSelectedGroup() {
-    this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED: ', this.selectedGroupId);
+    console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
     this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
-    this.NOT_HAS_EDITED = false
+
+    if (this.allowMultipleGroups) {
+      if (this.selectedGroupId) {
+        // 1. Crea una mappa con le percentuali esistenti
+        const currentMap = new Map(
+          this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+        );
+
+        // 2. Ricostruisci l’array mantenendo le percentuali già salvate
+        this.groupsParsedArray = this.selectedGroupId.map(id => ({
+          group_id: id,
+          percentage: currentMap.get(id) ?? 0   // se esiste lo recupera, altrimenti parte da 0
+        }));
+
+        console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
+        if (this.groupsParsedArray?.length > 0) {
+          this.displayAssignTo = false
+        }
+      }
+    }
+
+    // this.NOT_HAS_EDITED = false
     this.getGroupsByProjectId()
 
-
-    // this.logger.log('[DEPT-EDIT-ADD] - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
-
-
-
-    // // IF THE GROUP ASSIGNED TO THE DEPT HAS BEEN DELETED,
-    // // this.GROUP_ID_NOT_EXIST IS SET TO TRUE - IN THIS USE-CASE IS SHOWED THE SELECT OPTION
-    // // 'GROUP ERROR' AND the CLASS errorGroup OF THE HTML TAG select IS SET TO TRUE
-    // // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
-    // if (this.selectedGroupId !== 'Group error') {
-    //   this.GROUP_ID_NOT_EXIST = false
-
-    //   this.getGroupsByProjectId()
-    //   this.logger.log('[DEPT-EDIT-ADD] - setSelectedGroup this.selectedGroupId !== Group error');
-    // }
-
-    // // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
-    // // }
-
-    // // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
-    // if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
-    //   this.selectedGroupId = null;
-    // }
   }
 
   getCurrentProject() {
@@ -1070,10 +1096,26 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       .subscribe((project) => {
         if (project) {
           this.project = project
-          this.projectId = project._id
+          this.projectId = project._id;
+          this.getProjectById(this.projectId)
         }
         // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
       });
+  }
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+     
+      this.allowMultipleGroups = project.profile?.customization?.allowMultipleGroups ? true : false;
+   
+      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
+    }, error => {
+      this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID * COMPLETE * ');
+    
+    });
   }
 
 
@@ -1166,70 +1208,33 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.deptName_toUpdate = dept.name;
         this.dept_description_toUpdate = dept.description;
 
-       this.groupsParsedArray = dept.groups
-      //  this.groupsParsedArray = this.groupsLoadPercentageFake 
+        this.groupsParsedArray = dept?.groups
 
-       if (this.groupsParsedArray?.length > 0) {
+        if (this.allowMultipleGroups) {
+          this.selectedGroupId = dept?.groups?.map(item => item.group_id);
+        } else if (!this.allowMultipleGroups) {
+          this.selectedGroupId = dept.id_group;
+        }
+
+        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - selectedGroupId: ', this.selectedGroupId);
+        //  this.groupsParsedArray = this.groupsLoadPercentageFake 
+
+        if (this.groupsParsedArray?.length > 0) {
           this.displayAssignTo = false
           this.getGroupsByProjectId()
-       } else {
-         this.displayAssignTo = true
-       }
+        } else {
+          this.displayAssignTo = true
+        }
 
-     
-
-        // let rawDescription = dept.description?.trim() || '';
-        // console.log('[DEPT-EDIT-ADD] Raw dept description:', rawDescription);
-
-        // // Check if the string starts with [ or is a quoted escaped JSON string
-        // if (rawDescription.startsWith('[') ||
-        //   (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
-        //   (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))) {
-
-        //   try {
-        //     // Step 1: Remove surrounding quotes if any
-        //     if (
-        //       (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
-        //       (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
-        //     ) {
-        //       rawDescription = rawDescription.slice(1, -1);
-        //     }
-
-        //     // Step 2: Unescape JSON string (replace \" with ")
-        //     const unescaped = rawDescription.replace(/\\"/g, '"');
-
-        //     // Step 3: Parse into array
-        //     this.groupsParsedArray = JSON.parse(unescaped);
-        //     this.dept_description_toUpdate = '';
-
-        //     this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
-
-        //     console.log('[DEPT-EDIT-ADD] Parsed groupsParsedArray:', this.groupsParsedArray);
-        //     this.displayAssignTo = false
-        //     this.getGroupsByProjectId()
-
-        //   } catch (err) {
-        //     console.error('[DEPT-EDIT-ADD] ❌ Error parsing groupsParsedArray:', err);
-        //     this.groupsParsedArray = [];
-        //     this.dept_description_toUpdate = dept.description;
-        //     this.dept_description_toUpdate_temp = "";
-        //     this.displayAssignTo = true
-        //   }
-
-        // } else {
-        //   this.groupsParsedArray = [];
-
-        //   this.dept_description_toUpdate = rawDescription;
-        //   this.dept_description_toUpdate_temp = "";
-        //   this.displayAssignTo = true
-        // }
 
         // console.log('[DEPT-EDIT-ADD] Final dept_description_toUpdate:', this.dept_description_toUpdate)
         console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - dept_description_toUpdate : ', this.dept_description_toUpdate);
 
         this.botId = dept.id_bot;
         this.dept_routing = dept.routing;
-        this.selectedGroupId = dept.id_group;
+
+        // this.selectedGroupId = dept.id_group;
+
         this.dept_created_at = dept.createdAt;
         this.dept_ID = dept.id;
         this.bot_only = dept.bot_only
@@ -1523,40 +1528,40 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       });
   }
-    
-  openEditGroupsLoadDistributionDialog(){
-      const dialogRef = this.dialog.open(EditGroupsLoadDistributionModalComponent, {
-        width: '400px',
-        data: { 
-          groups: this.groupsParsedArray
-        }
-      });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.groupsParsedArray = result;
-          this.onGroupPercentageChange(); // update description string
-        }
-      });
-  
+  openEditGroupsLoadDistributionDialog() {
+    const dialogRef = this.dialog.open(EditGroupsLoadDistributionModalComponent, {
+      width: '400px',
+      data: {
+        groups: this.groupsParsedArray
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.groupsParsedArray = result;
+        this.onGroupPercentageChange(); // update description string
+      }
+    });
+
   }
-  
-  openEditLoadDistributionDialog(group) {
-      // prevent goToGroupDetail
-      const dialogRef = this.dialog.open(EditLoadDistributionModalComponent, {
-        width: '400px',
-        data: { 
-          groups: this.groupsParsedArray,
-          group: group
-        }
-      });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.groupsParsedArray = result;
-          this.onGroupPercentageChange(); 
-        }
-      });
+  openEditLoadDistributionDialog(group) {
+    // prevent goToGroupDetail
+    const dialogRef = this.dialog.open(EditLoadDistributionModalComponent, {
+      width: '400px',
+      data: {
+        groups: this.groupsParsedArray,
+        group: group
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.groupsParsedArray = result;
+        this.onGroupPercentageChange();
+      }
+    });
   }
 
   onGroupPercentageChange() {
@@ -1567,51 +1572,19 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         percentage: group.percentage
       }));
 
-        
+
       // this.dept_description_toUpdate_temp = JSON.stringify(result);
       //  this.dept_description_toUpdate = ""; // always clear textarea if using array
-      
+
       // this.groupsLoadPercentage = result
       this.groupsParsedArray = result
       console.log('[DEPT-EDIT-ADD] 🔄 Updated groupsParsedArray:', this.groupsParsedArray);
       this.getGroupsByProjectId()
-      }
+    }
   }
 
   // [{\"id\": \"68480837c19660002ded7b79\", \"percentage\":20},{\"id\": \"68480982c19660002deda58e\", \"percentage\":10}, {\"id\": \"687a6aa364222f002d1c83f9\", \"percentage\":10}, {\"id\": \"687a6ab364222f002d1c8410\", \"percentage\":10}, {\"id\": \"687a6ac064222f002d1c8426\", \"percentage\":10},{\"id\": \"687a6aca64222f002d1c843c\", \"percentage\":10}]
 
-// private syncDescriptionVars(description: string) {
-//   let rawDescription = description?.trim() || '';
-//   if (
-//     rawDescription.startsWith('[') ||
-//     (rawDescription.startsWith('"[') && rawDescription.endsWith(']"')) ||
-//     (rawDescription.startsWith("'[") && rawDescription.endsWith("]'"))
-//   ) {
-//     try {
-//       if (
-//         (rawDescription.startsWith('"') && rawDescription.endsWith('"')) ||
-//         (rawDescription.startsWith("'") && rawDescription.endsWith("'"))
-//       ) {
-//         rawDescription = rawDescription.slice(1, -1);
-//       }
-//       const unescaped = rawDescription.replace(/\\"/g, '"');
-//       this.groupsParsedArray = JSON.parse(unescaped);
-//       this.dept_description_toUpdate = "";
-//       this.dept_description_toUpdate_temp = JSON.stringify(this.groupsParsedArray);
-//       this.displayAssignTo = false;
-//     } catch (err) {
-//       this.groupsParsedArray = [];
-//       this.dept_description_toUpdate = description;
-//       this.dept_description_toUpdate_temp = "";
-//       this.displayAssignTo = true;
-//     }
-//   } else {
-//     this.groupsParsedArray = [];
-//     this.dept_description_toUpdate = rawDescription;
-//     this.dept_description_toUpdate_temp = "";
-//     this.displayAssignTo = true;
-//   }
-// }
 
   edit() {
     this.NOT_HAS_EDITED = true;
@@ -1633,8 +1606,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
     // console.log('[DEPT-EDIT-ADD] - EDIT - TAGS WHEN EDIT IS PRESSED ', this.tags)
-    console.log('[DEPT-EDIT-ADD] - EDIT - WHEN EDIT IS PRESSED  this.groupsLoadPercentage ', this.groupsParsedArray)
-   
+    console.log('[DEPT-EDIT-ADD] - EDIT - WHEN EDIT IS PRESSED  this.groupsParsedArray ', this.groupsParsedArray)
+
 
 
     if (this.selectedBotId === undefined) {
@@ -1643,7 +1616,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.botIdEdit = this.selectedBotId
     }
 
-    this.deptService.updateDept(this.id_dept,
+    this.deptService.updateDept(
+      this.id_dept,
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
       this.botIdEdit,
@@ -1651,66 +1625,22 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.selectedGroupId,
       this.dept_routing,
       this.groupsParsedArray,
-      this.tags,
-      ).subscribe((data) => {
-        console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
-        // console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES data description ', data['description']);
-
-        // if (data && data['description']) {
-        //     this.syncDescriptionVars(data['description']);
-        // }
-
-        // if (data && data['description'] && typeof data['description'] === 'string' && data['description'].trim().startsWith('[')) {
-        //   let toParse = data['description'].trim();
-        //   let parsedGroups: any[] = [];
-
-        //   try {
-        //     // Remove wrapping quotes if any
-        //     if (
-        //       (toParse.startsWith('"') && toParse.endsWith('"')) ||
-        //       (toParse.startsWith("'") && toParse.endsWith("'"))
-        //     ) {
-        //       toParse = toParse.slice(1, -1);
-        //     }
-
-        //     // Unescape \" to "
-        //     toParse = toParse.replace(/\\"/g, '"');
-
-        //     const parsed = JSON.parse(toParse);
-        //     if (Array.isArray(parsed)) {
-        //       parsedGroups = parsed;
-        //       console.log('[DEPT-EDIT-ADD] ✅ Parsed group array:', parsedGroups);
-              
-        //       this.dept_description_toUpdate = ""
-        //       // this.dept_description_toUpdate_temp = ""
-
-        //       // Optionally assign to class property
-        //       this.groupsParsedArray = parsedGroups;
-        //       this.displayAssignTo = false;
-        //       this.getGroupsByProjectId()
-
-        //     } else {
-        //       console.log('[DEPT-EDIT-ADD] ⚠️ Parsed result is not an array:', parsed);
-        //       this.displayAssignTo = true;
-        //     }
-        //   } catch (error) {
-        //     console.error('[DEPT-EDIT-ADD] ❌ Error parsing description:', error);
-        //     this.displayAssignTo = true;
-        //   }
-        // } else {
-        //   console.log('[DEPT-EDIT-ADD] ℹ️ Description is missing or does not start with "["');
-        //   this.displayAssignTo = true;
-        // }
+      this.allowMultipleGroups,
+      this.tags
+     
+    ).subscribe((data) => {
+      console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
 
 
-      }, (error) => {
-        this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
-      }, () => {
-        this.logger.log('[DEPT-EDIT-ADD] - EDIT * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
-      });
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] - EDIT * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+    });
 
   }
 
