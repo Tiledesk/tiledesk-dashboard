@@ -220,18 +220,18 @@ export class DepartmentService {
    */
   public addDept(deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string,groups:any, allowMultipleGroups:any,) {
     if(allowMultipleGroups) {
-      if(groups?.length > 1 && id_group?.length > 1) {
+      if(groups?.length > 0 && id_group?.length > 0) {
         id_group = null
       }
       if (groups?.length === 0 && id_group?.length === 0) {
         id_group = null
         groups = []
       }
-      if (groups?.length === 1 && id_group?.length === 1) {
-        id_group = id_group[0]
-        groups = []
-        console.log('[DEPTS-SERV] UPDATE DEPT - id_group 2 ', id_group);
-      }
+      // if (groups?.length === 1 && id_group?.length === 1) {
+      //   id_group = id_group[0]
+      //   groups = []
+      //   console.log('[DEPTS-SERV] UPDATE DEPT - id_group 2 ', id_group);
+      // }
     } else {
       if(groups?.length > 0){
          groups = []
@@ -299,18 +299,18 @@ export class DepartmentService {
     console.log('[DEPTS-SERV] UPDATE DEPT - id_group ', id_group);
     console.log('[DEPTS-SERV] UPDATE DEPT - allowMultipleGroups ', allowMultipleGroups);
     if(allowMultipleGroups) {
-      if(groups?.length > 1 && id_group?.length > 1) {
+      if(groups?.length > 0 && id_group?.length > 0) {
         id_group = null
       }
       if (groups?.length === 0 && id_group?.length === 0) {
         id_group = null
         groups = []
       }
-      if (groups?.length === 1 && id_group?.length === 1) {
-        id_group = id_group[0]
-        groups = []
-        console.log('[DEPTS-SERV] UPDATE DEPT - id_group 2 ', id_group);
-      }
+      // if (groups?.length === 1 && id_group?.length === 1) {
+      //   id_group = id_group[0]
+      //   groups = []
+      //   console.log('[DEPTS-SERV] UPDATE DEPT - id_group 2 ', id_group);
+      // }
     } else {
       if(groups?.length > 0){
          groups = []

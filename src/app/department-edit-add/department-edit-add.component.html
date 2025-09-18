@@ -414,17 +414,17 @@
 
                               </span>
 
-                              <span *ngIf="selectedGroupId?.length === 1 && allowMultipleGroups"
+                              <!-- <span *ngIf="selectedGroupId?.length === 1 && allowMultipleGroups"
                                 style="display: block; font-size:12px; color:red; font-weight: 400;margin-top:3px">
                                 For load distribution you must select at least 2 departments
-                              </span>
+                              </span> -->
 
                             </div>
                           </div>
 
 
                         <!--  -->
-                        <div class="row" *ngIf="displayAssignTo === false && groupsParsedArray?.length > 1">
+                        <div class="row" *ngIf="displayAssignTo === false && groupsParsedArray?.length > 0">
                           <div class="col-xs-12">
                             <div class="card-title-wpr" style="max-width: 538px;
                                                           display: flex;
@@ -468,7 +468,7 @@
                            
                         </div>
                           <!-- matTooltip= "{{'EditLoadDistribution' | translate}}" -->
-                          <div class="row" style="margin-top: 12px; max-width: 523px;" *ngIf="displayAssignTo === false && groupsParsedArray?.length > 1" class="groups-container">
+                          <div class="row" style="margin-top: 12px; max-width: 523px;" *ngIf="displayAssignTo === false && groupsParsedArray?.length > 0" class="groups-container">
                               <!-- groupsParsedArray   {{groupsParsedArray | json}} -->
                                <div class="gropus-wpr" *ngFor="let group of groupsParsedArray" (click)="openEditGroupsLoadDistributionDialog()"> 
                                 <div class="custom-group-row" >
@@ -486,7 +486,7 @@
                                       style="height: 30px;width: 30px; line-height: 30px; margin-left: 10px;">
                                         <mat-icon style="font-size: 16px;">more_vert</mat-icon>
                                     </button> -->
-                                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="more action" style="margin-left: 6px;margin-bottom: 3px;">
+                                    <!-- <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="more action" style="margin-left: 6px;margin-bottom: 3px;">
                                       <mat-icon style="font-size: 20px;">more_vert</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">
@@ -494,7 +494,7 @@
                                         <mat-icon>edit</mat-icon>
                                         <span>{{'GroupsPage.tooltipEditGroup' | translate}}</span>
                                       </button>
-                                    </mat-menu>
+                                    </mat-menu> -->
                                   </div>
                                   
                                   <!-- <div (click)="$event.stopPropagation()" style="display: flex; align-items: center;">
@@ -554,20 +554,19 @@
                         <span *ngIf="has_selected_bot === true">
                           <!-- btn-primary  -->
                           <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
-                            [disabled]="BOT_NOT_SELECTED === true || allowMultipleGroups && selectedGroupId?.length === 1">
+                            [disabled]="BOT_NOT_SELECTED === true">
                             <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                             {{ "DeptsAddEditPage.UpdateDept" | translate }}
                             <!-- </span> -->
                             <!-- <span *ngIf="ROUTING_PAGE_MODE === true">
-                      {{ "RoutingPage.UpdateRoutingRules" | translate }}
-                    </span> -->
+                            {{ "RoutingPage.UpdateRoutingRules" | translate }}
+                           </span> -->
                           </button>
                         </span>
 
                         <!-- [disabled]='GROUP_ID_NOT_EXIST' -->
                         <span *ngIf="has_selected_bot !== true">
-                          <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
-                            [disabled]="allowMultipleGroups && selectedGroupId?.length === 1">
+                          <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()">
                          
                             {{ "DeptsAddEditPage.UpdateDept" | translate }}
   
