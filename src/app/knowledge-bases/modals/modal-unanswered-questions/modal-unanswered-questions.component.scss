@@ -7,13 +7,17 @@
 }
 
 .add-content-container.unanswered-questions-modal {
-    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding: 12px 15px 6px;
     border-radius: var(--card-border-radius);
     border: 1px solid #e5effe !important;
+
+    margin: 25px 0;
+    display: inline-block;
+    position: relative;
+    width: 100%;
 }
 
 .preview-count-left {
@@ -70,6 +74,12 @@
   color: var(--table-thead-color);
   padding: 0 0 8px 0;
   border-bottom: 1px solid #f0f4f8;
+
+  font-size: 14px;
+  font-weight: var(--table-thead-font-weight);
+  margin: auto 4px;
+  color: var(--table-thead-color);
+  vertical-align: middle;
 }
 .uq-list-header-question {
   flex: 1 1 0;
