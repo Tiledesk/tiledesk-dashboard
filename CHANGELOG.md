@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.136-AR
+- Adds the ability to assign more than one group to a department and to define their load percentage
+
+### 2.7.135-AR
+- Improves groups load balancing
+- Fixes the bug: in the flows sidebar the icon of the first menu item is always active
+
 ### 2.7.134-AR
 - Add the percentage of group load in the department details
 
