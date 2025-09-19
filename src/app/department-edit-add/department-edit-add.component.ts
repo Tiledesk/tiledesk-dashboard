@@ -710,32 +710,33 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
   handleNewGroupCreatedFromSidebar(event) {
-    this.logger.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
+    console.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
     if (event) {
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
 
-      if (this.allowMultipleGroups) { 
-        this.selectedGroupId = [...this.selectedGroupId, this.new_group_created_id];
-        console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR selectedGroupId', this.selectedGroupId);
-        console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR groupsParsedArray', this.groupsParsedArray);
+      if (!this.allowMultipleGroups) {
 
-        // 2. Crea una mappa con le percentuali già salvate
-        const currentMap = new Map(
-          this.groupsParsedArray.map(g => [g.group_id, g.percentage])
-        );
+        // this.selectedGroupId = [...this.selectedGroupId, this.new_group_created_id];
+        // console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR selectedGroupId', this.selectedGroupId);
+        // console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR groupsParsedArray', this.groupsParsedArray);
 
-        // 3. Ricostruisci groupsParsedArray mantenendo le percentuali esistenti
-        this.groupsParsedArray = this.selectedGroupId.map(id => ({
-          group_id: id,
-          percentage: currentMap.get(id) ?? 0 // se esiste mantiene il valore, altrimenti 0
-        }));
+        // // 2. Crea una mappa con le percentuali già salvate
+        // const currentMap = new Map(
+        //   this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+        // );
 
-        console.log('[DEBUG] groupsParsedArray aggiornato:', this.groupsParsedArray);
+        // // 3. Ricostruisci groupsParsedArray mantenendo le percentuali esistenti
+        // this.groupsParsedArray = this.selectedGroupId.map(id => ({
+        //   group_id: id,
+        //   percentage: currentMap.get(id) ?? 0 // se esiste mantiene il valore, altrimenti 0
+        // }));
+
+        // console.log('[DEBUG] groupsParsedArray aggiornato:', this.groupsParsedArray);
       }
       // this.NOT_HAS_EDITED = false;
 
-      this.getGroupsByProjectId();
+     this.getGroupsByProjectId();
       // this.HAS_COMPLETED_GET_GROUPS = true
       // this.logger.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar tHAS_COMPLETED_GET_GROUPS  ', this.HAS_COMPLETED_GET_GROUPS );
     }
