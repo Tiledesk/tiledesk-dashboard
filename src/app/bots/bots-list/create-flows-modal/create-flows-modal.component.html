@@ -186,7 +186,7 @@
         <!-- --------------------------------- -->
         <!-- Copilot -->
         <!-- --------------------------------- -->
-        <div class="add--content-card-wpr" (click)="onOkPresssed('copilot')" matRipple>
+        <div *ngIf="isVisibleCOP" class="add--content-card-wpr" (click)="onOkPresssed('copilot')" matRipple>
             <div class="add-content-card-content" >
                 <div class="add-content-card-content-icon-wpr">
                     <span>

@@ -1018,7 +1018,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
 
-
   openDeleteModal(
     projectUser_id: string,
     userID: string,

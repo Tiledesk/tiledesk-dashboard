@@ -54,6 +54,7 @@ export class FlowWebhooksComponent implements OnInit {
   PERMISSION_TO_COPY_WEBHOOK_URL: boolean;
   PERMISSION_TO_ENABLE_DISABLE_WEBHOOK: boolean;
   PERMISSION_TO_DELETE_WEBHOOK: boolean;
+  project: any;
 
   constructor(
     private auth: AuthService,
@@ -68,15 +69,23 @@ export class FlowWebhooksComponent implements OnInit {
     private rolesService: RolesService,
   ) { }
 
+
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('flow-webhook')
     this.getBrowserVersion();
     this.getFaqKbByProjectId()
-    // this.getTemplates()
-    // this.getCommunityTemplates()
     this.getFlowWebhooks()
     this.getServerBaseURL()
     this.listenToProjectUser()
+    this.getCurrentProject()
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project;
+      }
+    })
   }
 
    listenToProjectUser() {
@@ -182,6 +191,11 @@ export class FlowWebhooksComponent implements OnInit {
     });
   }
 
+  goToFlowWebhookDetail(webhookid: string) {
+    if (this.project && this.project._id) {
+      this.router.navigate(['project/' + this.project._id + '/flows/flow-webhooks-logs/webhook/' + webhookid]);
+    }
+  }
 
   // --------------------------------------------------------------------------------------
   //  @ Enable / disable flow webkook
@@ -417,5 +431,6 @@ export class FlowWebhooksComponent implements OnInit {
 
     });
   }
+
 
 }
