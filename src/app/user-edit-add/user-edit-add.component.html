@@ -170,13 +170,15 @@
 
                       <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
                       <label class="col-sm-2 custom-label">
-                        {{ "UserEditAddPage.Role" | translate }}
+                      {{ "UserEditAddPage.Role" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class=""
+                        <select #selectElem (change)="setSelected(selectElem.value)" 
+                          [(ngModel)]="selectedRole"
                           style="width: 100%;border-radius: 5px;"
                           [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
-                          <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
+                          <option class="not_selected" value="ROLE_NOT_SELECTED" 
+                          [selected]="selected == true">
                             {{ "UserEditAddPage.SelectRole" | translate }}
                           </option>
                           <option value="admin">{{ 'admin' | translate }}</option>

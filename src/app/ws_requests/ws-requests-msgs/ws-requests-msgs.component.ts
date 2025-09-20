@@ -3573,27 +3573,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   onChangeSelectedPriority(selectedPriority) {
-    if(!this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY) {
+    if(this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY) {
+      this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
+      this.selectedPriority = selectedPriority;
+
+      this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
+        .subscribe((res: any) => {
+          console.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
+
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorOccurredWhileUpdatingTheCnversationPriority'), 4, 'report_problem');
+        }, () => {
+          // panel.scrollTop = panel.scrollHeight;
+          console.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('TheConversationPriorityHasBeenSuccessfullyUpdated'), 2, 'done');
+
+        });
+    } else {
       this.notify.presentDialogNoPermissionToPermomfAction();
-      return;
     }
-    this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
-    this.selectedPriority = selectedPriority;
-
-    this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
-      .subscribe((res: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
-
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorOccurredWhileUpdatingTheCnversationPriority'), 4, 'report_problem');
-      }, () => {
-        // panel.scrollTop = panel.scrollHeight;
-        this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('TheConversationPriorityHasBeenSuccessfullyUpdated'), 2, 'done');
-
-      });
-
   }
 
   // ---------------------------------------------------------------------------------------
