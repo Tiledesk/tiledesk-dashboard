@@ -180,6 +180,7 @@
     "UpdateContact": "Uppdatera kontakt",
     "EnterValidEmail": "Ange en giltig e-postadress",
     "AreYouSure": "Är du säker",
+    "YouAreAboutToLeaveTheConversation": "Du är på väg att lämna konversationen",
     "YouAreAboutToDeleteTheContact": "Du är på väg att ta bort kontakten",
     "DeleteContact": "Ta bort kontakt",
     "Attributes": "Attribut",
@@ -1546,6 +1547,8 @@
         "Open": "Öppen"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Konversation uppdaterades framgångsrikt",
+        "ThereWasProblemUpdatingTheConversation": "Det uppstod ett problem vid uppdatering av konversationen",
         "MessagesOfTheRequest": "Meddelanden från konversationen",
         "Messages": "Meddelanden",
         "RequestAttributes": "Konversationens attribut",

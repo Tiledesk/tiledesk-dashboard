@@ -180,6 +180,7 @@
     "UpdateContact": "Ажурирајте контакт",
     "EnterValidEmail": "Унесите исправну е-маил адресу",
     "AreYouSure": "Да ли сте сигурни",
+    "YouAreAboutToLeaveTheConversation": "Управо сте да напустите разговор",
     "YouAreAboutToDeleteTheContact": "Спремате се да избришете контакт",
     "DeleteContact": "Избриши контакт",
     "Attributes": "Атрибути",
@@ -1531,6 +1532,8 @@
         "Open": "Отвори"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Разговор је успешно ажуриран",
+        "ThereWasProblemUpdatingTheConversation": "Дошло је до проблема при ажурирању разговора",
         "MessagesOfTheRequest": "Поруке разговора",
         "Messages": "Поруке",
         "RequestAttributes": "Атрибути разговора",

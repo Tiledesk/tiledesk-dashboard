@@ -180,6 +180,7 @@
     "UpdateContact": "Контактіні жаңарту",
     "EnterValidEmail": "Жарамды электрондық пошта мекенжайын енгізіңіз",
     "AreYouSure": "Сіз сенімдісіз бе",
+    "YouAreAboutToLeaveTheConversation": "Сіз сөйлесуден шығу үстіндesіз",
     "YouAreAboutToDeleteTheContact": "Сіз контактіні жойғалы жатырсыз",
     "DeleteContact": "Контактіні жою",
     "Attributes": "Атрибуттар",
@@ -1546,6 +1547,8 @@
         "Open": "Ашық"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Сөйлесу сәтті жаңартылды",
+        "ThereWasProblemUpdatingTheConversation": "Сөйлесуді жаңарту кезінде мәселе туындады",
         "MessagesOfTheRequest": "Әңгімелесу хабарламалары",
         "Messages": "Хабарламалар",
         "RequestAttributes": "Әңгімелесу атрибуттары",

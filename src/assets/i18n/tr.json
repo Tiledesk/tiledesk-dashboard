@@ -181,6 +181,7 @@
     "UpdateContact": "Kişiyi Güncelle",
     "EnterValidEmail": "Geçerli bir e-posta adresi girin",
     "AreYouSure": "Emin misin",
+    "YouAreAboutToLeaveTheConversation": "Konuşmadan ayrılmak üzeresiniz",
     "YouAreAboutToDeleteTheContact": "Kişiyi silmek üzeresiniz",
     "DeleteContact": "Kişiyi silmek",
     "Attributes": "Öznitellikler",
@@ -1531,6 +1532,8 @@
         "Open": "Açık"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Konuşma başarıyla güncellendi",
+        "ThereWasProblemUpdatingTheConversation": "Konuşmayı güncellerken bir sorun oluştu",
         "MessagesOfTheRequest": "Konuşmanın mesajları",
         "Messages": "Mesajlar",
         "RequestAttributes": "Konuşmanın Nitelikleri",

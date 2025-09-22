@@ -180,6 +180,7 @@
     "UpdateContact": "تحديث جهة الاتصال",
     "EnterValidEmail": "أدخل عنوان بريد إلكتروني صالح",
     "AreYouSure": "هل أنت متأكد ؟",
+    "YouAreAboutToLeaveTheConversation": "أنت على وشك مغادرة المحادثة",
     "YouAreAboutToDeleteTheContact": "أنت على وشك حذف جهة الاتصال",
     "DeleteContact": "حذف اتصال",
     "Attributes": "صفات",
@@ -1531,6 +1532,8 @@
         "Open": "فتح"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "تم تحديث المحادثة بنجاح",
+        "ThereWasProblemUpdatingTheConversation": "حدثت مشكلة أثناء تحديث المحادثة",
         "MessagesOfTheRequest": "رسائل المحادثة",
         "Messages": "رسائل",
         "RequestAttributes": "سمات المحادثة",

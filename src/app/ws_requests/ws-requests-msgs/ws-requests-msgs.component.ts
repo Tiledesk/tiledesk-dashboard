@@ -1126,21 +1126,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   addFollower(event) {
-    this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
-    this.wsRequestsService.addFollower(event.value, this.request.request_id)
+    if (this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS) {
+     
+      this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
+      this.wsRequestsService.addFollower(event.value, this.request.request_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
-        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
 
       }, (error) => {
-
+        
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ThereWasProblemUpdatingTheConversation") , 4, 'report_problem');
         this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
 
       }, () => {
 
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ConversationUpdatedSuccessfully") , 2, 'done');
         this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
 
       });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   removeFollower(event) {
@@ -3480,6 +3487,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
+
+ 
+
   addNote() {
     // this.disableMainPanelScroll();
     if (!this.PERMISSION_TO_UPDATE_REQUEST_NOTES) {
@@ -4840,8 +4850,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalLeaveTheChat() {
     Swal.fire({
-      title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
-      // text: this.translationMap.get('Done'),
+      // title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
+      title: this.translationMap.get('AreYouSure')+"?",
+      text: this.translate.instant('YouAreAboutToLeaveTheConversation'),
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,

@@ -180,6 +180,7 @@
 	"UpdateContact": "Kontakt aktualisieren",
 	"EnterValidEmail": "Geben Sie eine gültige Email Adresse ein",
 	"AreYouSure": "Sind Sie sicher",
+	"YouAreAboutToLeaveTheConversation": "Sie sind dabei, die Konversation zu verlassen", 
 	"YouAreAboutToDeleteTheContact": "Sie sind dabei einen Kontakt zu löschen",
 	"DeleteContact": "Kontakt löschen",
 	"Attributes": "Attribute",
@@ -1530,6 +1531,8 @@
 		"Open": "Offen"
 	},
 	"RequestMsgsPage": {
+		"ConversationUpdatedSuccessfully": "Konversation erfolgreich aktualisiert",
+    	"ThereWasProblemUpdatingTheConversation": "Es gab ein Problem beim Aktualisieren der Konversation",
 		"MessagesOfTheRequest": "Nachrichten der Anfrage",
 		"Messages": "Nachrichten",
 		"RequestAttributes": "Attribute der Anfrage",

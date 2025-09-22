@@ -180,6 +180,7 @@
     "UpdateContact": "Оновити контакт",
     "EnterValidEmail": "Введіть дійсну адресу електронної пошти",
     "AreYouSure": "Ти впевнений",
+    "YouAreAboutToLeaveTheConversation": "Ви збираєтеся залишити розмову", 
     "YouAreAboutToDeleteTheContact": "Ви збираєтеся видалити контакт",
     "DeleteContact": "Видалити контакт",
     "Attributes": "Атрибути",
@@ -1546,6 +1547,8 @@
         "Open": "відчинено"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Розмову успішно оновлено",
+        "ThereWasProblemUpdatingTheConversation": "Виникла проблема під час оновлення розмови",
         "MessagesOfTheRequest": "Повідомлення розмови",
         "Messages": "Повідомлення",
         "RequestAttributes": "Атрибути розмови",

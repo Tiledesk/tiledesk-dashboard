@@ -179,6 +179,7 @@
     "UpdateContact": "Actualizar contacto",
     "EnterValidEmail": "Introduzca una dirección de correo válida",
     "AreYouSure": "¿Estás seguro",
+    "YouAreAboutToLeaveTheConversation": "Estás a punto de abandonar la conversación",
     "YouAreAboutToDeleteTheContact": "Estás a punto de eliminar el contacto",
     "DeleteContact": "Eliminar contacto",
     "Attributes": "Atributos",
@@ -1498,6 +1499,8 @@
         "Open": "Abrir"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Conversación actualizada correctamente",
+        "ThereWasProblemUpdatingTheConversation": "Hubo un problema al actualizar la conversación",
         "MessagesOfTheRequest": "Mensajes de la conversación",
         "Messages": "Mensajes",
         "RequestAttributes": "Atributos de la conversación",

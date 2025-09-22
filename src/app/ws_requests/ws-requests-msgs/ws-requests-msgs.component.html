@@ -493,7 +493,12 @@
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
                               (click)="sendChatMessage()"
-                              [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
+                              [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)"
+                              matTooltipClass="custom-mat-tooltip"
+                         	    [matTooltip]="!PERMISSION_TO_SEND_REQUEST ? ('YouDoNotHavePermissions' | translate) : null"
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above' 
+                              matTooltipHideDelay="100">
                               <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
                               <span
                                 *ngIf="HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false"
@@ -2553,7 +2558,8 @@
                         [hideSelected]="true"
                         [(ngModel)]="selectedPriority"
                         [searchable]="false" 
-                        (change)="onChangeSelectedPriority(selectedPriority)">
+                        (change)="onChangeSelectedPriority(selectedPriority)"
+                        [disabled]="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY">
                         <ng-template ng-label-tmp let-item="item">
                           <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
                           {{item.name | translate}}
@@ -2622,7 +2628,8 @@
                             (add)="addFollower($event)" 
                             (remove)="removeFollower($event)" 
                             [hideSelected]="true"
-                            (clear)="removeAllFollowers($event)">
+                            (clear)="removeAllFollowers($event)"
+                            [disabled]="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS">
                           </ng-select>
 
                           <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS"
@@ -2638,9 +2645,7 @@
                           <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn-wpr">
                             <button (click)="smartAssignmentOff()" class="convert-to-offline-btn"
                               [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT"
-                              [ngStyle]="{
-                                'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'
-                                }"
+                              [ngStyle]="{'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'}"
                                 matTooltipClass="custom-mat-tooltip"
                                 [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
                                 #tooltip="matTooltip"
@@ -2754,7 +2759,7 @@
                           [addTag]="createNewTag"
                           (keyup.enter)="ngSelect.close()" 
                           notFoundText="No tags found. Type to create a tag"
-                          [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true"
+                          [disabled]="!PERMISSION_TO_UPDATE_REQUEST_TAGS"
                           [ngClass]="{'conversation-tag-panel-mode': CHAT_PANEL_MODE === true }">
 
                           <ng-template ng-label-tmp let-item="item">
@@ -2797,7 +2802,12 @@
                   <div class="note--panel" [ngClass]="{'note--panel-chat': CHAT_PANEL_MODE === true}">
                     <div class="ws_msgs_note__textarea">
                       <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
-                        style="width: 100%;">
+                        style="width: 100%;" [disabled]="!PERMISSION_TO_UPDATE_REQUEST_NOTES" 
+                          matTooltipClass="custom-mat-tooltip"
+                          [matTooltip]="!PERMISSION_TO_UPDATE_REQUEST_NOTES ? ('YouDoNotHavePermissions' | translate) : null"
+                          #tooltip="matTooltip"
+                          matTooltipPosition='above' 
+                          matTooltipHideDelay="100">
                       </textarea>
 
 
@@ -2808,7 +2818,7 @@
                       <!-- btn-xs btn-primary -->
                       <button type="button" class="btn btn-tdblu-no-boxshadow add-note-btn" #cont
                         style="margin-bottom: 0px;" (click)="addNote()"
-                        [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
+                        [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true || !PERMISSION_TO_UPDATE_REQUEST_NOTES">
 
 
                         <span *ngIf="showSpinnerInAddNoteBtn !== true">
@@ -2845,7 +2855,12 @@
                         <!-- @ Remove note btn (click)="presentModalDeleteNote(note._id)" -->
                         <!-- ------------------------------------------------------------ -->
                         <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)" type="button"
-                          class="note__delete">
+                          class="note__delete" [disabled]="!PERMISSION_TO_UPDATE_REQUEST_NOTES"
+                            matTooltipClass="custom-mat-tooltip"
+                            [matTooltip]="!PERMISSION_TO_UPDATE_REQUEST_NOTES ? ('YouDoNotHavePermissions' | translate) : null"
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100"> 
                           <i class="material-icons delete_icon" style="font-size:16px">close</i>
                         </button>
                       </div>

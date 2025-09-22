@@ -180,6 +180,7 @@
     "UpdateContact": "Kontaktni yangilash",
     "EnterValidEmail": "Yaroqli elektron pochta manzilini kiriting",
     "AreYouSure": "Ishonchingiz komilmi",
+    "YouAreAboutToLeaveTheConversation": "Suhbatdan chiqish arafasidasiz",
     "YouAreAboutToDeleteTheContact": "Siz kontaktni o‘chirib tashlamoqchisiz",
     "DeleteContact": "Kontaktni o'chirish",
     "Attributes": "Atributlar",
@@ -1530,6 +1531,8 @@
         "Open": "Ochiq"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Suhbat muvaffaqiyatli yangilandi",
+        "ThereWasProblemUpdatingTheConversation": "Suhbatni yangilashda muammo yuzaga keldi",
         "MessagesOfTheRequest": "Suhbat xabarlari",
         "Messages": "Xabarlar",
         "RequestAttributes": "Suhbatning atributlari",

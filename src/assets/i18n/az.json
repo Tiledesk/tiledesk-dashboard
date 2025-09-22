@@ -180,6 +180,7 @@
     "UpdateContact": "Kontaktı yeniləyin",
     "EnterValidEmail": "Etibarlı e-poçt ünvanı daxil edin",
     "AreYouSure": "Sən əminsən",
+    "YouAreAboutToLeaveTheConversation": "Söhbəti tərk etmək üzrəsiniz",
     "YouAreAboutToDeleteTheContact": "Siz kontaktı silmək üzrəsiniz",
     "DeleteContact": "Kontaktı silin",
     "Attributes": "Atributlar",
@@ -1531,6 +1532,8 @@
         "Open": "Açıq"
     },
     "RequestMsgsPage": {
+        "ConversationUpdatedSuccessfully": "Söhbət uğurla yeniləndi",
+        "ThereWasProblemUpdatingTheConversation": "Söhbəti yeniləyərkən problem yaşandı",
         "MessagesOfTheRequest": "Söhbətin mesajları",
         "Messages": "Mesajlar",
         "RequestAttributes": "Söhbətin Atributları",
