@@ -235,7 +235,7 @@
                       </button>
       
                       <!-- Delete Button -->
-                      <button id="delete-kb" class="btn btn-red" [disabled]="addButtonDisabled" aria-label="Delete"
+                      <button id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
                         style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
                         <span *ngIf="selectedNamespace.default === false">
                           {{ 'Delete' | translate }}
