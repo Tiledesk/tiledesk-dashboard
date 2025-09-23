@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.137-AR
+- Minor improvements and bug fixing
+
 ### 2.7.136-AR
 - Adds the ability to assign more than one group to a department and to define their load percentage
 
