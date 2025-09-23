@@ -822,6 +822,11 @@
     "CurrentTotal":"Ағымдағы жалпы",
     "Exceeds100":"100% асады",
     "PercentageGroupName": "Пайыз {{group_name}}",
+    "WhitelistRules": "Ақ тізім ережелері",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "тек https://example.com/... сілтемелеріне рұқсат береді",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "example.com кез келген субдоменінен сілтемелерге рұқсат береді (мысалы: https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

@@ -823,6 +823,11 @@
     "CurrentTotal":"Cari cəmi",
     "Exceeds100":"100%-i keçir",
     "PercentageGroupName": "Faiz {{group_name}}",
+    "WhitelistRules": "Ağ siyahısı qaydaları",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "yalnız https://example.com/... keçidlərə icazə verir",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "example.com-un hər hansı alt domenindən keçidlərə icazə verir (məsələn: https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

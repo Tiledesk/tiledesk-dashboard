@@ -823,6 +823,11 @@
     "CurrentTotal":"Тренутни укупан износ",
     "Exceeds100":"Прелази 100%",
     "PercentageGroupName": "Проценат {{group_name}}",
+    "WhitelistRules": "Правила беле листе",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "дозвољава само линкове са https://example.com/...",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "дозвољава линкове са било ког поддомена example.com (нпр. https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

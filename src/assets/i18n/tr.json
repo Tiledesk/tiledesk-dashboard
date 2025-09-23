@@ -824,6 +824,11 @@
     "CurrentTotal":"Mevcut toplam",
     "Exceeds100":"%100'ü aşıyor",
     "PercentageGroupName": "Yüzde {{group_name}}",
+    "WhitelistRules": "Beyaz liste kuralları",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "yalnızca https://example.com/... bağlantılarına izin verir",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "example.com'un herhangi bir alt alan adından bağlantılara izin verir (örn. https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

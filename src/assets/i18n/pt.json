@@ -822,6 +822,11 @@
     "CurrentTotal":"Total atual",
     "Exceeds100":"Excede 100%",
     "PercentageGroupName": "Percentagem {{group_name}}",
+    "WhitelistRules": "Regras de lista branca",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "apenas permite links de https://example.com/...",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "permite links de qualquer subdomínio de example.com (ex. https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -821,6 +821,11 @@
     "CurrentTotal":"Aktueller Gesamtbetrag",
     "Exceeds100":"Über 100%",
 	"PercentageGroupName": "Prozentsatz {{group_name}}",
+	"WhitelistRules": "Whitelist-Regeln",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "erlaubt nur Links von https://example.com/...",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "erlaubt Links von jeder Subdomain von example.com (z.B. https://www.example.com/..., https://blog.example.com/...)",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

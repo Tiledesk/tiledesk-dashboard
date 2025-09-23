@@ -823,6 +823,11 @@
     "CurrentTotal":"Текущий итог",
     "Exceeds100":"Превышает 100%",
     "PercentageGroupName": "Процент {{group_name}}",
+    "WhitelistRules": "Правила белого списка",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "разрешает только ссылки с https://example.com/...",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "разрешает ссылки с любого поддомена example.com (напр. https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

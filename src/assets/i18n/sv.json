@@ -822,6 +822,11 @@
     "CurrentTotal":"Nuvarande totalsumma",
     "Exceeds100":"Överstiger 100%",
     "PercentageGroupName": "Procentandel {{group_name}}",
+    "WhitelistRules": "Vitlistningsregler",
+    "ExampleDotCom": "example.com",
+    "OnlyAllowsLinksFrom": "tillåter endast länkar från https://example.com/...",
+    "WildcardExampleDotCom": "*.example.com",
+    "AllowsLinksFromAnySubdomainOf": "tillåter länkar från vilken subdomän som helst av example.com (t.ex. https://www.example.com/..., https://blog.example.com/...)",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
