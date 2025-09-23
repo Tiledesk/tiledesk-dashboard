@@ -1428,7 +1428,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
 
         this.ALLOW_TO_SEND_EMOJI = true
-        console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 3', this.ALLOW_TO_SEND_EMOJI)
+        this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 3', this.ALLOW_TO_SEND_EMOJI)
       }
 
 
@@ -5721,11 +5721,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
-      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
-      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
         
       if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
-        console.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
+        this.logger.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
         this.chat_message = '';
         return;
       }
@@ -5749,8 +5749,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (this.IS_ENABLED_URLS_WHITELIST) {
           if (_chat_message && _chat_message.trim().length > 0) { 
             const urlsInMessage = this.extractUrls(_chat_message);
-            console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
-            console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+            this.logger.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+            this.logger.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
 
             // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
             let internalWhitelist: string[] = [];
@@ -5758,9 +5758,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               try {
                 const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
                 internalWhitelist = [fileDomain];
-                console.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+                this.logger.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
               } catch (e) {
-                console.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
+                this.logger.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
               }
             }
 
@@ -5795,7 +5795,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             });
 
             if (nonWhitelistedDomains.length > 0) {
-              console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+              this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
               this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
               return;
             }
@@ -6137,30 +6137,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
-      const file = result.file
-      const image = result.imagePreview
+      if (result) {
+        const file = result.file
+        const image = result.imagePreview
 
-      this.uploadedFiles = file
+        this.uploadedFiles = file
 
-      const uploadedFilesSize = this.uploadedFiles.size
+        const uploadedFilesSize = this.uploadedFiles.size
 
-      const formattedBytes = this.formatBytes(uploadedFilesSize)
-      this.uploadedFiles['formattedBytes'] = formattedBytes
-      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
-      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
-      this.type = 'image'
+        const formattedBytes = this.formatBytes(uploadedFilesSize)
+        this.uploadedFiles['formattedBytes'] = formattedBytes
+        this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
+        this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
+        this.type = 'image'
 
-      const uid = image.substring(image.length - 16)
-      this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
+        const uid = image.substring(image.length - 16)
+        this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
 
-      this.metadata = {
-        name: this.uploadedFiles.name,
-        type: this.uploadedFiles.type,
-        uid: uid
-      }
+        this.metadata = {
+          name: this.uploadedFiles.name,
+          type: this.uploadedFiles.type,
+          uid: uid
+        }
 
-      if (this.uploadedFiles) {
-        this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+        if (this.uploadedFiles) {
+          this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+        }
       }
     });
   }
