@@ -230,6 +230,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
   FLOW_AUTOMATION_ROUTE_IS_ACTIVE: boolean;
+  FLOW_AIAGENT_ROUTE_IS_ACTIVE: boolean;
   FLOW_WEBHOOKS_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
   TMPLT_ALL_ROUTE_IS_ACTIVE: boolean;
@@ -261,6 +262,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   isVisibleMON: boolean;
   isVisibleCNT: boolean;
   isVisibleINT: boolean;
+  isVisibleAUT: boolean;
   storageBucket: string;
   baseUrl: string;
   default_dept_id: string;
@@ -303,6 +305,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_KB: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_ACTVITIES: boolean;
+  isTiledeskDomain = false;
 
   constructor(
     private router: Router,
@@ -330,6 +333,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     public rolesService: RolesService
   ) {
+    this.getBaseUrlAndThenProjectPlan();
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
     const brand = brandService.getBrand();
@@ -371,7 +375,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
     // this.getProjectPlan()
-    this.getBaseUrlAndThenProjectPlan();
+
     // this.listenToKbVersion()
 
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
@@ -380,7 +384,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // const pathElement = this.svgPath.nativeElement;
-    // console.log('[SIDEBAR] pathElement ', pathElement)
+    // this.logger.log('[SIDEBAR] pathElement ', pathElement)
     // this.renderer.setStyle(this.element.nativeElement, '--brandColor', this.company_brand_color);
     if (this.company_brand_color) {
       // this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
@@ -532,9 +536,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // ngAfterContentInit(): void { 
   //   if (this.company_brand_color) { 
-  //     console.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
+  //     this.logger.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
   //      const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
-  //      console.log('[SIDEBAR] pathElement ', pathElement)
+  //      this.logger.log('[SIDEBAR] pathElement ', pathElement)
 
   //      this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
   //     this.renderer.setStyle(document.body, '--sidebar-active-icon', this.company_brand_color);
@@ -543,10 +547,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
   getBaseUrlAndThenProjectPlan() {
-    const href = window.location.href;
-
     // For test in local host
-    // const href= "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
+    // const currentDomain = "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
+    const currentDomain = window.location.hostname;
+    this.isTiledeskDomain = currentDomain.includes('tiledesk.com');
+    this.logger.log('[SIDEBAR] isTiledeskDomain ', this.isTiledeskDomain)
+
+    const href = window.location.href;
 
     this.logger.log('[SIDEBAR] href ', href)
 
@@ -1049,6 +1056,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
       }
 
+      if (key.includes('AUT')) {
+        let aut = key.split(':')
+        if (aut[1] === 'F') {
+          this.isVisibleAUT = false;
+        } else {
+          this.isVisibleAUT = true;
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("INT")) {
@@ -1075,6 +1091,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     if (!this.public_Key.includes("CNT")) {
       this.isVisibleCNT = false;
+    }
+
+    if (!this.public_Key.includes('AUT')) {
+      this.isVisibleAUT = false
     }
   }
 
@@ -1301,7 +1321,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // Chatbot sidebar
-        if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
+        if (event.url.indexOf('/bots/my-chatbots/all') !== -1 || event.url.indexOf('/bots') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
@@ -1334,6 +1354,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/flows/flow-aiagent') !== -1) {
+          this.FLOW_AIAGENT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
+        } else {
+          this.FLOW_AIAGENT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/flows/flow-webhooks') !== -1) {
@@ -2358,7 +2386,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   }
   goToWidgetSetUp() {
-    this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+    // this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
+    const now = performance.now();
+    this.logger.log('[SIDEBAR] Clicked WIDGET  at:', now);
+    const route = `project/${this.project._id}/widget-set-up`
+      this.router.navigate([route]).then(() => {
+      const afterNav = performance.now();
+      const durationMs = afterNav - now;
+      const durationSec = durationMs / 1000;
+      this.logger.log(`[SIDEBAR] WIDGET Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+    });
   }
 
   goToCannedResponses() {

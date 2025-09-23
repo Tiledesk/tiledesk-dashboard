@@ -248,6 +248,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   public hideHelpLink: boolean;
   public displayExtremeMeasures: boolean;
 
+
+
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -342,8 +344,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private contactsService: ContactsService,
     private cacheService: CacheService,
     private widgetService: WidgetService,
-    private roleService: RoleService,
     public rolesService: RolesService,
+    private roleService: RoleService,
     public dialog: MatDialog,
     // private formGroup: FormGroup
 
@@ -590,6 +592,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // You can also check status.role === 'owner' if needed
       });
   }
+
 
 
   getBrowserVersion() {

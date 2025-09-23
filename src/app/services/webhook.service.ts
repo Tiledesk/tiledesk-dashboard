@@ -174,6 +174,17 @@ export class WebhookService {
       .get<[any]>(url, { headers: headers })
   }
 
+
+  getFlowWebhookById(webhooksid) {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/id/' + webhooksid;
+    this.logger.log('[WEBHOOK-SERV] - GET FLOW WEBHOOK BY ID URL: ', url);
+    let headers = new HttpHeaders({
+      'Authorization': this.TOKEN
+    })
+    return this.http
+      .get<[any]>(url, { headers: headers })
+  }
+
   /**
    * Delete Flow Webhooks
    * @param webhookid 
