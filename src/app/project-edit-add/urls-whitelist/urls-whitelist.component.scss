@@ -43,3 +43,33 @@
   margin-top: 1rem;
   font-style: italic;
 }
+
+::ng-deep .custom-panel--popover {
+  box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    0 4px 4px -2px rgb(91 94 105 / 15%);
+  background: #1c2333;
+  border-radius: 6px;
+  min-height: 48px;
+  max-width: 400px !important;
+}
+
+.custom-panel--popover-content-wpr>.custom-panel--popover-title {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.custom-panel--popover-content-wpr>.custom-panel--popover-description {
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.dialog-title i {
+  font-size: 18px; 
+  color: #566787; 
+  cursor: pointer; 
+  vertical-align: middle;
+}
+

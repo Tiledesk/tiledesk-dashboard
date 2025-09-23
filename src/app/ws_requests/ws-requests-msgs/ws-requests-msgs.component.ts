@@ -5721,8 +5721,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
+        
+      if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
+        console.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
+        this.chat_message = '';
+        return;
+      }
+
       
       if (!this.ALLOW_TO_SEND_EMOJI) {
+        if (_chat_message && _chat_message.trim().length > 0) { 
           const messageWithoutEmojis = removeEmojis(_chat_message).trim();
 
           // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
@@ -5733,50 +5743,64 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           _chat_message = messageWithoutEmojis;
         }
+      }
 
-        if (_chat_message === '') {
-          //  this.chat_message = _chat_message
-          this.chat_message = ''
-          return;
-        }
       
-        if (this.IS_ENABLED_URLS_WHITELIST) {
-        const urlsInMessage = this.extractUrls(_chat_message);
-        this.logger.log('urlsInMessage ++++ :', urlsInMessage);
+      if (this.IS_ENABLED_URLS_WHITELIST) {
+          if (_chat_message && _chat_message.trim().length > 0) { 
+            const urlsInMessage = this.extractUrls(_chat_message);
+            console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+            console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
 
-        const nonWhitelistedDomains = urlsInMessage.filter((url) => {
-        try {
-          const domain = new URL(url).hostname.toLowerCase();
-
-            // Check if domain matches any whitelist rule
-            const isWhitelisted = this.URLS_WITHELIST.some(whitelisted => {
-              whitelisted = whitelisted.toLowerCase().trim();
-
-              // Match exact domain
-              if (whitelisted === domain) return true;
-
-              // Match wildcard domain (*.example.com)
-              if (whitelisted.startsWith('*.')) {
-                const baseDomain = whitelisted.substring(2); // remove '*.'
-                return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+            // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
+            let internalWhitelist: string[] = [];
+            if (this.type === 'file' && this.metadata?.src) {
+              try {
+                const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
+                internalWhitelist = [fileDomain];
+                console.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+              } catch (e) {
+                console.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
               }
+            }
 
-              return false;
+            const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+              try {
+                const domain = new URL(url).hostname.toLowerCase();
+
+                // unisci whitelist configurata e interna
+                const combinedWhitelist = [...this.URLS_WITHELIST, ...internalWhitelist];
+
+                // Check if domain matches any whitelist rule
+                const isWhitelisted = combinedWhitelist.some(whitelisted => {
+                  whitelisted = whitelisted.toLowerCase().trim();
+
+                  // Match exact domain
+                  if (whitelisted === domain) return true;
+
+                  // Match wildcard domain (*.example.com)
+                  if (whitelisted.startsWith('*.')) {
+                    const baseDomain = whitelisted.substring(2); // remove '*.'
+                    return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+                  }
+
+                  return false;
+                });
+
+                return !isWhitelisted;
+              } catch (e) {
+                // Invalid URL - consider it not allowed
+                return true;
+              }
             });
 
-            return !isWhitelisted;
-          } catch (e) {
-            // Invalid URL - consider it not allowed
-            return true;
+            if (nonWhitelistedDomains.length > 0) {
+              console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+              this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+              return;
+            }
           }
-        });
-
-        if (nonWhitelistedDomains.length > 0) {
-          this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
-          this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
-          return;
         }
-      }
 
       // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
       // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)

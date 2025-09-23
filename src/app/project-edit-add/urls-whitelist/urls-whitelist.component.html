@@ -1,8 +1,46 @@
 <h2 mat-dialog-title>
-  <!-- Manage Whitelisted URLs -->
+  
   {{'ManageWhitelist' | translate}}
 
+  <i [satPopoverAnchor]="whiteListRules" class="material-icons"
+    (mouseenter)="whiteListRules.open()" (mouseleave)="whiteListRules.close()"> 
+    help_outline 
+  </i>
 </h2>
+
+ <sat-popover #whiteListRules horizontalAlign="center" verticalAlign="above"
+    panelClass="custom-panel--popover" closeTransition="1ms ease-in" forceAlignment="true">
+
+    <div class="custom-panel--popover-content-wpr" style="padding: 12px; margin-bottom: 5px;">
+
+      <div class="custom-panel--popover-title" >
+        {{'WhitelistRules' | translate}}
+      </div>
+
+      <div class="custom-panel--popover-description"> 
+        <ul style="padding-left: 12px;"> 
+          <li>
+            {{'ExampleDotCom' | translate}}
+            <span class="material-icons-outlined" style="vertical-align: middle;font-size: 10px;">
+              arrow_forward
+            </span>
+            {{'OnlyAllowsLinksFrom' | translate}}
+          </li>
+        </ul>
+      </div> 
+      <div class="custom-panel--popover-description"> 
+        <ul style="padding-left: 12px;"> 
+          <li> {{'WildcardExampleDotCom' | translate}}
+            <span class="material-icons-outlined" style="vertical-align: middle;font-size: 10px;">
+              arrow_forward
+            </span>
+            {{'AllowsLinksFromAnySubdomainOf' | translate}}
+          </li>
+        </ul>
+      </div> 
+      
+    </div>
+  </sat-popover>
 
 <mat-dialog-content>
 
