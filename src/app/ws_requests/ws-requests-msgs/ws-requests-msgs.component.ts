@@ -6134,6 +6134,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       const daysDiff = currentTime.diff(requestclosedAt, 'd');
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
+      
+      
       if (this.request?.status === 1000 && daysDiff > 10) {
         this.presenModalMessageCouldNotBeSent();
       } else {
@@ -6142,12 +6144,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.reopenConversation(this.id_request)
         }
 
-        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
         let _chat_message = ''
-        if (this.type !== 'file') {
+        if (this.type !== 'file' ) {
           _chat_message = this.chat_message
-        } else if (this.type === 'file') {
-          // msg = [${metadata.name}](${metadata.src}) + '\n' + msg
+        } else if (this.type === 'file' ) {
           if (this.chat_message) {
             _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
           } else {
@@ -6155,98 +6156,156 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         }
 
-        // ❌ Remove emojis if not allowed
-        // let cleanedMessage = _chat_message;
-        // if (!this.ALLOW_TO_SEND_EMOJI) {
-        //   console.log('[WS-REQUESTS-MSGS] removeEmojis _chat_message ', _chat_message)
-        //   _chat_message = removeEmojis(_chat_message).trim();
-        // }
-
-        if (!this.ALLOW_TO_SEND_EMOJI) {
-          const messageWithoutEmojis = removeEmojis(_chat_message).trim();
-
-          // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
-          if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message.trim().length) {
-            this.triggerEmojiWarning();
-            return;
-          }
-
-          _chat_message = messageWithoutEmojis;
-        }
-
-        if (_chat_message === '') {
-          //  this.chat_message = _chat_message
-          this.chat_message = ''
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
+        
+        if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
+          console.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
+          this.chat_message = '';
           return;
         }
 
-        // if (this.IS_ENABLED_URLS_WHITELIST) {
-        //   const urlsInMessage = this.extractUrls(_chat_message);
-        //   console.log('urlsInMessage ++++ :', urlsInMessage);
-
-        //     const nonWhitelistedDomains = urlsInMessage.filter((url) => {
-        //     try {
-        //       const domain = new URL(url).hostname.toLowerCase();
-        //       return !this.URLS_WITHELIST.includes(domain);
-        //     } catch (e) {
-        //       // Ignore invalid URLs
-        //       return true;
-        //     }
-        //   });
-
-        //   if (nonWhitelistedDomains.length > 0) {
-        //     console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
-        //     this.triggerWarning('This message contains a URL from a domain that is not allowed.'); 
-        //     // this.domainWarning = true; // <-- display a warning
-        //     return;
-        //   }
-        // }
-        if (this.IS_ENABLED_URLS_WHITELIST) {
-          const urlsInMessage = this.extractUrls(_chat_message);
-          console.log('urlsInMessage ++++ :', urlsInMessage);
-
-          const nonWhitelistedDomains = urlsInMessage.filter((url) => {
-            try {
-              const domain = new URL(url).hostname.toLowerCase();
-
-              // Check if domain matches any whitelist rule
-              const isWhitelisted = this.URLS_WITHELIST.some(whitelisted => {
-                whitelisted = whitelisted.toLowerCase().trim();
-
-                // Match exact domain
-                if (whitelisted === domain) return true;
-
-                // Match wildcard domain (*.example.com)
-                if (whitelisted.startsWith('*.')) {
-                  const baseDomain = whitelisted.substring(2); // remove '*.'
-                  return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
-                }
-
-                return false;
-              });
-
-              return !isWhitelisted;
-            } catch (e) {
-              // Invalid URL - consider it not allowed
-              return true;
+        if (!this.ALLOW_TO_SEND_EMOJI) {
+          if (_chat_message && _chat_message.trim().length > 0) { 
+            const messageWithoutEmojis = removeEmojis(_chat_message).trim();
+            console.log('[WS-REQUESTS-MSGS] messageWithoutEmojis - SEND CHAT MESSAGE ', messageWithoutEmojis) 
+            // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
+            if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message?.trim()?.length) {
+              this.triggerEmojiWarning();
+              return;
             }
-          });
-
-          if (nonWhitelistedDomains.length > 0) {
-            console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
-            this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
-            return;
+            _chat_message = messageWithoutEmojis;
           }
         }
 
-        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+        
+        // if (_chat_message === '' && !this.uploadedFiles) {
+        //    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message 2', _chat_message)
+        //    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message 2 uploadedFiles', this.uploadedFiles)
+           
+        //   //  this.chat_message = _chat_message
+        //   this.chat_message = ''
+        //   return;
+        // }
+       
+
+        // const normalizedMessage = _chat_message?.trim() || '';
+
+        // if (normalizedMessage === '' && (!this.uploadedFiles)) {
+        //   console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - messaggio vuoto', _chat_message);
+        //   console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles', this.uploadedFiles);
+          
+        //   // reset textarea
+        //   this.chat_message = '';
+        //   return;
+        // }
+
+        // // Se arrivi qui, il messaggio o i file sono validi
+        // _chat_message = normalizedMessage;
+
+        // if (this.IS_ENABLED_URLS_WHITELIST) {
+        //   if (_chat_message && _chat_message?.length > 0) { 
+        //     const urlsInMessage = this.extractUrls(_chat_message);
+        //     console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+        //     console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+            
+
+        //     const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+        //       try {
+        //         const domain = new URL(url).hostname.toLowerCase();
+
+        //         // Check if domain matches any whitelist rule
+        //         const isWhitelisted = this.URLS_WITHELIST.some(whitelisted => {
+        //           whitelisted = whitelisted.toLowerCase().trim();
+
+        //           // Match exact domain
+        //           if (whitelisted === domain) return true;
+
+        //           // Match wildcard domain (*.example.com)
+        //           if (whitelisted.startsWith('*.')) {
+        //             const baseDomain = whitelisted.substring(2); // remove '*.'
+        //             return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+        //           }
+
+        //           return false;
+        //         });
+
+        //         return !isWhitelisted;
+        //       } catch (e) {
+        //         // Invalid URL - consider it not allowed
+        //         return true;
+        //       }
+        //     });
+
+        //     if (nonWhitelistedDomains.length > 0) {
+        //       console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+        //       this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+        //       return;
+        //     }
+        //   }
+        // }
+
+        if (this.IS_ENABLED_URLS_WHITELIST) {
+          if (_chat_message && _chat_message.trim().length > 0) { 
+            const urlsInMessage = this.extractUrls(_chat_message);
+            console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+            console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+
+            // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
+            let internalWhitelist: string[] = [];
+            if (this.type === 'file' && this.metadata?.src) {
+              try {
+                const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
+                internalWhitelist = [fileDomain];
+                console.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+              } catch (e) {
+                console.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
+              }
+            }
+
+            const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+              try {
+                const domain = new URL(url).hostname.toLowerCase();
+
+                // unisci whitelist configurata e interna
+                const combinedWhitelist = [...this.URLS_WITHELIST, ...internalWhitelist];
+
+                // Check if domain matches any whitelist rule
+                const isWhitelisted = combinedWhitelist.some(whitelisted => {
+                  whitelisted = whitelisted.toLowerCase().trim();
+
+                  // Match exact domain
+                  if (whitelisted === domain) return true;
+
+                  // Match wildcard domain (*.example.com)
+                  if (whitelisted.startsWith('*.')) {
+                    const baseDomain = whitelisted.substring(2); // remove '*.'
+                    return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+                  }
+
+                  return false;
+                });
+
+                return !isWhitelisted;
+              } catch (e) {
+                // Invalid URL - consider it not allowed
+                return true;
+              }
+            });
+
+            if (nonWhitelistedDomains.length > 0) {
+              console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+              this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+              return;
+            }
+          }
+        }
+
 
         this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
           .subscribe((msg) => {
 
-            this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+            console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE RESP ', msg);
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
@@ -6591,31 +6650,33 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
-      const file = result.file
-      const image = result.imagePreview
+      if (result) {
+        this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
+        const file = result.file
+        const image = result.imagePreview
 
-      this.uploadedFiles = file
+        this.uploadedFiles = file
 
-      const uploadedFilesSize = this.uploadedFiles.size
+        const uploadedFilesSize = this.uploadedFiles.size
 
-      const formattedBytes = this.formatBytes(uploadedFilesSize)
-      this.uploadedFiles['formattedBytes'] = formattedBytes
-      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
-      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
-      this.type = 'image'
+        const formattedBytes = this.formatBytes(uploadedFilesSize)
+        this.uploadedFiles['formattedBytes'] = formattedBytes
+        this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
+        this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
+        this.type = 'image'
 
-      const uid = image.substring(image.length - 16)
-      this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
+        const uid = image.substring(image.length - 16)
+        this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
 
-      this.metadata = {
-        name: this.uploadedFiles.name,
-        type: this.uploadedFiles.type,
-        uid: uid
-      }
+        this.metadata = {
+          name: this.uploadedFiles.name,
+          type: this.uploadedFiles.type,
+          uid: uid
+        }
 
-      if (this.uploadedFiles) {
-        this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+        if (this.uploadedFiles) {
+          this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+        }
       }
     });
   }
