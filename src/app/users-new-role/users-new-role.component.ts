@@ -489,6 +489,7 @@ export class UsersNewRoleComponent implements OnInit {
     } else {
 
       this.EDIT_VIEW = true;
+      this.form.get('roleName')?.disable();
       this.sections.forEach(section => section.expanded = true);
       console.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
       console.log('[CREATE-NEW-ROLE] - EDIT_VIEW ', this.EDIT_VIEW)
@@ -563,6 +564,7 @@ export class UsersNewRoleComponent implements OnInit {
   buildForm() {
     const group: any = {};
     group['roleName'] = [''];
+    // group['roleName'] = [{ value: '', disabled: this.EDIT_VIEW }];
     // for (const section of this.sections) {
     //   group[section.key] = false;
     //   for (const child of section.children) {
