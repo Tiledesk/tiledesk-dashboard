@@ -44,8 +44,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   public_Key: string
   showSpinner = true
-  projectUsersList: any
-  pendingInvitationList: any
+ 
+
 
   id_projectUser: string
   user_firstname: string
@@ -136,6 +136,21 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   PERMISSION_TO_INVITE: boolean;
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+
+  // Dati originali e filtrati
+  projectUsersList:  any[] = []; 
+  pendingInvitationList: any[] = [];
+  paginatedUsers: any[] = []; 
+  filteredUsers: any[] = [];
+
+  // Variabili per paginazione
+  pageSize = 20;
+  currentPage = 1;
+  totalItems = 0;
+  totalPagesNo_roundToUp: number;
+   
+  // Variabili per ricerca
+  searchTerm = '';
 
   constructor(
     private usersService: UsersService,
@@ -687,6 +702,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
         if (projectUsers) {
           this.projectUsersList = projectUsers
+          this.applyFilterAndPagination();
 
           let order = { owner: 1, admin: 2, agent: 3 };
           this.projectUsersList.sort(function (a, b) {
@@ -744,6 +760,147 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       },
     )
   }
+
+   getPendingInvitation() {
+    this.usersService.getPendingUsers().subscribe(
+      (pendingInvitation: any) => {
+        console.log('[USERS] - GET PENDING INVITATION - RES', pendingInvitation)
+
+        if (pendingInvitation) {
+          this.pendingInvitationList = pendingInvitation
+          this.countOfPendingInvites = pendingInvitation.length
+          
+          this.applyFilterAndPagination();
+          this.logger.log('[USERS] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.countOfPendingInvites)
+        }
+      }, (error) => {
+        // this.showSpinner = false
+        this.logger.error('[USERS] - GET PENDING INVITATION - ERROR', error)
+      }, () => {
+        this.logger.log('[USERS] - GET PENDING INVITATION * COMPLETE * ')
+        this.HAS_FINISHED_GET_PENDING_USERS = true
+        // this.showSpinner = false
+      },
+    )
+  }
+
+
+
+   // Metodo per applicare filtro e paginazione
+  applyFilterAndPagination() {
+    // Applica filtro
+    this.filteredUsers = this.filterUsers(this.projectUsersList, this.searchTerm);
+    console.log('applyFilterAndPagination Original users count:', this.projectUsersList.length);
+    console.log('applyFilterAndPagination Filtered users count:', this.filteredUsers.length);
+    // console.log('[USERS] - PROJECT USERS filterUsers ' , this.filterUsers)
+
+    this.filteredUsers.forEach(item => item.type = 'user');
+    this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+    //  const combinedItems = [
+    //   ...this.filteredUsers.map(item => ({ ...item, type: 'user' })),
+    //   ...this.pendingInvitationList.map(item => ({ ...item, type: 'invitation' }))
+    // ];
+
+    const combinedItems = [
+        ...this.filteredUsers,
+        ...this.pendingInvitationList
+    ];
+
+    console.log('applyFilterAndPagination combinedItems:', combinedItems);
+    
+    // Aggiorna totalItems
+    // this.totalItems = this.filteredUsers.length;
+    this.totalItems = combinedItems.length;
+    
+    // Applica paginazione
+    // this.applyPagination();
+    this.applyPagination(combinedItems);
+    
+  }
+
+  filterUsers(users: any[], searchTerm: string): any[] {
+    console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ' , searchTerm)
+    if (!searchTerm.trim()) {
+      return users;
+    }
+    console.log('[USERS] - PROJECT USERS filterUsers > users ' , users)
+
+    const term = searchTerm.toLowerCase().trim();
+    
+    // Verifica se il termine di ricerca è un'email
+    const isEmail = this.isValidEmail(term);
+
+    return users.filter(user => {
+       console.log('[USERS] - PROJECT USERS filterUsers > user ' , user)
+      if (isEmail) {
+        // Cerca per email
+        return user.id_user.email.toLowerCase().includes(term);
+      } else {
+        // Cerca per nome e cognome
+        const fullName = `${user.id_user.firstname || ''} ${user.id_user.lastname || ''}`.toLowerCase().trim();
+         console.log('[USERS] - PROJECT USERS filterUsers > fullName ' , fullName)
+        return fullName.includes(term) ||
+               (user.id_user.firstname && user.id_user.firstname.toLowerCase().includes(term)) ||
+               (user.id_user.lastname && user.id_user.lastname.toLowerCase().includes(term));
+      }
+    });
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  applyPagination(combinedItems) {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    // this.paginatedUsers = this.filteredUsers.slice(startIndex, endIndex);
+    this.paginatedUsers = combinedItems.slice(startIndex, endIndex)
+  }
+
+  // Metodo chiamato quando cambia il termine di ricerca
+  onSearchChange($event) {
+     console.log('[USERS] - PROJECT USERS filterUsers > onSearchChange event' , $event)
+     console.log('[USERS] - PROJECT USERS filterUsers > onSearchChange searchTerm' , this.searchTerm)
+    this.currentPage = 1; // Reset alla prima pagina
+    this.applyFilterAndPagination();
+  }
+
+  onPageChange(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      // this.applyPagination();
+      this.applyFilterAndPagination();
+    }
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  // Metodo per ottenere l'array delle pagine disponibili (per la UI)
+  get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+   // Metodi aggiuntivi per navigazione (opzionali)
+  goToFirstPage() {
+    this.onPageChange(1);
+  }
+
+  goToLastPage() {
+    this.onPageChange(this.totalPages);
+  }
+
+  goToNextPage() {
+    this.onPageChange(this.currentPage + 1);
+  }
+
+  goToPreviousPage() {
+    this.onPageChange(this.currentPage - 1);
+  }
+
 
   getFlatMembersArrayFromAllRequestsAndRunGetOccurrence(users_id_array) {
     this.logger.log('[USERS] CALL GET COUNT OF REQUEST FOR AGENT');
@@ -855,26 +1012,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     imageData.src = imageUrl
   }
 
-  getPendingInvitation() {
-    this.usersService.getPendingUsers().subscribe(
-      (pendingInvitation: any) => {
-        this.logger.log('[USERS] - GET PENDING INVITATION - RES', pendingInvitation)
-
-        if (pendingInvitation) {
-          this.pendingInvitationList = pendingInvitation
-          this.countOfPendingInvites = pendingInvitation.length
-          this.logger.log('[USERS] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.countOfPendingInvites)
-        }
-      }, (error) => {
-        // this.showSpinner = false
-        this.logger.error('[USERS] - GET PENDING INVITATION - ERROR', error)
-      }, () => {
-        this.logger.log('[USERS] - GET PENDING INVITATION * COMPLETE * ')
-        this.HAS_FINISHED_GET_PENDING_USERS = true
-        // this.showSpinner = false
-      },
-    )
-  }
+ 
 
   resendInvite(pendingInvitationId: string) {
     this.logger.log('[USERS] - RESEND INVITE TO PENDING INVITATION ID: ', pendingInvitationId)

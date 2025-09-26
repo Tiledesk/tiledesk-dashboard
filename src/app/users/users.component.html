@@ -147,60 +147,81 @@
             <!-- -------------------------------------------------- -->
             <!--  ./ PROJECT PROFILE INFO  -->
             <!-- -------------------------------------------------- -->
-
+ <!--  -->
+             
 
             <div class="row">
               <div class="col-xs-12">
                 <!-- New teammates list -->
                 <div *ngIf="!showSpinner" class="main--wrapper">
-                  <div class="page-title--wrapper">
+
+                  <div class="container-flex">
+                    <div class="flex-left">
+                      
+                    </div>
+
+                    <div class="flex-center">
+                      <div class="search-bar" style="width: 100%;max-width: 300px;">
+                        <input id="search-box" type="text"
+                          [(ngModel)]="searchTerm" 
+                          (ngModelChange)="onSearchChange($event)"
+                          placeholder="Search by name or email..." 
+                          class="search-input" style="height: 40px;
+                              padding: 5px 10px;
+                              border: 1px solid lightgrey;
+                              border-radius: 9999px;width: 100%;">
+                      </div>
+                    </div>
+
+                    <div class="flex-right">
+                      <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
+                      
+                        <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
+                          style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
+                          [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
+                    
+                          {{ "UsersPage.Invites" | translate }}
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <!-- <div class="page-title--wrapper">
                     <div class="title--header">
-                      <!-- {{ pageName }} -->
+                      <!- - {{ pageName }} - ->
+                    </div>
+
+                    <div class="search-bar">
+                      <input type="text"
+                        [(ngModel)]="searchTerm" 
+                        (ngModelChange)="onSearchChange($event)"
+                        placeholder="Search by name or email..." 
+                        class="search-input" style="height: 40px;
+                            padding: 5px 10px;
+                            border: 1px solid lightgrey;
+                            border-radius: 9999px;
+                            width: 300px;">
                     </div>
 
                     <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
-                      <!-- btn-primary -->
                       <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
                         style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
                         [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
-                        <!-- <span class="icon" style="padding-right:8px">
-                      <i class="material-icons">add_circle</i>
-                    </span> -->
                         {{ "UsersPage.Invites" | translate }}
                       </button>
                     </div>
-
-                    <!-- <div class="page--actions" *ngIf="projectUsersList && projectUsersList?.length > 0">
-                  <span class="order-by-label">Order by </span>
-
-                  <div class="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <span class="order-by-selected-value" *ngIf="orderBylastUpdated">Last updates </span>
-                      <span class="order-by-selected-value" *ngIf="orderByCreationDate">Creation date </span>
-                      <span class="caret dropdown-caret"
-                        [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
-                    </a>
-                    <ul class="dropdown-menu" style="left: -53px;">
-                      <li>
-                        <a (click)="orderBy('lastUpdates')">
-                          Last updates
-                        </a>
-                      </li>
-                      <li>
-                        <a (click)="orderBy('creationDate')">
-                          Creation date
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div> -->
-                  </div>
+                  </div> -->
 
 
+                    <!-- projectUsersList -->
+                  <div class="card-list" *ngFor="let projectUser of  paginatedUsers;let i = index;">
 
-                  <div class="card-list" *ngFor="let projectUser of projectUsersList;let i = index;">
-
-                    <div class="cl-card" [ngClass]="{'bg-disabled': projectUser?.status === 'disabled'}" (click)='goToEditUser(projectUser?._id)'>
+                    <!-- ------------------------------ -->
+                    <!-- Project users -->
+                    <!-- ------------------------------ -->
+                    <div *ngIf="projectUser.type === 'user'" class="cl-card" [ngClass]="{'bg-disabled': projectUser?.status === 'disabled'}" (click)='goToEditUser(projectUser?._id)'>
                       <div class="cl-card-content">
 
                         <div class="cl-card-first-column">
@@ -223,7 +244,7 @@
 
                           <div class="cl-card-img-wpr">
                             <div class="photo-profile-container" style="position: relative;">
-
+        
                               <!-- --------------------------------------------------- -->
                               <!-- USECASE uploadEngine Firebase  class="user-img-in-teammates-list" -->
                               <!-- --------------------------------------------------- -->
@@ -442,12 +463,130 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- ------------------------------ -->
+                    <!-- Pending invitations -->
+                    <!-- ------------------------------ -->
+                    <div *ngIf="projectUser.type === 'invitation'" class="cl-card">
+                      <div class="cl-card-content">
+
+                        <div class="cl-card-first-column">
+
+                          <div class="cl-card-img-wpr">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                              <path
+                                d="M224 0a128 128 0 1 1 0 256A128 128 0 1 1 224 0zM178.3 304h91.4c20.6 0 40.4 3.5 58.8 9.9C323 331 320 349.1 320 368c0 59.5 29.5 112.1 74.8 144H29.7C13.3 512 0 498.7 0 482.3C0 383.8 79.8 304 178.3 304zM352 368a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-80c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H512V304c0-8.8-7.2-16-16-16z" />
+                            </svg>
+                          </div>
+
+                          <div class="cl-card-info-wpr">
+                            <span class="cl-card-item-name-wpr">
+                              <div class="cl-card-item-name">
+                                <span>{{ projectUser?.email }}</span>
+                              </div>
+                            </span>
+
+                            <!-- <div class="cl-card-item-description-wpr">
+                              <div class="cl-card-item-description">
+                                {{ projectUser?.id_user?.email }}
+                              </div>
+                            </div>
+
+                            <div class="cl-card-item-info">
+                              {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{ faqkb?.updatedAt | amTimeAgo }}
+                            </div> -->
+
+                          </div>
+                        </div>
+
+                        <div class="cl-card-second-column">
+
+                          <div class="cl-card-stats-wpr">
+
+                            <div class="cl-card-item-stats">
+                              <div class="cl-card-item-stats-title" style="white-space: nowrap;">
+                                {{ "UsersPage.DateOfSending" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" style="white-space: nowrap;">
+                                {{ projectUser?.createdAt | amTimeAgo }}
+                              </div>
+                            </div>
+
+                            <div class="cl-card-item-stats">
+                              <div id="pu-pending-status" class="cl-card-item-stats-title">
+                                {{ "Status" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+                                {{'Pending' | translate}}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="pu-role-wpr" class="cl-card-item-stats"
+                            [ngStyle]="{'min-width': widthOfLargestDiv }">
+                            <div class="cl-card-item-stats-title">
+                              {{ "UsersPage.Role" | translate }}
+                            </div>
+                            <div id="pu-role" class="cl-card-item-stats-values">
+                              {{ projectUser?.role | translate }}
+                            </div>
+                          </div>
+
+                          <div class="cl-card-action-wpr">
+                            <div class="cl-card-action-group">
+
+                              <div class="cl-card-action-btn-wpr">
+                                <button id="btn-{{projectUser?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();resendInvite(projectUser?._id)"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'UsersPage.ResendInvite' | translate}}" #tooltip="matTooltip"
+                                  matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>mail</mat-icon>
+                                </button>
+                              </div>
+
+                              <div class="cl-card-action-btn-wpr">
+                                <button id="btn-copy-{{invites?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();copyInviteURL(projectUser?._id)"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'CopyInviteURL' | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>content_copy</mat-icon>
+                                </button>
+                              </div>
+
+                              <!-- -------------------------------------------- -->
+                              <!-- More Actions (Pending Invitations) -->
+                              <!-- -------------------------------------------- -->
+                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button mat-icon-button [matMenuTriggerFor]="moreactionspi"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{Actions | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #moreactionspi="matMenu">
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                                    mat-menu-item (click)='openCancelInvitationModal(projectUser?._id, projectUser?.email )'>
+                                    <mat-icon>delete</mat-icon>
+
+                                    <span>{{ 'UsersPage.modalCancelInvite' | translate }}</span>
+                                  </button>
+                                </mat-menu>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                   <!-- ------------------------------ -->
                   <!-- Pending invitations -->
                   <!-- ------------------------------ -->
-                  <div class="card-list" *ngFor="let invites of pendingInvitationList">
+                  <div style="display: none;" class="card-list" *ngFor="let invites of pendingInvitationList">
 
                     <div class="cl-card" (click)='goToEditUser(projectUser?._id)'>
                       <div class="cl-card-content">
@@ -566,6 +705,68 @@
                   <!-- ./ Pending invitations -->
                 </div>
                 <!-- ./ New teammates list -->
+
+
+                <!-- ------------------------------------------------- -->
+                <div *ngIf="filteredUsers.length === 0" class="no-results">
+                  No teammate found matching your search criteria.
+                </div>
+                <!-- ------------------------------------------------- -->
+
+
+                <div class="pagination-controls" *ngIf="totalPages > 1">
+                  <!-- <button 
+                    (click)="goToPreviousPage()"
+                    [disabled]="currentPage === 1"
+                    class="page-btn">
+                    Previous
+                  </button> -->
+                  <button  class="btn " (click)="goToPreviousPage()" 
+                        style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;    border-top-left-radius: 9999px !important;
+                          border-bottom-left-radius: 9999px !important;
+                          box-shadow: unset; background-color: var(--blue-20);"
+                        [disabled]="currentPage === 1">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      </button>
+
+                    <!-- Numeri delle pagine -->
+                    <!-- <div class="page-numbers">
+                      <button 
+                        *ngFor="let page of pages" 
+                        (click)="onPageChange(page)"
+                        [class.active]="page === currentPage"
+                        class="page-number-btn">
+                        {{ page }}
+                      </button>
+                    </div> -->
+
+                    <button class="btn "  style="border-radius: 0px !important;pointer-events: none;  box-shadow: unset;
+                            background-color: var(--blue-20);"> 
+                        {{currentPage}} / {{totalPages}}
+                      </button>
+
+                    <!-- <button 
+                      (click)="goToNextPage()"
+                      [disabled]="currentPage === totalPages"
+                      class="page-btn">
+                      Next
+                    </button> -->
+                    <button class="btn" (click)="goToNextPage()" 
+                        style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important; border-bottom-right-radius: 9999px !important;
+                            box-shadow: unset;
+                            background-color: var(--blue-20);
+                            border-top-right-radius: 9999px !important;"
+                        [disabled]="currentPage === totalPages">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      </button>
+
+
+    <!-- <span class="page-info">
+      Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total teammates)
+    </span> -->
+  </div>
+
+
               </div>
             </div>
 
