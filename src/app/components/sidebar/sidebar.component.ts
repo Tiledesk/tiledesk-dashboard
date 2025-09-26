@@ -303,6 +303,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_KB: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_ACTVITIES: boolean;
+  PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
+  PERMISSION_TO_VIEW_SETTING: boolean;
 
   constructor(
     private router: Router,
@@ -524,7 +526,65 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
         }
 
+        // -------------------------------
+        // PERMISSION_TO_VIEW_WA_BRODCAST
+        // -------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_WA_BRODCAST = true;
+          console.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
 
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_WA_BRODCAST = false;
+          console.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_WA_BRODCAST = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+          console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+        }
+
+        if (status.role === 'owner' || status.role === 'admin') {
+        // Owner and admin always has permission
+        this.PERMISSION_TO_VIEW_SETTING = true;
+        console.log('[SIDEBAR] - Project user is owner or admin', 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
+
+      } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_SETTING = false;
+          console.log('[SIDEBAR] - Project user is agent', 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
+
+      } else {
+          // Custom roles: permission depends on matchedPermissions
+          const requiredPermissions = [
+              PERMISSIONS.WIDGETSETUP_READ, 
+              PERMISSIONS.DEPARTMENTS_LIST_READ, 
+              PERMISSIONS.TEAMMATES_READ, 
+              PERMISSIONS.EMAIL_TICKETING_READ,
+              PERMISSIONS.CANNED_RESPONSES_READ,
+              PERMISSIONS.TAGS_READ,
+              PERMISSIONS.HOURS_READ,
+              PERMISSIONS.INTEGRATIONS_READ,
+              PERMISSIONS.PROJECTSETTINGS_GENERAL_READ,
+              PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ,
+              PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ,
+              PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ,
+              PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ,
+              PERMISSIONS.PROJECTSETTINGS_SECURITY_READ,
+              PERMISSIONS.PROJECTSETTINGS_BANNED_READ,
+              PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ
+          ];
+          
+          this.PERMISSION_TO_VIEW_SETTING = requiredPermissions.some(permission => 
+              status.matchedPermissions.includes(permission)
+          );
+    
+        console.log('[SIDEBAR] - Custom role', status.role, 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
+      }
+
+
+        
         // You can also check status.role === 'owner' if needed
       });
   }
@@ -2272,7 +2332,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   goToNewKnowledgeBases() {
-   
     if (!this.PERMISSION_TO_VIEW_KB) {
       this.notify.presentDialogNoPermissionToViewThisSection();
       return;
