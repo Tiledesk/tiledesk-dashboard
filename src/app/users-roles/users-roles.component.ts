@@ -32,7 +32,8 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   isVisibleGroups: boolean;
   areActivePay: boolean;
   roles: any;
-  projectUsers: any
+  projectUsers: any;
+  pendingInvitationList:any;
   projectUsersAssociatedToRole: any
 
   isAuthorized = false;
@@ -65,6 +66,7 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     this.getCurrentProject()
     this.getRoles()
     this.getAllUsersOfCurrentProject()
+    this.getPendingInvitation()
     this.checkPermissions();
   }
 
@@ -98,6 +100,26 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
       }, () => {
         console.log('[USERS-ROLES] - GET PROJECT-USERS * COMPLETE *')
       });
+  }
+
+   getPendingInvitation() {
+    this.usersService.getPendingUsers().subscribe(
+      (pendingInvitation: any) => {
+        console.log('[USERS-ROLES] - GET PENDING INVITATION - RES', pendingInvitation)
+
+        if (pendingInvitation) {
+          this.pendingInvitationList = pendingInvitation
+   
+          console.log('[USERS-ROLES] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.pendingInvitationList)
+        }
+      }, (error) => {
+    
+        this.logger.error('[USERS-ROLES] - GET PENDING INVITATION - ERROR', error)
+      }, () => {
+        this.logger.log('[USERS-ROLES] - GET PENDING INVITATION * COMPLETE * ')
+     
+      },
+    )
   }
 
 
@@ -146,49 +168,78 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
       return obj.role === rolename;
     });
 
-    console.log('[USERS-ROLES] delete role - puFilteredForRoleArray ', puFilteredForRoleArray)
-    this.projectUsersAssociatedToRole = []
-
-    puFilteredForRoleArray.forEach(pu => {
-      let userFullname = ""
-      if (pu.id_user.firstname) {
-        userFullname = pu.id_user.firstname + ' ' + pu.id_user.lastname
-      }
-
-      this.projectUsersAssociatedToRole.push(userFullname)
+    const pendingInvitationFilteredForRoleArray = this.pendingInvitationList.filter((invitation: any) => {
+        return invitation.role === rolename;
     });
 
-    console.log('[USERS-ROLES] delete role - projectUsersAssociatedToRole ', this.projectUsersAssociatedToRole)
+    console.log('[USERS-ROLES] delete role - puFilteredForRoleArray ', puFilteredForRoleArray)
+    console.log('[USERS-ROLES] delete role - pendingInvitationFilteredForRoleArray ', pendingInvitationFilteredForRoleArray)
 
-    // "TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates": "The role {{role_name}} cannot be deleted because it is assigned to the following teammates:",
-    // "RemoveTheRoleAssignments": "Remove the role assignments before deleting it.",
-    // "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "The role {{role_name}} cannot be deleted because it is assigned to the teammate",
-    // "RemoveTheRoleAssignment":"Remove the role assignment before deleting it.",
+    const totalAssociations = puFilteredForRoleArray.length + pendingInvitationFilteredForRoleArray.length;
+    console.log('[USERS-ROLES] delete role - totalAssociations ', totalAssociations)
 
-    let warningText = '';
-    let warningTextPartTwo = '';
-    if (puFilteredForRoleArray.length === 0) {
+    // this.projectUsersAssociatedToRole = []
 
-      this.presentDialogDeleteRole(rolename, roleid)
+    // puFilteredForRoleArray.forEach(pu => {
+    //   let userFullname = ""
+    //   if (pu.id_user.firstname) {
+    //     userFullname = pu.id_user.firstname + ' ' + pu.id_user.lastname
+    //   }
+
+    //   this.projectUsersAssociatedToRole.push(userFullname)
+    // });
+    if (totalAssociations === 0) {
+        this.presentDialogDeleteRole(rolename, roleid)
+    } else {
+        this.presentDialogRoleAssigned(rolename, totalAssociations)
     }
-    if (puFilteredForRoleArray.length === 1) {
-      warningText = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate', {
-        role_name: `<strong>${rolename}</strong>`
-      });
-      warningTextPartTwo = this.translate.instant('RemoveTheRoleAssignment')
-      this.presentDialogRoleAssigned(warningText,warningTextPartTwo, this.projectUsersAssociatedToRole)
-    }
-    if (puFilteredForRoleArray.length > 1) {
-      warningText = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates', {
-        role_name: `<strong>${rolename}</strong>`
-      });
-      warningTextPartTwo = this.translate.instant('RemoveTheRoleAssignments')
-      this.presentDialogRoleAssigned(warningText,warningTextPartTwo, this.projectUsersAssociatedToRole)
-    }
+
+
+    // let warningText = '';
+    // let warningTextPartTwo = '';
+    // if (puFilteredForRoleArray.length === 0) {
+
+    //   this.presentDialogDeleteRole(rolename, roleid)
+    // }
+    // if (puFilteredForRoleArray.length === 1) {
+    //   warningText = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate', {
+    //     role_name: `<strong>${rolename}</strong>`
+    //   });
+    //   warningTextPartTwo = this.translate.instant('RemoveTheRoleAssignment')
+    //   this.presentDialogRoleAssigned(warningText,warningTextPartTwo, this.projectUsersAssociatedToRole)
+    // }
+    // if (puFilteredForRoleArray.length > 1) {
+    //   warningText = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates', {
+    //     role_name: `<strong>${rolename}</strong>`
+    //   });
+    //   warningTextPartTwo = this.translate.instant('RemoveTheRoleAssignments')
+    //   this.presentDialogRoleAssigned(warningText,warningTextPartTwo, this.projectUsersAssociatedToRole)
+    // }
 
   }
 
-  presentDialogRoleAssigned(warningText,warningTextPartTwo, projectUsersAssociatedToRole) {
+  presentDialogRoleAssigned(rolename, totalAssociations) {
+     const isSingle = totalAssociations === 1;
+    const associationType = isSingle ? 'teammate' : 'teammates';
+    const pronoun = isSingle ? 'the teammate' : 'the teammates';
+    const htmlContent = `
+        Cannot delete role <strong>${rolename}</strong>.<br>
+        This role is currently assigned to ${totalAssociations} ${associationType}.<br>
+        Reassign ${pronoun} to a different role before deleting this one.
+    `;
+    Swal.fire({
+      title: 'Role Cannot Be Deleted',
+      html: htmlContent,
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      focusConfirm: false,
+
+    })
+  
+  }
+
+  _presentDialogRoleAssigned(warningText,warningTextPartTwo, projectUsersAssociatedToRole) {
 
     // const htmlContent = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates', {
     //   role_name: `<strong>${rolename}</strong>`
