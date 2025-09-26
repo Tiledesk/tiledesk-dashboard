@@ -437,7 +437,7 @@
               <!-- (ROLE_IS_AGENT === false) || (ROLE_IS_AGENT === true && DISPLAY_ALL_TEAMMATES_TO_AGENT) -->
               <!-- the last: ngIf="ROLE_IS_AGENT === false" -->
               <!--  -------------------------------------------------------------------------------------- -->
-              <div class="col-xs-12 teammates-carousel">
+              <!-- <div class="col-xs-12 teammates-carousel">
                 <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
                   <div class="card-content"
                     style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -448,12 +448,8 @@
 
                     <div #widgetsContent class="middle-nw">
                       <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
-                        <!-- *ngIf="ONLY_MY_REQUESTS === false" -->
-                         
                         <ng-container class="all-teammates">
                           <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
-                               <!-- user_available_rt  {{agent?.user_available_rt}} - profileStatus_rt {{agent?.profileStatus_rt}} -->
-
                             <div class="served-by-conv-c" matTooltipClass="conv-custom-mat-tooltip"
                               matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
                               #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
@@ -463,16 +459,12 @@
 
                                 <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
 
-                                  <!-- ---------------------------------------- -->
-                                  <!-- Usecase Firebase -->
-                                  <!-- ---------------------------------------- -->
+                                
                                   <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
                                     alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-                                  <!-- ---------------------------------------- -->
-                                  <!-- Usecase Native -->
-                                  <!-- ---------------------------------------- -->
+                           
                                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                                     src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                     alt="" onerror="this.src='assets/img/no_image_user.png'">
@@ -485,9 +477,7 @@
                                   </div>
                                 </div>
 
-                                <!-- ---------------------------------------- -->
-                                <!-- Usecase No profile image -->
-                                <!-- ---------------------------------------- -->
+                            
                                 <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
                                   <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
                                     [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
@@ -495,8 +485,6 @@
                                     <span class="altenative-conv-avatar" style="line-height: 40px;">
                                       {{ agent?.id_user?.fullname_initial }}
                                     </span>
-
-                                    <!-- [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }" -->
                                
                                     <div class="teammates-no-picture-status-icon"
                                        [ngClass]="{
@@ -509,95 +497,13 @@
                                 </div>
                               </div>
 
-                              <!-- <span style="min-width: fit-content;
-                          white-space: nowrap;
-                          top: 34px;
-                          padding: 1px 4px;
-                          box-shadow: unset;
-                          border-radius: 4px;
-                          font-size: 11px;" class="bottom">
-                            <span> {{ agent?.id_user?.firstname }}
-                              <span *ngIf="agent?.id_user?.lastname && agent?.id_user?.lastname !== ' '">
-                                {{ agent?.id_user?.lastname | slice:0:1 }}.
-                              </span>
-
-                            </span>
-                           
-                          </span> -->
-
                             </div>
                           </div>
                         </ng-container>
-                        <!-- ------------------------------------------------------------------ -->
-                        <!-- teammates of the groups to which the current user belongs -->
-                        <!-- ------------------------------------------------------------------ -->
-                        <!-- <ng-container class="curren-user-teammates" *ngIf="ONLY_MY_REQUESTS === true">
-                      <div class="served-by-conv-b" *ngFor="let agent of filteredProjectUsersArray">
-
-                        <div class="served-by-conv-c tool_tip">
-                          <div class="served-by-conv-d">
-
-                           
-                            <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
-
-                              <!- - ---------------------------------------- - ->
-                              <!- - Usecase Firebase - ->
-                              <!- - ---------------------------------------- - ->
-                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                                alt="" onerror="this.src='assets/img/no_image_user.png'">
-
-                              <!- - ---------------------------------------- - ->
-                              <!- - Usecase Native - ->
-                              <!- - ---------------------------------------- - ->
-                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                alt="" onerror="this.src='assets/img/no_image_user.png'">
-
-                              <div class="teammates-with-picture-status-icon"
-                                [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                              </div>
-                            </div>
-
-                            <!- - ---------------------------------------- - ->
-                            <!- - Usecase No profile image - ->
-                            <!- - ---------------------------------------- - ->
-                            <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
-                              <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
-                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
-
-                                <span class="altenative-conv-avatar" style="line-height: 40px;">
-                                  {{ agent?.id_user?.fullname_initial }}
-                                </span>
-                                <div class="teammates-no-picture-status-icon"
-                                  [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-
-                          <span style="min-width: fit-content;
-                          white-space: nowrap;
-                          top: 34px;
-                          padding: 1px 4px;
-                          box-shadow: unset;
-                          border-radius: 4px;
-                          font-size: 11px;" class="bottom">
-                            <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
-                              <span *ngIf="agent?.id_user?.lastname">
-                                {{ agent?.id_user?.lastname | slice:0:1 }}.
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </ng-container> -->
                       </div>
 
-                      <!-- ---------------------------------------------- -->
-                      <!-- Skeleton -->
-                      <!-- ---------------------------------------------- -->
+                  
+                      <!- - Skeleton - ->
                       <div class="served-by-conv-a" *ngIf="showRealTeammates === false">
                         <div class="served-by-conv-b" *ngFor="let fake of generateFake(project_user_length)">
 
@@ -618,7 +524,7 @@
 
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- .END HERE -->
 
             </div>
