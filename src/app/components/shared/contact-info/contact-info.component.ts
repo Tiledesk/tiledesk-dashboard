@@ -414,7 +414,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       }, (error) => {
         this.logger.error('[CONTACT-INFO] - UPDATE CONTACT - ERROR ', error);
 
-        this.notify.showNotification(this.editContactErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACT-INFO] - UPDATE CONTACT * COMPLETE *');
 
