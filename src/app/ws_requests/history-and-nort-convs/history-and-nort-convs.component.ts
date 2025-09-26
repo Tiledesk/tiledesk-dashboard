@@ -3290,7 +3290,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
           // =========== NOTIFY ERROR ===========
           // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
-          this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+          this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
           // this.ngOnInit();
           this.logger.log('[HISTORY & NORT-CONVS] +- CLOSE SUPPORT GROUP - COMPLETE');
