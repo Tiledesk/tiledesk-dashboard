@@ -546,7 +546,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WS-REQUESTS-LIST] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyAvailableWithEnterprisePlan = translation;
       });
 
@@ -795,12 +795,10 @@ getProjectUserRole() {
           projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
           // if (projectUser_from_ws_subscription['profileStatus']) {
-          //   console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus_rt ', projectuser['profileStatus_rt'])
-          //   projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          //  projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
           // }
-
           if ('profileStatus' in projectUser_from_ws_subscription) {
-            console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+            // console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
             projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
           }
 
@@ -1097,7 +1095,7 @@ getProjectUserRole() {
     if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.PERMISSION_TO_EDIT_SMART_ASSIGN) {
       if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
 
-        // this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Smartassignment');
+        // this.logger.log('[WS-REQUESTS-LIST] - HAS CLICKED goToProjectSettings_Smartassignment');
         this.router.navigate(['project/' + this.projectId + '/project-settings/smartassignment']);
 
       } else if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === false) {
@@ -1290,7 +1288,7 @@ getProjectUserRole() {
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      // console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {

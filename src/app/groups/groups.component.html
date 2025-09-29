@@ -494,17 +494,120 @@
       </div>
     </div>
   </div>
-</div>
 
-<!-- ============= DELETE MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
+  <!-- ============= DELETE MODAL ============= -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
+    style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content custom--modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title warning">
+            <span class="modal-header-icon-wpr">
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+                <path
+                  d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+              </svg>
+            </span>
+            <span style="vertical-align: middle; padding-left:8px">
+
+              {{ "GroupsPage.DeleteGroup" | translate }}
+
+            </span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <p class="modal-body--content">
+
+            {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
+
+            <span>
+              <strong> {{name_group_to_delete}} </strong>
+            </span>?
+
+          </p>
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteModal()">
+
+            {{ "Cancel" | translate }}
+          </button>
+          <button class="btn btn-red" (click)="deleteGroup()">
+
+            {{ "GroupsPage.DeleteGroup" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============= Disable MODAL ============= -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDisableModal}"
+    style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content custom--modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseDidableModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title warning">
+            <span class="modal-header-icon-wpr">
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+                <path
+                  d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+              </svg>
+            </span>
+            <span style="vertical-align: middle; padding-left:8px">
+
+              {{ "GroupsPage.DisableGroup" | translate }}
+
+            </span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <p class="modal-body--content">
+
+            <!-- {{ "GroupsPage.AreYouSureDeleteGroup" | translate }} -->
+              {{'AreYouSure' | translate }}?
+            <!-- <span>
+              <strong> {{name_group_to_delete}} </strong>
+            </span>? -->
+          </p>
+           <p [innerHTML]="'GroupsPage.TheGroupWilBeDisabled' | translate:{ group_name: name_group_to_disable }"></p>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-gray-no-boxshadow" (click)="onCloseDidableModal()">
+
+            {{ "Cancel" | translate }}
+          </button>
+          <button class="btn btn-red" (click)="disableGroup(id_group_to_disable)">
+
+            {{ "Disable" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- ============  RESTORE MODAL ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayRestoreModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseRestoreModal()">
           <span aria-hidden="true">&times;</span>
         </button>
+
         <h4 class="modal-title warning">
           <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
           <span class="modal-header-icon-wpr">
@@ -526,6 +629,7 @@
           {{ "GroupsPage.WillBeRemoved" | translate }}>
         </h4> -->
       </div>
+
       <div class="modal-body">
         <p class="modal-body--content">
 
@@ -536,9 +640,8 @@
           </span>?
 
         </p>
-
-
       </div>
+
       <div class="modal-footer">
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteModal()">
 
@@ -653,9 +756,9 @@
 
 
 
-<!-- !!! NO MORE USED - MOVED IN group-edit-add.component -  MODAL ADD MEMBER TO A GROUP -->
+  <!-- !!! NO MORE USED - MOVED IN group-edit-add.component -  MODAL ADD MEMBER TO A GROUP -->
 
-<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display_users_list_modal}" style="background-color: rgba(90,90,90,0.5);">
+  <!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display_users_list_modal}" style="background-color: rgba(90,90,90,0.5);">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
