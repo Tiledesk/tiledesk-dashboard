@@ -306,6 +306,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
   PERMISSION_TO_VIEW_SETTING: boolean;
 
+
+  ROLE: string; 
+  PERMISSION_TO_VIEW_WIDGET_SETUP: boolean;
+  PERMISSION_TO_VIEW_DEPTS: boolean;
+  PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS: boolean;
+  PERMISSION_TO_VIEW_EMAIL_TICKETING: boolean;
+  PERMISSION_TO_VIEW_CANNED_RESPONSES: boolean;
+  PERMISSION_TO_VIEW_TAGS: boolean;
+  PERMISSION_TO_VIEW_OH: boolean;
+  PERMISSION_TO_VIEW_INTEGRATIONS: boolean;
+  PERMISSION_TO_VIEW_APPS: boolean;
+  PERMISSION_TO_VIEW_PROJECT_SETTINGS: boolean;
+
   constructor(
     private router: Router,
     public location: Location,
@@ -389,13 +402,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   listenToProjectUser() {
     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-
-        console.log('[SIDEBAR] - Role:', status.role);
+        this.ROLE = status.role
+        console.log('[SIDEBAR] - Role:', this.ROLE);
+    
         console.log('[SIDEBAR] - Permissions:', status.matchedPermissions);
         // -------------------------------
         // PERMISSION TO VIEW MONITOR
@@ -544,48 +563,265 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.PERMISSION_TO_VIEW_WA_BRODCAST = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
           console.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
         }
-
+        // -------------------------------
+        // PERMISSION_TO_VIEW_SETTING
+        // -------------------------------
         if (status.role === 'owner' || status.role === 'admin') {
-        // Owner and admin always has permission
-        this.PERMISSION_TO_VIEW_SETTING = true;
-        console.log('[SIDEBAR] - Project user is owner or admin', 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_SETTING = true;
+          console.log('[SIDEBAR] - Project user is owner or admin', 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
 
-      } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_SETTING = false;
-          console.log('[SIDEBAR] - Project user is agent', 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
+        } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_SETTING = false;
+            console.log('[SIDEBAR] - Project user is agent', 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
 
-      } else {
-          // Custom roles: permission depends on matchedPermissions
-          const requiredPermissions = [
-              PERMISSIONS.WIDGETSETUP_READ, 
-              PERMISSIONS.DEPARTMENTS_LIST_READ, 
-              PERMISSIONS.TEAMMATES_READ, 
-              PERMISSIONS.EMAIL_TICKETING_READ,
-              PERMISSIONS.CANNED_RESPONSES_READ,
-              PERMISSIONS.TAGS_READ,
-              PERMISSIONS.HOURS_READ,
-              PERMISSIONS.INTEGRATIONS_READ,
-              PERMISSIONS.PROJECTSETTINGS_GENERAL_READ,
-              PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ,
-              PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ,
-              PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ,
-              PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ,
-              PERMISSIONS.PROJECTSETTINGS_SECURITY_READ,
-              PERMISSIONS.PROJECTSETTINGS_BANNED_READ,
-              PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ
-          ];
-          
-          this.PERMISSION_TO_VIEW_SETTING = requiredPermissions.some(permission => 
-              status.matchedPermissions.includes(permission)
-          );
-    
-        console.log('[SIDEBAR] - Custom role', status.role, 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
-      }
+        } else {
+            // Custom roles: permission depends on matchedPermissions
+            // PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ,
+            const requiredPermissions = [
+                PERMISSIONS.WIDGETSETUP_READ, 
+                PERMISSIONS.DEPARTMENTS_LIST_READ, 
+                PERMISSIONS.TEAMMATES_READ, 
+                PERMISSIONS.ROLES_READ, 
+                PERMISSIONS.GROUPS_READ,
+                PERMISSIONS.EMAIL_TICKETING_READ,
+                PERMISSIONS.CANNED_RESPONSES_READ,
+                PERMISSIONS.TAGS_READ,
+                PERMISSIONS.HOURS_READ,
+                PERMISSIONS.INTEGRATIONS_READ,
+                PERMISSIONS.APPS_READ,
+                PERMISSIONS.PROJECTSETTINGS_GENERAL_READ,
+                PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ,
+                PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ,
+                PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ,
+                PERMISSIONS.PROJECTSETTINGS_SECURITY_READ,
+                PERMISSIONS.PROJECTSETTINGS_BANNED_READ,
+                PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ
+            ];
+            
+            this.PERMISSION_TO_VIEW_SETTING = requiredPermissions.some(permission => 
+                status.matchedPermissions.includes(permission)
+            );
+      
+          console.log('[SIDEBAR] - Custom role', status.role, 'PERMISSION_TO_VIEW_SETTING:', this.PERMISSION_TO_VIEW_SETTING);
+        }
 
 
+          // TO MANAGE THE NAVIGATION ON THE SETTINGS BTN CLICK  //
+          // ---------------------------------
+          // PERMISSION_TO_VIEW_WIDGET_SETUP
+          // ---------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_WIDGET_SETUP = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_WIDGET_SETUP = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_WIDGET_SETUP = status.matchedPermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+          }
+  
+          // -------------------------------
+          // PERMISSION_TO_VIEW_DEPTS
+          // -------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_DEPTS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_DEPTS:', this.PERMISSION_TO_VIEW_DEPTS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_DEPTS = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_DEPTS:', this.PERMISSION_TO_VIEW_DEPTS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_DEPTS = status.matchedPermissions.includes(PERMISSIONS.DEPARTMENTS_LIST_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_DEPTS:', this.PERMISSION_TO_VIEW_DEPTS);
+          }
+
+          // ------------------------------------------
+          // PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS
+          // ------------------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin', 'PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS:', this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS);
+  
+          } else if (status.role === 'agent') {
+              // Agent never have permission
+              this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS = false;
+              console.log('[SETTINGS-SIDEBAR] - Project user is agent', 'PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS:', this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS);
+  
+          } else {
+              // Custom roles: permission depends on matchedPermissions
+              const requiredPermissions = [
+                  PERMISSIONS.TEAMMATES_READ, 
+                  PERMISSIONS.ROLES_READ, 
+                  PERMISSIONS.GROUPS_READ,
+              ];
+              
+              this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS = requiredPermissions.some(permission => 
+                  status.matchedPermissions.includes(permission)
+              );
         
-        // You can also check status.role === 'owner' if needed
+            console.log('[SETTINGS-SIDEBAR] - Custom role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS:', this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS);
+          }
+
+          // -----------------------------------
+          // PERMISSION_TO_VIEW_EMAIL_TICKETING
+          // -----------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_EMAIL_TICKETING = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_EMAIL_TICKETING:', this.PERMISSION_TO_VIEW_EMAIL_TICKETING);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_EMAIL_TICKETING = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_EMAIL_TICKETING:', this.PERMISSION_TO_VIEW_EMAIL_TICKETING);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_EMAIL_TICKETING = status.matchedPermissions.includes(PERMISSIONS.EMAIL_TICKETING_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_EMAIL_TICKETING:', this.PERMISSION_TO_VIEW_EMAIL_TICKETING);
+          }
+  
+          // -----------------------------------
+          // PERMISSION_TO_VIEW_CANNED_RESPONSES
+          // -----------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_CANNED_RESPONSES = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_CANNED_RESPONSES:', this.PERMISSION_TO_VIEW_CANNED_RESPONSES);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_CANNED_RESPONSES = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_CANNED_RESPONSES:', this.PERMISSION_TO_VIEW_CANNED_RESPONSES);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_CANNED_RESPONSES = status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_CANNED_RESPONSES:', this.PERMISSION_TO_VIEW_CANNED_RESPONSES);
+          }
+  
+          // -------------------------------
+          // PERMISSION_TO_VIEW_TAGS
+          // -------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_TAGS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TAGS:', this.PERMISSION_TO_VIEW_TAGS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_TAGS = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_TAGS:', this.PERMISSION_TO_VIEW_TAGS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_TAGS = status.matchedPermissions.includes(PERMISSIONS.TAGS_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_TAGS);
+          }
+
+          // -------------------------------
+          // PERMISSION_TO_VIEW_OH
+          // -------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_OH = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_OH:', this.PERMISSION_TO_VIEW_OH);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_OH = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_OH:', this.PERMISSION_TO_VIEW_OH);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_OH = status.matchedPermissions.includes(PERMISSIONS.HOURS_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_OH:', this.PERMISSION_TO_VIEW_OH);
+          }
+
+          // -------------------------------
+          // PERMISSION_TO_VIEW_INTEGRATIONS
+          // -------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_INTEGRATIONS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_INTEGRATIONS:', this.PERMISSION_TO_VIEW_INTEGRATIONS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_INTEGRATIONS = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_INTEGRATIONS:', this.PERMISSION_TO_VIEW_INTEGRATIONS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_INTEGRATIONS = status.matchedPermissions.includes(PERMISSIONS.INTEGRATIONS_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_INTEGRATIONS:', this.PERMISSION_TO_VIEW_INTEGRATIONS);
+          }
+
+          // -----------------------
+          // PERMISSION_TO_VIEW_APPS
+          // -----------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_APPS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_APPS:', this.PERMISSION_TO_VIEW_APPS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_APPS = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_APPS:', this.PERMISSION_TO_VIEW_APPS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_APPS = status.matchedPermissions.includes(PERMISSIONS.APPS_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_APPS:', this.PERMISSION_TO_VIEW_APPS);
+          }
+
+          // ------------------------------------------
+          // PERMISSION_TO_VIEW_PROJECT_SETTINGS
+          // ------------------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_PROJECT_SETTINGS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin', 'PERMISSION_TO_VIEW_PROJECT_SETTINGS:', this.PERMISSION_TO_VIEW_PROJECT_SETTINGS);
+  
+          } else if (status.role === 'agent') {
+              // Agent never have permission
+              this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS = false;
+              console.log('[SETTINGS-SIDEBAR] - Project user is agent', 'PERMISSION_TO_VIEW_PROJECT_SETTINGS:', this.PERMISSION_TO_VIEW_PROJECT_SETTINGS);
+  
+          } else {
+              // Custom roles: permission depends on matchedPermissions
+
+              // PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ, 
+              const requiredPermissions = [
+                  PERMISSIONS.PROJECTSETTINGS_GENERAL_READ, 
+                  PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ,
+                  PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ,
+                  PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ,
+                  PERMISSIONS.PROJECTSETTINGS_SECURITY_READ,
+                  PERMISSIONS.PROJECTSETTINGS_BANNED_READ,
+                  PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ
+              ];
+              
+              this.PERMISSION_TO_VIEW_PROJECT_SETTINGS = requiredPermissions.some(permission => 
+                  status.matchedPermissions.includes(permission)
+              );
+        
+            console.log('[SETTINGS-SIDEBAR] - Custom role', status.role, 'PERMISSION_TO_VIEW_PROJECT_SETTINGS:', this.PERMISSION_TO_VIEW_PROJECT_SETTINGS);
+          }
       });
   }
 
@@ -1932,7 +2168,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
-      // this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+      console.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
   }
 
@@ -2134,7 +2370,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((data) => {
-        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+        console.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
         if (data !== null) {
           if (data['user_available'] === false && data['profileStatus'] === "inactive") {
             this.IS_AVAILABLE = false;
@@ -2409,20 +2645,76 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   goToWidgetSetUpOrToCannedResponses() {
-    if (this.USER_ROLE !== 'agent') {
+    if (this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin' ) {
       this.goToWidgetSetUp()
     } else if (this.USER_ROLE === 'agent') {
       this.goToCannedResponses()
+    } else if (this.ROLE !== 'owner' && this.ROLE !== 'admin' && this.ROLE !== 'agent' ) {
+      if (this.PERMISSION_TO_VIEW_WIDGET_SETUP)  {
+         this.goToWidgetSetUp()
+      } else if (this.PERMISSION_TO_VIEW_DEPTS) {
+        this.goToDepartments()
+      } else if (this.PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS) {
+        this.goToTeammates()
+      } else if (this.PERMISSION_TO_VIEW_EMAIL_TICKETING) {
+        this.goToEmailTicketing()
+      } else if (this.PERMISSION_TO_VIEW_CANNED_RESPONSES) {
+        this.goToCannedResponses()
+      } else if (this.PERMISSION_TO_VIEW_TAGS) {
+        this.goToTags()
+      } else if (this.PERMISSION_TO_VIEW_OH) {
+        this.goToOperatingHours()
+      } else if (this.PERMISSION_TO_VIEW_INTEGRATIONS) {
+        this.goToIntegrations()
+      } else if (this.PERMISSION_TO_VIEW_APPS) {
+        this.goToApps()
+      }
     }
-
   }
+
+
+
   goToWidgetSetUp() {
     this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
   }
 
-  goToCannedResponses() {
-    this.router.navigate(['project/' + this.projectId + '/cannedresponses']);
+  goToDepartments() {
+    // routerLink="project/{{ project._id }}/departments"
+    this.router.navigate(['project/' + this.project._id + '/departments'])
   }
+
+  goToTeammates() {
+    // routerLink="project/{{ project._id }}/users"
+    this.router.navigate(['project/' + this.project._id + '/users'])
+  }
+
+  goToEmailTicketing() {
+    this.router.navigate(['project/' + this.project._id + '/email'])
+  }
+
+  goToCannedResponses() {
+    this.router.navigate(['project/' + this.project._id + '/cannedresponses'])
+  }
+
+  goToTags() {
+    // routerLink="project/{{ project._id }}/labels"
+    this.router.navigate(['project/' + this.project._id + '/labels'])
+  }
+
+  goToOperatingHours() {
+    // routerLink="project/{{ project._id }}/hours"
+    this.router.navigate(['project/' + this.project._id + '/hours'])
+  }
+
+  goToIntegrations() {
+  this.router.navigate(['project/' + this.project._id + '/integrations'])
+  }
+
+  goToApps() {
+    this.router.navigate(['project/' + this.project._id + '/app-store'])
+  }
+
+  
 
 
   goToProjects() {

@@ -27,53 +27,56 @@
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
+     <!-- isVisiblePaymentTab {{isVisiblePaymentTab}} PERMISSION_TO_VIEW_SUB  {{ PERMISSION_TO_VIEW_SUB }} -->
+
       <div class="teplate-content" style="flex: 1 1 auto;">
         <div class="row">
           <div class="col-xs-12" style="padding-right: 0px;">
             <!-- box-shadow: unset -->
             <ul class="bottom-nav" style="top:-9px; ">
-              <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
+              <li *ngIf="PERMISSION_TO_VIEW_GENERAL" (click)="goToProjectSettings_General()" class="btn-with-border-effect"
                 [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
                 <a> {{ "General" | translate }} </a>
               </li>
 
+             
               <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
                 [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
                 <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
               </li>
 
-              <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
+              <li *ngIf="isVisibleDeveloperTab && PERMISSION_TO_VIEW_DEV" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
                 [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
                 <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
               </li>
 
 
-              <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent'"
+              <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent' && PERMISSION_TO_VIEW_SMART_ASSIGN"
                 (click)="goToProjectSettings_SmartAssignment()" class="btn-with-border-effect"
                 [ngClass]="{ 'li-active' : PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === false }">
                 <a> {{ "SmartAssign" | translate }}</a>
               </li>
 
-              <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()"
+              <li *ngIf="isVisibleNotificationTab && PERMISSION_TO_VIEW_NOTIFICATIONS" (click)="goToProjectSettings_Notification()"
                 class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
                 <a> {{ "Notification" | translate }}</a>
               </li>
 
-              <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
+              <li *ngIf="isVisibleSecurityTab && PERMISSION_TO_VIEW_SECURITY" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
                 <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
 
 
               </li>
 
-              <li *ngIf="isVisibleBannedVisitor" (click)="goToProjectSettings_BannedVisitors()"
+              <li *ngIf="isVisibleBannedVisitor && PERMISSION_TO_VIEW_BANNED" (click)="goToProjectSettings_BannedVisitors()"
                 class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
                 <a> {{'BannedVisitors' | translate }} </a>
               </li>
 
-              <li (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+              <li *ngIf="PERMISSION_TO_VIEW_ADVANCED" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
                 <a> {{'ProjectEditPage.Advanced' | translate }} </a>
               </li>

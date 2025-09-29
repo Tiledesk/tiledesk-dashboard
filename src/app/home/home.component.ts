@@ -292,11 +292,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   PERMISSION_TO_INVITE: boolean;
   PERMISSION_TO_VIEW_HISTORY: boolean;
   PERMISSION_TO_VIEW_OP: boolean;
-  PERMISSION_TO_WIDGET_SETUP: boolean;
-
-  // TEAMMATES_READ: 'teammates_read',
-  // TEAMMATES_DETAILS_READ: 'teammates_detail_read',
-  // TEAMMATES_CREATE: 'teammates_create',
+  PERMISSION_TO_VIEW_WIDGET_SETUP: boolean;
 
   constructor(
     public auth: AuthService,
@@ -440,22 +436,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.PERMISSION_TO_VIEW_OP = true
           console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
         }
-        // -------------------------------
-        // PERMISSION_TO_WIDGET_SETUP
-        // -------------------------------
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+    
 
-          if (status.matchedPermissions.includes(PERMISSIONS.WIDGETSETUP_READ)) {
-            this.PERMISSION_TO_WIDGET_SETUP = true
-            console.log('[SIDEBAR] - PERMISSION_TO_WIDGET_SETUP ', this.PERMISSION_TO_WIDGET_SETUP);
-          } else {
-            this.PERMISSION_TO_WIDGET_SETUP = false
+        // ---------------------------------
+        // PERMISSION_TO_VIEW_WIDGET_SETUP
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_WIDGET_SETUP = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
 
-            console.log('[SIDEBAR] - PERMISSION_TO_WIDGET_SETUP ', this.PERMISSION_TO_WIDGET_SETUP);
-          }
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_WIDGET_SETUP = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+
         } else {
-          this.PERMISSION_TO_WIDGET_SETUP = true
-          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_WIDGET_SETUP ', this.PERMISSION_TO_WIDGET_SETUP);
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_WIDGET_SETUP = status.matchedPermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
         }
 
         // ---------------------------------
@@ -568,7 +567,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         } else {
           // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ);
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
           console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 

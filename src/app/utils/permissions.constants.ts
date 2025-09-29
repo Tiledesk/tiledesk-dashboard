@@ -70,18 +70,21 @@ export const PERMISSIONS = {
   WIDGETSETUP_READ: 'widgetsetup_read',
   INSTALLATION_READ: 'installation_read',
   TRANSLATIONS_READ: 'translations_read',
+  WIDGETSETUP_UPDATE: 'widgetsetup_update',
+
+  
 
   DEPARTMENTS_LIST_READ: 'department_list_read',
   DEPARTMENT_DETAIL_READ: 'department_detail_read',
   DEPARTMENT_CREATE_READ: 'department_create_read',
 
   TEAMMATES_READ: 'teammates_read',
-  TEAMMATES_DETAILS_READ: 'teammates_detail_read',
+  TEAMMATE_UPDATE: 'teammate_update',
   TEAMMATES_CREATE: 'teammates_create',
   ROLES_READ: 'roles_read',
   GROUPS_READ: 'groups_read',
 
-  TEAMMATE_STATUS_UPDATE: 'teammate_status_update',
+
 
   EMAIL_TICKETING_READ:'email_ticketing_read',
   EMAIL_TICKETING_UPDATE:'email_ticketing_update',

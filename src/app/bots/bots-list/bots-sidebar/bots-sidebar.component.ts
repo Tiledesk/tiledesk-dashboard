@@ -6,7 +6,9 @@ import { BrandService } from 'app/services/brand.service';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { RolesService } from 'app/services/roles.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 @Component({
@@ -61,6 +63,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     public localDbService: LocalDbService,
+    public rolesService: RolesService
   ) {
     const brand = brandService.getBrand();
     this.displayChatbotsCommunity = brand['display_chatbots_community']
@@ -78,13 +81,24 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     this.getDahordBaseUrlThenOSCODE()
     // this.getProjectPlan()
     // this.logger.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
+
   }
+
+
   ngOnChanges() {
     // this.logger.log('[BOTS-SIDEBAR] - allTemplatesCount ', this.allTemplatesCount)
     // this.logger.log('[BOTS-SIDEBAR] - customerSatisfactionTemplatesCount ', this.customerSatisfactionTemplatesCount)
     // this.logger.log('[BOTS-SIDEBAR] - increaseSalesTemplatesCount ', this.increaseSalesTemplatesCount)
     // this.logger.log('[BOTS-SIDEBAR] - myChatbotOtherCount ', this.myChatbotOtherCount)
   }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
 
   getCurrentProject() {
     // this.logger.log('[BOTS-SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)

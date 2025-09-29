@@ -407,6 +407,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_SEND_TRANSCRIPT: boolean;
   PERMISSION_TO_BAN_VISITOR: boolean;
   PERMISSION_TO_UPDATE_LEAD: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
 
   /**
    * Constructor
@@ -574,6 +577,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.fileUploadAccept = this.appConfigService.getConfig().fileUploadAccept
     // this.getClickOutEditContactFullname()
+  }
+
+ ngOnDestroy() {
+    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.unsuscribeRequesterPresence(this.requester_id);
+    if (this.id_request) {
+      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
+      this.unsuscribeRequestById(this.id_request);
+      this.unsuscribeMessages(this.id_request);
+    }
   }
 
   listenToProjectUser() {
@@ -835,17 +851,68 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_BAN_VISITOR = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+          console.log('[WS-REQUESTS-MSGS] - Project user is owner (1)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
 
         } else if (status.role === 'admin' || status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_BAN_VISITOR = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+          console.log('[WS-REQUESTS-MSGS] - Project user is admin or agent (2)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_BAN_VISITOR = status.matchedPermissions.includes(PERMISSIONS.LEAD_BAN);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+          console.log('[WS-REQUESTS-MSGS] - Custom role (3)', status.role, 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+        }
+
+        // ---------------------------------
+        // PERMISSION_TO_EDIT_FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[WS-REQUESTS-MSGS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[WS-REQUESTS-MSGS] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[WS-REQUESTS-MSGS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[WS-REQUESTS-MSGS] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
         }
 
 
@@ -1441,18 +1508,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  ngOnDestroy() {
-    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-
-    this.unsuscribeRequesterPresence(this.requester_id);
-    if (this.id_request) {
-      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
-      this.unsuscribeRequestById(this.id_request);
-      this.unsuscribeMessages(this.id_request);
-    }
-  }
+ 
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
@@ -5696,24 +5752,43 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         } else if (bot.type === 'tilebot') {
           botType = 'tilebot'
+
+          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
           if (this.CURRENT_USER_ROLE !== 'agent') {
             // this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
             goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
           }
         } else if (bot.type === 'tiledesk-ai') {
           botType = 'tiledesk-ai'
+
+          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
           if (this.CURRENT_USER_ROLE !== 'agent') {
             goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
           }
         } else {
+
+          if(!this.PERMISSION_TO_UPDATE_APP) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
+
           if (this.CURRENT_USER_ROLE !== 'agent') {
             this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
           }
           botType = bot.type
         }
 
-
       } else {
+          if(!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
         // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
         this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
       }

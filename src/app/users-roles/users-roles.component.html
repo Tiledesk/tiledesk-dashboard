@@ -23,13 +23,13 @@
             <div class="teplate-content" style="flex: 1 1 auto;">
                 <!-- style="top:-9px;" class="bottom-nav" -->
                 <ul [ngClass]="{ 'bottom-nav': isAuthorized, 'bottom-nav-fixed': !isAuthorized}">
-                    <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
+                    <li *ngIf="PERMISSION_TO_VIEW_TEAMMATES" class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
                         <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
                     </li>
                     <li class="btn-with-border-effect li-active">
                         <a style="text-transform: capitalize;"> {{ "Roles" | translate }}</a>
                     </li>
-                    <li *ngIf="isVisibleGroups" class="btn-with-border-effect border-from-center"
+                    <li *ngIf="isVisibleGroups && PERMISSION_TO_VIEW_GROUPS" class="btn-with-border-effect border-from-center"
                         (click)="goToGroups()">
                         <a>{{ "Groups" | translate }} </a>
                     </li>

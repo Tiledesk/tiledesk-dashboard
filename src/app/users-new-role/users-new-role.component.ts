@@ -85,11 +85,18 @@ export class UsersNewRoleComponent implements OnInit {
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
+
+  isVisiblePay: boolean;
+  public_Key: string;
+
   roleId: string;
 
   allComplete: boolean = false;
 
   form: FormGroup;
+
+  
+
   sections: PermissionSection[] = [
     {
       key: 'conversationAccess',
@@ -251,6 +258,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view' },
+        { key: PERMISSIONS.WIDGETSETUP_UPDATE, label: 'Able to update ' },
         // { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
         // { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },
@@ -280,7 +288,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates' },
-        { key: PERMISSIONS.TEAMMATES_DETAILS_READ, label: 'Able to view Teammates profile' },
+        { key: PERMISSIONS.TEAMMATE_UPDATE, label: 'Able to edit Teammates' },
         { key: PERMISSIONS.TEAMMATES_CREATE, label: 'Able to invite a new Teammate' },
         { key: PERMISSIONS.ROLES_READ, label: 'Able to view Roles'},
         { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'}
@@ -374,7 +382,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.PROJECTSETTINGS_GENERAL_READ, label: 'Able to view General' },
         { key: PERMISSIONS.PROJECTSETTINGS_GENERAL_UPDATE, label: 'Able to edit project name (in General)' },
-        { key: PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ, label: 'Able to view Subscription' },
+        // { key: PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ, label: 'Able to view Subscription' },
         { key: PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ, label: 'Able to view Developer' },
         { key: PERMISSIONS.PROJECTSETTINGS_DEVELOPER_UPDATE, label: 'Able to manage features available in Developer' },
         { key: PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ, label: 'Able to view Smart Assignment' },
@@ -457,7 +465,28 @@ export class UsersNewRoleComponent implements OnInit {
     this.buildForm()
     this.detectsCreateEditInTheUrl()
     this.getRoles()
-    //  this.getOSCODE()
+    this.getOSCODE()
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.isVisiblePay = false;
+          
+        } else {
+          this.isVisiblePay = true;
+        }
+      }
+    })
   }
 
   getRoles() {

@@ -135,7 +135,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   permissionChecked = false;
 
   PERMISSION_TO_INVITE: boolean;
-  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  // PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_UPDATE: boolean;
+  PERMISSION_TO_VIEW_ROLES: boolean;
+  PERMISSION_TO_VIEW_GROUPS:boolean;
 
   // Dati originali e filtrati
   projectUsersList:  any[] = []; 
@@ -215,35 +218,84 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[DEPTS] - Role:', status.role);
-        console.log('[DEPTS] - Permissions:', status.matchedPermissions);
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE)) {
+        console.log('[USERS] - Role:', status.role);
+        console.log('[USERS] - Permissions:', status.matchedPermissions);
+        // ---------------------------------------------------
+        // PERMISSION_TO_INVITE
+        // ---------------------------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_INVITE = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
 
-            this.PERMISSION_TO_INVITE = true
-            console.log('[DEPTS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
-          } else {
-            this.PERMISSION_TO_INVITE = false
-            console.log('[DEPTS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
-          }
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_INVITE = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+
         } else {
-          this.PERMISSION_TO_INVITE = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_INVITE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
         }
 
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ)) {
+        // ---------------------
+        // PERMISSION_TO_UPDATE
+        // ---------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
 
-            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-            console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-          } else {
-            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-            console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-          }
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
+
         } else {
-          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_UPDATE);
         }
+
+        // ------------------------
+        // PERMISSION_TO_VIEW_ROLES
+        // ------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ROLES = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ROLES = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+        }
+
+        // -------------------------
+        // PERMISSION_TO_VIEW_GROUPS
+        // -------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_GROUPS = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_GROUPS = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+        }
+
 
      
 
@@ -521,8 +573,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // }
 
   goToEditUser(projectUser_id) {
-    if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
-    this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id])
+    if (this.PERMISSION_TO_UPDATE) {
+      this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id])
     } else {
       this.notify.presentDialogNoPermissionToPermomfAction()
     }

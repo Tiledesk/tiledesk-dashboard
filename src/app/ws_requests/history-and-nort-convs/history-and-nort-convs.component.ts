@@ -320,6 +320,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   PERMISSION_TO_JOIN_REQUEST: boolean;
   PERMISSION_TO_REOPEN: boolean;
   PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_VIEW_OPENED_CONV: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
 
   /**
    * 
@@ -489,20 +493,85 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_DELETE = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else if (status.role === 'admin' || status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_DELETE = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          console.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.REQUEST_DELETE);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
 
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
 
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+        // PERMISSION_TO_VIEW_OPENED_CONV
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner & Admin always has permission
+          this.PERMISSION_TO_VIEW_OPENED_CONV = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_OPENED_CONV = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_OPENED_CONV = status.matchedPermissions.includes(PERMISSIONS.INBOX_READ);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+        }
+
+        // PERMISSION_TO_EDIT_FLOWS
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+         // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+        
         // You can also check status.role === 'owner' if needed
       });
 
@@ -535,7 +604,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
     this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
-    if (USER_ROLE === 'agent') {
+    if (USER_ROLE === 'agent' || !this.PERMISSION_TO_VIEW_OPENED_CONV) {
       let unservedIndex = this.statusInHistory.findIndex(x => x.id === '100');
       this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
       this.statusInHistory.splice(unservedIndex, 1)
@@ -3124,6 +3193,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   goToAgentProfile(member_id) {
+    if (!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
+
     this.logger.log('[HISTORY & NORT-CONVS] goToAgentProfile (AFTER GET PROJECT-USER-ID BY ID)', member_id)
     // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
 
@@ -3158,11 +3232,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else if (bot_type === 'tilebot') {
       botType = 'tilebot'
+
+      if(!this.PERMISSION_TO_EDIT_FLOWS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
+
       if (this.ROLE_IS_AGENT === false) {
         // this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
+      if(!this.PERMISSION_TO_UPDATE_APP) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       botType = bot_type
       if (this.ROLE_IS_AGENT === false) {
         this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);

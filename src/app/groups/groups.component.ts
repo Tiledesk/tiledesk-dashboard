@@ -11,6 +11,10 @@ import { BrandService } from 'app/services/brand.service';
 import { DepartmentService } from 'app/services/department.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoleService } from 'app/services/role.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -64,6 +68,10 @@ export class GroupsComponent implements OnInit {
   percentage: number;
   totalPercentage = 0;
   overflowGroupId: string | null = null;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
+  PERMISSION_TO_VIEW_TEAMMATES: boolean;
+  PERMISSION_TO_VIEW_ROLES: boolean;
 
   constructor(
     private auth: AuthService,
@@ -76,6 +84,7 @@ export class GroupsComponent implements OnInit {
     public departmentService: DepartmentService,
     private translate: TranslateService,
     private roleService: RoleService,
+    private rolesService: RolesService
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -92,8 +101,64 @@ export class GroupsComponent implements OnInit {
     this.getBrowserVersion()
     this.getTranslations();
     this.checkPermissions();
+    this.listenToProjectUser()
   }
 
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[USERS] - Role:', status.role);
+          console.log('[USERS] - Permissions:', status.matchedPermissions);
+        
+          // ----------------------------
+          // PERMISSION_TO_VIEW_TEAMMATES
+          // ----------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_TEAMMATES = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_TEAMMATES = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          }
+  
+          // ------------------------
+          // PERMISSION_TO_VIEW_ROLES
+          // ------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_ROLES = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_ROLES = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+          }
+  
+          
+          // You can also check status.role === 'owner' if needed
+        });
+    }
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('groups')

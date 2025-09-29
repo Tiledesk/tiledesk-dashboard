@@ -33,10 +33,10 @@
           <li class="btn-with-border-effect li-active">
             <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
           </li>
-          <li class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
+          <li *ngIf="PERMISSION_TO_VIEW_ROLES"  class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
             <a style="text-transform: capitalize;"> {{ "Roles" | translate }} </a>
           </li>
-          <li *ngIf="isVisibleGroups" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
+          <li *ngIf="isVisibleGroups && PERMISSION_TO_VIEW_GROUPS" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
             <a>{{ "Groups" | translate }} </a>
           </li>
         </ul>
@@ -165,7 +165,7 @@
                         <input id="search-box" type="text"
                           [(ngModel)]="searchTerm" 
                           (ngModelChange)="onSearchChange($event)"
-                          placeholder="Search by name or email..." 
+                          placeholder="Search teammate by name or email..." 
                           class="search-input" style="height: 40px;
                               padding: 5px 10px;
                               border: 1px solid lightgrey;
@@ -467,7 +467,7 @@
                     <!-- ------------------------------ -->
                     <!-- Pending invitations -->
                     <!-- ------------------------------ -->
-                    <div *ngIf="projectUser.type === 'invitation'" class="cl-card">
+                    <div *ngIf="projectUser.type === 'invitation' && !searchTerm" class="cl-card">
                       <div class="cl-card-content">
 
                         <div class="cl-card-first-column">

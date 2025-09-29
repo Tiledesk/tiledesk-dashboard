@@ -143,18 +143,35 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         console.log('[APP-STORE] - Permissions:', status.matchedPermissions);
 
         // PERMISSION TO UPDATE
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+        // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
-          if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
-            this.PERMISSION_TO_UPDATE = true
-            console.log('[APP-STORE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
-          } else {
-            this.PERMISSION_TO_UPDATE = false
-            console.log('[APP-STORE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
-          }
+        //   if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
+        //     this.PERMISSION_TO_UPDATE = true
+        //     console.log('[APP-STORE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        //   } else {
+        //     this.PERMISSION_TO_UPDATE = false
+        //     console.log('[APP-STORE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        //   }
+        // } else {
+        //   this.PERMISSION_TO_UPDATE = true
+        //   console.log('[APP-STORE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        // }
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE = true;
+          console.log('[APP-STORE] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_UPDATE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE = false;
+          console.log('[APP-STORE] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_UPDATE);
+
         } else {
-          this.PERMISSION_TO_UPDATE = true
-          console.log('[APP-STORE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[APP-STORE] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_UPDATE);
         }
 
         // You can also check status.role === 'owner' if needed

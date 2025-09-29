@@ -28,6 +28,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
 import { EditGroupsLoadDistributionModalComponent } from './edit-groups-load-distribution-modal/edit-groups-load-distribution-modal.component';
 import { ProjectService } from 'app/services/project.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -168,6 +170,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   allowMultipleGroups: boolean;
 
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -185,7 +191,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     private roleService: RoleService,
     public brandService: BrandService,
     private dialog: MatDialog,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    public rolesService: RolesService
   ) {
     super(prjctPlanService, notify);
 
@@ -357,12 +364,79 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.getBrowserVersion()
     this.getProjectPlan();
     this.getOSCODE();
+    this.listenToProjectUser();
   }
 
   ngAfterViewInit() {
     
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[DEPT-EDIT-ADD] - ROLE:', status.role);
+        console.log('[DEPT-EDIT-ADD] - PERMISSIONS', status.matchedPermissions);
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[DEPT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+
+        // PERMISSION_TO_EDIT_FLOWS
+          if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[WDEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+
+      });
+  }
 
   async checkEditPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('department-edit')
@@ -1465,6 +1539,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       }
     } else if (this.bot_type === 'tilebot') {
       botType = 'tilebot'
+       if(!this.PERMISSION_TO_EDIT_FLOWS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
@@ -1472,13 +1550,25 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       }
     } else if (this.bot_type === 'tiledesk-ai') {
       botType = 'tiledesk-ai'
+      if(!this.PERMISSION_TO_EDIT_FLOWS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
         goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
+       if(!this.PERMISSION_TO_UPDATE_APP) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       botType = this.bot_type;
+      if(!this.PERMISSION_TO_UPDATE_APP) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
       }
@@ -1488,6 +1578,11 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   goToMemberProfile(memberid) {
+    if(!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+    }
+
     this.getProjectuserbyUseridAndGoToEditProjectuser(memberid)
   }
 

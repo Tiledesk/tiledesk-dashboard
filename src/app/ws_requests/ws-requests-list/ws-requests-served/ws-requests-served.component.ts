@@ -101,6 +101,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
 
   /**
    * Constructor
@@ -185,70 +187,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   }
 
-    listenToProjectUser() {
-      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
-      this.rolesService.getUpdateRequestPermission()
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(status => {
-         
-          console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
-          console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
-          
-          // PERMISSION_TO_ARCHIVE_REQUEST
-          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-            if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-              console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
-             
-              this.PERMISSION_TO_ARCHIVE_REQUEST = true
-              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
-            } else {
-              this.PERMISSION_TO_ARCHIVE_REQUEST = false
-              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
-            }
-          } else {
-            this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
-          }
-
-          // PERMISSION_TO_JOIN_REQUEST
-          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-            if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
-              console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
-             
-              this.PERMISSION_TO_JOIN_REQUEST = true
-              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
-            } else {
-              this.PERMISSION_TO_JOIN_REQUEST = false
-              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
-            }
-          } else {
-            this.PERMISSION_TO_JOIN_REQUEST = true
-            console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
-          }
-
-          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-            if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ)) {
-
-              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-              console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-            } else {
-              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-              console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-            }
-          } else {
-          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-        }
-  
-  
-         
-  
-        
-        });
-    }
-
-
-
   ngAfterViewInit(): void {
     setTimeout(() => {
       scrollToWithAnimation(
@@ -321,6 +259,101 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
+        console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+
+        // PERMISSION_TO_EDIT_FLOWS
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+
+      });
   }
 
   onContextMenu(event: MouseEvent, item) {
@@ -658,14 +691,29 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
 
       } else if (bot.type === 'tilebot') {
+
+          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
+
         botType = 'tilebot'
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
 
       } else if (bot.type === 'tiledesk-ai') {
+          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
         botType = 'tiledesk-ai'
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
 
       } else {
+         if(!this.PERMISSION_TO_UPDATE_APP) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
+
         botType = bot.type
         this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
@@ -680,14 +728,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToAgentProfile(member_id) {
-    // if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
-    //   this.notify.presentDialogNoPermissionToEditFlow();
-    //   return
-    // }
-
-
+    if (!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
     this.logger.log('[WS-REQUESTS-LIST][SERVED]  goToAgentProfile ', member_id)
-
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
 
@@ -784,68 +829,68 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return;
     }
-      //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
-      //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
-      //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
+    //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
 
-      const participantingagentslength = participantingagents.length
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
+    const participantingagentslength = participantingagents.length
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
 
-      let chatAgent = '';
+    let chatAgent = '';
 
-      participantingagents.forEach((agent, index) => {
-        let stringEnd = ' '
+    participantingagents.forEach((agent, index) => {
+      let stringEnd = ' '
 
-        // if (participantingagentslength === 1) {
-        //   stringEnd = '.';
-        // }
+      // if (participantingagentslength === 1) {
+      //   stringEnd = '.';
+      // }
 
-        if (participantingagentslength - 1 === index) {
-          stringEnd = '.';
-        } else {
-          stringEnd = ', ';
-        }
+      if (participantingagentslength - 1 === index) {
+        stringEnd = '.';
+      } else {
+        stringEnd = ', ';
+      }
 
-        // if (participantingagentslength > 2 ) {
-        //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
-        //   if (participantingagentslength - 1 === index) {
-        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
-        //     stringEnd = '.';
-        //   } else if (participantingagentslength - 2) {
-        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
-        //     stringEnd = ' and ';
-        //   } else {
-        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
-        //     stringEnd = ', ';
-        //   }
-        // }
+      // if (participantingagentslength > 2 ) {
+      //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
+      //   if (participantingagentslength - 1 === index) {
+      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
+      //     stringEnd = '.';
+      //   } else if (participantingagentslength - 2) {
+      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
+      //     stringEnd = ' and ';
+      //   } else {
+      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
+      //     stringEnd = ', ';
+      //   }
+      // }
 
-        if (agent.firstname && agent.lastname) {
+      if (agent.firstname && agent.lastname) {
 
-          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
-        }
+        chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+      }
 
-        if (agent.name) {
-          chatAgent += agent.name + stringEnd
-        }
+      if (agent.name) {
+        chatAgent += agent.name + stringEnd
+      }
 
-      });
+    });
 
 
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
 
-      if (currentuserisjoined === false) {
-        if (channel.name === 'email' || channel.name === 'form') {
-          if (participantingagents.length === 1) {
-            this.presentModalYouCannotJoinChat()
-          } else if (participantingagents.length === 0) {
-            this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
-          }
-        } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
+    if (currentuserisjoined === false) {
+      if (channel.name === 'email' || channel.name === 'form') {
+        if (participantingagents.length === 1) {
+          this.presentModalYouCannotJoinChat()
+        } else if (participantingagents.length === 0) {
           this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
         }
+      } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
+        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
       }
-   
+    }
+
   }
 
   presentModalYouCannotJoinChat() {

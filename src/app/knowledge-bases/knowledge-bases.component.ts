@@ -205,6 +205,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   PERMISSION_TO_ADD_FLOWS: boolean;
   PERMISSION_TO_ADD_CONTENTS: boolean;
   PERMISSION_TO_EXPORT_CONTENTS: boolean;
+  PERMISSION_TO_EDIT_FLOWS:boolean
 
   // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
@@ -383,6 +384,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
           console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO VIEW FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
         // PERMISSION_TO_ADD_FLOWS
@@ -1912,6 +1932,10 @@ _presentDialogImportContents() {
   }
 
   presentDialogGoToCDS(chatbot) {
+    if(!this.PERMISSION_TO_EDIT_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
 
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
     const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {

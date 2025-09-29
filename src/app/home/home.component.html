@@ -784,7 +784,7 @@
                 <!-- Child 8 Customize Widget -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child8'">
-                  <ng-container *ngIf="PERMISSION_TO_WIDGET_SETUP"> 
+                  <ng-container *ngIf="PERMISSION_TO_VIEW_WIDGET_SETUP"> 
                     <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"
                       (trackUserAction)="trackUserAction($event)">
                     </appdashboard-home-customize-widget>

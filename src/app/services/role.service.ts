@@ -214,7 +214,7 @@ export class RoleService {
 
           // Teammate detail
           if (calledby === 'teammate-edit') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ);
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
             console.log('[ROLE-SERV] - teammate-edit hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -738,7 +738,7 @@ export class RoleService {
 
           // Teammate details 
           if (calledby === 'teammate-edit') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
             console.log('[ROLE-SERV] - teammate-edit hasPermission ', hasPermission)
             return hasPermission;
           }

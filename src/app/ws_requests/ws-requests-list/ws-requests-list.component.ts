@@ -733,10 +733,8 @@ getProjectUserRole() {
             }
           });
 
-          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
-
-
-          this.listenToAllProjectUsersOfProject$(projectuser)
+          // this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+          // this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
 

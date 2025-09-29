@@ -272,6 +272,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   isAuthorizedGeneral = false;
   permissionCheckedGeneral = false;
+  PERMISSION_TO_VIEW_GENERAL: boolean;
   PERMISSION_TO_UPDATE_GENERAL: boolean;
 
   isAuthorizedSub = false;
@@ -394,6 +395,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.ROLE = status.role
         console.log('[PRJCT-EDIT-ADD] - Role:', status.role);
         console.log('[PRJCT-EDIT-ADD] - Permissions:', status.matchedPermissions);
+
+
+        // PERMISSION_TO_VIEW_GENERAL
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_READ)) {
+            this.PERMISSION_TO_VIEW_GENERAL = true
+            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
+          } else {
+            this.PERMISSION_TO_UPDATE_GENERAL = false
+            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_GENERAL = true
+          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
+        }
 
         // PERMISSION TO UPDATE GENERAL
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
@@ -2094,6 +2111,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisiblePaymentTab = false;
+
         } else {
           this.isVisiblePaymentTab = true;
         }

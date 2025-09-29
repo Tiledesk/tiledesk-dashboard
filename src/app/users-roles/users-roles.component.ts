@@ -13,6 +13,7 @@ import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
 import { URL_understanding_custom_roles_and_permissions } from 'app/utils/util';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -39,6 +40,9 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   isAuthorized = false;
   permissionChecked = false;
   public hideHelpLink: boolean;
+
+  PERMISSION_TO_VIEW_TEAMMATES: boolean;
+  PERMISSION_TO_VIEW_GROUPS: boolean;
 
   constructor(
     private router: Router,
@@ -68,11 +72,63 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     this.getAllUsersOfCurrentProject()
     this.getPendingInvitation()
     this.checkPermissions();
+    this.listenToProjectUser()
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[USERS] - Role:', status.role);
+        console.log('[USERS] - Permissions:', status.matchedPermissions);
+      
+        // ----------------------------
+        // PERMISSION_TO_VIEW_TEAMMATES
+        // ----------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_TEAMMATES = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_TEAMMATES = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+        }
+
+        // -------------------------
+        // PERMISSION_TO_VIEW_GROUPS
+        // -------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_GROUPS = true;
+          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_GROUPS = false;
+          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
+          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+        }
+
+        
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
   async checkPermissions() {
