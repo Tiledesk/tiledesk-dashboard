@@ -557,6 +557,7 @@
         </table>
         <!-- btn btn-more btn-new btn-size-m btn--primary btn-xs center -->
     </div>
+   
     <div *ngIf="isLoading" [ngStyle]="{'margin-top':SHOW_MORE_BTN === true ? '20px' : '80px' }"
         class="loading-indicator">{{'KbPage.Loading' | translate}}</div>
     <div *ngIf="!isLoading && SHOW_MORE_BTN" class="btn-more btn--default" (click)="loadMoreData()">
