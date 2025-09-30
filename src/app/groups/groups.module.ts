@@ -33,7 +33,10 @@ const routes: Routes = [
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export class GroupsModule { }

@@ -13,3 +13,4 @@ export class FormatColLabelsPipe implements PipeTransform {
     });
   }
 }
+
