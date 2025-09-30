@@ -153,6 +153,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <!-- New teammates list -->
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
                 <div *ngIf="!showSpinner" class="main--wrapper">
 
                   <div class="container-flex">
@@ -336,21 +337,27 @@
     
                                 <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}"
                                   id="{{projectUser?._id}}"
-                                  (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id); ">
+                                  (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id); "
+                                  [disabled]="!PERMISSION_TO_UPDATE" style="text-transform: capitalize;"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  [matTooltip]="!PERMISSION_TO_UPDATE ? ('YouDoNotHavePermissions' | translate) : ''"
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='above' 
+                                   matTooltipHideDelay="100">
     
                                   <option value="available"
                                     [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                                    {{'Available' | translate}}
+                                      {{'Available' | translate}} 
                                   </option>
     
                                   <option value="unavailable"
                                     [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                                    {{'Unavailable' | translate}}
+                                      {{'Unavailable' | translate}} 
                                   </option>
     
                                   <option value="inactive"
                                     [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
-                                    {{'Inactive' | translate}}
+                                      {{'Inactive' | translate}} 
                                   </option>
                                 </select>
                               </div>
@@ -381,12 +388,14 @@
 
                           <div class="cl-card-action-wpr">
                             <div class="cl-card-action-group">
-                              <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr">
+                              <div *ngIf="isVisibleAnalytics && PERMISSION_TO_VIEW_ANALYTICS" class="cl-card-action-btn-wpr">
                                 <button id="btn-{{projectUser?.id_user?._id}}" mat-icon-button
                                   (click)="$event.stopPropagation();opeUserMsgsStats(projectUser?.id_user)"
                                   matTooltipClass="custom-mat-tooltip"
-                                  matTooltip="{{ 'BotsAddEditPage.Messages' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='below' matTooltipHideDelay="100">
+                                  matTooltip="{{ 'BotsAddEditPage.Messages' | translate}}" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below' 
+                                  matTooltipHideDelay="100">
                                   <mat-icon>leaderboard</mat-icon>
                                 </button>
                               </div>
@@ -404,7 +413,7 @@
                               </div>
 
                               <!-- -------------------------------------------- -->
-                              <!-- More Actions (Pending Invitations) -->
+                              <!-- More Actions -->
                               <!-- -------------------------------------------- -->
                               <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
                                 <button mat-icon-button [matMenuTriggerFor]="moreactions"

@@ -702,8 +702,9 @@ $f21blue: #039be5;
   // height: 30px;
 }
 #pu-status-wpr:hover > div > .select-teammate-status {
-  height: 30px;
-  background-color: #eef0fc
+  // height: 30px;
+  background-color: #eef0fc;
+  border-radius: 9999px;
 }
 // .select-teammate-status:hover { 
 //   height: 30px;

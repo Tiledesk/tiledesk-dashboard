@@ -361,9 +361,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
-
-        
-
         // PERMISSION_TO_TEST_FLOW
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission

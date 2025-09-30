@@ -777,7 +777,7 @@
 
                           <ng-container
                             *ngIf="!faqkb?.subtype || (faqkb?.subtype !== 'webhook' && faqkb?.subtype !== 'copilot')">
-                            <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
+                            <div *ngIf="isVisibleAnalytics && PERMISSION_TO_VIEW_ANALYTICS" class="cl-card-item-stats">
                               <div class="cl-card-item-stats-title">
                                 {{ 'BotsAddEditPage.Messages' | translate }}
                                 <!-- Messages -->
@@ -793,12 +793,11 @@
                           <div class="cl-card-action-group">
                             <ng-container
                               *ngIf="!faqkb?.subtype || (faqkb?.subtype !== 'webhook' && faqkb?.subtype !== 'copilot')">
-                              <!-- [disabled]="!PERMISSION_TO_VIEW_ANALYTICS" -->
-                              <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                             
+                              <div *ngIf="isVisibleAnalytics && PERMISSION_TO_VIEW_ANALYTICS" class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
                                 <button id="btn-{{faqkb._id}}" 
                                   mat-icon-button
                                   (click)="openBotMsgsStats(faqkb)"
-                                  
                                   matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{ 'BotsAddEditPage.Messages' | translate }}" 
                                   #tooltip="matTooltip"

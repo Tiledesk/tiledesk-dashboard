@@ -139,6 +139,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   PERMISSION_TO_UPDATE: boolean;
   PERMISSION_TO_VIEW_ROLES: boolean;
   PERMISSION_TO_VIEW_GROUPS:boolean;
+  PERMISSION_TO_VIEW_ANALYTICS: boolean;
 
   // Dati originali e filtrati
   projectUsersList:  any[] = []; 
@@ -294,6 +295,25 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
           console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+        }
+
+        // ----------------------------
+        // PERMISSION_TO_VIEW_ANALYTICS
+        // ----------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
 
@@ -1367,6 +1387,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // New changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string, ngselectid: number, $event: any) {
   changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
 
+    if(this.PERMISSION_TO_UPDATE ){
+
     this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue)
     this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
 
@@ -1421,6 +1443,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
         // this.getUploadEgineAndProjectUsers()
       },)
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   // IF THE AVAILABILITY STATUS IS CHANGED BY THE SIDEBAR AVAILABILITY / UNAVAILABILITY BUTTON
