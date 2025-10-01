@@ -6,7 +6,7 @@
 - Hides sections based on permissions.
 - Does not allow to change the name of an existing role
 - Adds in the teammates list pagination and Search box
-- Fixes the bug: Disable tooltips in conversation details when in chat mode
+- Fixes the bug: Served by tooltips are enabled in conversation details when panel is in a iframe
 
 ### 2.7.137-AR
 - Minor improvements and bug fixing
