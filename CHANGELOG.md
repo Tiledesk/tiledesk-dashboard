@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.138-AR
+- Hides sidebar menu items based on permissions
+- Manages permissions in the Home page
+- Hides sections based on permissions.
+- Does not allow to change the name of an existing role
+- Adds in the teammates list pagination and Search box
+- Fixes the bug: Disable tooltips in conversation details when in chat mode
+
 ### 2.7.137-AR
 - Minor improvements and bug fixing
 
