@@ -6193,6 +6193,152 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }, 3000); // 3000 =3 seconds
   }
 
+  _sanitizeMessage(_chat_message: string): string {
+  console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 1:', _chat_message);
+  if (!_chat_message) return _chat_message;
+  console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 2:', _chat_message);
+  const blockedDomains = [
+    'attacker.me',
+    'evil.com', 
+    'malicious.site',
+    'hacker.com',
+    'phishing.com'
+  ];
+
+  try {
+    // Regex per trovare URL nel testo
+
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    return _chat_message.replace(urlRegex, (url) => {
+      try {
+        const domain = new URL(url).hostname.toLowerCase();
+
+        // Se il dominio è nella lista nera → sostituisci con #blocked
+        if (blockedDomains.includes(domain)) {
+          return '#blocked';
+        }
+
+        return url; // se non è bloccato, restituisci l'URL originale
+      } catch (e) {
+        return url; // se non è un URL valido, lascialo così
+      }
+    });
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+sanitizeMessage(_chat_message: string): string {
+  console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 1:', _chat_message);
+  if (!_chat_message) return _chat_message;
+  console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 2:', _chat_message);
+
+  const blockedDomains = [
+    'attacker.me',
+    'evil.com',
+    'malicious.site',
+    'hacker.com',
+    'phishing.com'
+  ];
+
+  // regex usati
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g; // [text](url)
+  const urlRegex = /(https?:\/\/[^\s"']+)/g;     // https://...
+
+  // controlla se un URL è in blacklist (considera anche sottodomini)
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return blockedDomains.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch (e) {
+      return false; // non è un url valido -> non consideriamo blocked qui
+    }
+  };
+
+  // sanitizza una singola stringa (markdown links + url nudi)
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    // // 1) markdown links [text](url)
+    // s = s.replace(mdLinkRegex, (match, text, url) => {
+    //   try {
+    //     // se l'url è uno schema pericoloso (es. javascript:) lo consideriamo bloccato
+    //     const low = (url || '').trim().toLowerCase();
+    //     if (low.startsWith('javascript:') || low.startsWith('data:') || low.startsWith('vbscript:')) {
+    //       return '#blocked';
+    //     }
+    //   } catch (e) {}
+
+    //   if (isBlockedUrl(url)) return '#blocked';
+    //   return match; // mantieni il link originale se non è bloccato
+    // });
+
+    // 2) url "nudi" http(s)://...
+    s = s.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) return '#blocked';
+      return url;
+    });
+
+    return s;
+  };
+
+  // percorre ricorsivamente un oggetto/array/string e sanitizza le stringhe
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+
+    if (typeof value === 'string') {
+      return sanitizeString(value);
+    }
+
+    if (Array.isArray(value)) {
+      return value.map(v => traverseAndSanitize(v));
+    }
+
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        out[k] = traverseAndSanitize(value[k]);
+      }
+      return out;
+    }
+
+    // number, boolean, ecc.
+    return value;
+  };
+
+  try {
+    // Proviamo a parsare JSON: se è JSON valida sanitizziamo i campi interni
+    const trimmed = _chat_message.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        const res = JSON.stringify(sanitizedObj);
+        console.log('[WS-REQUESTS-MSGS] sanitizeMessage - parsed JSON sanitized:', res);
+        return res;
+      } catch (jsonErr) {
+        // non JSON valido -> prosegui con sanitizzazione del testo normale
+      }
+    }
+
+    // Non è JSON: sanitizza come testo puro
+    const result = sanitizeString(_chat_message);
+    console.log('[WS-REQUESTS-MSGS] sanitizeMessage - text sanitized:', result);
+    return result;
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+
+
   sendChatMessage() {
     if (this.PERMISSION_TO_SEND_REQUEST) {
       // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
@@ -6223,6 +6369,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         let _chat_message = ''
         if (this.type !== 'file' ) {
           _chat_message = this.chat_message
+          _chat_message = this.sanitizeMessage(_chat_message)
         } else if (this.type === 'file' ) {
           if (this.chat_message) {
             _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
@@ -6230,6 +6377,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             _chat_message = `[${this.metadata.name}](${this.metadata.src})`
           }
         }
+
+
 
         console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
         console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
