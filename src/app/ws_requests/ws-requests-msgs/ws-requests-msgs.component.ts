@@ -5746,6 +5746,62 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
 
       
+      // if (this.IS_ENABLED_URLS_WHITELIST) {
+      //     if (_chat_message && _chat_message.trim().length > 0) { 
+      //       const urlsInMessage = this.extractUrls(_chat_message);
+      //       this.logger.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+      //       this.logger.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+
+      //       // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
+      //       let internalWhitelist: string[] = [];
+      //       if (this.type === 'file' && this.metadata?.src) {
+      //         try {
+      //           const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
+      //           internalWhitelist = [fileDomain];
+      //           this.logger.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+      //         } catch (e) {
+      //           this.logger.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
+      //         }
+      //       }
+
+      //       const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+      //         try {
+      //           const domain = new URL(url).hostname.toLowerCase();
+
+      //           // unisci whitelist configurata e interna
+      //           const combinedWhitelist = [...this.URLS_WITHELIST, ...internalWhitelist];
+
+      //           // Check if domain matches any whitelist rule
+      //           const isWhitelisted = combinedWhitelist.some(whitelisted => {
+      //             whitelisted = whitelisted.toLowerCase().trim();
+
+      //             // Match exact domain
+      //             if (whitelisted === domain) return true;
+
+      //             // Match wildcard domain (*.example.com)
+      //             if (whitelisted.startsWith('*.')) {
+      //               const baseDomain = whitelisted.substring(2); // remove '*.'
+      //               return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+      //             }
+
+      //             return false;
+      //           });
+
+      //           return !isWhitelisted;
+      //         } catch (e) {
+      //           // Invalid URL - consider it not allowed
+      //           return true;
+      //         }
+      //       });
+
+      //       if (nonWhitelistedDomains.length > 0) {
+      //         this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+      //         this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+      //         return;
+      //       }
+      //     }
+      //   }
+
       if (this.IS_ENABLED_URLS_WHITELIST) {
           if (_chat_message && _chat_message.trim().length > 0) { 
             const urlsInMessage = this.extractUrls(_chat_message);
@@ -5795,7 +5851,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             });
 
             if (nonWhitelistedDomains.length > 0) {
-              this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+              this.logger.log('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
               this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
               return;
             }

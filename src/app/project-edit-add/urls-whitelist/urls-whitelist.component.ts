@@ -130,7 +130,7 @@ export class UrlsWhitelistComponent implements OnInit {
 
 
   onSave(): void {
-    this.logger.warn('this.formArray ', this.formArray);
+    this.logger.log('this.formArray ', this.formArray);
     if (this.formArray.invalid) {
       this.formArray.markAllAsTouched();
       return;
