@@ -84,8 +84,7 @@ export class AutomationsService {
     return this.httpClient.get(url, httpOptions);
   }
 
-
-   getWATemplates() {
+  getWATemplates() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -115,5 +114,4 @@ export class AutomationsService {
     return this.httpClient
       .post(url, formData, options)
   }
-  
 }

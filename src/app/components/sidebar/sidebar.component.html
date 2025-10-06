@@ -121,7 +121,7 @@
     </div>
 
     <!-- -------------------------------------------------------- -->
-    <!--  @ Knowledge Bases  && ARE_NEW_KB == true -->
+    <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
     <!-- -------------------------------------------------------- -->
     <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
       <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
@@ -267,6 +267,7 @@
         </ng-container>
       </ng-container>
 
+  
 
     <!-- ----------------------------- -->
     <!-- CONTACTS (LEADS)  -->
