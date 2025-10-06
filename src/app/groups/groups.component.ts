@@ -28,7 +28,7 @@ export class GroupsComponent implements OnInit {
   showSpinner = true;
   showSpinnerInModal: boolean;
 
-  groupsList: Group[];
+  // groupsList: Group[];
   project_id: string;
   display_users_list_modal = 'none';
   group_name: string;
@@ -72,6 +72,17 @@ export class GroupsComponent implements OnInit {
 
   PERMISSION_TO_VIEW_TEAMMATES: boolean;
   PERMISSION_TO_VIEW_ROLES: boolean;
+
+  groupsList: Group[] = [];
+  filteredGroups: any[] = [];
+  paginatedGroups: any[] = [];
+
+  searchTerm: string = '';
+  pageSize: number = 20;  // numero di gruppi per pagina
+  currentPage: number = 1;
+  totalPages: number = 1;
+
+
 
   constructor(
     private auth: AuthService,
@@ -222,21 +233,13 @@ export class GroupsComponent implements OnInit {
   getGroupsByProjectId() {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
       console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
-
-
-
       if (groups) {
-        this.groupsList = groups;
-
-        // this.groupsList = groups.map(group => ({
-        //   ...group,
-        //   percentage: 0
-        // }));
-
+        this.groupsList = groups || [];
+        this.filteredGroups = [...this.groupsList];
+        this.updatePagination();
         console.log('[GROUPS] - GET GROUPS BY PROJECT this.groupsList ', this.groupsList);
         this.createGroupAvatar(this.groupsList)
       }
-      // this.faqkbList = faqKb;
 
     }, (error) => {
       this.logger.error('[GROUPS] GET GROUPS - ERROR ', error);
@@ -246,6 +249,37 @@ export class GroupsComponent implements OnInit {
       this.logger.log('[GROUPS] GET GROUPS * COMPLETE');
     });
 
+  }
+
+  filterGroups() {
+    const term = this.searchTerm.trim().toLowerCase();
+    this.filteredGroups = this.groupsList.filter(group =>
+      group.name?.toLowerCase().includes(term)
+    );
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredGroups.length / this.pageSize);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedGroups = this.filteredGroups.slice(start, end);
+  }
+
+
+   nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
   }
 
   // onPercentageChange(changedGroup: Group): void {

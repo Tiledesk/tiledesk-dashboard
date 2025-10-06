@@ -717,9 +717,11 @@
 
 
                 <!-- ------------------------------------------------- -->
-                <div *ngIf="filteredUsers.length === 0" class="no-results">
-                  No teammate found matching your search criteria.
-                </div>
+                <ng-container  *ngIf="!showSpinner">
+                  <div *ngIf="filteredUsers?.length === 0" class="no-results">
+                    No teammate found matching your search criteria.
+                  </div>
+                </ng-container>
                 <!-- ------------------------------------------------- -->
 
 

@@ -44,12 +44,41 @@
 
             <!-- New group list -->
             <div class="row">
-              <div class="col-xs-8">
+              <div class="col-xs-12">
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                <div *ngIf="!showSpinner" class="main--wrapper">
 
-                <div class="main--wrapper">
-                  <div class="page-title--wrapper">
+                     <div class="container-flex">
+                    <div class="flex-left">
+                      
+                    </div>
+
+                    <div class="flex-center">
+                      <div class="search-bar" style="width: 100%;max-width: 300px;">
+                        <input id="search-box" type="text"
+                          [(ngModel)]="searchTerm" 
+                          (ngModelChange)="filterGroups($event)"
+                          placeholder="Search for a group..." 
+                          class="search-input" style="height: 40px;
+                              padding: 5px 10px;
+                              border: 1px solid lightgrey;
+                              border-radius: 9999px;width: 100%;">
+                      </div>
+                    </div>
+
+                    <div class="flex-right">
+                       <div class="add-group-btn-wpr">
+
+                        <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                          {{ "GroupsPage.AddGroup" | translate }}
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- <div class="page-title--wrapper">
                     <div class="title--header">
-                      <!-- {{ pageName }} -->
+                      <!- - {{ pageName }} - ->
                     </div>
 
                     <div class="add-group-btn-wpr">
@@ -59,7 +88,7 @@
 
                       </button>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="no-groups-wpr" *ngIf="groupsList && groupsList.length === 0">
 
@@ -70,9 +99,10 @@
 
                   </div>
 
-                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
-                  <div class="card-list-wpr" *ngIf="!showSpinner">
-                    <div class="card-list" *ngFor="let group of groupsList | sortBy : 'name'">
+                  
+                  <div class="card-list-wpr">
+                    <!-- groupsList -->
+                    <div class="card-list" *ngFor="let group of paginatedGroups | sortBy : 'name'">
                       <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false}"
                         (click)='goToEditAddPage_edit(group?._id)'>
                         <div class="cl-card-content">
@@ -222,10 +252,45 @@
                     </div>
                   </div>
                 </div>
+
+  
+                <ng-container  *ngIf="!showSpinner">
+                  <div *ngIf="filteredGroups?.length === 0" class="no-results">
+                    No groups found matching your search criteria.
+                  </div>
+                </ng-container>
+
+                <div class="pagination-controls" *ngIf="totalPages > 1">
+                  <!-- <button (click)="prevPage()" [disabled]="currentPage === 1">Precedente</button> -->
+                   <button  class="btn " (click)="prevPage()" 
+                        style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;    border-top-left-radius: 9999px !important;
+                          border-bottom-left-radius: 9999px !important;
+                          box-shadow: unset; background-color: var(--blue-20);"
+                        [disabled]="currentPage === 1">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      </button>
+
+                  <!-- <span>Pagina {{ currentPage }} di {{ totalPages }}</span> -->
+                   <button class="btn "  style="border-radius: 0px !important;pointer-events: none;  box-shadow: unset;
+                            background-color: var(--blue-20);"> 
+                        {{currentPage}} / {{totalPages}}
+                      </button>
+                  <!-- <button (click)="nextPage()" [disabled]="currentPage === totalPages">Successiva</button> -->
+                   <button class="btn" (click)="nextPage()" 
+                        style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important; border-bottom-right-radius: 9999px !important;
+                            box-shadow: unset;
+                            background-color: var(--blue-20);
+                            border-top-right-radius: 9999px !important;"
+                        [disabled]="currentPage === totalPages">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      </button>
+              </div>
+
+
               </div>
 
               <!-- // RIGHT SIDEBAR -->
-              <div class="col-md-4">
+              <div class="col-md-4" style="display: none;">
                 <div class="card card card--no-border">
                   <div class="card-content">
                     <div class="row quick-tips-row" style="margin-top: -25px;">
@@ -242,10 +307,10 @@
                     </div>
 
                     <p style="color: #7695a5;">
-                      <!-- Use groups to organize support teams. -->
+
                       {{ "GroupsQuickTips1" | translate }}
                       <br>
-                      <!-- You can group agents based on skills and assign groups of agents to your departments. -->
+                      
                       {{ "GroupsQuickTips2" | translate }}
                     </p>
 
