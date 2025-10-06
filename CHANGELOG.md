@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.139-AR
+- Prevents XSS attack via markdown
+
 ### 2.7.138-AR
 - Hides sidebar menu items based on permissions
 - Manages permissions in the Home page
