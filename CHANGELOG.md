@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.140-AR
+- Adds in the groups list pagination and Search box
+
 ### 2.7.139-AR
 - Prevents XSS attack via markdown
 
