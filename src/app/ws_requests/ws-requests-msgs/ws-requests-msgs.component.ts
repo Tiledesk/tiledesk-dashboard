@@ -1,4 +1,4 @@
-import { CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal, isValidEmail } from './../../utils/util';
+import { BLOCKED_DOMAINS, CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal, isValidEmail } from './../../utils/util';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges, isDevMode } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -6229,19 +6229,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     return _chat_message;
   }
 }
-
-sanitizeMessage(_chat_message: string): string {
+// -------------------------------
+// testo questa
+// -------------------------------
+thesecond_sanitizeMessage(_chat_message: string): string {
   console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 1:', _chat_message);
   if (!_chat_message) return _chat_message;
   console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 2:', _chat_message);
 
-  const blockedDomains = [
-    'attacker.me',
-    'evil.com',
-    'malicious.site',
-    'hacker.com',
-    'phishing.com'
-  ];
+  // const blockedDomains = [
+  //   'attacker.me',
+  //   'evil.com',
+  //   'malicious.site',
+  //   'hacker.com',
+  //   'phishing.com'
+  // ];
 
   // regex usati
   const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g; // [text](url)
@@ -6252,7 +6254,7 @@ sanitizeMessage(_chat_message: string): string {
     try {
       const parsed = new URL(urlStr);
       const hostname = parsed.hostname.toLowerCase();
-      return blockedDomains.some(bd => {
+      return BLOCKED_DOMAINS.some(bd => {
         const b = bd.toLowerCase();
         return hostname === b || hostname.endsWith('.' + b);
       });
@@ -6279,7 +6281,7 @@ sanitizeMessage(_chat_message: string): string {
     //   return match; // mantieni il link originale se non è bloccato
     // });
 
-    // 2) url "nudi" http(s)://...
+   // 2) url "nudi" http(s)://...
     s = s.replace(urlRegex, (url) => {
       if (isBlockedUrl(url)) return '#blocked';
       return url;
@@ -6337,6 +6339,864 @@ sanitizeMessage(_chat_message: string): string {
   }
 }
 
+____sanitizeMessage(_chat_message: string): string {
+  console.log('[WS-REQUESTS-MSGS] in sanitizeMessage 1:', _chat_message);
+  if (!_chat_message) return _chat_message;
+
+  // 🔹 Controllo domini bloccati
+  const urlRegex = /(https?:\/\/[^\s"')]+)/gi;
+
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return BLOCKED_DOMAINS.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch (e) {
+      return false; // non è un URL valido
+    }
+  };
+
+  // 🔹 Sanitizzazione base su stringa singola
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    let sanitized = s
+      // Rimuove tag <script> e il loro contenuto
+      .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+      // Rimuove eventi inline tipo onclick=, onload=, ecc.
+      .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+      // Rimuove javascript:, vbscript:, data:
+      .replace(/\b(javascript|vbscript|data):/gi, '')
+      // Rimuove funzioni pericolose e accessi DOM
+      .replace(/\b(alert|eval|setTimeout|setInterval|Function|document\.|window\.)/gi, '')
+      // Rimuove creazione dinamica di script
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\(\s*\)\s*;/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '');
+
+    // 🔹 Controlla se contiene URL in blacklist
+    sanitized = sanitized.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) {
+        console.warn(`[WS-REQUESTS-MSGS] URL bloccato: ${url}`);
+        return '#blocked';
+      }
+      return url;
+    });
+
+    return sanitized.trim();
+  };
+
+  // 🔹 Ricorsione per sanitizzare ogni campo in un oggetto/array
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+
+    if (typeof value === 'string') {
+      return sanitizeString(value);
+    }
+
+    if (Array.isArray(value)) {
+      return value.map(v => traverseAndSanitize(v));
+    }
+
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        out[k] = traverseAndSanitize(value[k]);
+      }
+      return out;
+    }
+
+    // number, boolean, ecc.
+    return value;
+  };
+
+  try {
+    // 🔹 Se è JSON, sanitizza i campi interni
+    const trimmed = _chat_message.trim();
+    if (
+      (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+      (trimmed.startsWith('[') && trimmed.endsWith(']'))
+    ) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        const res = JSON.stringify(sanitizedObj);
+        console.log('[WS-REQUESTS-MSGS] sanitizeMessage - parsed JSON sanitized:', res);
+        return res;
+      } catch (jsonErr) {
+        // non è JSON valido -> prosegui come testo
+      }
+    }
+
+    // 🔹 Non è JSON → sanitizza come testo normale
+    const result = sanitizeString(_chat_message);
+    console.log('[WS-REQUESTS-MSGS] sanitizeMessage - text sanitized:', result);
+    return result;
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+_____sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  const urlRegex = /(https?:\/\/[^\s"')]+)/gi;
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/gi; // [text](url)
+
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return BLOCKED_DOMAINS.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch {
+      return false;
+    }
+  };
+
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    let sanitized = s
+      // Rimuove script (anche offuscati tipo <scrip t>)
+      .replace(/<\s*script[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
+      // Rimuove tag pericolosi
+      .replace(/<\s*(iframe|object|embed|link|style)[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
+      .replace(/<\s*(iframe|object|embed|link|style)[^>]*>/gi, '')
+      // Rimuove eventi inline (onload=, onclick=, ecc.)
+      .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+      // Rimuove protocolli pericolosi
+      .replace(/\b(javascript|vbscript|data):/gi, '')
+      // Rimuove accessi DOM o funzioni pericolose
+      .replace(/\b(alert|eval|setTimeout|setInterval|Function|document\.|window\.)/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '')
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\(\s*\)\s*;/gi, '');
+
+    // 🔸 Gestione Markdown links [text](url)
+    sanitized = sanitized.replace(mdLinkRegex, (match, text, url) => {
+      const href = (url || '').trim().toLowerCase();
+      // Se è un protocollo pericoloso o dominio blacklistato → rimuovi il link, lascia solo testo
+      if (
+        href.startsWith('javascript:') ||
+        href.startsWith('data:') ||
+        href.startsWith('vbscript:') ||
+        isBlockedUrl(href)
+      ) {
+        console.warn(`[XSS] Link pericoloso rimosso: ${href}`);
+        return `${text} 🔒`; // mostra solo testo
+      }
+      return match;
+    });
+
+    // 🔸 Gestione URL nudi
+    sanitized = sanitized.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) {
+        console.warn(`[WS-REQUESTS-MSGS] URL bloccato: ${url}`);
+        return '#blocked';
+      }
+      return url;
+    });
+
+    return sanitized.trim();
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+
+    if (typeof value === 'string') return sanitizeString(value);
+    if (Array.isArray(value)) return value.map(v => traverseAndSanitize(v));
+
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        out[k] = traverseAndSanitize(value[k]);
+      }
+      return out;
+    }
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+    if (
+      (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+      (trimmed.startsWith('[') && trimmed.endsWith(']'))
+    ) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        const res = JSON.stringify(sanitizedObj);
+        console.log('[WS-REQUESTS-MSGS] sanitizeMessage - parsed JSON sanitized:', res);
+        return res;
+      } catch {
+        // non è JSON valido → continua come testo
+      }
+    }
+
+    const result = sanitizeString(_chat_message);
+    console.log('[WS-REQUESTS-MSGS] sanitizeMessage - text sanitized:', result);
+    return result;
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+______sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  // 🔹 regex per URL nudi
+  const urlRegex = /(https?:\/\/[^\s"')]+)/gi;
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/gi;
+
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return BLOCKED_DOMAINS.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch {
+      return false;
+    }
+  };
+
+  // 🔹 Normalizza i nomi dei tag per catturare offuscamenti tipo <scri pt>
+  const normalizeTagNames = (html: string): string => {
+    return html.replace(/<\s*\/?\s*([a-zA-Z][\w-]*)([^>]*)>/g, (m, tag, rest) => {
+      const normalizedTag = tag.replace(/[\s\-_\/]+/g, '');
+      return `<${m.startsWith('</') ? '/' : ''}${normalizedTag}${rest}>`;
+    });
+  };
+
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    let sanitized = normalizeTagNames(s)
+      // Rimuove tag pericolosi e contenuti di script
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '')
+      .replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '')
+      .replace(/<embed[^>]*>[\s\S]*?<\/embed>/gi, '')
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<link[^>]*>/gi, '')
+      // Rimuove eventi inline
+      .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+      // Protocolli pericolosi
+      .replace(/\b(javascript|vbscript|data):/gi, '')
+      // Funzioni JS pericolose e accessi DOM
+      .replace(/\b(alert|eval|setTimeout|setInterval|Function|document\.|window\.)/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '')
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\(\s*\)\s*;/gi, '');
+
+    // 🔹 Markdown link [text](url)
+    sanitized = sanitized.replace(mdLinkRegex, (match, text, url) => {
+      const href = (url || '').trim().toLowerCase();
+      if (
+        href.startsWith('javascript:') ||
+        href.startsWith('data:') ||
+        href.startsWith('vbscript:') ||
+        isBlockedUrl(href)
+      ) {
+        return `${text} 🔒`; // solo testo, non cliccabile
+      }
+      return match;
+    });
+
+    // 🔹 URL nudi
+    sanitized = sanitized.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) {
+        return '#blocked';
+      }
+      return url;
+    });
+
+    return sanitized.trim();
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+    if (typeof value === 'string') return sanitizeString(value);
+    if (Array.isArray(value)) return value.map(v => traverseAndSanitize(v));
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        out[k] = traverseAndSanitize(value[k]);
+      }
+      return out;
+    }
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+    if (
+      (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+      (trimmed.startsWith('[') && trimmed.endsWith(']'))
+    ) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        return JSON.stringify(sanitizedObj);
+      } catch {
+        // non JSON valido → continua come testo
+      }
+    }
+
+    return sanitizeString(_chat_message);
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+_______sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  const urlRegex = /(https?:\/\/[^\s"')]+)/gi;
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/gi;
+
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr.startsWith('//') ? 'https:' + urlStr : urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return BLOCKED_DOMAINS.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch {
+      return false;
+    }
+  };
+
+  // Normalizza i nomi dei tag: rimuove spazi/interruzioni solo nella parte del "nome tag"
+  const normalizeTagNames = (html: string): string => {
+    return html.replace(/<\s*\/?\s*([^>\s/]+(?:[\s\-_\/]+[^>\s/]+)*)?([^>]*)>/g, (m, namePart = '', rest = '') => {
+      // namePart può essere e.g. "scri pt" o "s c r i p t" o "sc ript"
+      const wasClosing = /^\s*<\/\s*/.test(m);
+      // collapse only whitespace and control chars inside the name part
+      const compactName = namePart.replace(/[\s\0\x0B\x0C\r\n\t]+/g, '');
+      // assicurati di non toccare gli attributi (rest) tranne che per ripristinare gli spazi originali
+      return `<${wasClosing ? '/' : ''}${compactName}${rest}>`;
+    });
+  };
+
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    // 1) normalizza i tag (per catturare <scri pt> etc.)
+    let sanitized = normalizeTagNames(s);
+
+    // 2) rimuovi blocchi pericolosi (script, iframe, object, embed, style)
+    sanitized = sanitized
+      .replace(/<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
+      .replace(/<\s*iframe\b[^>]*>[\s\S]*?<\s*\/\s*iframe\s*>/gi, '')
+      .replace(/<\s*object\b[^>]*>[\s\S]*?<\s*\/\s*object\s*>/gi, '')
+      .replace(/<\s*embed\b[^>]*>[\s\S]*?<\s*\/\s*embed\s*>/gi, '')
+      .replace(/<\s*style\b[^>]*>[\s\S]*?<\s*\/\s*style\s*>/gi, '')
+      // rimuovi anche eventuali tag single-self-close pericolosi
+      .replace(/<\s*(script|iframe|object|embed|style|link)[^>]*\/?>/gi, '');
+
+    // 3) rimuovi attributi inline pericolosi e schemi
+    sanitized = sanitized
+      .replace(/\son\w+\s*=\s*(['"])[\s\S]*?\1/gi, '') // onload= onclick= ...
+      .replace(/\b(javascript|vbscript|data):/gi, '')   // schemi
+      .replace(/\b(alert|eval|Function|document\.|window\.)/gi, '') // funzioni/access DOM
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\s*\(\s*\)\s*;?/gi, '') // IIFE
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '');
+
+    // 4) gestione Markdown links: se pericoloso -> sostituisci con testo (non cliccabile)
+    sanitized = sanitized.replace(mdLinkRegex, (match, text, url) => {
+      const href = (url || '').trim();
+      const low = href.toLowerCase();
+      if (low.startsWith('javascript:') || low.startsWith('data:') || low.startsWith('vbscript:') || isBlockedUrl(href)) {
+        return `${text} 🔒`; // solo testo
+      }
+      return match;
+    });
+
+    // 5) gestione URL nudi: sostituisci se blacklistato
+    sanitized = sanitized.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) return '#blocked';
+      return url;
+    });
+
+    return sanitized;
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+    if (typeof value === 'string') return sanitizeString(value);
+    if (Array.isArray(value)) return value.map(v => traverseAndSanitize(v));
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) out[k] = traverseAndSanitize(value[k]);
+      return out;
+    }
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        return JSON.stringify(sanitizedObj);
+      } catch {
+        // non-JSON: prosegui come testo
+      }
+    }
+    return sanitizeString(_chat_message);
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+// thelastone_
+thelastone_sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  const urlRegex = /(https?:\/\/[^\s"')]+)/gi;
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/gi;
+
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr.startsWith('//') ? 'https:' + urlStr : urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return BLOCKED_DOMAINS.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch {
+      return false;
+    }
+  };
+
+  const normalizeTagNames = (html: string): string => {
+    return html.replace(/<\s*\/?\s*([^>\s/]+(?:[\s\-_\/]+[^>\s/]+)*)?([^>]*)>/g, (m, namePart = '', rest = '') => {
+      const wasClosing = /^\s*<\/\s*/.test(m);
+      const compactName = namePart.replace(/[\s\0\x0B\x0C\r\n\t]+/g, '');
+      return `<${wasClosing ? '/' : ''}${compactName}${rest}>`;
+    });
+  };
+
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    let sanitized = normalizeTagNames(s);
+
+    sanitized = sanitized
+      .replace(/<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
+      .replace(/<\s*iframe\b[^>]*>[\s\S]*?<\s*\/\s*iframe\s*>/gi, '')
+      .replace(/<\s*object\b[^>]*>[\s\S]*?<\s*\/\s*object\s*>/gi, '')
+      .replace(/<\s*embed\b[^>]*>[\s\S]*?<\s*\/\s*embed\s*>/gi, '')
+      .replace(/<\s*style\b[^>]*>[\s\S]*?<\s*\/\s*style\s*>/gi, '')
+      .replace(/<\s*(script|iframe|object|embed|style|link)[^>]*\/?>/gi, '')
+      .replace(/\son\w+\s*=\s*(['"])[\s\S]*?\1/gi, '')
+      .replace(/\b(javascript|vbscript|data):/gi, '')
+      .replace(/\b(alert|eval|Function|document\.|window\.)/gi, '')
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\s*\(\s*\)\s*;?/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '');
+
+    // 🔹 Markdown links: rendi non cliccabili se pericolosi
+    sanitized = sanitized.replace(mdLinkRegex, (match, text, url) => {
+      const href = (url || '').trim();
+      const low = href.toLowerCase();
+      if (
+        low.startsWith('javascript:') ||
+        low.startsWith('data:') ||
+        low.startsWith('vbscript:') ||
+        isBlockedUrl(href)
+      ) {
+        return `${text} 🔒`; // solo testo, non cliccabile
+      }
+      return match;
+    });
+
+    // 🔹 URL nudi
+    sanitized = sanitized.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) return '#blocked';
+      return url;
+    });
+
+    return sanitized;
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+    if (typeof value === 'string') return sanitizeString(value);
+    if (Array.isArray(value)) return value.map(v => traverseAndSanitize(v));
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        if (k === 'text' && typeof value[k] === 'string') {
+          out[k] = sanitizeString(value[k]);
+        } else if (k === 'metadata' && value[k]?.src) {
+          out[k] = { ...value[k] };
+          if (isBlockedUrl(value[k].src)) {
+            out[k].src = '#blocked';
+          }
+        } else {
+          out[k] = traverseAndSanitize(value[k]);
+        }
+      }
+      return out;
+    }
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        return JSON.stringify(sanitizedObj);
+      } catch {
+        // non-JSON: prosegui come testo
+      }
+    }
+    return sanitizeString(_chat_message);
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+thelastllastone_sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  const urlRegex = /(https?:\/\/[^\s"')]+)/gi;
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/gi;
+
+  const isBlockedUrl = (urlStr: string): boolean => {
+    try {
+      const parsed = new URL(urlStr.startsWith('//') ? 'https:' + urlStr : urlStr);
+      const hostname = parsed.hostname.toLowerCase();
+      return BLOCKED_DOMAINS.some(bd => {
+        const b = bd.toLowerCase();
+        return hostname === b || hostname.endsWith('.' + b);
+      });
+    } catch {
+      return false;
+    }
+  };
+
+  const getDomainName = (urlStr: string): string => {
+    try {
+      const parsed = new URL(urlStr.startsWith('//') ? 'https:' + urlStr : urlStr);
+      return parsed.hostname.replace(/^www\./, '');
+    } catch {
+      return urlStr;
+    }
+  };
+
+  const normalizeTagNames = (html: string): string => {
+    return html.replace(/<\s*\/?\s*([^>\s/]+(?:[\s\-_\/]+[^>\s/]+)*)?([^>]*)>/g,
+      (m, namePart = '', rest = '') => {
+        const wasClosing = /^\s*<\/\s*/.test(m);
+        const compactName = namePart.replace(/[\s\0\x0B\x0C\r\n\t]+/g, '');
+        return `<${wasClosing ? '/' : ''}${compactName}${rest}>`;
+      });
+  };
+
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    let sanitized = normalizeTagNames(s);
+
+    sanitized = sanitized
+      .replace(/<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
+      .replace(/<\s*iframe\b[^>]*>[\s\S]*?<\s*\/\s*iframe\s*>/gi, '')
+      .replace(/<\s*object\b[^>]*>[\s\S]*?<\s*\/\s*object\s*>/gi, '')
+      .replace(/<\s*embed\b[^>]*>[\s\S]*?<\s*\/\s*embed\s*>/gi, '')
+      .replace(/<\s*style\b[^>]*>[\s\S]*?<\s*\/\s*style\s*>/gi, '')
+      .replace(/<\s*(script|iframe|object|embed|style|link)[^>]*\/?>/gi, '')
+      .replace(/\son\w+\s*=\s*(['"])[\s\S]*?\1/gi, '')
+      .replace(/\b(javascript|vbscript|data):/gi, '')
+      .replace(/\b(alert|eval|Function|document\.|window\.)/gi, '')
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\s*\(\s*\)\s*;?/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '');
+
+    // 🔹 Markdown links — rendi non cliccabili se pericolosi o bloccati
+    sanitized = sanitized.replace(mdLinkRegex, (_match, label, url) => {
+      const href = (url || '').trim();
+      const low = href.toLowerCase();
+
+      if (
+        low.startsWith('javascript:') ||
+        low.startsWith('data:') ||
+        low.startsWith('vbscript:') ||
+        isBlockedUrl(href)
+      ) {
+        return `${label} #blocked`; // testo semplice
+      }
+      return _match;
+    });
+
+    // 🔹 URL nudi — sostituisci con dominio + 🔒
+    sanitized = sanitized.replace(urlRegex, (url) => {
+      if (isBlockedUrl(url)) {
+        const domain = getDomainName(url);
+        return `${domain} #blocked`;
+      }
+      return url;
+    });
+
+    return sanitized;
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+    if (typeof value === 'string') return sanitizeString(value);
+    if (Array.isArray(value)) return value.map(v => traverseAndSanitize(v));
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        if (k === 'text' && typeof value[k] === 'string') {
+          out[k] = sanitizeString(value[k]);
+        } else if (k === 'metadata' && value[k]?.src) {
+          out[k] = { ...value[k] };
+          if (isBlockedUrl(value[k].src)) {
+            out[k].src = `${getDomainName(value[k].src)} #blocked`;
+          }
+        } else {
+          out[k] = traverseAndSanitize(value[k]);
+        }
+      }
+      return out;
+    }
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        return JSON.stringify(sanitizedObj);
+      } catch {
+        // non JSON
+      }
+    }
+    return sanitizeString(_chat_message);
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+semigood_sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  const normalizeTagNames = (html: string): string => {
+    // Rimuove spazi interni ai nomi dei tag per intercettare <scri pt> ecc.
+    return html.replace(/<\s*\/?\s*([^>\s/]+(?:[\s\-_\/]+[^>\s/]+)*)?([^>]*)>/g,
+      (m, namePart = '', rest = '') => {
+        const wasClosing = /^\s*<\/\s*/.test(m);
+        const compactName = namePart.replace(/[\s\0\x0B\x0C\r\n\t]+/g, '');
+        return `<${wasClosing ? '/' : ''}${compactName}${rest}>`;
+      });
+  };
+
+  const sanitizeString = (s: string): string => {
+    if (!s) return s;
+
+    let sanitized = normalizeTagNames(s);
+
+    // Rimuove tag e script pericolosi
+    sanitized = sanitized
+      .replace(/<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
+      .replace(/<\s*iframe\b[^>]*>[\s\S]*?<\s*\/\s*iframe\s*>/gi, '')
+      .replace(/<\s*object\b[^>]*>[\s\S]*?<\s*\/\s*object\s*>/gi, '')
+      .replace(/<\s*embed\b[^>]*>[\s\S]*?<\s*\/\s*embed\s*>/gi, '')
+      .replace(/<\s*style\b[^>]*>[\s\S]*?<\s*\/\s*style\s*>/gi, '')
+      .replace(/<\s*(script|iframe|object|embed|style|link)[^>]*\/?>/gi, '')
+      .replace(/\son\w+\s*=\s*(['"])[\s\S]*?\1/gi, '')
+      .replace(/\b(javascript|vbscript|data):/gi, '')
+      .replace(/\b(alert|eval|Function|document\.|window\.)/gi, '')
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\s*\(\s*\)\s*;?/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '')
+      .replace(/<[^>]*\son\w+\s*=\s*(['"]).*?\1[^>]*>/gi, '');
+
+    return sanitized;
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+    if (typeof value === 'string') return sanitizeString(value);
+    if (Array.isArray(value)) return value.map(v => traverseAndSanitize(v));
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        out[k] = traverseAndSanitize(value[k]);
+      }
+      return out;
+    }
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        return JSON.stringify(sanitizedObj);
+      } catch {
+        // Non-JSON → prosegui come testo
+      }
+    }
+    return sanitizeString(_chat_message);
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+sanitizeMessage(_chat_message: string): string {
+  if (!_chat_message) return _chat_message;
+
+  // regex utili
+  const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/gi; // [label](url)
+  const scriptBlockRegex = /<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi;
+
+  const normalizeTagNames = (html: string): string => {
+    // riduce offuscamenti tipo <s c r i p t> -> <script>
+    return html.replace(/<\s*\/?\s*([^>\s/]+(?:[\s\-_\/]+[^>\s/]+)*)?([^>]*)>/g,
+      (m, namePart = '', rest = '') => {
+        const wasClosing = /^\s*<\/\s*/.test(m);
+        const compactName = namePart.replace(/[\s\0\x0B\x0C\r\n\t]+/g, '');
+        return `<${wasClosing ? '/' : ''}${compactName}${rest}>`;
+      });
+  };
+
+  const sanitizeString = (raw: string): string => {
+    if (!raw) return raw;
+
+    // 1) proteggi i markdown link: salva i token e sostituiscili con placeholder
+    const mdPlaceholders: string[] = [];
+    let tmp = raw.replace(mdLinkRegex, (match) => {
+      const idx = mdPlaceholders.length;
+      mdPlaceholders.push(match);
+      return `__MD_LINK_PLACEHOLDER_${idx}__`;
+    });
+
+    // 2) normalizza eventuali tag offuscati
+    tmp = normalizeTagNames(tmp);
+
+    // 3) rimuovi blocchi script (insieme al loro contenuto)
+    tmp = tmp.replace(scriptBlockRegex, '');
+
+    // 4) rimuovi tag pericolosi ma preserva il testo interno (es. <div onclick=...>Test</div> -> Test)
+    // rimuove tutti i tag rimanenti
+    tmp = tmp.replace(/<\s*(iframe|object|embed|style|link)[\s\S]*?>[\s\S]*?<\s*\/\s*\1\s*>/gi, '');
+    tmp = tmp.replace(/<\s*(script|iframe|object|embed|style|link)[^>]*\/?>/gi, '');
+    // elimina tutti i tag HTML residui lasciando il testo interno
+    tmp = tmp.replace(/<\/?[^>]+>/g, '');
+
+    // 5) rimuovi attributi on* presenti (se per qualche motivo sono rimasti)
+    tmp = tmp.replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '');
+
+    // 6) rimuovi schemi e funzioni pericolose nel testo libero (non nei markdown link: quelli sono mascherati)
+    tmp = tmp
+      .replace(/\bjavascript:/gi, '')   // rimuove la parola javascript: se c'è come testo libero
+      .replace(/\bvbscript:/gi, '')
+      .replace(/\bdata:/gi, '')
+      .replace(/\b(alert|eval|Function|document\.|window\.)/gi, '')
+      .replace(/\(function\s*\(\)\s*\{[\s\S]*?\}\)\s*\(\s*\)\s*;?/gi, '')
+      .replace(/\.createElement\s*\(/gi, '')
+      .replace(/\.appendChild\s*\(/gi, '');
+
+    // 7) ripristina i markdown link originali (non tocchiamo il loro contenuto)
+    tmp = tmp.replace(/__MD_LINK_PLACEHOLDER_(\d+)__/g, (_, i) => {
+      const index = Number(i);
+      return mdPlaceholders[index] ?? '';
+    });
+
+    return tmp;
+  };
+
+  const traverseAndSanitize = (value: any): any => {
+    if (value === null || value === undefined) return value;
+
+    if (typeof value === 'string') {
+      return sanitizeString(value);
+    }
+
+    if (Array.isArray(value)) {
+      return value.map(v => traverseAndSanitize(v));
+    }
+
+    if (typeof value === 'object') {
+      const out: any = {};
+      for (const k of Object.keys(value)) {
+        out[k] = traverseAndSanitize(value[k]);
+      }
+      return out;
+    }
+
+    // number, boolean, ecc.
+    return value;
+  };
+
+  try {
+    const trimmed = _chat_message.trim();
+
+    // se è JSON (stringa che rappresenta un oggetto/array), parsalo e sanitizza ricorsivamente
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+        (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const sanitizedObj = traverseAndSanitize(parsed);
+        const res = JSON.stringify(sanitizedObj);
+        console.log('[sanitizeMessage] JSON sanitized ->', res);
+        return res;
+      } catch (jsonErr) {
+        // non JSON valido -> trattalo come testo semplice
+        console.warn('[sanitizeMessage] JSON parse failed, procedo come testo.');
+      }
+    }
+
+    // non è JSON -> sanitizza stringa normale
+    const out = sanitizeString(_chat_message);
+    console.log('[sanitizeMessage] text sanitized ->', out);
+    return out;
+  } catch (e) {
+    console.error('Errore in sanitizeMessage:', e);
+    return _chat_message;
+  }
+}
+
+
+
+
+
+private presentModalBlockedDomain(domain: string) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Invio bloccato',
+    html: `Non puoi inviare link verso il dominio <b>${domain}</b> perché non è sicuro.`,
+    confirmButtonText: 'Ok',
+    confirmButtonColor: '#3085d6',
+    allowOutsideClick: false
+  });
+}
+
 
 
   sendChatMessage() {
@@ -6370,6 +7230,13 @@ sanitizeMessage(_chat_message: string): string {
         if (this.type !== 'file' ) {
           _chat_message = this.chat_message
           _chat_message = this.sanitizeMessage(_chat_message)
+          // const blockedDomain = this.sanitizeMessage(_chat_message);
+
+          // if (blockedDomain) {
+          //   this.presentModalBlockedDomain(blockedDomain);
+          //   return; // blocco l’invio
+          // }
+
         } else if (this.type === 'file' ) {
           if (this.chat_message) {
             _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
