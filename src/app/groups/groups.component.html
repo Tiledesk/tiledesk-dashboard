@@ -102,7 +102,8 @@
                   
                   <div class="card-list-wpr">
                     <!-- groupsList -->
-                    <div class="card-list" *ngFor="let group of paginatedGroups | sortBy : 'name'">
+                     <!-- | sortBy : 'name' -->
+                    <div class="card-list" *ngFor="let group of paginatedGroups ">
                       <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false}"
                         (click)='goToEditAddPage_edit(group?._id)'>
                         <div class="cl-card-content">

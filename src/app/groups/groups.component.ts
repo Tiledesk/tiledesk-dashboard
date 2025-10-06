@@ -234,7 +234,11 @@ export class GroupsComponent implements OnInit {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
       console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
       if (groups) {
-        this.groupsList = groups || [];
+        this.groupsList = (groups || []).sort((a, b) => {
+        const nameA = (a.name || '').toLowerCase();
+        const nameB = (b.name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
         this.filteredGroups = [...this.groupsList];
         this.updatePagination();
         console.log('[GROUPS] - GET GROUPS BY PROJECT this.groupsList ', this.groupsList);
@@ -463,12 +467,20 @@ export class GroupsComponent implements OnInit {
       // UPDATE THE GROUP LIST
       //this.ngOnInit()
 
-      for (var i = 0; i < this.groupsList.length; i++) {
-        if (this.groupsList[i]._id === this.id_group_to_delete) {
-          this.groupsList.splice(i, 1);
+      // for (var i = 0; i < this.groupsList.length; i++) {
+      //   if (this.groupsList[i]._id === this.id_group_to_delete) {
+      //     this.groupsList.splice(i, 1);
+      //     i--;
+      //   }
+      // }
+       for (var i = 0; i < this.paginatedGroups.length; i++) {
+        if (this.paginatedGroups[i]._id === this.id_group_to_delete) {
+          this.paginatedGroups.splice(i, 1);
           i--;
         }
       }
+
+      
 
     });
   }
