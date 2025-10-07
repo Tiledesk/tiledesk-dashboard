@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { TYPE_GPT_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
+import { LLM_MODEL, OPENAI_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -45,6 +45,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public selectedModel: any // = this.models_list[0].value;
   public max_tokens: number;
   public max_tokens_min: number;
+  public max_tokens_max: number;
   public temperature: number; // 0.7
   public alpha: number; // 0.7
   public topK: number;
@@ -54,7 +55,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public citations: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
-  private modelDefaultValue = "gpt-4o-mini";
+  private modelDefaultValue = "gpt-4o";
   private maxTokensDefaultValue = 256;
   private temperatureDefaultValue = 0.7
   private alphaDefaultValue = 0.5
@@ -78,7 +79,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public hideHelpLink: boolean;
 
   temperature_slider_disabled: boolean;
-
+  modelGroups: any[] = [];
+  flattenedModels: any[] = [];
 
   aiSettingsObject = [{
     model: null,
@@ -109,7 +111,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
       if (this.selectedNamespace && this.selectedNamespace.engine) {
-        if ( this.selectedNamespace.hybrid === true) {
+        if (this.selectedNamespace.hybrid === true) {
           this.diplaySearchTypeSlider = true;
         } else {
           this.diplaySearchTypeSlider = false;
@@ -123,7 +125,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
-      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
+      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
       this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject 1", this.aiSettingsObject)
 
       // new
@@ -135,16 +137,21 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
       this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
-      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
-        
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5')) {
+
         // this.temperature = 1
         // this.aiSettingsObject[0].temperature = 1
         // this.kbService.hasChagedAiSettings(this.aiSettingsObject)
         this.temperature_slider_disabled = true;
+        this.max_tokens_max = 100000
         this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
-      } else { 
+      } else {
         // this.temperature = this.selectedNamespace.preview_settings.temperature
         this.temperature_slider_disabled = false;
+        this.max_tokens_max = 9999
+        if (this.max_tokens > 9999 ) {
+          this.max_tokens = this.maxTokensDefaultValue;
+        }
       }
 
 
@@ -202,7 +209,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     if (data && data.calledBy && data.calledBy === 'modal-preview-kb') {
       this.wasOpenedFromThePreviewKBModal = true;
       this.logger.log('[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal ', this.wasOpenedFromThePreviewKBModal)
-     
+
     } else {
       this.wasOpenedFromThePreviewKBModal = false;
       this.logger.log('[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal ', this.wasOpenedFromThePreviewKBModal)
@@ -211,45 +218,128 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.listenToCurrentURL()
   }
 
-    listenToCurrentURL() {
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) {
-          this.logger.log('[MODAL PREVIEW SETTINGS] - NavigationEnd event url ', event.url)
-          const currentUrl: string = event.url;
-              
-          if (currentUrl.includes('/knowledge-bases')) {
-            this.logger.log("✅ User is on the 'knowledge-bases' route.");
-          } else {
-            this.logger.log("❌ User is NOT on the 'knowledge-bases' route.");
-              this.dialogRef.close();
-              // if (this.dialogRefAiSettings) {
-              //   this.dialogRefAiSettings.close()
-              // }
-          }
+  listenToCurrentURL() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NavigationEnd event url ', event.url)
+        const currentUrl: string = event.url;
+
+        if (currentUrl.includes('/knowledge-bases')) {
+          this.logger.log("✅ User is on the 'knowledge-bases' route.");
+        } else {
+          this.logger.log("❌ User is NOT on the 'knowledge-bases' route.");
+          this.dialogRef.close();
+          // if (this.dialogRefAiSettings) {
+          //   this.dialogRefAiSettings.close()
+          // }
         }
-      })
-    }
+      }
+    })
+  }
 
   ngOnInit(): void {
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
-    // this.model_list = Object.values(TYPE_GPT_MODEL).filter(el => el.status !== 'inactive').map((el) => {
+    // this.model_list = OPENAI_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
     //   if (ai_models[el.value])
     //     return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
     //   else
     //     return { ...el, multiplier: null }
     // })
 
-    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
-      if (ai_models[el.value])
-        return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
-      else
-        return { ...el, multiplier: null }
-    })
+    // const allModels = LLM_MODEL.flatMap(provider => provider.models);
+    // this.model_list = allModels
+    //   .map(model => ({
+    //     ...model,
+    //     multiplier: ai_models[model.value]
+    //       ? `${ai_models[model.value]} x tokens`
+    //       : null
+    //   }))
+    //   .sort((a, b) => a.name.localeCompare(b.name));
+
+    // // 🔹 imposta il modello selezionato (se già salvato)
+    // const selectedValue = this.selectedNamespace?.preview_settings?.model;
+    // this.selectedModel = this.model_list.find(m => m.value === selectedValue)?.value || null;
+
+    // 🔹 Cloniamo e ordiniamo i provider, mettendo OpenAI per primo
+    // const orderedProviders = [...LLM_MODEL].sort((a, b) => {
+    //   if (a.name === 'OpenAI') return -1;
+    //   if (b.name === 'OpenAI') return 1;
+    //   return a.name.localeCompare(b.name);
+    // });
+
+    // // 🔹 Costruiamo la struttura con modelli raggruppati per provider
+    // this.modelGroups = orderedProviders.map(provider => ({
+    //   providerName: provider.name,
+    //   // providerIcon: provider.src,
+    //   models: (provider.models || [])  // 🔹 fallback
+    //     .filter(m => m.status === 'active') // mostriamo solo quelli attivi (opzionale)
+    //     .sort((a, b) => a.name.localeCompare(b.name))
+    //     .map(model => ({
+    //       ...model,
+    //       multiplier: ai_models[model.value]
+    //         ? `${ai_models[model.value]} x tokens`
+    //         : null
+    //     }))
+    // }));
+
+    // // 🔹 Flatten solo per determinare il selectedModel
+    // const allModels = this.modelGroups.flatMap(group => group.models);
+    // const selectedValue = this.selectedNamespace?.preview_settings?.model;
+    // this.selectedModel = allModels.find(m => m.value === selectedValue)?.value || null;
+
+    const orderedProviders = [
+      ...LLM_MODEL.filter(p => p.value === 'openai'),
+      ...LLM_MODEL.filter(p => p.value !== 'openai')
+    ];
+
+    // crea l’array dei gruppi di modelli per la select
+    this.modelGroups = orderedProviders.map(provider => ({
+      providerName: provider.name,
+      models: (provider.models || [])  // fallback se models è undefined
+        .filter(m => m.status === 'active')  // solo modelli attivi
+        .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
+        .map(model => ({
+          ...model,
+          multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
+        }))
+    }));
+
+    this.flattenedModels = this.modelGroups.flatMap(group =>
+      group.models.map(model => ({
+        ...model,
+        providerName: group.providerName
+      }))
+    );
+
+    console.log('[MODAL PREVIEW SETTINGS] modelGroups ', this.modelGroups)
+    // eventualmente seleziona il modello corrente
+    const selectedProvider = this.modelGroups.find(g =>
+      g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
+    );
+    if (selectedProvider) {
+      const selectedModelObj = selectedProvider.models.find(m =>
+        m.value === this.selectedNamespace.preview_settings.model
+      );
+      this.selectedModel = selectedModelObj?.value;
+    }
+
+    console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+    // if (!this.selectedModel) {
+    //   const defaultModel = this.flattenedModels.find(m => m.value === this.modelDefaultValue);
+    //   if (defaultModel) {
+    //     this.selectedModel = defaultModel.value;  // <-- importante: prendi solo il value
+    //   }
+    // }
 
 
-    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+
+
+
+    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
 
@@ -279,22 +369,27 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
   onSelectModel(selectedModel) {
-    this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
-    if (selectedModel.startsWith('gpt-5'))  {
-        
-        this.temperature = 1;
-        this.aiSettingsObject[0].temperature = 1;
-        this.selectedNamespace.preview_settings.temperature = 1;
-        this.kbService.hasChagedAiSettings(this.aiSettingsObject);
-        this.temperature_slider_disabled = true;
-        this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
+    console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    if (selectedModel.startsWith('gpt-5')) {
+
+      this.temperature = 1;
+      this.aiSettingsObject[0].temperature = 1;
+      this.selectedNamespace.preview_settings.temperature = 1;
+      this.kbService.hasChagedAiSettings(this.aiSettingsObject);
+      this.temperature_slider_disabled = true;
+      this.max_tokens_max = 100000
+      this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
     } else {
-      
+
       this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
       this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature = this.temperatureDefaultValue;
       this.temperature_slider_disabled = false;
+      this.max_tokens_max = 9999
+       if (this.max_tokens > 9999 ) {
+        this.max_tokens = this.maxTokensDefaultValue;
+      }
     }
 
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -360,7 +455,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
-   
+
     if (type === "alpha") {
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.alpha = value
@@ -541,16 +636,21 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.max_tokens = this.selectedNamespaceClone.preview_settings.max_tokens;
     // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
-    if (this.selectedModel.startsWith('gpt-5'))  { 
+    if (this.selectedModel.startsWith('gpt-5')) {
       this.temperature = 1
       this.temperature_slider_disabled = true;
+       this.max_tokens_max = 100000
     } else {
       this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
       this.temperature_slider_disabled = false;
+      this.max_tokens_max = 9999
+      if (this.max_tokens > 9999 ) {
+        this.max_tokens = this.maxTokensDefaultValue;
+      }
     }
-      
+
     // this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
-    
+
 
     this.topK = this.selectedNamespaceClone.preview_settings.top_k;
     // this.selectedNamespace.preview_settings.top_k = this.topkDefaultValue;
@@ -589,7 +689,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   resetToDefault() {
-    this.selectedModel = this.model_list[3].value;
+    // this.selectedModel = this.model_list[3].value;
+    this.selectedModel = this.modelDefaultValue
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
@@ -640,7 +741,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
           this.aiModel.close()
           this.maxTokens.close()
           this.aiModeltemperature.close()
-           this.aiSearchType.close();
+          this.aiSearchType.close();
           this.chunkLimit.close()
           this.systemContext.close()
           this.advancedContext.close()
@@ -678,7 +779,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiModel.close()
     this.maxTokens.close()
     this.aiModeltemperature.close()
-     this.aiSearchType.close()
+    this.aiSearchType.close()
     this.chunkLimit.close()
     this.systemContext.close()
     this.advancedContext.close()
@@ -723,7 +824,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   searchTypePopoverIsOpened() {
-     this.logger.log('[MODAL PREVIEW SETTINGS] searchTypePopoverIsOpened')
+    this.logger.log('[MODAL PREVIEW SETTINGS] searchTypePopoverIsOpened')
     this.logger.log("[MODAL PREVIEW SETTINGS] searchTypePopoverIsOpened sat popover", this.aiSearchType)
   }
 
