@@ -1009,21 +1009,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           }
 
 
-          const messageRequests = this.faqkbList.map(bot =>
-            this.faqKbService.getNumberOfMessages(bot._id, bot.type)
-          );
+          // const messageRequests = this.faqkbList.map(bot =>
+          //   this.faqKbService.getNumberOfMessages(bot._id, bot.type)
+          // );
 
-          forkJoin(messageRequests)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((results: any[]) => {
-            results.forEach((res, i) => {
-              if (res.length === 0) {
-                this.faqkbList[i].message_count = 0;
-              } else {
-                this.faqkbList[i].message_count = res[0].totalCount;
-              }
-            });
-          });
+          // forkJoin(messageRequests)
+          // .pipe(takeUntil(this.unsubscribe$))
+          // .subscribe((results: any[]) => {
+          //   results.forEach((res, i) => {
+          //     if (res.length === 0) {
+          //       this.faqkbList[i].message_count = 0;
+          //     } else {
+          //       this.faqkbList[i].message_count = res[0].totalCount;
+          //     }
+          //   });
+          // });
         }
       }
 
