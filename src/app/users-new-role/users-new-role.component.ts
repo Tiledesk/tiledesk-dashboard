@@ -139,16 +139,16 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
       ]
     },
-    // {
-    //   key: 'historyManagement',
-    //   title: 'History',
-    //   parentLabel: 'Select all',
-    //   type: 'checkbox',
-    //   expanded: false,
-    //   children: [
-    //     { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
-    //   ]
-    // },
+    {
+      key: 'conversationRating',
+      title: 'Conversation rating',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.RATING_READ, label: 'Able to view Conversation rating in chat' },
+      ]
+    },
 
 
 

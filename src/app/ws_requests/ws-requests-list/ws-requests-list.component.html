@@ -34,7 +34,7 @@
         </button>
       </li> -->
       <!-- CREATE TICKET -->
-      <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
+      <li *ngIf="isVisibleCreateTicket" class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
         <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
           (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow"
           style="font-size: 12px;  margin-left: 15px;height: 36px;"
@@ -133,7 +133,7 @@
     <ul class="bottom-bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="display: none;">
       <li class="" style="padding-top: 3px!important; padding-left: 10px!important">
         <!-- btn-primary navbar-btn  -->
-        <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+        <button *ngIf="isVisibleCreateTicket"  attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
           (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;">
 
           <span aria-hidden="true" class="material-icons"

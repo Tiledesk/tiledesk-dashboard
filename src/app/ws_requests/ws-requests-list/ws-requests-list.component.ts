@@ -194,6 +194,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   newTicketRequestId: string;
   onlyAvailableWithEnterprisePlan: string;
   isVisiblePay: boolean;
+  isVisibleCreateTicket: boolean;
   cancelLbl: string;
   upgradePlan: string;
   cPlanOnly: string;
@@ -505,6 +506,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      if (key.includes("TKT")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisibleCreateTicket = false;
+        } else {
+          this.isVisibleCreateTicket = true;
+        }
+      }
+
     });
 
 
@@ -519,6 +530,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePay = false;
+    }
+    if (!this.public_Key.includes("TKT")) {
+      this.isVisibleCreateTicket = false;
     }
   }
 

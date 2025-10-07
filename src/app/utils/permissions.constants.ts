@@ -25,6 +25,8 @@ export const PERMISSIONS = {
 
   HISTORY_READ: 'history_read',
 
+  RATING_READ:'rating_read',
+
   AUTOMATIONSLOG_READ: "automationslog_read",
   AUTOMATIONSLOG_CREATE: "automationslog_create",
 

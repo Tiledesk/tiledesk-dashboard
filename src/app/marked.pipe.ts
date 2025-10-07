@@ -48,13 +48,15 @@ export class MarkedPipe implements PipeTransform {
       renderer: renderer,
       gfm: true,
       breaks: true,
+      mangle: false,
+      headerIds: false,
     });
 
   
     // if (value && value.length > 0) {
       const cleanValue = this.cleanInput(value);
       const text = marked.parse(cleanValue);
-      console.log('MARKED PIPE value 2', text)
+      // console.log('MARKED PIPE value 2', text)
       // PROTEZIONE XSS: Sanificazione Angular
       return this.sanitizer.bypassSecurityTrustHtml(text);
 
@@ -66,7 +68,7 @@ export class MarkedPipe implements PipeTransform {
     if (!input) return '';
 
     let cleaned = input;
-    console.log('MARKED PIPE cleaned ', cleaned)
+    // console.log('MARKED PIPE cleaned ', cleaned)
     BLOCKED_DOMAINS.forEach(domain => {
     const escapedDomain = domain.replace(/\./g, '\\.');
     
@@ -97,7 +99,7 @@ export class MarkedPipe implements PipeTransform {
     ];
 
     dangerousLinkPatterns.forEach(pattern => {
-      console.log('Marked pipe here yes ')
+      // console.log('Marked pipe here yes ')
       cleaned = cleaned.replace(pattern, '$1'); // $1 = il testo del link
     });
 

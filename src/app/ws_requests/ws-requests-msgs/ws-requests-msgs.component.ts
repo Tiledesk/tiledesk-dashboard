@@ -410,6 +410,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
+  PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE: boolean;
 
   /**
    * Constructor
@@ -913,6 +914,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
           console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+
+        // PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.RATING_READ)) {
+
+            this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
+          } else {
+            this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
         }
 
 
