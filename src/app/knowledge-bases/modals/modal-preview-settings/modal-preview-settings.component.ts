@@ -50,6 +50,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public topK: number;
   public context: string
   public context_placeholder: string
+  public chunkOnly: boolean
   public advancedPrompt: boolean // = false;
   public citations: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
@@ -77,6 +78,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   public hideHelpLink: boolean;
 
+  temperature_slider_disabled: boolean;
+
 
   aiSettingsObject = [{
     model: null,
@@ -85,6 +88,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     alpha: null,
     top_k: null,
     context: null,
+    chunkOnly: null,
     advancedPrompt: null,
     citations: null,
   }]
@@ -133,6 +137,18 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
       this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
+        
+        // this.temperature = 1
+        // this.aiSettingsObject[0].temperature = 1
+        // this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+        this.temperature_slider_disabled = true;
+        this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
+      } else { 
+        // this.temperature = this.selectedNamespace.preview_settings.temperature
+        this.temperature_slider_disabled = false;
+      }
+
 
       this.temperature = this.selectedNamespace.preview_settings.temperature
       // this.logger.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
@@ -149,6 +165,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
       this.context = this.selectedNamespace.preview_settings.context
+
+       if (!this.selectedNamespace.preview_settings.chunks_only) {
+        this.chunkOnly = false
+        this.selectedNamespace.preview_settings.chunks_only = this.chunkOnly
+      } else {
+        this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
+        this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly ", this.chunkOnly)
+      }
 
       this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.advancedPrompt)
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
@@ -266,6 +290,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   onSelectModel(selectedModel) {
     this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    if (selectedModel.startsWith('gpt-5'))  {
+        
+        this.temperature = 1;
+        this.aiSettingsObject[0].temperature = 1;
+        this.selectedNamespace.preview_settings.temperature = 1;
+        this.kbService.hasChagedAiSettings(this.aiSettingsObject);
+        this.temperature_slider_disabled = true;
+        this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
+    } else {
+      
+      this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
+      this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
+      this.kbService.hasChagedAiSettings(this.aiSettingsObject);
+      this.temperature = this.temperatureDefaultValue;
+      this.temperature_slider_disabled = false;
+    }
+
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.model = selectedModel
     }
@@ -286,8 +327,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   updateSliderValue(value, type) {
-   this.logger.log("[MODAL PREVIEW SETTINGS] value: ", value);
-   this.logger.log("[MODAL PREVIEW SETTINGS] type: ", type);
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
       if (!this.wasOpenedFromThePreviewKBModal) {
@@ -331,6 +370,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
+   
     if (type === "alpha") {
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.alpha = value
@@ -403,9 +443,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
   }
 
+  changeChunkOnly(event) {
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeChunkOnly event ", event.target.checked)
+    this.chunkOnly = event.target.checked
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.chunks_only = this.chunkOnly
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeChunkOnly this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
+    this.aiSettingsObject[0].chunkOnly = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+  }
+
   changeAdvancePrompt(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext event ", event.target.checked)
     this.advancedPrompt = event.target.checked
+    
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
@@ -506,12 +560,21 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
+
     // this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens = this.selectedNamespaceClone.preview_settings.max_tokens;
     // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
-    this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
-    // this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
+    if (this.selectedModel.startsWith('gpt-5'))  { 
+      this.temperature = 1
+      this.temperature_slider_disabled = true;
+    } else {
+      this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
+      this.temperature_slider_disabled = false;
+    }
+      
+    // this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
+    
 
     this.topK = this.selectedNamespaceClone.preview_settings.top_k;
     // this.selectedNamespace.preview_settings.top_k = this.topkDefaultValue;
