@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+## 2.7.132-stage
+- Adds vLLM integration
+
 ### 2.7.131
 - Adds the ability to manage which pages the widget can appear on in Widget Settings
 - Adds the ability to manage the file types users can upload from the widget in Widget Settings
