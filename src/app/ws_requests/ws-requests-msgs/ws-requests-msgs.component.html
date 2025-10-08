@@ -2205,10 +2205,10 @@
                 <!-- ------------------------------------- -->
                 <!-- Rating - Apps - Prechat accordion -->
                 <!-- ------------------------------------- -->
-                PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE {{PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE}}
-                CHAT_PANEL_MODE {{ CHAT_PANEL_MODE}}
+       
+               
                 <div *ngIf="tab0" class="tab0-card2">
-                  <div class="tab0-card2-content-wpr" *ngIf="PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE && CHAT_PANEL_MODE === true" 
+                  <div class="tab0-card2-content-wpr" *ngIf="PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE" 
                     [ngClass]="{'tab0-card2-content-wpr-chat': CHAT_PANEL_MODE === true}">
                     <ng-container *ngIf="displayChatRatings">
                       <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">

@@ -146,7 +146,7 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.RATING_READ, label: 'Able to view Conversation rating in chat' },
+        { key: PERMISSIONS.RATING_READ, label: 'Able to view' },
       ]
     },
 
