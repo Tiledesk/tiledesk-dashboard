@@ -16,6 +16,7 @@ export class CloneBotComponent implements OnInit {
   public current_project_id: string;
   public selectedProjectId: Project;
   public selectedProject: Project;
+  public storedCurrentrojectId: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -40,6 +41,12 @@ export class CloneBotComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const storedCurrentroject = localStorage.getItem('last_project')
+    console.log('[CLONE-BOT] storedCurrentroject  ', storedCurrentroject)
+    // console.log('[CLONE-BOT] storedCurrentroject parsed ', JSON.parse(storedCurrentroject) )
+    const storedCurrentrojectParsed = JSON.parse(storedCurrentroject)
+    this.storedCurrentrojectId = storedCurrentrojectParsed._id
+    // console.log('[CLONE-BOT] storedCurrentrojectId  ', this.storedCurrentrojectId)
   }
 
 
@@ -50,7 +57,7 @@ export class CloneBotComponent implements OnInit {
 
   onOkPresssed(){
     // console.log('[MODAL-CHATBOT-NAME] chatbot ', this.chatbot)
-    this.duplicateChatbot();
+    this.getLandingChatbotAndCloseModal();
     
   }
 
@@ -59,7 +66,7 @@ export class CloneBotComponent implements OnInit {
   }
 
 
-  duplicateChatbot() {
+  getLandingChatbotAndCloseModal() {
     this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
     
     this.projects.forEach(project => {
@@ -95,7 +102,7 @@ export class CloneBotComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close(this.selectedProjectId)
+    this.dialogRef.close({storedCurrentrojectId: this.storedCurrentrojectId, selectedProjectId: this.selectedProjectId})
   }
 
 

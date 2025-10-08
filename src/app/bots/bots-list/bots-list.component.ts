@@ -741,18 +741,39 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       },
     });
 
-    dialogRef.afterClosed().subscribe(selectedProjectId => {
-      this.logger.log(`Dialog afterClosed result (selectedProjectId): ${selectedProjectId}`);
-      if (selectedProjectId) {
-        this.forkTemplate(bot_id, selectedProjectId)
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(`Dialog afterClosed result (selectedProjectId) res:`, res);
+      
+      if (res) {
+        console.log(`Dialog afterClosed result (selectedProjectId) res selectedProjectId:`, res.selectedProjectId);
+        this.forkTemplateinAnotherProject(bot_id, res.storedCurrentrojectId, res.selectedProjectId)
       }
+    });
+  }
+
+  forkTemplateinAnotherProject(bot_id, storedCurrentrojectId, selectedProjectId) {
+    console.log('forkTemplateinAnotherProject this.currentProjectId ', this.currentProjectId) 
+    console.log('forkTemplateinAnotherProject storedCurrentrojectId ', storedCurrentrojectId) 
+    console.log('forkTemplateinAnotherProject selectedProjectId ', selectedProjectId) 
+
+    this.faqKbService.duplicateChatbot(bot_id, storedCurrentrojectId, false, selectedProjectId).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
+      // this.botid = res.bot_id
+      this.getFaqKbById(res.bot_id, selectedProjectId);
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] FORK TEMPLATE - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+  
+      
     });
   }
 
 
 
   forkTemplate(bot_id, selectedProjectId) {
-    this.faqKbService.installTemplate(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
+    this.faqKbService.duplicateChatbot(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
       // this.botid = res.bot_id
       this.getFaqKbById(res.bot_id, selectedProjectId);
