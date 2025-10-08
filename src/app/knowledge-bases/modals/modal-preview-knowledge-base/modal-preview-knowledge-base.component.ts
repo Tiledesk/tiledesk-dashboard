@@ -355,8 +355,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "top_k": this.topK,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
-      'citations': this.citations
-
+      'citations': this.citations,
+      'llm':'google'
     }
     // this.error_answer = false;
 

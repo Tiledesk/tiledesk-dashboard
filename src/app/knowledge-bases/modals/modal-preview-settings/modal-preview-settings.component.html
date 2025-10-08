@@ -160,10 +160,12 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">{{max_tokens_min}}</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" [min]="max_tokens_min" [max]="max_tokens_max" [(ngModel)]="max_tokens"
+                <!-- [max]="max_tokens_max" -->
+                <mat-slider class="wait-slider" thumbLabel step="1" [min]="max_tokens_min" max="100000" [(ngModel)]="max_tokens"
                     (change)="updateSliderValue($event.value, 'max_tokens')" aria-label="units">
                 </mat-slider>
-                <div class="action-wait-range">{{max_tokens_max}}</div>
+                <!-- {{max_tokens_max}} -->
+                <div class="action-wait-range"> 100000</div>
             </div>
             <!-- <input type="text" class="slider-output" value="{{max_tokens}}" disabled> -->
         </div>

@@ -143,15 +143,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         // this.aiSettingsObject[0].temperature = 1
         // this.kbService.hasChagedAiSettings(this.aiSettingsObject)
         this.temperature_slider_disabled = true;
-        this.max_tokens_max = 100000
+        // this.max_tokens_max = 100000
         this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
       } else {
         // this.temperature = this.selectedNamespace.preview_settings.temperature
         this.temperature_slider_disabled = false;
-        this.max_tokens_max = 9999
-        if (this.max_tokens > 9999 ) {
-          this.max_tokens = this.maxTokensDefaultValue;
-        }
+        // this.max_tokens_max = 9999
+        // if (this.max_tokens > 9999 ) {
+        //   this.max_tokens = this.maxTokensDefaultValue;
+        // }
       }
 
 
@@ -377,7 +377,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedNamespace.preview_settings.temperature = 1;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature_slider_disabled = true;
-      this.max_tokens_max = 100000
+      // this.max_tokens_max = 100000
       this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
     } else {
 
@@ -386,10 +386,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature = this.temperatureDefaultValue;
       this.temperature_slider_disabled = false;
-      this.max_tokens_max = 9999
-       if (this.max_tokens > 9999 ) {
-        this.max_tokens = this.maxTokensDefaultValue;
-      }
+      // this.max_tokens_max = 9999
+      //  if (this.max_tokens > 9999 ) {
+      //   this.max_tokens = this.maxTokensDefaultValue;
+      // }
     }
 
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -639,14 +639,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     if (this.selectedModel.startsWith('gpt-5')) {
       this.temperature = 1
       this.temperature_slider_disabled = true;
-       this.max_tokens_max = 100000
+      //  this.max_tokens_max = 100000
     } else {
       this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
       this.temperature_slider_disabled = false;
-      this.max_tokens_max = 9999
-      if (this.max_tokens > 9999 ) {
-        this.max_tokens = this.maxTokensDefaultValue;
-      }
+      // this.max_tokens_max = 9999
+      // if (this.max_tokens > 9999 ) {
+      //   this.max_tokens = this.maxTokensDefaultValue;
+      // }
     }
 
     // this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
