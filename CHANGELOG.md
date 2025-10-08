@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+## 2.7.134-stage
+- Adds Ollama models to the knowledge base
+
 ## 2.7.133-stage
 - Adds LLM models to the knowledge base
 
