@@ -32,10 +32,11 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
+      console.log('[MODAL-DETAIL-KB] source ', this.source)
       this.content = this.kb.content;
 
       if (this.kb.type === 'faq') {
@@ -43,7 +44,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       } 
 
       // Recupera i chunks solo se esiste _id
-      if (this.kb._id) {
+      if (this.kb._id && this.kb.type !== 'sitemap') {
         this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
       } else {
         this.showSpinner = false;
@@ -51,6 +52,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
+    
     this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
       if (chunks) {
         
@@ -117,6 +119,10 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     // this.logger.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.dialogRef.close(this.kb);
     // this.updateKnowledgeBase.emit(this.kb);
+  }
+
+  onDeleteKnowledgeBase() {
+    this.dialogRef.close({'kb': this.kb, 'method': 'delete'})
   }
 
 }

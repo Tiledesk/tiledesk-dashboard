@@ -33,6 +33,9 @@ export class CannedResponsesListComponent implements OnInit {
   baseUrl: string;
   isChromeVerGreaterThan100: boolean
   public hideHelpLink: boolean;
+
+  currentUserId: string;
+
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -57,7 +60,18 @@ export class CannedResponsesListComponent implements OnInit {
     // this.getMainPanelAndSetOverflow();
     this.listenSidebarIsOpened();
     this.getImageStorage();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.getCurrentUser()
+  }
+
+   getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('[CANNED-RES-LIST] - LoggedUser ', user);
+
+      if (user && user._id) {
+        this.currentUserId = user._id;
+      }
+    });
   }
 
   getBrowserVersion() {
@@ -198,7 +212,10 @@ export class CannedResponsesListComponent implements OnInit {
     this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
   }
 
-  presentResponseModal_inEditMode(cannedresponseid: string) {
+  presentResponseModal_inEditMode(cannedresponseid: string, createdby) {
+    if (createdby !== this.currentUserId) {
+      return
+    }
     this.getScrollPos();
     this.selectCannedResponseId = cannedresponseid;
     this.displayModal_AddEditResponse = 'block';
