@@ -306,14 +306,25 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         }))
     }));
 
-    this.flattenedModels = this.modelGroups.flatMap(group =>
-      group.models.map(model => ({
-        ...model,
-        providerName: group.providerName
-      }))
-    );
+    // this.flattenedModels = this.modelGroups.flatMap(group =>
+    //   group.models.map(model => ({
+    //     ...model,
+    //     providerName: group.providerName
+    //   }))
+    // );
+    this.flattenedModels = this.modelGroups.flatMap(group => {
+      // trova il provider corrispondente in LLM_MODEL
+      const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
 
-    console.log('[MODAL PREVIEW SETTINGS] modelGroups ', this.modelGroups)
+      return group.models.map(model => ({
+        ...model,
+        providerName: group.providerName,
+        llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
+        llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
+      }));
+    });
+
+    console.log('[MODAL PREVIEW SETTINGS] modelGroups ', this.flattenedModels)
     // eventualmente seleziona il modello corrente
     const selectedProvider = this.modelGroups.find(g =>
       g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
@@ -336,16 +347,21 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // }
 
 
-
-
-
     this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+    console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
+    const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
+    console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
 
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
     // this.listenToAiSettingsChanges()
+  }
+
+  getLlmProviderByModel(modelValue: string): string | null {
+    const found = this.flattenedModels.find(el => el.value === modelValue);
+    return found ? found.llmValue : null;
   }
 
 
@@ -370,6 +386,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   onSelectModel(selectedModel) {
     console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+
+    const selected = this.flattenedModels.find(m => m.value === selectedModel);
+    if (selected) {
+      console.log('Modello selezionato:', selected.name);
+      console.log('LLM Provider:', selected.llmValue);
+      console.log('Icona provider:', selected.llmSrc);
+      this.selectedNamespace.preview_settings.llm = selected.llmValue
+    }
+
     if (selectedModel.startsWith('gpt-5')) {
 
       this.temperature = 1;
