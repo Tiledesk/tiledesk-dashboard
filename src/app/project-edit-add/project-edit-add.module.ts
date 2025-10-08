@@ -8,6 +8,14 @@ import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
   { path: "", component: ProjectEditAddComponent},
@@ -15,7 +23,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ProjectEditAddComponent
+    ProjectEditAddComponent,
+    UrlsWhitelistComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -26,7 +35,14 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MomentModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+    SatPopoverModule
   ]
 })
 export class ProjectEditAddModule { }

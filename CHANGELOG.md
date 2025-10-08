@@ -1,5 +1,19 @@
 # tiledesk-dashboard
 
+## 2.7.133-stage
+- Adds LLM models to the knowledge base
+
+## 2.7.132-stage
+- Adds vLLM integration
+
+### 2.7.131
+- Adds the ability to manage which pages the widget can appear on in Widget Settings
+- Adds the ability to manage the file types users can upload from the widget in Widget Settings
+- Adds the ability to manage the file types users can upload from the agent chat in Project Settings > Advanced
+- Adds the ability to manage emoji sending in Project Settings > Advanced
+- Adds the ability to manage URL submission based on the domains whitelist in Project Settings > Advanced
+
+
 ### 2.7.130
 - Adds links to documentations
 - Adds translations
@@ -55,11 +69,26 @@
 ### 2.7.114
 - Minor improvements and bug fixing
 
+### 2.7.114-rc5
+- changed: added request_id in flow-request-logs row
+
+### 2.7.114-rc4
+- Added: added flow request logs
+
+### 2.7.114-rc2
+- Fixes the bug: changed css module in knowledge-base
+
+### 2.7.114-rc1
+- Added: added flow webhooks logs
+
 ### 2.7.113
 - Adds the environment variable "oauth2SigninEnabled"
 
 ### 2.7.112
 - Adds the ability for teammates with admin roles to edit email templates
+
+### 2.7.112-rc5
+- Added: added unanswered-questions module in knowledge-base
 
 ### 2.7.111
 - Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari

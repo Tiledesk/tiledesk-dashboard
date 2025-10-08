@@ -68,7 +68,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   body: any;
   storedQuestionNoDoubleQuote: string;
   aiQuotaExceeded: boolean = false;
-  prompt_token_size: number
+  prompt_token_size: number;
+  public chunkOnly: boolean
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
@@ -98,6 +99,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
       console.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
+
+      
+      if (!this.selectedNamespace.preview_settings.chunks_only) {
+        this.chunkOnly = false
+        this.selectedNamespace.preview_settings.chunks_only = this.chunkOnly
+      } else {
+        this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
+        this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
+      }
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
         this.advancedPrompt = false
@@ -308,6 +318,17 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from selectedNamespace ', this.context)
         }
 
+        if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === true) {
+          this.chunkOnly = editedAiSettings[0]['chunkOnly']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
+        } else if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === false) {
+          this.chunkOnly = editedAiSettings[0]['chunkOnly']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
+        } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
+          this.chunkOnly = this.selectedNamespace.preview_settings.chunkOnly
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
+        }
+
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
           this.advancedPrompt = editedAiSettings[0]['advancedPrompt']
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test from editedAiSettings 1', this.advancedPrompt)
@@ -354,6 +375,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "alpha": this.alpha,
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
+      "chunks_only": this.chunkOnly,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
@@ -447,7 +469,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
-      this.responseTime = Math.round((endTime - startTime) / 1000);
+      // this.responseTime = Math.round((endTime - startTime) / 1000);
+      this.responseTime = response.duration
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)

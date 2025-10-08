@@ -930,3 +930,16 @@ td {
     background: rgba(82, 89, 99, .8)
 }
 
+.sitemap-badge {
+    background: #ff6154;
+    color: #fff;
+    border-radius: 9999px;
+    padding: 0 5px;
+    font-size: 9px;
+    font-weight: 400;
+    margin-right: 3px;
+}
+
+.sitemap-badge:hover { 
+    opacity: .6;
+}

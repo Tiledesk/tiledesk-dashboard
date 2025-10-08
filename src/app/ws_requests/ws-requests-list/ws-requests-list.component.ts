@@ -434,7 +434,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WS-REQUESTS-LIST] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyAvailableWithEnterprisePlan = translation;
       });
 
@@ -976,7 +976,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (this.CURRENT_USER_ROLE === 'owner') {
       if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
 
-        // this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Smartassignment');
+        // this.logger.log('[WS-REQUESTS-LIST] - HAS CLICKED goToProjectSettings_Smartassignment');
         this.router.navigate(['project/' + this.projectId + '/project-settings/smartassignment']);
 
       } else if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === false) {

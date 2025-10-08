@@ -7,6 +7,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 @Component({
   selector: 'modal-site-map',
@@ -27,8 +28,7 @@ export class ModalSiteMapComponent implements OnInit {
   listOfUrls: string;
   countSitemap: number;
   errorLimit: boolean = false;
-
-
+  selectedNamespace: string;
   panelOpenState = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // scrape_types: Array<any> = [
@@ -66,6 +66,7 @@ export class ModalSiteMapComponent implements OnInit {
   payIsVisible:  boolean;
   t_params: any;
   salesEmail: string;
+  siteMap: string;
   kb: KB = {
     _id: null,
     type: '',
@@ -79,7 +80,8 @@ export class ModalSiteMapComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-     public brandService: BrandService
+    public brandService: BrandService,
+    private kbService: KnowledgeBaseService
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-SITEMAP] data: ", data);
@@ -90,6 +92,8 @@ export class ModalSiteMapComponent implements OnInit {
       this.id_project = data.id_project;
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
+      this.selectedNamespace = data.selectedNamespace
+      console.log("[MODALS-SITEMAP] data > selectedNamespace: ", this.selectedNamespace);
       this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
       this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
       this.logger.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
@@ -102,7 +106,7 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.kbForm = this.createConditionGroup();
+    // this.kbForm = this.createConditionGroup();
     this.listenToOnSenSitemapSiteListEvent()
   }
 
@@ -128,37 +132,41 @@ export class ModalSiteMapComponent implements OnInit {
     );
   }
 
-  // ngOnChanges(changes: SimpleChanges){
-  //   // this.logger.log('ModalSiteMapComponent changes: ', changes);
-  //   if(this.listSitesOfSitemap.length > 0){
-  //     this.buttonDisabled = false;
-  //     this.listOfUrls = this.listSitesOfSitemap.join('\n');
-  //     // this.logger.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
-  //     this.countSitemap = this.listSitesOfSitemap.length;
-  //     this.isSitemapLoaded = true;
-  //   } else {
-  //     this.buttonDisabled = true;
-  //     this.isSitemapLoaded = false;
-  //   }
+
+
+
+
+
+  // createConditionGroup(): FormGroup {
+  //   const namePattern = /^[^&<>]{3,}$/;
+  //   return this.formBuilder.group({
+  //     //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+  //     // url: ['', [Validators.required]],
+  //     siteMap: ['', [Validators.required]],
+  //     // name: ['', [Validators.required, Validators.pattern(namePattern)]]
+  //   })
   // }
 
-
-  createConditionGroup(): FormGroup {
-    const namePattern = /^[^&<>]{3,}$/;
-    return this.formBuilder.group({
-      //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      url: ['', [Validators.required]],
-      // name: ['', [Validators.required, Validators.pattern(namePattern)]]
-    })
-  }
-
   onChangeInput(event): void {
-    if (this.kbForm.valid) {
-      this.buttonDisabled = false;
-    } else {
-      this.buttonDisabled = true;
-    }
+    // if (this.kbForm.valid) {
+    //   this.buttonDisabled = false;
+    // } else {
+    //   this.buttonDisabled = true;
+    // }
   }
+
+  // importSitemap() {
+  //   let body  = {
+  //       "name": "https://www.sitemaps.org/sitemap.xml",
+  //       "source": "https://www.sitemaps.org/sitemap.xml",
+  //       "content": "",
+  //       "type": "sitemap",
+  //       "namespace": "{{namespace_id}}",
+  //       "refresh_rate": "never",
+  //       "scrape_type": 2
+  //     }
+    
+  // }
 
 
   onChangeList(event):void {
@@ -198,7 +206,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
-    // this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
+    console.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
 
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });
@@ -212,17 +220,27 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   onSaveKnowledgeBase(){
-    if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
-      this.errorLimit = true;
-    } else {
-      this.errorLimit = false;
-      const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
-        return row.trim() !== '';
-      });
-      let body = {
-        'list': arrayURLS,
-        scrape_type: this.selectedScrapeType,
-        refresh_rate: this.selectedRefreshRate
+    // if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
+    //   this.errorLimit = true;
+    // } else {
+    //   this.errorLimit = false;
+    //   const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
+    //     return row.trim() !== '';
+    //   });
+      // let body = {
+      //   'list': arrayURLS,
+      //   scrape_type: this.selectedScrapeType,
+      //   refresh_rate: this.selectedRefreshRate
+      // }
+
+       let body  = {
+        "name":   this.siteMap,
+        "source": this.siteMap,
+        "content": "",
+        "type": "sitemap",
+        "namespace": this.selectedNamespace['id'],
+        "refresh_rate": this.selectedRefreshRate,
+        "scrape_type": this.selectedScrapeType
       }
 
       if (this.selectedScrapeType === 4) {
@@ -234,7 +252,7 @@ export class ModalSiteMapComponent implements OnInit {
       }
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);
-    }
+    // }
     
   }
 

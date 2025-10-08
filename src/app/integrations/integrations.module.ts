@@ -23,6 +23,7 @@ import { GroqIntegrationComponent } from './list/groq-integration/groq-integrati
 import { CohereIntegrationComponent } from './list/cohere-integration/cohere-integration.component';
 import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-integration.component';
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
+import { VLLMComponent } from './list/v-llm/v-llm.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -46,7 +47,8 @@ const routes: Routes = [
     GroqIntegrationComponent,
     CohereIntegrationComponent,
     OllamaIntegrationComponent,
-    DeepseekIntegrationComponent
+    DeepseekIntegrationComponent,
+    VLLMComponent
   ],
   imports: [
     RouterModule.forChild(routes),

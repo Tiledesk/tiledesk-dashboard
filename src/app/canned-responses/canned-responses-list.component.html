@@ -144,8 +144,8 @@
 
 
                       <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                          (click)='presentResponseModal_inEditMode(response?._id)'>
+                        <button [disabled]="response?.createdBy_user?._id !== currentUserId" type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          (click)='presentResponseModal_inEditMode(response?._id, response?.createdBy_user?._id)'>
                           <i class="material-icons">edit</i>
                         </button>
 
