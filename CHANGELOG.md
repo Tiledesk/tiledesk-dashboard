@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+## 2.7.133
+- Updates markdown library
+
 ## 2.7.132
 - Fixes the bug: Ai Agent duplicate not working
 
