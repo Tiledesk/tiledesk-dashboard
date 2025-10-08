@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+## 2.7.133-stage
+- Adds LLM models to the knowledge base
+
 ## 2.7.132-stage
 - Adds vLLM integration
 
