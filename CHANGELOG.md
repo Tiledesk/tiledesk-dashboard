@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.141-AR
+- Adds the ability to hide the rating section via permissions
+- Removes the "Create Ticket" button
+
 ### 2.7.140-AR
 - Adds in the groups list pagination and Search box
 
