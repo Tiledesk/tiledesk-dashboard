@@ -186,6 +186,7 @@ export class FaqKbService {
   }
   
   duplicateChatbot(botid: string, projectid: string, ispublic: boolean, landingprojectid) {
+    console.log('[DUPLICATE-BOT] projectid',  projectid, 'landingprojectid', landingprojectid)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -196,7 +197,7 @@ export class FaqKbService {
     // / (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
     // const url = this.SERVER_BASE_PATH + "635b97cc7d7275001a2ab3e0/bots/fork/" + botid;
     const url = this.SERVER_BASE_PATH + projectid + "/faq_kb/fork/" + botid + "?public=" + ispublic + "&projectid=" + landingprojectid;
-    // console.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
 
     return this._httpClient
       .post(url, null, httpOptions)
