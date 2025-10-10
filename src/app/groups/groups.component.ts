@@ -351,10 +351,55 @@ export class GroupsComponent implements OnInit {
   }
 
   getDepartments(selectedGrouId?: string, reason?: string) {
+  console.log('[GROUPS] getDepartments - DELETE / DISABLE reason ', reason);
+  console.log('[GROUPS] getDepartments - ID OF THE GROUP TO DELETE / DISABLE ', selectedGrouId);
+
+  this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+    console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+
+    // ✅ cerca sia nel vecchio campo id_group che nel nuovo array groups[]
+    const deptsArrayWithAssociatedGroup = _departments.filter((dept: any) => {
+      const hasSingleGroup = dept.id_group === selectedGrouId;
+      const hasMultipleGroups = Array.isArray(dept.groups) && dept.groups.some(g => g.group_id === selectedGrouId);
+      return hasSingleGroup || hasMultipleGroups;
+    });
+
+    if (deptsArrayWithAssociatedGroup.length === 0) {
+      console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
+      if (reason === 'delete') {
+        this.displayDeleteModal = 'block';
+      } else {
+        this.displayDisableModal = 'block';
+      }
+      return;
+    }
+
+    // ✅ gruppo associato ad almeno un dipartimento
+    console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP ASSOCIATED');
+    console.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
+
+    const deptsNameAssociatedToGroup = deptsArrayWithAssociatedGroup.map(dept => dept.name);
+    const isPlural = deptsNameAssociatedToGroup.length > 1;
+    const translationKey = isPlural
+      ? 'GroupsPage.TheGroupIsAssociatedWithDepartments'
+      : 'GroupsPage.TheGroupIsAssociatedWithTheDepartment';
+
+    const actionMessage = reason === 'delete'
+      ? this.disassociateTheGroup
+      : this.disassociateTheGroupBeforeToDisableIt;
+
+    this.showWarningAlert(
+      this.warning,
+      `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
+    );
+  });
+}
+
+  _getDepartments(selectedGrouId?: string, reason?: string) {
     console.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
     this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE / DISABLE ', selectedGrouId)
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+      console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
 
       const deptsArrayWithAssociatedGroup = _departments.filter((obj: any) => {
         return obj.id_group === selectedGrouId;
@@ -396,29 +441,6 @@ export class GroupsComponent implements OnInit {
           this.warning,
           `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
         );
-
-        // Swal.fire({
-        //   title: this.warning,
-        //   text: `${translatedMessage}. ${this.disassociateTheGroup}`,
-        //   icon: "warning",
-        //   showCloseButton: true,
-        //   showCancelButton: false,
-        //   // confirmButtonColor: "var(--blue-light)",
-        //   focusConfirm: false
-        // })
-
-
-        // if (deptsArrayWithAssociatedGroup.length > 1) {
-        //   Swal.fire({
-        //     title: this.warning,
-        //     text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithDepartments', { depts_name: deptsNameAssociatedToGroup.join(', ') }) +'. ' + this.disassociateTheGroup,
-        //     icon: "warning",
-        //     showCloseButton: true,
-        //     showCancelButton: false,
-        //     // confirmButtonColor: "var(--blue-light)",
-        //     focusConfirm: false,
-        //   })
-        // }
       }
     })
   }
@@ -463,9 +485,9 @@ export class GroupsComponent implements OnInit {
       // UPDATE THE GROUP LIST
       //this.ngOnInit()
 
-      for (var i = 0; i < this.groupsList.length; i++) {
-        if (this.groupsList[i]._id === this.id_group_to_delete) {
-          this.groupsList.splice(i, 1);
+      for (var i = 0; i < this.paginatedGroups.length; i++) {
+        if (this.paginatedGroups[i]._id === this.id_group_to_delete) {
+          this.paginatedGroups.splice(i, 1);
           i--;
         }
       }
