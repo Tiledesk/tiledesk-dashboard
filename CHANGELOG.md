@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+## 2.7.134
+- Adds a tooltip to the file upload button in the conversation detail that indicates the maximum size allowed
+- Displays a confirm dialog on delete Canned response 
+- Manage the Knowledge preview error “allowed max tokens”
+- Allows txt extension on Knowledge Base page > Add contents > Upload files
+
 ## 2.7.133
 - Updates markdown library
 
