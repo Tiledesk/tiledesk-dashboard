@@ -12,6 +12,7 @@
     "Default Department": "Отдел по умолчанию",
     "Teammate": "товарищ по команде",
     "Teammates": "товарищи по команде",
+    "TeammatesCapitalized": "Члены команды",
     "TeammateInitial": "Т",
     "ProjectSettings_Initials": "НП",
     "ProjectSettings": "Настройки Проекта",
@@ -709,7 +710,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Это сообщение содержит URL-адрес из домена, который не разрешен.",
     "AllowedFileExtensions": "Разрешенные расширения файлов",
     "AllowedFileExtensionsWidgetDesc": "Управление типами файлов, которые пользователи могут загружать из виджета",
-    "AllowedFileExtensionsAgentChatDesc": "Управление типами файлов, которые пользователи могут загружать из чата агента",
+    "AllowedFileExtensionsAgentChatDesc": "Управление типами файлов, которые члены команды могут загружать из чата агента",
     "AddExtension": "Добавить расширение",
     "QuotaResetsOn": "Квота сбрасывается {{reset_date}}",
     "AllExtensions": "Все",
@@ -802,6 +803,16 @@
     "OnlyAllowsLinksFrom": "разрешает только ссылки с https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "разрешает ссылки с любого поддомена example.com (напр. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "Член команды",
+    "TheTeammates": "Члены команды",
+    "CannotDeleteRole": "Невозможно удалить роль <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "Эта роль в настоящее время назначена {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Назначьте [{pronoun}} другую роль перед удалением этой",
+    "RoleCannotBeDeleted": "Роль не может быть удалена",
+    "MaxAllowedSize":"Максимальный разрешенный размер {{file_size_limit}} Мб",
+    "Attachments": "Вложения",
+    "Emoji": "Эмодзи",
+    "VoiceRecorder": "Диктофон",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -855,7 +866,10 @@
             "CreateCannedResError": "Произошла ошибка при создании ответа",
             "UpdateCannedResSuccess": "Ответ успешно обновлен",
             "UpdateCannedResError": "Произошла ошибка при обновлении ответа"
-        }
+        },
+        "DeleteCannedResponse": "Удалить готовый ответ",
+        "DoYouReallyWantToDeleteTheResponse": "Вы действительно хотите удалить ответ?",
+        "DeleteResponse": "Удалить ответ"
     },
     "Pricing": {
         "Operators": "Сиденья",

@@ -150,7 +150,7 @@
                         </button>
 
                         <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
-                          (click)='deleteCannedResponse(response?._id)'>
+                          (click)='openConfirmDialogDeleteResponse(response?._id)'>
                           <i class="material-icons">close</i>
                         </button>
                       </td>
@@ -245,3 +245,57 @@
   (closeModal)='onCloseEditResponseModal()'
   (hasSavedResponse)='onSaveResponse()'> 
 </appdashboard-canned-responses-create> -->
+
+<!-- ---------------------------------------------------------------- -->
+<!-- Delete Canned response modal -->
+<!-- ---------------------------------------------------------------- -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModalDeleteResponse}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom--modal-content" >
+      
+      <div class="modal-header">
+
+        <button type="button" class="close" aria-label="Close" (click)="closeModalDeleteResponse()"
+          style="position: absolute; right: 14px;top: 16px;">
+          <span aria-hidden="true">
+            <svg class="tide-icon " width="18" height="18" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+
+        <h4 class="modal-title warning">
+          <span class="modal-header-icon-wpr"> 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
+          <span style="vertical-align: middle;padding-left:8px">
+            {{ "CannedResponses.DeleteCannedResponse" | translate }}
+          </span>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-body--content">
+          {{ "CannedResponses.DoYouReallyWantToDeleteTheResponse" | translate}}
+        </p>
+      </div>
+
+      <div class="modal-footer">
+          <button class="btn btn-gray-no-boxshadow" type="button" (click)="closeModalDeleteResponse()">
+            {{ "Cancel" | translate }}
+          </button>
+
+          <button class="btn btn-red" type="button" (click)="deleteCannedResponse()">
+            {{ "CannedResponses.DeleteResponse" | translate }}
+          </button>
+      
+      </div>
+    </div>
+  </div>
+</div>

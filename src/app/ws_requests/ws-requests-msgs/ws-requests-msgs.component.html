@@ -572,7 +572,12 @@
                             style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
+                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()"
+                              matTooltipClass="custom-mat-tooltip"
+                              [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100">
                               <span class="material-icons">
                                 attach_file
                               </span>

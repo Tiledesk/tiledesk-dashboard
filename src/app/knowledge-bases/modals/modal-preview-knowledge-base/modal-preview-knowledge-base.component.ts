@@ -485,11 +485,20 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.answer = err.error.message;
       } else if (err.error && err.error.error && err.error.error.answer) {
         this.answer = err.error.error.answer;
-        // && err.headers.statusText
-        if (err.statusText) {
+
+        if (err.error.error.error_message) {
+          let errorString = err.error.error.error_message
+          const match = errorString.match(/'message':\s*'([^']+)'/);
+          const message = match ? match[1] : '';
           this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
-          this.answer = this.answer + ' (' + err.statusText + ')'
+          // this.answer = this.answer + ' (' + err.statusText + ')'
+          this.answer = this.answer + ' (' + message + ')'
         }
+        
+       // if (err.statusText) {
+       //   this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
+       //   this.answer = this.answer + ' (' + err.statusText + ')'
+       // }
       }
 
       this.logger.error("ERROR ask gpt: ", err.message);

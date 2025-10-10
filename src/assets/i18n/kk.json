@@ -12,6 +12,7 @@
     "Default Department": "Әдепкі бөлім",
     "Teammate": "командалас",
     "Teammates": "командаластары",
+    "TeammatesCapitalized": "Команда мүшелері",
     "TeammateInitial": "Т",
     "ProjectSettings_Initials": "PS",
     "ProjectSettings": "Жоба параметрлері",
@@ -708,7 +709,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Бұл хабар рұқсат етілмеген доменнің URL мекенжайын қамтиды",
     "AllowedFileExtensions": "Рұқсат етілген файл кеңейтімдері",
     "AllowedFileExtensionsWidgetDesc": "Пайдаланушылардың виджеттен жүктей алатын файл түрлерін басқарыңыз",
-    "AllowedFileExtensionsAgentChatDesc": "Пайдаланушылардың агент чатынан жүктей алатын файл түрлерін басқарыңыз",
+    "AllowedFileExtensionsAgentChatDesc": "Команда мүшелерінің агент чатынан жүктей алатын файл түрлерін басқару",
     "AddExtension": "Кеңейтуді қосу",
     "QuotaResetsOn": "Квота {{reset_date}} күні қалпына келтіріледі",
     "AllExtensions": "Барлығы",
@@ -801,6 +802,16 @@
     "OnlyAllowsLinksFrom": "тек https://example.com/... сілтемелеріне рұқсат береді",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "example.com кез келген субдоменінен сілтемелерге рұқсат береді (мысалы: https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "команда мүшесі",
+    "TheTeammates": "команда мүшелері",
+    "CannotDeleteRole": "<b>{{role_name}}</b> рөлін жою мүмкін емес",
+    "ThisRoleIsCurrentlyAssignedTo": "Бұл рөл қазіргі уақытта {{total_associations}} {{association_type}} тағайындалған",
+    "ReassignDifferentRoleBeforeDeleting": "Бұны жоюдың алдында {{pronoun}} басқа рөлге тағайындаңыз",
+    "RoleCannotBeDeleted": "Рөлді жою мүмкін емес",
+    "MaxAllowedSize":"Рұқсат етілген максималды өлшем {{file_size_limit}} Мб",
+    "Attachments": "Тіркелген файлдар",
+    "Emoji": "Эмоджи",
+    "VoiceRecorder": "Дыбыс жазушы",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -854,7 +865,10 @@
             "CreateCannedResError": "Жауапты жасау кезінде қате орын алды",
             "UpdateCannedResSuccess": "Жауап сәтті жаңартылды",
             "UpdateCannedResError": "Жауапты жаңарту кезінде қате орын алды"
-        }
+        },
+        "DeleteCannedResponse": "Дайын жауапты жою",
+        "DoYouReallyWantToDeleteTheResponse": "Сіз шынымен жауапты жойғыңыз келе ме?",
+        "DeleteResponse": "Жауапты жою"
     },
     "Pricing": {
         "Operators": "Орындар",

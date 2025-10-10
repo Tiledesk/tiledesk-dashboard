@@ -12,6 +12,7 @@
     "Default Department": "Département par défaut",
     "Teammate": "coéquipier",
     "Teammates": "coéquipiers",
+    "TeammatesCapitalized": "Coéquipiers",
     "TeammateInitial": "C",
     "ProjectSettings_Initials": "PP",
     "ProjectSettings": "Paramètres du projet",
@@ -708,7 +709,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Ce message contient une URL d'un domaine qui n'est pas autorisé",
     "AllowedFileExtensions": "Extensions de fichier autorisées",
     "AllowedFileExtensionsWidgetDesc": "Gérer le type de fichiers que les utilisateurs peuvent télécharger depuis le widget",
-    "AllowedFileExtensionsAgentChatDesc": "Gérer les types de fichiers que les utilisateurs peuvent télécharger depuis le chat de l'agent",
+    "AllowedFileExtensionsAgentChatDesc": "Gérer les types de fichiers que les coéquipiers peuvent télécharger depuis le chat de l'agent",
     "AddExtension": "Ajouter une extension",
     "QuotaResetsOn": "Le quota se réinitialise le {{reset_date}}",
     "AllExtensions": "Toutes",
@@ -801,6 +802,16 @@
     "OnlyAllowsLinksFrom": "autorise uniquement les liens de https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "autorise les liens de tout sous-domaine de example.com (ex. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "Le coéquipier",
+    "TheTeammates": "Les coéquipiers",
+    "CannotDeleteRole": "Impossible de supprimer le rôle <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "Ce rôle est actuellement attribué à {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Réaffectez {{pronoun}} à un rôle différent avant de supprimer celui-ci",
+    "RoleCannotBeDeleted": "Le rôle ne peut pas être supprimé",
+    "MaxAllowedSize":"Taille maximale autorisée {{file_size_limit}} Mo",
+    "Attachments": "Pièces jointes",
+    "Emoji": "Émoji",
+    "VoiceRecorder": "Enregistreur vocal",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -854,7 +865,10 @@
             "CreateCannedResError": "Une erreur s'est produite lors de la création de la réponse",
             "UpdateCannedResSuccess": "Réponse mise à jour avec succès",
             "UpdateCannedResError": "Une erreur s'est produite lors de la mise à jour de la réponse"
-        }
+        },
+        "DeleteCannedResponse": "Supprimer la réponse prédéfinie",
+        "DoYouReallyWantToDeleteTheResponse": "Voulez-vous vraiment supprimer la réponse ?",
+        "DeleteResponse": "Supprimer la réponse"
     },
     "Pricing": {
         "Operators": "Des places",

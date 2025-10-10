@@ -12,6 +12,7 @@
     "Default Department": "Уобичајено Одељењe",
     "Teammate": "саиграч",
     "Teammates": "саиграчи",
+    "TeammatesCapitalized": "Саиграчи",
     "TeammateInitial": "Т",
     "ProjectSettings_Initials": "ПП",
     "ProjectSettings": "Подешавања пројекта",
@@ -709,7 +710,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Ова порука садржи URL адресу са домена који није дозвољен",
     "AllowedFileExtensions": "Дозвољене екстензије датотека",
     "AllowedFileExtensionsWidgetDesc": "Управљајте врстама датотека које корисници могу отпремити из виџета",
-    "AllowedFileExtensionsAgentChatDesc": "Управљајте врстама датотека које корисници могу отпремити из ћаскања са агентом",
+    "AllowedFileExtensionsAgentChatDesc": "Управљај типовима фајлова које саиграчи могу отпремити из ћаскања са агентом",
     "AddExtension": "Додај екстензију",
     "QuotaResetsOn": "Квота се resetује {{reset_date}}",
     "AllExtensions": "Све",
@@ -802,6 +803,16 @@
     "OnlyAllowsLinksFrom": "дозвољава само линкове са https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "дозвољава линкове са било ког поддомена example.com (нпр. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "саиграч",
+    "TheTeammates": "саиграчи",
+    "CannotDeleteRole": "Не могу да обришем улогу <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "Ова улога је тренутно додељена {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Преусмери {{pronoun}} на другу улогу пре брисања ове",
+    "RoleCannotBeDeleted": "Улога се не може обрисати",
+    "MaxAllowedSize":"Максимална дозвољена величина {{file_size_limit}} Мб",
+    "Attachments": "Прилози",
+    "Emoji": "Емођи",
+    "VoiceRecorder": "Снимач гласа",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -855,7 +866,10 @@
             "CreateCannedResError": "Дошло је до грешке при креирању одговора",
             "UpdateCannedResSuccess": "Одговор је успешно ажуриран",
             "UpdateCannedResError": "Дошло је до грешке при ажурирању одговора"
-        }
+        },
+        "DeleteCannedResponse": "Обриши унапред припремљен одговор",
+        "DoYouReallyWantToDeleteTheResponse": "Да ли заиста желите да обришете одговор?",
+        "DeleteResponse": "Обриши одговор"
     },
     "Pricing": {
         "Operators": "Седишта",

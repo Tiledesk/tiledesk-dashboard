@@ -12,6 +12,7 @@
     "Default Department": "Varsayılan Departman",
     "Teammate": "takım arkadaşı",
     "Teammates": "takım arkadaşları",
+    "TeammatesCapitalized": "Takım arkadaşları",
     "TeammateInitial": "T",
     "ProjectSettings_Initials": "PA",
     "ProjectSettings": "Proje ayarları",
@@ -710,7 +711,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Bu ileti, izin verilmeyen bir etki alanından bir URL içeriyor",
     "AllowedFileExtensions": "İzin verilen dosya uzantıları",
     "AllowedFileExtensionsWidgetDesc": "Kullanıcıların widget'tan yükleyebileceği dosya türlerini yönetin",
-    "AllowedFileExtensionsAgentChatDesc": "Kullanıcıların ajan sohbetinden yükleyebileceği dosya türlerini yönetin",
+    "AllowedFileExtensionsAgentChatDesc": "Takım arkadaşlarının ajan sohbetinden yükleyebileceği dosya türlerini yönetin",
     "AddExtension": "Uzantı ekle",
     "QuotaResetsOn": "Kota {{reset_date}} tarihinde sıfırlanır",
     "AllExtensions": "Tümü",
@@ -803,6 +804,16 @@
     "OnlyAllowsLinksFrom": "yalnızca https://example.com/... bağlantılarına izin verir",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "example.com'un herhangi bir alt alan adından bağlantılara izin verir (örn. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "Takım arkadaşı",
+    "TheTeammates": "Takım arkadaşları",
+    "CannotDeleteRole": "<b>{{role_name}}</b> rolü silinemiyor",
+    "ThisRoleIsCurrentlyAssignedTo": "Bu rol şu anda {{total_associations}} {{association_type}} atanmış durumda",
+    "ReassignDifferentRoleBeforeDeleting": "Bunu silmeden önce {{pronoun}} farklı bir role atayın",
+    "RoleCannotBeDeleted": "Rol silinemez",
+    "MaxAllowedSize": "Maksimum izin verilen boyut {{file_size_limit}} Mb",
+    "Attachments": "Ekler",
+    "Emoji": "Emoji",
+    "VoiceRecorder": "Ses kaydedici",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -856,7 +867,10 @@
             "CreateCannedResError": "Yanıt oluşturulurken bir hata oluştu",
             "UpdateCannedResSuccess": "Yanıt başarıyla güncellendi",
             "UpdateCannedResError": "Yanıt güncellenirken bir hata oluştu"
-        }
+        },
+        "DeleteCannedResponse": "Hazır cevabı sil",
+        "DoYouReallyWantToDeleteTheResponse": "Yanıtı gerçekten silmek istiyor musunuz?",
+        "DeleteResponse": "Yanıtı sil"
     },
     "Pricing": {
         "Operators": "Koltuklar",
