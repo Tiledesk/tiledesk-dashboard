@@ -121,7 +121,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
         // { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
         { key: PERMISSIONS.REQUEST_CREATE_TICKET, label: 'Able to create a ticket'},
-        { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message' },
+        { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message and upload file' },
         { key: PERMISSIONS.REQUEST_JOIN, label: 'Able to join to a conversation' },
         { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
         { key: PERMISSIONS.REQUEST_REOPEN, label: 'Able to reopen an archived conversation' },

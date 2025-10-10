@@ -275,16 +275,16 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   }
 
   presentDialogRoleAssigned(rolename, totalAssociations) {
-     const isSingle = totalAssociations === 1;
-    const associationType = isSingle ? 'teammate' : 'teammates';
-    const pronoun = isSingle ? 'the teammate' : 'the teammates';
-    const htmlContent = `
-        Cannot delete role <strong>${rolename}</strong>.<br>
-        This role is currently assigned to ${totalAssociations} ${associationType}.<br>
-        Reassign ${pronoun} to a different role before deleting this one.
+    const isSingle = totalAssociations === 1;
+    const associationType = isSingle ? this.translate.instant('Teammate') : this.translate.instant('Teammates');
+    const pronoun = isSingle ? this.translate.instant('TheTeammate') : this.translate.instant('TheTeammates');
+    const htmlContent =  `
+      ${this.translate.instant('CannotDeleteRole', { role_name: rolename })}<br>
+      ${this.translate.instant('ThisRoleIsCurrentlyAssignedTo', { total_associations: totalAssociations, association_type: associationType })}<br>
+      ${this.translate.instant('ReassignDifferentRoleBeforeDeleting', { pronoun: pronoun })}<br>
     `;
     Swal.fire({
-      title: 'Role Cannot Be Deleted',
+      title: this.translate.instant('RoleCannotBeDeleted'),
       html: htmlContent,
       icon: "warning",
       showCancelButton: false,

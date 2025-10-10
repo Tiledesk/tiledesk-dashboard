@@ -31,7 +31,7 @@
         <!-- class="bottom-nav" -->
         <ul [ngClass]="{ 'bottom-nav': isAuthorized, 'bottom-nav-fixed': !isAuthorized}">
           <li class="btn-with-border-effect li-active">
-            <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
+            <a> {{ "TeammatesCapitalized" | translate }} </a>
           </li>
           <li *ngIf="PERMISSION_TO_VIEW_ROLES"  class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
             <a style="text-transform: capitalize;"> {{ "Roles" | translate }} </a>

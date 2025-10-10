@@ -12,6 +12,7 @@
     "Default Department": "Standardavdelning",
     "Teammate": "lagkamrat",
     "Teammates": "lagkamrater",
+    "TeammatesCapitalized": "Lagkamrater",
     "TeammateInitial": "T",
     "ProjectSettings_Initials": "PS",
     "ProjectSettings": "Projektinställningar",
@@ -733,7 +734,7 @@
     "EmojisNotAllowed":"Emojier är inte tillåtna",
     "ThisMessageContainsURLFromDomainNotAllowed":"Det här meddelandet innehåller en URL från en domän som inte är tillåten",
     "AllowedFileExtensionsWidgetDesc": "Hantera vilken typ av filer användare kan ladda upp från widgeten",
-    "AllowedFileExtensionsAgentChatDesc": "Hantera vilka filtyper användare kan ladda upp från agentchatt",
+    "AllowedFileExtensionsAgentChatDesc": "Hantera filtyper som lagkamrater kan ladda upp från agentchatt",
     "AddExtension": "Lägg till tillägg",
     "QuotaResetsOn": "Kvoten återställs den {{reset_date}}",
     "AllExtensions": "Alla",
@@ -827,6 +828,16 @@
     "OnlyAllowsLinksFrom": "tillåter endast länkar från https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "tillåter länkar från vilken subdomän som helst av example.com (t.ex. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "Lagkamraten",
+    "TheTeammates": "Lagkamraterna",
+    "CannotDeleteRole": "Kan inte ta bort rollen <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "Denna roll är för närvarande tilldelad {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Tilldela {{pronoun}} en annan roll innan du tar bort denna",
+    "RoleCannotBeDeleted": "Rollen kan inte tas bort",
+    "MaxAllowedSize":"Maximal tillåten storlek {{file_size_limit}} Mb",
+    "Attachments": "Bilagor",
+    "Emoji": "Emoji",
+    "VoiceRecorder": "Röstinspelare",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -896,7 +907,10 @@
             "CreateCannedResError": "Ett fel uppstod när svaret skapades",
             "UpdateCannedResSuccess": "Svaret har uppdaterats",
             "UpdateCannedResError": "Ett fel uppstod när svaret skulle uppdateras"
-        }
+        },
+        "DeleteCannedResponse": "Radera förifyllt svar",
+        "DoYouReallyWantToDeleteTheResponse": "Vill du verkligen radera svaret?",
+        "DeleteResponse": "Radera svar"
     },
     "Pricing": {
         "Operators": "Säten",

@@ -2,9 +2,8 @@
   <!-- ---------------------------------------------------------------- -->
   <!-- Delete tag modal -->
   <!-- ---------------------------------------------------------------- -->
-
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModalDeleteTag}"
-  style="background-color: rgba(90,90,90,0.9);">
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content" >
       
@@ -32,38 +31,23 @@
             {{ "Tags.DeleteLabel" | translate }}
           </span>
         </h4>
-
       </div>
-      <!-- <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px"> -->
-      <div class="modal-body">
 
+      <div class="modal-body">
         <p class="modal-body--content">
           {{ "Tags.DoYouReallyWantToCancelTheTag" | translate}} <b>{{ tag_name }}</b>?
         </p>
-
-
-        <!-- <div class="row">
-          <div class="col-sm-12">
-            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px">
-
-              {{ "Tags.DoYouReallyWantToCancelTheTag" | translate}}  "{{ tag_name }}"?
-
-            </h3>
-          </div>
-        </div> -->
       </div>
 
       <div class="modal-footer">
-        <!-- <div style="text-align: center; margin-bottom: 25px;"> -->
           <button class="btn btn-gray-no-boxshadow" type="button" (click)="closeModalDeleteTag()">
             {{ "Cancel" | translate }}
           </button>
 
           <button class="btn btn-red" type="button" (click)="deleteTag()">
-
             {{ "Tags.DeleteLabel" | translate }}
           </button>
-        <!-- </div> -->
+      
       </div>
     </div>
   </div>

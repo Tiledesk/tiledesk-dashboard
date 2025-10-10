@@ -12,6 +12,7 @@
     "Default Department": "Дефолтний відділ",
     "Teammate": "товариш по команді",
     "Teammates": "товариші по команді",
+    "TeammatesCapitalized": "Члени команди",
     "TeammateInitial": "Т",
     "ProjectSettings_Initials": "Налаштування проекту",
     "ProjectSettings": "Налаштування проекту",
@@ -734,7 +735,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Це повідомлення містить URL-адресу з забороненого домену",
     "AllowedFileExtensions": "Дозволені розширення файлів",
     "AllowedFileExtensionsWidgetDesc": "Керуйте типами файлів, які користувачі можуть завантажувати з віджета",
-    "AllowedFileExtensionsAgentChatDesc": "Керуйте типами файлів, які користувачі можуть завантажувати з чату агента",
+    "AllowedFileExtensionsAgentChatDesc": "Керування типами файлів, які члени команди можуть завантажувати з чату агента",
     "AddExtension": "Додати розширення",
     "QuotaResetsOn": "Квота скидається {{reset_date}}",
     "AllExtensions": "Всі",
@@ -827,6 +828,16 @@
     "OnlyAllowsLinksFrom": "дозволяє лише посилання з https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "дозволяє посилання з будь-якого піддомена example.com (напр. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "Член команди",
+    "TheTeammates": "Члени команди",
+    "CannotDeleteRole": "Неможливо видалити роль <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "Ця роль наразі призначена для {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Перепризначте {{pronoun}} на іншу роль перед видаленням цієї",
+    "RoleCannotBeDeleted": "Роль не може бути видалена",
+    "MaxAllowedSize":"Максимальний дозволений розмір {{file_size_limit}} Мб",
+    "Attachments": "Вкладення",
+    "Emoji": "Емодзі",
+    "VoiceRecorder": "Диктофон",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -896,7 +907,10 @@
             "CreateCannedResError": "Під час створення відповіді сталася помилка",
             "UpdateCannedResSuccess": "Відповідь успішно оновлено",
             "UpdateCannedResError": "Під час оновлення відповіді сталася помилка"
-        }
+        },
+        "DeleteCannedResponse": "Видалити стандартну відповідь",
+        "DoYouReallyWantToDeleteTheResponse": "Ви дійсно хочете видалити відповідь?",
+        "DeleteResponse": "Видалити відповідь"
     },
     "Pricing": {
         "Operators": "Сидіння",

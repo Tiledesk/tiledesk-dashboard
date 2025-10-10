@@ -12,6 +12,7 @@
     "Default Department": "Standart bo'lim",
     "Teammate": "jamoadoshi",
     "Teammates": "jamoadoshlar",
+    "TeammatesCapitalized": "Jamoa a'zolari",
     "TeammateInitial": "T",
     "ProjectSettings_Initials": "PS",
     "ProjectSettings": "Loyiha sozlamalari",
@@ -734,7 +735,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Це повідомлення містить URL-адресу з забороненого домену",
     "AllowedFileExtensions": "Ruxsat etilgan fayl kengaytmalari",
     "AllowedFileExtensionsWidgetDesc": "Foydalanuvchilar vidjetdan yuklay oladigan fayl turlarini boshqaring",
-    "AllowedFileExtensionsAgentChatDesc": "Foydalanuvchilar agent chatidan yuklay oladigan fayl turlarini boshqaring",
+    "AllowedFileExtensionsAgentChatDesc": "Jamoa a'zolarining agent chatidan yuklay oladigan fayl turlarini boshqaring",
     "AddExtension": "Kengaytma qo'shish",
     "QuotaResetsOn": "Kvota {{reset_date}} sanada qayta tiklanadi",
     "AllExtensions": "Hammasi",
@@ -827,6 +828,16 @@
     "OnlyAllowsLinksFrom": "faqat https://example.com/... havolalariga ruxsat beradi",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "example.com ning har qanday subdomenidan havolalarga ruxsat beradi (masalan: https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "jamoa a'zosi",
+    "TheTeammates": "jamoa a'zolari",
+    "CannotDeleteRole": "<b>{{role_name}}</b> rolini o'chirib bo'lmaydi",
+    "ThisRoleIsCurrentlyAssignedTo": "Bu rol hozirda {{total_associations}} {{association_type}} ga tayinlangan",
+    "ReassignDifferentRoleBeforeDeleting": "Buni o'chirishdan oldin {{pronoun}} ni boshqa rolga tayinlang",
+    "RoleCannotBeDeleted": "Rol o'chirilishi mumkin emas",
+    "MaxAllowedSize":"Ruxsat etilgan maksimal hajm {{file_size_limit}} Mb",
+    "Attachments": "Ilovalar",
+    "Emoji": "Emoji",
+    "VoiceRecorder": "Ovoz yozish qurilmasi",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -880,7 +891,10 @@
             "CreateCannedResError": "Javob yaratishda xatolik yuz berdi",
             "UpdateCannedResSuccess": "Javob muvaffaqiyatli yangilandi",
             "UpdateCannedResError": "Javobni yangilashda xatolik yuz berdi"
-        }
+        },
+        "DeleteCannedResponse": "Tayyor javobni o'chirish",
+        "DoYouReallyWantToDeleteTheResponse": "Haqiqatan ham javobni o'chirmoqchimisiz?",
+        "DeleteResponse": "Javobni o'chirish"
     },
     "Pricing": {
         "Operators": "O'rindiqlar",
