@@ -6886,6 +6886,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onFileSelected($event) {
+    if(!this.PERMISSION_TO_SEND_REQUEST) {
+     this.notify.presentDialogNoPermissionToPermomfAction()
+     return
+    }
     this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
     const upload_btn = <HTMLElement>document.querySelector('.upload-btn');

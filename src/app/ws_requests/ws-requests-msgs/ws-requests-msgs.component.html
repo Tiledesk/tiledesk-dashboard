@@ -574,10 +574,17 @@
 
                           <!-- File upload -->
                           <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload
-                            style="display: none;" [accept]="fileUploadAccept">
+                            style="display: none;" [accept]="fileUploadAccept" >
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
+                            <button class="btn  pull-left upload-btn" (click)="PERMISSION_TO_SEND_REQUEST && fileUpload.click()"
+                            matTooltipClass="custom-mat-tooltip"
+                            [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })" 
+                            #tooltip="matTooltip"
+                            [matTooltipDisabled]="!PERMISSION_TO_SEND_REQUEST" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100"
+                            [disabled]="!PERMISSION_TO_SEND_REQUEST">
                               <span class="material-icons">
                                 attach_file
                               </span>
