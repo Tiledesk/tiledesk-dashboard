@@ -22,7 +22,9 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 export class CannedResponsesListComponent implements OnInit, OnDestroy {
 
   public canned_responses_docs_url = URL_canned_responses_doc
-  displayModal_AddEditResponse = 'none'
+  displayModal_AddEditResponse = 'none';
+  displayModalDeleteResponse = 'none';
+  cannedResponseIdToDelete: string;
   // displayEditResponseModal = 'none'
   responsesList: Array<any>;
   modalMode: string;
@@ -230,7 +232,7 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
   getResponses() {
     // this.contactsService.getLeads(this.queryString, this.pageNo).subscribe((leads_object: any) => {
     this.cannedResponsesService.getCannedResponses().subscribe((responses: any) => {
-      // console.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
+     console.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
       if (responses) {
         this.responsesList = responses;
 
@@ -272,20 +274,42 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteCannedResponse(cannedresponseid) {
+
+  openConfirmDialogDeleteResponse(cannedresponseid) {
+    if (!this.PERMISSION_TO_DELETE) { 
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
+    this.displayModalDeleteResponse = 'block'
+    this.cannedResponseIdToDelete = cannedresponseid;
+  }
+
+  closeModalDeleteResponse() {
+     this.displayModalDeleteResponse = 'none'
+  }
+
+  deleteCannedResponse() {
     if (this.PERMISSION_TO_DELETE) {
-      this.cannedResponsesService.deleteCannedResponse(cannedresponseid).subscribe((responses: any) => {
+      this.cannedResponsesService.deleteCannedResponse(this.cannedResponseIdToDelete).subscribe((responses: any) => {
         this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP - RES ', responses);
 
       }, (error) => {
         this.logger.error('[CANNED-RES-LIST] - DELETE CANNED RESP - ERROR  ', error);
-
+        this.displayModalDeleteResponse = 'none'
         this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
-        this.getResponses()
-
+        // this.getResponses()
+        // this.cannedResponseIdToDelete = null
+        this.displayModalDeleteResponse = 'none'
+        for (var i = 0; i < this.responsesList.length; i++) {
+          if (this.responsesList[i]._id === this.cannedResponseIdToDelete) {
+            this.responsesList.splice(i, 1);
+            i--;
+          }
+        }
+        
       });
 
     } else {
