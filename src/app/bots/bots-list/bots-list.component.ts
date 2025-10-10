@@ -842,7 +842,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.manageVoiceChatbotVisibility(projectProfileData)
       this.getIfAutomationCopilotIsEnabled(projectProfileData)
       this.managePlanAutomationCopilotAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
-
+      localStorage.setItem('last_project', JSON.stringify(project))
     }, error => {
       this.logger.error('[BOTS-LIST] - GET PROJECT BY ID - ERROR ', error);
     }, () => {

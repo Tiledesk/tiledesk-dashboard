@@ -42,7 +42,7 @@ export class CloneBotComponent implements OnInit {
 
   ngOnInit(): void {
     const storedCurrentroject = localStorage.getItem('last_project')
-    console.log('[CLONE-BOT] storedCurrentroject  ', storedCurrentroject)
+    // console.log('[CLONE-BOT] storedCurrentroject  ', storedCurrentroject)
     // console.log('[CLONE-BOT] storedCurrentroject parsed ', JSON.parse(storedCurrentroject) )
     const storedCurrentrojectParsed = JSON.parse(storedCurrentroject)
     this.storedCurrentrojectId = storedCurrentrojectParsed._id
@@ -51,7 +51,7 @@ export class CloneBotComponent implements OnInit {
 
 
   onSelectProject(selectedprojectid) {
-    this.logger.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', selectedprojectid)
+    // console.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', selectedprojectid)
     this.selectedProjectId = selectedprojectid
   }
 
@@ -74,7 +74,7 @@ export class CloneBotComponent implements OnInit {
       if (project.id_project.id === this.selectedProjectId) {
         // console.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
         const _project = project.id_project
-        // console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
+        console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
         // console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
 
         _project['role'] =  project['role']
