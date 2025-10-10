@@ -12,6 +12,7 @@
     "Default Department": "Varsayılan Departman",
     "Teammate": "takım arkadaşı",
     "Teammates": "takım arkadaşları",
+    "TeammatesCapitalized": "Teammates",
     "TeammateInitial": "T",
     "ProjectSettings_Initials": "PA",
     "ProjectSettings": "Proje ayarları",
@@ -708,7 +709,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed": "This message contains a URL from a domain that is not allowed",
     "AllowedFileExtensions": "Allowed file extensions",
     "AllowedFileExtensionsWidgetDesc": "Manage the type of files users can upload from the widget",
-    "AllowedFileExtensionsAgentChatDesc": "Manage the file types users can upload from agent chat",
+    "AllowedFileExtensionsAgentChatDesc": "Manage the file types teammates can upload from agent chat",
     "AddExtension": "Add extension",
     "QuotaResetsOn": "Quota resets on {{reset_date}}",
     "AllExtensions": "All",
@@ -801,6 +802,16 @@
     "OnlyAllowsLinksFrom": "only allows links from https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "allows links from any subdomain of example.com (e.g. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "the teammate",
+    "TheTeammates": "the teammates",
+    "CannotDeleteRole": "Cannot delete role <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "This role is currently assigned to {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Reassign {{pronoun}} to a different role before deleting this one.",
+    "RoleCannotBeDeleted": "Role cannot be deleted",
+    "MaxAllowedSize": "Max allowed size {{file_size_limit}} Mb",
+    "Attachments": "Attachments",
+    "Emoji": "Emoji",
+    "VoiceRecorder": "Voice recorder",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -870,7 +881,10 @@
             "CreateCannedResError": "Yanıt oluşturulurken bir hata oluştu",
             "UpdateCannedResSuccess": "Yanıt başarıyla güncellendi",
             "UpdateCannedResError": "Yanıt güncellenirken bir hata oluştu"
-        }
+        },
+        "DeleteCannedResponse": "Delete canned response",
+        "DoYouReallyWantToDeleteTheResponse": "Do you really want to delete the response?",
+        "DeleteResponse": "Delete response"
     },
     "Pricing": {
         "Operators": "Koltuklar",
