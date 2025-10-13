@@ -812,6 +812,7 @@
     "Attachments": "المرفقات",
     "Emoji": "الرموز التعبيرية",
     "VoiceRecorder": "مسجل الصوت",
+    "TheConversationWillBeResolved": "سيتم حل المحادثة",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

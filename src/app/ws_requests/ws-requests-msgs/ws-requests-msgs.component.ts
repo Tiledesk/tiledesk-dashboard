@@ -4232,8 +4232,62 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
+   archiveRequest(requestid) {
 
-  archiveRequest(requestid) {
+    Swal.fire({
+      title: this.translationMap.get('AreYouSure') + "?",
+      text: this.translate.instant('TheConversationWillBeResolved'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('VisitorsPage.Resolve'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    })
+      .then((result) => {
+        if (result.isDenied) {
+
+          this.wsRequestsService.closeSupportGroup(requestid).subscribe((data: any) => {
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+
+            this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
+
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+            //  NOTIFY ERROR 
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
+          }, () => {
+
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+            //  NOTIFY SUCCESS
+            this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
+
+            let convWokingStatus = ''
+            this.updateRequestWorkingStatus(convWokingStatus)
+          });
+
+        } else {
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
+        }
+      });
+
+  }
+
+
+  _archiveRequest(requestid) {
     this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
     this.wsRequestsService.closeSupportGroup(requestid)
