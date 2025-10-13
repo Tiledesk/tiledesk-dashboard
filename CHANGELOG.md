@@ -1,5 +1,18 @@
 # tiledesk-dashboard
 
+### 2.7.142-AR
+- Adds and fix translations
+- Does not allow deletion of groups associated with departments
+- Fixes the bug: duplicating an AI Agent does not work
+- Block file uploads in conversation details based on permission “Able to send message and upload file”
+- Adds a tooltip to the file upload button in the conversation detail that indicates the maximum size allowed
+- Displays a confirm dialog on delete Canned response 
+- Manage the Knowledge preview error “allowed max tokens”
+- Allows txt extension on Knowledge Base page > Add contents > Upload files
+- Disables Leave Conversation, Add Teammate, and Re-assign Conversation actions in conversation details when conversation is closed
+- Displays a confirmation dialog on the conversation details page when resolving a conversation
+- Adds GPT-5 LLM models
+
 ### 2.7.141-AR
 - Adds the ability to hide the rating section via permissions
 - Removes the "Create Ticket" button
