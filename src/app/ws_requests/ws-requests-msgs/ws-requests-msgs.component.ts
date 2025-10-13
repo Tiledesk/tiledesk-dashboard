@@ -580,7 +580,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.getClickOutEditContactFullname()
   }
 
- ngOnDestroy() {
+  ngOnDestroy() {
     //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -1210,24 +1210,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   addFollower(event) {
     if (this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS) {
-     
+
       this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
       this.wsRequestsService.addFollower(event.value, this.request.request_id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((res) => {
-        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((res) => {
+          console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
 
-      }, (error) => {
-        
-        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ThereWasProblemUpdatingTheConversation") , 4, 'report_problem');
-        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
+        }, (error) => {
 
-      }, () => {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ThereWasProblemUpdatingTheConversation"), 4, 'report_problem');
+          this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
 
-        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ConversationUpdatedSuccessfully") , 2, 'done');
-        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
+        }, () => {
 
-      });
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ConversationUpdatedSuccessfully"), 2, 'done');
+          this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
+
+        });
     } else {
       this.notify.presentDialogNoPermissionToPermomfAction()
     }
@@ -1524,7 +1524,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
- 
+
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
@@ -2449,7 +2449,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
           this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
 
-          if (this.CURRENT_USER_ROLE === 'agent') {
+          // if (this.CURRENT_USER_ROLE === 'agent') {
+          if (this.CURRENT_USER_ROLE !== 'owner' && this.CURRENT_USER_ROLE !== 'admin') {
             const isCurrentUserParticipant = this.members_array.includes(this.currentUserID);
 
             if (isCurrentUserParticipant) {
@@ -3560,7 +3561,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
- 
+
 
   addNote() {
     // this.disableMainPanelScroll();
@@ -3655,7 +3656,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   onChangeSelectedPriority(selectedPriority) {
-    if(this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY) {
+    if (this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY) {
       this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
       this.selectedPriority = selectedPriority;
 
@@ -4689,6 +4690,64 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   archiveRequest(requestid) {
+    if (!this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return
+    }
+
+    Swal.fire({
+      title: this.translationMap.get('AreYouSure') + "?",
+      text: this.translate.instant('TheConversationWillBeResolved'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('VisitorsPage.Resolve'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    })
+      .then((result) => {
+        if (result.isDenied) {
+
+          this.wsRequestsService.closeSupportGroup(requestid).subscribe((data: any) => {
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+
+            this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
+
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+            //  NOTIFY ERROR 
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
+          }, () => {
+
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+            //  NOTIFY SUCCESS
+            this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
+
+            let convWokingStatus = ''
+            this.updateRequestWorkingStatus(convWokingStatus)
+          });
+
+        } else {
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
+        }
+      });
+
+  }
+
+  _archiveRequest(requestid) {
     if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
@@ -4923,7 +4982,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalLeaveTheChat() {
     Swal.fire({
       // title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
-      title: this.translationMap.get('AreYouSure')+"?",
+      title: this.translationMap.get('AreYouSure') + "?",
       text: this.translate.instant('YouAreAboutToLeaveTheConversation'),
       icon: "info",
       showCloseButton: false,
@@ -5769,7 +5828,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else if (bot.type === 'tilebot') {
           botType = 'tilebot'
 
-          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+          if (!this.PERMISSION_TO_EDIT_FLOWS) {
             this.notify.presentDialogNoPermissionToPermomfAction()
             return;
           }
@@ -5780,7 +5839,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else if (bot.type === 'tiledesk-ai') {
           botType = 'tiledesk-ai'
 
-          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+          if (!this.PERMISSION_TO_EDIT_FLOWS) {
             this.notify.presentDialogNoPermissionToPermomfAction()
             return;
           }
@@ -5789,7 +5848,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         } else {
 
-          if(!this.PERMISSION_TO_UPDATE_APP) {
+          if (!this.PERMISSION_TO_UPDATE_APP) {
             this.notify.presentDialogNoPermissionToPermomfAction()
             return;
           }
@@ -5801,10 +5860,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
 
       } else {
-          if(!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
-            this.notify.presentDialogNoPermissionToPermomfAction()
-            return;
-          }
+        if (!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+          this.notify.presentDialogNoPermissionToPermomfAction()
+          return;
+        }
         // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
         this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
       }
@@ -6179,9 +6238,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
       const messageWithoutEmojis = removeEmojis(message).trim();
       this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
-       if ( this.showEmojiWarning === true) { 
+      if (this.showEmojiWarning === true) {
         this.triggerEmojiWarning();
-       }
+      }
     } else {
       this.showEmojiWarning = false;
     }
@@ -6225,8 +6284,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       const daysDiff = currentTime.diff(requestclosedAt, 'd');
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
-      
-      
+
+
       if (this.request?.status === 1000 && daysDiff > 10) {
         this.presenModalMessageCouldNotBeSent();
       } else {
@@ -6237,9 +6296,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
         let _chat_message = ''
-        if (this.type !== 'file' ) {
+        if (this.type !== 'file') {
           _chat_message = this.chat_message
-        } else if (this.type === 'file' ) {
+        } else if (this.type === 'file') {
           if (this.chat_message) {
             _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
           } else {
@@ -6249,7 +6308,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
         console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
-        
+
         if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
           console.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
           this.chat_message = '';
@@ -6257,9 +6316,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
 
         if (!this.ALLOW_TO_SEND_EMOJI) {
-          if (_chat_message && _chat_message.trim().length > 0) { 
+          if (_chat_message && _chat_message.trim().length > 0) {
             const messageWithoutEmojis = removeEmojis(_chat_message).trim();
-            console.log('[WS-REQUESTS-MSGS] messageWithoutEmojis - SEND CHAT MESSAGE ', messageWithoutEmojis) 
+            console.log('[WS-REQUESTS-MSGS] messageWithoutEmojis - SEND CHAT MESSAGE ', messageWithoutEmojis)
             // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
             if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message?.trim()?.length) {
               this.triggerEmojiWarning();
@@ -6269,23 +6328,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         }
 
-        
+
         // if (_chat_message === '' && !this.uploadedFiles) {
         //    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message 2', _chat_message)
         //    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message 2 uploadedFiles', this.uploadedFiles)
-           
+
         //   //  this.chat_message = _chat_message
         //   this.chat_message = ''
         //   return;
         // }
-       
+
 
         // const normalizedMessage = _chat_message?.trim() || '';
 
         // if (normalizedMessage === '' && (!this.uploadedFiles)) {
         //   console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - messaggio vuoto', _chat_message);
         //   console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles', this.uploadedFiles);
-          
+
         //   // reset textarea
         //   this.chat_message = '';
         //   return;
@@ -6299,7 +6358,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         //     const urlsInMessage = this.extractUrls(_chat_message);
         //     console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
         //     console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
-            
+
 
         //     const nonWhitelistedDomains = urlsInMessage.filter((url) => {
         //       try {
@@ -6337,7 +6396,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // }
 
         if (this.IS_ENABLED_URLS_WHITELIST) {
-          if (_chat_message && _chat_message.trim().length > 0) { 
+          if (_chat_message && _chat_message.trim().length > 0) {
             const urlsInMessage = this.extractUrls(_chat_message);
             console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
             console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
@@ -6886,9 +6945,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onFileSelected($event) {
-    if(!this.PERMISSION_TO_SEND_REQUEST) {
-     this.notify.presentDialogNoPermissionToPermomfAction()
-     return
+    if (!this.PERMISSION_TO_SEND_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
     }
     this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
@@ -7154,7 +7213,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openAddContactNameForm($event) {
     console.log('[WS-REQUESTS-MSGS] - openAddContactNameForm PERMISSION_TO_UPDATE_LEAD', this.PERMISSION_TO_UPDATE_LEAD)
-    if (this.PERMISSION_TO_UPDATE_LEAD === false)  {
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
       this.notify.presentDialogNoPermissionToPermomfAction()
       return;
     }
