@@ -838,6 +838,7 @@
     "Attachments": "Тіркелген файлдар",
     "Emoji": "Эмоджи",
     "VoiceRecorder": "Дыбыс жазушы",
+    "TheConversationWillBeResolved": "Өтініш шешіледі",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

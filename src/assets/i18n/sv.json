@@ -838,6 +838,7 @@
     "Attachments": "Bilagor",
     "Emoji": "Emoji",
     "VoiceRecorder": "Röstinspelare",
+    "TheConversationWillBeResolved": "Konversationen kommer att lösas",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

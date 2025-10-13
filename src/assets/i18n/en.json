@@ -838,6 +838,7 @@
     "Attachments": "Attachments",
     "Emoji": "Emoji",
     "VoiceRecorder": "Voice recorder",
+    "TheConversationWillBeResolved": "The conversation will be resolved",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
