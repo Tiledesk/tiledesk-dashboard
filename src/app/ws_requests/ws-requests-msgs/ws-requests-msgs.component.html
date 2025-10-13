@@ -721,7 +721,7 @@
                             </a>
                           </li>
                        
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST}">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST || request?.status === 1000}">
                           <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_REASSIGN_REQUEST}"> -->
                             <a (click)='openSelectUsersModal(action = "reassign")'
                               style="padding-left: 15px; padding-right: 15px;">
@@ -733,7 +733,7 @@
                             </a>
                           </li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST || request?.status === 1000}">
                            <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}"> -->
                             <a (click)='openSelectUsersModal(action = "invite")'
                               style="padding-left: 15px; padding-right: 15px;"> 
@@ -746,7 +746,7 @@
 
                           <li class="divider"></li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST)}">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST) || request?.status === 1000}">
 
                             <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
