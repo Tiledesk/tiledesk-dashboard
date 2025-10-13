@@ -121,7 +121,7 @@
     </div>
 
     <!-- -------------------------------------------------------- -->
-    <!--  @ Knowledge Bases  && ARE_NEW_KB == true -->
+    <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
     <!-- -------------------------------------------------------- -->
     <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
       <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
@@ -246,7 +246,7 @@
       <!-- WA broadcasts  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="PERMISSION_TO_VIEW_WA_BRODCAST"> 
-        <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleAUT">
           <!-- routerLinkActive="item-active"  -->
           <div id="bot-anchor-wpr" *ngIf="project" 
             matTooltipClass="sb-mat-tooltip"
@@ -267,6 +267,7 @@
         </ng-container>
       </ng-container>
 
+  
 
     <!-- ----------------------------- -->
     <!-- CONTACTS (LEADS)  -->
