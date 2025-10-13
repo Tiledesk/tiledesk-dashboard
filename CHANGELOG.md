@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+## 2.7.135-stage
+- Roles and LLM
+
 ### 2.7.142-AR
 - Adds and fix translations
 - Does not allow deletion of groups associated with departments
