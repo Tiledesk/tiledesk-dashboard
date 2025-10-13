@@ -1,12 +1,17 @@
-<h1 mat-dialog-title style="font-family: 'Poppins';"> {{ 'KbPage.titleUrls' | translate }} </h1>
+<h1 mat-dialog-title style="font-family: 'Poppins';"> 
+    <!-- {{ 'KbPage.titleUrls' | translate }}  -->
+      {{ 'KbPage.ImportFromWebsites' | translate }}
+</h1>
 
 <div mat-dialog-content style="font-family: 'Poppins';">
 
     <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
-            <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
-            <p [innerHTML]="'KbPage.helpUrls' | translate"></p>
+            <!-- <p>Enter web pages from public URLs into the text area below, separated by a carriage return, or import them from a sitemap.</p> -->
+            <!-- <p [innerHTML]="'KbPage.helpUrls' | translate"></p> -->
+            <p [innerHTML]="'HelpsURLs' | translate"></p>
+             
         </div>
     </div>
 
@@ -14,7 +19,7 @@
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
             class="custom--expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> Sitemap </mat-panel-title>
+                <mat-panel-title> {{'ImportURLsFromSitemap' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
 
@@ -24,13 +29,15 @@
                 </mat-form-field>
 
                  <button class="fetch-button" (click)="fetchSiteMap()">
-                    Fetch
+                    {{'Fetch' | translate }}
                 </button>
                 
 
             </div>
         </mat-expansion-panel>
     </mat-accordion>
+
+
 
     <mat-accordion>
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
@@ -207,6 +214,9 @@
         </ng-container>
     </div>
 </div>
+
+
+
 <div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">
     <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
         {{ "Cancel" | translate }}
