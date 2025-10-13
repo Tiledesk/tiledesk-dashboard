@@ -43,6 +43,14 @@
 
 ### 2.7.134-AR
 - Add the percentage of group load in the department details
+## 2.7.134-stage
+- Adds Ollama models to the knowledge base
+
+## 2.7.133-stage
+- Adds LLM models to the knowledge base
+
+## 2.7.132-stage
+- Adds vLLM integration
 
 ### 2.7.131
 - Adds the ability to manage which pages the widget can appear on in Widget Settings
