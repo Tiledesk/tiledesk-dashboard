@@ -14,6 +14,8 @@ import { browserRefresh } from 'app/app.component';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { TagsService } from 'app/services/tags.service';
 import { UsersService } from 'app/services/users.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RolesService } from 'app/services/roles.service';
 @Component({
   selector: 'appdashboard-contact-info',
   templateUrl: './contact-info.component.html',
@@ -23,6 +25,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   @Input() contact_details: any;
   @Output() onClickTagConversation = new EventEmitter();
   @Output() contactEmailChanged = new EventEmitter();
+  public PERMISSION_TO_UPDATE_LEAD: boolean;
+  public PERMISSION_TO_VIEW_TAG: boolean;
   public CHAT_PANEL_MODE: boolean;
   public project_name: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -67,7 +71,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   public form: FormGroup;
   CURRENT_USER_ROLE: string;
   hasEditedEmail: boolean = false;
-  onFocusEmail: string 
+  onFocusEmail: string
 
   constructor(
     public router: Router,
@@ -79,7 +83,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     private translate: TranslateService,
     public logger: LoggerService,
     private tagsService: TagsService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    public rolesService: RolesService
   ) { }
 
 
@@ -96,6 +101,59 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.getTag();
     this.getProjectUserRole();
     // this.getAllContactProperties()
+    this.listenToProjectUser()
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[CONTACT-INFO] - Role:', status.role);
+        console.log('[CONTACT-INFO] - Permissions:', status.matchedPermissions);
+
+        // ----------------------------   
+        // PERMISSION_TO_UPDATE_LEAD
+        // ----------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
+
+            this.PERMISSION_TO_UPDATE_LEAD = true
+            console.log('[CONTACT-INFO] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          } else {
+            this.PERMISSION_TO_UPDATE_LEAD = false
+            console.log('[CONTACT-INFO] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_LEAD = true
+          console.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+        }
+        // ----------------------------
+        // PERMISSION_TO_VIEW_TAG
+        // ----------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ)) {
+
+            this.PERMISSION_TO_VIEW_TAG = true
+            console.log('[CONTACT-INFO] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
+          } else {
+            this.PERMISSION_TO_VIEW_TAG = false
+            console.log('[CONTACT-INFO] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_TAG = true
+          console.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
+        }
+        
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
   // -------------------------------------------------------------
@@ -107,7 +165,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+        this.logger.log('[CONTACT-INFO] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.CURRENT_USER_ROLE = userRole;
       })
@@ -129,6 +187,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   ngOnChanges() {
     this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
+    console.log('[CONTACT-INFO] PERMISSION_TO_UPDATE_LEAD', this.PERMISSION_TO_UPDATE_LEAD)
+
     if (this.contact_details) {
 
       if (this.contact_details._id) {
@@ -249,10 +309,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     }
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
 
   getIfRouteUrlIsRequestForPanel() {
@@ -290,18 +347,18 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
   emailChange(event?: any) {
     this.logger.log('[CONTACT-INFO] ON EMAIL CHANGE event ', event)
-   
+
     if (event && event.length > 0) {
       this.logger.log('[CONTACT-INFO] ON EMAIL CHANGE event length', event.length)
       this.hasEditedEmail = true
     } else if (!event) {
       this.hasEditedEmail = false
     }
-    
+
     this.EMAIL_IS_VALID = this.validateEmail(event)
     this.logger.log('[CONTACT-INFO] ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
   }
-  
+
 
   validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -311,17 +368,22 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   contactEmailOnFocus() {
     let emailInputElement = <HTMLInputElement>document.querySelector('#lead-email');
     let emailinputValue = emailInputElement.value;
-  
+
     this.logger.log('[CONTACT-INFO] contactEmailOnFocus emailinputValue', emailinputValue)
-    if(emailinputValue === this.contactNewEmail) {
+    if (emailinputValue === this.contactNewEmail) {
       this.hasEditedEmail = false
     }
   }
 
   editContactEmailOnBlur() {
-   this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur contactNewEmail', this.contactNewEmail)
+    console.log('[CONTACT-INFO] > editContactEmailOnBlur here yes')
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      // this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
+    this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur contactNewEmail', this.contactNewEmail)
 
-   this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur hasEditedEmail', this.hasEditedEmail)
+    this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur hasEditedEmail', this.hasEditedEmail)
 
     if ((this.EMAIL_IS_VALID && this.contactNewEmail !== undefined && this.hasEditedEmail)) {
       this.logger.log('[CONTACT-INFO] editContactEmailOnBlur HERE UPDATES CONTACT EMAIL')
@@ -337,6 +399,13 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.contactEmailChanged.emit(this.contactNewEmail)
   }
 
+  onBlockedInputClick(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+  }
+
+
 
   updateContactemail(contatid: string, contatemail: string) {
     this.contactsService.updateLeadEmail(contatid, contatemail)
@@ -345,7 +414,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       }, (error) => {
         this.logger.error('[CONTACT-INFO] - UPDATE CONTACT - ERROR ', error);
 
-        this.notify.showNotification(this.editContactErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACT-INFO] - UPDATE CONTACT * COMPLETE *');
 
@@ -357,8 +426,13 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // @ Lead Phone
   // -----------------------------------------------------
   editContactPhoneOnBlur() {
+    console.log('[CONTACT-INFO] > editContactPhoneOnBlur here yes')
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      // this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
     if (this.contactPhone !== undefined && this.contactPhone.length > 0) {
-      this.logger.log('[CONTACT-INFO] editContactEmailOnBlur HERE UPDATES CONTACT PHONE')
+      this.logger.log('[CONTACT-INFO] editContactPhoneOnBlur HERE UPDATES CONTACT PHONE')
       this.updateContactPhone(this.contact_details._id, this.contactPhone)
     }
   }
@@ -370,6 +444,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   updateContactPhone(contactid, contactphone) {
+    
     this.contactsService.updateLeadPhone(
       contactid,
       contactphone
@@ -396,6 +471,13 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // @ Lead Company
   // -----------------------------------------------------
   editContactCompany() {
+
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      console.log('[CONTACT-INFO] - editContactCompany  here yes');
+      // this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
+
     if (this.contactCompany !== undefined) {
       this.updateContactCompany(this.contact_details._id, this.contactCompany)
     }
@@ -466,21 +548,21 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   }
 
- 
+
 
   // -----------------------------------------------------
   // @ Lead Tags
   // -----------------------------------------------------
   getTag() {
-    
+
     this.tagsService.getTags().subscribe((tags: any) => {
       if (tags) {
         // contactTempTags are the available tags that the administrator has set on the tag management page
-       
+
         this.contactTempTags = tags
-        this.contactTempTags =  this.contactTempTags.slice(0)
+        this.contactTempTags = this.contactTempTags.slice(0)
         this.logger.log('[CONTACT-INFO] - GET TAGS - tag of contactTempTags  this.contactTempTags ', this.contactTempTags);
-        
+
         this.logger.log('[CONTACT-INFO] - GET TAGS - contactTempTags length', this.contactTempTags.length);
         this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTags: ', this.contactTags);
 
@@ -491,10 +573,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       }
     }, (error) => {
       this.logger.error('[CONTACT-INFO]  - GET TAGS - ERROR  ', error);
-    
+
     }, () => {
       this.logger.log('[CONTACT-INFO]  - GET TAGS * COMPLETE *');
-     
+
     });
   }
 
@@ -520,6 +602,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   // When the user select a tag from the combo-box 
   addTag(tag) {
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
     this.logger.log('[CONTACT-INFO] - ADD TAG > tag: ', tag);
     this.contactTags.push(tag.tag)
     var index = this.contactTempTags.indexOf(tag);
@@ -538,45 +624,49 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   createNewTag = (newTag: string) => {
     let self = this;
-    
+     if (self.PERMISSION_TO_UPDATE_LEAD === false) {
+      self.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
+
     // self.logger.log("Create New TAG Clicked : " + newTag)
     let newTagTrimmed = newTag.trim()
     self.contactTags.push(newTagTrimmed)
     // self.this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     // this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     self.updateContactTag(self.requester_id, self.contactTags)
-     const tag_selected_color = '#43B1F2'
+    const tag_selected_color = '#43B1F2'
     self.addTagsToThePresetList(newTag, tag_selected_color)
   }
 
   addTagsToThePresetList(newTag, tag_selected_color) {
-
     this.tagsService.createTag(newTag, tag_selected_color)
-    .subscribe((tag: any) => {
-      this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+      .subscribe((tag: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
 
-      // const tagObject = { tag: tag.tag, color: tag.color }
-      
+        // const tagObject = { tag: tag.tag, color: tag.color }
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+        // this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+        // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
 
-      
+        // this.tag_name = '';
+        // this.tag_selected_color = '#43B1F2';
 
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-      // this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
-    }, () => {
-      this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
-      // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
-
-      // this.tag_name = '';
-      // this.tag_selected_color = '#43B1F2';
-
-      this.getTag();
-    });
+        this.getTag();
+      });
 
   }
- 
+
 
   removeTag(tag: string) {
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
+
     this.logger.log('[CONTACT-INFO] removeTag tag', tag)
     var index = this.contactTags.indexOf(tag);
     if (index !== -1) {
@@ -591,6 +681,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   updateContactTag(requester_id: string, tags: any) {
+    
     this.contactsService.updateLeadTag(requester_id, tags)
       .subscribe((lead: any) => {
         this.logger.log('[CONTACT-INFO] - ADD CONTACT TAGS  lead ', lead);
@@ -633,9 +724,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // @ Lead Address
   // -----------------------------------------------------
   toggleAddress() {
-    
+
     this.showAllAddress = !this.showAllAddress;
-    this.logger.log('here yes' , this.showAllAddress)
+    console.log('here yes', this.showAllAddress)
     const addressArrowIconElem = <HTMLElement>document.querySelector('#address-arrow-down');
     this.logger.log('toggleAddress ', addressArrowIconElem)
     if (this.showAllAddress === true) {
@@ -706,6 +797,11 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   editContactAddress() {
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
+    
     if (this.contactStreet && this.contactStreet.length > 0) {
       this.contactStreet = this.contactStreet.trim();
       this.updateContactAddress();
@@ -782,6 +878,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
 
   addContactCustomProperty() {
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
     this.logger.log('[CONTACT-INFO] - ADD CONTACT PROPERTY ');
 
     const dialogRef = this.dialog.open(ContactCustomPropertiesComponent, {
@@ -1006,6 +1106,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   onKey(propertyName, propertylabel, event) {
+     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
     this.logger.log('[CONTACT-INFO] - onKey propertyName', propertyName);
     this.logger.log('[CONTACT-INFO] - onKey propertylabel', propertylabel);
     // this.logger.log('[CONTACT-INFO] - onKey event', event);

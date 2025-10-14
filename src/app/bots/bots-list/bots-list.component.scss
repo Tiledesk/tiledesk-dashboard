@@ -386,7 +386,7 @@ input[type="checkbox"]:disabled {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   color: #fff !important;
@@ -889,6 +889,43 @@ input[type="checkbox"]:disabled {
   opacity: 0;
 }
 
+.chrome-gt-100 {
+  margin-top: -64px;
+}
+
+.chrome-lt-100 {
+  margin-top: 6px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.add---content-card-wpr.add---content-card-wpr-disabled {
+  cursor: not-allowed;
+}
+
+.add---content-card-wpr.add---content-card-wpr-disabled:hover {
+  box-shadow: none !important;
+  background-color: inherit; // prevent color changes if any
+}
+
+.add--content-card-wpr.add---content-card-wpr-disabled {
+  cursor: not-allowed;
+}
+
+.add--content-card-wpr.add---content-card-wpr-disabled:hover {
+  box-shadow: none !important;
+  background-color: inherit; // prevent color changes if any
+}
+
+.select-flow-btn.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 .chrome-gt-100 {
   margin-top: -64px;

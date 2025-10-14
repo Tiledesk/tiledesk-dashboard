@@ -84,10 +84,10 @@
 
     <section class="availability-section">
        
-
-        <ng-select style="text-align: left;" (change)="changeAvailabilityState(selectedStatus)"
+        <!--  -->
+        <ng-select style="text-align: left;width: 100%;" (change)="changeAvailabilityState(selectedStatus)"
             [(ngModel)]="selectedStatus" 
-            class="teammate-status-in-drawer" 
+            class="teammate-status-in-drawer"
             [items]="teammateStatus" 
             bindLabel="name"
             bindValue="id" 
@@ -110,9 +110,11 @@
         </ng-select>
     </section>
 
+
+
     <hr class="first-divider">
 
-    <section class="user-details-plan-info" *ngIf="isVisiblePAY">
+    <section class="user-details-plan-info">
         <!-- <span style="text-transform: uppercase; color: #a9afbb;"> {{'Plan' | translate}}: </span> -->
 
         <span class="material-icons user-details-plan-icon">
@@ -121,7 +123,7 @@
 
         <span>
             <div> {{prjct_name}} </div>
-            <div style="display: inline-block; margin-left: 26px;"> {{ _prjct_profile_name }} </div>
+            <div  *ngIf="isVisiblePAY" style="display: inline-block; margin-left: 26px;"> {{ _prjct_profile_name }} </div>
 
             <!-- <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
                 style="color:#f44336; position:relative; top: -1px;display: inline-block;">
@@ -175,12 +177,9 @@
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
 
     <!-- (click)=logout() -->
+
     <section *ngIf="logoutBtnVisible" class="user-details-footer-section"
         [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
-        <!-- <i class="material-icons user-details-logout-icon">
-            logout
-        </i>
-        <div> Logout</div> -->
         <div role="button" class="logout-btn-wpr" (click)=openLogoutModal()>
             <i class="material-icons user-details-logout-icon">
                 logout

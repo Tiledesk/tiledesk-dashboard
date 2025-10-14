@@ -5801,6 +5801,50 @@ label {
   border-bottom-left-radius: 0 !important;
 }
 
+.send-msg-dropdown-toggle-disabled {
+  opacity: .6 !important;
+}
+
+
+// .emoji-warning {
+//   color: red;
+//   text-align: center;
+//   font-size: 14px;
+//   font-weight: 500;
+//   margin-bottom: 4px;
+// }
+
+// .animated-fade {
+//   animation: fadeInOut 3s ease-in-out;
+// }
+
+// @keyframes fadeInOut {
+//   0% { opacity: 0; transform: translateY(10px); }
+//   10% { opacity: 1; transform: translateY(0); }
+//   90% { opacity: 1; }
+//   100% { opacity: 0; transform: translateY(-10px); }
+// }
+
+
+// .emoji-warning-container {
+//   height: 20px; /* or enough height to reserve space */
+//   overflow: hidden;
+// }
+
+// .emoji-warning {
+//   color: red;
+//   text-align: center;
+//   font-size: 14px;
+//   font-weight: 500;
+//   opacity: 0;
+//   transition: opacity 0.3s ease-in-out;
+// }
+
+// .emoji-warning.visible {
+//   opacity: 1;
+// }
+
+
 .emoji-warning-container {
   height: 20px; /* reserve vertical space to prevent layout shift */
   overflow: hidden;

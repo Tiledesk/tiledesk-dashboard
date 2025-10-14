@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Location } from '@angular/common';
 import { ColorPickerService } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
@@ -37,9 +37,13 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 import emojiRegex from 'emoji-regex';
 import { MatDialog } from '@angular/material/dialog';
 import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelist-modal/widget-domains-withelist-modal.component';
+
 
 
 @Component({
@@ -49,7 +53,7 @@ import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelis
 })
 
 
-export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked {
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
   private routerSubscription: Subscription;
   PLAN_NAME = PLAN_NAME;
@@ -410,16 +414,19 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   fileUploadAccept: string;
 
-  showSpinnerAttachmentUploading: boolean = false
+  showSpinnerAttachmentUploading: boolean = false;
 
-  // manage extension
-  // radio value: 'all' | 'custom'
   selectedOption: string; // = 'all';
   newExtension: string = '';
   extensions: string[] = [];
   allowedUploadExtentions: string;
   defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
 
+  isAuthorized = false;
+  permissionChecked = false; // To avoid showing the content before check completes
+  private accordionInitialized = false;
+  PERMISSION_TO_READ_TRANSLATIONS: boolean;
+  public ROLE: string
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -441,6 +448,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private uploadImageNativeService: UploadImageNativeService,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
     public localDbService: LocalDbService,
+    private roleService: RoleService,
+    public rolesService: RolesService,
     public dialog: MatDialog,
   ) {
     super(translate);
@@ -465,6 +474,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   ngOnInit() {
+
+
     // this.auth.checkRoleForCurrentProject();
     this.getProjectPlan()
     this.getProjectUserRole();
@@ -488,7 +499,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.getOSCODE();
     this.getTestSiteUrl();
     // this.getAndManageAccordionInstallWidget();
-    this.getAndManageAccordion();
+
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
 
@@ -503,7 +514,82 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
     this.listenToUpladAttachmentProgress()
-   
+    // this.getAndManageAccordion();
+    this.checkPermissions();
+    this.listenToProjectUser()
+  }
+
+  ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      const test = <HTMLElement>document.querySelector('.' + this.fragment)
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
+      test.scrollIntoView();
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+
+  ngAfterViewChecked() {
+    if (this.isAuthorized && !this.accordionInitialized) {
+      const acc = document.getElementsByClassName("widget-section-accordion");
+      if (acc.length > 0) {
+        this.getAndManageAccordion();
+        this.accordionInitialized = true;
+      }
+    }
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('widget-set-up')
+    console.log('[WIDGET-SET-UP] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[WIDGET-SET-UP] isAuthorized ', this.isAuthorized)
+    console.log('[WIDGET-SET-UP] permissionChecked ', this.permissionChecked)
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role
+        console.log('[WIDGET-SET-UP] - Role:', this.ROLE);
+        console.log('[WIDGET-SET-UP] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TRANSLATIONS_READ)) {
+            // Enable read translations
+            this.PERMISSION_TO_READ_TRANSLATIONS = true
+            console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+          } else {
+            this.PERMISSION_TO_READ_TRANSLATIONS = false
+            console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TRANSLATIONS = true
+          console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+        }
+
+    
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
 
@@ -1273,30 +1359,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  ngAfterViewInit(): void {
-    try {
-      // name of the class of the html div = . + fragment
-      const test = <HTMLElement>document.querySelector('.' + this.fragment)
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
-      test.scrollIntoView();
-      // document.querySelector('#' + this.fragment).scrollIntoView();
-      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
-    } catch (e) {
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
-    }
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-  }
-
-
   // il testo della modale '"Non è impostata nessuna lingua predefinita' e dato che potrebbe essere visualizzata 
   // all'init della pagina nn può stare nel base compo
 
@@ -1571,7 +1633,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           var arrow_icon = arrow_icon_div.children[0]
           // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
           arrow_icon.classList.add("arrow-up");
-        // }, 2000);
+          // }, 2000);
         }, 100);
       }
 
@@ -1591,7 +1653,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // this.logger.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
 
         setTimeout(() => {
-        // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+          // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
 
           if (firstAccordion.classList.contains('active')) {
             self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'false')
@@ -1655,7 +1717,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** defaultLangCode (onInit) ', this.defaultLangCode);
-            
+
 
             } else {
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** No default Lang *****  ', translation);
@@ -1685,18 +1747,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - GET LABELS -  ordered wd_availableTranslations', this.wd_availableTranslations);
           this.logger.log('[WIDGET-SET-UP] - GET LABELS -  defaultLangCode', this.defaultLangCode);
           this.wd_availableTranslations[0]
-          if (this.wd_availableTranslations &&  this.defaultLangCode ) { 
+          if (this.wd_availableTranslations && this.defaultLangCode) {
             const defaultLanguage = this.wd_availableTranslations.find(lang => lang.code === this.defaultLangCode);
 
             this.logger.log('[WIDGET-SET-UP]  defaultLanguage', defaultLanguage);
             this.selectedLang = defaultLanguage.name;
             this.selectedLangCode = defaultLanguage.code;
             this.selectedLangName = defaultLanguage.name;
-          
-          } else if (this.wd_availableTranslations &&  !this.defaultLangCode) {
-              this.selectedLang = this.wd_availableTranslations[0].name;
-              this.selectedLangCode = this.wd_availableTranslations[0].code;
-              this.selectedLangName = this.wd_availableTranslations[0].name;
+
+          } else if (this.wd_availableTranslations && !this.defaultLangCode) {
+            this.selectedLang = this.wd_availableTranslations[0].name;
+            this.selectedLangCode = this.wd_availableTranslations[0].code;
+            this.selectedLangName = this.wd_availableTranslations[0].name;
 
           }
 
@@ -1890,7 +1952,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         this.calloutTitle = this.selected_translation["CALLOUT_TITLE_PLACEHOLDER"];
         // this.calloutTitleForPreview =  this.calloutTitle.trim();
+        this.logger.log('[WIDGET-SET-UP] -  calloutTitle (on getCurrentTranslation)', this.calloutTitle);
         this.checkIsEmoji(this.calloutTitle.trim());
+        
         this.logger.log('[WIDGET-SET-UP] - checkIsEmoji calloutTitleForPreview (on getCurrentTranslation)', this.calloutTitleForPreview);
 
         this.calloutMsg = this.selected_translation["CALLOUT_MSG_PLACEHOLDER"];
@@ -2171,6 +2235,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.calloutTitleForPreview = calloutTitle;
     this.callout_emoticon = null;
     // const emojiRegex = require('emoji-regex');
+    
 
     const regex = emojiRegex();
     let match;
@@ -2208,8 +2273,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // ------------------------------------------------------------------------------------
   onSelectlang(selectedLang) {
     this.logger.log('[WIDGET-SET-UP] onSelectlang selectedLang ', selectedLang);
-    this.logger.log('[WIDGET-SET-UP] onSelectlang   this.defaultLangCode ',   this.defaultLangCode);
-  
+    this.logger.log('[WIDGET-SET-UP] onSelectlang   this.defaultLangCode ', this.defaultLangCode);
+
     this.selectedLangCode = selectedLang.code;
     this.logger.log('[WIDGET-SET-UP] - GET LABELS - onSelectlang (onSelectlang) ', this.selectedLangCode);
     this.selectedLangName = selectedLang.name;
@@ -2639,10 +2704,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // --------------------------------------------
         if (project.widget.allowedOnSpecificUrl) {
           this.allowedOnSpecificUrl = true;
-          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         } else {
           this.allowedOnSpecificUrl = false;
-          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         }
 
         // --------------------------------------------
@@ -2650,10 +2715,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // --------------------------------------------
         if (project.widget.allowedOnSpecificUrlList) {
           this.allowedOnSpecificUrlList = project.widget.allowedOnSpecificUrlList;
-          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         } else {
           this.allowedOnSpecificUrlList = [];
-          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         }
 
         // ----------------------------------------------------
@@ -2676,27 +2741,24 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
         if (project.widget.hasOwnProperty('allowedUploadExtentions')) {
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
           
           if (project.widget.allowedUploadExtentions === '*/*') {
 
             this.selectedOption = 'all';
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
           } else {
             this.selectedOption = 'custom'
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
             this.extensions = project.widget.allowedUploadExtentions.split(',').map(v => v.trim());
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
           }
         } else {
           this.selectedOption = 'custom'
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
         }
 
-        // } else {
-        //   this.showAttachmentButton = true;
-        // }
         // ----------------------------------------------------
         // Display / hide Emoji Button (if widget object)
         // ----------------------------------------------------
@@ -2774,7 +2836,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.themeColorOpacity === 0) {
           // this.logger.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
           // this.themeColorOpacity = "0.50";
-            this.themeColorOpacity = "0";
+          this.themeColorOpacity = "0";
           this.primaryColorOpacityEnabled = true
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
@@ -2933,6 +2995,24 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.allowedOnSpecificUrlList = []
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+
+        // -----------------------------------------------------------------------
+        // @ allowedOnSpecificUrl
+        // @ allowedOnSpecificUrlList
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.allowedOnSpecificUrl = false;
+        this.allowedOnSpecificUrlList = []
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+
+        // -----------------------------------------------------------------------
+        // @ allowedUploadExtentions
+        // -----------------------------------------------------------------------
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
+        this.selectedOption = 'custom'
+        this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -3625,7 +3705,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] file.type', file.type)
     this.logger.log('[WIDGET-SET-UP] file.size', file.size)
     if (file.size <= 1024000) {
-                     
+
       if (file.type === 'image/gif' || file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
 
 
@@ -3671,7 +3751,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         }
       } else {
-       this.notify.presenModalAttachmentFileTypeNotSupported()
+        this.notify.presenModalAttachmentFileTypeNotSupported()
       }
     } else {
       this.logger.log('[WIDGET-SET-UP] File is too large to upload. Max file size: 1024KB')
@@ -3680,12 +3760,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
 
- 
+
 
   presentModalAttachmentFileSizeTooLarge(fileSize) {
     Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('FileTooLarge', {file_size: fileSize}),
+      text: this.translate.instant('FileTooLarge', { file_size: fileSize }),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: false,
@@ -3856,7 +3936,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // }
   }
 
-  saveWidgetSingleConversation () {
+  saveWidgetSingleConversation() {
 
     if (this.singleConversation === true) {
 
@@ -3923,7 +4003,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   saveWidgetVisibility() {
-   
+
 
     if (this.mobile_widget_is_visible === false) {
       this.widgetObj['displayOnMobile'] = this.mobile_widget_is_visible;
@@ -4618,6 +4698,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.getExtensionsForBackend()
   }
 
+
+
   // -----------------------------------------------------------------------
   //  @ Emoji Button
   // -----------------------------------------------------------------------
@@ -4713,19 +4795,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
 
     this.widgetObj['allowedUploadExtentions'] = this.allowedUploadExtentions;
-    this.logger.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
+    console.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
 
-     this.logger.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
+     console.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
      if(this.selectedOption === 'all') {
        this.widgetObj['allowedUploadExtentions'] = '*/*'
      } else {
       
       this.widgetObj['allowedUploadExtentions'] = this.extensions.join(',')
-     }
+    }
 
     this.widgetService.updateWidgetProject(this.widgetObj)
     this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
   }
+
+
+
+ 
+
+ 
 
 
   // onPastePrechatFormJSON(event: ClipboardEvent) {
@@ -4812,7 +4900,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToWidgetMultilanguage() {
-    this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
+    if (this.PERMISSION_TO_READ_TRANSLATIONS) {
+      this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
   }
 
   goToInstallWithTagManagerDocs() {

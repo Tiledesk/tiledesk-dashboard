@@ -1,7 +1,7 @@
 
 <h1 mat-dialog-title>{{ 'KbPage.TitleSitemap' | translate }} </h1>
 
-<div *ngIf="!isSitemapLoaded" mat-dialog-content>
+<!-- <div *ngIf="!isSitemapLoaded" mat-dialog-content>
 
     <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
@@ -19,9 +19,9 @@
             </div>
         </form>
     </div>
-</div>
+</div> -->
 
-<div *ngIf="!isSitemapLoaded" mat-dialog-actions style="justify-content: center;">  
+<!-- <div *ngIf="!isSitemapLoaded" mat-dialog-actions style="justify-content: center;">  
     <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
         {{ "Cancel" | translate }}
     </button>
@@ -29,16 +29,25 @@
     <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled" (click)="onSendSitemap()">
         {{ 'OnboardPage.Next' | translate }}
     </button>
-</div>
+</div> -->
+<!-- *ngIf="isSitemapLoaded" -->
+<div  mat-dialog-content >
 
-<div *ngIf="isSitemapLoaded" mat-dialog-content >
-
-    <div class="info-container">
+  <!--  <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
             <span>{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
         </div>
+    </div> -->
+
+     <div class="info-container">
+        <i class="material-icons-outlined info-icon">help_outline</i>
+        <div class="info-text">
+          <p>{{ 'KbPage.InfoSitemap' | translate }}</p>
+        </div>
     </div>
+
+    
 
 
     <mat-accordion>
@@ -148,7 +157,7 @@
         </mat-expansion-panel>
     </mat-accordion> 
 
-    <div class="form-container">
+    <!-- <div class="form-container">
         <div class="input-container">
         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
         <textarea type="text" class="custom-textarea" 
@@ -162,12 +171,64 @@
             {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
         </span>
         </div>
+    </div> -->
+
+   
+    <!-- <div class="form-container">
+        <form [formGroup]="kbForm">
+            <div class="input-container">
+                <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
+                <input type="url" name="url" class="custom-input" [(ngModel)]="kb.url" formControlName="url"
+                    placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)"
+                    [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+            </div>
+        </form>
+    </div> -->
+
+    <div class="form--container">
+      
+        <div class="input-container">
+            <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
+            <input type="url" name="url" class="custom-input" [(ngModel)]="siteMap"
+                placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)" [disabled]="!refreshRateIsEnabled">
+        </div>
+       
+        <ng-container *ngIf="payIsVisible">
+            <div *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled" class="upsell-for-refresh-rate">
+                <span class="material-icons-outlined" style="font-size: 20px;">bolt</span>
+                <span class="upsell-text">  {{ 'KbPage.WantToTryThisNewFeature' | translate }}
+                    <a class="upsell-text-link" (click)="contacUsViaEmail()"> {{'ContactUs' | translate}}!</a>
+                </span>
+            </div>
+        </ng-container>
+
+         <div class="refresh-rate--upgrade-plan" *ngIf="isAvailableRefreshRateFeature === false">
+            <div class="refresh-rate--upgrade-plan-title">
+                <!-- Synchronized sitemap feature is available from the Business plan -->
+                {{ 'KbPage.SynchronizedSitemapAvailableFromThe' | translate: t_params }}
+            </div>
+
+                <!-- matTooltipClass="custom-mat-tooltip" 
+                matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='above' 
+                matTooltipHideDelay="100" -->
+            <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
+                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()">
+                <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                    upgrade
+                </span>
+                <span>
+                    {{ 'Pricing.UpgradePlan' | translate }}
+                </span>
+            </button>
+        </div>
     </div>
 
     <!-- ----------------------------------------------- -->
     <!-- Refresh rate - How often will the URL(s) sync -->
     <!-- ----------------------------------------------- -->
-    <div class="refresh-rate-wpr">
+    <div class="refresh-rate-wpr" *ngIf="refreshRateIsEnabled" >
         <div class="refresh-rate-select">
             <span class="input-label">
                
@@ -188,14 +249,15 @@
             <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
             </span>
+
         </div>
 
+        
 
-        <div class="refresh-rate-upgrade-plan">
+
+        <!-- <div class="refresh-rate-upgrade-plan">
             <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
-                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
-                matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
-                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()">
                 <span class="material-icons-outlined get--feature-upgrade-plan-icon">
                     upgrade
                 </span>
@@ -214,21 +276,23 @@
                     </div> 
                 </div>
             </div>
-        </ng-container>
+        </ng-container> -->
 
 
     </div>
 
 
 </div>
-
-<div *ngIf="isSitemapLoaded" mat-dialog-actions style="justify-content: center;">  
+<!-- *ngIf="isSitemapLoaded" -->
+<div  mat-dialog-actions style="justify-content: center;">  
     <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
         {{ "Cancel" | translate }}
     </button>
 
-    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" (click)="onSaveKnowledgeBase()">
-        {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
+    <!-- [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" -->
+    <button class="mat-dialog-ok-btn" mat-button  (click)="onSaveKnowledgeBase()" [disabled]="!siteMap || selectedScrapeType === 4 && extract_tags.length === 0">
+        {{ 'KbPage.Import' | translate }} 
+        <!-- {{countSitemap}} URL -->
     </button>
 </div>
 

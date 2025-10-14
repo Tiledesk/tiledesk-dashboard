@@ -930,3 +930,24 @@ td {
     background: rgba(82, 89, 99, .8)
 }
 
+.add-content-card-wpr.add-content-card-wpr-disabled {
+    cursor: not-allowed;
+}
+
+.add-content-card-wpr.add-content-card-wpr-disabled:hover {
+    box-shadow: none !important;
+    background-color: inherit; // prevent color changes if any
+}
+.sitemap-badge {
+    background: #ff6154;
+    color: #fff;
+    border-radius: 9999px;
+    padding: 0 5px;
+    font-size: 9px;
+    font-weight: 400;
+    margin-right: 3px;
+}
+
+.sitemap-badge:hover { 
+    opacity: .6;
+}

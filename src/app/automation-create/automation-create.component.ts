@@ -23,7 +23,7 @@ export class AutomationCreateComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean
-  templates_list = [];
+  templates_list: any[] = [];
   projectId: string;
   phone_number_id: string;
   selected_template: any;
@@ -70,7 +70,7 @@ export class AutomationCreateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.roleService.checkRoleForCurrentProject('automations')
+    this.roleService.checkRoleForCurrentProject('new-broadcast')
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.getWATemplates();
@@ -188,8 +188,13 @@ export class AutomationCreateComponent implements OnInit {
   }
 
   onSelectTemplate() {
-    this.selected_template = this.templates_list.find(t => t.name === this.templateName);
-    this.logger.log('[AUTOMATION-CREATE] onSelectTemplate selected_template', this.selected_template)
+    if (!this.templates_list?.length) {
+      console.warn('templates_list non inizializzato');
+      return;
+    }
+    console.log('[AUTOMATION-CREATE] onSelectTemplate  this.templateName ', this.templateName) 
+    this.selected_template = this.templates_list.find(t => t.name === this.templateName) || null;
+    console.log('[AUTOMATION-CREATE] onSelectTemplate selected_template', this.selected_template)
     this.selected_template_name = this.selected_template.name
     this.selected_template_lang = this.selected_template.language
 
@@ -197,10 +202,8 @@ export class AutomationCreateComponent implements OnInit {
     const phoneNumbers = ['3931234567'];
     this.csvOutput = this.generateCSVFromWhatsAppTemplate(this.selected_template, phoneNumbers);
 
-    this.logger.log('[AUTOMATION-CREATE] csvOutput', this.csvOutput)
-    // if (csvOutput) {
-    //  this.downloadFile(csvOutput, 'example.csv');
-    // }
+    console.log('[AUTOMATION-CREATE] csvOutput', this.csvOutput)
+ 
     this.createTemplatePreview()
   }
 

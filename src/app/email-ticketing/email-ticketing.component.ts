@@ -6,6 +6,11 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { URL_getting_started_with_email_ticketing } from '../utils/util';
 import { BrandService } from 'app/services/brand.service';
 import { RoleService } from 'app/services/role.service';
+import { Subject } from 'rxjs';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NotifyService } from 'app/core/notify.service';
 @Component({
   selector: 'appdashboard-email-ticketing',
   templateUrl: './email-ticketing.component.html',
@@ -26,29 +31,79 @@ export class EmailTicketingComponent implements OnInit {
   public emailEndpoint: string;
   public hideHelpLink: boolean;
   public companyName: string
+
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
   constructor(
     private deptService: DepartmentService,
     private auth: AuthService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private roleService: RoleService
-  ) { 
-    const brand = brandService.getBrand(); 
-    this.hideHelpLink= brand['DOCS'];
-    this.companyName = brand["BRAND_NAME"] 
+    private roleService: RoleService,
+    public rolesService: RolesService,
+    public notify: NotifyService,
+  ) {
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+    this.companyName = brand["BRAND_NAME"]
   }
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('email-ticketing')
+    // this.roleService.checkRoleForCurrentProject('email-ticketing')
     this.getCurrentProjectAndBuildTicketingEmail();
     this.getDeptsByProjectId();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.getOSCODE();
     // this.getTicketingEmailEndpoint()
-  
+    this.checkPermissions();
+    this.listenToProjectUser()
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('email-ticketing')
+    console.log('[EMAIL-TICKETING] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[EMAIL-TICKETING] isAuthorized ', this.isAuthorized)
+    console.log('[EMAIL-TICKETING] permissionChecked ', this.permissionChecked)
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[EMAIL-TICKETING] - listenToProjectUser-  Role:', status.role);
+        console.log('[EMAIL-TICKETING] - listenToProjectUser - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.EMAIL_TICKETING_UPDATE)) {
+
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[EMAIL-TICKETING] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          } else {
+            this.PERMISSION_TO_UPDATE = false
+            console.log('EMAIL-TICKETING] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE = true
+          console.log('[EMAIL-TICKETING] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        }
+
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
   // getTicketingEmailEndpoint() {
@@ -65,7 +120,7 @@ export class EmailTicketingComponent implements OnInit {
       if (key.includes("DEP")) {
         // this.logger.log('[EMAIL-TICKETING] PUBLIC-KEY - key', key);
         let dep = key.split(":");
-        
+
         if (dep[1] === "F") {
           this.isVisibleDEP = false;
         } else {
@@ -76,7 +131,7 @@ export class EmailTicketingComponent implements OnInit {
     });
 
     if (!this.public_Key.includes("DEP")) {
-  
+
       this.isVisibleDEP = false;
     }
   }
@@ -102,20 +157,38 @@ export class EmailTicketingComponent implements OnInit {
   }
 
   copyTicketingEmail() {
-    const ticketingEmailElem = document.getElementById('ticketing-email') as HTMLInputElement;
-    this.logger.log('onSelectedDeptId - selectedDeptId', ticketingEmailElem);
-    ticketingEmailElem.select();
-    try {
-      document.execCommand('copy');
-      this.hasCopiedTicketingEmail = true
-    } catch (err) {
-      this.logger.error('Fallback: Oops, unable to copy', err);
+    if (this.PERMISSION_TO_UPDATE) {
+      const ticketingEmailElem = document.getElementById('ticketing-email') as HTMLInputElement;
+      this.logger.log('onSelectedDeptId - selectedDeptId', ticketingEmailElem);
+      ticketingEmailElem.select();
+      try {
+        document.execCommand('copy');
+        this.hasCopiedTicketingEmail = true
+      } catch (err) {
+        this.logger.error('Fallback: Oops, unable to copy', err);
+      }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction();
     }
   }
 
+  handleBlockedSelectClick(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.notify.presentDialogNoPermissionToPermomfAction();
+  }
 
+  disableContextMenu(event: MouseEvent) {
+    if (!this.PERMISSION_TO_UPDATE) {
+      event.preventDefault();
+    }
+  }
 
-
+  disableCopy(event: ClipboardEvent) {
+    if (!this.PERMISSION_TO_UPDATE) {
+      event.preventDefault();
+    }
+  }
 
   getDeptsByProjectId() {
     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
@@ -155,10 +228,14 @@ export class EmailTicketingComponent implements OnInit {
   }
 
   copyTicketingEmailDept() {
-    const ticketingEmailDeptElem = document.getElementById('ticketing-email-dept') as HTMLInputElement;
-    this.logger.log('onSelectedDeptId - selectedDeptId', ticketingEmailDeptElem);
-    ticketingEmailDeptElem.select();
-    document.execCommand('copy');
+    if (this.PERMISSION_TO_UPDATE) {
+      const ticketingEmailDeptElem = document.getElementById('ticketing-email-dept') as HTMLInputElement;
+      this.logger.log('onSelectedDeptId - selectedDeptId', ticketingEmailDeptElem);
+      ticketingEmailDeptElem.select();
+      document.execCommand('copy');
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+    }
   }
 
 

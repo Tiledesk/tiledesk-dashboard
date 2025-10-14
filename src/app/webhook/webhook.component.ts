@@ -7,6 +7,10 @@ import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { BrandService } from 'app/services/brand.service';
 import { RoleService } from 'app/services/role.service';
+import { Subject } from 'rxjs';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { takeUntil } from 'rxjs/operators';
+import { RolesService } from 'app/services/roles.service';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -30,6 +34,11 @@ export class WebhookComponent implements OnInit {
   public hideHelpLink: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
@@ -38,7 +47,8 @@ export class WebhookComponent implements OnInit {
     private logger: LoggerService,
     private auth: AuthService,
     public brandService: BrandService,
-    public roleService: RoleService
+    public roleService: RoleService,
+    public rolesService: RolesService
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -51,11 +61,56 @@ export class WebhookComponent implements OnInit {
     this.translateNotificationMsgs();
     this.getBrowserVersion() ;
     this.listenSidebarIsOpened();
+    this.checkPermissions()
+    this.listenToProjectUser()
   }
+
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('webhook')
+    console.log('[WEBHOOK] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[WEBHOOK] isAuthorized ', this.isAuthorized)
+    console.log('[WEBHOOK] permissionChecked ', this.permissionChecked)
+  }
+
+   listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+  
+          console.log('[WEBHOOK] - Role:', status.role);
+          console.log('[WEBHOOK] - Permissions:', status.matchedPermissions);
+  
+          // PERMISSION TO UPDATE
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+  
+            if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_UPDATE)) {
+              this.PERMISSION_TO_UPDATE = true
+              console.log('[WEBHOOK] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            } else {
+              this.PERMISSION_TO_UPDATE = false
+              console.log('[WEBHOOK] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            }
+          } else {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[WEBHOOK] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+  
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[USER-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.logger.log('[WEBHOOK] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
@@ -105,6 +160,10 @@ export class WebhookComponent implements OnInit {
   }
 
   presentWebhookModal_inAddMode() {
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     const webhook_add_subscription_btn = <HTMLElement>document.querySelector('.webhook-add-subscription-btn');
     webhook_add_subscription_btn.blur();
     this.selectWebhookId = null;
@@ -114,6 +173,10 @@ export class WebhookComponent implements OnInit {
   }
 
   presentWebhookModal_inEditMode(subscriptionID: string) {
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.selectWebhookId = subscriptionID;
     this.displayModal_AddEditWebhook = 'block';
     this.modalMode = 'edit';
@@ -145,6 +208,10 @@ export class WebhookComponent implements OnInit {
   }
 
   showModal_ConfirmDeleteSubscription(subscriptionID) {
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.subscriptionIDToDelete = subscriptionID;
     this.displayModal_ConfirmDeleteModal = 'block';
   }

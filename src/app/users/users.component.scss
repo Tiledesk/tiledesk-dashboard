@@ -690,7 +690,7 @@ $f21blue: #039be5;
   cursor: pointer;
   border: unset;
   padding: 0 6px;
-  text-transform: var(--cl-card-item-stats-values-text-transform);
+  // text-transform: var(--cl-card-item-stats-values-text-transform);
   // background: rgb(226, 232, 239);
   // border-radius: 15px;
   // text-transform: capitalize;
@@ -702,8 +702,9 @@ $f21blue: #039be5;
   // height: 30px;
 }
 #pu-status-wpr:hover > div > .select-teammate-status {
-  height: 30px;
-  background-color: #eef0fc
+  // height: 30px;
+  background-color: #eef0fc;
+  border-radius: 9999px;
 }
 // .select-teammate-status:hover { 
 //   height: 30px;
@@ -814,4 +815,43 @@ $f21blue: #039be5;
 
 .link-to-action-wpr > span:hover {
   text-decoration: underline;
+}
+
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.container-flex {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 15px 26px;
+}
+
+.flex-left {
+  flex: 1; /* Occupa 1 parte dello spazio disponibile */
+}
+
+.flex-center {
+  flex: 2; /* Occupa 2 parti dello spazio disponibile */
+  display: flex;
+  justify-content: center;
+}
+
+.flex-right {
+  flex: 1; /* Occupa 1 parte dello spazio disponibile */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  color: #647491;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: center;
 }

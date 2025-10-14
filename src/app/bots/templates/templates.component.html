@@ -57,6 +57,7 @@
                 [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
                 [chatBotCount]="chatBotCount"
                 [myChatbotOtherCount]="myChatbotOtherCount"
+                [chatBotCount]="chatBotCount"
                 [automationsCount]="automationsCount" 
                 [flowWebhooksCount]="flowWebhooksCount"
                 [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
@@ -262,7 +263,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                               
                                 <div class="template-card" *ngFor="let template of templates"
                                     [ngClass]="{'template-card-one-template': templates?.length === 1}">
                                     <!-- <svg aria-hidden="true" focusable="false"
@@ -302,7 +303,8 @@
                                     <div class="use-template-btn-row use-template-btn-wpr">
                                         <!-- btn-new btn-size-l btn--primary btn-block -->
                                         <button type="button" class="btn btn-tdblu-no-boxshadow"
-                                            (click)="openDialog(template)" style="width: 100%;">
+                                            (click)="openDialog(template)" style="width: 100%;"
+                                            [disabled]="!PERMISSION_TO_ADD_FLOWS">
 
                                             <span>
                                                 {{'UseTemplate' | translate}}

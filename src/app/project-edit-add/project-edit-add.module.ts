@@ -8,6 +8,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +19,7 @@ import { MatListModule } from '@angular/material/list';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
-  { path: "", component: ProjectEditAddComponent},
+  { path: "", component: ProjectEditAddComponent },
 ];
 
 @NgModule({
@@ -36,6 +37,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MomentModule,
     MatTooltipModule,
+    UnauthorizedForSettingsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,

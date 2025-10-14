@@ -5,41 +5,44 @@
 </p>
 
 <div class="main-content" style="padding-top:0px;padding-left:0px; padding-right:0px">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
+  <!-- <ng-container *ngIf="permissionChecked">
+    <ng-container *ngIf="isAuthorized; else unauthorizedTpl"> -->
+      <div class="container-fluid">
 
-        <!-- ------------------------------------------------------- -->
-        <!-- Search card -->
-        <!-- ------------------------------------------------------- -->
-        <div class="card search-card card--no-border" style="margin-bottom: 5px;margin-top: 0px; padding: 15px;">
-          <div class="card-content" style="padding-top: 0px;padding-bottom: 0px;">
-            <!-- <div class="card-header" style="background-color:#ffffff; padding: 8px;"> -->
+        <div class="row">
+          <div class="col-md-12">
 
-            <!-- *********************** // PAGINATION // ***********************  -->
-            <!-- <div class="row">
+            <!-- ------------------------------------------------------- -->
+            <!-- Search card -->
+            <!-- ------------------------------------------------------- -->
+            <div class="card search-card card--no-border" style="margin-bottom: 5px;margin-top: 0px; padding: 15px;">
+              <div class="card-content" style="padding-top: 0px;padding-bottom: 0px;">
+                <!-- <div class="card-header" style="background-color:#ffffff; padding: 8px;"> -->
+
+                <!-- *********************** // PAGINATION // ***********************  -->
+                <!-- <div class="row">
                     <div class="col-md-12">
                       <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
                         <div style="width: 120px;">
                           <div class="input-group"> -->
 
-            <!-- -------====== BTN DECREASE PAGE  ======------ -->
-            <!-- <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                <!-- <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
                               <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" 
                                style="padding: 6px 8px">
                                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                               </button>
                             </span> -->
 
-            <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-            <!-- <span class="input-group-btn" style="padding-right:0px;">
+                <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                <!-- <span class="input-group-btn" style="padding-right:0px;">
                               <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
                                 {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                               </button>
                             </span> -->
 
-            <!-- -------====== BTN INCREASE PAGE  ======------ -->
-            <!-- <span class="input-group-btn" style="padding-right:0px">
+                <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                <!-- <span class="input-group-btn" style="padding-right:0px">
                               <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" 
                                (click)="increasePageNumber()" style="padding: 6px 8px">
                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
@@ -54,252 +57,249 @@
                   </div> -->
 
 
-            <form #myForm="ngForm" novalidate class="search-form">
-              <!-- test start -->
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="input-group full-text-input">
+                <form #myForm="ngForm" novalidate class="search-form">
+                  <!-- test start -->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="input-group full-text-input">
 
-                    <!-- // SEARCH FULL-TEXT BTN -->
-                    <span class="input-group-btn" style="padding-right: 2px;">
-                      <button class="custom-input-group---btn" type="submit">
-                        <i class="fa fa-search fa-search-btn" (click)="search()"
-                          style="color:grey; font-size: 18px;"></i>
-                      </button>
-                    </span>
-                    <!-- (ngModelChange)="onChangeFullText($event)" (keyup.enter)="search()"  (focus)="onFocusSearchField()" {{ 'SearchYourContacts' | translate }} placeholder=" {{fullTextSearchPlaholder}}" -->
-                    <div class="search_field_wrap">
-                      <input (keyup.enter)="search()" id="search_field" name="fullText"
-                        (focus)="onfocusFullTextSearchField($event)" [(ngModel)]="fullText"  autocomplete="off"
-                        class="search-field"
-                        [placeholder]="hasClickedTrashed === false ? searchInYourContactsPlaceholder : searchInTrashPlaceholder">
-                    </div>
-                    <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-                    <!-- *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" -->
-                    <span
-                      *ngIf="fullText?.length > 0 || selectedContactEmail?.length > 0 || selectedContactTAG?.length > 0"
-                      class="input-group-btn" style="padding-right: 2px;">
-                      <button class="custom-input-group---btn" type="button">
-                        <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
-                          style="color:grey; font-size: 18px;"></i>
-                      </button>
-                    </span>
+                        <!-- // SEARCH FULL-TEXT BTN -->
+                        <span class="input-group-btn" style="padding-right: 2px;">
+                          <button class="custom-input-group---btn" type="submit">
+                            <i class="fa fa-search fa-search-btn" (click)="search()"
+                              style="color:grey; font-size: 18px;"></i>
+                          </button>
+                        </span>
+                        <!-- (ngModelChange)="onChangeFullText($event)" (keyup.enter)="search()"  (focus)="onFocusSearchField()" {{ 'SearchYourContacts' | translate }} placeholder=" {{fullTextSearchPlaholder}}" -->
+                        <div class="search_field_wrap">
+                          <input (keyup.enter)="search()" id="search_field" name="fullText"
+                            (focus)="onfocusFullTextSearchField($event)" [(ngModel)]="fullText" autocomplete="off"
+                            class="search-field"
+                            [placeholder]="hasClickedTrashed === false ? searchInYourContactsPlaceholder : searchInTrashPlaceholder">
+                        </div>
+                        <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                        <!-- *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" -->
+                        <span
+                          *ngIf="fullText?.length > 0 || selectedContactEmail?.length > 0 || selectedContactTAG?.length > 0"
+                          class="input-group-btn" style="padding-right: 2px;">
+                          <button class="custom-input-group---btn" type="button">
+                            <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
+                              style="color:grey; font-size: 18px;"></i>
+                          </button>
+                        </span>
 
-                    <!-- // OPEN ADVANCED OPTION BTN NOTE: the class "dropdown keep-open" Keep Dropdown Open -->
-                    <span id="dropdown_input_group_btn" class="input-group-btn dropdown keep-open"
-                      style="padding-left: 2px;position: static;">
-                      <button class="custom-input-group---btn dropdown-toggle" id="dropdown_btn" type="button"
-                        data-toggle="dropdown">
-                        <i class="fa fa-caret-down fa-advanced-option-btn" style="color:grey; font-size: 18px;"></i>
-                      </button>
+                        <!-- // OPEN ADVANCED OPTION BTN NOTE: the class "dropdown keep-open" Keep Dropdown Open -->
+                        <span id="dropdown_input_group_btn" class="input-group-btn dropdown keep-open"
+                          style="padding-left: 2px;position: static;">
+                          <button class="custom-input-group---btn dropdown-toggle" id="dropdown_btn" type="button"
+                            data-toggle="dropdown">
+                            <i class="fa fa-caret-down fa-advanced-option-btn" style="color:grey; font-size: 18px;"></i>
+                          </button>
 
 
-                      <div class="dropdown-menu dropdown-menu-right" style="left: 0;padding: 15px; margin-top: 3px;border-radius: 12px;"
-                        (click)="$event.stopPropagation()">
-                        <div class="lead-advanced-search-container"></div>
-                        <!-- <div class="row"> -->
-                        <div class="col-sm-6">
-                          <div class="col-sm-12">
-                            <div class="form-group"
-                              style="margin-top: 6px;padding-bottom: 0px !important;margin-right: 3px;;">
-                              <!-- class="form-control" -->
-                              <!-- <input id="lead--email" type="email" (keyup.enter)="search()"
+                          <div class="dropdown-menu dropdown-menu-right"
+                            style="left: 0;padding: 15px; margin-top: 3px;border-radius: 12px;"
+                            (click)="$event.stopPropagation()">
+                            <div class="lead-advanced-search-container"></div>
+                            <!-- <div class="row"> -->
+                            <div class="col-sm-6">
+                              <div class="col-sm-12">
+                                <div class="form-group"
+                                  style="margin-top: 6px;padding-bottom: 0px !important;margin-right: 3px;;">
+                                  <!-- class="form-control" -->
+                                  <!-- <input id="lead--email" type="email" (keyup.enter)="search()"
                                 style="margin-top:2px;border-radius:5px!important" name="contactEmail"
                                 autocomplete="off" [(ngModel)]="selectedContactEmail"
                                 placeholder="{{ 'SearchByEmail' | translate }}"> -->
-                              <label class="col-sm-12 label-7695a5" style="margin-top: 2px;">
-                                {{ 'SearchByEmail' | translate }}
-                              </label>
+                                  <label class="col-sm-12 label-7695a5" style="margin-top: 2px;">
+                                    {{ 'SearchByEmail' | translate }}
+                                  </label>
 
-                              <ng-select [items]="emailArray" bindLabel="name" bindValue="name"
-                                placeholder="{{'SelectAnEmail' | translate}}" [(ngModel)]="selectedContactEmail"
-                                (change)="emailSelected()" [clearable]='false'>
-                                <ng-template ng-label-tmp let-item="item">
+                                  <ng-select [items]="emailArray" bindLabel="name" bindValue="name"
+                                    placeholder="{{'SelectAnEmail' | translate}}" [(ngModel)]="selectedContactEmail"
+                                    (change)="emailSelected()" [clearable]='false'>
+                                    <ng-template ng-label-tmp let-item="item">
 
-                                  <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                  <span>{{item.name}}</span>
-                                </ng-template>
-                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                      <span>{{item.name}}</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
 
-                                  <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                  <span>{{item.name}}</span>
-                                </ng-template>
-                              </ng-select>
+                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                      <span>{{item.name}}</span>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                              </div>
+
                             </div>
-                          </div>
-
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="col-sm-12">
-                            <div class="form-group" style="margin-top: 8px;margin-left: 3px;">
-                              <!-- <input (keyup.enter)="search()" style="margin-top:2px;border-radius:5px!important"
+                            <div class="col-sm-6">
+                              <div class="col-sm-12">
+                                <div class="form-group" style="margin-top: 8px;margin-left: 3px;">
+                                  <!-- <input (keyup.enter)="search()" style="margin-top:2px;border-radius:5px!important"
                                 class="form-control" name="contactTag" autocomplete="off"
                                 [(ngModel)]="selectedContactTAG" placeholder="Search by TAG"> -->
 
-                              <label class="col-sm-12 label-7695a5">
-                                {{ 'Tags.SearchByTAG' | translate }}
-                              </label>
-                              <ng-select [items]="tagsArray" 
-                                bindLabel="name" bindValue="name"
-                                placeholder="{{'Tags.SelectTag' | translate}}" 
-                                [(ngModel)]="selectedContactTAG"
-                                (change)="tagNameSelected()" 
-                                [clearable]='false'>
-                                <ng-template ng-label-tmp let-item="item">
+                                  <label class="col-sm-12 label-7695a5">
+                                    {{ 'Tags.SearchByTAG' | translate }}
+                                  </label>
+                                  <ng-select [items]="tagsArray" bindLabel="name" bindValue="name"
+                                    placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selectedContactTAG"
+                                    (change)="tagNameSelected()" [clearable]='false'>
+                                    <ng-template ng-label-tmp let-item="item">
 
-                                  <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                  <span>{{item.name}}</span>
-                                </ng-template>
-                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                      <span>{{item.name}}</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
 
-                                  <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                  <span>{{item.name}}</span>
-                                </ng-template>
-                              </ng-select>
+                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                      <span>{{item.name}}</span>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <div class="col-sm-12" style="text-align: right;">
+                              <button id="cnct-search-btn" type="submit"
+                                class="btn btn-tdblu-no-boxshadow searchbtn pull-right" (click)="search()">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                {{'Search'|translate}}
+                              </button>
+                              <button id="clear-search-btn" type="submit"
+                                class="btn btn-gray-no-boxshadow clearsearchbtn pull-right" (click)="clearFullText()">
+
+                                {{'ResetFilters'|translate}}
+                              </button>
                             </div>
                           </div>
-                        </div>
-                        <!-- </div> -->
+                        </span>
+                      </div><!-- /input-group -->
+                    </div>
 
-                        <div class="col-sm-12" style="text-align: right;">
-                          <button id="cnct-search-btn"
-                            type="submit" class="btn btn-tdblu-no-boxshadow searchbtn pull-right" (click)="search()">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                            {{'Search'|translate}}
-                          </button>
-                          <button id="clear-search-btn"
-                            type="submit" class="btn btn-gray-no-boxshadow clearsearchbtn pull-right"
-                            (click)="clearFullText()">
-
-                            {{'ResetFilters'|translate}}
-                          </button>
-                        </div>
-                      </div>
-                    </span>
-                  </div><!-- /input-group -->
-                </div>
-
+                  </div>
+                  <!-- test end -->
+                </form>
               </div>
-              <!-- test end -->
-            </form>
-          </div>
-        </div>
+            </div>
 
-        <ng-container *ngIf="HAS_SEARCHED">
-          <div class="lead-applied-filter-wpr" *ngIf="fullText || selectedContactEmail || selectedContactTAG">
-            <div class="lead-applied-filter-title"> {{'AppliedFilters' | translate}} </div>
-            <!-- --------------------------- -->
-            <!-- Full text -->
-            <!-- --------------------------- -->
-            <div *ngIf="fullText" class="lead-applied-filter">
-              <div class="lead-filter-icon-and-text-wpr">
-                <div class="lead-icon-wpr" style="height: 19px;">
-                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 212.6 127.6"
-                    style="enable-background:new 0 0 212.6 127.6; width: 30px;" xml:space="preserve">
-                    <style type="text/css">
-                      .st0 {
-                        fill: #203250;
-                      }
-                    </style>
-                    <g>
-                      <path class="st0" d="M182.5,5.3H30.1C16.6,5.3,5.6,16.2,5.6,29.7v68.1c0,13.5,10.9,24.5,24.5,24.5h152.4
+            <ng-container *ngIf="HAS_SEARCHED">
+              <div class="lead-applied-filter-wpr" *ngIf="fullText || selectedContactEmail || selectedContactTAG">
+                <div class="lead-applied-filter-title"> {{'AppliedFilters' | translate}} </div>
+                <!-- --------------------------- -->
+                <!-- Full text -->
+                <!-- --------------------------- -->
+                <div *ngIf="fullText" class="lead-applied-filter">
+                  <div class="lead-filter-icon-and-text-wpr">
+                    <div class="lead-icon-wpr" style="height: 19px;">
+                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 212.6 127.6"
+                        style="enable-background:new 0 0 212.6 127.6; width: 30px;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0 {
+                            fill: #203250;
+                          }
+                        </style>
+                        <g>
+                          <path class="st0" d="M182.5,5.3H30.1C16.6,5.3,5.6,16.2,5.6,29.7v68.1c0,13.5,10.9,24.5,24.5,24.5h152.4
                       c13.5,0,24.5-10.9,24.5-24.5V29.7C207,16.2,196,5.3,182.5,5.3z M187,105.3H25.6V22.2H187V105.3z" />
-                      <path class="st0" d="M38.4,92.8c3.3,1.5,7,1,8.3-2.1C49,85.5,53,86,57.3,86.1c3.6,0.1,7.3,0.2,10.9,0c3.1-0.2,5.1,0.4,6.6,3.6
+                          <path class="st0" d="M38.4,92.8c3.3,1.5,7,1,8.3-2.1C49,85.5,53,86,57.3,86.1c3.6,0.1,7.3,0.2,10.9,0c3.1-0.2,5.1,0.4,6.6,3.6
                       c1.5,3.3,4.6,4.7,8.4,3.5c3.4-1.1,5-3.6,5.3-7.1c-0.1-0.6-0.2-1.3-0.4-1.9c-6.3-15.8-13.2-31.3-20.7-46.5c-2.6-5.2-10-4.9-12.5,0.5
                       c-7.1,15-13.7,30.4-20.4,45.6c-0.2,0.4-0.2,1-0.2,1.5C33.7,88.8,35.2,91.3,38.4,92.8z M58.8,65.4c0.7-1.6,1.4-3.2,2.5-5.8
                       c1.6,3.6,2.5,6.2,3.8,8.7c1.5,2.9,0.3,3.2-2.3,3.2C56.1,71.6,56.1,71.7,58.8,65.4z" />
-                      <path class="st0" d="M97,85.1c0.1,5.5,2.7,8.2,8.3,8.4c6.8,0.2,13.6,0.3,20.4-0.1c7.8-0.4,13.6-4.2,16.7-11.4
+                          <path class="st0" d="M97,85.1c0.1,5.5,2.7,8.2,8.3,8.4c6.8,0.2,13.6,0.3,20.4-0.1c7.8-0.4,13.6-4.2,16.7-11.4
                       c3.1-7,1.9-13.6-3.2-19.3c-1.4-1.6-1.6-2.9-1.1-4.8c3.2-12.2-4.8-23.2-17.4-23.9c-5.1-0.3-10.3-0.2-15.4,0
                       c-5.5,0.2-8.2,2.9-8.3,8.4c-0.1,6.9,0,13.9,0,20.8C97,70.6,96.9,77.8,97,85.1z M129,75.1c-0.1,2.7-2.1,3.5-4.5,3.6
                       c-1.8,0.1-3.6,0-5.5,0c-1.3,0-2.7-0.1-4,0c-2.7,0.4-3.5-0.8-3.2-3.4c0.2-2-0.7-4.5,3-4.3c3.3,0.2,6.6-0.1,9.9,0.1
                       C127,71.3,129.1,72.3,129,75.1z M111.8,50.8c0.2-1.5,0.7-2,2.1-1.9c1.8,0.1,3.6,0,5.4,0c2.5,0.1,4.7,0.9,4.7,3.8
                       c0,2.7-2.1,3.4-4.4,3.7c-1,0.1-2,0-2.9,0C111.8,56.5,111.1,55.5,111.8,50.8z" />
-                    </g>
-                  </svg>
-                </div>
-                <div class="lead-text-wpr">
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="lead-text-wpr">
 
-                  {{fullText }}
+                      {{fullText }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- --------------------------- -->
+                <!-- Email -->
+                <!-- --------------------------- -->
+                <div *ngIf="selectedContactEmail" class="lead-applied-filter">
+                  <div class="lead-filter-icon-and-text-wpr">
+                    <div class="lead-icon-wpr" style="height: 16px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 16px;">
+
+                        <path
+                          d="M256 64C150 64 64 150 64 256s86 192 192 192c17.7 0 32 14.3 32 32s-14.3 32-32 32C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256v32c0 53-43 96-96 96c-29.3 0-55.6-13.2-73.2-33.9C320 371.1 289.5 384 256 384c-70.7 0-128-57.3-128-128s57.3-128 128-128c27.9 0 53.7 8.9 74.7 24.1c5.7-5 13.1-8.1 21.3-8.1c17.7 0 32 14.3 32 32v80 32c0 17.7 14.3 32 32 32s32-14.3 32-32V256c0-106-86-192-192-192zm64 192a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z" />
+                      </svg>
+                    </div>
+                    <div class="lead-text-wpr">
+                      {{selectedContactEmail }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- --------------------------- -->
+                <!-- Tag -->
+                <!-- --------------------------- -->
+                <div *ngIf="selectedContactTAG" class="lead-applied-filter">
+                  <div class="lead-filter-icon-and-text-wpr">
+                    <div class="lead-icon-wpr" style="height: 16px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 16px;">
+                        <path
+                          d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                      </svg>
+                    </div>
+                    <div class="lead-text-wpr">
+                      {{selectedContactTAG }}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <!-- --------------------------- -->
-            <!-- Email -->
-            <!-- --------------------------- -->
-            <div *ngIf="selectedContactEmail" class="lead-applied-filter">
-              <div class="lead-filter-icon-and-text-wpr">
-                <div class="lead-icon-wpr" style="height: 16px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 16px;">
-
-                    <path
-                      d="M256 64C150 64 64 150 64 256s86 192 192 192c17.7 0 32 14.3 32 32s-14.3 32-32 32C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256v32c0 53-43 96-96 96c-29.3 0-55.6-13.2-73.2-33.9C320 371.1 289.5 384 256 384c-70.7 0-128-57.3-128-128s57.3-128 128-128c27.9 0 53.7 8.9 74.7 24.1c5.7-5 13.1-8.1 21.3-8.1c17.7 0 32 14.3 32 32v80 32c0 17.7 14.3 32 32 32s32-14.3 32-32V256c0-106-86-192-192-192zm64 192a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z" />
-                  </svg>
-                </div>
-                <div class="lead-text-wpr">
-                  {{selectedContactEmail }}
-                </div>
-              </div>
-            </div>
-
-            <!-- --------------------------- -->
-            <!-- Tag -->
-            <!-- --------------------------- -->
-            <div *ngIf="selectedContactTAG" class="lead-applied-filter">
-              <div class="lead-filter-icon-and-text-wpr">
-                <div class="lead-icon-wpr" style="height: 16px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 16px;">
-                    <path
-                      d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-                  </svg>
-                </div>
-                <div class="lead-text-wpr">
-                  {{selectedContactTAG }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
+            </ng-container>
 
 
-        <!-- ------------------------------------------------------- -->
-        <!-- Contacts sidebar -->
-        <!-- ------------------------------------------------------- -->
-        <div id="contacts-page">
-          <div id="contacts-sideBar">
-            <div class="card nav-card">
-              <div class="card-content"
-                style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">
+            <!-- ------------------------------------------------------- -->
+            <!-- Contacts sidebar -->
+            <!-- ------------------------------------------------------- -->
+            <div id="contacts-page">
+              <div id="contacts-sideBar">
+                <div class="card nav-card">
+                  <div class="card-content"
+                    style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">
 
-                <ul style="padding-left: 0px;    list-style: none;">
-                  <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === false}"
-                    (click)="closeTrashContacts()">
+                    <ul style="padding-left: 0px;    list-style: none;">
+                      <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === false}"
+                        (click)="closeTrashContacts()">
 
-                    <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
-                      class="material-icons">contacts</i>
-                    <span style="padding-left: 8px;">{{'Contacts'| translate}} </span>
+                        <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                          class="material-icons">contacts</i>
+                        <span style="padding-left: 8px;">{{'Contacts'| translate}} </span>
 
-                    <span style="float: right; margin-right: 20px;"> {{ countOfActiveContacts }}</span>
-                  </li>
-                  <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === true}"
-                    (click)="openTrashedContact()">
-                    <span>
-                      <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
-                        class="material-icons">delete</i>
-                      <!-- <span class="notification_on_trash">{{ trashedContanctCount }}</span> -->
-                      <span style="padding-left: 8px;"> {{'TrashContacts' | translate}}</span>
+                        <span style="float: right; margin-right: 20px;"> {{ countOfActiveContacts }}</span>
+                      </li>
+                      <li class="nav-contacts-li" [ngClass]="{'nav-contacts-li-active' : hasClickedTrashed === true}"
+                        (click)="openTrashedContact()">
+                        <span>
+                          <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
+                            class="material-icons">delete</i>
+                          <!-- <span class="notification_on_trash">{{ trashedContanctCount }}</span> -->
+                          <span style="padding-left: 8px;"> {{'TrashContacts' | translate}}</span>
 
-                      <span style="float: right; margin-right: 20px;"> {{ trashedContanctCount }}</span>
-                    </span>
-                  </li>
+                          <span style="float: right; margin-right: 20px;"> {{ trashedContanctCount }}</span>
+                        </span>
+                      </li>
 
-                  <!--
+                      <!--
               // -------------------------------------------------------
               // NEW - Visitors
               // ------------------------------------------------------- -->
 
-                  <!-- <li class="nav-contacts-li" (click)="goToVisitors()">
+                      <!-- <li class="nav-contacts-li" (click)="goToVisitors()">
                 <span>
                   <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54); padding-left: 10px;"
                     class="material-icons">group</i>
@@ -309,260 +309,255 @@
 
 
 
-                </ul>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
 
-          <!-- ------------------------------------------------------- -->
-          <!-- Contacts list -->
-          <!-- ------------------------------------------------------- -->
-          <div id="contacts-content">
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="card contact-list" style="margin-top:0px; border-radius: 12px;">
-                  <div class="card-header card-header-custom-bkgrnd"
-                    [ngClass]="{'gray-bckgnd': hasClickedTrashed === true}">
+              <!-- ------------------------------------------------------- -->
+              <!-- Contacts list -->
+              <!-- ------------------------------------------------------- -->
+              <div id="contacts-content">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="card contact-list" style="margin-top:0px; border-radius: 12px;">
+                      <div class="card-header card-header-custom-bkgrnd"
+                        [ngClass]="{'gray-bckgnd': hasClickedTrashed === true}">
 
-                    <div class="row">
-                      <!-- [ngClass]="{'col-xs-6' : hasClickedTrashed === false, 'col-xs-12': hasClickedTrashed === true}"  -->
-                      <div class="col-xs-6">
-                        <span *ngIf="hasClickedTrashed === false">
-                          <button 
-                            class="btn btn-outlined export-to-csv-btn" (click)="exportContactsToCsv()">
-                            {{ 'ExportToCSV' | translate }}
-                            <span class="material-icons">
-                              save_alt
+                        <div class="row">
+                          <!-- [ngClass]="{'col-xs-6' : hasClickedTrashed === false, 'col-xs-12': hasClickedTrashed === true}"  -->
+                          <div class="col-xs-6">
+                            <span *ngIf="hasClickedTrashed === false">
+                              <button class="btn btn-outlined export-to-csv-btn" [disabled]="PERMISSION_TO_EXPORT_LEADS === false" (click)="exportContactsToCsv()">
+                                {{ 'ExportToCSV' | translate }}
+                                <span class="material-icons">
+                                  save_alt
+                                </span>
+                              </button>
                             </span>
-                          </button>
-                        </span>
 
-                        <span *ngIf="hasClickedTrashed === true" style="font-weight: 400;margin-right: 16px;">
-                          <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
-                            class="material-icons">delete</i>
-                  
-                          {{'TrashContacts' | translate}}
-                        </span>
-
-
-                      </div>
-
-                      <div *ngIf="hasClickedTrashed === false" class="col-xs-6" style="text-align: right;">
-                        <div class="mobile-trash-contacs-btn">
-                          <span style="cursor:pointer" (click)="openTrashedContact()">
-                            <span style="font-weight: 400;">
-                              {{'TrashContacts' | translate}}
-                            </span>
-                            <span>
+                            <span *ngIf="hasClickedTrashed === true" style="font-weight: 400;margin-right: 16px;">
                               <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
                                 class="material-icons">delete</i>
-                              <span class="notification_on_trash">{{ trashedContanctCount }}</span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
 
-                      <div *ngIf="hasClickedTrashed === true" class="col-xs-6" style="text-align: right;">
-                        <div class="mobile-trash-contacs-btn" (click)="closeTrashContacts()">
-                          <i class="material-icons" style="vertical-align: middle;">
-                            clear
-                          </i>
-                          <span style="vertical-align: middle;">
-                            {{ 'CloseTrash' |translate}}
-                          </span>
-                          <!-- <button style="padding: 9px 30px;margin-bottom:0px" class="btn btn-default"
+                              {{'TrashContacts' | translate}}
+                            </span>
+
+
+                          </div>
+
+                          <div *ngIf="hasClickedTrashed === false" class="col-xs-6" style="text-align: right;">
+                            <div class="mobile-trash-contacs-btn">
+                              <span style="cursor:pointer" (click)="openTrashedContact()">
+                                <span style="font-weight: 400;">
+                                  {{'TrashContacts' | translate}}
+                                </span>
+                                <span>
+                                  <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
+                                    class="material-icons">delete</i>
+                                  <span class="notification_on_trash">{{ trashedContanctCount }}</span>
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div *ngIf="hasClickedTrashed === true" class="col-xs-6" style="text-align: right;">
+                            <div class="mobile-trash-contacs-btn" (click)="closeTrashContacts()">
+                              <i class="material-icons" style="vertical-align: middle;">
+                                clear
+                              </i>
+                              <span style="vertical-align: middle;">
+                                {{ 'CloseTrash' |translate}}
+                              </span>
+                              <!-- <button style="padding: 9px 30px;margin-bottom:0px" class="btn btn-default"
                 (click)="closeTrashContacts()">
                  {{ 'CloseTrash' |translate}}
 
               </button>  -->
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
-                  <div *ngIf="!showSpinner" class="card-content table-responsive">
+                      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                      <div *ngIf="!showSpinner" class="card-content table-responsive">
 
-                    <table class="table table-hover">
-                      <thead class="text">
-                        <tr>
+                        <table class="table table-hover">
+                          <thead class="text">
+                            <tr>
 
-                          <!-- ===== CONTACT NAME ===== -->
-                          <!-- style="width: 20%;" -->
-                          <th>
-                            <span class="column-th-span">
-                              {{ 'Contact' | translate }}
-                            </span>
-                          </th>
+                              <!-- ===== CONTACT NAME ===== -->
+                              <!-- style="width: 20%;" -->
+                              <th>
+                                <span class="column-th-span">
+                                  {{ 'Contact' | translate }}
+                                </span>
+                              </th>
 
-                          <!-- ===== CHAT WITH ===== -->
-                          <!-- style="width: 20%;" -->
-                          <!-- <th> </th> -->
+                              <!-- ===== CHAT WITH ===== -->
+                              <!-- style="width: 20%;" -->
+                              <!-- <th> </th> -->
 
-                          <!-- ===== CONTACT EMAIL ===== -->
+                              <!-- ===== CONTACT EMAIL ===== -->
 
-                          <th>
-                            <span class="column-th-span">
-                              Email
-                            </span>
-                          </th>
+                              <th>
+                                <span class="column-th-span">
+                                  Email
+                                </span>
+                              </th>
 
-                          <!-- ===== CREATED ===== -->
-                          <!-- style="width: 20%;" -->
-                          <th>
-                            <span class="column-th-span">
-                              {{ 'Created' | translate }}
-                            </span>
-                          </th>
+                              <!-- ===== CREATED ===== -->
+                              <!-- style="width: 20%;" -->
+                              <th>
+                                <span class="column-th-span">
+                                  {{ 'Created' | translate }}
+                                </span>
+                              </th>
 
-                          <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
-                          <!-- style="width: 20%;" -->
-                          <th>
-                            <span class="column-th-span">
-                              {{ 'Actions' | translate }}
-                            </span>
-                          </th>
+                              <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
+                              <!-- style="width: 20%;" -->
+                              <th>
+                                <span class="column-th-span">
+                                  {{ 'Actions' | translate }}
+                                </span>
+                              </th>
 
-                        </tr>
-                      </thead>
-                      <tbody>
+                            </tr>
+                          </thead>
+                          <tbody>
 
-                        <!-- ===== IF THERE ISN'T CONTACTS ===== -->
-                        <tr *ngIf="contacts && contacts?.length === 0">
-                          <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
+                            <!-- ===== IF THERE ISN'T CONTACTS ===== -->
+                            <tr *ngIf="contacts && contacts?.length === 0">
+                              <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
 
-                            <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                              {{ 'NoContact' | translate }}
-                            </p>
-                          </td>
-                        </tr>
+                                <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                                  {{ 'NoContact' | translate }}
+                                </p>
+                              </td>
+                            </tr>
 
-                        <tr *ngFor="let contact of contacts">
+                            <tr *ngFor="let contact of contacts">
 
-                          <!-- ===== CONTACT NAME ===== -->
-                          <!-- [ngStyle]="{'background-color': contact?.avatar_fill_colour }" -->
-                          <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
-                            <span class="avatar"
-                              [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + contact?.avatar_fill_colour + ')'}">
-                              <span style="color: #ffffff"> {{ contact?.name_initial }} </span>
-                            </span>
-                            <span *ngIf="contact?.contact_is_verified === true" class="contact-verified-icon-wpr"    
-                                matTooltipClass="custom-mat-tooltip" 
-                                matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100">
-                              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
-                                width="18" height="18" style="position: relative;left: -47px;top: -7px;"
-                                xml:space="preserve">
-                                <style type="text/css">
-                                  .st0 {
-                                    fill: none;
-                                  }
+                              <!-- ===== CONTACT NAME ===== -->
+                              <!-- [ngStyle]="{'background-color': contact?.avatar_fill_colour }" -->
+                              <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                                <span class="avatar"
+                                  [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + contact?.avatar_fill_colour + ')'}">
+                                  <span style="color: #ffffff"> {{ contact?.name_initial }} </span>
+                                </span>
+                                <span *ngIf="contact?.contact_is_verified === true" class="contact-verified-icon-wpr"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}" #tooltip="matTooltip"
+                                  matTooltipPosition='above' matTooltipHideDelay="100">
+                                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                                    width="18" height="18" style="position: relative;left: -47px;top: -7px;"
+                                    xml:space="preserve">
+                                    <style type="text/css">
+                                      .st0 {
+                                        fill: none;
+                                      }
 
-                                  .st1 {
-                                    fill: #FFFFFF;
-                                  }
+                                      .st1 {
+                                        fill: #FFFFFF;
+                                      }
 
-                                  .st2 {
-                                    fill: #18BDF7;
-                                  }
-                                </style>
-                                <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                                <path class="st1"
-                                  d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                                <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                      .st2 {
+                                        fill: #18BDF7;
+                                      }
+                                    </style>
+                                    <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                                    <path class="st1"
+                                      d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                                    <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
                                   l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                              </svg>
-                            </span>
+                                  </svg>
+                                </span>
 
-                            <span class="column-td" style="margin-left: 10px;"
-                              [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
-                             <!-- {{ contact?.fullname }} -->
-                             {{ contact?.fullname?.length > 40 ? (contact?.fullname | slice:0:37) + '...' : contact?.fullname}}
-                            </span>
+                                <span class="column-td" style="margin-left: 10px;"
+                                  [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
+                                 <!-- {{ contact?.fullname }} -->
+                                  {{ contact?.fullname?.length > 40 ? (contact?.fullname | slice:0:37) + '...' : contact?.fullname}}
+                                </span>
 
-                            <span *ngIf="!contact?.fullname" class="column-td"
-                              [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
-                              n.a
-                            </span>
+                                <span *ngIf="!contact?.fullname" class="column-td"
+                                  [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
+                                  n.a
+                                </span>
 
-                            <!-- --------------------------------------- -->
-                            <!-- Request Tag -->
-                            <!-- --------------------------------------- -->
-                            <section style="max-width: 210px;position: absolute;
-                        left: 60px;
-                        top: 35px;" *ngIf="contact?.tags?.length > 0">
+                                <!-- --------------------------------------- -->
+                                <!-- Request Tag -->
+                                <!-- --------------------------------------- -->
+                                <section style="max-width: 210px;position: absolute; left: 60px;top: 35px;" *ngIf="contact?.tags?.length > 0">
 
-                              <div style="display: inline-block;" *ngFor="let tag of contact?.tags;  let i=index">
-                                <div *ngIf="i<2">
-                                  <div class="icon-container" style="display: inline-block;margin-left: 2px;">
-                                    <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false"
-                                      data-prefix="fas" data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16"
-                                      role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                      fill="#757575">
+                                  <div style="display: inline-block;" *ngFor="let tag of contact?.tags;  let i=index">
+                                    <div *ngIf="i<2">
+                                      <div class="icon-container" style="display: inline-block;margin-left: 2px;">
+                                        <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false"
+                                          data-prefix="fas" data-icon="tag"
+                                          class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#757575">
 
-                                      <path class="tag_icon_in_ws_msgs"
-                                        d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                      </path>
-                                    </svg>
+                                          <path class="tag_icon_in_ws_msgs"
+                                            d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                          </path>
+                                        </svg>
 
-                                    <span class="lead-list--lead-tag">
-                                      {{ tag }}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-
-
-                              <!-- -------------------------------------------------------------------- -->
-                              <!-- Display more tags -->
-                              <!-- -------------------------------------------------------------------- -->
-                              <div [id]="'more_tags_btn_' + contact?._id" style="display: inline-block;"
-                                *ngIf="contact?.tags?.length > 2">
-                                <a (click)="$event.stopPropagation(); displayMoreTags(contact?._id)"
-                                  class="display-more-tags-btn">
-                                  ...{{contact?.tags?.length - 2}} {{'more' | translate}}
-                                </a>
-                              </div>
-
-
-                              <!-- -------------------------------------------------------------------- -->
-                              <!-- Tag from 3 to ... -->
-                              <!-- -------------------------------------------------------------------- -->
-                              <div (click)="$event.stopPropagation(); displayLessTag(contact?._id)"
-                                [id]="'more_tags_' + contact?._id" style="display: none"
-                                *ngIf="contact?.tags?.length > 2">
-                                <div style="display: inline-block;" *ngFor="let tag of contact?.tags;  let i=index">
-                                  <div *ngIf="i >= 2">
-                                    <div class="icon-container" style="display: inline-block; margin-right: 2px;">
-                                      <svg style="width: 10px; height: auto;fill: #757575" aria-hidden="true"
-                                        focusable="false" data-prefix="fas" data-icon="tag"
-                                        class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                        <!-- [ngStyle]="{'fill':tag.color}" -->
-                                        <path class="tag_icon_in_ws_msgs"
-                                          d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                        </path>
-                                      </svg>
-
-                                      <span class="lead-list--lead-tag">
-                                        {{ tag}}
-                                      </span>
-
+                                        <span class="lead-list--lead-tag">
+                                          {{ tag }}
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
 
-                            </section>
 
-                          </td>
+                                  <!-- -------------------------------------------------------------------- -->
+                                  <!-- Display more tags -->
+                                  <!-- -------------------------------------------------------------------- -->
+                                  <div [id]="'more_tags_btn_' + contact?._id" style="display: inline-block;"
+                                    *ngIf="contact?.tags?.length > 2">
+                                    <a (click)="$event.stopPropagation(); displayMoreTags(contact?._id)"
+                                      class="display-more-tags-btn">
+                                      ...{{contact?.tags?.length - 2}} {{'more' | translate}}
+                                    </a>
+                                  </div>
 
-                          <!-- ========== CHAT WITH ========== -->
-                           <!-- <td style="width: 1%;">
+
+                                  <!-- -------------------------------------------------------------------- -->
+                                  <!-- Tag from 3 to ... -->
+                                  <!-- -------------------------------------------------------------------- -->
+                                  <div (click)="$event.stopPropagation(); displayLessTag(contact?._id)"
+                                    [id]="'more_tags_' + contact?._id" style="display: none"
+                                    *ngIf="contact?.tags?.length > 2">
+                                    <div style="display: inline-block;" *ngFor="let tag of contact?.tags;  let i=index">
+                                      <div *ngIf="i >= 2">
+                                        <div class="icon-container" style="display: inline-block; margin-right: 2px;">
+                                          <svg style="width: 10px; height: auto;fill: #757575" aria-hidden="true"
+                                            focusable="false" data-prefix="fas" data-icon="tag"
+                                            class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <!-- [ngStyle]="{'fill':tag.color}" -->
+                                            <path class="tag_icon_in_ws_msgs"
+                                              d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                            </path>
+                                          </svg>
+
+                                          <span class="lead-list--lead-tag">
+                                            {{ tag}}
+                                          </span>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </section>
+
+                              </td>
+
+                              <!-- ========== CHAT WITH ========== -->
+                              <!-- <td style="width: 1%;">
                             <span>
                               <span class="White__Tooltip">
                                 <i class="material-icons chat-with-agent"
@@ -582,51 +577,52 @@
                             </span>
                           </td>  -->
 
-                          <!-- ========== CONTACT EMAIL ========== -->
-                          <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                              <!-- ========== CONTACT EMAIL ========== -->
+                              <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
 
-                            <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
-                              {{ contact?.email }}
-                            </p>
+                                <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+                                  {{ contact?.email }}
+                                </p>
 
-                            <p class="column-td" *ngIf="!contact?.email" style="margin-bottom: 5px; margin-top: 5px">
-                              N/A
-                            </p>
-                          </td>
+                                <p class="column-td" *ngIf="!contact?.email"
+                                  style="margin-bottom: 5px; margin-top: 5px">
+                                  N/A
+                                </p>
+                              </td>
 
-                          <!-- ========== CREATED AT ========== -->
-                          <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                              <!-- ========== CREATED AT ========== -->
+                              <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
 
-                            <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+                                <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
 
-                              {{ contact?.createdAt | amTimeAgo }}
-                              <!-- ({{ contact?.createdAt | date: 'd/M/y HH:mm' }})  -->
+                                  {{ contact?.createdAt | amTimeAgo }}
+                                  <!-- ({{ contact?.createdAt | date: 'd/M/y HH:mm' }})  -->
 
-                            </p>
-                          </td>
+                                </p>
+                              </td>
 
-                          <!-- ========== ICONS EDIT CONTACT - VIEW CONTACT REQUESTS - REMOVE CONTACT ========== -->
-                          <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
+                              <!-- ========== ICONS EDIT CONTACT - VIEW CONTACT REQUESTS - REMOVE CONTACT ========== -->
+                              <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
 
-                          <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
-                            style="padding-left: 0px;padding-top: 17px!important;">
+                              <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
+                                style="padding-left: 0px;padding-top: 17px!important;">
 
-                            <!-- VIEW CONVERSATIONS {{ 'ViewContactRequests' | translate }}  -->
-                            <button type="button" class="btn btn-primary btn-simple btn-xs"
-                              (click)='goToContactDetails(contact?._id)'
-                              matTooltipClass="custom-mat-tooltip" 
-                              matTooltip="{{ 'ContactDetails' | translate }}" 
-                              #tooltip="matTooltip"
-                              matTooltipPosition='above' 
-                              matTooltipHideDelay="100">
-                              <i class="material-icons">contact_page</i>
-                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
+                                <!-- VIEW CONVERSATIONS {{ 'ViewContactRequests' | translate }}  -->
+                                <button type="button" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='goToContactDetails(contact?._id)' 
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'ContactDetails' | translate }}" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='above' 
+                                  matTooltipHideDelay="100">
+                                  <i class="material-icons">contact_page</i>
+                                  <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'ContactDetails' | translate }}
                               </span> -->
-                            </button>
+                                </button>
 
-                            <!-- EDIT CONTACT -->
-                            <!-- <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                                <!-- EDIT CONTACT -->
+                                <!-- <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
                               (click)='goToEditContact(contact?._id)'>
                               <i class="material-icons">edit</i>
                               <span class="tooltiptext-custom" style="text-transform:none">
@@ -634,110 +630,109 @@
                               </span>
                             </button> -->
 
-                            <!-- DELETE CONTACT {{ 'DeleteContact' | translate }} -->
-                            <button type="button" class="btn btn-danger btn-simple btn-xs"
-                              [disabled]="IS_CURRENT_USER_AGENT === true"
-                              (click)='moveContactToTrash(contact?._id, contact?.fullname)'
-                              matTooltipClass="custom-mat-tooltip" 
-                              matTooltip="{{ 'MoveToTrash' | translate }}" 
-                              #tooltip="matTooltip"
-                              matTooltipPosition='above' 
-                              matTooltipHideDelay="100">
-                              <i class="material-icons">delete</i>
-                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
+                                <!-- DELETE CONTACT {{ 'DeleteContact' | translate }} -->
+                                <button type="button" class="btn btn-danger btn-simple btn-xs"
+                                  [disabled]="IS_CURRENT_USER_AGENT === true || PERMISSION_TO_TRASH_LEAD === false"
+                                  (click)='moveContactToTrash(contact?._id, contact?.fullname)'
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="{{ 'MoveToTrash' | translate }}"
+                                  #tooltip="matTooltip" 
+                                  matTooltipPosition='above' 
+                                  matTooltipHideDelay="100">
+                                  <i class="material-icons">delete</i>
+                                  <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'MoveToTrash' | translate }}
                               </span> -->
-                            </button>
-                          </td>
+                                </button>
+                              </td>
 
-                          <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
-                            style="padding-left: 0px;padding-top: 17px !important;">
-                            <button type="button" class="btn btn-danger btn-simple btn-xs"
-                              [disabled]="IS_CURRENT_USER_OWNER !== true"
-                              (click)='deleteContactForever(contact?._id, contact?.fullname)'
-                              matTooltipClass="custom-mat-tooltip" 
-                              matTooltip="{{ 'DeleteContact' | translate }}" 
-                              #tooltip="matTooltip"
-                              matTooltipPosition='above' 
-                              matTooltipHideDelay="100">
-                              <i class="material-icons">delete_forever</i>
-                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
-                                {{ 'DeleteContact' | translate }}
-                              </span> -->
-                            </button>
+                              <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
+                                style="padding-left: 0px;padding-top: 17px !important;">
+                                <button type="button" class="btn btn-danger btn-simple btn-xs"
+                                  [disabled]="USER_ROLE === 'admin' || USER_ROLE === 'agent' || PERMISSION_TO_DELETE_LEAD === false"
+                                  (click)='deleteContactForever(contact?._id, contact?.fullname)'
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="{{ 'DeleteContact' | translate }}"
+                                  #tooltip="matTooltip" 
+                                  matTooltipPosition='above' 
+                                  matTooltipHideDelay="100">
+                                  <i class="material-icons">delete_forever</i>
+                                </button>
 
-                            <button type="button" class="btn btn-default btn-simple btn-xs"
-                              [disabled]="USER_ROLE === 'agent'" (click)='restore_contact(contact?._id)'
-                              matTooltipClass="custom-mat-tooltip" 
-                              matTooltip="{{ 'RestoreContact' | translate }}" 
-                              #tooltip="matTooltip"
-                              matTooltipPosition='above' 
-                              matTooltipHideDelay="100">
-                    
-                              <i class="material-icons">forward</i>
-                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
+                                <button type="button" class="btn btn-default btn-simple btn-xs"
+                                  [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_RESTORE_LEAD === false" 
+                                  (click)='restore_contact(contact?._id)'
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="{{ 'RestoreContact' | translate }}"
+                                  #tooltip="matTooltip" 
+                                  matTooltipPosition='above' 
+                                  matTooltipHideDelay="100">
+
+                                  <i class="material-icons">forward</i>
+                                  <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'RestoreContact' | translate }}
                               </span> -->
-                            </button>
+                                </button>
 
-                          </td>
+                              </td>
 
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div> <!-- ./ card-content table-responsive -->
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div> <!-- ./ card-content table-responsive -->
 
-                  <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:center">
-                    <div class="stats">
+                      <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:center">
+                        <div class="stats">
 
-                      <div class="contacts-paginantion" style="width: 120px; margin: 0 auto; margin-top: 10px ">
-                        <div class="input-group">
+                          <div class="contacts-paginantion" style="width: 120px; margin: 0 auto; margin-top: 10px ">
+                            <div class="input-group">
 
-                          <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                          <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                            <button [disabled]="pageNo + 1 === 1" class="btn btn-primary decrease-page-number-btn"
-                              type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
-                              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            </button>
-                          </span>
+                              <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                              <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                                <button [disabled]="pageNo + 1 === 1" class="btn btn-primary decrease-page-number-btn"
+                                  type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                </button>
+                              </span>
 
-                          <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                          <span class="input-group-btn" style="padding-right:0px;">
-                            <button #searchbtn class="btn btn-primary" type="button" style="padding: 6px 8px">
-                              {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
-                            </button>
-                          </span>
+                              <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                              <span class="input-group-btn" style="padding-right:0px;">
+                                <button #searchbtn class="btn btn-primary" type="button" style="padding: 6px 8px">
+                                  {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                                </button>
+                              </span>
 
-                          <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                          <span class="input-group-btn" style="padding-right:0px">
-                            <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
-                              class="btn btn-primary increase-page-number-btn" type="button"
-                              (click)="increasePageNumber()" style="padding: 6px 8px">
-                              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            </button>
-                          </span>
+                              <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                              <span class="input-group-btn" style="padding-right:0px">
+                                <button
+                                  [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
+                                  class="btn btn-primary increase-page-number-btn" type="button"
+                                  (click)="increasePageNumber()" style="padding: 6px 8px">
+                                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </button>
+                              </span>
+
+                            </div>
+                          </div>
 
                         </div>
                       </div>
 
-                    </div>
+                    </div> <!-- ./ card -->
                   </div>
-
-                </div> <!-- ./ card -->
+                </div>
               </div>
-            </div>
-          </div>
 
 
 
 
-          <!-- 
-    // -------------------------------------------------------
-    // Right sidebar & Contact list
-    // ------------------------------------------------------- -->
+              <!-- 
+          // -------------------------------------------------------
+          // Right sidebar & Contact list
+          // ------------------------------------------------------- -->
 
-          <!-- <div class="row">
-        <div class="col-xs-12" style="padding-right: 5px;padding-left: 0px;">
+              <!-- <div class="row">
+          <div class="col-xs-12" style="padding-right: 5px;padding-left: 0px;">
 
           <div class="card nav-card" style="margin-bottom: 0px;margin-top: 0px; padding: 15px 0px;">
             <div class="card-content"
@@ -766,55 +761,69 @@
 
 
 
-        </div>
+          </div>
 
-      </div> -->
+        </div> -->
 
 
-
-        </div> <!-- ./ container-fluid -->
-      </div> <!-- ./ main-content -->
-
-      <!-- ============= MODAL REMOVE 'CONTACT' ============= -->
-      <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
-        style="background-color: rgba(90,90,90,0.5);">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-
-            <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
-              <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
-                <span aria-hidden="true" style="color: #fff">&times;</span>
-              </button>
-              <h4 class="modal-title" style="color: #fff">
-                <i class="material-icons" style="vertical-align: middle">report_problem</i>
-                <span style="vertical-align: middle; padding-left:8px">
-
-                  {{ "DeleteContact" | translate }}
-                </span>
-              </h4>
 
             </div>
-            <div class="modal-body">
-              <p style="font-weight:500; text-align: left; margin-top: 10px; color: #394f5a;font-size: 16px;">
-                {{ "AreYouSure" | translate }} ?
-                <!-- <span style="font-weight:600;">{{ groupNameToUpdate }}</span> -->
-              </p>
-              <p style="color: #7695a5">
-                {{ "YouAreAboutToDeleteTheContact" | translate }}
-                <span style="font-weight:500;">{{ fullName_toDelete }}</span>
-              </p>
-            </div>
-            <div class="modal-footer" style="margin-top: 0px;">
-              <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
 
-                <!-- {{ "GroupsAddEditPage.Cancel" | translate }} -->
-                {{ "Cancel" | translate }}
-              </button>
-              <button style="margin-top:0px" class="btn btn-danger" (click)="deleteContact()">
 
-                {{ "DeleteContact" | translate }}
-              </button>
-            </div>
           </div>
         </div>
+
+      </div> <!-- ./ container-fluid -->
+
+
+    <!-- </ng-container>
+    <ng-template #unauthorizedTpl>
+      <unauthorized-for-settings [customHeight]="customHeight"></unauthorized-for-settings>
+    </ng-template>
+  </ng-container> -->
+
+</div> <!-- ./ main-content -->
+
+<!-- ============= MODAL REMOVE 'CONTACT' ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+          <span aria-hidden="true" style="color: #fff">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+          <span style="vertical-align: middle; padding-left:8px">
+
+            {{ "DeleteContact" | translate }}
+          </span>
+        </h4>
+
       </div>
+      <div class="modal-body">
+        <p style="font-weight:500; text-align: left; margin-top: 10px; color: #394f5a;font-size: 16px;">
+          {{ "AreYouSure" | translate }} ?
+          <!-- <span style="font-weight:600;">{{ groupNameToUpdate }}</span> -->
+        </p>
+        <p style="color: #7695a5">
+          {{ "YouAreAboutToDeleteTheContact" | translate }}
+          <span style="font-weight:500;">{{ fullName_toDelete }}</span>
+        </p>
+      </div>
+      <div class="modal-footer" style="margin-top: 0px;">
+        <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
+
+          <!-- {{ "GroupsAddEditPage.Cancel" | translate }} -->
+          {{ "Cancel" | translate }}
+        </button>
+        <button style="margin-top:0px" class="btn btn-danger" (click)="deleteContact()">
+
+          {{ "DeleteContact" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

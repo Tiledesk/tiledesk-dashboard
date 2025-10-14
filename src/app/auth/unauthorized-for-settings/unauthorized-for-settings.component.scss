@@ -1,0 +1,17 @@
+.unauthorized-message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.unauthorized-page-title {
+    font-family: var(--header-font-family);
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+.unauthorized-page-subtitle {
+    color: var(--secondary-text-color);
+}

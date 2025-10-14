@@ -797,3 +797,91 @@ select[disabled] {
   color: var(--blue-20);
   margin-right: 6px;
 }
+
+.custom-group-row {
+  // border: 1px solid #ccc;
+  // background-color: #f9f9f9;
+  box-shadow: var(--card-elevation);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.custom-group-row:hover {
+  // background-color: rgba(249, 249, 249, .6);
+  // border: 1px solid var(--blue-20);
+  box-shadow: var(--card-light-elevation);
+}
+
+.group-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.group-percentage {
+  font-weight: 500;
+  color: #555;
+}
+
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  color: #fff !important;
+}
+
+.trasparent-btn {
+  color: var(--blue-20);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  font-family: var(--content-font-family);
+  background-color: transparent;
+  border: unset;
+  border-radius: 4px;
+}
+
+.trasparent-btn:hover {
+  background-color: var(--only-text-btn-hover-background);
+}
+
+.link-to-docs-wpr {
+  margin-bottom: 16px;
+}
+
+.link-to-docs-wpr > div > div > span > svg {
+  fill: var(--blue-20);
+  vertical-align: middle;
+} 
+
+.link-to-docs {
+  // background-color: rgb(241, 241, 241);
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-left: -14px;
+  // padding-bottom: 12px;
+  // padding-top: 12px;
+  padding: 10px 0px;
+}
+
+.custom-anchor-to-docs {
+  color: var(--blue-20); // #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+  text-decoration: underline;
+}

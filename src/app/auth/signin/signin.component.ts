@@ -10,6 +10,7 @@ import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { TranslateService } from '@ngx-translate/core';
+declare const grecaptcha: any;
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -46,6 +47,7 @@ export class SigninComponent implements OnInit {
   hideGoogleAuthBtn: string;
   areActivePay: boolean
   OAUTH2_SIGNIN_ENABLED: boolean 
+  reCaptchaSiteKey: string;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -97,6 +99,7 @@ export class SigninComponent implements OnInit {
     this.buildForm();
     this.getWindowWidthAndHeight();
     this.getStoredRoute()
+    this.getReCaptchaSiteKey()
     // get if user has used Signin with Google
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
@@ -135,7 +138,7 @@ export class SigninComponent implements OnInit {
 
   getOSCODE() {
     this.OAUTH2_SIGNIN_ENABLED =  this.appConfigService.getConfig().oauth2SigninEnabled;
-    this.logger.log('[SIGN-IN] OAUTH2_SIGNIN_ENABLED ', this.OAUTH2_SIGNIN_ENABLED)
+    console.log('[SIGN-IN] OAUTH2_SIGNIN_ENABLED ', this.OAUTH2_SIGNIN_ENABLED)
 
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     let keys = this.public_Key.split("-");
@@ -305,6 +308,32 @@ export class SigninComponent implements OnInit {
       }
     }
   }
+
+
+  getReCaptchaSiteKey() {
+    this.reCaptchaSiteKey = this.appConfigService.getConfig().reCaptchaSiteKey;
+    console.log('[SIGN-IN] reCaptchaSiteKey ', this.reCaptchaSiteKey)
+  }
+
+  signIn() {
+    if (window && window['grecaptcha']) {
+        this.logger.log('[SIGN-IN] window grecaptcha', window['grecaptcha'])
+        this.logger.log('[SIGN-IN] signup with recaptcha', window['grecaptcha'])
+        grecaptcha.ready(() => {
+          grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
+            // Add your logic to submit to your backend server here.
+            // console.log('[SIGN-IN] grecaptcha token', token)
+            if (token) {
+              this.signin()
+            }
+          });
+        });
+      } else {
+        this.logger.log('[SIGN-IN] signin without recaptcha')
+        this.signin()
+      }
+  }
+
 
   signin() {
     this.showSpinnerInLoginBtn = true;

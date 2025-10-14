@@ -8,6 +8,8 @@ import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
+import { UnauthorizedForSettingsComponent } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.component';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: WidgetMultilanguageComponent},
@@ -16,7 +18,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     WidgetMultilanguageComponent,
-    BaseTranslationComponent
+    BaseTranslationComponent,
+    // UnauthorizedForSettingsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -25,7 +28,8 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     SettingsSidebarModule,
-    NgSelectModule
+    NgSelectModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class WidgetMultilanguageModule { }

@@ -23,6 +23,7 @@ import { GroqIntegrationComponent } from './list/groq-integration/groq-integrati
 import { CohereIntegrationComponent } from './list/cohere-integration/cohere-integration.component';
 import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-integration.component';
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { VLLMComponent } from './list/v-llm/v-llm.component';
 
 const routes: Routes = [
@@ -57,7 +58,8 @@ const routes: Routes = [
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class IntegrationsModule { }

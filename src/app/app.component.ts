@@ -39,6 +39,7 @@ import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
+import { KeycloakService } from './services/keycloak.service';
 
 // import { UsersService } from './services/users.service';
 
@@ -108,16 +109,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private projectService: ProjectService,
         private sleekplanSsoService: SleekplanSsoService,
         private sleekplanService: SleekplanService,
-        private sleekplanApiService: SleekplanApiService
-
+        private sleekplanApiService: SleekplanApiService,
+        private keycloakService: KeycloakService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
 
+      
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                // console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                this.logger.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
                 this.currenturl = event.url
 
                 if (this.currenturl === '/projects' || this.currenturl === '/login') {
@@ -133,24 +135,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.getCurrentProject(event.urlAfterRedirects)
                 }
 
-
-                const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
-                if (event.url !== '/signup') {
-                    // this.logger.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
-                    if (grecaptchaBadgeEl) {
-                        grecaptchaBadgeEl.style.visibility = 'hidden'
-                    }
-                } else {
-                    if (grecaptchaBadgeEl) {
-                        grecaptchaBadgeEl.style.visibility = 'visible'
-                    }
-                }
+                
+                this.setRecaptchaVisibility(this.currenturl)
+                // const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
+                // // if (event.url === '/signup' || event.url === '/login') {
+                // //     console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
+                // //     if (grecaptchaBadgeEl) {
+                // //         // grecaptchaBadgeEl.style.visibility = 'hidden'
+                // //         grecaptchaBadgeEl.style.visibility = 'visible'
+                // //     }
+                // // } else {
+                // //      console.log('[APP-COMPONENT] grecaptchaBadgeEl (else)', grecaptchaBadgeEl)
+                // //     if (grecaptchaBadgeEl) {
+                // //         // grecaptchaBadgeEl.style.visibility = 'visible'
+                // //         grecaptchaBadgeEl.style.visibility = 'hidden'
+                // //     }
+                // // }
             }
         })
-
-
-
-
+        
         // this.logger.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
@@ -280,6 +283,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
 
+    }
+
+     ngAfterViewInit() {
+        this.runOnRouteChange();
+        this.hideFooter();
+    }
+
+    private setRecaptchaVisibility(url: string) {
+        this.logger.log('[APP-COMPONENT] setRecaptchaVisibility  url (in the method) ',url ) 
+        const grecaptchaBadgeEl = document.querySelector('.grecaptcha-badge') as HTMLElement;
+        this.logger.log('[APP-COMPONENT] setRecaptchaVisibility  grecaptchaBadgeEl' , grecaptchaBadgeEl) 
+        const showRecaptcha = url === '/signup' || url === '/login';
+
+        if (grecaptchaBadgeEl) {
+            grecaptchaBadgeEl.style.setProperty('visibility', showRecaptcha ? 'visible' : 'hidden', 'important');
+        }
     }
 
     hideSleekPlanRightPopup = () => {
@@ -530,7 +549,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getCurrentUserAndConnectToWs();
 
         this.listenToSwPostMessage();
+
+        // this.keycloakInit()
         // this.getCurrentProject()
+    }
+
+    keycloakInit() {
+        this.keycloakService.init().then(authenticated => {
+            if (!authenticated) {
+                console.log('[APP-COMPONENT] 🔑 Login required');
+            }
+        });
     }
 
 
@@ -1265,14 +1294,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // this.logger.log('»> * ', this.route)
             }
         });
-    }
-
-
-
-
-    ngAfterViewInit() {
-        this.runOnRouteChange();
-        this.hideFooter();
     }
 
     hideFooter() {

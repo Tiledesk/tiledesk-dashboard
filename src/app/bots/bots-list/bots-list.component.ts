@@ -32,6 +32,9 @@ import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { aiAgents, automations } from 'app/integrations/utils';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -104,8 +107,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
   isChromeVerGreaterThan100: boolean;
 
-
+  allTemplatesCount: number;
+  allCommunityTemplatesCount: number;
+  customerSatisfactionTemplatesCount: number;
+  increaseSalesTemplatesCount: number;
+  customerSatisfactionBotsCount: number;
   flowWebhooksCount: number;
+
+  increaseSalesBotsCount: number;
+  kbCount: number;
+
+  customerSatisfactionBots: any;
+  increaseSalesBots: any;
 
   myChatbot: any
   myChatbotOtherCount: number;
@@ -155,7 +168,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   orderByChatbotName: boolean = false;
   pageName: string;
   isVisiblePAY: boolean;
-  isVisibleCOP: boolean;
   chatbotNumExceedChatbotLimit: boolean = false;
 
   isAllFlowRoute: boolean
@@ -181,7 +193,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   pageSize = 20;
   currentPage = 1;
-  totalPagesNo_roundToUp: number
+  totalPagesNo_roundToUp: number;
+
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_TEST_FLOW: boolean;
+  PERMISSION_TO_DUPLICATE_FLOW: boolean;
+  PERMISSION_TO_DELETE_FLOW: boolean;
+  PERMISSION_TO_SHARE_FLOW: boolean;
+  PERMISSION_TO_EXPORT_FLOW: boolean;
+  PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
+  PERMISSION_TO_VIEW_ANALYTICS: boolean;
+  
 
   // editBotName: boolean = false;
   constructor(
@@ -205,6 +231,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private _snackBar: MatSnackBar,
     private webhookService: WebhookService,
     private activatedroute: ActivatedRoute,
+    private roleService: RoleService,
+    private rolesService: RolesService,
     // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
@@ -219,7 +247,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.currentRoute = this.router.url;
     this.logger.log('[BOTS-LIST] - currentRoute ', this.currentRoute)
 
-    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1 || this.currentRoute.indexOf('/bots') !== -1 ) {
+    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1) {
       this.isChatbotRoute = 'all'
 
       this.logger.log('[BOTS-LIST] - currentRoute isChatbotRoute ', this.isChatbotRoute)
@@ -247,6 +275,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('flows')
     // this.getCommunityTemplates()
     // this.getTemplates()
     // this.getAllNamespaces()
@@ -254,19 +283,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // this.getQueryParams()
     // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
-   
-      this.getProfileImageStorage();
-      this.getCurrentProject();
-      this.getOSCODE();
-      this.getFaqKbByProjectId();
-      this.getTranslations();
-      this.getFlowWebhooks()
-      this.getNavigationBaseUrl()
-      this.getProjectPlan();
-      this.getUserRole();
-      this.getDefaultDeptId();
-      this.getLoggedUser()
-   
+  
+    this.getProfileImageStorage();
+    this.getCurrentProject();
+    this.getOSCODE();
+    this.getFaqKbByProjectId();
+    this.getTranslations();
+    this.getFlowWebhooks()
+    this.getNavigationBaseUrl()
+    this.getProjectPlan();
+    this.getUserRole();
+    this.getDefaultDeptId();
+    this.getLoggedUser();
+    this.listenToProjectUser()
   }
 
   // getQueryParams() {
@@ -285,6 +314,195 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.unsubscribe$.complete();
   }
 
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('BOT-LIST] - this.ROLE:', this.ROLE);
+        console.log('BOT-LIST] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('BOT-LIST] - hasDefaultRole', this.hasDefaultRole);
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+
+        // PERMISSION_TO_EDIT_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION_TO_TEST_FLOW
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_TEST_FLOW = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_TEST_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_TEST);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
+        }
+
+
+        // PERMISSION_TO_DUPLICATE_FLOW
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_DUPLICATE_FLOW = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DUPLICATE_FLOW = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DUPLICATE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_DUPLICATE);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+        }
+
+        // PERMISSION_TO_DELETE_FLOW
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_DELETE_FLOW = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DELETE_FLOW = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_DELETE);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
+        }
+
+           if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_DUPLICATE_FLOW = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DUPLICATE_FLOW = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DUPLICATE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_DUPLICATE);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+        }
+
+        // PERMISSION_TO_SHARE_FLOW
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_SHARE_FLOW = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_SHARE_FLOW = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_SHARE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_SHARE);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
+        }
+
+
+        // PERMISSION_TO_EXPORT_FLOW
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_EXPORT_FLOW = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EXPORT_FLOW = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EXPORT_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_EXPORT);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
+        }
+
+
+        // PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH
+        // if (status.role === 'owner' || status.role === 'admin') {
+        //   // Owner and Admin always has permission
+        //   this.PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH = true;
+        //   console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH:', this.PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH);
+
+        // } else if (status.role === 'agent') {
+        //   // Agent never have permission
+        //   this.PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH = false;
+        //   console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH:', this.PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH);
+
+        // } else {
+        //   // Custom roles: permission depends on matchedPermissions
+        //   this.PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH = status.matchedPermissions.includes(PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH);
+        //   console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH:', this.PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH);
+        // }
+
+        // PERMISSION_TO_VIEW_ANALYTICS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = true;
+          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = false;
+          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+        }
+
+      });
+
+  }
+
   checkChromeVersion(): boolean {
     const ua = navigator.userAgent;
     const match = ua.match(/Chrome\/(\d+)/);
@@ -293,7 +511,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }
     return false;
   }
-
 
   getLoggedUser() {
     this.auth.user_bs
@@ -337,11 +554,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     })
   }
 
-  getFlowWebhooks() {
 
-    this.webhookService.getFlowWebhooks()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((res: any) => {
+  getFlowWebhooks() {
+   
+    this.webhookService.getFlowWebhooks().subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] GET WH RES  ', res);
       if (res) {
         this.flowWebhooksCount = res.length
@@ -349,15 +565,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     }, (error) => {
       this.logger.error('[BOTS-LIST] GET WH ERROR ', error);
-  
+    
     }, () => {
       this.logger.log('[BOTS-LIST] GET WH COMPLETE');
-    
+     
     });
   }
 
-
- 
 
   renameChatbot(bot) {
     this.botIdToRename = bot._id;
@@ -382,6 +596,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   shareWithLink(botid, botname) {
+    if(!this.PERMISSION_TO_SHARE_FLOW) {
+      this.notify.presentDialogNoPermissionToPermomfAction() 
+      return;  
+    }
     this.logger.log('[BOTS-LIST] - UPDATED CHATBOT - shareWithLink botid', botid);
     this.logger.log('[BOTS-LIST] - UPDATED CHATBOT - shareWithLink botname', botname);
     // https://widget.tiledesk.com/v6/assets/twp/chatbot-panel.html?tiledesk_projectid=64959b8a6998ee001399056e&tiledesk_participants=bot_65bc881f4bc2250013ca8832&tiledesk_departmentID=64959b8a6998ee0013990572&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle=Showcase%20Deals&tiledesk_preChatForm=false&td_draft=true
@@ -399,6 +617,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   openTestSiteInPopupWindow(botid) {
+    if (!this.PERMISSION_TO_TEST_FLOW) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
     // https://widget.tiledesk.com/v6/assets/twp/chatbot-panel.html?tiledesk_projectid=63d7911ca7b3d3001a4a9404&tiledesk_participants=bot_65605e3dfb23780013b92711&tiledesk_departmentID=63d7911ca7b3d3001a4a9408
     // this.logger.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
     this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
@@ -416,6 +639,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // Export chatbot to JSON
   // -------------------------------------------------------------------------------------- 
   exportChatbotToJSON(faqkb) {
+    if(!this.PERMISSION_TO_EXPORT_FLOW) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
     // exportFaqToJsonBtnEl.blur();
     this.faqService.exportChatbotToJSON(faqkb._id).subscribe((faq: any) => {
@@ -458,6 +685,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   duplicateChatbot(bot_id, bot_name) {
+    if (!this.PERMISSION_TO_DUPLICATE_FLOW) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
@@ -510,18 +741,39 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       },
     });
 
-    dialogRef.afterClosed().subscribe(selectedProjectId => {
-      this.logger.log(`Dialog afterClosed result (selectedProjectId): ${selectedProjectId}`);
-      if (selectedProjectId) {
-        this.forkTemplate(bot_id, selectedProjectId)
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(`Dialog afterClosed result (selectedProjectId) res:`, res);
+      
+      if (res) {
+        console.log(`Dialog afterClosed result (selectedProjectId) res selectedProjectId:`, res.selectedProjectId);
+        this.forkTemplateinAnotherProject(bot_id, res.storedCurrentrojectId, res.selectedProjectId)
       }
+    });
+  }
+
+  forkTemplateinAnotherProject(bot_id, storedCurrentrojectId, selectedProjectId) {
+    console.log('forkTemplateinAnotherProject this.currentProjectId ', this.currentProjectId) 
+    console.log('forkTemplateinAnotherProject storedCurrentrojectId ', storedCurrentrojectId) 
+    console.log('forkTemplateinAnotherProject selectedProjectId ', selectedProjectId) 
+
+    this.faqKbService.duplicateChatbot(bot_id, storedCurrentrojectId, false, selectedProjectId).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
+      // this.botid = res.bot_id
+      this.getFaqKbById(res.bot_id, selectedProjectId);
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] FORK TEMPLATE - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+  
+      
     });
   }
 
 
 
   forkTemplate(bot_id, selectedProjectId) {
-    this.faqKbService.installTemplate(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
+    this.faqKbService.duplicateChatbot(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
       // this.botid = res.bot_id
       this.getFaqKbById(res.bot_id, selectedProjectId);
@@ -590,7 +842,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.manageVoiceChatbotVisibility(projectProfileData)
       this.getIfAutomationCopilotIsEnabled(projectProfileData)
       this.managePlanAutomationCopilotAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
-
+      localStorage.setItem('last_project', JSON.stringify(project))
     }, error => {
       this.logger.error('[BOTS-LIST] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
@@ -782,6 +1034,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   openBotMsgsStats(bot) {
+    if(!this.PERMISSION_TO_VIEW_ANALYTICS) {
+      this.notify.presentDialogNoPermissionToViewReports()
+      return;
+    }
+
     this.logger.log('[BOTS-LIST] openBotStats  ')
 
     const statsDialogRef = this.dialog.open(MessagesStatsModalComponent, {
@@ -836,7 +1093,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
   // NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
   // ----------------------------------------------------------------
-  getFaqKbByProjectId() {
+ getFaqKbByProjectId() {
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId()
@@ -849,7 +1106,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.currentPage = 1
         this.updatePagedFaqkbList();
 
-        this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
+        console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
         this.chatBotCount = this.faqkbList.length;
 
         if (this.orderBylastUpdated) {
@@ -981,9 +1238,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.logger.log('/flows/automations ', this.faqkbList);
         } 
         
-
-
-
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {
             this.showSpinner = false;
@@ -1039,12 +1293,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
   }
 
-//  pagedFaqkbList(faqkbList: any) {
-//     const start = (this.currentPage - 1) * this.pageSize;
-//     return faqkbList.slice(start, start + this.pageSize);
-//   }
-
-  updatePagedFaqkbList() {
+    updatePagedFaqkbList() {
     if (!this.faqkbList || this.faqkbList?.length === 0) {
       this.totalPagesNo_roundToUp = 1;
       this.pagedFaqkbList = [];
@@ -1058,7 +1307,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST]] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
 
     const start = (this.currentPage - 1) * this.pageSize;
-    this.logger.log('[BOTS-LIST] pagedFaqkbList start ', start )
+    console.log('[BOTS-LIST] pagedFaqkbList start ', start )
     this.logger.log('[BOTS-LIST] pagedFaqkbList end ', start + this.pageSize )
     this.logger.log('[BOTS-LIST] pagedFaqkbList this.faqkbList ', this.faqkbList.slice(start, start + this.pageSize) )
     // return this.faqkbList.slice(start, start + this.pageSize);
@@ -1078,8 +1327,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.updatePagedFaqkbList();
     }
   }
-
-  
 
   trackByFaqkbId(_index: number, faqkb: FaqKb) { 
     return faqkb._id; 
@@ -1151,20 +1398,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.isVisiblePAY = true;
         }
       }
-
-      if (key.includes("COP")) {
-        let cop = key.split(":");
-        this.logger.log('PUBLIC-KEY [BOTS-LIST] - cop key&value', cop);
-        if (cop[1] === "F") {
-          this.isVisibleCOP = false;
-          this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
-        } else {
-          this.isVisibleCOP = true;
-          this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
-        }
-      }
-
-
     })
 
     if (!this.public_Key.includes("PAY")) {
@@ -1174,12 +1407,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
     }
-
-    if (!this.public_Key.includes("COP")) {
-      this.isVisibleCOP = false;
-      this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
-    }
-
   }
 
   goToBotExternalUrl(botExternalUrl) {
@@ -1201,12 +1428,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
 
-
   /**
    * MODAL DELETE AI agent / Automation
    * @param id
    */
   openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string, botSubType: string) {
+    if(!this.PERMISSION_TO_DELETE_FLOW) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
     this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - botSubType', botSubType);
     const deptsArray = this.getDepartments(id)
 
@@ -1472,6 +1703,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   goToBotAllTemplates() {
     this.router.navigate(['project/' + this.project._id + '/bots/templates/all']);
+    // this.router.navigate(['project/' + this.project._id + '/templates/all']);
   }
 
   // --------------------------------------------------------------------------
@@ -1483,14 +1715,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+          
           this.createTilebotBotFromScratch(botSubtype, namespaceid)
           this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
-          // if (this.isChatbotRoute) {
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'chatbot' }})
-          // } else {
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'automation' }})
-          // }
+       
         } else if (this.chatBotCount >= this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
@@ -1499,11 +1727,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.logger.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
         this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
         this.createTilebotBotFromScratch(botSubtype, namespaceid)
-        // if (this.isChatbotRoute) {
-        // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'chatbot' }})
-        // } else {
-        // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'automation' }})
-        // }
+      
       }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()
@@ -1758,6 +1982,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   presentDialogCreateFlows(isChatbotRoute) {
+    if (!this.PERMISSION_TO_ADD_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
     this.logger.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
     const showTwilio = this.diplayTwilioVoiceChabotCard;
     const showVXML = this.diplayVXMLVoiceChabotCard;
@@ -1765,10 +1994,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     let dialogWidth = '800px';
 
     if (isChatbotRoute && !showTwilio && !showVXML) {
-      dialogWidth = '550px';
-    }
-
-    if (!isChatbotRoute && !this.isVisibleCOP) {
       dialogWidth = '550px';
     }
 
@@ -1930,6 +2155,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
   goToBotDtls(faqkb: FaqKb) {
+
+    if(! this.PERMISSION_TO_EDIT_FLOWS){
+        this.notify.presentDialogNoPermissionToEditFlow();
+        return;
+    }
     // this.goToCDS(faqkb)
     // if (this.isPanelRoute === false) {
     //   this.goToOldBotDtls(idFaqKb, botType, botname)

@@ -5,6 +5,7 @@ import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-
 import { SharedModule } from 'app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: DepartmentsComponent},
@@ -19,7 +20,8 @@ const routes: Routes = [
     CommonModule,
     SettingsSidebarModule,
     SharedModule,
-    TranslateModule
+    TranslateModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class DepartmentsModule { }

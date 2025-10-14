@@ -42,7 +42,9 @@
           padding-bottom: 4px !important;">
 
             <label for="allServedCheckbox">
-              <input id="allServedCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+              <input id="allServedCheckbox" 
+                [disabled]="ROLE_IS_AGENT === true || !PERMISSION_TO_ARCHIVE_REQUEST" 
+                [checked]="allChecked === true"
                 type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
                 (click)="selectAll($event)">
             </label>
@@ -51,18 +53,22 @@
           </th>
 
           <!-- --------------------------------------------------------- -->
-          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- Requests Icons th (in this th put the button to archive 
+           matTooltip="{{'VisitorsPage.Resolve' | translate}}" -->
           <!-- ---------------------------------------------------------- -->
           <th style="padding-top: 6px;padding-bottom: 6px !important;">
             <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button"
               (click)="archiveSelected()" 
               matTooltipClass="mat-white-tooltip"
-              matTooltip="{{'VisitorsPage.Resolve' | translate}}" 
+              [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? ('YouDoNotHavePermissions' | translate) : ('VisitorsPage.Resolve' | translate)"
               #tooltip="matTooltip" 
               matTooltipPosition='above'
-              matTooltipHideDelay="100">
+              matTooltipHideDelay="100"
+              [disabled]="!PERMISSION_TO_ARCHIVE_REQUEST"
+              [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
 
-              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;"
+              [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
                 archive
               </span>
             </button>
@@ -327,7 +333,7 @@
                 <hr class='ng2-tooltip-divider-line'>
                 <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
                   <p class='ng2-comment-sender'> 
-                    <!-- {{ request?.msgsArray[0]?.senderFullname}}  -->
+                    <!--  {{ request?.msgsArray[0]?.senderFullname}} -->
                     {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
                   </p>
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
@@ -688,9 +694,8 @@
                     'requester-not-has-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone,
                     'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.phone === request?.lead?.fullname)
                     }">
-                    <!-- {{ request?.lead?.fullname}} -->
-                    {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
-
+                      <!-- {{ request?.lead?.fullname}}  -->  
+                     {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
                   </span>
 
                   <span *ngIf="!request?.lead?.fullname"
@@ -1175,7 +1180,7 @@
             <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
               (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id, request?.channel)'
-              [disabled]="request?.currentUserIsJoined === true"
+              [disabled]="request?.currentUserIsJoined === true || !PERMISSION_TO_JOIN_REQUEST"
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}" 
               #tooltip="matTooltip" 
@@ -1203,7 +1208,7 @@
             <!-- ------------------------------------- -->
             <!-- (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)' -->
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
-              title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
+              title="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
               (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" 
@@ -1232,7 +1237,7 @@
             <!-- -------------------------- -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs" (click)='archiveRequest(request?.request_id)'
-              [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true"
+              [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || !PERMISSION_TO_ARCHIVE_REQUEST"
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{'VisitorsPage.Resolve' | translate}}" 
               #tooltip="matTooltip" 
@@ -1241,11 +1246,6 @@
 
               <i class="material-icons">archive</i>
 
-              <!-- // tooltip text 'Archive' -->
-              <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
-                <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
-                <i></i>
-              </span> -->
             </button>
 
             <!-- -------------------------- -->
