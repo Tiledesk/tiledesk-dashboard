@@ -88,7 +88,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private router: Router
   ) {
     super(prjctPlanService, notify);
-    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
+    console.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
@@ -98,6 +98,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
+      console.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
       if (!this.selectedNamespace.preview_settings.chunks_only) {
@@ -377,8 +378,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "chunks_only": this.chunkOnly,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
-      'citations': this.citations
-
+      'citations': this.citations,
+      'llm': this.selectedNamespace.preview_settings.llm
     }
     // this.error_answer = false;
 

@@ -48,6 +48,7 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
   PERMISSION_TO_CREATE: boolean;
   PERMISSION_TO_DELETE: boolean;
 
+
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -79,10 +80,12 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
     this.getCurrentUser()
   }
 
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  
    getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
       console.log('[CANNED-RES-LIST] - LoggedUser ', user);
