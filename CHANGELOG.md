@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+## 2.7.137-stage
+- Adds the ability to select LLM models from the Knowledge base preview settings dialog
+
 ## 2.7.136-stage
 - Displays a confirmation dialog on the conversation details page when resolving a conversation only when panel is in chat mode
 - In the conversation details chat, if the Resolved option is selected, the conversation is closed without sending the message.
