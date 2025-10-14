@@ -2449,8 +2449,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
           this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
 
-          // if (this.CURRENT_USER_ROLE === 'agent') {
-          if (this.CURRENT_USER_ROLE !== 'owner' && this.CURRENT_USER_ROLE !== 'admin') {
+          if (this.CURRENT_USER_ROLE === 'agent') {
+          // if (this.CURRENT_USER_ROLE !== 'owner' && this.CURRENT_USER_ROLE !== 'admin') {
             const isCurrentUserParticipant = this.members_array.includes(this.currentUserID);
 
             if (isCurrentUserParticipant) {
@@ -4688,8 +4688,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  resolveRequest(requestid) {
+    if (this.CHAT_PANEL_MODE) {
+      this.archiveRequestWithConfimationDialog(requestid)
+    } else {
+      this.archiveRequest(requestid)
+    }
 
-  archiveRequest(requestid) {
+  }
+
+
+  archiveRequestWithConfimationDialog(requestid) {
     if (!this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
       return
@@ -4747,7 +4756,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-  _archiveRequest(requestid) {
+  archiveRequest(requestid) {
     if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
@@ -4826,6 +4835,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
+
+
 
   }
 
@@ -6227,7 +6238,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onMessageChange(msg: string) {
-    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
+    // console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
     // if (!this.ALLOW_TO_SEND_EMOJI) {
     //   this.chat_message = removeEmojis(msg);
     // }
@@ -6285,6 +6296,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       const daysDiff = currentTime.diff(requestclosedAt, 'd');
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
 
+       console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - HAS_SELECTED_SEND_AS_SOLVED?', this.HAS_SELECTED_SEND_AS_SOLVED)
 
       if (this.request?.status === 1000 && daysDiff > 10) {
         this.presenModalMessageCouldNotBeSent();
@@ -6293,8 +6305,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (this.selectedResponseTypeID && this.IS_CURRENT_USER_JOINED === false) {
           this.reopenConversation(this.id_request)
         }
-
         console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+       
+
+
+        // if (this.HAS_SELECTED_SEND_AS_SOLVED) {
+        //   if (this.CHAT_PANEL_MODE) {
+        //     this.archiveRequestWithConfimationDialog(this.id_request)
+        //   } else {
+        //     this.archiveRequest(this.id_request)
+        //   }
+
+        // } 
+
         let _chat_message = ''
         if (this.type !== 'file') {
           _chat_message = this.chat_message
@@ -6470,13 +6493,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             let convWokingStatus = ""
             if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
               convWokingStatus = 'open'
+              
+              this.updateRequestWorkingStatusAndReopen(convWokingStatus)
+              
             } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
               convWokingStatus = 'pending'
+             
+              this.updateRequestWorkingStatusAndReopen(convWokingStatus)
+             
             } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
               convWokingStatus = ''
+              if (this.CHAT_PANEL_MODE) {
+                this.archiveRequestWithConfimationDialog(this.id_request)
+              } else {
+                this.archiveRequest(this.id_request)
+              }
+
             }
 
-            this.updateRequestWorkingStatus(convWokingStatus)
+            
 
           });
       }
@@ -6492,11 +6527,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  updateRequestWorkingStatus(convWokingStatus) {
+   updateRequestWorkingStatusAndReopen(convWokingStatus) {
+    console.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
     this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
       .subscribe((request) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+        console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
+        this.reopenConversation(this.id_request)
+      })
+  }
+  
+
+  updateRequestWorkingStatus(convWokingStatus) {
+    console.log('-----> convWokingStatus ', convWokingStatus)
+    this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
+      .subscribe((request) => {
+
+        console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
 
@@ -6547,15 +6599,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedSolved(calledby) {
-    // this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;
     if (calledby === 'updatedWorkingStatus') {
       let convWokingStatus = ''
       this.updateRequestWorkingStatus(convWokingStatus)
+    
+
+      if (this.CHAT_PANEL_MODE) {
+        this.archiveRequestWithConfimationDialog(this.id_request)
+      } else {
+        this.archiveRequest(this.id_request)
+      }
+
     }
-    this.archiveRequest(this.id_request)
+
+
 
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -6956,7 +7017,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
-    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files[0]', $event.target.files[0]);
     // this.uploadedFiles = $event.target.files[0];
     // this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
@@ -6976,7 +7037,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.manageImageUploadOnPaste($event.target.files[0])
 
       }
-    } else if ($event.target.files[0].type.startsWith("application/")) {
+    } else if ($event.target.files[0].type.startsWith("application/") || ($event.target.files[0].type === 'text/plain')) {
 
 
       this.uploadedFiles = $event.target.files[0];

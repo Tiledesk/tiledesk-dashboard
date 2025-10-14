@@ -125,8 +125,7 @@
                           name="smtpswd" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
                           autocomplete="new-password">
                         <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                          <button id="smtp-show-password-btn" class="btn btn-primary show-password-btn" (click)="showPassword()"
-                            style="">
+                          <button id="smtp-show-password-btn" class="btn btn-primary show-password-btn" (click)="showPassword()">
                             <span *ngIf="!showPswd" class="material-icons">
                               visibility_off
                             </span>
@@ -172,14 +171,16 @@
                     </button>
                   </div>
                   <div class="col-xs-6" style="text-align: right; padding-right:0px">
-                    <!-- btn-white reset-to-default-smtp-configuration -->
-                    <button type="submit" class="btn btn-gray-no-boxshadow"
+               
+                    <!-- <button type="submit" class="btn btn-gray-no-boxshadow"
                       (click)="resetToDefaultSMTPConfiguration()" style="margin-right: 8px;">
                       {{ "ResetToDefaults" | translate }}
-                    </button>
+                    </button> -->
+
                     <!-- btn-primary update-smtp-configuration -->
-                    <button type="submit" class="btn btn-tdblu-no-boxshadow"
-                      (click)="updateSMTPConfiguration()">
+                    <button type="submit" class="btn btn-tdblu-no-boxshadow update-smtp-configuration"
+                      (click)="updateSMTPConfiguration()" 
+                      [disabled]="!smtp_host_name || !smtp_host_name || !smtp_port">
                       {{ "Update" | translate }}
                     </button>
                   </div>
