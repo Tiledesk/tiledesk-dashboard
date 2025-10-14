@@ -4232,7 +4232,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
-   archiveRequest(requestid) {
+
+ resolveRequest(requestid) {
+    if (this.CHAT_PANEL_MODE) {
+      this.archiveRequestWithConfimationDialog(requestid)
+    } else {
+      this.archiveRequest(requestid)
+    }
+
+  }
+
+
+   archiveRequestWithConfimationDialog(requestid) {
 
     Swal.fire({
       title: this.translationMap.get('AreYouSure') + "?",
@@ -4287,7 +4298,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  _archiveRequest(requestid) {
+  archiveRequest(requestid) {
     this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
     this.wsRequestsService.closeSupportGroup(requestid)
@@ -5935,16 +5946,39 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           let convWokingStatus = ""
           if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'open'
+            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
           } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'pending'
+            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
           } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
             convWokingStatus = ''
+            if (this.CHAT_PANEL_MODE) {
+                this.archiveRequestWithConfimationDialog(this.id_request)
+              } else {
+                this.archiveRequest(this.id_request)
+              }
+
           }
 
-          this.updateRequestWorkingStatus(convWokingStatus)
+          //this.updateRequestWorkingStatus(convWokingStatus)
 
         });
     }
+  }
+
+   updateRequestWorkingStatusAndReopen(convWokingStatus) {
+    console.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
+    this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
+      .subscribe((request) => {
+
+        console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
+        this.reopenConversation(this.id_request)
+      })
   }
 
   updateRequestWorkingStatus(convWokingStatus) {
@@ -6009,8 +6043,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (calledby === 'updatedWorkingStatus') {
       let convWokingStatus = ''
       this.updateRequestWorkingStatus(convWokingStatus)
+
+       if (this.CHAT_PANEL_MODE) {
+        this.archiveRequestWithConfimationDialog(this.id_request)
+      } else {
+        this.archiveRequest(this.id_request)
+      }
+
     }
-    this.archiveRequest(this.id_request)
+   // this.archiveRequest(this.id_request)
 
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -6418,7 +6459,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.manageImageUploadOnPaste($event.target.files[0])
 
       }
-    } else if ($event.target.files[0].type.startsWith("application/")) {
+    } else if ($event.target.files[0].type.startsWith("application/") || ($event.target.files[0].type === 'text/plain')) {
 
 
       this.uploadedFiles = $event.target.files[0];
