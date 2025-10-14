@@ -240,8 +240,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-   
-    
+
+
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
     // this.model_list = OPENAI_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
@@ -291,11 +291,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // const allModels = this.modelGroups.flatMap(group => group.models);
     // const selectedValue = this.selectedNamespace?.preview_settings?.model;
     // this.selectedModel = allModels.find(m => m.value === selectedValue)?.value || null;
-    
-     // this.listenToAiSettingsChanges()
+
+    // this.listenToAiSettingsChanges()
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
-    
+
+    this.getVllmModels()
     this.getOllamaModels()
     this.loadModelGroups();
 
@@ -355,7 +356,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     // this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
 
-   
+
 
   }
 
@@ -364,41 +365,72 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     return found ? found.llmValue : null;
   }
 
-  getOllamaModels() {
-  const integrationName = 'ollama';
-  this.integrationService.getIntegrationByName(integrationName).subscribe({
-    next: (res: any) => {
-      console.log('[ACTION AI_PROMPT] - NEW_MODELS:', res);
+  getVllmModels() {
+    const integrationName = 'vllm';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
 
-      const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
-      if (ollamaProvider && res?.value?.models?.length) {
-        ollamaProvider.models = res.value.models.map((item: string) => ({
-          name: item,
-          value: item,
-          status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
-        }));
+        const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
+        if (vllmProvider && res?.value?.models?.length) {
+          vllmProvider.models = res.value.models.map((item: string) => ({
+            name: item,
+            value: item,
+            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
+          }));
 
-        console.log('[ACTION AI_PROMPT] - MODELS AGGIORNATI:', ollamaProvider.models);
-      } else {
-        console.warn('[ACTION AI_PROMPT] - Nessun modello trovato per Ollama');
+          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
+        } else {
+          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+      },
+      complete: () => {
+        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
       }
+    });
+  }
 
-      // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
-      this.loadModelGroups();
-    },
-    error: (err) => {
-      console.error('[ACTION AI_PROMPT] - ERRORE getOllamaModels:', err);
-    },
-    complete: () => {
-      console.log('POST REQUEST * COMPLETE *');
-    }
-  });
-}
+  getOllamaModels() {
+    const integrationName = 'ollama';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+
+        const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
+        if (ollamaProvider && res?.value?.models?.length) {
+          ollamaProvider.models = res.value.models.map((item: string) => ({
+            name: item,
+            value: item,
+            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
+          }));
+
+          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
+        } else {
+          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+      },
+      complete: () => {
+        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
 
 
-loadModelGroups(){
-  const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-     console.log('LLM_MODEL' , LLM_MODEL)
+  loadModelGroups() {
+    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+    console.log('LLM_MODEL', LLM_MODEL)
     const orderedProviders = [
       ...LLM_MODEL.filter(p => p.value === 'openai'),
       ...LLM_MODEL.filter(p => p.value !== 'openai')
@@ -416,7 +448,7 @@ loadModelGroups(){
         }))
     }));
 
-    console.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
+    console.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
 
     this.flattenedModels = this.modelGroups.flatMap(group => {
       // trova il provider corrispondente in LLM_MODEL
@@ -445,7 +477,7 @@ loadModelGroups(){
     console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
     console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
     console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
-   
+
 
 
     this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
@@ -454,17 +486,17 @@ loadModelGroups(){
     const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
     console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
-}
+  }
 
   async getIntegrationByName() {
 
     const integrationName = 'ollama';
-    
+
     return new Promise((resolve, reject) => {
-    
+
       this.integrationService.getIntegrationByName(integrationName).subscribe((res: any) => {
 
-        resolve(res) 
+        resolve(res)
       }, err => {
         console.error(err);
         reject([])

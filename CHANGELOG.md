@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.131
+- Adds the ability to manage which pages the widget can appear on in Widget Settings
+- Adds the ability to manage the file types users can upload from the widget in Widget Settings
+- Adds the ability to manage the file types users can upload from the agent chat in Project Settings > Advanced
+- Adds the ability to manage emoji sending in Project Settings > Advanced
+- Adds the ability to manage URL submission based on the domains whitelist in Project Settings > Advanced
+
+
 ### 2.7.130
 - Adds links to documentations
 - Adds translations
