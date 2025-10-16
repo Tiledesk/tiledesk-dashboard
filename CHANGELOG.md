@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.138-stage
+- Fixes the bug: Email search doesn't work in Teammates
+- Fixes the bug: the whitelist of allowed domains does not work properly
+
 ### 2.7.144-AR
 - Fixes the bug: Email search doesn't work in Teammates
 - Fixes the bug: the whitelist of allowed domains does not work properly
