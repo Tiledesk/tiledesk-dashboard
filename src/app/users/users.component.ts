@@ -859,7 +859,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
    // Metodo per applicare filtro e paginazione
-  applyFilterAndPagination() {
+  _applyFilterAndPagination() {
     // Applica filtro
     this.filteredUsers = this.filterUsers(this.projectUsersList, this.searchTerm);
     console.log('applyFilterAndPagination Original users count:', this.projectUsersList.length);
@@ -886,12 +886,168 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.totalItems = combinedItems.length;
     
     // Applica paginazione
-    // this.applyPagination();
     this.applyPagination(combinedItems);
     
   }
 
-  filterUsers(users: any[], searchTerm: string): any[] {
+ applyFilterAndPagination() {
+  // Imposta il tipo per ciascun elemento
+  this.projectUsersList.forEach(item => item.type = 'user');
+  this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+  // Combina utenti e pending
+  const combinedItems = [
+    ...this.projectUsersList,
+    ...this.pendingInvitationList
+  ];
+
+  console.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
+
+  // Applica il filtro su tutti (users + pending)
+  const filtered = this.filterUsers(combinedItems, this.searchTerm);
+
+  console.log('applyFilterAndPagination elementi filtrati:', filtered);
+
+  // Aggiorna conteggio e paginazione
+  this.totalItems = filtered.length;
+  this.applyPagination(filtered);
+
+  this.filteredUsers = filtered;
+  console.log('filteredUsers ',  this.filteredUsers) 
+}
+
+ ordered_applyFilterAndPagination() {
+  // Imposta il tipo per ciascun elemento
+  this.projectUsersList.forEach(item => item.type = 'user');
+  this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+  // Combina utenti e pending
+  const combinedItems = [
+    ...this.projectUsersList,
+    ...this.pendingInvitationList
+  ];
+
+  // Applica il filtro su tutti (users + pending)
+  const filtered = this.filterUsers(combinedItems, this.searchTerm);
+
+  // Ordina solo per tipo: utenti prima, pending dopo
+  const ordered = filtered.sort((a, b) => {
+    if (a.type === 'user' && b.type === 'invitation') return -1;
+    if (a.type === 'invitation' && b.type === 'user') return 1;
+    return 0; // mantiene l'ordine relativo all'interno dello stesso tipo
+  });
+
+  // Aggiorna conteggio e paginazione
+  this.totalItems = ordered.length;
+  this.applyPagination(ordered);
+
+  // Salva l'elenco filtrato per il template
+  this.filteredUsers = ordered;
+
+  // console.log('applyFilterAndPagination elementi filtrati ordinati:', this.filteredUsers);
+}
+
+// ordina per visualizzare prima  User poi  pending e ordine alfabetico
+// applyFilterAndPagination() {
+//   // Imposta il tipo per ciascun elemento
+//   this.projectUsersList.forEach(item => item.type = 'user');
+//   this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+//   // Combina utenti e pending
+//   const combinedItems = [
+//     ...this.projectUsersList,
+//     ...this.pendingInvitationList
+//   ];
+
+//   console.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
+
+//   // Applica il filtro su tutti (users + pending)
+//   const filtered = this.filterUsers(combinedItems, this.searchTerm);
+
+//   console.log('applyFilterAndPagination elementi filtrati:', filtered);
+
+//   // ✅ Ordina: utenti prima, pending dopo
+//   const ordered = filtered.sort((a, b) => {
+//     if (a.type === 'user' && b.type === 'invitation') return -1;
+//     if (a.type === 'invitation' && b.type === 'user') return 1;
+//     // Ordinamento alfabetico secondario (per nome o email)
+//     const aName = (a.id_user?.firstname || a.email || '').toLowerCase();
+//     const bName = (b.id_user?.firstname || b.email || '').toLowerCase();
+//     return aName.localeCompare(bName);
+//   });
+
+//   // Aggiorna conteggio e paginazione
+//   this.totalItems = ordered.length;
+//   this.applyPagination(ordered);
+
+//   // ✅ Salviamo anche l'elenco filtrato per il template
+//   this.filteredUsers = ordered;
+// }
+
+
+
+  filterUsers(items: any[], searchTerm: string): any[] {
+  if (!searchTerm.trim()) {
+    return items;
+  }
+
+  const term = searchTerm.toLowerCase().trim();
+
+  return items.filter(item => {
+    // Se è un utente normale
+    if (item.type === 'user' && item.id_user) {
+      const email = item.id_user.email?.toLowerCase() || '';
+      const firstname = item.id_user.firstname?.toLowerCase() || '';
+      const lastname = item.id_user.lastname?.toLowerCase() || '';
+      const fullName = `${firstname} ${lastname}`.trim();
+
+      return (
+        email.includes(term) ||
+        firstname.includes(term) ||
+        lastname.includes(term) ||
+        fullName.includes(term)
+      );
+    }
+
+    // Se è una pending invitation
+    if (item.type === 'invitation' && item.email) {
+      console.log('Pendind item', item)
+      const email = item.email.toLowerCase();
+      return email.includes(term);
+    }
+
+    return false;
+  });
+}
+
+
+searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
+    console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ', searchTerm);
+
+    if (!searchTerm.trim()) {
+      return users;
+    }
+
+    const term = searchTerm.toLowerCase().trim();
+
+    return users.filter(user => {
+      const email = user.id_user.email?.toLowerCase() || '';
+      const firstname = user.id_user.firstname?.toLowerCase() || '';
+      const lastname = user.id_user.lastname?.toLowerCase() || '';
+      const fullName = `${firstname} ${lastname}`.trim();
+
+      // 🔍 Cerca sempre in nome, cognome, nome completo ed email
+      return (
+        email.includes(term) ||
+        firstname.includes(term) ||
+        lastname.includes(term) ||
+        fullName.includes(term)
+      );
+    });
+}
+
+
+  _filterUsers(users: any[], searchTerm: string): any[] {
     console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ' , searchTerm)
     if (!searchTerm.trim()) {
       return users;
@@ -929,6 +1085,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     const endIndex = startIndex + this.pageSize;
     // this.paginatedUsers = this.filteredUsers.slice(startIndex, endIndex);
     this.paginatedUsers = combinedItems.slice(startIndex, endIndex)
+    // console.log('paginatedUsers',  this.paginatedUsers)
   }
 
   // Metodo chiamato quando cambia il termine di ricerca
@@ -1280,7 +1437,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
-        for (var i = 0; i < this.projectUsersList.length; i++) {
+        for (var i = 0; i < this.paginatedUsers.length; i++) {
               if (this.paginatedUsers[i].id === this.id_projectUser) {
                 this.paginatedUsers.splice(i, 1);
                 i--;

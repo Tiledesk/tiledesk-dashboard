@@ -476,7 +476,8 @@
                     <!-- ------------------------------ -->
                     <!-- Pending invitations -->
                     <!-- ------------------------------ -->
-                    <div *ngIf="projectUser.type === 'invitation' && !searchTerm" class="cl-card">
+                    <!-- && !searchTerm -->
+                    <div *ngIf="projectUser.type === 'invitation' " class="cl-card">
                       <div class="cl-card-content">
 
                         <div class="cl-card-first-column">
@@ -717,9 +718,16 @@
 
 
                 <!-- ------------------------------------------------- -->
-                <ng-container  *ngIf="!showSpinner">
+                <!-- <ng-container  *ngIf="!showSpinner">
                   <div *ngIf="filteredUsers?.length === 0" class="no-results">
                     No teammate found matching your search criteria.
+                  </div>
+                </ng-container> -->
+
+                <ng-container *ngIf="!showSpinner">
+                  <div *ngIf="filteredUsers && filteredUsers.length === 0 && searchTerm?.trim()" class="no-results">
+                    <!-- No teammate found matching your search criteria. -->
+                    {{ "NoTeammateFoundMatchingCriteria" | translate}}
                   </div>
                 </ng-container>
                 <!-- ------------------------------------------------- -->
