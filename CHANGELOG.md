@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.144-AR
+- Fixes the bug: Email search doesn't work in Teammates
+- Fixes the bug: the whitelist of allowed domains does not work properly
+
 ### 2.7.143-AR
 - Displays a confirmation dialog on the conversation details page when resolving a conversation only when panel is in chat mode
 - In the conversation details chat, if the Resolved option is selected, the conversation is closed without sending the message.
