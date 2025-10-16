@@ -6257,10 +6257,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  extractUrls(text: string): string[] {
-    const urlRegex = /https?:\/\/[^\s]+/g;
-    return text.match(urlRegex) || [];
-  }
+
+
+extractUrls(text: string): string[] {
+  // Rileva URL con o senza protocollo (http/https)
+  const urlRegex = /\b((https?:\/\/)?(www\.)?[a-z0-9.-]+\.[a-z]{2,})(\/[^\s]*)?/gi;
+  const matches = text.match(urlRegex) || [];
+  // Normalizza: aggiunge https:// se manca, così il parsing con new URL() funziona
+  return matches.map((url) => {
+    if (!/^https?:\/\//i.test(url)) {
+      return 'https://' + url;
+    }
+    return url;
+  });
+}
 
 
 
