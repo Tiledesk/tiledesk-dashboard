@@ -153,8 +153,8 @@ export class AuthService {
   getKeycloakURLToRedirectAfterLogout() {
     this.keycloakURLToRedirectAfterLogout = this.appConfigService.getConfig().logoutURL
     this.redirectToKeycloakURLAfterLogout =  typeof this.keycloakURLToRedirectAfterLogout === 'string' && this.keycloakURLToRedirectAfterLogout.trim() !== '';
-    console.log('[AUTH-SERV] keycloakURLToRedirectAfterLogout ', this.keycloakURLToRedirectAfterLogout)
-    console.log('[AUTH-SERV] redirectToKeycloakURLAfterLogout ', this.redirectToKeycloakURLAfterLogout)
+    // console.log('[AUTH-SERV] keycloakURLToRedirectAfterLogout ', this.keycloakURLToRedirectAfterLogout)
+    // console.log('[AUTH-SERV] redirectToKeycloakURLAfterLogout ', this.redirectToKeycloakURLAfterLogout)
   }
 
   getPAYValue() {
