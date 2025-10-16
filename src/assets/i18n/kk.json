@@ -839,6 +839,7 @@
     "Emoji": "Эмоджи",
     "VoiceRecorder": "Дыбыс жазушы",
     "TheConversationWillBeResolved": "Өтініш шешіледі",
+    "NoTeammateFoundMatchingCriteria":"Сіздің іздеу критерилеріңізге сәйкес келетін команда мүшесі табылмады",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

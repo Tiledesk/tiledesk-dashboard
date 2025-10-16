@@ -840,6 +840,7 @@
     "Emoji": "Emociya",
     "VoiceRecorder": "Səs yazıcısı",
     "TheConversationWillBeResolved": "Söhbət həll ediləcək",
+    "NoTeammateFoundMatchingCriteria":"Axtarış kriteriyalarınıza uyğun komanda yoldaşı tapılmadı",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -839,6 +839,7 @@
     "Emoji": "Емодзі",
     "VoiceRecorder": "Диктофон",
     "TheConversationWillBeResolved": "Розмова буде вирішена",
+    "NoTeammateFoundMatchingCriteria":"Учасника команди, що відповідає вашим критеріям пошуку, не знайдено",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

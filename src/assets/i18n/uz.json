@@ -839,6 +839,7 @@
     "Emoji": "Emoji",
     "VoiceRecorder": "Ovoz yozish qurilmasi",
     "TheConversationWillBeResolved": "Suhbat hal qilinadi",
+    "NoTeammateFoundMatchingCriteria":"Sizning qidiruv mezonlaringizga mos keladigan jamoa a'zosi topilmadi",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

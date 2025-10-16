@@ -839,6 +839,7 @@
     "Emoji": "Emoji",
     "VoiceRecorder": "Registratore vocale",
     "TheConversationWillBeResolved": "La conversazione verrà risolta",
+    "NoTeammateFoundMatchingCriteria":"Nessun compagno di squadra trovato corrispondente ai tuoi criteri di ricerca",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
