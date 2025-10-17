@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { Observable, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
+
 @Component({
   selector: 'appdashboard-automations',
   templateUrl: './automations.component.html',
@@ -54,6 +55,7 @@ export class AutomationsComponent implements OnInit {
   ROLE: string;
   PERMISSIONS: any;
   PERMISSION_TO_CREATE: boolean;
+
 
   constructor(
     private auth: AuthService,
@@ -273,7 +275,7 @@ export class AutomationsComponent implements OnInit {
     this.showAutomationDetail = false;
   }
 
-  reload(target) {
+  _reload(target) {
     this.showSpinner = true;
     if (target === 'logs') {
       this.getLogs(this.selected_automation_id);
@@ -287,7 +289,7 @@ export class AutomationsComponent implements OnInit {
     }
   }
 
-  _reload(target) {
+  reload(target) {
  
   this.showSpinner = true;
 

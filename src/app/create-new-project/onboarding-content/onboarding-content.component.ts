@@ -93,6 +93,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   isMTT: boolean;
   USER_ROLE: string;
   hasSelectChatBotOrKb: string
+  IS_SAFARI: boolean;
 
   constructor(
     private auth: AuthService,
@@ -138,9 +139,27 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.initialize();
     this.onInitWindowHeight();
     this.detectMobile();
+    this.getIfIsSafary()
   }
 
+  getIfIsSafary() {
 
+    if (this.isSafari()) {
+
+      this.IS_SAFARI = true
+      this.logger.log('User is using Safari? ', this.IS_SAFARI);
+    } else {
+      this.IS_SAFARI = false
+      this.logger.log('User is using Safari', this.IS_SAFARI);
+    }
+
+  }
+
+  isSafari(): boolean {
+    const ua = navigator.userAgent;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+    return isSafari;
+  }
   onInitWindowHeight(): any {
     this.logger.log('[ONBOARDING-CONTENT] ACTUAL WIDTH ', window.innerWidth);
 
@@ -179,7 +198,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (this.translate.currentLang) {
       langDashboard = this.translate.currentLang;
     }
-    this.logger.log('[ONBOARDING-CONTENT] browser lang' ,this.translate.currentLang)
+    this.logger.log('[ONBOARDING-CONTENT] browser lang', this.translate.currentLang)
     let jsonWidgetLangURL = 'assets/i18n/' + langDashboard + '.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data => {
       try {
@@ -843,8 +862,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   segment(pageName, trackName, trackAttr, segmentIdentifyAttributes) {
-    this.logger.log('[ONBOARDING-D] segmentIdentifyAttributes',  segmentIdentifyAttributes);
-    this.logger.log('[ONBOARDING-D] trackAttr',  trackAttr);
+    this.logger.log('[ONBOARDING-D] segmentIdentifyAttributes', segmentIdentifyAttributes);
+    this.logger.log('[ONBOARDING-D] trackAttr', trackAttr);
 
     segmentIdentifyAttributes['name'] = this.user.firstname + ' ' + this.user.lastname;
     segmentIdentifyAttributes['email'] = this.user.email;
