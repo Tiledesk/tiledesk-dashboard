@@ -45,6 +45,7 @@
     <p *ngIf="answer" class="answer-title">
       {{ 'KbPage.Answer' | translate }}
 
+   
       <span *ngIf="qa?.ai_model"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
     </p>
     <div id="answer" class="answer">
