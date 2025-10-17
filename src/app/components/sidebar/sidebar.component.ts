@@ -2370,7 +2370,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((data) => {
-        console.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
         if (data !== null) {
           if (data['user_available'] === false && data['profileStatus'] === "inactive") {
             this.IS_AVAILABLE = false;

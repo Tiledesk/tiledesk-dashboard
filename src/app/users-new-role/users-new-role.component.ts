@@ -150,6 +150,18 @@ export class UsersNewRoleComponent implements OnInit {
       ]
     },
 
+    {
+      key: 'navbar',
+      title: 'Navbar',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.CHANGE_PROJECT, label: 'Able to change project' },
+        { key: PERMISSIONS.SIMULATE_CONV, label: 'Able to simulate a conversation' },
+      ]
+    },
+
 
 
     {

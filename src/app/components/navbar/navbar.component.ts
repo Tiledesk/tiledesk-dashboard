@@ -47,6 +47,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service';
 import { SleekplanService } from 'app/services/sleekplan.service';
 import { browserRefresh } from 'app/app.component';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RolesService } from 'app/services/roles.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -218,6 +220,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   newChangelogCount: boolean;
   // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
+  PERMISSION_TO_CHANGE_PROJECT: boolean;
+  PERMISSION_TO_SIMULATE_CONVERSATION: boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -243,7 +247,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService,
-
+    public rolesService: RolesService
   ) {
 
     super(prjctPlanService, notifyService);
@@ -323,9 +327,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     // this.listenToWSRequestsDataCallBack()
 
-
-
-    this.listenToHomeRequestQuotes()
+    this.listenToHomeRequestQuotes();
+    this.listenToProjectUser()
   }
 
 
@@ -335,6 +338,51 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[NAVBAR] - Role:', status.role);
+          console.log('[NAVBAR] - Permissions:', status.matchedPermissions);
+  
+          // PERMISSION_TO_CHANGE_PROJCT
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.CHANGE_PROJECT)) {
+  
+              this.PERMISSION_TO_CHANGE_PROJECT = true
+              console.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+            } else {
+              this.PERMISSION_TO_CHANGE_PROJECT = false
+              console.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+            }
+          } else {
+            this.PERMISSION_TO_CHANGE_PROJECT = true
+            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+          }
+
+          // PERMISSION_TO_SIMULATE_CONVERSATION
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.SIMULATE_CONV)) {
+  
+              this.PERMISSION_TO_SIMULATE_CONVERSATION = true
+              console.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+            } else {
+              this.PERMISSION_TO_SIMULATE_CONVERSATION = false
+              console.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+            }
+          } else {
+            this.PERMISSION_TO_SIMULATE_CONVERSATION = true
+            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+          }
+  
+  
+  
+          // You can also check status.role === 'owner' if needed
+        });
+  
+    }
 
   listenToHomeRequestQuotes() {
     this.quotesService.requestQuotes$.subscribe(() => {

@@ -518,7 +518,7 @@
         <!-- ------------------------------------------------------ -->
         <!-- test site btn -->
         <!-- ------------------------------------------------------ -->
-        <ng-container class="test-site">
+        <ng-container class="test-site" *ngIf="PERMISSION_TO_SIMULATE_CONVERSATION">
           <li *ngIf="project" matTooltipClass="custom-mat-tooltip-navbar"
             matTooltip="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #tooltip="matTooltip"
             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -528,28 +528,10 @@
               </button>
 
             </a>
-            <!-- <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
-            font-family: 'Poppins';" (click)="testWidgetPage()">
-              <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
-              <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
-            </button> -->
+    
           </li>
         </ng-container>
-        <!-- <ng-container class="test-site">
-          <li *ngIf="project">
-            <a class=" navbar-test-site-ancor" (click)="testWidgetPage()">
-              <div class="navbar-test-site-btn-wpr tool_tip">
-                <i class="material-icons navbar-test-site-icon" style="vertical-align: middle;">play_arrow</i>
-                <p class="hidden-lg hidden-md">testwidget</p>
-                <div class="bottom"
-                  style="text-align: center; padding:2px 5px; border-radius: 3px; text-transform: none;  min-width: fit-content; white-space: nowrap; top: 31px; opacity: 1;">
-                  {{ 'VisitorsPage.SimulateVisitor' | translate }}
-                  <i></i>
-                </div>
-              </div>
-            </a>
-          </li>
-        </ng-container> -->
+      
 
         <!--  ------------------------------------------------ -->
         <!--  Sound on / off -->
@@ -567,116 +549,88 @@
         <!--  ------------------------------------------------ -->
         <!--  ------ PROJECTS  DROPDOWN ------ -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
-          <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
+        <ng-container *ngIf="PERMISSION_TO_CHANGE_PROJECT">
+          <li *ngIf="project">
+            <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
 
-            <span style="text-transform: none"> {{ project.name }} </span>
-            <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
-            <!-- <b class="caret"></b> -->
-            <!-- <p class="hidden-lg hidden-md">Projects</p> -->
-          </a>
+              <span style="text-transform: none"> {{ project.name }} </span>
+              <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
+              <!-- <b class="caret"></b> -->
+              <!-- <p class="hidden-lg hidden-md">Projects</p> -->
+            </a>
 
-          <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
-
-
-            <!--  ------------------------------------------------ -->
-            <!--  PROJECT SETTINGS  -->
-            <!--  ------------------------------------------------ -->
-            <!-- <li *ngIf="ROLE_IS_AGENT === false">
-              <a routerLink="/project/{{ project?._id }}/project-settings/general">
-                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
-                {{ 'ProjectSettings' | translate }}
-              </a>
-            </li> -->
+            <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
 
 
-            <!--  ------------------------------------------------ -->
-            <!--  ALL PROJECTS -->
-            <!--  ------------------------------------------------ -->
-            <li (click)="goToProjects()">
-              <a style="cursor: pointer">
-                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
-                {{ 'NavBar.ViewAllProjects' | translate }}
-              </a>
-            </li>
+              <!--  ------------------------------------------------ -->
+              <!--  ALL PROJECTS -->
+              <!--  ------------------------------------------------ -->
+              <li (click)="goToProjects()">
+                <a style="cursor: pointer">
+                  <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
+                  {{ 'NavBar.ViewAllProjects' | translate }}
+                </a>
+              </li>
 
 
-            <!--  ------------------------------------------------ -->
-            <!--  ADD PROJECT -->
-            <!--  ------------------------------------------------ -->
-            <li id="navbar_create_prjct" *ngIf="MT === true" (click)="goToCreateProject()">
-              <a style="cursor: pointer">
-                <i class="material-icons"
-                  style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
-                {{ 'AddProject' | translate }}
-              </a>
-            </li>
-            <li class="divider"></li>
-
-            <!--  ------------------------------------------------ -->
-            <!--  RECENT PROJECTS -->
-            <!--  ------------------------------------------------ -->
-            <li>
-              <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
-                {{ 'RecentProjects' | translate }}
-              </span>
-            </li>
-
-            <!-- 
-            ***** ngFor - reverse order of output using the index *****
-            Reverse() works in place. It means, it will change the original array. 
-            Slice without parameters returns a copy of projects, so original array, in this case, stays unchanged.  
-            let prjct of projects?.reverse()
-            -->
-            <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
-
-            <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
-                [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
-
-                <span> {{ prjct?.id_project?.name }} </span>
-              </a>
-            </li>
-
-            <ng-container *ngIf="projects?.length > 5">
+              <!--  ------------------------------------------------ -->
+              <!--  ADD PROJECT -->
+              <!--  ------------------------------------------------ -->
+              <li id="navbar_create_prjct" *ngIf="MT === true" (click)="goToCreateProject()">
+                <a style="cursor: pointer">
+                  <i class="material-icons"
+                    style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
+                  {{ 'AddProject' | translate }}
+                </a>
+              </li>
               <li class="divider"></li>
+
+              <!--  ------------------------------------------------ -->
+              <!--  RECENT PROJECTS -->
+              <!--  ------------------------------------------------ -->
               <li>
                 <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
-                  {{ 'OtherProjects' | translate}}
+                  {{ 'RecentProjects' | translate }}
                 </span>
               </li>
 
-              <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
-              <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
-                  {{ prjct?.id_project?.name }}
+
+              <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
+                <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
+                  [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
+
+                  <span> {{ prjct?.id_project?.name }} </span>
                 </a>
               </li>
-            </ng-container>
 
+              <ng-container *ngIf="projects?.length > 5">
+                <li class="divider"></li>
+                <li>
+                  <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+                    {{ 'OtherProjects' | translate}}
+                  </span>
+                </li>
 
-
-          </ul>
-        </li>
-
-
-
+                <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
+                  <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
+                    {{ prjct?.id_project?.name }}
+                  </a>
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+        </ng-container>  
 
         <!-- -------------------------------------------- -->
         <!-- Sleekplan -->
         <!-- -------------------------------------------- -->
-
         <ng-container *ngIf="isVisiblePay" style="position: relative;">
           <li *ngIf="project">
             <a>
               <button class="give-feedback" (click)="openFeedback()">
 
                 <i class="material-icons">notifications</i>
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#555">
-                  <path d="M0 0h24v24H0V0z" fill="none"  style="vertical-align: middle;"/>
-                  <path
-                    d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
-                </svg> -->
+                
               </button>
 
             </a>

@@ -27,6 +27,10 @@ export const PERMISSIONS = {
 
   RATING_READ:'rating_read',
 
+  CHANGE_PROJECT:'change_project',
+  SIMULATE_CONV:'simulate_conv',
+  HOME_READ: 'home_read',
+
   AUTOMATIONSLOG_READ: "automationslog_read",
   AUTOMATIONSLOG_CREATE: "automationslog_create",
 
