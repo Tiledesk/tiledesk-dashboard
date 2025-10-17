@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.145-AR
+- Adds the ability to hide or show the conversation simulation button and the switch project combo box via permissions
+- Adds the ability to hide or show the sidebar menu item Home via permissions
+
 ### 2.7.144-AR
 - Fixes the bug: Email search doesn't work in Teammates
 - Fixes the bug: the whitelist of allowed domains does not work properly
