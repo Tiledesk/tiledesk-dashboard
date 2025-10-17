@@ -24,7 +24,7 @@
             {{ "NewRole" | translate }}
         </span>
         <span class="active-breadcrumb" *ngIf="EDIT_VIEW">
-            Edit role
+           {{ "EditRole" | translate }}
         </span>
     </div>
 
@@ -115,7 +115,7 @@
                                 <div class="submit-btn-wpr">
                                     <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="submit()"
                                         [disabled]="isSubmitDisabled || reservedName">
-                                        Save
+                                        {{'Save' | translate}}
                                     </button>
                                 </div>
                             </form>
