@@ -28,6 +28,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   @ViewChild('leadTagsContainer') leadTagsContainer!: ElementRef;
   @ViewChild('ngSelect') ngSelect!: any;
+  @ViewChild('contactPropertySelect') contactPropertySelect!: any;
+  
   private observer!: MutationObserver;
 
   public PERMISSION_TO_UPDATE_LEAD: boolean;
@@ -323,6 +325,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
 
   getIfRouteUrlIsRequestForPanel() {
+    // this.CHAT_PANEL_MODE = true; //for test
     this.CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
       this.CHAT_PANEL_MODE = true;
@@ -927,6 +930,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     })
 
     dialogRef.afterClosed().subscribe(result => {
+
+      this.contactPropertySelect.blur()
       this.logger.log(`Dialog result:`, result);
 
       const propertyLabel = result.label
@@ -1061,6 +1066,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   onSelectCustomProperty(event) {
+    this.contactPropertySelect.blur();
     this.logger.log('[CONTACT-INFO] - ON SELECT CONTACT PROPERTY event ', event);
     // this.logger.log('[CONTACT-INFO] - ON SELECT CONTACT PROPERTY contactProperty ', this.contactProperty);
     setTimeout(() => {

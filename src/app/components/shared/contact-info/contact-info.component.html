@@ -508,10 +508,16 @@
         <div class="ng-select-lead-properties-wpr" style="width: 100%; position: relative;">
 
           <!-- contactsCustomProperties -->
-          <ng-select class="contact-property" [ngStyle]="{ 'width': CHAT_PANEL_MODE === true ? '244px' : '100%' }"
-            id="add-contatct-custom-property" [items]="contactPropertiesToSelect"
-            style="top: 0px;padding-right: 2px; margin-left: 2px;" bindLabel="label" bindValue="label"
-            placeholder="{{'AddContactProperty'| translate}}" [(ngModel)]="contactProperty"
+          <ng-select class="contact-property" 
+            #contactPropertySelect
+            [ngStyle]="{ 'width': CHAT_PANEL_MODE === true ? '242px' : '100%' }"
+            id="add-contatct-custom-property" 
+            [items]="contactPropertiesToSelect"
+            style="top: 0px;padding-right: 3px; margin-left: 2px;" 
+            bindLabel="label" 
+            bindValue="label"
+            placeholder="{{'AddContactProperty'| translate}}" 
+            [(ngModel)]="contactProperty"
             (change)="onSelectCustomProperty($event)">
 
             <ng-template ng-label-tmp let-item="item">
@@ -558,7 +564,9 @@
           <div class="lead-tags--container-wpr">
 
             <div class="ng-select-tags-wpr" style="position: relative;">
-              <ng-select class="add-contact-tag" style="padding-right: 12px;margin-left: -1px " id="select-lead-tag"
+              <ng-select class="add-contact-tag" 
+                [ngClass]="{'add-contact-tag-chat-mode': CHAT_PANEL_MODE === true}"
+                style="padding-right: 12px;margin-left: -1px;margin-right: 0.5px;" id="select-lead-tag"
                 [ngStyle]="{'top':contactTags?.length === 0 ? '-10px' : '-10px' }" 
                 #ngSelect 
                 (change)="addTag(tag)"

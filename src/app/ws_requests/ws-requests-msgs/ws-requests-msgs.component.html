@@ -1790,7 +1790,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Ticket Subject -->
                     <!-- ------------------------------------- -->
-                    <li class="ticket-subject" *ngIf="request?.subject">
+                    <li class="ticket-subject" *ngIf="request?.subject" style="margin-top: 10px;margin-bottom: 0px;">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1803,11 +1803,14 @@
                         </span>
                         <div class="form-group" style="margin-top: 2px;">
                           <input type="text" name="ticket-subject" data-id="ticket-subject"
-                            class="form-control input-md" [(ngModel)]="ticketSubject" maxlength="255"
-                            (blur)="saveEditInPlaceSubject()" (keydown.enter)='saveEditInPlaceSubject()'
-                            autocomplete="off" style="padding-bottom: 2px;" required>
+                            class="form-control input-md" 
+                            [(ngModel)]="ticketSubject" maxlength="255"
+                            (blur)="saveEditInPlaceSubject()" 
+                            (keydown.enter)='saveEditInPlaceSubject()'
+                            autocomplete="off" style="padding-bottom: 2px;" 
+                            required>
                         </div>
-                        <div class="action-btns">
+                        <div class="action-btns" style="margin-right: -11px;">
                           <button type="button" data-id="email" (click)="removeTicket()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                               style="min-width: 20px; min-height: 20px;">
@@ -1820,7 +1823,7 @@
                         </div>
                       </div>
                       <div *ngIf="ticketSubject?.length === 0"
-                        style="color: #f44336; position: relative;  top: -8px; font-size: 12px;font-weight: 400;margin-left: 34px;">
+                        style="color: #f44336; position: relative;  top: -4px; font-size: 12px;font-weight: 400;margin-left: 34px;">
                         {{'FieldRequired' | translate}}
                       </div>
                     </li>
@@ -1851,9 +1854,8 @@
 
                             </div>
 
-                            <div class="ng-select-tags-wpr"
-                              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : '100%' }">
-
+                            <div class="ng-select-tags-wpr"  [ngClass]="{'ng-select-tags-wpr-panel-mode': CHAT_PANEL_MODE === false}"
+                              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '229px' : '100%' }">
                               <ng-select class="convs-tags" id="select-tag" 
                                 #ngSelect 
                                 (change)="addTag()"
@@ -1950,7 +1952,7 @@
                   <!-- Advanced accordion -->
                   <div class="row ticket--panel">
                     <div class="col-sm-12">
-                      <div class="ticket--panel-accordion">
+                      <div class="ticket--panel-accordion"  [ngClass]="{'ticket--panel-accordion-chat-mode':CHAT_PANEL_MODE === true }">
 
                         <div class="ticket--panel-accordion-left">
 
@@ -1966,7 +1968,7 @@
                         </div>
 
                         <div class="action-btns-arrow" (click)="toggleTicketAdvanced()">
-                          <button type="button" data-id="toggle-viewed-pages"
+                          <button type="button" data-id="toggle-advanced"
                             [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
                             <svg id="viewed-page-arrow-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                               viewBox="0 0 24 24" width="24px"
@@ -1978,7 +1980,7 @@
                         </div>
                       </div>
 
-                      <div class="ticket--panel-accordion-content" *ngIf="showTicketAdvanced">
+                      <div class="ticket--panel-accordion-content"  [ngStyle]="{'margin-left':CHAT_PANEL_MODE === true ? '-5px' : '28px' }" *ngIf="showTicketAdvanced">
 
                         <!-- ----------------------------------------------------------------------------- -->
                         <!-- Priority -->
@@ -2030,7 +2032,7 @@
                         <!-- ----------------------------------------------------------------------------- -->
                         <!-- Followers -->
                         <!-- ----------------------------------------------------------------------------- -->
-                        <div class="row ticket--panel">
+                        <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
                           <div class="col-sm--12">
                             <div class="conv-followers">
                               <div class="ticket--panel-row-header">
@@ -2094,7 +2096,7 @@
                         <!-- ----------------------------------------------------------------------------- -->
                         <!-- Convert offline / online -->
                         <!-- ----------------------------------------------------------------------------- -->
-                        <div class="row ticket--panel">
+                        <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
                           <div class="col-sm--12">
                             <div class="followers-container"
                               [ngClass]="{'followers-container-chat':CHAT_PANEL_MODE === true}">
@@ -2398,7 +2400,7 @@
 
                         <div class="action-btns-arrow" (click)="toggleViewedPages()">
                           <button type="button" data-id="toggle-viewed-pages"
-                            [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
+                            [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '8px' : '-11px' }">
                             <svg id="viewed-page-arrow-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                               viewBox="0 0 24 24" width="24px"
                               style="min-width: 24px; min-height: 24px;position: relative;right: 3px;top: -2px;">
