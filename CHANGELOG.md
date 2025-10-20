@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.140-stage
+- Improves the conversation details sidebar
+
 ### 2.7.146-AR
 - Improves the conversation details sidebar
 
