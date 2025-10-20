@@ -967,6 +967,13 @@ const routes: Routes = [
     loadChildren: () => import('app/automations/automations.module').then(m => m.AutomationsModule),
     canActivate: [AuthGuard, ProjectProfileGuard],
   },
+
+  // Automations create
+  {
+    path: 'project/:projectid/new-broadcast',
+    loadChildren: () => import('app/automation-create/automation-create.module').then(m => m.AutomationCreateModule),
+    canActivate: [AuthGuard],
+  },
   // { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
    {
@@ -1325,7 +1332,19 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+  {
+    path: 'project/:projectid/flows/flow-webhooks-logs/:type/:id',
+    loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
 
+  {
+    path: 'project/:projectid/wsrequests/logs/:type/:id',
+    loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
   {
     path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
@@ -1623,9 +1642,6 @@ const routes: Routes = [
 
   // Rasa bot Not more used
   // { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
-
-
-
 
 ];
 

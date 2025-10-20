@@ -32,7 +32,7 @@
         <span style="position: relative;top: 1px;">
           <a class="avaible-email" target="_blank" *ngIf="request?.lead?.email"
             href="mailto:{{request?.lead?.email}}">
-            {{request?.lead?.email}}
+             {{request?.lead?.email}}
           </a>
           <a class="unavaible-property" *ngIf="!request?.lead?.email">
             {{'Unavailable' | translate}}
