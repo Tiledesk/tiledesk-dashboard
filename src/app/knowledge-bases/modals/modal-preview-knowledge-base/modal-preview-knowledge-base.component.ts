@@ -88,7 +88,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private router: Router
   ) {
     super(prjctPlanService, notify);
-    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
+    console.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
@@ -98,6 +98,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
+      console.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
       if (!this.selectedNamespace.preview_settings.chunks_only) {
@@ -377,8 +378,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "chunks_only": this.chunkOnly,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
-      'citations': this.citations
-
+      'citations': this.citations,
+      'llm': this.selectedNamespace.preview_settings.llm
     }
     // this.error_answer = false;
 
@@ -498,7 +499,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.show_answer = true;
       this.searching = false;
     }, (err) => {
-      this.logger.log("ask gpt preview response error: ", err);
+      console.log("ask gpt preview response error: ", err);
       // this.logger.log("ask gpt preview response error message: ", error.message);
       // this.logger.log("ask gpt preview response error error: ", error.error);
       if (err && err.error && err.error.error_code === 13001) {
@@ -513,23 +514,25 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         if (err.error.error.error_message) {
           let errorString = err.error.error.error_message
           const match = errorString.match(/'message':\s*'([^']+)'/);
-          const message = match ? match[1] : '';
+          const message = match ? match[1] : 'Error';
           this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
           // this.answer = this.answer + ' (' + err.statusText + ')'
           this.answer = this.answer + ' (' + message + ')'
+        } else if (!err.error.error.error_message) {
+          if (err.statusText) { 
+            this.answer = this.answer + ' (' + err.statusText + ')'
+          }
         }
       }
 
-      this.logger.error("ERROR ask gpt err.message: ", err.message);
-      console.log("ERROR ask gpt err: ", err);
-      console.log("ERROR ask gpt err.error.error.error_message: ", err.error.error.error_message);
-      let errorString = err.error.error.error_message
-      // Estrai il messaggio dopo 'message': '
-      const match = errorString.match(/'message':\s*'([^']+)'/);
-
-      const message = match ? match[1] : '';
-
-      console.log("ERROR ask gpt message ",  message);
+      // this.logger.error("ERROR ask gpt err.message: ", err.message);
+      // console.log("ERROR ask gpt err: ", err);
+      // console.log("ERROR ask gpt err.error.error.error_message: ", err.error.error.error_message);
+      // let errorString = err.error.error.error_message
+      // // Estrai il messaggio dopo 'message': '
+      // const match = errorString.match(/'message':\s*'([^']+)'/);
+      // const message = match ? match[1] : '';
+      // console.log("ERROR ask gpt message ",  message);
 
       // this.error_answer = true;
       this.show_answer = true;

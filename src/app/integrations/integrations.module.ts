@@ -24,6 +24,7 @@ import { CohereIntegrationComponent } from './list/cohere-integration/cohere-int
 import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-integration.component';
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { VLLMComponent } from './list/v-llm/v-llm.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -47,7 +48,8 @@ const routes: Routes = [
     GroqIntegrationComponent,
     CohereIntegrationComponent,
     OllamaIntegrationComponent,
-    DeepseekIntegrationComponent
+    DeepseekIntegrationComponent,
+    VLLMComponent
   ],
   imports: [
     RouterModule.forChild(routes),

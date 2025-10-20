@@ -86,6 +86,7 @@ export class OpenaiService {
 
 
   askGpt(data) {
+    console.log('[OPENAI.SERVICE] askGpt',  data) 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
