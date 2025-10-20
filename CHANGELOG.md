@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.146-AR
+- Improves the conversation details sidebar
+
 ### 2.7.145-AR
 - Adds the ability to hide or show the conversation simulation button and the switch project combo box via permissions
 - Adds the ability to hide or show the sidebar menu item Home via permissions
