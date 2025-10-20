@@ -840,6 +840,8 @@
     "VoiceRecorder": "Дыбыс жазушы",
     "TheConversationWillBeResolved": "Өтініш шешіледі",
     "NoTeammateFoundMatchingCriteria":"Сіздің іздеу критерилеріңізге сәйкес келетін команда мүшесі табылмады",
+    "AddTagToConversation":"Өтінішке тег қосу...",
+    "Info":"Ақпарат",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

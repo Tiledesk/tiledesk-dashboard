@@ -839,6 +839,8 @@
     "VoiceRecorder": "Sprachrecorder",
 	"TheConversationWillBeResolved": "Die Konversation wird abgeschlossen",
 	"NoTeammateFoundMatchingCriteria":"Kein Teammitglied gefunden, das Ihren Suchkriterien entspricht",
+	"AddTagToConversation":"Tag zur Konversation hinzufügen...",
+	"Info":"Info",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

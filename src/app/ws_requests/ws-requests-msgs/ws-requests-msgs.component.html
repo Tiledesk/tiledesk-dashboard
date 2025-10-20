@@ -67,8 +67,8 @@
                       <div class="chat-header-wpr-btn">
                         <!-- [matTooltip]="request?.status !== 1000 ? ( 'ThisConversationIsNotAssignedToYou' | translate ) : ( 'This conversation is closed, reopen it to Join' )"  -->
                         <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
-                          [disabled]="request?.status == 1000 || !PERMISSION_TO_JOIN_REQUEST" role="button" matTooltipClass="custom-mat-tooltip"
-                          [matTooltip]="getJoinTooltipMessage()"
+                          [disabled]="request?.status == 1000 || !PERMISSION_TO_JOIN_REQUEST" role="button"
+                          matTooltipClass="custom-mat-tooltip" [matTooltip]="getJoinTooltipMessage()"
                           #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                           <i class="material-icons"
                             style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
@@ -440,7 +440,7 @@
                       </span>
                     </div>
 
-                     <div class="warning-message-cointainer" style="position: relative;"> 
+                    <div class="warning-message-cointainer" style="position: relative;">
                       <!-- For emojis -->
                       <!-- showEmojiWarning {{showEmojiWarning}} -->
                       <div class="emoji-warning-container">
@@ -456,8 +456,8 @@
                         </div>
                       </div>
                     </div>
-                  
-                      
+
+
 
                     <div class="col-xs-12 h-100 plr-0" style="position: relative;"
                       [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
@@ -465,7 +465,7 @@
                       <!-- For emojis -->
                       <div class="emoji-warning-container">
                         <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
-                         {{'EmojisNotAllowed' | translate}}
+                          {{'EmojisNotAllowed' | translate}}
                         </div>
                       </div>
 
@@ -475,14 +475,10 @@
                           {{ warningMessage }}
                         </div>
                       </div>
-                    
-                      <textarea #sendMessageTexarea class="send-message-texarea" 
-                        [(ngModel)]="chat_message"
-                        placeholder="Write your message" 
-                        (input)="resizeTextArea()"
-                        (paste)="onPasteInSendMsg($event)"
-                        (ngModelChange)="onMessageChange($event)"
-                        [disabled]="!PERMISSION_TO_SEND_REQUEST">  
+
+                      <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
+                        placeholder="Write your message" (input)="resizeTextArea()" (paste)="onPasteInSendMsg($event)"
+                        (ngModelChange)="onMessageChange($event)" [disabled]="!PERMISSION_TO_SEND_REQUEST">
                       </textarea>
                     </div>
 
@@ -496,10 +492,8 @@
                               (click)="sendChatMessage()"
                               [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)"
                               matTooltipClass="custom-mat-tooltip"
-                         	    [matTooltip]="!PERMISSION_TO_SEND_REQUEST ? ('YouDoNotHavePermissions' | translate) : null"
-                              #tooltip="matTooltip"
-                              matTooltipPosition='above' 
-                              matTooltipHideDelay="100">
+                              [matTooltip]="!PERMISSION_TO_SEND_REQUEST ? ('YouDoNotHavePermissions' | translate) : null"
+                              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                               <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
                               <span
                                 *ngIf="HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false"
@@ -513,21 +507,19 @@
                               </span>
                               <span
                                 *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === true"
-                                style="font-weight:500;"> {{'Resolved' | translate }} 
+                                style="font-weight:500;"> {{'Resolved' | translate }}
                               </span>
                             </button>
 
                             <!-- data-toggle="dropdown" -->
                             <button type="button"
                               [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)"
-                              [ngClass]="{'send-msg-dropdown-toggle-disabled': (!chat_message || chat_message?.length === 0) && (existAnAttacment === false)}" 
+                              [ngClass]="{'send-msg-dropdown-toggle-disabled': (!chat_message || chat_message?.length === 0) && (existAnAttacment === false)}"
                               class="btn btn-tdblu-no-boxshadow dropdown-toggle send-msg-dropdown-toggle"
-                              [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
-                              [ngStyle]="{
+                              [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null" [ngStyle]="{
                                 'opacity': PERMISSION_TO_UPDATE_REQUEST_STATUS ? '1' : '0.6',
                                 'cursor': PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'pointer' : 'not-allowed'
-                               }"
-                              (click)="isOpenDropdown(isOpen = !isOpen)">
+                               }" (click)="isOpenDropdown(isOpen = !isOpen)">
                               <span class="caret"
                                 [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
                               <span class="sr-only">Toggle Dropdown</span>
@@ -557,7 +549,7 @@
                                   </span>
                                 </a>
                               </li>
-                              <li  [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 }">
+                              <li [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 }">
 
                                 <a (click)="hasSelectedSolved('sendMessageAs')"
                                   style="padding-left: 15px; padding-right: 15px;">
@@ -578,17 +570,16 @@
 
                           <!-- File upload -->
                           <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload
-                            style="display: none;" [accept]="fileUploadAccept" >
+                            style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn" (click)="PERMISSION_TO_SEND_REQUEST && fileUpload.click()"
-                            matTooltipClass="custom-mat-tooltip"
-                            [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })" 
-                            #tooltip="matTooltip"
-                            [matTooltipDisabled]="!PERMISSION_TO_SEND_REQUEST" 
-                            matTooltipPosition='right' 
-                            matTooltipHideDelay="100"
-                            [disabled]="!PERMISSION_TO_SEND_REQUEST">
+                            <button class="btn  pull-left upload-btn"
+                              (click)="PERMISSION_TO_SEND_REQUEST && fileUpload.click()"
+                              matTooltipClass="custom-mat-tooltip"
+                              [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })"
+                              #tooltip="matTooltip" [matTooltipDisabled]="!PERMISSION_TO_SEND_REQUEST"
+                              matTooltipPosition='right' matTooltipHideDelay="100"
+                              [disabled]="!PERMISSION_TO_SEND_REQUEST">
                               <span class="material-icons">
                                 attach_file
                               </span>
@@ -635,12 +626,9 @@
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
                   <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
-                    [disabled]="request?.status == 1000" 
-                    role="button" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" 
-                    #tooltip="matTooltip"
-                    [matTooltipDisabled]="request?.status == 1000" 
-                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    [matTooltipDisabled]="request?.status == 1000" matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
                       style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
                     <span style="vertical-align: middle">
@@ -724,9 +712,10 @@
                               </span>
                             </a>
                           </li>
-                       
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST || request?.status === 1000}">
-                          <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_REASSIGN_REQUEST}"> -->
+
+                          <li
+                            [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST || request?.status === 1000}">
+                            <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_REASSIGN_REQUEST}"> -->
                             <a (click)='openSelectUsersModal(action = "reassign")'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
@@ -737,10 +726,11 @@
                             </a>
                           </li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST || request?.status === 1000}">
-                           <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}"> -->
+                          <li
+                            [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST || request?.status === 1000}">
+                            <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}"> -->
                             <a (click)='openSelectUsersModal(action = "invite")'
-                              style="padding-left: 15px; padding-right: 15px;"> 
+                              style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">person_add</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
                                 {{ 'VisitorsPage.AddAgent' | translate }}
@@ -750,7 +740,8 @@
 
                           <li class="divider"></li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST) || request?.status === 1000}">
+                          <li
+                            [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST) || request?.status === 1000}">
 
                             <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
@@ -889,8 +880,9 @@
                             <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
                               <h3 id="edit-fullname-contact-info--name" *ngIf="request?.lead?.fullname"
                                 class="contact-info--name">
-                               <!-- {{request?.lead?.fullname}} -->  
-                                {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:27) + '...' : request?.lead?.fullname }}
+                                <!-- {{request?.lead?.fullname}} -->
+                                {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:27) + '...'
+                                : request?.lead?.fullname }}
                               </h3>
                               <!-- -->
                               <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"
@@ -932,8 +924,7 @@
                           </div>
                         </div>
                         <div class="contact-location-and-served-by-wpr">
-                          <a rel="noopener noreferrer" class="contact-location"
-                            [ngClass]="{
+                          <a rel="noopener noreferrer" class="contact-location" [ngClass]="{
                           'contact-location-chat-one-agent': CHAT_PANEL_MODE === true && agents_array?.length === 1, 
                           'contact-location-chat-two-agent': CHAT_PANEL_MODE === true && agents_array?.length === 2,
                           'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length >= 3}">
@@ -1055,18 +1046,15 @@
                                 <!-- @ Human Agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- (mouseenter)="agentfbimg.open()"  -->
-                                
+
                                 <img *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                                   alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
-                                  onerror="this.src='assets/img/no_image_user.png'" 
-                                  [satPopoverAnchor]="agentfbimg"
+                                  onerror="this.src='assets/img/no_image_user.png'" [satPopoverAnchor]="agentfbimg"
                                   (click)="!CHAT_PANEL_MODE && agentfbimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentfbimg.close()" matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} {{'ClickToDisplayActions' | translate}}"
-                                  [matTooltipDisabled]="CHAT_PANEL_MODE"
-                                  #tooltip="matTooltip" 
-                                  matTooltipPosition='left' 
+                                  [matTooltipDisabled]="CHAT_PANEL_MODE" #tooltip="matTooltip" matTooltipPosition='left'
                                   matTooltipHideDelay="100" />
                                 <sat-popover #agentfbimg horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1094,10 +1082,9 @@
                                   class="served-by-avatar--img" [satPopoverAnchor]="agentntimg"
                                   (click)="!CHAT_PANEL_MODE && agentntimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentntimg.close()" matTooltipClass="custom-mat-tooltip"
-                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} {{'ClickToDisplayActions' | translate}}" 
-                                  [matTooltipDisabled]="CHAT_PANEL_MODE"
-                                  #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} {{'ClickToDisplayActions' | translate}}"
+                                  [matTooltipDisabled]="CHAT_PANEL_MODE" #tooltip="matTooltip" matTooltipPosition='left'
+                                  matTooltipHideDelay="100" />
 
                                 <sat-popover #agentntimg horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1125,12 +1112,10 @@
                                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
                                   style="cursor:pointer" [satPopoverAnchor]="agentnoimg"
                                   (click)="$event.stopPropagation()" (click)="!CHAT_PANEL_MODE && agentnoimg.toggle()"
-                                  (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" 
-                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}}
+                                  (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}}
                                    {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                   [matTooltipDisabled]="CHAT_PANEL_MODE"
-                                   matTooltipPosition='left' 
-                                   matTooltipHideDelay="100">
+                                  [matTooltipDisabled]="CHAT_PANEL_MODE" matTooltipPosition='left'
+                                  matTooltipHideDelay="100">
                                   {{ agent?.userFullname }}
                                 </div>
 
@@ -1163,7 +1148,8 @@
                                   (click)="$event.stopPropagation()" (document:click)="botfbengine.close()"
                                   matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE"/>
+                                  matTooltipPosition='left' matTooltipHideDelay="100"
+                                  [matTooltipDisabled]="CHAT_PANEL_MODE" />
 
                                 <sat-popover #botfbengine horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1280,7 +1266,7 @@
                                               {{agent?.firstname}} {{agent?.lastname}}
                                             </span>
                                           </div>
-                                          <div  *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
+                                          <div *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
                                               (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
@@ -1346,17 +1332,14 @@
                       <!-- ----------------------------------------------------------  -->
                       <!-- Working status dropdow data-toggle="dropdown"-->
                       <!-- ----------------------------------------------------------  -->
-                    <!-- matTooltip="{{'ChangeTheConversationStatus' | translate }}"  -->
-                      <div class="dropdown"  matTooltipClass="custom-mat-tooltip"
-                          [matTooltip]="!isDropdownOpen ? ('ChangeTheConversationStatus' | translate) : ''"
-                          #tooltip="matTooltip"
-                          matTooltipPosition='above' 
-                          matTooltipHideDelay="100">
+                      <!-- matTooltip="{{'ChangeTheConversationStatus' | translate }}"  -->
+                      <div class="dropdown" matTooltipClass="custom-mat-tooltip"
+                        [matTooltip]="!isDropdownOpen ? ('ChangeTheConversationStatus' | translate) : ''"
+                        #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
 
                         <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;"
                           [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
-                          (click)="handleDropdownClick($event)"
-                          [ngStyle]="{
+                          (click)="handleDropdownClick($event)" [ngStyle]="{
                             'opacity': PERMISSION_TO_UPDATE_REQUEST_STATUS ? '1' : '0.6',
                             'cursor': PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'pointer' : 'not-allowed'
                           }"
@@ -1390,10 +1373,8 @@
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)"
                             class="conversation-open-assigned" *ngIf="!request?.subject"
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'ConversationBeingProcessed' | translate }}" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='right' 
-                            matTooltipHideDelay="100">
+                            matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1403,13 +1384,9 @@
                           </li>
                           <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
-                            *ngIf="request?.subject" 
-                            class="ticket-open-assigned" 
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'TicketBeingProcessed' | translate }}" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='right' 
-                            matTooltipHideDelay="100">
+                            *ngIf="request?.subject" class="ticket-open-assigned" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1422,8 +1399,7 @@
                             (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' 
-                            matTooltipHideDelay="100">
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1435,10 +1411,8 @@
                             [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
                             (click)="hasSelectedSolved('updatedWorkingStatus')" class="conversation-resolved"
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='right' 
-                            matTooltipHideDelay="100">
+                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; ">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
@@ -1715,36 +1689,43 @@
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === true && tab1 === false && tab2 === false && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab0()">
-                            <span> {{ 'UserProfile.Profile' | translate }} </span>
+                            <span>
+                              <!-- {{ 'UserProfile.Profile' | translate }}  -->
+                              {{"Info" | translate}}
+
+                            </span>
 
                           </div>
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === true && tab2 === false && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab1()">
-                            <span>Ticket </span>
+                            <span>{{'Notes.Notes' | translate}} ({{ notesArray?.length }})</span>
 
                           </div>
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === true && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab2()">
-                            <span> {{'Notes.Notes' | translate}} ({{ notesArray?.length }}) </span>
+                            <span> {{'Conversations' | translate}} </span>
 
                           </div>
+
+                       
                           <!-- ------------------------------------- -->
                           <!-- Other tabs -->
                           <!-- ------------------------------------- -->
                           <div *ngIf="otherTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === false && tab3 === true && tab4 === false}"
                             (click)="hasSelectedTab3()">
-                            <span> {{'Conversations' | translate}} </span>
+                            <span> {{'Attributes' | translate }} </span>
 
-                          </div>
-                          <div *ngIf="otherTabs" class="sidebar-tab"
+                          </div> 
+                        
+                          <!-- <div *ngIf="otherTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab2 === false && tab1 === false && tab3 === false && tab4 === true}"
                             (click)="hasSelectedTab4()">
                             <span> {{'Attributes' | translate }} </span>
 
-                          </div>
+                          </div> -->
                           <!-- ------------------------------------- -->
                           <!-- Arrow right -->
                           <!-- ------------------------------------- -->
@@ -1762,10 +1743,434 @@
                   </div>
                 </div>
 
-                <appdashboard-contact-info *ngIf="tab0" [contact_details]="contact_details"
-                  (onClickTagConversation)="onClickTagConversation()"
-                  (contactEmailChanged)="onChangeContactEmail($event)">
-                </appdashboard-contact-info>
+                <div *ngIf="tab0" class="ul-wpr" [ngClass]="{'ul-wpr-chat': CHAT_PANEL_MODE === true}">
+
+                  <ul class="ticket-info-list">
+                    <!-- ------------------------------------- -->
+                    <!-- ticket id -->
+                    <!-- ------------------------------------- -->
+                    <li *ngIf="request?.ticket_id" class="ticket-id" style="margin-bottom: -3px;">
+                      <div class="contact-row">
+                        <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px"
+                            fill="#e8eaed">
+                            <path
+                              d="M320-240 80-480l240-240 57 57-184 184 183 183-56 56Zm320 0-57-57 184-184-183-183 56-56 240 240-240 240Z" />
+                          </svg>
+                        </span>
+                        <span class="ticket-id-text" style="white-space: nowrap;">
+                          {{ 'TicketId' | translate }}
+                        </span>
+
+                        <!-- <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
+                            fill="none" style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                            matTooltipHideDelay="100">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                              d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                          </svg> -->
+                        <!-- </span> -->
+                         <!-- width: 100%;text-align: right; -->
+                        <div class="form-group" style="margin-top: 8px;">
+                          <!-- style="cursor: default;" -->
+                          <input *ngIf="!showSpinner" name="ticket_id" type="text" data-id="ticket_id"
+                            class="form-control input-md" value="#{{ request?.ticket_id}}" disabled
+                            style="cursor: default;width: 240px;" id="ticket_id">
+                          <!-- <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px"
+                            fill="none" style="margin-right: 5px;vertical-align: middle; cursor: pointer;" id="copy_ticket_id">
+                            <path
+                              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z" />
+                          </svg> -->
+                        </div>
+                      </div>
+                    </li>
+
+                    <!-- ------------------------------------- -->
+                    <!-- Ticket Subject -->
+                    <!-- ------------------------------------- -->
+                    <li class="ticket-subject" *ngIf="request?.subject">
+                      <div class="contact-row">
+                        <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
+                            fill="none" style="min-width: 22px; min-height: 22px;">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path d="M21 11.01L3 11v2h18zM3 16h12v2H3zM21 6H3v2.01L21 8z"
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Subject' | translate }}"
+                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          </svg>
+                        </span>
+                        <div class="form-group" style="margin-top: 2px;">
+                          <input type="text" name="ticket-subject" data-id="ticket-subject"
+                            class="form-control input-md" [(ngModel)]="ticketSubject" maxlength="255"
+                            (blur)="saveEditInPlaceSubject()" (keydown.enter)='saveEditInPlaceSubject()'
+                            autocomplete="off" style="padding-bottom: 2px;" required>
+                        </div>
+                        <div class="action-btns">
+                          <button type="button" data-id="email" (click)="removeTicket()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                              style="min-width: 20px; min-height: 20px;">
+                              <path
+                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                              </path>
+                              <path d="M0 0h24v24H0z" fill="none"></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div *ngIf="ticketSubject?.length === 0"
+                        style="color: #f44336; position: relative;  top: -8px; font-size: 12px;font-weight: 400;margin-left: 34px;">
+                        {{'FieldRequired' | translate}}
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- ------------------------------------------ -->
+                  <!-- @ Conversation Tags (new) -->
+                  <!-- ------------------------------------------ -->
+                  <div class="row ticket--panel">
+                    <div class="col-sm-12">
+                      <div *ngIf="isVisibleLBS === true" class="tag-content-wpr"
+                        [ngClass]="{'tag-content-wpr-chat': CHAT_PANEL_MODE === true}">
+
+
+                        <form [ngStyle]="{'height':convTagContainerElementHeight }">
+                          <div class="tags--container-wpr">
+                            <div class="ticket--panel-row-header">
+
+                              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip"
+                                matTooltipPosition='right' matTooltipHideDelay="100">
+                                <path d="M0 0h22v22H0z" fill="none"></path>
+                                <path
+                                  d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
+                                </path>
+                              </svg>
+
+                            </div>
+
+                            <div class="ng-select-tags-wpr"
+                              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : '100%' }">
+
+                              <ng-select class="convs-tags" id="select-tag" 
+                                #ngSelect 
+                                (change)="addTag()"
+                                [items]="tagsList"
+                                bindLabel="tag" 
+                                bindValue="_id" 
+                                [clearable]="false"
+                                [clearSearchOnAdd]="true" 
+                                [hideSelected]="true"
+                                placeholder="{{ typeALabelAndPressEnter}}"
+                                [(ngModel)]="tag" 
+                                addTagText="{{ 'CreateNew' | translate}}"
+                                [addTag]="createNewTag" 
+                                (keyup.enter)="ngSelect.close()"
+                                notFoundText="{{'NoTAGFoundTypeToCreateATAG' | translate}}"
+                                [disabled]="!PERMISSION_TO_UPDATE_REQUEST_TAGS"
+                                [ngClass]="{'conversation-tag-panel-mode': CHAT_PANEL_MODE === true }">
+
+                                <ng-template ng-label-tmp let-item="item">
+                                  <i [style.color]="item.color" class="fa fa-tag"
+                                    style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+
+                                  {{item.tag}}
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                  <i [style.color]="item.color" class="fa fa-tag"
+                                    style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+                                  {{item.tag}}
+                                </ng-template>
+                                <ng-template ng-footer-tmp *ngIf="PERMISSION_TO_READ_TAGS">
+                                    <div class="link-to-tags-page-in-select-footer" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false ">
+                                      <span (click)="goToTags()" class="manage-tags-in-select-footer">
+                                        {{ 'Tags.ManageTags' | translate}}
+                                      </span>
+                                    </div>
+                                </ng-template>
+                              </ng-select>
+
+                              <!-- Invisible overlay to block interactions -->
+                              <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_TAGS"
+                                (click)="handleBlockedSelectClick($event)"
+                                style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
+                              </div>
+
+                            </div>
+                          </div>
+                          <div class="tags--container" #tagsContainer>
+                            <!-- <div *ngIf="request?.tags?.length === 0" aria-label="tag" class="no-conv-tags-wpr">
+                              <p weight="400" class="no-conv-tags"> {{'NoTAGAssignedYet' | translate}}</p>
+                            </div> -->
+
+                            <div class="tag" *ngFor="let tag of request?.tags" role="button">
+                              <!-- request  {{request?.tags }} -->
+                              <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                              <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
+                              <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                              <div (click)="removeTag(tag)">
+                                <div class="icon-container" style="display: inline-block;">
+                                  <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                                    aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                    class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                    <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                      d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                    </path>
+                                  </svg>
+                                  <span class="tag-delete">
+                                    <i class="material-icons delete_icon" style="font-size: 16px;"> close
+                                    </i>
+                                  </span>
+                                </div>
+                                {{ tag.tag}}
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </form>
+
+                      </div> 
+                      <!-- ./Conversation tag -->
+
+                      <!-- <ng-container *ngIf="PERMISSION_TO_READ_TAGS">
+                        <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false ">
+                          <button (click)="goToTags()" class="manage_tags">
+                            {{ 'Tags.ManageTags' | translate}}
+                          </button>
+                        </div>
+                      </ng-container> -->
+                    </div>
+                  </div>
+
+                  <!-- Advanced accordion -->
+                  <div class="row ticket--panel">
+                    <div class="col-sm-12">
+                      <div class="ticket--panel-accordion">
+
+                        <div class="ticket--panel-accordion-left">
+
+                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px"
+                            fill="none">
+                            <path
+                              d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+                          </svg>
+
+                          <span class="ticket--panel-accordion-title">
+                            {{'ProjectEditPage.Advanced' | translate}}
+                          </span>
+                        </div>
+
+                        <div class="action-btns-arrow" (click)="toggleTicketAdvanced()">
+                          <button type="button" data-id="toggle-viewed-pages"
+                            [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
+                            <svg id="viewed-page-arrow-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" width="24px"
+                              style="min-width: 24px; min-height: 24px;position: relative;right: 6px;top: -2px;">
+                              <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
+                              <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="ticket--panel-accordion-content" *ngIf="showTicketAdvanced">
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Priority -->
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
+                          <div class="col-sm--12">
+                            <div class="conv-priority">
+                              <div class="ticket--panel-row-header">
+
+                                <!-- <span style="vertical-align: middle">
+                                {{ 'Priority' | translate }}
+                              </span> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                  width="24px" fill="none" matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'Priority' | translate }}" #tooltip="matTooltip"
+                                  matTooltipPosition='right' matTooltipHideDelay="100">
+                                  <path
+                                    d="M360-120q-100 0-170-70t-70-170v-240q0-100 70-170t170-70h240q100 0 170 70t70 170v240q0 100-70 170t-170 70H360Zm80-200 240-240-56-56-184 184-88-88-56 56 144 144Zm-80 120h240q66 0 113-47t47-113v-240q0-66-47-113t-113-47H360q-66 0-113 47t-47 113v240q0 66 47 113t113 47Zm120-280Z" />
+                                </svg>
+
+                              </div>
+
+                              <!-- <div class="col-sm-12" style="margin-bottom: 8px;"> -->
+                              <div class="ticket-priority-select-wpr">
+                                <ng-select class="ticket-priority" [items]="priority" bindLabel="name" bindValue="name"
+                                  [clearable]="false" [hideSelected]="true" [(ngModel)]="selectedPriority"
+                                  [searchable]="false" (change)="onChangeSelectedPriority(selectedPriority)"
+                                  [disabled]="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY">
+                                  <ng-template ng-label-tmp let-item="item">
+                                    <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                                    {{item.name | translate}}
+                                  </ng-template>
+                                  <ng-template ng-option-tmp let-item="item" let-index="index">
+                                    <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                                    {{item.name | translate }}
+                                  </ng-template>
+                                </ng-select>
+
+                                <!-- Invisible overlay to block interactions -->
+                                <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY"
+                                  (click)="handleBlockedSelectClick($event)"
+                                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Followers -->
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <div class="row ticket--panel">
+                          <div class="col-sm--12">
+                            <div class="conv-followers">
+                              <div class="ticket--panel-row-header">
+                                <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+
+                                <!-- <span style="vertical-align: middle">
+                                  <span class="followers-label" [ngClass]="{'followers-label-chat':CHAT_PANEL_MODE === true}">
+                                    {{'Followers' | translate}}
+                                  </span>
+                                  <span matTooltipClass="custom-mat-tooltip"
+                                    matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='right' 
+                                    matTooltipHideDelay="100">
+                                    <i class="material-icons">
+                                      help_outline
+                                    </i>
+                                  </span>
+                                </span> -->
+
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                  width="24px" fill="none" matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
+                                  matTooltipPosition='right' matTooltipHideDelay="100">
+                                  <path
+                                    d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z" />
+                                </svg>
+                              </div>
+
+
+                              <div class="followers-select" style="position: relative; width: 100%;">
+                                <ng-select class="ticket-followers" [items]="projectTeammates" bindLabel="label"
+                                  [multiple]="true" placeholder="Search teammate" [(ngModel)]="selectedFollowers"
+                                  (add)="addFollower($event)" (remove)="removeFollower($event)" [hideSelected]="true"
+                                  (clear)="removeAllFollowers($event)"
+                                  [disabled]="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS">
+                                </ng-select>
+
+                                <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS"
+                                  (click)="handleBlockedSelectClick($event)"
+                                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
+                                </div>
+
+                              </div>
+                            </div>
+
+
+                            <!-- <button *ngIf="CURRENT_USER_IS_A_FOLLOWER === false" (click)="follow()" class="follow-btn">
+                                  {{'Follow' | translate}}
+                                </button>
+
+
+                                <button *ngIf="CURRENT_USER_IS_A_FOLLOWER === true" (click)="unfollow()" class="follow-btn">
+                                  {{'Unfollow' | translate}}
+                                </button>  -->
+
+
+                          </div>
+                        </div>
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Convert offline / online -->
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <div class="row ticket--panel">
+                          <div class="col-sm--12">
+                            <div class="followers-container"
+                              [ngClass]="{'followers-container-chat':CHAT_PANEL_MODE === true}">
+
+                              <div class="followers">
+                                <div class="ticket--panel-row-header">
+                                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="none">
+                                    <path
+                                      d="M280-160q-33 0-56.5-23.5T200-240v-370L40-800h760q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H280Zm-68-560 68 80v400h520v-480H212Zm328 460 56-56-44-44h168v-80H360l180 180ZM360-520h360L540-700l-56 56 44 44H360v80Zm146 40Z" />
+                                  </svg>
+
+                                </div>
+
+                                <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21"
+                                  class="convert-to-offline-btns-wpr">
+
+                                  <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn-wpr">
+                                    <button (click)="smartAssignmentOff()" class="convert-to-offline-btn"
+                                      [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT"
+                                      [ngStyle]="{'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'}"
+                                      matTooltipClass="custom-mat-tooltip"
+                                      [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
+                                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                                      {{'ConvertToOffline' | translate}}
+                                    </button>
+
+                                    <span matTooltipClass="custom-mat-tooltip"
+                                      matTooltip="{{'SmartReassignmentForThisConversationWillBeDisabled' | translate}}"
+                                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                                      <i class="material-icons">
+                                        help_outline
+                                      </i>
+                                    </span>
+                                  </span>
+
+                                  <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn-wpr">
+                                    <button class="convert-to-offline-btn" (click)="smartAssignmentOn()"
+                                      [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT" [ngStyle]="{
+                                          'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'
+                                          }" matTooltipClass="custom-mat-tooltip"
+                                      [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
+                                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                                      {{'ConvertToOnline' | translate}}
+                                    </button>
+
+                                    <span matTooltipClass="custom-mat-tooltip"
+                                      matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
+                                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                                      <i class="material-icons">
+                                        help_outline
+                                      </i>
+                                    </span>
+                                  </span>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ./ Advanced accordion -->
+                </div>
+
+                <ng-container *ngIf="PERMISSION_TO_VIEW_CONTACT_SECTION"> 
+                  <appdashboard-contact-info *ngIf="tab0" [contact_details]="contact_details"
+                    (onClickTagConversation)="onClickTagConversation()"
+                    (contactEmailChanged)="onChangeContactEmail($event)">
+                  </appdashboard-contact-info>
+                </ng-container>
+
+
+
                 <div *ngIf="tab0" class="ul-wpr tab0-card1B"
                   [ngClass]="{'tab0-card1B-ticket': request?.subject, 'ul-wpr-chat': CHAT_PANEL_MODE === true }"
                   [ngStyle]="{ 'height': tagContainerElementHeight }">
@@ -1974,15 +2379,6 @@
                     <li class="viewed-pages" *ngIf="viewedPages && viewedPages?.length > 0">
                       <div id="contact-row-source-pages" class="contact-row input-row">
                         <span>
-                          <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
-                            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'SourceWebPage' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
-                            <path d="M0 0h24v24H0V0z" fill="none" />
-                            <path
-                              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-.61.08-1.21.21-1.78L8.99 15v1c0 1.1.9 2 2 2v1.93C7.06 19.43 4 16.07 4 12zm13.89 5.4c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41C17.92 5.77 20 8.65 20 12c0 2.08-.81 3.98-2.11 5.4z" />
-                          </svg> -->
-
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
                             style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ViewedPages' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -2216,10 +2612,8 @@
                 <!-- ------------------------------------- -->
                 <!-- Rating - Apps - Prechat accordion -->
                 <!-- ------------------------------------- -->
-       
-               
                 <div *ngIf="tab0" class="tab0-card2">
-                  <div class="tab0-card2-content-wpr" *ngIf="PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE" 
+                  <div class="tab0-card2-content-wpr" *ngIf="PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE"
                     [ngClass]="{'tab0-card2-content-wpr-chat': CHAT_PANEL_MODE === true}">
                     <ng-container *ngIf="displayChatRatings">
                       <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
@@ -2488,349 +2882,15 @@
                 </div>
               </div>
 
-              <div *ngIf="tab1" class="ul-wpr" [ngClass]="{'ul-wpr-chat': CHAT_PANEL_MODE === true}">
-
-                <ul class="ticket-info-list">
-                  <!-- ------------------------------------- -->
-                  <!-- ticket id -->
-                  <!-- ------------------------------------- -->
-                  <li *ngIf="request?.ticket_id" class="ticket-id">
-                    <div class="contact-row">
-                      <span class="ticket-id-text" style="white-space: nowrap;">
-                        {{ 'TicketId' | translate }}
-                      </span>
-
-                      <!-- <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
-                          fill="none" style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                          matTooltipHideDelay="100">
-                          <path d="M0 0h24v24H0V0z" fill="none" />
-                          <path
-                            d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                        </svg> -->
-                      <!-- </span> -->
-                      <div class="form-group" style="margin-top: 10px;">
-                        <input *ngIf="!showSpinner" name="ticket_id" type="text" data-id="ticket_id"
-                          class="form-control input-md" style="width: 240px;cursor: default;"
-                          title="#{{ request?.ticket_id}}" value="#{{ request?.ticket_id}}" disabled>
-                      </div>
-                    </div>
-                  </li>
-
-                  <!-- ------------------------------------- -->
-                  <!-- Ticket Subject -->
-                  <!-- ------------------------------------- -->
-                  <li class="ticket-subject" *ngIf="request?.subject">
-                    <div class="contact-row">
-                      <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
-                          fill="none" style="min-width: 22px; min-height: 22px;">
-                          <path d="M0 0h24v24H0V0z" fill="none" />
-                          <path d="M21 11.01L3 11v2h18zM3 16h12v2H3zM21 6H3v2.01L21 8z"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Subject' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
-                        </svg>
-                      </span>
-                      <div class="form-group" style="margin-top: 2px;">
-                        <input type="text" name="ticket-subject" data-id="ticket-subject" class="form-control input-md"
-                          [(ngModel)]="ticketSubject" maxlength="255" (blur)="saveEditInPlaceSubject()"
-                          (keydown.enter)='saveEditInPlaceSubject()' autocomplete="off" style="padding-bottom: 2px;"
-                          required>
-                      </div>
-                      <div class="action-btns">
-                        <button type="button" data-id="email" (click)="removeTicket()">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                            style="min-width: 20px; min-height: 20px;">
-                            <path
-                              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                            </path>
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div *ngIf="ticketSubject?.length === 0"
-                      style="color: #f44336; position: relative;  top: -8px; font-size: 12px;font-weight: 400;margin-left: 34px;">
-                      {{'FieldRequired' | translate}}
-                    </div>
-                  </li>
-                </ul>
-
-
-                <!-- ----------------------------------------------------------------------------- -->
-                <!-- Priority -->
-                <!-- ----------------------------------------------------------------------------- -->
-                <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
-                  <div class="col-sm-12">
-                    <p class="ticket--panel-row-header">
-
-                      <span style="vertical-align: middle">
-                        {{ 'Priority' | translate }}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div class="col-sm-12" style="margin-bottom: 8px;">
-                    <div class="ticket-priority-select-wpr" style="position: relative;">
-                      <ng-select class="ticket-priority" 
-                        [items]="priority" 
-                        bindLabel="name" 
-                        bindValue="name"
-                        [clearable]="false" 
-                        [hideSelected]="true"
-                        [(ngModel)]="selectedPriority"
-                        [searchable]="false" 
-                        (change)="onChangeSelectedPriority(selectedPriority)"
-                        [disabled]="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY">
-                        <ng-template ng-label-tmp let-item="item">
-                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                          {{item.name | translate}}
-                        </ng-template>
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                          {{item.name | translate }}
-                        </ng-template>
-                      </ng-select>
-
-                      <!-- Invisible overlay to block interactions -->
-                      <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY"
-                          (click)="handleBlockedSelectClick($event)"
-                          style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <!-- ----------------------------------------------------------------------------- -->
-                <!-- Followers -->
-                <!-- ----------------------------------------------------------------------------- -->
-                <div class="row ticket--panel">
-                  <div class="col-sm-12">
-                    <div class="ticket--panel-row-header">
-                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                      <span style="vertical-align: middle">
-                        <span class="followers-label" [ngClass]="{'followers-label-chat':CHAT_PANEL_MODE === true}">
-                          {{'Followers' | translate}}
-                        </span>
-                        <span matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='right' matTooltipHideDelay="100">
-                          <i class="material-icons">
-                            help_outline
-                          </i>
-                        </span>
-                      </span>
-
-
-                      <!-- <button *ngIf="CURRENT_USER_IS_A_FOLLOWER === false" (click)="follow()" class="follow-btn">
-                          {{'Follow' | translte}}
-                        </button>
-
-
-                        <button *ngIf="CURRENT_USER_IS_A_FOLLOWER === true" (click)="unfollow()" class="follow-btn">
-                          {{'Unfollow' | translte}}
-                        </button> -->
-
-
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
-                    <div class="followers-container" [ngClass]="{'followers-container-chat':CHAT_PANEL_MODE === true}">
-
-                      <div class="followers">
-                        <!-- (change)="getValues($event)" -->
-                        <div class="followers-select" style="position: relative;"> 
-                          <ng-select class="ticket-followers" [items]="projectTeammates" 
-                            bindLabel="label"
-                            [multiple]="true" 
-                            placeholder="Search teammate" 
-                            [(ngModel)]="selectedFollowers"
-                            (add)="addFollower($event)" 
-                            (remove)="removeFollower($event)" 
-                            [hideSelected]="true"
-                            (clear)="removeAllFollowers($event)"
-                            [disabled]="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS">
-                          </ng-select>
-
-                          <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS"
-                            (click)="handleBlockedSelectClick($event)"
-                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                          </div>
-
-                        </div>
-
-                        <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21" class="convert-to-offline-btns-wpr"
-                          style="margin-top:14px">
-
-                          <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn-wpr">
-                            <button (click)="smartAssignmentOff()" class="convert-to-offline-btn"
-                              [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT"
-                              [ngStyle]="{'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'}"
-                                matTooltipClass="custom-mat-tooltip"
-                                [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
-                                #tooltip="matTooltip"
-                                matTooltipPosition='right' 
-                                matTooltipHideDelay="100">
-                              {{'ConvertToOffline' | translate}}
-                            </button>
-
-                            <span matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{'SmartReassignmentForThisConversationWillBeDisabled' | translate}}"
-                              #tooltip="matTooltip" 
-                              matTooltipPosition='right'
-                              matTooltipHideDelay="100">
-                              <i class="material-icons">
-                                help_outline
-                              </i>
-                            </span>
-                          </span>
-
-                          <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn-wpr">
-                            <button class="convert-to-offline-btn" (click)="smartAssignmentOn()" 
-                              [disabled]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT"
-                              [ngStyle]="{
-                                'cursor': PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? 'pointer' : 'not-allowed'
-                                }"
-                                matTooltipClass="custom-mat-tooltip"
-                                [matTooltip]="!PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ? ('YouDoNotHavePermissions' | translate) : null"
-                                #tooltip="matTooltip"
-                                matTooltipPosition='right' 
-                                matTooltipHideDelay="100">
-                              {{'ConvertToOnline' | translate}}
-                            </button>
-
-                            <span matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
-                              #tooltip="matTooltip" 
-                              matTooltipPosition='right' 
-                              matTooltipHideDelay="100">
-                              <i class="material-icons">
-                                help_outline
-                              </i>
-                            </span>
-                          </span>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- ------------------------------------------ -->
-                <!-- @ Conversation Tags (new) -->
-                <!-- ------------------------------------------ -->
-                <div *ngIf="isVisibleLBS === true" class="tag-content-wpr"
-                  [ngClass]="{'tag-content-wpr-chat': CHAT_PANEL_MODE === true}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                    style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                    matTooltipHideDelay="100">
-                    <path d="M0 0h22v22H0z" fill="none"></path>
-                    <path
-                      d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
-                    </path>
-                  </svg>
-
-                  <form style="min-height: 52px;" [ngStyle]="{'height':convTagContainerElementHeight }">
-                    <div class="tags--container-wpr">
-                      <div class="tags--container">
-                        <div *ngIf="request?.tags?.length === 0" aria-label="tag" class="no-conv-tags-wpr">
-                          <p weight="400" class="no-conv-tags"> {{'NoTAGAssignedYet' | translate}}</p>
-                        </div>
-
-                        <div class="tag" *ngFor="let tag of request?.tags" role="button">
-                          <!-- request  {{request?.tags }} -->
-                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
-                          <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
-                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
-                          <div (click)="removeTag(tag)">
-                            <div class="icon-container" style="display: inline-block;">
-                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
-                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                                class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                                <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
-                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                </path>
-                              </svg>
-                              <span class="tag-delete">
-                                <i class="material-icons delete_icon" style="font-size: 16px;"> close
-                                </i>
-                              </span>
-                            </div>
-                            {{ tag.tag}}
-                          </div>
-
-                        </div>
-                      </div>
-                      <div class="ng-select-tags-wpr" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }" style="position: relative;">
-
-                        <ng-select style="margin-right: 13px;" 
-                          class="convs-tags" id="select-tag" #ngSelect
-                          (change)="addTag()" 
-                          [items]="tagsList" 
-                          bindLabel="tag" 
-                          bindValue="_id" 
-                          [clearable]="false"
-                          [clearSearchOnAdd]="true" 
-                          [hideSelected]="true" placeholder="{{ typeALabelAndPressEnter}}"
-                          [(ngModel)]="tag" 
-                          addTagText="Create New" 
-                          [addTag]="createNewTag"
-                          (keyup.enter)="ngSelect.close()" 
-                          notFoundText="No tags found. Type to create a tag"
-                          [disabled]="!PERMISSION_TO_UPDATE_REQUEST_TAGS"
-                          [ngClass]="{'conversation-tag-panel-mode': CHAT_PANEL_MODE === true }">
-
-                          <ng-template ng-label-tmp let-item="item">
-                            <i [style.color]="item.color" class="fa fa-tag"
-                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
-
-                            {{item.tag}}
-                          </ng-template>
-                          <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <i [style.color]="item.color" class="fa fa-tag"
-                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
-                            {{item.tag}}
-                          </ng-template>
-                        </ng-select>
-
-                        <!-- Invisible overlay to block interactions -->
-                        <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST_TAGS"
-                            (click)="handleBlockedSelectClick($event)"
-                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                        </div>
-
-                      </div>
-
-                    </div>
-                  </form>
-
-                </div> <!-- ./Conversation tag -->
-              
-                <ng-container *ngIf="PERMISSION_TO_READ_TAGS"> 
-                  <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false">
-                    <button (click)="goToTags()" class="manage_tags">
-                      {{ 'Tags.ManageTags' | translate}}
-                    </button>
-                  </div>
-                </ng-container>
-              </div>
-
-              <div *ngIf="tab2">
+              <div *ngIf="tab1">
                 <div class="note--container" [ngClass]="{'note--container-chat': CHAT_PANEL_MODE === true}">
                   <div class="note--panel" [ngClass]="{'note--panel-chat': CHAT_PANEL_MODE === true}">
                     <div class="ws_msgs_note__textarea">
                       <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
-                        style="width: 100%;" [disabled]="!PERMISSION_TO_UPDATE_REQUEST_NOTES" 
-                          matTooltipClass="custom-mat-tooltip"
-                          [matTooltip]="!PERMISSION_TO_UPDATE_REQUEST_NOTES ? ('YouDoNotHavePermissions' | translate) : null"
-                          #tooltip="matTooltip"
-                          matTooltipPosition='above' 
-                          matTooltipHideDelay="100">
+                        style="width: 100%;" [disabled]="!PERMISSION_TO_UPDATE_REQUEST_NOTES"
+                        matTooltipClass="custom-mat-tooltip"
+                        [matTooltip]="!PERMISSION_TO_UPDATE_REQUEST_NOTES ? ('YouDoNotHavePermissions' | translate) : null"
+                        #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                       </textarea>
 
 
@@ -2879,11 +2939,9 @@
                         <!-- ------------------------------------------------------------ -->
                         <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)" type="button"
                           class="note__delete" [disabled]="!PERMISSION_TO_UPDATE_REQUEST_NOTES"
-                            matTooltipClass="custom-mat-tooltip"
-                            [matTooltip]="!PERMISSION_TO_UPDATE_REQUEST_NOTES ? ('YouDoNotHavePermissions' | translate) : null"
-                            #tooltip="matTooltip"
-                            matTooltipPosition='above' 
-                            matTooltipHideDelay="100"> 
+                          matTooltipClass="custom-mat-tooltip"
+                          [matTooltip]="!PERMISSION_TO_UPDATE_REQUEST_NOTES ? ('YouDoNotHavePermissions' | translate) : null"
+                          #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                           <i class="material-icons delete_icon" style="font-size:16px">close</i>
                         </button>
                       </div>
@@ -2898,7 +2956,7 @@
               <!-- ---------------------------------------- -->
               <!-- Tab 3 Contact conversations-->
               <!-- ---------------------------------------- -->
-              <div *ngIf="tab3">
+              <div *ngIf="tab2">
 
                 <div class="contact--conversations-wpr"
                   [ngClass]="{'contact--conversations-wpr-chat': CHAT_PANEL_MODE === true}">
@@ -3244,7 +3302,7 @@
               <!-- ------------------------------------------------------------------ -->
               <!-- Attribute acccordion & JWT Attribute acccordion -->
               <!-- ------------------------------------------------------------------ -->
-              <div *ngIf="tab4">
+              <div *ngIf="tab3">
                 <!-- ------------------------------------------------------ -->
                 <!-- @ Attributes accordion fake -->
                 <!-- ------------------------------------------------------ -->

@@ -841,6 +841,8 @@
     "VoiceRecorder": "Диктофон",
     "TheConversationWillBeResolved": "Разговор будет разрешен",
     "NoTeammateFoundMatchingCriteria":"Участник команды, соответствующий вашим критериям поиска, не найден",
+    "AddTagToConversation":"Добавить тег к разговору...",
+    "Info":"Информация",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

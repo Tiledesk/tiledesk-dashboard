@@ -841,6 +841,8 @@
     "VoiceRecorder": "Səs yazıcısı",
     "TheConversationWillBeResolved": "Söhbət həll ediləcək",
     "NoTeammateFoundMatchingCriteria":"Axtarış kriteriyalarınıza uyğun komanda yoldaşı tapılmadı",
+    "AddTagToConversation":"Söhbətə etiket əlavə et...",
+    "Info":"Məlumat",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

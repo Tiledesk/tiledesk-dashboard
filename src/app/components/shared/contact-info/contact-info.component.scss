@@ -18,9 +18,9 @@ textarea[type="text"] {
     border: solid 1px #ddd;
 }
 
-.tab0-card1 {
-    min-height: 283px;
-}
+// .tab0-card1 {
+//     min-height: 283px;
+// }
 
 .tab0-card1-ticket {
     min-height: 191px !important;
@@ -340,6 +340,17 @@ textarea[type="text"] {
 //     }
 // }
 
+.manage-tags-in-select-footer {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--blue-20);
+    cursor: pointer;
+}
+
+.manage-tags-in-select-footer:hover { 
+  text-decoration: underline;
+}
+
 .manage_tags-cnctc-info {
     color: var(--manage-tag-font-color);
     font-size: var(--manage-tag-font-size);
@@ -391,13 +402,15 @@ textarea[type="text"] {
     margin-top: 0px;
     margin-bottom: 0px;
     font-weight: var(--contact-tag-font-weight);
-    font-size: var(--contact-tag-font-size);
+    // font-size: var(--contact-tag-font-size);
     line-height: var(--contact-tag-line-height);
     letter-spacing: var(--contact-tag-letter-spacing);
     padding: 3px 5px 4px;
     word-break: break-word;
     cursor: default;
     font-family: var(--content-font-family);
+    font-size: 12px;
+    color: var(--text-color);
 }
 
 .delete-tag-btn {

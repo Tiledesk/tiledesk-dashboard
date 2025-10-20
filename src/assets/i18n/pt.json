@@ -840,7 +840,9 @@
     "VoiceRecorder": "Gravador de voz",
     "TheConversationWillBeResolved": "A conversa será resolvida",
     "NoTeammateFoundMatchingCriteria":"Nenhum colega de equipa encontrado correspondente aos seus critérios de pesquisa",
-     "TYPE_GPT_MODEL": {
+    "AddTagToConversation":"Adicionar etiqueta à conversa...",
+    "Info":"Info",
+    "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
         "gpt-4": { "description": ""},

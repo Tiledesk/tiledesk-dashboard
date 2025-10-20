@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, HostListener, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, HostListener, AfterViewInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
@@ -25,6 +25,11 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   @Input() contact_details: any;
   @Output() onClickTagConversation = new EventEmitter();
   @Output() contactEmailChanged = new EventEmitter();
+
+  @ViewChild('leadTagsContainer') leadTagsContainer!: ElementRef;
+  @ViewChild('ngSelect') ngSelect!: any;
+  private observer!: MutationObserver;
+
   public PERMISSION_TO_UPDATE_LEAD: boolean;
   public PERMISSION_TO_VIEW_TAG: boolean;
   public CHAT_PANEL_MODE: boolean;
@@ -104,9 +109,18 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.listenToProjectUser()
   }
 
+ ngAfterViewInit() {
+   
+  this.getTagContainerElementHeight()
+ 
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
 
@@ -179,11 +193,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     }, 1500);
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.getTagContainerElementHeight()
-    }, 1000);
-  }
+ 
 
   ngOnChanges() {
     this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
@@ -606,6 +616,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
+    this.ngSelect.blur();
     this.logger.log('[CONTACT-INFO] - ADD TAG > tag: ', tag);
     this.contactTags.push(tag.tag)
     var index = this.contactTempTags.indexOf(tag);
@@ -623,12 +634,14 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   createNewTag = (newTag: string) => {
+    
     let self = this;
      if (self.PERMISSION_TO_UPDATE_LEAD === false) {
       self.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
       return
     }
-
+    self.ngSelect.close()
+    self.ngSelect.blur();
     // self.logger.log("Create New TAG Clicked : " + newTag)
     let newTagTrimmed = newTag.trim()
     self.contactTags.push(newTagTrimmed)
@@ -704,17 +717,38 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   getTagContainerElementHeight() {
-    const tagContainerElement = <HTMLElement>document.querySelector('.lead-tags--container');
-    // this.logger.log('tagContainerElement ', tagContainerElement)
-    if (tagContainerElement) {
-      this.tagContainerElementHeight = tagContainerElement.offsetHeight + 60 + 'px'
-      this.logger.log('[CONTACT-INFO] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
-      this.logger.log('[CONTACT-INFO] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
+    // const tagContainerElement = <HTMLElement>document.querySelector('.lead-tags--container');
+    // if (tagContainerElement) {
+    //   this.tagContainerElementHeight = tagContainerElement.offsetHeight + 60 + 'px'
+    //   this.logger.log('[CONTACT-INFO] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
+    //   this.logger.log('[CONTACT-INFO] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
+    // }
+    console.log('[CONTACT TAG HEIGHT] leadTagsContainer:', this.leadTagsContainer);
+    if (!this.leadTagsContainer) return;
 
-      // this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
-      // this.this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
-    }
+    // Iniziale
+    this.updateTagContainerHeight();
+
+    // Osserva i cambiamenti nel DOM delle tag
+    this.observer = new MutationObserver(() => {
+    this.updateTagContainerHeight();
+  });
+
+    this.observer.observe(this.leadTagsContainer.nativeElement, {
+      childList: true, // osserva aggiunte/rimozioni di elementi
+      subtree: false
+    });
   }
+
+  updateTagContainerHeight() {
+    const element = this.leadTagsContainer.nativeElement as HTMLElement;
+    console.log('[CONTACT TAG HEIGHT] element:', element);
+    const height = element.offsetHeight;
+
+    // Piccolo margine extra per estetica
+    this.tagContainerElementHeight = height + 20 + 'px';
+    console.log('[CONTACT TAG HEIGHT] Altezza aggiornata:', this.tagContainerElementHeight);
+ }
 
   goToTags() {
     this.router.navigate(['project/' + this.id_project + '/labels']);

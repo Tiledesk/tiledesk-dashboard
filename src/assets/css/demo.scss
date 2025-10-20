@@ -3061,7 +3061,54 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 // -------------------------
-// add-contact-t select
+// add-conversaton-tag select 
+// -------------------------
+
+.ng-select.convs-tags .ng-select-container {
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.convs-tags .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+  // font-family: var(--header-font-family);
+  margin-left: -9px;
+  font-size: 13px;
+  // font-weight: 400;
+}
+
+.ng-dropdown-panel.convs-tags {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.convs-tags .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.convs-tags.ng-select-opened>.ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// -------------------------
+// add-contact-tag select
 // -------------------------
 .ng-select.add-contact-tag .ng-select-container {
   background-color: var(--select-background) !important;
@@ -3071,6 +3118,10 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 .ng-select.add-contact-tag .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color);
+  // font-family: var(--header-font-family);
+  // margin-left: -9px;
+  font-size: 13px;
+  // font-weight: 400;
 }
 
 .ng-dropdown-panel.add-contact-tag {

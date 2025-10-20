@@ -85,13 +85,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @ViewChild('sendMessageTexarea', { static: false }) sendMessageTexarea: ElementRef;
 
   @ViewChild('Selecter', { static: false }) ngselect: NgSelectComponent;
+  
   @ViewChild('selecttagcombobox', { static: false }) selecttagcombobox: NgSelectComponent;
-  @ViewChild(NgSelectComponent, { static: false }) ngSelect: NgSelectComponent
+  // @ViewChild(NgSelectComponent, { static: false }) ngSelect: NgSelectComponent
+  @ViewChild('ngSelect') ngSelect!: any;
 
 
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
 
   @ViewChild('editFullnameDropdown', { static: false }) editFullnameDropdown: ElementRef;
+
 
   SERVER_BASE_PATH: string;
   CHAT_BASE_URL: string;
@@ -99,7 +102,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // messagesList: WsMessage[] = [];
   messagesList: any;
   showSpinner = true;
-  showViewedPages: boolean = false
+  showViewedPages: boolean = false;
+  showTicketAdvanced: boolean = false;
   ipAddress: string;
   // showSpinner = false;
   showSpinner_inModalUserList = true;
@@ -390,6 +394,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
 
+  private observer!: MutationObserver;
+  @ViewChild('tagsContainer') tagsContainer!: ElementRef;
+
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_SEND_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
@@ -411,6 +418,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
   PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE: boolean;
+  PERMISSION_TO_VIEW_CONTACT_SECTION: boolean;
 
   /**
    * Constructor
@@ -533,18 +541,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.requestInfoListElementHeight = requestInfoListElement.offsetHeight + 59
     }
 
-    const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
-    this.logger.log('tagContainerElement ', tagContainerElement)
-    if (tagContainerElement) {
-      this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
+    // const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
+    // console.log('tagContainerElement ', tagContainerElement)
+    // if (tagContainerElement) {
+    //   this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
 
-      this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
-      this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+    //   this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
+    //   console.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
 
-      this.convTagContainerElementHeight = tagContainerElement.offsetHeight + 20 + 'px';
-      this.logger.log('this.tagContainerElementHeight ', this.convTagContainerElementHeight)
-    }
+    //   this.convTagContainerElementHeight = tagContainerElement.offsetHeight + 20 + 'px';
+    //   this.logger.log('this.tagContainerElementHeight ', this.convTagContainerElementHeight)
+    // }
+     if (!this.tagsContainer) return;
+
+  // Iniziale
+  this.updateTagContainerHeight();
+
+  // Osserva i cambiamenti nel DOM delle tag
+  this.observer = new MutationObserver(() => {
+    this.updateTagContainerHeight();
+  });
+
+  this.observer.observe(this.tagsContainer.nativeElement, {
+    childList: true, // osserva aggiunte/rimozioni di elementi
+    subtree: false
+  });
   }
+
+
+updateTagContainerHeight() {
+  const element = this.tagsContainer.nativeElement as HTMLElement;
+  const height = element.offsetHeight;
+
+  // Piccolo margine extra per estetica
+  this.convTagContainerElementHeight = height + 20 + 'px';
+  console.log('[TAG HEIGHT] Altezza aggiornata:', this.convTagContainerElementHeight);
+}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -580,6 +612,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.getClickOutEditContactFullname()
   }
 
+   ngAfterViewInit() {
+    // -----------------------------------
+    // Right sidebar width after view init
+    // -----------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
+    if (rightSidebar) {
+      this.rightSidebarWidth = rightSidebar.offsetWidth;
+    }
+
+    if (this.request) {
+      this.getfromStorageIsOpenAppSidebar()
+    }
+
+    this.getAppsInstalledApps()
+    this.getTagContainerElementHeight()
+  }
+
+
   ngOnDestroy() {
     //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
@@ -590,6 +641,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
       this.unsuscribeRequestById(this.id_request);
       this.unsuscribeMessages(this.id_request);
+    }
+
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 
@@ -929,6 +984,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
+        }
+
+        // -----------------------------------
+        // PERMISSION_TO_VIEW_CONTACT_SECTION
+        // -----------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.LEADS_READ)) {
+            this.PERMISSION_TO_VIEW_CONTACT_SECTION = true
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_CONTACT_SECTION ', this.PERMISSION_TO_VIEW_CONTACT_SECTION);
+          } else {
+            this.PERMISSION_TO_VIEW_CONTACT_SECTION = false
+
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_CONTACT_SECTION ', this.PERMISSION_TO_VIEW_CONTACT_SECTION);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_CONTACT_SECTION = true
+          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_CONTACT_SECTION ', this.PERMISSION_TO_VIEW_CONTACT_SECTION);
         }
 
 
@@ -1420,23 +1493,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
   }
 
-  ngAfterViewInit() {
-    // -----------------------------------
-    // Right sidebar width after view init
-    // -----------------------------------
-    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
-    if (rightSidebar) {
-      this.rightSidebarWidth = rightSidebar.offsetWidth;
-    }
-
-    if (this.request) {
-      this.getfromStorageIsOpenAppSidebar()
-    }
-
-    this.getAppsInstalledApps()
-
-  }
+ 
 
   getAppsInstalledApps() {
     let promise = new Promise((resolve, reject) => {
@@ -3017,6 +3074,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.showViewedPages = !this.showViewedPages;
   }
 
+  toggleTicketAdvanced() {
+    this.showTicketAdvanced = !this.showTicketAdvanced;
+  }
+
+
   getWsMsgs$() {
     this.wsMsgsService.wsMsgsList$
       .pipe(
@@ -3176,6 +3238,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       return obj._id === this.tag;
     });
 
+    this.ngSelect.close()
+    this.ngSelect.blur()
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
 
     // No more used
@@ -3255,7 +3319,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
 
         // if (this.tagsList.length > 0) {
-        this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
+        // this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
+        this.typeALabelAndPressEnter = this.translate.instant('AddTagToConversation');
         // } else {
         //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
         // }
@@ -3326,9 +3391,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       let self = this;
       this.logger.log(' this.ngSelect', this.ngSelect)
-      if (this.ngSelect) {
-        this.ngSelect.close()
-        this.ngSelect.blur()
+      if (self.ngSelect) {
+        self.ngSelect.close()
+        self.ngSelect.blur()
       }
       this.getTagContainerElementHeight()
 
@@ -3380,7 +3445,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       return;
     }
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
-      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
+      console.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
       this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag id TO REMOVE: ', tag['_id']);
       // ----------------------------
       // NO MORE USED

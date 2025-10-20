@@ -840,6 +840,8 @@
     "VoiceRecorder": "Röstinspelare",
     "TheConversationWillBeResolved": "Konversationen kommer att lösas",
     "NoTeammateFoundMatchingCriteria":"Ingen lagkamrat hittades som matchar dina sökkriterier",
+    "AddTagToConversation":"Lägg till tagg i konversationen...",
+    "Info":"Info",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
