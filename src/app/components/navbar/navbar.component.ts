@@ -222,6 +222,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
   PERMISSION_TO_CHANGE_PROJECT: boolean;
   PERMISSION_TO_SIMULATE_CONVERSATION: boolean;
+  PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -376,9 +377,25 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             this.PERMISSION_TO_SIMULATE_CONVERSATION = true
             console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
           }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_QUOTA_USAGE
+        // -------------------------------
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
   
-  
-  
+              this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
+              console.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+            } else {
+              this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
+              console.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+            }
+          } else {
+            this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
+            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          }
+
+        
           // You can also check status.role === 'owner' if needed
         });
   

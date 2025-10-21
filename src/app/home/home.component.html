@@ -95,7 +95,7 @@
                 </div>
               </div>
               <!-- ---------------------------------- -->
-              <!-- Left side mt-6 -------------------------------------------------------------------------------------------------------------->
+              <!-- Left side mt-6 ---------------------->
               <!-- ---------------------------------- -->
               <div class="flex items-center  sm-mt-0 sm-ml-2 space-x-3">
 
@@ -166,8 +166,12 @@
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
                 <button id="dashlet-filter-btn" *ngIf="USER_ROLE !== 'agent'" mat-mini-fab aria-label="filter icon"
-                  [matMenuTriggerFor]="dashletMenu" matTooltipClass="custom-mat-tooltip" matTooltip="Dashlets filter"
-                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                  [matMenuTriggerFor]="dashletMenu" 
+                  matTooltipClass="custom-mat-tooltip" 
+                  matTooltip="Dashlets filter"
+                  #tooltip="matTooltip" 
+                  matTooltipPosition='below' 
+                  matTooltipHideDelay="100">
                   <!-- <span class="mat-button-wrapper"> -->
                   <mat-icon>
                     tune
@@ -250,7 +254,7 @@
         <!-- QUOTA Banner -->
         <!--  *ngIf="!displayQuotaSkeleton"-->
         <!-- <div class="test">  -->
-        <ng-cointainer *ngIf="isVisibleQuoteSection">
+        <ng-cointainer *ngIf="isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE">
           <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
             [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
 
@@ -275,11 +279,12 @@
                 <div class="home-quote-title-count-wpr">
                   <p class="quote-title" matTooltipClass="custom-mat-tooltip"
                     matTooltip="Current usage" #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                    Conversations
+                     {{'Conversations' | translate}}
                   </p>
                   <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                   <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
-                    You run out of converations
+                    <!-- You run out of conversations -->
+                     {{'YouRunOutOfConversations' | translate}}
                   </div>
                 </div>
 
@@ -302,11 +307,13 @@
                 <div class="home-quote-title-count-wpr">
                   <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
                     #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                    AI Tokens
+                    <!-- AI Tokens -->
+                     {{'AiTokens' | translate}}
                   </p>
                   <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
                   <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
-                    You run out of AI Tokens
+                    <!-- You run out of AI Tokens -->
+                     {{'YouRunOutOfAiTokens' | translate}}
                   </div>
                 </div>
 
@@ -332,11 +339,11 @@
                 <div class="home-quote-title-count-wpr">
                   <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
                     #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                    Email
+                   {{'Email' | translate}}
                   </p>
                   <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
                   <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
-                    You run out of Email
+                    {{'YouRunOutOfEmail' | translate}}
                   </div>
                 </div>
 
@@ -361,12 +368,12 @@
                 <div class="home-quote-title-count-wpr">
                   <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
                     #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                    <!-- {{'Voice' | translate}} -->
-                    Voice
+                    {{'Voice' | translate}}
+                   
                   </p>
                   <div class="quote-count">{{voice_count_min_sec }} / {{voice_limit | number:'1.0-0'}}m</div>
                   <div class="quota-runned-out-msg" *ngIf="voiceRunnedOut">
-                    You run out of voice
+                    {{'YouRunOutOfVoice' | translate}}
                   </div>
                 </div>
   

@@ -293,6 +293,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   PERMISSION_TO_VIEW_HISTORY: boolean;
   PERMISSION_TO_VIEW_OP: boolean;
   PERMISSION_TO_VIEW_WIDGET_SETUP: boolean;
+  PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
 
   constructor(
     public auth: AuthService,
@@ -398,26 +399,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[SIDEBAR] - Role:', status.role);
-        console.log('[SIDEBAR] - Permissions:', status.matchedPermissions);
-  
+        console.log('[HOME] - Role:', status.role);
+        console.log('[HOME] - Permissions:', status.matchedPermissions);
         // -------------------------------
-        // PERMISSION TO VIEW MONITOR
+        // PERMISSION_TO_VIEW_QUOTA_USAGE
         // -------------------------------
-        // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
 
-        //   if (status.matchedPermissions.includes(PERMISSIONS.INBOX_READ)) {
-        //     this.PERMISSION_TO_VIEW_MONITOR = true
-        //     console.log('[SIDEBAR] - PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
-        //   } else {
-        //     this.PERMISSION_TO_VIEW_MONITOR = false
-
-        //     console.log('[SIDEBAR] - PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
-        //   }
-        // } else {
-        //   this.PERMISSION_TO_VIEW_MONITOR = true
-        //   console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
-        // }
+            this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
+            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          } else {
+            this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
+            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
+          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+        }
 
         // -------------------------------
         // PERMISSION_TO_VIEW_OP

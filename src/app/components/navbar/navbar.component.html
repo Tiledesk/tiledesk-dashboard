@@ -146,7 +146,7 @@
 
 
         <!--  ------------------------------------------------ -->
-        <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
+        <!--  UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisiblePay">
           <li id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
@@ -162,7 +162,7 @@
         <!-- Quote - usage stats  indicator -->
         <!-- -------------------------------------------- -->
         <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
-        <ng-container *ngIf="project && isVisibleQuoteBtn">
+        <ng-container *ngIf="project && isVisibleQuoteBtn && PERMISSION_TO_VIEW_QUOTA_USAGE">
           <li id="usage-stats">
 
             <!-- mat-mini-fab -->
@@ -179,102 +179,12 @@
                 arrow_drop_down
               </mat-icon>
             </button>
-            <!--  -->
+          
             <mat-menu #menu="matMenu" class="quotas-usage-menu" xPosition="before"
               style="margin-top: 6px !important; width: 280px !important;">
 
               <div class="menu-container">
-                <!-- <p class="menu-title">{{'Usage' | translate}}</p> -->
-                <!-- <div class="quotes-container">
 
-                  <div class="quote-container">
-
-                    <div class="quota-wpr">
-
-                      <div class="quota-header-section">
-                        <p class="quote-title">Conversations</p>
-                        <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit |
-                          number:'1.0-0'}}</div>
-                      </div>
-
-                      <div class="convs-count-container">
-                        <div class="convs-count-wpr">
-                          <div class="convs-count-label">Opened </div>
-                          <div class="convs-count-value" (click)="goToHistoryOpenedConvs()"> {{openedConversations}}
-                          </div>
-                        </div>
-                        <div class="convs-count-wpr">
-                          <div class="convs-count-label">Closed </div>
-                          <div class="convs-count-value" (click)="goToHistoryClosedConvs()"> {{closedConversations}}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-                    <div class="quote">
-
-                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                        [mode]="'determinate'" [value]="requests_perc">
-                      </mat-progress-spinner>
-
-                      <div class="percentage">{{ requests_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                  <div class="quote-container">
-
-                    <!- - // number:'1.0-1' to diplay minimun 0 and manximum 1 digit after the comma - ->
-                    <div class="quota-wpr">
-                      <div class="quota-header-section">
-                        <p class="quote-title">AI Tokens</p>
-                        <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="quote">
-                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                        [mode]="'determinate'" [value]="tokens_perc">
-                      </mat-progress-spinner>
-
-                      <div class="percentage">{{ tokens_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div class="quote-container">
-
-                    <div class="quota-wpr">
-                      <div class="quota-header-section">
-                        <p class="quote-title">Email</p>
-                        <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <div class="quote">
-              
-                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                        [mode]="'determinate'" [value]="email_perc">
-                      </mat-progress-spinner>
-
-                      <div class="percentage">{{ email_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                  </div>
-                </div> -->
-
-
-
-                <!-- ------- -->
                 <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
                   <div class="quotas-usage-container">
 
@@ -347,7 +257,7 @@
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
                             <div class="quota-title-wpr">
-                              <h2 class="quota-title">AI Tokens</h2>
+                              <h2 class="quota-title">  {{'AiTokens' | translate}}</h2>
                               <!-- <span  class="quota-plan-badge">Free</span> -->
                             </div>
 
