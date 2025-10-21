@@ -417,3 +417,12 @@ only screen and (max-width: 760px),
   font-weight: 400;
   justify-content: center;
 }
+
+.bg-disabled {
+  box-shadow: unset;
+}
+
+.edit-disabled {
+  // box-shadow: unset;
+  cursor: default;
+}

@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
@@ -65,6 +67,10 @@ export class GroupEditAddComponent implements OnInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   isChromeVerGreaterThan100: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -76,7 +82,9 @@ export class GroupEditAddComponent implements OnInit {
     private translate: TranslateService,
     public location: Location,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) { }
 
   ngOnInit() {
@@ -94,6 +102,26 @@ export class GroupEditAddComponent implements OnInit {
     this.getProfileImageStorage();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
+  }
+
+
+    
+  async checkEditPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('group-edit')
+    console.log('[GROUP-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[GROUP-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    console.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
+  }
+
+   async checkCreatePermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('group-create')
+    console.log('[GROUP-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[GROUP-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    console.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
   }
 
   listenSidebarIsOpened() {
@@ -190,13 +218,16 @@ export class GroupEditAddComponent implements OnInit {
   detectsCreateEditInTheUrl() {
     if (this.router.url.indexOf('/create') !== -1) {
       this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED CREATE ');
+       this.checkCreatePermissions();
 
       this.CREATE_VIEW = true;
       this.showSpinner = false;
 
     } else {
       this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED EDIT ');
+      this.checkEditPermissions();
       this.EDIT_VIEW = true;
+      
       // this.showSpinner = false;
 
       // GET THE ID OF GROUP PASSED BY GROUP-LIST PAGE

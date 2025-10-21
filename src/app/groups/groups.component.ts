@@ -72,6 +72,9 @@ export class GroupsComponent implements OnInit {
 
   PERMISSION_TO_VIEW_TEAMMATES: boolean;
   PERMISSION_TO_VIEW_ROLES: boolean;
+  PERMISSION_TO_EDIT_GROUP: boolean;
+  PERMISSION_TO_CREATE_GROUP: boolean;
+  PERMISSION_TO_DELETE_GROUP: boolean;
 
   groupsList: Group[] = [];
   filteredGroups: any[] = [];
@@ -165,6 +168,65 @@ export class GroupsComponent implements OnInit {
             this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
             console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
           }
+
+          // ------------------------
+          // PERMISSION_TO_EDIT_GROUP
+          // ------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_EDIT_GROUP = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_EDIT_GROUP = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_EDIT_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUP_UPDATE);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+          }
+
+          // --------------------------
+          // PERMISSION_TO_CREATE_GROUP
+          // --------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_CREATE_GROUP = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_CREATE_GROUP = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_CREATE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUPS_CREATE);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+          }
+
+          // --------------------------
+          // PERMISSION_TO_DELETE_GROUP
+          // --------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_DELETE_GROUP = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_DELETE_GROUP = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_DELETE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUP_DELETE);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+          }
+
+          
   
           
           // You can also check status.role === 'owner' if needed
@@ -320,6 +382,9 @@ export class GroupsComponent implements OnInit {
   }
 
   goToEditAddPage_edit(id_group: string) {
+    if(!this.PERMISSION_TO_EDIT_GROUP) {
+      return;
+    }
     this.router.navigate(['project/' + this.project_id + '/group/edit/' + id_group]);
   }
 
@@ -330,6 +395,10 @@ export class GroupsComponent implements OnInit {
 
   openDeleteModal(id_group: string, group_name: string) {
     // this.displayDeleteModal = 'block';
+    if(!this.PERMISSION_TO_DELETE_GROUP){
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.id_group_to_delete = id_group;
     this.name_group_to_delete = group_name;
     this.logger.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
@@ -337,6 +406,10 @@ export class GroupsComponent implements OnInit {
   }
 
   opendisableModal(id_group: string, group_name: string) {
+    if(!this.PERMISSION_TO_EDIT_GROUP){
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.id_group_to_disable = id_group;
     this.name_group_to_disable = group_name;
     this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
@@ -344,6 +417,10 @@ export class GroupsComponent implements OnInit {
   }
 
   openRestoreModal(id_group: string, group_name: string) {
+     if(!this.PERMISSION_TO_EDIT_GROUP){
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.displayRestoreModal = 'block';
     this.id_group_to_restore = id_group;
     this.name_group_to_restore = group_name;

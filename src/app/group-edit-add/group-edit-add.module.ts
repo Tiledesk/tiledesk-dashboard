@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: GroupEditAddComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
     FormsModule,
     SharedModule,
     SettingsSidebarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    UnauthorizedForSettingsModule,
   ]
 })
 export class GroupEditAddModule { }

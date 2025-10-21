@@ -69,7 +69,7 @@
                     <div class="flex-right">
                        <div class="add-group-btn-wpr">
 
-                        <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                        <button *ngIf="PERMISSION_TO_CREATE_GROUP" class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
                           {{ "GroupsPage.AddGroup" | translate }}
                         </button>
                       </div>
@@ -103,7 +103,7 @@
                   <div class="card-list-wpr">
                     <!-- groupsList -->
                     <div class="card-list" *ngFor="let group of paginatedGroups | sortBy : 'name'">
-                      <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false}"
+                      <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false, 'edit-disabled': !PERMISSION_TO_EDIT_GROUP}"
                         (click)='goToEditAddPage_edit(group?._id)'>
                         <div class="cl-card-content">
 
@@ -212,7 +212,7 @@
 
                                     <!-- Modifica Gruppo -->
                                     <button class="mat-menu-btn" mat-menu-item
-                                      (click)='goToEditAddPage_edit(group?._id)'>
+                                      (click)='goToEditAddPage_edit(group?._id)' [disabled]="!PERMISSION_TO_EDIT_GROUP">
                                       <mat-icon>edit</mat-icon>
                                       <span>{{ 'GroupsPage.tooltipEditGroup' | translate }}</span>
                                     </button>
@@ -220,7 +220,7 @@
 
                                     <!-- Disabilita Gruppo -->
                                     <button class="mat-menu-btn" *ngIf="group.enabled !== false" mat-menu-item
-                                      (click)='opendisableModal(group?._id, group?.name)'>
+                                      (click)='opendisableModal(group?._id, group?.name)' [disabled]="!PERMISSION_TO_EDIT_GROUP">
                                       <mat-icon>close</mat-icon>
                                       <span>{{'GroupsPage.DisableGroup' | translate }}</span>
                                     </button>
@@ -228,14 +228,14 @@
                                     <!-- Riabilita Gruppo 
                                   restoreGroup(group?._id)' -->
                                     <button class="mat-menu-btn" *ngIf="group.enabled === false" mat-menu-item
-                                      (click)='openRestoreModal(group?._id, group?.name)'>
+                                      (click)='openRestoreModal(group?._id, group?.name)' [disabled]="!PERMISSION_TO_EDIT_GROUP">
                                       <mat-icon>undo</mat-icon>
                                       <span>{{ "GroupsPage.RestoreGroup" | translate }}</span>
                                     </button>
 
                                     <!-- Elimima Gruppo -->
                                     <button class="mat-menu-btn" mat-menu-item
-                                      (click)='openDeleteModal(group?._id, group?.name)'>
+                                      (click)='openDeleteModal(group?._id, group?.name)' [disabled]="!PERMISSION_TO_DELETE_GROUP">
                                       <mat-icon>delete</mat-icon>
                                       <span>{{ 'GroupsPage.tooltipDeleteGroup' | translate }}</span>
                                     </button>

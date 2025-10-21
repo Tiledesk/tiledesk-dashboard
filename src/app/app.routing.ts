@@ -862,22 +862,37 @@ const routes: Routes = [
   // { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
 
-  // Group create 
-  {
-    path: 'project/:projectid/group/create',
-    loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Group create - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/group/create',
+  //   loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Group edit
+   {
+    path: 'project/:projectid/group/create',
+    loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+    canActivate: [AuthGuard]
+  },
+
+  // Group edit - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/group/edit/:groupid',
+  //   loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
   {
     path: 'project/:projectid/group/edit/:groupid',
     loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard],
+
   },
+
+  
   // { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Group demo page

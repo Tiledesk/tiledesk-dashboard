@@ -233,10 +233,39 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Group create
+          if (calledby === 'group-create') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.GROUPS_CREATE);
+            console.log('[ROLE-SERV] - group-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Group edit
+          if (calledby === 'group-edit') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.GROUP_UPDATE);
+            console.log('[ROLE-SERV] - group-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
           // Roles
           if (calledby === 'users-roles') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.ROLES_READ);
             console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles edit
+          if (calledby === 'edit-roles') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.ROLE_UPDATE);
+            console.log('[ROLE-SERV] - edit-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles create
+          if (calledby === 'create-roles') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.ROLE_CREATE);
+            console.log('[ROLE-SERV] - create-roles hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -249,14 +278,16 @@ export class RoleService {
 
           // Canned responses
           if (calledby === 'canned-responses') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ);
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ) &&
+                                  projectUser_bs.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_UPDATE);
             console.log('[ROLE-SERV] - canned-responses hasPermission ', hasPermission)
             return hasPermission;
           }
 
           // Tags
           if (calledby === 'tags') {
-            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TAGS_READ);
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TAGS_READ) &&
+                                  projectUser_bs.rolePermissions.includes(PERMISSIONS.TAG_UPDATE);
             console.log('[ROLE-SERV] - tags hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -434,6 +465,21 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Group create
+          if (calledby === 'group-create') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - groups create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Group edit
+          if (calledby === 'group-edit') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - groups edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
           // Roles
           if (calledby === 'users-roles') {
             const hasPermission = true
@@ -441,6 +487,21 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Roles edit
+          if (calledby === 'edit-roles') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - edit-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles create
+          if (calledby === 'create-roles') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - create-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+    
           // Email ticketing
           if (calledby === 'email-ticketing') {
             const hasPermission = true
@@ -757,10 +818,38 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Group create
+          if (calledby === 'group-create') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.GROUPS_CREATE);
+            console.log('[ROLE-SERV] - group-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Group edit
+          if (calledby === 'group-edit') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.GROUP_UPDATE);
+            console.log('[ROLE-SERV] - group-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           // Roles
           if (calledby === 'users-roles') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.ROLES_READ);
             console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles edit
+          if (calledby === 'edit-roles') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.ROLE_UPDATE);
+            console.log('[ROLE-SERV] - edit-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles create
+          if (calledby === 'create-roles') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.ROLE_CREATE);
+            console.log('[ROLE-SERV] - create-roles hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -773,14 +862,16 @@ export class RoleService {
 
           // Canned responses
           if (calledby === 'canned-responses') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ) &&
+                                  _projectUser.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_UPDATE);
             console.log('[ROLE-SERV] - canned-responses hasPermission ', hasPermission)
             return hasPermission;
           }
 
           // Tags
           if (calledby === 'tags') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TAGS_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TAGS_READ) && 
+                                  _projectUser.rolePermissions.includes(PERMISSIONS.TAG_UPDATE);
             console.log('[ROLE-SERV] - tags hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -958,12 +1049,42 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Groups edit
+          if (calledby === 'group-edit') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - group-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Groups create
+          if (calledby === 'group-create') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - group-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          
           // Roles
           if (calledby === 'users-roles') {
             const hasPermission = true;
             console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
             return hasPermission;
           }
+
+          // Roles edit
+          if (calledby === 'edit-roles') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - edit-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles create
+          if (calledby === 'create-roles') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - create-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+          
 
           // Email ticketing
           if (calledby === 'email-ticketing') {

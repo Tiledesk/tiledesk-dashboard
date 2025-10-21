@@ -47,379 +47,389 @@
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
-        <span *ngIf="CREATE_VIEW">
+        
+        <ng-container *ngIf="permissionChecked">
+            <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <span *ngIf="!showSpinner">
-
-            <div class="row">
-              <div class="col-md-8 card-wpr">
-                <!-- card--no-border -->
-                <div class="card">
-                  <div class="card-content">
-                    <label class="col-sm-2 custom-label">
-                      {{ "GroupsAddEditPage.GroupName" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <input [(ngModel)]="groupName" class="input" type="text"
-                        placeholder='{{ "GroupsAddEditPage.GroupName" | translate }}'>
-                    </div>
-
-                    <!-- SPACER -->
-                    <div class="col-sm-12" style="height:15px"></div>
-
-                    <label class="col-sm-2"></label>
-                    <div class="col-sm-10">
-                      <!-- btn-primary -->
-                      <button class="btn btn-tdblu-no-boxshadow" [disabled]="groupName?.length < 2" (click)="create()">
-                        {{ "GroupsAddEditPage.CreateGroup" | translate }}
-                      </button>
-                    </div>
-                  </div>
-                  <!-- ./ card-content -->
-                </div>
-                <!-- ./ card -->
-              </div>
-              <!-- ./ col-md-8 -->
-              <!-- // RIGHT SIDEBAR CREATE VIEW -->
-              <div class="col-md-4">
-                <div class="card card--no-border" style="margin-top:5px">
-                  <div class="card-content">
-                    <!-- <h4 class="card-title"
-                  style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-                  {{ "QuickTips" | translate }}
-                </h4> -->
-                    <div class="row">
-                      <div class="col-sm-12 col-md-12">
-                        <h3 class="card_title__underlined">
-                          <span class="card_title__underline">
-                            {{ "QuickTips" | translate }}
-                          </span>
-                        </h3>
-                      </div>
-                      <div class="col-sm-12 col-md-12">
-                        <div class="section-subtitle"> </div>
-                      </div>
-                    </div>
-
-                    <p style="color:#7695a5">
-                      <!-- Use groups to organize support teams. -->
-                      {{ "GroupsQuickTips1" | translate }}
-                      <br>
-                      <!-- You can group agents based on skills and assign groups of agents to your departments. -->
-                      {{ "GroupsQuickTips2" | translate }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-            <!-- ./ row -->
-          </span>
-          <!-- /. CREATE_VIEW showSpinner -->
-        </span>
-        <!-- CREATE VIEW  -->
-
-        <span *ngIf="EDIT_VIEW">
-
-          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-          <!-- <span *ngIf="!showSpinner"> -->
-          <div class="row">
-            <div class="col-md-8 card-wpr">
-              <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
-
-                <!-- style="margin-top: 16px" -->
-                <div class="card-content">
-
-                  <!-- <div class="row"> -->
-                  <!-- <div class="col-md-12"> -->
-
-                  <label class="col-sm-2 custom-label">
-                    {{ "GroupsAddEditPage.GroupName" | translate }}
-                  </label>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <input [(ngModel)]="groupNameToUpdate" class="input" type="text">
-                  </div>
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12 spacer_div" style="height:15px"></div>
-
-                  <!-- <label class="col-sm-2"></label> -->
-                  <div class="col-sm-10 col-sm-offset-2">
-                    <button class="btn btn-tdblu-no-boxshadow" (click)="editGroupName()">
-                      {{ "GroupsAddEditPage.UpdateGroupName" | translate }}
-                    </button>
-                  </div>
-
-                  <!-- </div> -->
-                  <!-- </div> -->
-
-                </div>
-              </div>
-              <!-- ./ card -->
-            </div>
-            <!-- ./ col-md-8 -->
-
-
-
-            <!--  -------------------------------------------- -->
-            <!--  RIGHT SIDEBAR EDIT VIEW 'GROUP ATTRIBUTES' -->
-            <!--  -------------------------------------------- -->
-            <div class="col-md-4">
-              <div class="card card--no-border" style="margin-bottom: 5px; margin-top: 5px;">
-                <div class="card-content">
-                  <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 6px">
-                {{ "GroupsAddEditPage.GroupAttributes" | translate }}
-              </h4> -->
-
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12">
-                      <h3 class="card_title__underlined">
-                        <span class="card_title__underline">
-                          {{ "QuickTips" | translate }}
-                        </span>
-                      </h3>
-                    </div>
-                    <div class="col-sm-12 col-md-12">
-                      <div class="section-subtitle"> </div>
-                    </div>
-                  </div>
-
-                  <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
-
-                    {{ "GroupsAddEditPage.GroupID" | translate }}
-
-                  </p>
-                  <p class="attribute">
-                    {{ id_group }}
-                  </p>
-
-                  <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
-                    <!-- <strong> -->
-                    {{ "GroupsPage.CreationDate" | translate }}
-                    <!-- </strong> -->
-                  </p>
-                  <p class="attribute" style="margin-bottom: 9px">
-                    {{ groupCreatedAt | date: 'd/M/y'}}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <!-- ./ row -->
-
-          <!-- <div class="row">
-          <div class="col-md-12">
-            <div class="create" style="text-align: left!important; padding-top:5px; padding-bottom:0px">
-
-              <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="open_users_list_modal()">
-                <span class="icon" style="padding-right:0px">
-                  <i class="material-icons">add_circle</i>
-                </span>
-                
-                AGGIUNGI MEMBRI
-              </button>
-            </div>
-          </div>
-
-        </div> -->
-
-          <div class="row">
-            <div class="col-md-8 card-wpr">
-              <div class="card" style="padding-top:0px; padding-bottom:0px; margin-top: 5px;">
-
-                <div class="card-header card-header-custom-bkgrnd card-header-flex">
-                  <h4 class="card-header-title">
-
-                    {{ "GroupsAddEditPage.Members" | translate }}
-                    <span style="font-weight: 500">
-
-                      ({{ count }})
-                    </span>
-                    <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
-                    (click)='open_users_list_modal()'>
-                    <i class="material-icons" style="padding-top: 1px;">add</i>
-                  </button> -->
-                  </h4>
-                  <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
-                  <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="open_users_list_modal()">
-                    {{ 'GroupsAddEditPage.AddMembers' | translate }}
-                    <!-- <span class="icon" style="padding-right:0px">
-                        <i class="material-icons" style="font-size:18px; top:0px">add</i>
-                      </span> -->
-                    <!-- <span class="tooltiptext" style="text-transform:capitalize"> 
-                        {{ 'GroupsAddEditPage.AddMembers' |  translate }} 
-                      </span> -->
-                  </button>
-
-                </div>
+              <span *ngIf="CREATE_VIEW">
 
                 <loading-spinner *ngIf="showSpinner"></loading-spinner>
-                <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
+                <span *ngIf="!showSpinner">
 
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                        <!-- <th>
-                        <span style="color: #566787">
-                          <strong>
-                            Project_User Id
-                          </strong>
-                        </span>
-                      </th> -->
+                  <div class="row">
+                    <div class="col-md-8 card-wpr">
+                      <!-- card--no-border -->
+                      <div class="card">
+                        <div class="card-content">
+                          <label class="col-sm-2 custom-label">
+                            {{ "GroupsAddEditPage.GroupName" | translate }}
+                          </label>
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input [(ngModel)]="groupName" class="input" type="text"
+                              placeholder='{{ "GroupsAddEditPage.GroupName" | translate }}'>
+                          </div>
 
-                        <!-- // USER AVATAR -->
-                        <th>
-                          <span class="column-th-span">
-                            {{ "GroupsAddEditPage.User" | translate }}
-                          </span>
-                        </th>
+                          <!-- SPACER -->
+                          <div class="col-sm-12" style="height:15px"></div>
 
-                        <th>
-                          <span class="column-th-span">
-                            {{ "GroupsAddEditPage.Role" | translate }}
-                          </span>
-                        </th>
+                          <label class="col-sm-2"></label>
+                          <div class="col-sm-10">
+                            <!-- btn-primary -->
+                            <button class="btn btn-tdblu-no-boxshadow" [disabled]="groupName?.length < 2" (click)="create()">
+                              {{ "GroupsAddEditPage.CreateGroup" | translate }}
+                            </button>
+                          </div>
+                        </div>
+                        <!-- ./ card-content -->
+                      </div>
+                      <!-- ./ card -->
+                    </div>
+                    <!-- ./ col-md-8 -->
+                    <!-- // RIGHT SIDEBAR CREATE VIEW -->
+                    <div class="col-md-4">
+                      <div class="card card--no-border" style="margin-top:5px">
+                        <div class="card-content">
+                          <!-- <h4 class="card-title"
+                        style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+                        {{ "QuickTips" | translate }}
+                      </h4> -->
+                          <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                              <h3 class="card_title__underlined">
+                                <span class="card_title__underline">
+                                  {{ "QuickTips" | translate }}
+                                </span>
+                              </h3>
+                            </div>
+                            <div class="col-sm-12 col-md-12">
+                              <div class="section-subtitle"> </div>
+                            </div>
+                          </div>
 
-                        <th>
-                          <span class="column-th-span">
-                            Email
-                          </span>
-                        </th>
-
-                        <!-- FOR DEBUG: USER ID -->
-                        <!-- <th>
-                        <span style="color: #566787">
-                          <strong>
-                            {{ "GroupsAddEditPage.UserId" | translate }}
-                          </strong>
-                        </span>
-                      </th> -->
-
-                        <th>
-                          <span class="column-th-span">
-                            <!-- {{ "GroupsAddEditPage.Actions" | translate }} -->
-                            {{ "Actions" | translate }}
-                          </span>
-                        </th>
-
-                      </tr>
-
-                    </thead>
-
-                    <tbody style="font-weight:400">
-                      <!-- IF THERE ISN'T GROUP'S MEMBERS -->
-                      <tr *ngIf="group_members?.length === 0">
-                        <td colspan="5" style="text-align: center; padding-top: 16px;">
-
-                          <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                            <!-- Nessun Membro  -->
-                            {{ "GroupsAddEditPage.NoMembers" | translate }}
+                          <p style="color:#7695a5">
+                            <!-- Use groups to organize support teams. -->
+                            {{ "GroupsQuickTips1" | translate }}
+                            <br>
+                            <!-- You can group agents based on skills and assign groups of agents to your departments. -->
+                            {{ "GroupsQuickTips2" | translate }}
                           </p>
-                        </td>
-                      </tr>
+                        </div>
+                      </div>
+                    </div>
 
-                      <tr *ngFor="let projectUser of projectUsersList"
-                          >
-                        <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                        <!-- <td *ngIf="projectUser?.is_group_member">
-                        {{ projectUser?._id }}
-                      </td> -->
+                  </div>
+                  <!-- ./ row -->
+                </span>
+                <!-- /. CREATE_VIEW showSpinner -->
+              </span>
+              <!-- CREATE VIEW  -->
 
-                        <!-- // USER AVATAR -->
-                        <!-- <td *ngIf="projectUser?.is_group_member">                    </td> -->
+              <span *ngIf="EDIT_VIEW">
 
-                        <!-- click)="goToMemberProfile(projectUser?.id_user?._id) -->
-                        <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
-                          style="cursor:pointer"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'ViewDetails' | translate}}" 
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='above'
-                          matTooltipHideDelay="100">
+                <div class="row">
+                  <div class="col-md-8 card-wpr">
+                    <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
 
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Firebase -->
-                          <!-- --------------------------------------------------- -->
-                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                      <!-- style="margin-top: 16px" -->
+                      <div class="card-content">
 
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Native -->
-                          <!-- --------------------------------------------------- -->
-                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                        <!-- <div class="row"> -->
+                        <!-- <div class="col-md-12"> -->
 
-                          <!-- <span class="tooltipx">
-                            <span style="font-size:13px"> {{ projectUser?.id_user?.firstname }} </span>
-                            <span style="font-size:13px"> {{ projectUser?.id_user?.lastname }}
-                            </span>
+                        <label class="col-sm-2 custom-label">
+                          {{ "GroupsAddEditPage.GroupName" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <input [(ngModel)]="groupNameToUpdate" class="input" type="text">
+                        </div>
 
-                            <span class="tooltiptext"> {{ "GroupsAddEditPage.UserId" | translate }}: {{
-                              projectUser?.id_user?._id }} </span>
-                          </span> -->
-                        </td>
-                        <!-- (click)="goToMemberProfile(projectUser?.id_user?._id) -->
-                        <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
-                          style="cursor:pointer;font-size:13px"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'ViewDetails' | translate}}" 
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='above'
-                          matTooltipHideDelay="100">
-                          {{ projectUser?.role | translate }}
-                        </td>
+                        <!-- SPACER -->
+                        <div class="col-sm-12 spacer_div" style="height:15px"></div>
 
-                        <!-- (click)="goToMemberProfile(projectUser?.id_user?._id)"  -->
-                        <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
-                          style="cursor:pointer; font-size:13px"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'ViewDetails' | translate}}" 
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='above'
-                          matTooltipHideDelay="100">
-                          {{ projectUser?.id_user?.email }}
-                        </td>
-
-                        <!-- FOR DEBUG: USER ID -->
-                        <!-- <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                        {{ projectUser?.id_user?._id }}
-                      </td> -->
-
-                        <!-- ACTIONS ========== DELETE -->
-                        <td *ngIf="projectUser?.is_group_member" class="td-actions text-right">
-                          <!-- <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"> -->
-                          <!-- <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs"
-                            (click)='goToEditUser(projectUser?._id)'>
-                            <i class="material-icons">edit</i>
-                          </button> -->
-                          <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
-                            class="btn btn-danger btn-simple btn-xs"
-                            (click)='openDeleteModal(projectUser?.id_user?._id, projectUser?.id_user?.email)'>
-                            <i class="material-icons" style="padding-top: 3px;">delete</i>
+                        <!-- <label class="col-sm-2"></label> -->
+                        <div class="col-sm-10 col-sm-offset-2">
+                          <button class="btn btn-tdblu-no-boxshadow" (click)="editGroupName()">
+                            {{ "GroupsAddEditPage.UpdateGroupName" | translate }}
                           </button>
-                          <!-- </span> -->
-                        </td>
+                        </div>
 
-                      </tr>
-                    </tbody>
-                  </table>
+                        <!-- </div> -->
+                        <!-- </div> -->
+
+                      </div>
+                    </div>
+                    <!-- ./ card -->
+                  </div>
+                  <!-- ./ col-md-8 -->
+
+
+
+                  <!--  -------------------------------------------- -->
+                  <!--  RIGHT SIDEBAR EDIT VIEW 'GROUP ATTRIBUTES' -->
+                  <!--  -------------------------------------------- -->
+                  <div class="col-md-4">
+                    <div class="card card--no-border" style="margin-bottom: 5px; margin-top: 5px;">
+                      <div class="card-content">
+                        <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 6px">
+                      {{ "GroupsAddEditPage.GroupAttributes" | translate }}
+                    </h4> -->
+
+                        <div class="row">
+                          <div class="col-sm-12 col-md-12">
+                            <h3 class="card_title__underlined">
+                              <span class="card_title__underline">
+                                {{ "QuickTips" | translate }}
+                              </span>
+                            </h3>
+                          </div>
+                          <div class="col-sm-12 col-md-12">
+                            <div class="section-subtitle"> </div>
+                          </div>
+                        </div>
+
+                        <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
+
+                          {{ "GroupsAddEditPage.GroupID" | translate }}
+
+                        </p>
+                        <p class="attribute">
+                          {{ id_group }}
+                        </p>
+
+                        <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
+                          <!-- <strong> -->
+                          {{ "GroupsPage.CreationDate" | translate }}
+                          <!-- </strong> -->
+                        </p>
+                        <p class="attribute" style="margin-bottom: 9px">
+                          {{ groupCreatedAt | date: 'd/M/y'}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
                 </div>
-              </div>
-            </div>
-            <!-- ./ col-md-12 -->
-          </div>
-          <!-- ./ row -->
-          <!-- </span> -->
-          <!-- EDIT VIEW showSpinner -->
-        </span>
-        <!-- /. EDIT_VIEW -->
+                <!-- ./ row -->
+
+                <!-- <div class="row">
+                <div class="col-md-12">
+                  <div class="create" style="text-align: left!important; padding-top:5px; padding-bottom:0px">
+
+                    <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="open_users_list_modal()">
+                      <span class="icon" style="padding-right:0px">
+                        <i class="material-icons">add_circle</i>
+                      </span>
+                      
+                      AGGIUNGI MEMBRI
+                    </button>
+                  </div>
+                </div>
+
+              </div> -->
+
+                <div class="row">
+                  <div class="col-md-8 card-wpr">
+                    <div class="card" style="padding-top:0px; padding-bottom:0px; margin-top: 5px;">
+
+                      <div class="card-header card-header-custom-bkgrnd card-header-flex">
+                        <h4 class="card-header-title">
+
+                          {{ "GroupsAddEditPage.Members" | translate }}
+                          <span style="font-weight: 500">
+
+                            ({{ count }})
+                          </span>
+                          <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
+                          (click)='open_users_list_modal()'>
+                          <i class="material-icons" style="padding-top: 1px;">add</i>
+                        </button> -->
+                        </h4>
+                        <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
+                        <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="open_users_list_modal()">
+                          {{ 'GroupsAddEditPage.AddMembers' | translate }}
+                          <!-- <span class="icon" style="padding-right:0px">
+                              <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                            </span> -->
+                          <!-- <span class="tooltiptext" style="text-transform:capitalize"> 
+                              {{ 'GroupsAddEditPage.AddMembers' |  translate }} 
+                            </span> -->
+                        </button>
+
+                      </div>
+
+                      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                      <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
+
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                              <!-- <th>
+                              <span style="color: #566787">
+                                <strong>
+                                  Project_User Id
+                                </strong>
+                              </span>
+                            </th> -->
+
+                              <!-- // USER AVATAR -->
+                              <th>
+                                <span class="column-th-span">
+                                  {{ "GroupsAddEditPage.User" | translate }}
+                                </span>
+                              </th>
+
+                              <th>
+                                <span class="column-th-span">
+                                  {{ "GroupsAddEditPage.Role" | translate }}
+                                </span>
+                              </th>
+
+                              <th>
+                                <span class="column-th-span">
+                                  Email
+                                </span>
+                              </th>
+
+                              <!-- FOR DEBUG: USER ID -->
+                              <!-- <th>
+                              <span style="color: #566787">
+                                <strong>
+                                  {{ "GroupsAddEditPage.UserId" | translate }}
+                                </strong>
+                              </span>
+                            </th> -->
+
+                              <th>
+                                <span class="column-th-span">
+                                  <!-- {{ "GroupsAddEditPage.Actions" | translate }} -->
+                                  {{ "Actions" | translate }}
+                                </span>
+                              </th>
+
+                            </tr>
+
+                          </thead>
+
+                          <tbody style="font-weight:400">
+                            <!-- IF THERE ISN'T GROUP'S MEMBERS -->
+                            <tr *ngIf="group_members?.length === 0">
+                              <td colspan="5" style="text-align: center; padding-top: 16px;">
+
+                                <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                                  <!-- Nessun Membro  -->
+                                  {{ "GroupsAddEditPage.NoMembers" | translate }}
+                                </p>
+                              </td>
+                            </tr>
+
+                            <tr *ngFor="let projectUser of projectUsersList"
+                                >
+                              <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                              <!-- <td *ngIf="projectUser?.is_group_member">
+                              {{ projectUser?._id }}
+                            </td> -->
+
+                              <!-- // USER AVATAR -->
+                              <!-- <td *ngIf="projectUser?.is_group_member">                    </td> -->
+
+                              <!-- click)="goToMemberProfile(projectUser?.id_user?._id) -->
+                              <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
+                                style="cursor:pointer"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{'ViewDetails' | translate}}" 
+                                #tooltip="matTooltip" 
+                                matTooltipPosition='above'
+                                matTooltipHideDelay="100">
+
+                                <!-- --------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Firebase -->
+                                <!-- --------------------------------------------------- -->
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
+
+                                <!-- --------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Native -->
+                                <!-- --------------------------------------------------- -->
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
+
+                                <!-- <span class="tooltipx">
+                                  <span style="font-size:13px"> {{ projectUser?.id_user?.firstname }} </span>
+                                  <span style="font-size:13px"> {{ projectUser?.id_user?.lastname }}
+                                  </span>
+
+                                  <span class="tooltiptext"> {{ "GroupsAddEditPage.UserId" | translate }}: {{
+                                    projectUser?.id_user?._id }} </span>
+                                </span> -->
+                              </td>
+                              <!-- (click)="goToMemberProfile(projectUser?.id_user?._id) -->
+                              <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
+                                style="cursor:pointer;font-size:13px"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{'ViewDetails' | translate}}" 
+                                #tooltip="matTooltip" 
+                                matTooltipPosition='above'
+                                matTooltipHideDelay="100">
+                                {{ projectUser?.role | translate }}
+                              </td>
+
+                              <!-- (click)="goToMemberProfile(projectUser?.id_user?._id)"  -->
+                              <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
+                                style="cursor:pointer; font-size:13px"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{'ViewDetails' | translate}}" 
+                                #tooltip="matTooltip" 
+                                matTooltipPosition='above'
+                                matTooltipHideDelay="100">
+                                {{ projectUser?.id_user?.email }}
+                              </td>
+
+                              <!-- FOR DEBUG: USER ID -->
+                              <!-- <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                              {{ projectUser?.id_user?._id }}
+                            </td> -->
+
+                              <!-- ACTIONS ========== DELETE -->
+                              <td *ngIf="projectUser?.is_group_member" class="td-actions text-right">
+                                <!-- <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"> -->
+                                <!-- <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='goToEditUser(projectUser?._id)'>
+                                  <i class="material-icons">edit</i>
+                                </button> -->
+                                <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
+                                  class="btn btn-danger btn-simple btn-xs"
+                                  (click)='openDeleteModal(projectUser?.id_user?._id, projectUser?.id_user?.email)'>
+                                  <i class="material-icons" style="padding-top: 3px;">delete</i>
+                                </button>
+                                <!-- </span> -->
+                              </td>
+
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ./ col-md-12 -->
+                </div>
+                <!-- ./ row -->
+                <!-- </span> -->
+                <!-- EDIT VIEW showSpinner -->
+              </span>
+              <!-- /. EDIT_VIEW -->
+
+            </ng-container>
+            <ng-template #unauthorizedTpl>
+              <unauthorized-for-settings></unauthorized-for-settings>
+            </ng-template>
+          </ng-container>
       </div>
+
+
     </div>
   </div>
 </div>
