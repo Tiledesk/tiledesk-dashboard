@@ -341,7 +341,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          console.log('[BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
 
         // PERMISSION_TO_EDIT_FLOWS
