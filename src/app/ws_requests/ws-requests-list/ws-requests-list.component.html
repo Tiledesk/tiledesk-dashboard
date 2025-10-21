@@ -405,8 +405,10 @@
                   <div *ngIf="displayAgentsSelect" class="col-sm-4 select-agent-wpr" style="position: relative;">
 
                     <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
-                      name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
-                      (clear)="clearAgentFilter()" (change)="onChangeAgent()">
+                      name="agent" [(ngModel)]="selectedAgentId" 
+                      placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                      (clear)="clearAgentFilter()" 
+                      (change)="onChangeAgent()">
 
                       <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
                       <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
