@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: UsersNewRoleComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatRadioModule
+    MatRadioModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class UsersNewRoleModule { }

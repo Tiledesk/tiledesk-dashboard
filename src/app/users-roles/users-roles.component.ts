@@ -43,6 +43,9 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
 
   PERMISSION_TO_VIEW_TEAMMATES: boolean;
   PERMISSION_TO_VIEW_GROUPS: boolean;
+  PERMISSION_TO_CREATE_NEW_ROLE: boolean;
+  PERMISSION_TO_UPDATE_ROLE: boolean;
+  PERMISSION_TO_DELETE_ROLE: boolean;
 
   constructor(
     private router: Router,
@@ -124,6 +127,63 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
           console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+        }
+
+        // -----------------------------
+        // PERMISSION_TO_CREATE_NEW_ROLE
+        // -----------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_CREATE_NEW_ROLE = true;
+          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_CREATE_NEW_ROLE = false;
+          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_CREATE_NEW_ROLE = status.matchedPermissions.includes(PERMISSIONS.ROLE_CREATE);
+          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
+        }
+
+        // -----------------------------
+        // PERMISSION_TO_UPDATE_ROLE
+        // -----------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_ROLE = true;
+          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_ROLE = false;
+          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_ROLE = status.matchedPermissions.includes(PERMISSIONS.ROLE_UPDATE);
+          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
+        }
+
+        // -----------------------------
+        // PERMISSION_TO_DELETE_ROLE
+        // -----------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_DELETE_ROLE = true;
+          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DELETE_ROLE = false;
+          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE_ROLE = status.matchedPermissions.includes(PERMISSIONS.ROLE_DELETE);
+          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
         }
 
         
@@ -219,6 +279,11 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   }
 
   deleteRole(roleid, rolename) {
+
+    if (!this.PERMISSION_TO_DELETE_ROLE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
 
     const puFilteredForRoleArray = this.projectUsers.filter((obj: any) => {
       return obj.role === rolename;
@@ -467,6 +532,10 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   }
 
   goToRoleDetail(roleid) {
+    if (!this.PERMISSION_TO_UPDATE_ROLE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     this.router.navigate(['project/' + this.id_project + '/edit-role/' + roleid]);
   }
 

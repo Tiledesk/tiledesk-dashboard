@@ -37,93 +37,105 @@
             <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
             <div class="teplate-content" style="flex: 1 1 auto;">
+                <ng-container *ngIf="permissionChecked">
+                    <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
+                        <div class="row">
+                            <div class="col-xs-12">
 
-                <div class="row">
-                    <div class="col-xs-12">
+                                <div class="new-role-page-content">
 
-                        <div class="new-role-page-content">
-
-                            <form [formGroup]="form">
-                                <!-- appearance="fill" -->
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Name</mat-label>
-                                    <input matInput formControlName="roleName" placeholder="Enter role name">
-                                </mat-form-field>
-                                <!-- reservedName {{reservedName }} nameExists {{nameExists}} -->
-                                 
-                                <div class="role-name-error" *ngIf="reservedName">
-                                    This role name is reserved and cannot be used.
-                                </div>
-                                <div  class="role-name-error" *ngIf="nameExists && CREATE_VIEW">
-                                    This role name already exists.
-                                </div>
-
-
-                                <mat-accordion multi>
-                                    <mat-expansion-panel *ngFor="let section of sections" [expanded]="section.expanded"
-                                        (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="margin-top: 6px;border-radius: 4px;box-shadow: unset;border: 1px solid #ddd;">
-                                        <mat-expansion-panel-header>
-                                            <mat-panel-title style="margin-top: 3px;">{{ section.title }}</mat-panel-title>
-                                            <mat-panel-description>
-                                                <span class="status-label" style="position: absolute;right: 55px;font-size: 10px;top: 16px;padding: 0px 6px;border-radius: 9999px;line-height: 16px;"
-                                                    [ngClass]="getLabelClass(getAccessLabel(section))">
-                                                    {{ getAccessLabel(section) }}
-                                                </span>
-                                            </mat-panel-description>
-                                        </mat-expansion-panel-header>
-                                        <ng-container [ngSwitch]="section.type">
-                                            <ng-container *ngSwitchCase="'checkbox'">
-                                                <div class="permission-checkboxex-wpr"
-                                                    style="padding-left: 25px;padding-bottom: 12px;">
-                                                    <!-- Parent Checkbox -->
-                                                    <mat-checkbox [formControl]="form.get(section.key)"
-                                                        [indeterminate]="isIndeterminate(section.key)"
-                                                        (change)="onParentToggle(section)">
-                                                        {{ section.parentLabel }}
-                                                    </mat-checkbox>
-
-                                                    <!-- Child Checkboxes -->
-                                                    <div
-                                                        style="margin-left: 16px; margin-top: 8px; display: flex; flex-direction: column;">
-                                                        <mat-checkbox *ngFor="let child of section.children"
-                                                            [formControl]="form.get(child.key)">
-                                                            {{ child.label }}
-                                                        </mat-checkbox>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
+                                    <form [formGroup]="form">
+                                        <!-- appearance="fill" -->
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>{{'Name' | translate}}</mat-label>
+                                            <input matInput formControlName="roleName" placeholder="Enter role name">
+                                        </mat-form-field>
+                                        <!-- reservedName {{reservedName }} nameExists {{nameExists}} -->
+                                        
+                                        <div class="role-name-error" *ngIf="reservedName">
+                                            <!-- This role name is reserved and cannot be used. -->
+                                            {{'ThisRoleNameIsReservedAndCannotBeUsed' | translate}}
+                                        </div>
+                                        <div  class="role-name-error" *ngIf="nameExists && CREATE_VIEW">
+                                            <!-- This role name already exists. -->
+                                            {{'ThisRoleNameAlreadyExists' | translate}}
+                                        </div>
 
 
-                                            <ng-container *ngSwitchCase="'radio'">
-                                                <!-- <label>{{ section.parentLabel }}</label> -->
-                                                <div style="padding-left: 25px;padding-bottom: 12px;">
-                                                    <mat-radio-group [formControl]="form.get(section.key)">
-                                                        <div style=" display: flex; flex-direction: column;gap: 3px;">
-                                                            <mat-radio-button *ngFor="let child of section.children"
-                                                                [value]="child.key">
-                                                                {{ child.label }}
-                                                            </mat-radio-button>
+                                        <mat-accordion multi>
+                                            <mat-expansion-panel *ngFor="let section of sections" [expanded]="section.expanded"
+                                                (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="margin-top: 6px;border-radius: 4px;box-shadow: unset;border: 1px solid #ddd;">
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title style="margin-top: 3px;">{{ section.title }}</mat-panel-title>
+                                                    <mat-panel-description>
+                                                        <span class="status-label" style="position: absolute;right: 55px;font-size: 10px;top: 16px;padding: 0px 6px;border-radius: 9999px;line-height: 16px;"
+                                                            [ngClass]="getLabelClass(getAccessLabel(section))">
+                                                            {{ getAccessLabel(section) }}
+                                                        </span>
+                                                    </mat-panel-description>
+                                                </mat-expansion-panel-header>
+                                                <ng-container [ngSwitch]="section.type">
+                                                    <ng-container *ngSwitchCase="'checkbox'">
+                                                        <div class="permission-checkboxex-wpr"
+                                                            style="padding-left: 25px;padding-bottom: 12px;">
+                                                            <!-- Parent Checkbox -->
+                                                            <mat-checkbox [formControl]="form.get(section.key)"
+                                                                [indeterminate]="isIndeterminate(section.key)"
+                                                                (change)="onParentToggle(section)">
+                                                                {{ section.parentLabel }}
+                                                            </mat-checkbox>
+
+                                                            <!-- Child Checkboxes -->
+                                                            <div
+                                                                style="margin-left: 16px; margin-top: 8px; display: flex; flex-direction: column;">
+                                                                <mat-checkbox *ngFor="let child of section.children"
+                                                                    [formControl]="form.get(child.key)">
+                                                                    {{ child.label }}
+                                                                </mat-checkbox>
+                                                            </div>
                                                         </div>
-                                                    </mat-radio-group>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>
+                                                    </ng-container>
 
-                                    </mat-expansion-panel>
-                                </mat-accordion>
 
-                                <div class="submit-btn-wpr">
-                                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="submit()"
-                                        [disabled]="isSubmitDisabled || reservedName">
-                                        {{'Save' | translate}}
-                                    </button>
+                                                    <ng-container *ngSwitchCase="'radio'">
+                                                        <!-- <label>{{ section.parentLabel }}</label> -->
+                                                        <div style="padding-left: 25px;padding-bottom: 12px;">
+                                                            <mat-radio-group [formControl]="form.get(section.key)">
+                                                                <div style=" display: flex; flex-direction: column;gap: 3px;">
+                                                                    <mat-radio-button *ngFor="let child of section.children"
+                                                                        [value]="child.key">
+                                                                        {{ child.label }}
+                                                                    </mat-radio-button>
+                                                                </div>
+                                                            </mat-radio-group>
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+
+                                        <div class="submit-btn-wpr">
+                                            <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="submit()"
+                                                [disabled]="isSubmitDisabled || reservedName">
+                                                {{'Save' | translate}}
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+
+
+                            </div>
                         </div>
 
+                   </ng-container>
 
-                    </div>
-                </div>
+                    <ng-template #unauthorizedTpl>
+                        <unauthorized-for-settings></unauthorized-for-settings>
+
+                    </ng-template>
+                </ng-container>
+
             </div>
         </div>
     </div>

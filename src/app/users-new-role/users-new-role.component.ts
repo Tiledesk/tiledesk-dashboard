@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { RolesService } from 'app/services/roles.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RoleService } from 'app/services/role.service';
 
 
 
@@ -140,13 +141,14 @@ export class UsersNewRoleComponent implements OnInit {
       ]
     },
     {
-      key: 'conversationRating',
-      title: 'Conversation rating',
+      key: 'conversationDetailSidebar',
+      title: 'Conversation detail sidebar',
       parentLabel: 'Select all',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.RATING_READ, label: 'Able to view' },
+        { key: PERMISSIONS.TICKET_ID_READ, label: 'Able to view ticked id' },
+        { key: PERMISSIONS.RATING_READ, label: 'Able to view conversation rating' },
       ]
     },
 
@@ -159,6 +161,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.CHANGE_PROJECT, label: 'Able to change project' },
         { key: PERMISSIONS.SIMULATE_CONV, label: 'Able to simulate a conversation' },
+        { key: PERMISSIONS.QUOTA_USAGE_READ, label: 'Able to view quota usage' },
       ]
     },
 
@@ -315,7 +318,13 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.TEAMMATE_UPDATE, label: 'Able to edit Teammates' },
         { key: PERMISSIONS.TEAMMATES_CREATE, label: 'Able to invite a new Teammate' },
         { key: PERMISSIONS.ROLES_READ, label: 'Able to view Roles'},
-        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'}
+        { key: PERMISSIONS.ROLE_CREATE, label: 'Able to create Roles'},
+        { key: PERMISSIONS.ROLE_UPDATE, label: 'Able to edit Roles'},
+        { key: PERMISSIONS.ROLE_DELETE, label: 'Able to delete Roles'},
+        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'},
+        { key: PERMISSIONS.GROUPS_CREATE, label: 'Able to create Groups'},
+        { key: PERMISSIONS.GROUP_UPDATE, label: 'Able to edit Groups'},
+        { key: PERMISSIONS.GROUP_DELETE, label: 'Able to delete Groups'}
       ]
     },
     {
@@ -467,6 +476,9 @@ export class UsersNewRoleComponent implements OnInit {
   roles: any[] = [];
   reservedName: boolean = false;
   nameExists: boolean = false;
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -477,7 +489,8 @@ export class UsersNewRoleComponent implements OnInit {
     private fb: FormBuilder,
     private rolesService: RolesService,
     private route: ActivatedRoute,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private roleService: RoleService,
   ) {
 
   }
@@ -490,13 +503,33 @@ export class UsersNewRoleComponent implements OnInit {
     this.detectsCreateEditInTheUrl()
     this.getRoles()
     this.getOSCODE()
+    // this.checkPermissions();
   }
+
+  async checkEditPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('edit-roles')
+    console.log('[CREATE-NEW-ROLE] edit-roles result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[CREATE-NEW-ROLE] isAuthorized to EDIT ', this.isAuthorized)
+    console.log('[CREATE-NEW-ROLE] permissionChecked ', this.permissionChecked)
+  }
+
+  async checkCreatePermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('create-roles')
+    console.log('[CREATE-NEW-ROLE] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[CREATE-NEW-ROLE] isAuthorized to CREATE', this.isAuthorized)
+    console.log('[CREATE-NEW-ROLE] permissionChecked ', this.permissionChecked)
+  }
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
+    this.logger.log('[CREATE-NEW-ROLE] getAppConfig public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
+    this.logger.log('[CREATE-NEW-ROLE] keys', keys)
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
@@ -533,14 +566,14 @@ export class UsersNewRoleComponent implements OnInit {
   }
   detectsCreateEditInTheUrl() {
     if (this.router.url.indexOf('/create-new-role') !== -1) {
-
+    this.checkCreatePermissions();
 
       this.CREATE_VIEW = true;
       console.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
       // this.showSpinner = false;
 
     } else {
-
+      this.checkEditPermissions();
       this.EDIT_VIEW = true;
       this.form.get('roleName')?.disable();
       this.sections.forEach(section => section.expanded = true);

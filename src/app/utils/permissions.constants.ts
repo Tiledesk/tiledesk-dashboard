@@ -25,10 +25,12 @@ export const PERMISSIONS = {
 
   HISTORY_READ: 'history_read',
 
+  TICKET_ID_READ:'ticket_id_read',
   RATING_READ:'rating_read',
 
   CHANGE_PROJECT:'change_project',
   SIMULATE_CONV:'simulate_conv',
+  QUOTA_USAGE_READ: 'quota_usage_read',
   HOME_READ: 'home_read',
 
   AUTOMATIONSLOG_READ: "automationslog_read",
@@ -88,9 +90,14 @@ export const PERMISSIONS = {
   TEAMMATE_UPDATE: 'teammate_update',
   TEAMMATES_CREATE: 'teammates_create',
   ROLES_READ: 'roles_read',
+  ROLE_CREATE: 'roles_create',
+  ROLE_UPDATE: 'roles_update',
+  ROLE_DELETE: 'role_delete',
+
   GROUPS_READ: 'groups_read',
-
-
+  GROUPS_CREATE: 'groups_create',
+  GROUP_UPDATE: 'group_update',
+  GROUP_DELETE: 'group_delete',
 
   EMAIL_TICKETING_READ:'email_ticketing_read',
   EMAIL_TICKETING_UPDATE:'email_ticketing_update',
