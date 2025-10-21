@@ -196,7 +196,7 @@
     <!-- ------------------------------------------------------- -->
     <!-- Canned responses -->
     <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_CANNED_RESPONSES">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_CANNED_RESPONSES && PERMISSION_TO_UPDATE_CANNED">
       <ng-container *ngIf="isVisibleCAR && USER_ROLE !== 'agent'">
         <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()"
           matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
@@ -224,7 +224,7 @@
     <!-- -------------------------------------------------------------  -->
     <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
     <!-- ------------------------------------------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_TAGS">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_TAGS && PERMISSION_TO_UPDATE_TAGS">
       <ng-container *ngIf="isVisibleLBS && USER_ROLE !== 'agent'">
         <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()"
           matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip=" {{'Tags.ConversationsTAG' | translate}}"

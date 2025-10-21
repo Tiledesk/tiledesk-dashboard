@@ -96,7 +96,9 @@ export class SettingsSidebarComponent implements OnInit {
 
   PERMISSION_TO_VIEW_EMAIL_TICKETING: boolean;
   PERMISSION_TO_VIEW_CANNED_RESPONSES: boolean;
+  PERMISSION_TO_UPDATE_CANNED: boolean;
   PERMISSION_TO_VIEW_TAGS: boolean;
+  PERMISSION_TO_UPDATE_TAGS: boolean;
   PERMISSION_TO_VIEW_OH: boolean;
   PERMISSION_TO_VIEW_INTEGRATIONS: boolean;
   PERMISSION_TO_VIEW_APPS: boolean;
@@ -314,6 +316,25 @@ export class SettingsSidebarComponent implements OnInit {
             this.PERMISSION_TO_VIEW_CANNED_RESPONSES = status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ);
             console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_CANNED_RESPONSES:', this.PERMISSION_TO_VIEW_CANNED_RESPONSES);
           }
+
+          // -----------------------------------
+          // PERMISSION_TO_UPDATE_CANNED
+          // -----------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_UPDATE_CANNED = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_CANNED:', this.PERMISSION_TO_UPDATE_CANNED);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_UPDATE_CANNED = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_UPDATE_CANNED:', this.PERMISSION_TO_UPDATE_CANNED);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_UPDATE_CANNED = status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_UPDATE);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_CANNED:', this.PERMISSION_TO_UPDATE_CANNED);
+          }
   
           // -------------------------------
           // PERMISSION_TO_VIEW_TAGS
@@ -331,7 +352,26 @@ export class SettingsSidebarComponent implements OnInit {
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_TAGS = status.matchedPermissions.includes(PERMISSIONS.TAGS_READ);
-            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_TAGS);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TAGS:', this.PERMISSION_TO_VIEW_TAGS);
+          }
+
+          // -------------------------------
+          // PERMISSION_TO_UPDATE_TAGS
+          // -------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_UPDATE_TAGS = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_TAGS:', this.PERMISSION_TO_UPDATE_TAGS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_UPDATE_TAGS = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_UPDATE_TAGS:', this.PERMISSION_TO_UPDATE_TAGS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_UPDATE_TAGS = status.matchedPermissions.includes(PERMISSIONS.TAG_UPDATE);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_TAGS:', this.PERMISSION_TO_UPDATE_TAGS);
           }
 
           // -------------------------------
