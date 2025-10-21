@@ -843,6 +843,13 @@
     "NoTeammateFoundMatchingCriteria":"Није пронађен саиграч који одговара вашим критеријумима претраге",
     "AddTagToConversation":"Додај ознаку у разговор...",
     "Info":"Инфо",
+    "AiTokens": "АИ Токени",
+    "YouRunOutOfConversations": "Понестало вам разговора",
+    "YouRunOutOfAiTokens": "Понестало вам АИ токена",
+    "YouRunOutOfEmail": "Понестало вам е-поште",
+    "YouRunOutOfVoice": "Понестало вам гласа",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Ово име улоге је резервисано и не може се користити",
+    "ThisRoleNameAlreadyExists": "Ово име улоге већ постоји",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

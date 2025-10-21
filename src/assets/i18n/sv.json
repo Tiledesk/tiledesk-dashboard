@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"Ingen lagkamrat hittades som matchar dina sökkriterier",
     "AddTagToConversation":"Lägg till tagg i konversationen...",
     "Info":"Info",
+    "AiTokens": "AI-tokens",
+    "YouRunOutOfConversations": "Du har slut på konversationer",
+    "YouRunOutOfAiTokens": "Du har slut på AI-tokens",
+    "YouRunOutOfEmail": "Du har slut på e-post",
+    "YouRunOutOfVoice": "Du har slut på röst",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Det här rollnamnet är reserverat och kan inte användas",
+    "ThisRoleNameAlreadyExists": "Det här rollnamnet finns redan",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

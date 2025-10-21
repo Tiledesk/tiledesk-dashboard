@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"Nenhum colega de equipa encontrado correspondente aos seus critérios de pesquisa",
     "AddTagToConversation":"Adicionar etiqueta à conversa...",
     "Info":"Info",
+    "AiTokens": "Tokens de IA",
+    "YouRunOutOfConversations": "Ficaste sem conversas",
+    "YouRunOutOfAiTokens": "Ficaste sem tokens de IA",
+    "YouRunOutOfEmail": "Ficaste sem e-mail",
+    "YouRunOutOfVoice": "Ficaste sem voz",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Este nome de função está reservado e não pode ser usado",
+    "ThisRoleNameAlreadyExists": "Este nome de função já existe",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

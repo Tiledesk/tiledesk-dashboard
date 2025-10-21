@@ -843,6 +843,13 @@
     "NoTeammateFoundMatchingCriteria":"Участник команды, соответствующий вашим критериям поиска, не найден",
     "AddTagToConversation":"Добавить тег к разговору...",
     "Info":"Информация",
+    "AiTokens": "AI Токены",
+    "YouRunOutOfConversations": "У вас закончились разговоры",
+    "YouRunOutOfAiTokens": "У вас закончились AI токены",
+    "YouRunOutOfEmail": "У вас закончилась электронная почта",
+    "YouRunOutOfVoice": "У вас закончилась голосовая функция",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Это название роли зарезервировано и не может быть использовано",
+    "ThisRoleNameAlreadyExists": "Это название роли уже существует",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

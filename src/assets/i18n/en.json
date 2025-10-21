@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"No teammate found matching your search criteria",
     "AddTagToConversation":"Add Tag to conversation...",
     "Info":"Info",
+     "AiTokens": "AI Tokens",
+    "YouRunOutOfConversations": "You run out of conversations",
+    "YouRunOutOfAiTokens": "You run out of AI Tokens",
+    "YouRunOutOfEmail": "You run out of Email",
+    "YouRunOutOfVoice": "You run out of voice",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "This role name is reserved and cannot be used",
+    "ThisRoleNameAlreadyExists": "This role name already exists",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"Сіздің іздеу критерилеріңізге сәйкес келетін команда мүшесі табылмады",
     "AddTagToConversation":"Өтінішке тег қосу...",
     "Info":"Ақпарат",
+    "AiTokens": "AI Токендері",
+    "YouRunOutOfConversations": "Сізде сөйлесулер бітті",
+    "YouRunOutOfAiTokens": "Сізде AI Токендері бітті",
+    "YouRunOutOfEmail": "Сізде электрондық пошта бітті",
+    "YouRunOutOfVoice": "Сізде дауыс бітті",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Бұл рөл атауы қорғалған және пайдаланылуы мүмкін емес",
+    "ThisRoleNameAlreadyExists": "Бұл рөл атауы бұрыннан бар",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"Sizning qidiruv mezonlaringizga mos keladigan jamoa a'zosi topilmadi",
     "AddTagToConversation":"Suhbatga teg qo'shish...",
     "Info":"Ma'lumot",
+    "AiTokens": "AI Tokenlari",
+    "YouRunOutOfConversations": "Suhbatlaringiz tugadi",
+    "YouRunOutOfAiTokens": "AI Tokenlaringiz tugadi",
+    "YouRunOutOfEmail": "Elektron pochtangiz tugadi",
+    "YouRunOutOfVoice": "Ovozingiz tugadi",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Bu rol nomi qo'riqlanadi va ishlatilishi mumkin emas",
+    "ThisRoleNameAlreadyExists": "Bu rol nomi allaqachon mavjud",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

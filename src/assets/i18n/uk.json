@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"Учасника команди, що відповідає вашим критеріям пошуку, не знайдено",
     "AddTagToConversation":"Додати тег до розмови...",
     "Info":"Інформація",
+    "AiTokens": "AI Токени",
+    "YouRunOutOfConversations": "У вас закінчилися розмови",
+    "YouRunOutOfAiTokens": "У вас закінчилися AI токени",
+    "YouRunOutOfEmail": "У вас закінчилася електронна пошта",
+    "YouRunOutOfVoice": "У вас закінчився голосовий функціонал",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Ця назва ролі зарезервована і не може бути використана",
+    "ThisRoleNameAlreadyExists": "Ця назва ролі вже існує",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

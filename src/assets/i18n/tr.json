@@ -844,6 +844,13 @@
     "NoTeammateFoundMatchingCriteria":"Arama kriterlerinizle eşleşen takım arkadaşı bulunamadı",
     "AddTagToConversation":"Konuşmaya etiket ekle...",
     "Info":"Bilgi",
+    "AiTokens": "AI Tokenları",
+    "YouRunOutOfConversations": "Konuşmalarınız tükendi",
+    "YouRunOutOfAiTokens": "AI Tokenlarınız tükendi",
+    "YouRunOutOfEmail": "E-postanız tükendi",
+    "YouRunOutOfVoice": "Sesiniz tükendi",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Bu rol adı ayrılmıştır ve kullanılamaz",
+    "ThisRoleNameAlreadyExists": "Bu rol adı zaten var",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

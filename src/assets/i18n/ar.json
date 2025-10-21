@@ -842,6 +842,13 @@
     "NoTeammateFoundMatchingCriteria":"لم يتم العثور على زميل في الفريق يطابق معايير البحث الخاصة بك",
     "AddTagToConversation":"إضافة علامة إلى المحادثة...",
     "Info":"معلومات",
+    "AiTokens": "رموز الذكاء الاصطناعي",
+    "YouRunOutOfConversations": "لقد نفدت المحادثات",
+    "YouRunOutOfAiTokens": "لقد نفدت رموز الذكاء الاصطناعي",
+    "YouRunOutOfEmail": "لقد نفد البريد الإلكتروني",
+    "YouRunOutOfVoice": "لقد نفد الصوت",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "اسم الدور هذا محجوز ولا يمكن استخدامه",
+    "ThisRoleNameAlreadyExists": "اسم الدور هذا موجود بالفعل",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

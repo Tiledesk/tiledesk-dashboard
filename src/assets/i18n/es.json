@@ -817,6 +817,13 @@
     "NoTeammateFoundMatchingCriteria":"No se encontró ningún compañero de equipo que coincida con sus criterios de búsqueda",
     "AddTagToConversation":"Añadir etiqueta a la conversación...",
     "Info":"Info",
+    "AiTokens": "Tokens de IA",
+    "YouRunOutOfConversations": "Te quedaste sin conversaciones",
+    "YouRunOutOfAiTokens": "Te quedaste sin tokens de IA",
+    "YouRunOutOfEmail": "Te quedaste sin correo electrónico",
+    "YouRunOutOfVoice": "Te quedaste sin voz",
+    "ThisRoleNameIsReservedAndCannotBeUsed": "Este nombre de rol está reservado y no se puede usar",
+    "ThisRoleNameAlreadyExists": "Este nombre de rol ya existe",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
