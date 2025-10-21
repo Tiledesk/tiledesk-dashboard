@@ -871,6 +871,7 @@ export class ProjectService {
     return promise;
   }
 
+  
   // --------------------------------------------------------------------------------------
   // ALLOW TO SEND EMOJI 
   // --------------------------------------------------------------------------------------
@@ -916,7 +917,7 @@ export class ProjectService {
   // --------------------------------------------------------------------------------------
   // SAVE URLs Whitelist
   // --------------------------------------------------------------------------------------
-saveURLsWhitelist (urlWhitelist) {
+  saveURLsWhitelist (urlWhitelist) {
     let promise = new Promise((resolve, reject) => {
       this.logger.log("[PROJECT-SERV] SAVE URLs Whitelist urlWhitelist", urlWhitelist)
       let headers = new HttpHeaders({
@@ -933,7 +934,6 @@ saveURLsWhitelist (urlWhitelist) {
     })
     return promise;
   }
-
 
   // --------------------------------------------------------------------------------------
   // SAVE AGENTS CHAT ALLOWED EXTENTIONS
