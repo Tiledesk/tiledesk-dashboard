@@ -173,6 +173,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
+  PERMISSION_TO_CREATE_GROUP: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
 
   constructor(
     private router: Router,
@@ -435,6 +437,42 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
         }
 
+        // --------------------------
+        // PERMISSION_TO_CREATE_GROUP
+        // --------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_CREATE_GROUP = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_CREATE_GROUP = false;
+          console.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_CREATE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUPS_CREATE);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+        }
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[DEPT-EDIT-ADD] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+
       });
   }
 
@@ -448,8 +486,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   }
 
-
-
   async checkCreatePermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('department-create')
     console.log('[DEPT-EDIT-ADD] result ', result)
@@ -457,7 +493,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.permissionChecked = true;
     console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
     console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
-
   }
 
   getCurrentProject() {
