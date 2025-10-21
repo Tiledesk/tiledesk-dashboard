@@ -417,8 +417,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
-  PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE: boolean;
+  PERMISSION_TO_VIEW_RATING_SECTION: boolean;
   PERMISSION_TO_VIEW_CONTACT_SECTION: boolean;
+  PERMISSION_TO_VIEW_TICKET_ID: boolean;
 
   /**
    * Constructor
@@ -971,20 +972,37 @@ updateTagContainerHeight() {
           console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
         }
 
-        // PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE
+        // PERMISSION_TO_VIEW_RATING_SECTION
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.RATING_READ)) {
 
-            this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = true
-            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
+            this.PERMISSION_TO_VIEW_RATING_SECTION = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_SECTION ', this.PERMISSION_TO_VIEW_RATING_SECTION);
           } else {
-            this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = false
-            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
+            this.PERMISSION_TO_VIEW_RATING_SECTION = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_SECTION ', this.PERMISSION_TO_VIEW_RATING_SECTION);
           }
         } else {
-          this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE = true
-          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE ', this.PERMISSION_TO_VIEW_RATING_IN_CHAT_MODE);
+          this.PERMISSION_TO_VIEW_RATING_SECTION = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_RATING_SECTION ', this.PERMISSION_TO_VIEW_RATING_SECTION);
         }
+
+        // PERMISSION_TO_VIEW_TICKET_ID
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TICKET_ID_READ)) {
+
+            this.PERMISSION_TO_VIEW_TICKET_ID = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_TICKET_ID ', this.PERMISSION_TO_VIEW_TICKET_ID);
+          } else {
+            this.PERMISSION_TO_VIEW_TICKET_ID = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_TICKET_ID ', this.PERMISSION_TO_VIEW_TICKET_ID);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_TICKET_ID = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TICKET_ID ', this.PERMISSION_TO_VIEW_TICKET_ID);
+        }
+
+        
 
         // -----------------------------------
         // PERMISSION_TO_VIEW_CONTACT_SECTION
