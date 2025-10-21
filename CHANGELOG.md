@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.147-AR
+- Adds the ability to hide or show quota usage 
+- Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
+- Hides or shows the Settings sidebar menu item only if the permissions to edit tags and to edit canned responses are also enabled
+- Adds 'create', 'edit'  and 'delete' permissions for groups
+- Adds 'create', 'edit'  and 'delete' permissions for roles
+- Adds the ability to hide or show the ticket ID in the conversation details page via permissions
+
 ### 2.7.146-AR
 - Improves the conversation details sidebar
 
