@@ -467,10 +467,17 @@
                     {{ "Status" | translate }}
                   </label>
                   <div class="col-sm-12">
-                    <ng-select class="request-statuses-select" name="requeststatuses" [(ngModel)]="requests_statuses"
+                    <ng-select class="request-statuses-select" name="requeststatuses" 
+                      [(ngModel)]="requests_statuses"
                       (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
-                      [items]="statusInHistory | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                      [multiple]="true" [searchable]="false" bindValue="id" placeholder="Select status">
+                      [items]="statusInHistory | selectOptionsTranslate" 
+                      bindLabel="name" 
+                      [clearable]='false'
+                      [multiple]="true" 
+                      [searchable]="false" 
+                      bindValue="id" 
+                      placeholder="Select status"
+                      [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV">
                     </ng-select>
                   </div>
                 </div>

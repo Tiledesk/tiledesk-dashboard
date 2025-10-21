@@ -604,7 +604,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
     this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
-    if (USER_ROLE === 'agent' || !this.PERMISSION_TO_VIEW_OPENED_CONV) {
+    if (USER_ROLE === 'agent' || (USER_ROLE !== 'agent' && USER_ROLE !== 'admin' && USER_ROLE !== 'owner' && !this.PERMISSION_TO_VIEW_OPENED_CONV)) {
       let unservedIndex = this.statusInHistory.findIndex(x => x.id === '100');
       this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
       this.statusInHistory.splice(unservedIndex, 1)
