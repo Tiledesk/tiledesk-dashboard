@@ -15,13 +15,12 @@ export class McpIntegrationComponent implements OnInit {
   @Output() onDeleteIntegration = new EventEmitter;
 
   translateparams: any;
-  typeOptions: string[] = ['HTTP Streamable'];
   
   // Form fields
   currentServer: McpServer = {
     name: '',
     url: '',
-    type: 'HTTP Streamable'
+    transport: 'streamable_http'
   };
   
   isEditing: boolean = false;
@@ -46,7 +45,7 @@ export class McpIntegrationComponent implements OnInit {
     this.logger.log('[INT-MCP] addOrUpdateServer', this.currentServer, 'isEditing:', this.isEditing);
     
     // Validation
-    if (!this.currentServer.name || !this.currentServer.url || !this.currentServer.type) {
+    if (!this.currentServer.name || !this.currentServer.url || !this.currentServer.transport) {
       this.logger.error('[INT-MCP] Missing required fields');
       return;
     }
@@ -68,7 +67,7 @@ export class McpIntegrationComponent implements OnInit {
   onSelectServer(server: McpServer): void {
     this.logger.log('[INT-MCP] Server selected:', server);
     const index = this.integration.value.servers.findIndex(s => 
-      s.name === server.name && s.url === server.url && s.type === server.type
+      s.name === server.name && s.url === server.url && s.transport === server.transport
     );
     
     if (index >= 0) {
@@ -81,7 +80,7 @@ export class McpIntegrationComponent implements OnInit {
   onDeleteServer(server: McpServer): void {
     this.logger.log('[INT-MCP] Delete server:', server);
     const index = this.integration.value.servers.findIndex(s => 
-      s.name === server.name && s.url === server.url && s.type === server.type
+      s.name === server.name && s.url === server.url && s.transport === server.transport
     );
     
     if (index >= 0) {
@@ -100,10 +99,16 @@ export class McpIntegrationComponent implements OnInit {
     this.currentServer = {
       name: '',
       url: '',
-      type: 'HTTP Streamable'
+      transport: 'streamable_http'
     };
     this.isEditing = false;
     this.editingIndex = -1;
+  }
+
+  // Get display value for transport
+  getTransportDisplay(transport: string): string {
+    // Currently only one transport type is supported
+    return transport === 'streamable_http' ? 'HTTP Streamable' : transport;
   }
 
   saveIntegration() {

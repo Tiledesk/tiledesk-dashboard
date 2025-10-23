@@ -39,6 +39,23 @@ p {
     margin-bottom: 24px;
   }
 
+  .readonly-field {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    min-height: 40px;
+    cursor: not-allowed;
+    max-width: 500px;
+    .readonly-value {
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
   .form-header {
     margin-bottom: 20px;
 

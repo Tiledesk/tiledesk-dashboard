@@ -8,7 +8,7 @@
                         type="text" 
                         [(ngModel)]="filterText"
                         (input)="onFilterChange($any($event.target).value)"
-                        placeholder="{{ 'Search by name, URL or type' | translate }}">
+                        placeholder="{{ 'SearchByNameURLOrType' | translate }}">
                     <span class="material-icons-outlined">search</span>
                 </div>
             </div>
@@ -19,7 +19,7 @@
     <div class="card contents-card">
         <div class="card-header">
             <div class="servers-count">
-                {{ 'Total MCP Servers' | translate }}: <span class="count-num">{{ filteredServers.length }}</span>
+                {{ 'Integration.TotalMCPServers' | translate }}: <span class="count-num">{{ filteredServers.length }}</span>
             </div>
         </div>
 
@@ -35,9 +35,9 @@
                             <span>URL</span>
                             <span class="material-icons-outlined sort-icon">{{ getSortIcon('url') }}</span>
                         </th>
-                        <th class="sortable-column" (click)="onSort('type')">
-                            <span>Type</span>
-                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('type') }}</span>
+                        <th class="sortable-column" (click)="onSort('transport')">
+                            <span>{{ 'Type' | translate }}</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('transport') }}</span>
                         </th>
                         <th class="actions-column"></th>
                     </tr>
@@ -52,9 +52,9 @@
                         <td class="url-column">
                             <span class="server-url">{{ server.url }}</span>
                         </td>
-                        <td class="type-column">
-                            <div class="type-chip">
-                                <span>{{ server.type }}</span>
+                        <td class="transport-column">
+                            <div class="transport-chip">
+                                <span>{{ getTransportDisplay(server.transport) }}</span>
                             </div>
                         </td>
                         <td class="actions-column">
@@ -76,7 +76,7 @@
                         <td colspan="4" class="no-data">
                             <div class="no-data-message">
                                 <span class="material-icons-outlined">inbox</span>
-                                <p>{{ 'No MCP servers found' | translate }}</p>
+                                <p>{{ 'Integration.NoMCPServersFound' | translate }}</p>
                             </div>
                         </td>
                     </tr>

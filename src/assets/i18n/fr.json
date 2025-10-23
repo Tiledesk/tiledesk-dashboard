@@ -2462,6 +2462,7 @@
         "Save": "Sauvegarder",
         "Clear": "Clair",
         "Delete": "Supprimer",
+        "Transport": "Transport",
         "AddMCPServer": "Ajouter Serveur MCP",
         "EditMCPServer": "Modifier Serveur MCP",
         "TotalMCPServers": "Total Serveurs MCP",

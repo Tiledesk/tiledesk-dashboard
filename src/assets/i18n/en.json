@@ -2474,6 +2474,7 @@
         "Save": "Save",
         "Clear": "Clear",
         "Delete": "Delete",
+        "Transport": "Transport",
         "AddMCPServer": "Add MCP Server",
         "EditMCPServer": "Edit MCP Server",
         "TotalMCPServers": "Total MCP Servers",

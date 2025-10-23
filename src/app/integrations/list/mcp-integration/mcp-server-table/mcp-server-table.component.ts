@@ -5,7 +5,7 @@ export interface McpServer {
   id?: string;
   name: string;
   url: string;
-  type: string;
+  transport: string;
 }
 
 @Component({
@@ -20,7 +20,7 @@ export class McpServerTableComponent implements OnInit {
 
   filteredServers: McpServer[] = [];
   filterText: string = '';
-  sortField: 'name' | 'url' | 'type' = 'name';
+  sortField: 'name' | 'url' | 'transport' = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private logger: LoggerService) { }
@@ -46,7 +46,7 @@ export class McpServerTableComponent implements OnInit {
       this.filteredServers = this.mcpServers.filter(server =>
         server.name?.toLowerCase().includes(searchTerm) ||
         server.url?.toLowerCase().includes(searchTerm) ||
-        server.type?.toLowerCase().includes(searchTerm)
+        server.transport?.toLowerCase().includes(searchTerm)
       );
     }
 
@@ -59,7 +59,7 @@ export class McpServerTableComponent implements OnInit {
     this.applyFilter();
   }
 
-  onSort(field: 'name' | 'url' | 'type'): void {
+  onSort(field: 'name' | 'url' | 'transport'): void {
     if (this.sortField === field) {
       // Toggle direction
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -96,11 +96,21 @@ export class McpServerTableComponent implements OnInit {
     this.onDeleteServer.emit(server);
   }
 
-  getSortIcon(field: 'name' | 'url' | 'type'): string {
+  getSortIcon(field: 'name' | 'url' | 'transport'): string {
     if (this.sortField !== field) {
       return 'unfold_more';
     }
     return this.sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
+  }
+
+  // Get display value for transport
+  getTransportDisplay(transport: string): string {
+    // const transportMap: { [key: string]: string } = {
+    //     'streamable_http': 'HTTP Streamable'
+    //   };
+    //   return transportMap[transport] || transport;
+    // Currently only one transport type is supported
+    return transport === 'streamable_http' ? 'HTTP Streamable' : transport;
   }
 }
 

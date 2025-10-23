@@ -199,12 +199,12 @@
           }
         }
 
-        &.type-column {
+        &.transport-column {
           width: 150px;
           min-width: 150px;
           max-width: 150px;
           
-          .type-chip {
+          .transport-chip {
             display: inline-flex;
             align-items: center;
             padding: 4px 12px;
@@ -317,7 +317,7 @@
     }
     
     thead th:nth-child(3),
-    tbody td.type-column {
+    tbody td.transport-column {
       width: 150px;
       min-width: 150px;
       max-width: 150px;
@@ -359,7 +359,7 @@
     }
     
     thead th:nth-child(3),
-    tbody td.type-column {
+    tbody td.transport-column {
       width: 150px;
       min-width: 150px;
       max-width: 150px;

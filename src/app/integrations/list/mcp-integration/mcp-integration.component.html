@@ -3,8 +3,8 @@
     <!-- Form Section -->
     <div class="form-section">
         <div class="form-header">
-            <h4 *ngIf="!isEditing">{{ 'Add MCP Server' | translate }}</h4>
-            <h4 *ngIf="isEditing">{{ 'Edit MCP Server' | translate }}</h4>
+            <h4 *ngIf="!isEditing">{{ 'Integration.AddMCPServer' | translate }}</h4>
+            <h4 *ngIf="isEditing">{{ 'Integration.EditMCPServer' | translate }}</h4>
         </div>
 
         <div class="input-field">
@@ -22,13 +22,16 @@
         </div>
 
         <div class="input-field">
-            <label>Type</label>
-            <select id="mcp-type" class="custom-input" name="mcp-type"
-                [(ngModel)]="currentServer.type">
-                <option *ngFor="let option of typeOptions" [value]="option">
-                    {{ option }}
+            <label>{{ 'Type' | translate }}</label>
+            <!-- <select id="mcp-transport" class="custom-input" name="mcp-transport"
+                [(ngModel)]="currentServer.transport">
+                <option *ngFor="let option of transportOptions" [value]="option.value">
+                    {{ option.display }}
                 </option>
-            </select>
+            </select> -->
+            <div class="readonly-field">
+                <span class="readonly-value">{{ getTransportDisplay(currentServer.transport) }}</span>
+            </div>
         </div>
 
         <div class="form-actions">
