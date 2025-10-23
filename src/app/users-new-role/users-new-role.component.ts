@@ -147,8 +147,10 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
+        { key: PERMISSIONS.CONVERSATION_DETAIL_READ, label: 'Able to view' },
         { key: PERMISSIONS.TICKET_ID_READ, label: 'Able to view ticked id' },
         { key: PERMISSIONS.RATING_READ, label: 'Able to view conversation rating' },
+        { key: PERMISSIONS.TAGS_READ_ALL, label: 'Able to view all conversation tags' },
       ]
     },
 

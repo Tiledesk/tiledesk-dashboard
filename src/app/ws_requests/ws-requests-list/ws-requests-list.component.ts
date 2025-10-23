@@ -899,7 +899,7 @@ getProjectUserRole() {
 
         // this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
-          // this.logger.log('[WS-REQUESTS-LIST] - GROUP ', group);
+          console.log('[WS-REQUESTS-LIST] - GROUP ', group);
 
           if (group.members.includes(this.currentUserID)) {
             // this.logger.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
@@ -1270,8 +1270,8 @@ getProjectUserRole() {
   }
 
   hasmeInAgents(agents, wsrequest) {
-    // this.logger.log('[WS-REQUESTS-LIST] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
-    this.logger.log("[WS-REQUESTS-LIST] - hasmeInAgents - currentUserID ", this.currentUserID);
+    console.log('[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
+    console.log("[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - currentUserID ", this.currentUserID);
     if (agents) {
       for (let j = 0; j < agents.length; j++) {
         if (this.currentUserID === agents[j].id_user) {
@@ -1279,18 +1279,18 @@ getProjectUserRole() {
         }
       }
     } else {
-      this.logger.log("[WS-REQUESTS-LIST] - hasmeInAgents Oops!!!! THERE ARE NOT AGENTS ");
+      this.logger.log("WS-REQUESTS-LIST-USECASE] - hasmeInAgents Oops!!!! THERE ARE NOT AGENTS ");
     }
   }
 
   // this check fix the bug: the request is assigned to a agent or admin od the dept A 
   // the the same requets is reassigned to an agent or admin of the dept B
   // the agent or admin doesn't see the request
-  hasmeInParticipants(participants) {
+  hasmeInParticipants(participants, wsrequest?:any) {
     let iAmThere = false
     participants.forEach(participant => {
-      this.logger.log('[WS-REQUESTS-LIST] - hasmeInParticipants - currentUserID', this.currentUserID)
-      this.logger.log('[WS-REQUESTS-LIST] - hasmeInParticipants - participant', participant)
+      this.logger.log('[WS-REQUESTS-LIST-USECASE] - hasmeInParticipants - currentUserID', this.currentUserID, ' wsrequest ', wsrequest)
+      this.logger.log('[WS-REQUESTS-LIST-USECASE] - hasmeInParticipants - participant', participant)
       if (participant === this.currentUserID) {
         iAmThere = true;
         return
@@ -1482,7 +1482,7 @@ getProjectUserRole() {
             }
 
             if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
-
+              
               this.ws_requests = [];
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
@@ -1501,8 +1501,8 @@ getProjectUserRole() {
               // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
             }
           } else if (this.ROLE !== 'owner' && this.ROLE !== 'admin' && this.ROLE !== 'agent') {
-            console.log('[WS-REQUESTS-LIST] - getWsRequests$ this.ROLE (else) ', this.ROLE);
-            console.log('[WS-REQUESTS-LIST] - getWsRequests$ this.PERMISSIONS (else) ', this.PERMISSIONS);
+            console.log('[WS-REQUESTS-LIST-USECASE] - getWsRequests$ this.ROLE (else) ', this.ROLE);
+            console.log('[WS-REQUESTS-LIST-USECASE] - getWsRequests$ this.PERMISSIONS (else) ', this.PERMISSIONS);
 
             // Se il tuo ruolo è uno custom e ha scelto opzione request_reame_my allora devi visualizzare solo le tue conv e scartare le altre. Praticamente la stessa cosa che fai con AGENTS_CAN_SEE_ONLY_OWN_CONVS
             // Se invece ha scelto request_read_group allora solo quelle del gruppo di appartenenza
@@ -1510,23 +1510,25 @@ getProjectUserRole() {
 
             // request_read_all
             if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_ALL)) {
-              console.log('[WS-REQUESTS-LIST] - getWsRequests$ request_read_all');
+
+              console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE getWsRequests$ request_read_all');
               this.ws_requests = wsrequests;
               this.addDeptObject(this.ws_requests)
             }
 
             // request_read_group
             if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_GROUP)) {
+              console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE getWsRequests$ request_read_group');
               this.ws_requests = [];
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
 
-                  console.log('[WS-REQUESTS-LIST] - request_read_group - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
-                  console.log('[WS-REQUESTS-LIST] - request_read_group - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
+                  console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
                   if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
                     this.ws_requests.push(wsrequest);
-                    console.log('[WS-REQUESTS-LIST] - request_read_group -  this.ws_requests ', this.ws_requests)
+                    // console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group -  this.ws_requests ', this.ws_requests)
                   }
                 }
               });
@@ -1535,19 +1537,19 @@ getProjectUserRole() {
             }
             // request_read_my
             if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_MY)) {
-              console.log('[WS-REQUESTS-LIST] - getWsRequests$ request_read_my');
+              console.log('[WS-REQUESTS-LIST-USECASE]  ---> USECASE getWsRequests$ request_read_my');
               this.displayAgentsSelect = false
 
               this.ws_requests = [];
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
 
-                  console.log('[WS-REQUESTS-LIST] - request_read_my - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
-                  console.log('[WS-REQUESTS-LIST] - request_read_my - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
+                  console.log('[WS-REQUESTS-LIST-USECASE]- request_read_my - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  console.log('[WS-REQUESTS-LIST-USECASE] - request_read_my - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants, wsrequest))
 
                   if (this.hasmeInParticipants(wsrequest.participants) === true) {
                     this.ws_requests.push(wsrequest);
-                    console.log('[WS-REQUESTS-LIST] - request_read_my -  this.ws_requests ', this.ws_requests)
+                    // console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_my -  this.ws_requests ', this.ws_requests)
                   }
                 }
               });

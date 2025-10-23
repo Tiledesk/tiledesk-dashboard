@@ -19,6 +19,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
+import { GroupService } from 'app/services/group.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -159,6 +160,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     private logger: LoggerService,
     private rolesService: RolesService,
     private roleService: RoleService,
+    private groupService: GroupService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -234,7 +236,75 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
 
+  // getGroupsByProjectId() {
+   
+  //   // this.HAS_COMPLETED_GET_GROUPS = false
+  //   this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
+  //     console.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
 
+  //     if (Array.isArray(this.groupsParsedArray)) {
+  //       this.groupsParsedArray = this.groupsParsedArray.map(item => {
+  //         const matchedGroup = groups.find(group => group._id === item.group_id);
+  //         return {
+  //           ...item,
+  //           name: matchedGroup ? matchedGroup.name : 'Unknown group'
+  //         };
+  //       });
+
+  //       console.log('[DEPT-EDIT-ADD] - myParsedArray with group names:', this.groupsParsedArray);
+  //     }
+
+  //     if (groups) {
+  //       // this.groupsList = groups;
+
+  //       this.groupsList = groups.filter(group => group.enabled !== false);
+
+  //       this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
+  //       this.groupsList.forEach(group => {
+
+  //         if (this.selectedGroupId) {
+  //           if (group._id === this.selectedGroupId) {
+  //             this.logger.log('[DEPT-EDIT-ADD] - GROUP ASSIGNED TO THIS DEPT', group);
+  //             this.group_name = group.name
+  //             this.projectUsersInGroup = [];
+
+  //             group.members.forEach(member => {
+  //               this.logger.log('[DEPT-EDIT-ADD] - MEMBER OF THE GROUP ASSIGNED TO THIS DEPT', member);
+
+  //               this.projectUsers.forEach(projectuser => {
+  //                 // this.logger.log('DEPT EDIT-ADD - PROJECT USER ', projectuser);
+  //                 if (member === projectuser.id_user._id) {
+
+  //                   this.projectUsersInGroup.push(projectuser.id_user)
+  //                 }
+  //               });
+
+  //             });
+
+  //             this.logger.log('[DEPT-EDIT-ADD] - PROJECT USERS IN GROUP ', this.projectUsersInGroup);
+  //             // const filteredProjectUsers = group.members
+  //           }
+  //         } else {
+  //           this.logger.log('[DEPT-EDIT-ADD] - NO GROUP ASSIGNED TO THIS DEPT - GROUP ID', this.selectedGroupId);
+  //         }
+  //       });
+
+
+  //       // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
+  //       // IF THE GROUP-ID DOES NOT EXIST MEANS THAT WAS DELETED
+  //       if (this.selectedGroupId !== null && this.selectedGroupId !== undefined) {
+  //         this.checkGroupId(this.selectedGroupId, this.groupsList)
+  //       }
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[DEPT-EDIT-ADD] - GET GROUPS - ERROR ', error);
+  //     // this.HAS_COMPLETED_GET_GROUPS = false
+  //     // this.showSpinner = false;
+  //   },
+  //     () => {
+  //       this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS * COMPLETE');
+  //     });
+  // }
 
   getRoles() {
     this.rolesService.getAllRoles()

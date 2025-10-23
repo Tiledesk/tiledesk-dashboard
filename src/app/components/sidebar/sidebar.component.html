@@ -107,7 +107,7 @@
     <!-- ------------------------------------------- -->
     <!-- HOME   (click)="goToHome()"" -->
     <!-- ------------------------------------------- -->
-    <div matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+    <div *ngIf="PERMISSION_TO_VIEW_HOME" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
       <a target="_self" routerLink="project/{{ project?._id }}/home" class="customAncor">
         <span>

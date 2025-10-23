@@ -285,6 +285,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   calling_page: string = "conv_details"
 
   projectTeammates: any
+  allProjectUsers: any
   hasClickedFollow: boolean = false;
   selected: any
   selectedFollowers: any
@@ -420,6 +421,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_VIEW_RATING_SECTION: boolean;
   PERMISSION_TO_VIEW_CONTACT_SECTION: boolean;
   PERMISSION_TO_VIEW_TICKET_ID: boolean;
+  PERMISSION_TO_VIEW_ALL_TAGS: boolean;
 
   /**
    * Constructor
@@ -576,7 +578,7 @@ updateTagContainerHeight() {
 
   // Piccolo margine extra per estetica
   this.convTagContainerElementHeight = height + 20 + 'px';
-  console.log('[TAG HEIGHT] Altezza aggiornata:', this.convTagContainerElementHeight);
+  // console.log('[TAG HEIGHT] Altezza aggiornata:', this.convTagContainerElementHeight);
 }
 
   // -----------------------------------------------------------------------------------------------------
@@ -940,6 +942,7 @@ updateTagContainerHeight() {
           console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
+
         // PERMISSION_TO_READ_TEAMMATE_DETAILS
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
@@ -954,6 +957,23 @@ updateTagContainerHeight() {
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
+
+        // PERMISSION_TO_VIEW_ALL_TAGS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ_ALL)) {
+
+            this.PERMISSION_TO_VIEW_ALL_TAGS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+          } else {
+            this.PERMISSION_TO_VIEW_ALL_TAGS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_ALL_TAGS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+        }
+
+        
 
         // PERMISSION TO UPDATE APP
         if (status.role === 'owner' || status.role === 'admin') {
@@ -1431,14 +1451,16 @@ updateTagContainerHeight() {
         if (prjctteammates) {
           // this.projectTeammates = prjctteammates
           this.projectTeammates = []
+          this.allProjectUsers = []
 
 
           prjctteammates.forEach(teammate => {
             this.logger.log('[WS-REQUESTS-MSGS] teammate', teammate)
             teammate['fullname'] = teammate['id_user']['firstname'] + ' ' + teammate['id_user']['lastname']
             this.projectTeammates.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
+            this.allProjectUsers.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
           });
-          this.logger.log('[WS-REQUESTS-MSGS] TEAMMATES ARRAY ', this.projectTeammates)
+          console.log('[WS-REQUESTS-MSGS] ---> TEAMMATES ARRAY ', this.projectTeammates)
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] GET TEAMMATES - ERROR  ', error);
@@ -3322,40 +3344,168 @@ updateTagContainerHeight() {
   //     });
   // }
 
-  getTag() {
-    this.loadingTags = true
-    this.tagsService.getTags().subscribe((tags: any) => {
-      if (tags) {
-        // tagsList are the available tags that the administrator has set on the tag management page
-        // and that are displayed in the combo box 'Add tag' of this template
-        this.tagsList = tags
-        this.tagsList = this.tagsList.slice(0)
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.tagsList ', this.tagsList);
+  // _getTag() {
+  //   this.loadingTags = true
+  //   this.tagsService.getTags().subscribe((tags: any) => {
+  //     if (tags) {
+  //       // tagsList are the available tags that the administrator has set on the tag management page
+  //       // and that are displayed in the combo box 'Add tag' of this template
+  //       // this.tagsList = tags
+       
 
-        // "tagArray" are the tags present in the "this.request" object
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
 
-        // if (this.tagsList.length > 0) {
-        // this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
-        this.typeALabelAndPressEnter = this.translate.instant('AddTagToConversation');
-        // } else {
-        //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
-        // }
-        // -----------------------------------------------------------------------------------
-        // Splice tags from the tagslist the tags already present in the "this.request" object
-        // ------------------------------------------------------------------------------------
-        // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+
+  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tags ', tags);
+  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+  //       if (!this.PERMISSION_TO_VIEW_ALL_TAGS) {
+  //         const validUserIds = this.projectTeammates.map(u => u.userid);
+  //         this.tagsList = tags.filter(tag => validUserIds.includes(tag.createdBy));
+  //       } else {
+  //         this.tagsList = tags;
+  //       }
+  //       this.tagsList = this.tagsList.slice(0)
+  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.tagsList ', this.tagsList);
+  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.projectTeammates ',  this.projectTeammates);
+
+  //       // "tagArray" are the tags present in the "this.request" object
+  //       this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
+  //       this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
+
+  //       // if (this.tagsList.length > 0) {
+  //       // this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
+  //       this.typeALabelAndPressEnter = this.translate.instant('AddTagToConversation');
+  //       // } else {
+  //       //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
+  //       // }
+  //       // -----------------------------------------------------------------------------------
+  //       // Splice tags from the tagslist the tags already present in the "this.request" object
+  //       // ------------------------------------------------------------------------------------
+  //       // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[WS-REQUESTS-MSGS] - GET TAGS - ERROR  ', error);
+  //     this.loadingTags = false
+  //   }, () => {
+  //     this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray)
+  //     this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS * COMPLETE *');
+  //     this.loadingTags = false
+  //   });
+  // }
+  // ------------------
+async getTag() {
+  this.loadingTags = true;
+
+  try {
+    const tags: any[] = await this.tagsService.getTags().toPromise();
+    console.log('[WS-REQUESTS-MSGS] - GET TAGS - tags ', tags);
+    
+    if (!tags) {
+      this.loadingTags = false;
+      return;
+    }
+
+    this.tagsList = tags;
+
+    // Assicurati che allProjectUsers sia inizializzato
+    if (!this.allProjectUsers) {
+      this.allProjectUsers = [];
+    }
+    // console.log('[WS-REQUESTS-MSGS] - GET TAGS - allProjectUsers', this.allProjectUsers);
+
+
+    // Creo un array di Promesse per recuperare utenti remoti
+    const userPromises = this.tagsList.map(async (tag) => {
+
+      //  console.log('[WS-REQUESTS-MSGS] - GET TAGS  - CONFRONTO:', {
+      //   createdBy: tag.createdBy,
+      //   allProjectUsers_ids: this.allProjectUsers.map(u => u.userid)
+      // });
+      // Controlla se l'utente è già in allProjectUsers
+      let user = this.allProjectUsers.find(u => u.userid === tag.createdBy);
+      // console.log('[WS-REQUESTS-MSGS] - GET TAGS - user ', user);
+      
+      if (!user) {
+        // Controlla nello storage locale
+        const localUser = this.usersLocalDbService.getMemberFromStorage(tag.createdBy);
+        // console.log('[WS-REQUESTS-MSGS] - GET TAGS - user from storage', localUser);
+      
+
+        if (localUser) {
+          localUser['fullname'] = localUser['id_user']['firstname'] + ' ' + localUser['id_user']['lastname']
+          user = { 
+            label:  localUser['fullname'], 
+            value: localUser['_id'], 
+            userid: localUser['id_user']['_id']
+          };
+          // Aggiungi a allProjectUsers
+          this.allProjectUsers.push(user);
+        } else {
+          // Recupero l'utente da remoto
+          const remoteUser = await this.getMemberFromRemoteForTag(tag.createdBy);
+          if (remoteUser) {
+            user = { 
+              label: remoteUser['id_user']['firstname'] + ' ' + remoteUser['id_user']['lastname'], 
+              value: remoteUser._id, 
+              userid: remoteUser['id_user']['_id']
+            };
+            // Aggiorno l'array allProjectUsers
+            this.allProjectUsers.push(user);
+            // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Added user to allProjectUsers:', user);
+          }
+        }
       }
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-MSGS] - GET TAGS - ERROR  ', error);
-      this.loadingTags = false
-    }, () => {
-      this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray)
-      this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS * COMPLETE *');
-      this.loadingTags = false
+      
+      return user;
     });
+
+    // Aspetto che tutte le promesse siano completate
+    await Promise.all(userPromises);
+
+    // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Final allProjectUsers ', this.allProjectUsers);
+
+    // Filtro le tag solo se NON ho il permesso di vedere tutte
+    if (!this.PERMISSION_TO_VIEW_ALL_TAGS) {
+      const validUserIds = this.allProjectUsers.map(u => u.userid);
+      this.tagsList = this.tagsList.filter(tag => validUserIds.includes(tag.createdBy));
+      // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Filtered tagsList ', this.tagsList);
+    }
+
+    // Copia array per trigger change detection
+    this.tagsList = [...this.tagsList];
+
+    this.typeALabelAndPressEnter = this.translate.instant('AddTagToConversation');
+    this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+
+  } catch (error) {
+    this.logger.error('[TAGS] - GET TAGS - ERROR', error);
+  } finally {
+    this.loadingTags = false;
   }
+}
+
+getMemberFromRemoteForTag(userid: string): Promise<any> {
+  // console.log('[TAGS] - GET TAGS - getMemberFromRemoteForTag', userid);
+  return new Promise((resolve, reject) => {
+    this.usersService.getProjectUserById(userid).subscribe(
+      (projectUser: any) => {
+        if (projectUser && projectUser.length > 0) {
+          const user = projectUser[0];
+          // console.log('[TAGS] - GET TAGS - Found remote user:', user);
+          resolve(user);
+        } else {
+          // console.log('[TAGS] - GET TAGS - User not found:', userid);
+          resolve(null);
+        }
+      },
+      (error) => {
+        this.logger.warn('[TAGS] - getMemberFromRemoteForTag - ERROR', error);
+        // console.log('[TAGS] - GET TAGS - Error fetching user, resolving null');
+        resolve(null);
+      }
+    );
+  });
+}
+
 
   // tag_name: string;
   // tag_selected_color = '#43B1F2';

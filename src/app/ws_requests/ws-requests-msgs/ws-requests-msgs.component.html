@@ -2049,9 +2049,14 @@
 
 
                               <div class="followers-select" style="position: relative; width: 100%;">
-                                <ng-select class="ticket-followers" [items]="projectTeammates" bindLabel="label"
-                                  [multiple]="true" placeholder="Search teammate" [(ngModel)]="selectedFollowers"
-                                  (add)="addFollower($event)" (remove)="removeFollower($event)" [hideSelected]="true"
+                                <ng-select class="ticket-followers" 
+                                  [items]="projectTeammates" bindLabel="label"
+                                  [multiple]="true" 
+                                  placeholder="Search teammate" 
+                                  [(ngModel)]="selectedFollowers"
+                                  (add)="addFollower($event)" 
+                                  (remove)="removeFollower($event)" 
+                                  [hideSelected]="true"
                                   (clear)="removeAllFollowers($event)"
                                   [disabled]="!PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS">
                                 </ng-select>

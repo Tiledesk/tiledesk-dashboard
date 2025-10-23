@@ -14,11 +14,23 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { FaqKbService } from 'app/services/faq-kb.service';
+
+interface TagUser {
+  firstname: string;
+  lastname?: string;
+  email?: string;
+  isBot?: boolean;
+}
+
 @Component({
   selector: 'appdashboard-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss']
 })
+
+
+
 export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   public tag_docs_url = URL_tag_doc
   tagsList: Array<any>;
@@ -73,7 +85,8 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
     private logger: LoggerService,
     public brandService: BrandService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private faqKbService: FaqKbService,
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -207,7 +220,7 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  getTag() {
+  old_getTag() {
     this.tagsService.getTags().subscribe((tags: any) => {
       this.logger.log('TAGS] - GET TAGS - RES ', tags);
 
@@ -239,6 +252,183 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSpinner = false
     });
   }
+
+  // getTag() {
+  //  this.tagsService.getTags().subscribe(
+  //   (tags: any) => {
+  //    console.log('[TAGS] - GET TAGS - RES ', tags);
+
+  //     if (tags) {
+  //       this.tagsList = tags;
+
+  //       this.tagsList.forEach(tag => {
+  //         // -----------------------------------------------------
+  //         // Get the user by id ('createdBy' matches the user id)
+  //         // -----------------------------------------------------
+  //         let user: TagUser | string | null = this.usersLocalDbService.getMemberFromStorage(tag.createdBy);
+  //         console.log('[TAGS] - GET TAGS - getMemberFromStorage - createdBy ', user);
+
+  //         if (!user) {
+            
+  //           const storedValue = localStorage.getItem(tag.createdBy);
+  //           if (storedValue) {
+  //             console.log('[TAGS] - GET TAGS - NO USER CHECK FOR BOT IN STOAGE storedValue', storedValue);
+  //             // Se lo storage contiene solo una stringa, assumiamo sia un chatbot
+  //             let storedValueParsed = JSON.parse(storedValue) 
+  //              console.log('[TAGS] - GET TAGS - NO USER CHECK FOR BOT IN STOAGE storedValueParsed', storedValueParsed);
+  //              if (storedValueParsed.type = "tilebot") {
+  //                 user = { firstname: storedValueParsed.name, isBot: true };
+  //              }
+             
+  //           }
+  //         }
+
+  //         if (user) {
+  //           tag.createdBy_user = user;
+  //         } else {
+  //           console.log('[TAGS] - GET TAGS - NO USER IN STORAGE ', user);
+  //           // -----------------------------------------------------
+  //           // From remote if not exist in the local storage
+  //           // -----------------------------------------------------
+  //           this.getMemberFromRemote(tag, tag.createdBy);
+  //         }
+  //       });
+  //     }
+  //   },
+  //   (error) => {
+  //     this.logger.error('[TAGS] - GET TAGS - ERROR ', error);
+  //     this.showSpinner = false;
+  //   },
+  //   () => {
+  //     this.logger.log('[TAGS] - GET TAGS * COMPLETE *');
+  //     this.showSpinner = false;
+  //   }
+  // );
+  // }
+
+  _getTag() {
+    this.tagsService.getTags().subscribe(
+      (tags: any) => {
+        this.logger.log('[TAGS] - GET TAGS - RES ', tags);
+
+        if (tags) {
+          this.tagsList = tags;
+
+          this.tagsList.forEach(tag => {
+            // -----------------------------------------------------
+            // Provo a prendere l'utente dallo storage locale
+            // -----------------------------------------------------
+            let user: any = this.usersLocalDbService.getMemberFromStorage(tag.createdBy);
+
+            if (user) {
+              tag.createdBy_user = user;
+            } else {
+              // -----------------------------------------------------
+              // Controllo se è un bot nello storage locale
+              // -----------------------------------------------------
+              const storedValue = localStorage.getItem(tag.createdBy);
+              if (storedValue) {
+                let storedBotParsed = JSON.parse(storedValue) 
+                if (storedBotParsed.type = 'tilebot') {
+                  tag.createdBy_user = { firstname: storedBotParsed.name, isBot: true };
+                }
+              } else {
+                // -----------------------------------------------------
+                // Se non trovato, chiamo le API remote
+                // -----------------------------------------------------
+                // Decido se è bot o umano in base a qualche logica: es. id pattern
+                if (tag.createdBy.startsWith('bot_')) {
+                  // è un bot
+                  this.getBotById(tag.createdBy, tag);
+                } else {
+                  // è un utente umano
+                  this.getMemberFromRemote(tag, tag.createdBy);
+                }
+              }
+            }
+          });
+        }
+      },
+      (error) => {
+        this.logger.error('[TAGS] - GET TAGS - ERROR ', error);
+        this.showSpinner = false;
+      },
+      () => {
+        this.logger.log('[TAGS] - GET TAGS * COMPLETE *');
+        this.showSpinner = false;
+      }
+    );
+  }
+  getTag() {
+  this.tagsService.getTags().subscribe(
+    (tags: any) => {
+      this.logger.log('[TAGS] - GET TAGS - RES ', tags);
+
+      if (tags) {
+        this.tagsList = tags;
+
+        this.tagsList.forEach(tag => {
+          // 1️⃣ Provo a prendere l’utente dallo storage locale
+          let user: any = this.usersLocalDbService.getMemberFromStorage(tag.createdBy);
+
+          if (user) {
+            tag.createdBy_user = user;
+
+          } else {
+            // 2️⃣ Utente non trovato nello storage locale → chiamata remota
+            this.getMemberFromRemote(tag, tag.createdBy);
+
+            // 3️⃣ Controllo se esiste uno stored bot
+            const storedValue = localStorage.getItem(tag.createdBy);
+            if (storedValue) {
+              try {
+                const storedBotParsed = JSON.parse(storedValue);
+                if (storedBotParsed.type === 'tilebot') {
+                  tag.createdBy_user = { firstname: storedBotParsed.name, isBot: true };
+                }
+              } catch (e) {
+                this.logger.error('[TAGS] - errore parsing storedValue', e);
+              }
+            } else {
+              // 4️⃣ Nessun bot nello storage → chiamata remota per il bot
+              this.getBotById(tag.createdBy, tag);
+            }
+          }
+        });
+      }
+    },
+    (error) => {
+      this.logger.error('[TAGS] - GET TAGS - ERROR ', error);
+      this.showSpinner = false;
+    },
+    () => {
+      this.logger.log('[TAGS] - GET TAGS * COMPLETE *');
+      this.showSpinner = false;
+    }
+  );
+}
+
+
+
+getBotById(botid: string, tag: any) {
+    this.logger.log('getFaqById');
+
+    this.faqKbService.getBotById(botid).subscribe((chatbot) => {
+      this.logger.log('[TAGS] - GET BOT BY ID RES - chatbot', chatbot);
+      if (chatbot) {
+ 
+        tag.createdBy_user = { firstname: chatbot.name, isBot: true };
+      }
+    }, (error) => {
+      this.logger.error('[TAGS] - GET BOT BY ID RES - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[TAGS] - GET BOT BY ID RES - COMPLETE ');
+
+    });
+  }
+
+
 
 
   getMemberFromRemote(tag: any, userid: string) {

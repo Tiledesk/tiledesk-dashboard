@@ -1088,9 +1088,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       if (!this.allowMultipleGroups) {
         this.selectedGroupId = this.new_group_created_id;
       }
-
-
-
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {

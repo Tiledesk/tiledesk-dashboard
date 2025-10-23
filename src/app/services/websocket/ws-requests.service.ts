@@ -402,6 +402,7 @@ export class WsRequestsService implements OnDestroy {
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
       // this.wsRequestsList$.next(this.wsRequestsList);
+      console.log('[WS-REQUESTS-SERV] wsRequestsList ', this.wsRequestsList ) 
 
     }
 
@@ -468,7 +469,7 @@ export class WsRequestsService implements OnDestroy {
 
         if (this.wsRequestsList) {
           this.wsRequestsList$.next(this.wsRequestsList);
-          this.logger.log("[WS-REQUESTS-SERV] -  ON-UPATE REQUESTS LIST ", this.wsRequestsList);
+          // console.log("[WS-REQUESTS-SERV] -  ON-UPATE REQUESTS LIST ", this.wsRequestsList);
         }
       }
     }

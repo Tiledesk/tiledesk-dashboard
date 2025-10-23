@@ -726,7 +726,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     //   this.logger.log('[CONTACT-INFO] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
     //   this.logger.log('[CONTACT-INFO] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
     // }
-    console.log('[CONTACT TAG HEIGHT] leadTagsContainer:', this.leadTagsContainer);
+    // console.log('[CONTACT TAG HEIGHT] leadTagsContainer:', this.leadTagsContainer);
     if (!this.leadTagsContainer) return;
 
     // Iniziale
@@ -745,12 +745,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   updateTagContainerHeight() {
     const element = this.leadTagsContainer.nativeElement as HTMLElement;
-    console.log('[CONTACT TAG HEIGHT] element:', element);
+    // console.log('[CONTACT TAG HEIGHT] element:', element);
     const height = element.offsetHeight;
 
     // Piccolo margine extra per estetica
     this.tagContainerElementHeight = height + 20 + 'px';
-    console.log('[CONTACT TAG HEIGHT] Altezza aggiornata:', this.tagContainerElementHeight);
+    // console.log('[CONTACT TAG HEIGHT] Altezza aggiornata:', this.tagContainerElementHeight);
  }
 
   goToTags() {

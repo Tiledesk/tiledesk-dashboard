@@ -58,8 +58,8 @@ export class RoleService {
         } else if (projectUserRole !== 'owner' && projectUserRole !== 'admin') {
           console.log('[ROLE-SERV] - custom role 2', projectUserRole)
          
-          // Monitor & NORT
-          if (calledby === 'wsrequests' || calledby === 'all-conversations' || calledby === 'wsrequest-detail')  {
+          // Monitor & NORT || calledby === 'wsrequest-detail'
+          if (calledby === 'wsrequests' || calledby === 'all-conversations')  {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
@@ -69,13 +69,23 @@ export class RoleService {
             // return hasPermission;
           }
 
-          // History
-          if (calledby === 'history' || calledby === 'wsrequest-detail-history') {
+
+          // History || calledby === 'wsrequest-detail-history'
+          if (calledby === 'history' ) {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
               
               // this.router.navigate([`project/${projectId}/unauthorized`])
                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
+
+          // Conversation detail
+          if (calledby === 'wsrequest-detail-history' || calledby === 'wsrequest-detail')  {
+            console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
+            if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.CONVERSATION_DETAIL_READ)) {
+             this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -647,8 +657,8 @@ export class RoleService {
         } else if (_projectUserRole !== 'owner' && _projectUserRole !== 'admin') {
           console.log('[ROLE-SERV] - checkRoleForCurrentProject get from remote _projectUser.rolePermissions ', _projectUser.rolePermissions)
 
-          // Monitor & Nort
-          if (calledby === 'wsrequests' || calledby === 'all-conversations' || calledby === 'wsrequest-detail') {
+          // Monitor & Nort || calledby === 'wsrequest-detail'
+          if (calledby === 'wsrequests' || calledby === 'all-conversations') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
               // this.router.navigate([`project/${projectId}/unauthorized`])
@@ -659,13 +669,21 @@ export class RoleService {
             // return hasPermission;
           }
 
-          // History
-          if (calledby === 'history' || calledby === 'wsrequest-detail-history') {
+          // History || calledby === 'wsrequest-detail-history'
+          if (calledby === 'history') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
              
               // this.router.navigate([`project/${projectId}/unauthorized`])
               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
+          // Conversation detail
+          if (calledby === 'wsrequest-detail-history' || calledby === 'wsrequest-detail')  {
+            console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
+            if (!_projectUser.rolePermissions.includes(PERMISSIONS.CONVERSATION_DETAIL_READ)) {
+             this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 

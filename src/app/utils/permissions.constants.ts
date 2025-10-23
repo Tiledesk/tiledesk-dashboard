@@ -24,9 +24,12 @@ export const PERMISSIONS = {
   REQUEST_TRANSCRIPT_SEND: 'request_transcript_send',
 
   HISTORY_READ: 'history_read',
-
+  
+  CONVERSATION_DETAIL_READ: 'conversation_detail_read',
   TICKET_ID_READ:'ticket_id_read',
   RATING_READ:'rating_read',
+  TAGS_READ_ALL: 'tags_read_all',
+
 
   CHANGE_PROJECT:'change_project',
   SIMULATE_CONV:'simulate_conv',
@@ -105,6 +108,7 @@ export const PERMISSIONS = {
   CANNED_RESPONSES_READ:'canned_responses_read',
   CANNED_RESPONSES_UPDATE:'canned_responses_update',
   CANNED_RESPONSES_CREATE:'canned_responses_create',
+  CANNED_RESPONSES_SHARED_CREATE:'canned_responses_shared_create',
   CANNED_RESPONSES_DELETE:'canned_responses_delete',
   
   TAGS_READ:'tags_read',

@@ -326,6 +326,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_PROJECT_SETTING_SECURITY: boolean;
   PERMISSION_TO_VIEW_PROJECT_SETTING_BANNED: boolean;
   PERMISSION_TO_VIEW_PROJECT_SETTING_ADVANCED: boolean;
+  PERMISSION_TO_VIEW_HOME: boolean;
 
   constructor(
     private router: Router,
@@ -424,8 +425,28 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         console.log('[SIDEBAR] - Role:', this.ROLE);
     
         console.log('[SIDEBAR] - Permissions:', status.matchedPermissions);
+
+
         // -------------------------------
-        // PERMISSION TO VIEW MONITOR
+        // PERMISSION_TO_VIEW_HOME
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.HOME_READ)) {
+            this.PERMISSION_TO_VIEW_HOME = true
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_HOME ', this.PERMISSION_TO_VIEW_HOME);
+          } else {
+            this.PERMISSION_TO_VIEW_HOME = false
+
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_HOME);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_HOME = true
+          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_HOME ', this.PERMISSION_TO_VIEW_HOME);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_MONITOR
         // -------------------------------
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
