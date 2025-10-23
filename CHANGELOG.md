@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.145-stage
+- Minor improvements
 
 ### 2.7.143-stage
 - Adds MCP integration
