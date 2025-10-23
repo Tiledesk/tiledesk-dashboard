@@ -1,0 +1,53 @@
+<div class="content">
+
+    <!-- Form Section -->
+    <div class="form-section">
+        <div class="form-header">
+            <h4 *ngIf="!isEditing">{{ 'Add MCP Server' | translate }}</h4>
+            <h4 *ngIf="isEditing">{{ 'Edit MCP Server' | translate }}</h4>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Name' | translate }}</label>
+            <input id="mcp-name" class="custom-input" type="text" name="mcp-name"
+                placeholder="Enter MCP server name"
+                [(ngModel)]="currentServer.name" autocomplete="off">
+        </div>
+
+        <div class="input-field">
+            <label>URL</label>
+            <input id="mcp-url" class="custom-input" type="url" name="mcp-url"
+                placeholder="URL of the external MCP server"
+                [(ngModel)]="currentServer.url" autocomplete="off">
+        </div>
+
+        <div class="input-field">
+            <label>Type</label>
+            <select id="mcp-type" class="custom-input" name="mcp-type"
+                [(ngModel)]="currentServer.type">
+                <option *ngFor="let option of typeOptions" [value]="option">
+                    {{ option }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn btn-tdblu-no-boxshadow" (click)="addOrUpdateServer()">
+                <span *ngIf="!isEditing">{{ 'Add' | translate }}</span>
+                <span *ngIf="isEditing">{{ 'Update' | translate }}</span>
+            </button>
+            <button *ngIf="isEditing" class="btn btn-outlined" (click)="resetForm()">
+                {{ 'Cancel' | translate }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <mcp-server-table 
+        [mcpServers]="integration.value.servers"
+        (onSelectServer)="onSelectServer($event)"
+        (onDeleteServer)="onDeleteServer($event)">
+    </mcp-server-table>
+
+</div>
+

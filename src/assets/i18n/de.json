@@ -2459,7 +2459,12 @@
 		"Failed": "Fehlgeschlagen!",
 		"Save": "Speichern",
 		"Clear": "Klar",
-		"Delete": "Löschen"
+		"Delete": "Löschen",
+		"AddMCPServer": "MCP-Server hinzufügen",
+		"EditMCPServer": "MCP-Server bearbeiten",
+		"TotalMCPServers": "Gesamt MCP-Server",
+		"SearchByNameURLOrType": "Nach Name, URL oder Typ suchen",
+		"NoMCPServersFound": "Keine MCP-Server gefunden"
 	},
 	"ViewTeammates": "Teamkollegen anzeigen",
 	"AddNewTeammate": "Neuen Teamkollegen hinzufügen",

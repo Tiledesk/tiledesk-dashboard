@@ -1,0 +1,88 @@
+<div class="mcp-table-wrapper">
+    <!-- Filter Section -->
+    <div class="filters-card">
+        <div class="card-content">
+            <div class="search-filters-card-header">
+                <div class="fake-input">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="filterText"
+                        (input)="onFilterChange($any($event.target).value)"
+                        placeholder="{{ 'Search by name, URL or type' | translate }}">
+                    <span class="material-icons-outlined">search</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="card contents-card">
+        <div class="card-header">
+            <div class="servers-count">
+                {{ 'Total MCP Servers' | translate }}: <span class="count-num">{{ filteredServers.length }}</span>
+            </div>
+        </div>
+
+        <div class="table-body card-content table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable-column" (click)="onSort('name')">
+                            <span>{{ 'Name' | translate }}</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('name') }}</span>
+                        </th>
+                        <th class="sortable-column" (click)="onSort('url')">
+                            <span>URL</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('url') }}</span>
+                        </th>
+                        <th class="sortable-column" (click)="onSort('type')">
+                            <span>Type</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('type') }}</span>
+                        </th>
+                        <th class="actions-column"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let server of filteredServers" 
+                        class="server-row"
+                        (click)="onRowClick(server)">
+                        <td class="name-column">
+                            <span class="server-name">{{ server.name }}</span>
+                        </td>
+                        <td class="url-column">
+                            <span class="server-url">{{ server.url }}</span>
+                        </td>
+                        <td class="type-column">
+                            <div class="type-chip">
+                                <span>{{ server.type }}</span>
+                            </div>
+                        </td>
+                        <td class="actions-column">
+                            <button mat-icon-button 
+                                    [matMenuTriggerFor]="menu" 
+                                    aria-label="Actions"
+                                    (click)="$event.stopPropagation()">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
+                                <button mat-menu-item (click)="onDelete(server, $event)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>{{ 'Delete' | translate }}</span>
+                                </button>
+                            </mat-menu>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredServers.length === 0">
+                        <td colspan="4" class="no-data">
+                            <div class="no-data-message">
+                                <span class="material-icons-outlined">inbox</span>
+                                <p>{{ 'No MCP servers found' | translate }}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

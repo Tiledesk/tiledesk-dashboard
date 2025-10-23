@@ -2462,7 +2462,12 @@
         "Failed": "Arızalı!",
         "Save": "Kaydetmek",
         "Clear": "Temizlemek",
-        "Delete": "Silmek"
+        "Delete": "Silmek",
+        "AddMCPServer": "MCP Sunucusu Ekle",
+        "EditMCPServer": "MCP Sunucusunu Düzenle",
+        "TotalMCPServers": "Toplam MCP Sunucuları",
+        "SearchByNameURLOrType": "Ad, URL veya türe göre ara",
+        "NoMCPServersFound": "MCP sunucusu bulunamadı"
     },
     "ViewTeammates": "Takım arkadaşlarını görüntüle",
     "AddNewTeammate": "Yeni takım arkadaşı ekle",
