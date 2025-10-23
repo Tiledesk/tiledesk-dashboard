@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+
+### 2.7.142-stage
+- Adds MCP integration
+
 ### 2.7.141-stage
 - Adds the ability to hide or show quota usage 
 - Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
