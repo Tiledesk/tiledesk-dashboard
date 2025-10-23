@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.146-stage
+- Minor improvements
+
 ### 2.7.145-stage
 - Minor improvements
 
