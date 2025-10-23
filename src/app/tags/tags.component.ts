@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { TagsService } from '../services/tags.service';
@@ -9,12 +9,17 @@ import { AuthService } from '../core/auth.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { URL_tag_doc } from 'app/utils/util';
 import { BrandService } from 'app/services/brand.service';
+import { Subject } from 'rxjs';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'appdashboard-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss']
 })
-export class TagsComponent implements OnInit, AfterViewInit {
+export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   public tag_docs_url = URL_tag_doc
   tagsList: Array<any>;
   tagname: string;
@@ -48,6 +53,15 @@ export class TagsComponent implements OnInit, AfterViewInit {
   ];
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  isAuthorized = false;
+  permissionChecked = false;
+
+  PERMISSION_TO_CREATE: boolean;
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_UPDATE: boolean;
+
   constructor(
     public translate: TranslateService,
     private notify: NotifyService,
@@ -58,6 +72,8 @@ export class TagsComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private logger: LoggerService,
     public brandService: BrandService,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -68,7 +84,81 @@ export class TagsComponent implements OnInit, AfterViewInit {
     this.translateNotificationMsgs();
     this.getImageStorage();
     this.listenSidebarIsOpened();
-    this.getBrowserVersion() 
+    this.getBrowserVersion();
+    this.checkPermissions();
+    this.listenToProjectUser()
+  }
+
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('tags')
+    console.log('[TAGS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[TAGS] isAuthorized ', this.isAuthorized)
+    console.log('[TAGS] permissionChecked ', this.permissionChecked)
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[TAGS] - Role:', status.role);
+        console.log('[TAGS] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAG_CREATE)) {
+          
+            this.PERMISSION_TO_CREATE = true
+            console.log('[TAGS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          } else {
+            this.PERMISSION_TO_CREATE = false
+            console.log('[TAGS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          }
+        } else {
+          this.PERMISSION_TO_CREATE = true
+          console.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+        }
+
+
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAG_DELETE)) {
+          
+            this.PERMISSION_TO_DELETE = true
+            console.log('[TAGS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          } else {
+            this.PERMISSION_TO_DELETE = false
+            console.log('[TAGS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          }
+        } else {
+          this.PERMISSION_TO_DELETE = true
+          console.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+        }
+
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAG_UPDATE)) {
+          
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[TAGS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          } else {
+            this.PERMISSION_TO_UPDATE = false
+            console.log('[TAGS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE = true
+          console.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
   getBrowserVersion() {
@@ -173,34 +263,40 @@ export class TagsComponent implements OnInit, AfterViewInit {
 
 
   createTag() {
-    // console.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
-    const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn');
 
-    createTagBtn.blur();
+    if (this.PERMISSION_TO_CREATE) {
+      // console.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
+      const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn');
 
-    if (this.tagname && this.tagname.length > 0) {
-      this.hasError = false;
+      createTagBtn.blur();
 
-      this.tagsService.createTag(this.tagname, this.tag_selected_color)
-        .subscribe((tag: any) => {
-          this.logger.log('[TAGS] - CREATE TAG - RES ', tag);
+      if (this.tagname && this.tagname.length > 0) {
+        this.hasError = false;
 
-        }, (error) => {
-          this.logger.error('[TAGS] - CREATE TAG - ERROR  ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
-        }, () => {
-          this.logger.log('[TAGS] - CREATE TAG * COMPLETE *');
-          this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+        this.tagsService.createTag(this.tagname, this.tag_selected_color)
+          .subscribe((tag: any) => {
+            this.logger.log('[TAGS] - CREATE TAG - RES ', tag);
 
-          this.tagname = '';
-          this.tag_selected_color = '#43B1F2';
+          }, (error) => {
+            this.logger.error('[TAGS] - CREATE TAG - ERROR  ', error);
+            this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+          }, () => {
+            this.logger.log('[TAGS] - CREATE TAG * COMPLETE *');
+            this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
 
-          this.getTag();
-        });
+            this.tagname = '';
+            this.tag_selected_color = '#43B1F2';
+
+            this.getTag();
+          });
+
+      } else {
+
+        this.hasError = true;
+      }
 
     } else {
-
-      this.hasError = true;
+      this.notify.presentDialogNoPermissionToPermomfAction()
     }
 
   }
@@ -214,18 +310,31 @@ export class TagsComponent implements OnInit, AfterViewInit {
   }
 
   presentModalDeleteTag(tag_id: string, tag_name: string) {
-    this.displayModalDeleteTag = 'block';
-    this.tagid = tag_id;
-    this.tag_name = tag_name;
-    this.logger.log('[TAGS] - presentModalDeleteTag - tagid  ', this.tagid, ' tagname ', this.tagname);
+    if (this.PERMISSION_TO_DELETE) {
+      this.displayModalDeleteTag = 'block';
+      this.tagid = tag_id;
+      this.tag_name = tag_name;
+      this.logger.log('[TAGS] - presentModalDeleteTag - tagid  ', this.tagid, ' tagname ', this.tagname);
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   closeModalDeleteTag() {
     this.displayModalDeleteTag = 'none';
   }
 
-  onTagDeleted() {
-    this.getTag();
+  onTagDeleted(tagid) {
+    this.logger.log('[TAGS] - onTagDeleted - tagid  ', tagid);
+    this.logger.log('[TAGS] - onTagDeleted -  this.tagsList  ',  this.tagsList);
+  
+    for (var i = 0; i < this.tagsList.length; i++) {
+      if (this.tagsList[i]._id === tagid) {
+        this.tagsList.splice(i, 1);
+        i--;
+      }
+    }
+    // this.getTag();
   }
 
   // !! NOT USED

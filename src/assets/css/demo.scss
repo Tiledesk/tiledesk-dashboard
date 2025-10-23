@@ -875,7 +875,42 @@ my-app .main-panel .main-content .card {
 }
 
 
+/* BTN Round Gray outline
+/* ------------------------- */
+.btn-blu-gray-outline {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 9px !important;
+  font-size: 14px;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+  border: 1px solid #cbd5e1;
+  height: 40px;
+  border-radius: var(--btn-border-radius) !important;
+  background: transparent;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.btn-blu-gray-outline>svg {
+  fill: #333
+}
+
+
+.btn-blu-gray-outline:hover {
+  box-shadow: unset !important;
+  background: rgba(136, 148, 171, 0.08) !important;
+  border-color: rgba(136, 148, 171, .56);
+}
+
+.btn-blu-gray-outline:focus {
+  background: transparent !important
+}
+.btn-blu-gray-outline:active {
+  background: transparent !important
+}
 
 /* BTN GRAY NO BOX-SHADOW
 /* ------------------------- */
@@ -1010,6 +1045,14 @@ my-app .main-panel .main-content .card {
   color: var(--secondary-text-color);
   line-height: 18px;
   font-weight: 400;
+}
+
+.span-18-inline {
+  display: inline-block;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
 }
 
 .span-20 {
@@ -2499,6 +2542,21 @@ footer ul {
   color: var(--blue-20) !important
 }
 
+/* Angular material checkbox 
+/* ****************************** */
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+/* Angular radio button 
+/* ****************************** */
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: var(--blue-20) !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--blue-20) !important;
+}
 
 
 // Used 
@@ -3085,7 +3143,54 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 // -------------------------
-// add-contact-t select
+// add-conversaton-tag select 
+// -------------------------
+
+.ng-select.convs-tags .ng-select-container {
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.convs-tags .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+  // font-family: var(--header-font-family);
+  margin-left: -9px;
+  // font-size: 13px;
+  // font-weight: 400;
+}
+
+.ng-dropdown-panel.convs-tags {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.convs-tags .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.convs-tags.ng-select-opened>.ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// -------------------------
+// add-contact-tag select
 // -------------------------
 .ng-select.add-contact-tag .ng-select-container {
   background-color: var(--select-background) !important;
@@ -3095,6 +3200,10 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 .ng-select.add-contact-tag .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color);
+  // font-family: var(--header-font-family);
+  // margin-left: -9px;
+  // font-size: 13px;
+  // font-weight: 400;
 }
 
 .ng-dropdown-panel.add-contact-tag {
@@ -3239,7 +3348,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 // /* hide recaptcha badge*/
 .grecaptcha-badge {
-  visibility: hidden;
+  visibility: hidden !important;
+  z-index: 3;
 }
 
 // /* only show recaptcha badge on needed pages */
@@ -4161,6 +4271,41 @@ div:where(.swal2-container) .swal2-select {
 }
 
 .bottom-nav-widget-translations li a:hover {
+  text-decoration: none;
+  //  background-color: #eee;
+}
+
+/* Bottom nav fixed position
+/* *************************** */
+.bottom-nav-fixed {
+  background-color: #fff;
+  width: 100%;
+  position: fixed;
+  top: 65px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+}
+
+.bottom-nav-fixed li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav-fixed li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.bottom-nav-fixed li a:hover {
   text-decoration: none;
   //  background-color: #eee;
 }

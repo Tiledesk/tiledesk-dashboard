@@ -207,8 +207,8 @@ export class SmtpSettingsComponent implements OnInit {
   }
 
   sendSMTPTestEmail() {
-    const send_smtp_test_email = <HTMLElement>document.querySelector('.send-smtp-test-email');
-    send_smtp_test_email.blur();
+    // const send_smtp_test_email = <HTMLElement>document.querySelector('.send-smtp-test-email');
+    // send_smtp_test_email.blur();
 
     this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND TEST EMAIL')
 
@@ -230,7 +230,11 @@ export class SmtpSettingsComponent implements OnInit {
   sendTestEmail(recipientemail) {
     this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security
     // this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd,
-    this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name, this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd)
+    let recipient_email = null
+    if (recipientemail) {
+      recipient_email = recipientemail.toLowerCase()
+    }
+    this.projectService.sendTestEmail(recipient_email, this.smtp_host_name,  this.smtp_port,this.smtp_connetion_security,  this.smtp_usermame, this.smtp_pswd)
       .subscribe((res: any) => {
         //  console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
         if (res && res.error && res.error.code === "EAUTH") {
@@ -272,7 +276,7 @@ export class SmtpSettingsComponent implements OnInit {
 
           this.projectService.resetToDefaultSMPTSettings()
             .subscribe((res: any) => {
-              this.logger.log('[SMTP-SETTINGS] in swal willResetToDefault res ', res)
+              console.log('[SMTP-SETTINGS] in swal willResetToDefault res ', res)
 
             }, (error) => {
               this.logger.error('[SMTP-SETTINGS] in swal willResetToDefault - ERROR ', error);
@@ -309,8 +313,12 @@ export class SmtpSettingsComponent implements OnInit {
     // console.log('[SMTP-SETTINGS] - smtp_usermame', this.smtp_usermame)
     // console.log('[SMTP-SETTINGS] - smtp_pswd', this.smtp_pswd)
     // console.log('[SMTP-SETTINGS] - smtp_connetion_security', this.smtp_connetion_security)
+    let senderEmailAddress = null
+    if (this.sender_email_address) {
+      senderEmailAddress =  this.sender_email_address.toLowerCase()
+    }
 
-    this.projectService.updateSMPTSettings(this.smtp_host_name, this.smtp_port, this.sender_email_address.toLowerCase(), this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security)
+    this.projectService.updateSMPTSettings(this.smtp_host_name, this.smtp_port, senderEmailAddress, this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security)
       .subscribe((res: any) => {
         this.logger.log('[[SMTP-SETTINGS] - SAVE SMTP SETTINGS res ', res)
         if (res) {

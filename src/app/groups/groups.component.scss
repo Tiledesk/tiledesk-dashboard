@@ -348,6 +348,13 @@ only screen and (max-width: 760px),
 }
 
 
+.page-title---wrapper {
+  justify-content: space-between;
+  display: flex;
+  flex-flow: row;
+  margin: 15px 0px 15px 26px;
+}
+
 /* New group list
 /* ******************** */
 .main--wrapper {
@@ -371,4 +378,51 @@ only screen and (max-width: 760px),
     font-size: 24px;
     font-weight: 400;
     font-family: var(--header-font-family);
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.container-flex {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 15px 26px;
+}
+
+.flex-left {
+  flex: 1; /* Occupa 1 parte dello spazio disponibile */
+}
+
+.flex-center {
+  flex: 2; /* Occupa 2 parti dello spazio disponibile */
+  display: flex;
+  justify-content: center;
+}
+
+.flex-right {
+  flex: 1; /* Occupa 1 parte dello spazio disponibile */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  color: #647491;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: center;
+}
+
+.bg-disabled {
+  box-shadow: unset;
+}
+
+.edit-disabled {
+  // box-shadow: unset;
+  cursor: default;
 }

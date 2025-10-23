@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: ContactsComponent},
@@ -27,6 +28,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MomentModule,
     MatTooltipModule,
+    UnauthorizedForSettingsModule
   ],
   exports: [
     RouterModule

@@ -25,6 +25,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   @Input() public projectId: string;
   @Input() public USER_ROLE: string;
   @Input() public displayAnalyticsConvsGraph: boolean;
+  @Input() public PERMISSION_TO_VIEW_ANALYTICS: boolean;
   monthNames: any;
   numOfDays: number = 7;
   browserLang: string;

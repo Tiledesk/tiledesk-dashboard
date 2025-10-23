@@ -7,6 +7,7 @@ import { AppStoreService } from 'app/services/app-store.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoggerService } from '../../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
 
 
 @Component({
@@ -33,6 +34,9 @@ export class AppStoreInstallComponent implements OnInit {
   appurl: string;
   calledBy: string;
 
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -41,7 +45,8 @@ export class AppStoreInstallComponent implements OnInit {
     private auth: AuthService,
     private ngZone: NgZone,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService,
   ) {
     // console.log('Here app-store-install!!!')
     this.getRouteParams();
@@ -51,7 +56,17 @@ export class AppStoreInstallComponent implements OnInit {
   ngOnInit() {
     this.getCurrentProject();
     this.onInitframeHeight();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.checkPermissions()
+  }
+
+   async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('app-store')
+    console.log('[APP-STORE-INSTALL] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[APP-STORE-INSTALL] isAuthorized ', this.isAuthorized)
+    console.log('[APP-STORE-INSTALL] permissionChecked ', this.permissionChecked)
   }
 
 

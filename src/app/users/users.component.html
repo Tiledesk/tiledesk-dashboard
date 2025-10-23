@@ -26,887 +26,780 @@
     <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
-      <!-- margin-left: 20px; -->
+     
       <div class="teplate-content" style="flex: 1 1 auto;">
-        <ul class="bottom-nav" style="top:-9px;">
+        <!-- class="bottom-nav" -->
+        <ul [ngClass]="{ 'bottom-nav': isAuthorized, 'bottom-nav-fixed': !isAuthorized}">
           <li class="btn-with-border-effect li-active">
             <a> {{ "TeammatesCapitalized" | translate }} </a>
           </li>
-          <li *ngIf="isVisibleGroups" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
+          <li *ngIf="PERMISSION_TO_VIEW_ROLES"  class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
+            <a style="text-transform: capitalize;"> {{ "Roles" | translate }} </a>
+          </li>
+          <li *ngIf="isVisibleGroups && PERMISSION_TO_VIEW_GROUPS" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
             <a>{{ "Groups" | translate }} </a>
           </li>
         </ul>
 
-        <!-- <div *ngIf="hideHelpLink" class="link-to-teammates-roles-docs">
-          <div class="row">
-            <div class="col-md-12 help-link">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="none" style="vertical-align: middle;">
-                  <path
-                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                </svg>
-              </span>
-              <a (click)="goToTeammatesRolesDoc()">
-                {{ 'LearnMoreAboutDefaultRoles' | translate }}
-              </a>
-            </div>
-          </div>
-        </div> -->
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-
-
-        <!-- -------------------------------------------------- -->
-        <!--  PROJECT PROFILE INFO  -->
-        <!-- -------------------------------------------------- -->
-        <div class="row" *ngIf="areActivePay">
-          <div class="col-md-12">
-            <div class="card card card--no-border" style="margin-top: -16px; margin-bottom: 0px;">
-              <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            <!-- -------------------------------------------------- -->
+            <!--  PROJECT PROFILE INFO  -->
+            <!-- -------------------------------------------------- -->
+            <div class="row" *ngIf="areActivePay">
+              <div class="col-md-12">
+                <div class="card card card--no-border" style="margin-top: -12px; margin-bottom: 0px;">
+                  <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                  (prjct_profile_type === 'free' && trial_expired === false) || 
                  (prjct_profile_type === 'free' && trial_expired === true))  &&
                  (projectUsersLength + countOfPendingInvites <= seatsLimit))">
 
-                <i class="material-icons" style="vertical-align: middle;"
-                  [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }">
-                  info
-                </i>
-                <span class="msg-alert"
-                  [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#394f5a' }">
-                  {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
-                  {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                  <span style="text-transform: capitalize">
-                    {{ prjct_profile_name }}
-                  </span>
-                  <span *ngIf="USER_ROLE !== 'agent'">
-                    - <span class="link-to-action-wpr"  (click)="getMoreOperatorsSeats()">
-                        <span  *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
-                          {{ "GetMore" | translate }}
-                        </span>
-                        <span *ngIf="prjct_profile_type === 'free'">
-                          {{ "Pricing.UpgradePlan" | translate }}
+                    <i class="material-icons" style="vertical-align: middle;"
+                      [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }">
+                      info
+                    </i>
+                    <span class="msg-alert"
+                      [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#394f5a' }">
+                      {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites
+                      }}
+                      {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                      <span style="text-transform: capitalize">
+                        {{ prjct_profile_name }}
+                      </span>
+                      <span *ngIf="USER_ROLE !== 'agent'">
+                        - <span class="link-to-action-wpr" (click)="getMoreOperatorsSeats()">
+                          <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
+                            {{ "GetMore" | translate }}
+                          </span>
+                          <span *ngIf="prjct_profile_type === 'free'">
+                            {{ "Pricing.UpgradePlan" | translate }}
+                          </span>
                         </span>
                       </span>
-                  </span>
-                </span>
+                    </span>
 
-              </div>
+                  </div>
 
-              <!-- <div class="card-content alert-number-of-teammates-exceeds" style="background: #f44336;color: #fff;text-align: center;" 
+                  <!-- <div class="card-content alert-number-of-teammates-exceeds" style="background: #f44336;color: #fff;text-align: center;" 
               *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                (prjct_profile_type === 'free' && trial_expired === false) || 
                (prjct_profile_type === 'free' && trial_expired === true))  &&
                (projectUsersLength + countOfPendingInvites > seatsLimit))"> -->
-              <div class="card-content alert-number-of-teammates-exceeds"
-                style="background: #f44336;color: #fff;text-align: center;"
-                *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
-                <span class="msg-alert">
-                  {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
-                </span>
-                <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
-                <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                  <!-- upgrade--plan-btn -->
-                  <button class="btn btn-white-rounded" (click)="presentGoToPricingModal()">
-                    {{ "Pricing.UpgradePlan" | translate }}
-                  </button>
-                </div>
-              </div>
-
-              <div class="card-content alert-number-of-teammates-exceeds"
-                style="background: #f44336;color: #fff;text-align: center;"
-                *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === true) && (projectUsersLength + countOfPendingInvites > seatsLimit)">
-                <span class="msg-alert">
-                  {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
-                </span>
-                <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
-                <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                  <!-- upgrade--plan-btn -->
-                  <button class="btn btn-white-rounded" (click)="presentContactUsModal()">
-                    {{ "Pricing.UpgradePlan" | translate }}
-                  </button>
-                </div>
-              </div>
-
-              <div class="card-content  alert-number-of-teammates-exceeds"
-                style="background: #f44336;color: #fff;text-align: center;"
-                *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
-
-
-                <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
-                  <span style="text-transform: capitalize">
-                    {{ prjct_profile_name }}
-                  </span>
-                  {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
-
-                  <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
-                    {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
-                  </span>
-
-                  <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                    <!-- upgrade--plan-btn -->
-                    <button class="btn btn-white-rounded" (click)="openModalSubsExpired()">
-                      {{ "Pricing.UpgradePlan" | translate }}
-                    </button>
+                  <div class="card-content alert-number-of-teammates-exceeds"
+                    style="background: #f44336;color: #fff;text-align: center;"
+                    *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
+                    <span class="msg-alert">
+                      {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                    </span>
+                    <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
+                    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+                      <!-- upgrade--plan-btn -->
+                      <button class="btn btn-white-rounded" (click)="presentGoToPricingModal()">
+                        {{ "Pricing.UpgradePlan" | translate }}
+                      </button>
+                    </div>
                   </div>
-                </span>
 
+                  <div class="card-content alert-number-of-teammates-exceeds"
+                    style="background: #f44336;color: #fff;text-align: center;"
+                    *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === true) && (projectUsersLength + countOfPendingInvites > seatsLimit)">
+                    <span class="msg-alert">
+                      {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                    </span>
+                    <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
+                    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+                      <!-- upgrade--plan-btn -->
+                      <button class="btn btn-white-rounded" (click)="presentContactUsModal()">
+                        {{ "Pricing.UpgradePlan" | translate }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="card-content  alert-number-of-teammates-exceeds"
+                    style="background: #f44336;color: #fff;text-align: center;"
+                    *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
+
+
+                    <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                      <span style="text-transform: capitalize">
+                        {{ prjct_profile_name }}
+                      </span>
+                      {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
+
+                      <span style="display: block;"
+                        *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+                        {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
+                      </span>
+
+                      <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+                        <!-- upgrade--plan-btn -->
+                        <button class="btn btn-white-rounded" (click)="openModalSubsExpired()">
+                          {{ "Pricing.UpgradePlan" | translate }}
+                        </button>
+                      </div>
+                    </span>
+
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- -------------------------------------------------- -->
-        <!--  ./ PROJECT PROFILE INFO  -->
-        <!-- -------------------------------------------------- -->
+            <!-- -------------------------------------------------- -->
+            <!--  ./ PROJECT PROFILE INFO  -->
+            <!-- -------------------------------------------------- -->
+ <!--  -->
+             
 
+            <div class="row">
+              <div class="col-xs-12">
+                <!-- New teammates list -->
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                <div *ngIf="!showSpinner" class="main--wrapper">
 
-        <div class="row">
-          <div class="col-xs-12">
-            <!-- New teammates list -->
-            <div *ngIf="!showSpinner" class="main--wrapper">
-              <div class="page-title--wrapper">
-                <div class="title--header">
-                  <!-- {{ pageName }} -->
-                </div>
+                  <div class="container-flex">
+                    <div class="flex-left">
+                      
+                    </div>
 
-                <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
-                  <!-- btn-primary -->
-                  <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
-                    style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
-                    [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
-                    <!-- <span class="icon" style="padding-right:8px">
-                      <i class="material-icons">add_circle</i>
-                    </span> -->
-                    {{ "UsersPage.Invites" | translate }}
-                  </button>
-                </div>
+                    <div class="flex-center">
+                      <div class="search-bar" style="width: 100%;max-width: 300px;">
+                        <input id="search-box" type="text"
+                          [(ngModel)]="searchTerm" 
+                          (ngModelChange)="onSearchChange($event)"
+                          placeholder="Search teammate by name or email..." 
+                          class="search-input" style="height: 40px;
+                              padding: 5px 10px;
+                              border: 1px solid lightgrey;
+                              border-radius: 9999px;width: 100%;">
+                      </div>
+                    </div>
 
-                <!-- <div class="page--actions" *ngIf="projectUsersList && projectUsersList?.length > 0">
-                  <span class="order-by-label">Order by </span>
+                    <div class="flex-right">
+                      <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
+                      
+                        <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
+                          style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
+                          [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
+                    
+                          {{ "UsersPage.Invites" | translate }}
+                        </button>
+                      </div>
+                    </div>
 
-                  <div class="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <span class="order-by-selected-value" *ngIf="orderBylastUpdated">Last updates </span>
-                      <span class="order-by-selected-value" *ngIf="orderByCreationDate">Creation date </span>
-                      <span class="caret dropdown-caret"
-                        [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
-                    </a>
-                    <ul class="dropdown-menu" style="left: -53px;">
-                      <li>
-                        <a (click)="orderBy('lastUpdates')">
-                          Last updates
-                        </a>
-                      </li>
-                      <li>
-                        <a (click)="orderBy('creationDate')">
-                          Creation date
-                        </a>
-                      </li>
-                    </ul>
                   </div>
-                </div> -->
-              </div>
 
 
+                  <!-- <div class="page-title--wrapper">
+                    <div class="title--header">
+                      <!- - {{ pageName }} - ->
+                    </div>
 
-              <div class="card-list" *ngFor="let projectUser of projectUsersList;let i = index;">
+                    <div class="search-bar">
+                      <input type="text"
+                        [(ngModel)]="searchTerm" 
+                        (ngModelChange)="onSearchChange($event)"
+                        placeholder="Search by name or email..." 
+                        class="search-input" style="height: 40px;
+                            padding: 5px 10px;
+                            border: 1px solid lightgrey;
+                            border-radius: 9999px;
+                            width: 300px;">
+                    </div>
 
-                <div class="cl-card" [ngClass]="{'bg-disabled': projectUser?.status === 'disabled'}" (click)='goToEditUser(projectUser?._id)'>
-                  <div class="cl-card-content">
-                    <div class="cl-card-first-column">
-                      <div class="status-wpr" style="position: relative;">
-                        <div id="teammate-status-icon" class="teammate-status-icon"
-                          [ngClass]="{
+                    <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
+                      <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
+                        style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
+                        [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
+                        {{ "UsersPage.Invites" | translate }}
+                      </button>
+                    </div>
+                  </div> -->
+
+
+                    <!-- projectUsersList -->
+                  <div class="card-list" *ngFor="let projectUser of  paginatedUsers;let i = index;">
+
+                    <!-- ------------------------------ -->
+                    <!-- Project users -->
+                    <!-- ------------------------------ -->
+                    <div *ngIf="projectUser.type === 'user'" class="cl-card" [ngClass]="{'bg-disabled': projectUser?.status === 'disabled'}" (click)='goToEditUser(projectUser?._id)'>
+                      <div class="cl-card-content">
+
+                        <div class="cl-card-first-column">
+                          <div class="status-wpr" style="position: relative;">
+                            <div id="teammate-status-icon" class="teammate-status-icon"
+                              [ngClass]="{
                           'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
                           'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
                           'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'}">
-                        </div>
+                            </div>
 
-                        <div *ngIf="projectUser?.isBusy" class="user-is-busy" matTooltipClass="custom-mat-tooltip"
-                          matTooltip=" {{ 'Busy' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                          matTooltipHideDelay="100">
+                            <div *ngIf="projectUser?.isBusy" class="user-is-busy" matTooltipClass="custom-mat-tooltip"
+                              matTooltip=" {{ 'Busy' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
+                              matTooltipHideDelay="100">
 
-                          <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
+                              <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
 
-                        </div>
-                      </div>
+                            </div>
+                          </div>
 
-                      <div class="cl-card-img-wpr">
-                        <div class="photo-profile-container" style="position: relative;">
+                          <div class="cl-card-img-wpr">
+                            <div class="photo-profile-container" style="position: relative;">
+        
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Firebase  class="user-img-in-teammates-list" -->
+                              <!-- --------------------------------------------------- -->
+                              <!-- projectUser?.hasImage &&  onerror="this.src='assets/img/no_image_user.png'"-->
+                              <img *ngIf="projectUser?.hasImage === true && UPLOAD_ENGINE_IS_FIREBASE"
+                                id="img-{{projectUser?.id_user?._id}}"
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                                onerror="this.src='assets/img/no_image_user_2.png'" />
 
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Firebase  class="user-img-in-teammates-list" -->
-                          <!-- --------------------------------------------------- -->
-                          <!-- projectUser?.hasImage &&  onerror="this.src='assets/img/no_image_user.png'"-->
-                          <img *ngIf="projectUser?.hasImage === true && UPLOAD_ENGINE_IS_FIREBASE" id="img-{{projectUser?.id_user?._id}}"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user_2.png'" />
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Native class="user-img-in-teammates-list" -->
+                              <!-- --------------------------------------------------- -->
+                              <!-- projectUser?.hasImage &&  onerror="this.src='assets/img/no_image_user.png'"-->
+                              <img *ngIf="projectUser?.hasImage === true && !UPLOAD_ENGINE_IS_FIREBASE"
+                                id="img-{{projectUser?.id_user?._id}}"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                onerror="this.src='assets/img/no_image_user_2.png'" />
 
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Native class="user-img-in-teammates-list" -->
-                          <!-- --------------------------------------------------- -->
-                          <!-- projectUser?.hasImage &&  onerror="this.src='assets/img/no_image_user.png'"-->
-                          <img *ngIf="projectUser?.hasImage === true && !UPLOAD_ENGINE_IS_FIREBASE" id="img-{{projectUser?.id_user?._id}}" 
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/no_image_user_2.png'" />
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE No profile Image -->
+                              <!-- --------------------------------------------------- -->
+                              <!-- *ngIf="projectUser?.hasImage === false" [ngStyle]="{'display': displayAvatarNoProfileFoto }" -->
 
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE No profile Image -->
-                          <!-- --------------------------------------------------- -->
-                          <!-- *ngIf="projectUser?.hasImage === false" [ngStyle]="{'display': displayAvatarNoProfileFoto }" -->
-                  
-                          <div *ngIf="projectUser?.hasImage === false" class="avatar-no-profile-photo"
-                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
-                            <span class="altenative-projetuser-avatar">
-                              {{ projectUser?.id_user?.fullname_initial }}
+                              <div *ngIf="projectUser?.hasImage === false" class="avatar-no-profile-photo"
+                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
+                                <span class="altenative-projetuser-avatar">
+                                  {{ projectUser?.id_user?.fullname_initial }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="cl-card-info-wpr">
+                            <span class="cl-card-item-name-wpr">
+                              <div class="cl-card-item-name">
+                                <span>{{ projectUser?.id_user?.firstname }} {{ projectUser?.id_user?.lastname }}</span>
+                              </div>
                             </span>
-                          </div>
-                        </div>
-                      </div>
+                            <div class="cl-card-item-description-wpr">
+                              <div class="cl-card-item-description">
+                                {{ projectUser?.id_user?.email }}
+                              </div>
+                            </div>
 
-                      <div class="cl-card-info-wpr">
-                        <span class="cl-card-item-name-wpr">
-                          <div class="cl-card-item-name">
-                            <span>{{ projectUser?.id_user?.firstname }} {{ projectUser?.id_user?.lastname }}</span>
-                          </div>
-                        </span>
-                        <div class="cl-card-item-description-wpr">
-                          <div class="cl-card-item-description">
-                            {{ projectUser?.id_user?.email }}
-                          </div>
-                        </div>
+                            <div class="cl-card-item-info">
 
-                        <div class="cl-card-item-info">
+                              <!-- Project user tags -->
+                              <span class="project-user-tags" *ngFor="let tag of projectUser.tags" role="button">
+                                <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false"
+                                  data-prefix="fas" data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16"
+                                  role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 
-                          <!-- Project user tags -->
-                          <span class="project-user-tags" *ngFor="let tag of projectUser.tags" role="button">
-                            <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false"
-                              data-prefix="fas" data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16"
-                              role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                  <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                    d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                  </path>
+                                </svg>
 
-                              <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
-                                d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                              </path>
-                            </svg>
-
-                            <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
-                              {{ tag.tag}}
-                            </span>
-                          </span>
-                          <!-- {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{ faqkb?.updatedAt | amTimeAgo }}  -->
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="cl-card-second-column">
-                      <div class="cl-card-stats-wpr">
-                        
-                        <div *ngIf="projectUser.status === 'disabled'" id="pu-status-wpr" class="cl-card-item-stats">
-                          <div id="pu-status" class="cl-card-item-stats-title">
-                            {{ "Status" | translate }}
-                          </div>
-                          <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
-
-                            <div style="width: 118px; display: flex; justify-content: center; align-items: center;">
-                              <span class="material-icons-outlined" style="font-size: 16px;">block</span>
-                              <p style="margin: 0 4px;">{{ "Disabled" | translate }}</p>
+                                <span
+                                  style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                                  {{ tag.tag}}
+                                </span>
+                              </span>
+                              <!-- {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{ faqkb?.updatedAt | amTimeAgo }}  -->
                             </div>
                           </div>
                         </div>
+
+                        <div class="cl-card-second-column">
+                          <div class="cl-card-stats-wpr">
                         
-                        <div *ngIf="projectUser.status !== 'disabled'" id="pu-status-wpr" class="cl-card-item-stats">
-                          <div id="pu-status" class="cl-card-item-stats-title">
-                            {{ "Status" | translate }}
-                          </div>
-                          <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
-
-                            <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}"
-                              id="{{projectUser?._id}}"
-                              (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id); ">
-
-                              <option value="available"
-                                [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                                {{'Available' | translate}}
-                              </option>
-
-                              <option value="unavailable"
-                                [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                                {{'Unavailable' | translate}}
-                              </option>
-
-                              <option value="inactive"
-                                [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
-                                {{'Inactive' | translate}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-
-
-                        <div id="pu-role-wpr" class="cl-card-item-stats" [ngStyle]="{'min-width': widthOfLargestDiv }">
-                          <div class="cl-card-item-stats-title">
-                            {{ "UsersPage.Role" | translate }}
-                          </div>
-                          <div id="pu-role" class="cl-card-item-stats-values">
-                            {{ projectUser?.role | translate}}
-                          </div>
-                        </div>
-
-                        <!-- ---------------------------------------------- -->
-                        <!-- Assigned conversations (real time) -->
-                        <!-- ---------------------------------------------- -->
-                        <!-- <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
-                          <div class="cl-card-item-stats-title">
-                            Conversations
-                          </div>
-                          <div class="cl-card-item-stats-values">
-                            {{projectUser.assigned_requests }}
-                          </div>
-                        </div> -->
-                      </div>
-
-                      <div class="cl-card-action-wpr">
-                        <div class="cl-card-action-group">
-                          <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr">
-                            <button id="btn-{{projectUser?.id_user?._id}}" mat-icon-button
-                              (click)="$event.stopPropagation();opeUserMsgsStats(projectUser?.id_user)"
-                              matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'BotsAddEditPage.Messages' | translate}}" #tooltip="matTooltip"
-                              matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>leaderboard</mat-icon>
-                            </button>
-                          </div>
-
-                          <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                            <button id="chat-with-{{projectUser?.id_user?._id}}" mat-icon-button
-                              matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
-                              (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
-                              <mat-icon>
-                                chat
-                              </mat-icon>
-                            </button>
+                            <div *ngIf="projectUser.status === 'disabled'" id="pu-status-wpr" class="cl-card-item-stats">
+                              <div id="pu-status" class="cl-card-item-stats-title">
+                                {{ "Status" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+    
+                                <div style="width: 118px; display: flex; justify-content: center; align-items: center;">
+                                  <span class="material-icons-outlined" style="font-size: 16px;">block</span>
+                                  <p style="margin: 0 4px;">{{ "Disabled" | translate }}</p>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div *ngIf="projectUser.status !== 'disabled'" id="pu-status-wpr" class="cl-card-item-stats">
+                              <div id="pu-status" class="cl-card-item-stats-title">
+                                {{ "Status" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+    
+                                <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}"
+                                  id="{{projectUser?._id}}"
+                                  (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id); "
+                                  [disabled]="!PERMISSION_TO_UPDATE" style="text-transform: capitalize;"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  [matTooltip]="!PERMISSION_TO_UPDATE ? ('YouDoNotHavePermissions' | translate) : ''"
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='above' 
+                                   matTooltipHideDelay="100">
+    
+                                  <option value="available"
+                                    [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
+                                      {{'Available' | translate}} 
+                                  </option>
+    
+                                  <option value="unavailable"
+                                    [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
+                                      {{'Unavailable' | translate}} 
+                                  </option>
+    
+                                  <option value="inactive"
+                                    [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
+                                      {{'Inactive' | translate}} 
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+    
+    
+                            <div id="pu-role-wpr" class="cl-card-item-stats" [ngStyle]="{'min-width': widthOfLargestDiv }">
+                              <div class="cl-card-item-stats-title">
+                                {{ "UsersPage.Role" | translate }}
+                              </div>
+                              <div id="pu-role" class="cl-card-item-stats-values">
+                                {{ projectUser?.role | translate}}
+                              </div>
+                            </div>
+    
+                            <!-- ---------------------------------------------- -->
+                            <!-- Assigned conversations (real time) -->
+                            <!-- ---------------------------------------------- -->
+                            <!-- <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
+                              <div class="cl-card-item-stats-title">
+                                Conversations
+                              </div>
+                              <div class="cl-card-item-stats-values">
+                                {{projectUser.assigned_requests }}
+                              </div>
+                            </div> -->
                           </div>
 
-                          <!-- -------------------------------------------- -->
-                          <!-- More Actions (Pending Invitations) -->
-                          <!-- -------------------------------------------- -->
-                          <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                            <button mat-icon-button [matMenuTriggerFor]="moreactions"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>more_vert</mat-icon>
-                            </button>
+                          <div class="cl-card-action-wpr">
+                            <div class="cl-card-action-group">
+                              <div *ngIf="isVisibleAnalytics && PERMISSION_TO_VIEW_ANALYTICS" class="cl-card-action-btn-wpr">
+                                <button id="btn-{{projectUser?.id_user?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();opeUserMsgsStats(projectUser?.id_user)"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'BotsAddEditPage.Messages' | translate}}" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below' 
+                                  matTooltipHideDelay="100">
+                                  <mat-icon>leaderboard</mat-icon>
+                                </button>
+                              </div>
 
-                            <mat-menu #moreactions="matMenu">
+                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button id="chat-with-{{projectUser?.id_user?._id}}" mat-icon-button
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                  (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
+                                  <mat-icon>
+                                    chat
+                                  </mat-icon>
+                                </button>
+                              </div>
 
-                              <button class="mat-menu-btn" mat-menu-item (click)='goToEditUser(projectUser?._id)'>
-                                <mat-icon>edit</mat-icon>
-                                <span>{{ 'UsersPage.tootipEditUser' | translate }}</span>
-                              </button>
-
-                              <button class="mat-menu-btn"
-                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status === 'disabled'"
-                                mat-menu-item
-                                (click)='openRestoreModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
-                                [disabled]="USER_ROLE == 'agent'">
-                                <mat-icon>undo</mat-icon>
-
-                                <span>{{ "UsersPage.RestoreMember" | translate }}</span>
-                              </button>
-                
-                              <button class="mat-menu-btn"
-                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status !== 'disabled'"
-                                mat-menu-item
-                                (click)='openDisableModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
-                                [disabled]="USER_ROLE === 'agent'">
-                                <mat-icon>close</mat-icon>
-
-                                <!-- <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span> -->
-                                <span>{{ 'DisableMember' | translate }}</span>
-                              </button>
-
-                              <button class="mat-menu-btn"
-                                  *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                                  mat-menu-item
-                                  (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
-                                  [disabled]="USER_ROLE === 'agent'">
-                                  <mat-icon>delete</mat-icon>
-                                  <!-- <mat-icon>close</mat-icon> -->
-                                  
-
-                                  <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span> 
-                                  <!-- <span>{{ 'DisableMember' | translate }}</span> -->
+                              <!-- -------------------------------------------- -->
+                              <!-- More Actions -->
+                              <!-- -------------------------------------------- -->
+                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button mat-icon-button [matMenuTriggerFor]="moreactions"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>more_vert</mat-icon>
                                 </button>
 
+                                <mat-menu #moreactions="matMenu">
 
-                            </mat-menu>
+                                  <button class="mat-menu-btn" mat-menu-item (click)='goToEditUser(projectUser?._id)'>
+                                    <mat-icon>edit</mat-icon>
+                                    <span>{{ 'UsersPage.tootipEditUser' | translate }}</span>
+                                  </button>
+
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status === 'disabled'"
+                                    mat-menu-item
+                                    (click)='openRestoreModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                    [disabled]="USER_ROLE === 'agent'">
+                                    <mat-icon>undo</mat-icon>
+
+                                    <span>{{ "UsersPage.RestoreMember" | translate }}</span>
+                                  </button>
+                
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id && projectUser.status !== 'disabled'"
+                                    mat-menu-item
+                                    (click)='openDisableModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                    [disabled]="USER_ROLE === 'agent'">
+                                    <!-- <mat-icon>delete</mat-icon> -->
+                                    <mat-icon>close</mat-icon>
+                                    
+
+                                   <!-- <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span>  -->
+                                    <span>{{ 'DisableMember' | translate }}</span>
+                                  </button>
+
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                                    mat-menu-item
+                                    (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                    [disabled]="USER_ROLE === 'agent'">
+                                    <mat-icon>delete</mat-icon>
+                                    <!-- <mat-icon>close</mat-icon> -->
+                                    
+
+                                    <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span> 
+                                    <!-- <span>{{ 'DisableMember' | translate }}</span> -->
+                                  </button>
+
+                                </mat-menu>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <!-- ------------------------------ -->
-              <!-- Pending invitations -->
-              <!-- ------------------------------ -->
-              <div class="card-list" *ngFor="let invites of pendingInvitationList">
+                    <!-- ------------------------------ -->
+                    <!-- Pending invitations -->
+                    <!-- ------------------------------ -->
+                    <!-- && !searchTerm -->
+                    <div *ngIf="projectUser.type === 'invitation' " class="cl-card">
+                      <div class="cl-card-content">
 
-                <div class="cl-card" (click)='goToEditUser(projectUser?._id)'>
-                  <div class="cl-card-content">
+                        <div class="cl-card-first-column">
 
-                    <div class="cl-card-first-column">
-
-                      <div class="cl-card-img-wpr">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                          <path
-                            d="M224 0a128 128 0 1 1 0 256A128 128 0 1 1 224 0zM178.3 304h91.4c20.6 0 40.4 3.5 58.8 9.9C323 331 320 349.1 320 368c0 59.5 29.5 112.1 74.8 144H29.7C13.3 512 0 498.7 0 482.3C0 383.8 79.8 304 178.3 304zM352 368a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-80c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H512V304c0-8.8-7.2-16-16-16z" />
-                        </svg>
-                      </div>
-
-                      <div class="cl-card-info-wpr">
-                        <span class="cl-card-item-name-wpr">
-                          <div class="cl-card-item-name">
-                            <span>{{ invites?.email }}</span>
-                          </div>
-                        </span>
-                        <div class="cl-card-item-description-wpr">
-
-                          <div class="cl-card-item-description">
-                            {{ projectUser?.id_user?.email }}
-                          </div>
-                        </div>
-
-                        <div class="cl-card-item-info">
-                          <!-- {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{ faqkb?.updatedAt | amTimeAgo }}  -->
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <div class="cl-card-second-column">
-
-                      <div class="cl-card-stats-wpr">
-
-                        <div class="cl-card-item-stats">
-                          <div class="cl-card-item-stats-title" style="white-space: nowrap;">
-                            {{ "UsersPage.DateOfSending" | translate }}
-                          </div>
-                          <div class="cl-card-item-stats-values" style="white-space: nowrap;">
-                            {{ invites?.createdAt | amTimeAgo }}
-                          </div>
-                        </div>
-
-                        <div class="cl-card-item-stats">
-                          <div id="pu-pending-status" class="cl-card-item-stats-title">
-                            {{ "Status" | translate }}
-                          </div>
-                          <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
-                            {{'Pending' | translate}}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div id="pu-role-wpr" class="cl-card-item-stats" [ngStyle]="{'min-width': widthOfLargestDiv }">
-                        <div class="cl-card-item-stats-title">
-                          {{ "UsersPage.Role" | translate }}
-                        </div>
-                        <div id="pu-role" class="cl-card-item-stats-values">
-                          {{ invites?.role | translate }}
-                        </div>
-                      </div>
-
-                      <div class="cl-card-action-wpr">
-                        <div class="cl-card-action-group">
-
-                          <div class="cl-card-action-btn-wpr">
-                            <button id="btn-{{invites?._id}}" mat-icon-button
-                              (click)="$event.stopPropagation();resendInvite(invites?._id)"
-                              matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'UsersPage.ResendInvite' | translate}}" #tooltip="matTooltip"
-                              matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>mail</mat-icon>
-                            </button>
+                          <div class="cl-card-img-wpr">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                              <path
+                                d="M224 0a128 128 0 1 1 0 256A128 128 0 1 1 224 0zM178.3 304h91.4c20.6 0 40.4 3.5 58.8 9.9C323 331 320 349.1 320 368c0 59.5 29.5 112.1 74.8 144H29.7C13.3 512 0 498.7 0 482.3C0 383.8 79.8 304 178.3 304zM352 368a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-80c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H512V304c0-8.8-7.2-16-16-16z" />
+                            </svg>
                           </div>
 
-                          <div class="cl-card-action-btn-wpr">
-                            <button id="btn-copy-{{invites?._id}}" mat-icon-button
-                              (click)="$event.stopPropagation();copyInviteURL(invites?._id)"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{'CopyInviteURL' | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>content_copy</mat-icon>
-                            </button>
-                          </div>
-
-                          <!-- -------------------------------------------- -->
-                          <!-- More Actions (Pending Invitations) -->
-                          <!-- -------------------------------------------- -->
-                          <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                            <button mat-icon-button [matMenuTriggerFor]="moreactionspi"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{Actions | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>more_vert</mat-icon>
-                            </button>
-
-                            <mat-menu #moreactionspi="matMenu">
-                              <button class="mat-menu-btn"
-                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                                mat-menu-item (click)='openCancelInvitationModal(invites?._id, invites?.email )'>
-                                <mat-icon>delete</mat-icon>
-
-                                <span>{{ 'UsersPage.modalCancelInvite' | translate }}</span>
-                              </button>
-                            </mat-menu>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./ Pending invitations -->
-            </div>
-            <!-- ./ New teammates list -->
-          </div>
-        </div>
-
-        <!-- ------------------------------------------------ -->
-        <!-- Old teammates list -->
-        <!-- ------------------------------------------------ -->
-        <div style="display: none;" class="row">
-          <div class="col-md-12">
-            <div class="card card card--no-border"
-              style="min-height: 195px;margin-top: 15px;box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px !important;padding: 0px 6px;">
-
-
-              <!-- table-responsive -->
-              <div class="card-header card-header-custom-bckgrnd"
-                style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
-
-                <!-- displayBtn {{displayInviteTeammateBtn}} -> USER_ROLE > {{ USER_ROLE}} -->
-                <ng-container *ngIf="displayInviteTeammateBtn">
-                  <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
-                    style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
-                    [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
-                    <span class="icon" style="padding-right:8px">
-                      <i class="material-icons">add_circle</i>
-                    </span>
-                    {{ "UsersPage.Invites" | translate }}
-                  </button>
-                </ng-container>
-
-
-
-                <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
-                {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
-              </div> -->
-              </div>
-
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
-
-              <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px; width: 100%;">
-
-                <table class="table table-hover">
-                  <thead>
-                    <tr style="display: none;">
-
-                      <!-- ------------------------------------- -->
-                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                      <!-- ------------------------------------- -->
-                      <!-- <th>
-                    <span style="color: #566787">
-                      <strong>
-                        Project_User Id
-                      </strong>
-                    </span>
-                  </th> -->
-
-
-                      <!-- --------------------------------- -->
-                      <!-- User Avatar -->
-                      <!-- --------------------------------- -->
-                      <th>
-                        <span class="column-th-span" style="white-space: nowrap">
-                          {{ "UsersPage.User" | translate }}
-                        </span>
-                      </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- User Fullname -->
-                      <!-- --------------------------------- -->
-                      <th> </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- Chat with -->
-                      <!-- --------------------------------- -->
-                      <th> </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- Role -->
-                      <!-- --------------------------------- -->
-                      <th>
-                        <span class="column-th-span">
-                          {{ "UsersPage.Role" | translate }}
-                        </span>
-                      </th>
-
-
-                      <!-- ------------------------------------------- -->
-                      <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
-                      <!-- ------------------------------------------- -->
-                      <th>
-                        <span class="column-th-span">
-                          {{ "Status" | translate }}
-                        </span>
-                      </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- IS BUSY -->
-                      <!-- --------------------------------- -->
-                      <th>
-                        <span class="column-th-span">
-                          {{ "Actions" | translate }}
-                        </span>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
-                    <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
-
-                      <td (click)="goToEditUser(projectUser?._id)"
-                        style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
-
-                        <div class="user-avatar-wrap">
-
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Firebase -->
-                          <!-- --------------------------------------------------- -->
-
-                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-                            class="user-img-in-teammates-list"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
-
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Native -->
-                          <!-- --------------------------------------------------- -->
-                          <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                            class="user-img-in-teammates-list"
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/no_image_user.png'" />
-
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE No profile Image -->
-                          <!-- --------------------------------------------------- -->
-                          <!-- [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }" -->
-                          <div *ngIf="projectUser?.hasImage === false"
-                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
-                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
-                            <span class="altenative-projetuser-avatar">
-                              {{ projectUser?.id_user?.fullname_initial }}
+                          <div class="cl-card-info-wpr">
+                            <span class="cl-card-item-name-wpr">
+                              <div class="cl-card-item-name">
+                                <span>{{ projectUser?.email }}</span>
+                              </div>
                             </span>
+
+                            <!-- <div class="cl-card-item-description-wpr">
+                              <div class="cl-card-item-description">
+                                {{ projectUser?.id_user?.email }}
+                              </div>
+                            </div>
+
+                            <div class="cl-card-item-info">
+                              {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{ faqkb?.updatedAt | amTimeAgo }}
+                            </div> -->
+
                           </div>
-
-                          <div id="teammate-status-icon" class="teammate-status-icon"
-                            [ngClass]="{
-                            'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
-                            'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
-                            'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'}">
-                          </div>
-
-                          <!-- [matTooltip]="projectUser.id_user._id === CURRENT_USER_ID ? ( 'Busy, click to reset' ) : ( 'Busy' ) " -->
-                          <!-- (click)="presentDialogResetBusy(); $event.stopPropagation()" -->
-                          <div *ngIf="projectUser?.isBusy" class="user-is-busy" matTooltipClass="custom-mat-tooltip"
-                            matTooltip=" {{ 'Busy' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100">
-                            <!-- <span class="tool__tip"> -->
-                            <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
-
-                            <!-- <span class="top">
-                                {{ 'Busy' | translate }}
-                                <i></i>
-                              </span>
-                            </span> -->
-                          </div>
-
                         </div>
 
-                        <!-- <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition">
-                      {{ 'Busy' | translate }}
+                        <div class="cl-card-second-column">
+
+                          <div class="cl-card-stats-wpr">
+
+                            <div class="cl-card-item-stats">
+                              <div class="cl-card-item-stats-title" style="white-space: nowrap;">
+                                {{ "UsersPage.DateOfSending" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" style="white-space: nowrap;">
+                                {{ projectUser?.createdAt | amTimeAgo }}
+                              </div>
+                            </div>
+
+                            <div class="cl-card-item-stats">
+                              <div id="pu-pending-status" class="cl-card-item-stats-title">
+                                {{ "Status" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+                                {{'Pending' | translate}}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="pu-role-wpr" class="cl-card-item-stats"
+                            [ngStyle]="{'min-width': widthOfLargestDiv }">
+                            <div class="cl-card-item-stats-title">
+                              {{ "UsersPage.Role" | translate }}
+                            </div>
+                            <div id="pu-role" class="cl-card-item-stats-values">
+                              {{ projectUser?.role | translate }}
+                            </div>
+                          </div>
+
+                          <div class="cl-card-action-wpr">
+                            <div class="cl-card-action-group">
+
+                              <div class="cl-card-action-btn-wpr">
+                                <button id="btn-{{projectUser?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();resendInvite(projectUser?._id)"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'UsersPage.ResendInvite' | translate}}" #tooltip="matTooltip"
+                                  matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>mail</mat-icon>
+                                </button>
+                              </div>
+
+                              <div class="cl-card-action-btn-wpr">
+                                <button id="btn-copy-{{invites?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();copyInviteURL(projectUser?._id)"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'CopyInviteURL' | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>content_copy</mat-icon>
+                                </button>
+                              </div>
+
+                              <!-- -------------------------------------------- -->
+                              <!-- More Actions (Pending Invitations) -->
+                              <!-- -------------------------------------------- -->
+                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button mat-icon-button [matMenuTriggerFor]="moreactionspi"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{Actions | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #moreactionspi="matMenu">
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                                    mat-menu-item (click)='openCancelInvitationModal(projectUser?._id, projectUser?.email )'>
+                                    <mat-icon>delete</mat-icon>
+
+                                    <span>{{ 'UsersPage.modalCancelInvite' | translate }}</span>
+                                  </button>
+                                </mat-menu>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- ------------------------------ -->
+                  <!-- Pending invitations -->
+                  <!-- ------------------------------ -->
+                  <div style="display: none;" class="card-list" *ngFor="let invites of pendingInvitationList">
+
+                    <div class="cl-card" (click)='goToEditUser(projectUser?._id)'>
+                      <div class="cl-card-content">
+
+                        <div class="cl-card-first-column">
+
+                          <div class="cl-card-img-wpr">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                              <path
+                                d="M224 0a128 128 0 1 1 0 256A128 128 0 1 1 224 0zM178.3 304h91.4c20.6 0 40.4 3.5 58.8 9.9C323 331 320 349.1 320 368c0 59.5 29.5 112.1 74.8 144H29.7C13.3 512 0 498.7 0 482.3C0 383.8 79.8 304 178.3 304zM352 368a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-80c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H512V304c0-8.8-7.2-16-16-16z" />
+                            </svg>
+                          </div>
+
+                          <div class="cl-card-info-wpr">
+                            <span class="cl-card-item-name-wpr">
+                              <div class="cl-card-item-name">
+                                <span>{{ invites?.email }}</span>
+                              </div>
+                            </span>
+                            <div class="cl-card-item-description-wpr">
+
+                              <div class="cl-card-item-description">
+                                {{ projectUser?.id_user?.email }}
+                              </div>
+                            </div>
+
+                            <div class="cl-card-item-info">
+                              <!-- {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{ faqkb?.updatedAt | amTimeAgo }}  -->
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="cl-card-second-column">
+
+                          <div class="cl-card-stats-wpr">
+
+                            <div class="cl-card-item-stats">
+                              <div class="cl-card-item-stats-title" style="white-space: nowrap;">
+                                {{ "UsersPage.DateOfSending" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" style="white-space: nowrap;">
+                                {{ invites?.createdAt | amTimeAgo }}
+                              </div>
+                            </div>
+
+                            <div class="cl-card-item-stats">
+                              <div id="pu-pending-status" class="cl-card-item-stats-title">
+                                {{ "Status" | translate }}
+                              </div>
+                              <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+                                {{'Pending' | translate}}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="pu-role-wpr" class="cl-card-item-stats"
+                            [ngStyle]="{'min-width': widthOfLargestDiv }">
+                            <div class="cl-card-item-stats-title">
+                              {{ "UsersPage.Role" | translate }}
+                            </div>
+                            <div id="pu-role" class="cl-card-item-stats-values">
+                              {{ invites?.role | translate }}
+                            </div>
+                          </div>
+
+                          <div class="cl-card-action-wpr">
+                            <div class="cl-card-action-group">
+
+                              <div class="cl-card-action-btn-wpr">
+                                <button id="btn-{{invites?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();resendInvite(invites?._id)"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'UsersPage.ResendInvite' | translate}}" #tooltip="matTooltip"
+                                  matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>mail</mat-icon>
+                                </button>
+                              </div>
+
+                              <div class="cl-card-action-btn-wpr">
+                                <button id="btn-copy-{{invites?._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();copyInviteURL(invites?._id)"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'CopyInviteURL' | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>content_copy</mat-icon>
+                                </button>
+                              </div>
+
+                              <!-- -------------------------------------------- -->
+                              <!-- More Actions (Pending Invitations) -->
+                              <!-- -------------------------------------------- -->
+                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                <button mat-icon-button [matMenuTriggerFor]="moreactionspi"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{Actions | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                  <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #moreactionspi="matMenu">
+                                  <button class="mat-menu-btn"
+                                    *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
+                                    mat-menu-item (click)='openCancelInvitationModal(invites?._id, invites?.email )'>
+                                    <mat-icon>delete</mat-icon>
+
+                                    <span>{{ 'UsersPage.modalCancelInvite' | translate }}</span>
+                                  </button>
+                                </mat-menu>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ./ Pending invitations -->
+                </div>
+                <!-- ./ New teammates list -->
+
+
+                <!-- ------------------------------------------------- -->
+                <!-- <ng-container  *ngIf="!showSpinner">
+                  <div *ngIf="filteredUsers?.length === 0" class="no-results">
+                    No teammate found matching your search criteria.
+                  </div>
+                </ng-container> -->
+
+                <ng-container *ngIf="!showSpinner">
+                  <div *ngIf="filteredUsers && filteredUsers.length === 0 && searchTerm?.trim()" class="no-results">
+                    <!-- No teammate found matching your search criteria. -->
+                    {{ "NoTeammateFoundMatchingCriteria" | translate}}
+                  </div>
+                </ng-container>
+                <!-- ------------------------------------------------- -->
+
+
+                <div class="pagination-controls" *ngIf="totalPages > 1">
+                  <!-- <button 
+                    (click)="goToPreviousPage()"
+                    [disabled]="currentPage === 1"
+                    class="page-btn">
+                    Previous
+                  </button> -->
+                  <button  class="btn " (click)="goToPreviousPage()" 
+                        style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;    border-top-left-radius: 9999px !important;
+                          border-bottom-left-radius: 9999px !important;
+                          box-shadow: unset; background-color: var(--blue-20);"
+                        [disabled]="currentPage === 1">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      </button>
+
+                    <!-- Numeri delle pagine -->
+                    <!-- <div class="page-numbers">
+                      <button 
+                        *ngFor="let page of pages" 
+                        (click)="onPageChange(page)"
+                        [class.active]="page === currentPage"
+                        class="page-number-btn">
+                        {{ page }}
+                      </button>
                     </div> -->
-                      </td>
 
-                      <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
-                      <td (click)="goToEditUser(projectUser?._id)"
-                        style="cursor:pointer; white-space: nowrap;  width: 1%;">
-                        <span class="White__Tooltip">
-                          <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
-                          <span style="font-weight:400; font-size: 13px">
-                            {{ projectUser?.id_user?.lastname }} </span>
+                    <button class="btn "  style="border-radius: 0px !important;pointer-events: none;  box-shadow: unset;
+                            background-color: var(--blue-20);"> 
+                        {{currentPage}} / {{totalPages}}
+                      </button>
 
-                          <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
-                            {{ projectUser?.id_user?.email }}
-                          </span>
-                        </span>
-                      </td>
-
-                      <td>
-                        <span>
-                          <span class="White__Tooltip" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
-                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                            <i class="material-icons chat-with-agent"
-                              (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
-                              chat
-                            </i>
-                            <!-- <span class="White__Tooltiptext"
-                              style="font-size: 12px; white-space: nowrap;font-weight: 100;">
-                              {{"ChatWith" | translate }}:
-                              <span style="display:block">
-                                {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}
-                              </span>
-                            </span> -->
-                          </span>
-                        </span>
-                      </td>
-
-                      <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
-                      <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
-                        <!-- <span class="White__Tooltip"> -->
-                        <span style="font-weight:400; font-size: 13px">
-                          {{ projectUser?.role | translate}}
-                        </span>
-                        <!-- <span class="White__Tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
-                          {{projectUser?.id_user?._id}}</span>
-                      </span> -->
-                        <!-- </span> -->
-                      </td>
+                    <!-- <button 
+                      (click)="goToNextPage()"
+                      [disabled]="currentPage === totalPages"
+                      class="page-btn">
+                      Next
+                    </button> -->
+                    <button class="btn" (click)="goToNextPage()" 
+                        style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important; border-bottom-right-radius: 9999px !important;
+                            box-shadow: unset;
+                            background-color: var(--blue-20);
+                            border-top-right-radius: 9999px !important;"
+                        [disabled]="currentPage === totalPages">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      </button>
 
 
-                      <!-- ------------------------------------------- -->
-                      <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
-                      <!-- ------------------------------------------- -->
-                      <!-- *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" -->
-                      <td>
+    <!-- <span class="page-info">
+      Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total teammates)
+    </span> -->
+  </div>
 
 
-
-                        <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}"
-                          id="{{projectUser?._id}}"
-                          (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id)">
-
-                          <option value="available"
-                            [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                            {{'Available' | translate}}
-                          </option>
-
-                          <option value="unavailable"
-                            [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                            {{'Unavailable' | translate}}
-                          </option>
-
-                          <option value="inactive"
-                            [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
-                            {{'Inactive' | translate}}
-                          </option>
-                        </select>
-                      </td>
-
-
-
-                      <!-- ACTIONS -->
-                      <td class="td-actions text-right">
-                        <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
-                        <span style="position: relative;top: 15px;">
-                          <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                            (click)='goToEditUser(projectUser?._id)' matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'UsersPage.tootipEditUser' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
-                            <i class="material-icons">edit</i>
-                            <!-- <span class="White__Tooltiptext" style="text-transform:capitalize">
-                              {{ 'UsersPage.tootipEditUser' | translate }} 
-                            </span> -->
-                          </button>
-
-
-                          <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                            type="button" class="btn btn-danger btn-simple btn-xs"
-                            (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'UsersPage.tootipDeleteUser' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </span>
-                      </td>
-
-                    </tr>
-
-
-
-                    <!-- -------------------------------------------------------------- -->
-                    <!-- @ Pending invitation -->
-                    <!-- -------------------------------------------------------------- -->
-                    <tr *ngFor="let invites of pendingInvitationList">
-                      <td style="text-align: center; width:1%; white-space:nowrap; ">
-                        <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
-                          query_builder
-                        </i>
-                      </td>
-
-                      <td>
-                        <span style="font-weight:400">
-                          {{ invites?.email }}
-                        </span>
-                        <span
-                          style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
-                          {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
-                        </span>
-                      </td>
-
-                      <td>
-                        <span style="font-weight:400;font-weight:400; font-size: 13px">
-                          {{ "UsersPage.InvitedToBecome" | translate }}
-                          <span style="text-transform:capitalize">
-                            {{ invites?.role | translate }}
-                          </span>
-                        </span>
-                      </td>
-
-                      <td> </td>
-                      <td> </td>
-
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title=""
-                          class="btn btn-primary btn-simple btn-xs White__Tooltip" (click)='resendInvite(invites?._id)'>
-                          <i class="material-icons">send</i>
-                          <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
-                            {{ "UsersPage.ResendInvite" | translate }}
-                          </span>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs "
-                          (click)='openCancelInvitationModal(invites?._id, invites?.email )' style="margin-left: 4px;">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
             </div>
-          </div>
-        </div>
+
+           
+          
+
+          </ng-container>
+
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+
+          </ng-template>
+        </ng-container>
+        
       </div>
     </div>
   </div>
@@ -975,6 +868,7 @@
   <!-- /.modal-dialog -->
 </div>
 
+
 <!-- ============ USERS DISABLE MODAL ============ -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDisableModal}"
   style="background-color: rgba(90,90,90,0.5);">
@@ -987,16 +881,15 @@
 
         <h4 class="modal-title warning">
           <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
-          <span class="modal-header-icon-wpr"> 
+          <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
                 d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
             </svg>
           </span>
           <span style="vertical-align: middle; padding-left:8px">
-            <!-- {{ "UsersPage.modalDeleteUser" | translate }} -->
+           <!-- {{ "UsersPage.modalDeleteUser" | translate }} -->
               {{ "DisableMember" | translate }}
-              
           </span>
         </h4>
 
@@ -1010,7 +903,7 @@
 
       <div class="modal-body">
         <p class="modal-body--content">
-          <!-- {{ "UsersPage.AreYouSure" | translate }}
+         <!--  {{ "UsersPage.AreYouSure" | translate }}
           <b>{{user_firstname}} {{user_lastname }} </b>
           {{ "UsersPage.FromTheProject" | translate }}? -->
            {{'AreYouSure' | translate }}?
@@ -1021,13 +914,13 @@
 
       <div class="modal-footer">
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
-        
+
           {{ "Cancel" | translate }}
         </button>
-       
+
         <button class="btn btn-red" (click)="onCloseDisableModalHandled()">
           <!-- {{ "UsersPage.modalDeleteUser" | translate }} -->
-           {{ "Disable" | translate }}
+             {{ "Disable" | translate }}
         </button>
       </div>
 
@@ -1050,7 +943,7 @@
 
         <h4 class="modal-title warning">
           <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
-          <span class="modal-header-icon-wpr"> 
+          <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
                 d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
@@ -1072,10 +965,10 @@
 
       <div class="modal-footer">
         <button class="btn btn-gray-no-boxshadow" (click)="closeCancelInvitationModal()">
-   
+
           {{ "Cancel" | translate }}
         </button>
-     
+
         <button class="btn btn-red" (click)="deletePendinInvitation()">
           {{ "UsersPage.modalCancelInvite" | translate }}
         </button>
@@ -1108,18 +1001,12 @@
           </span>
         </h4>
 
-        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
-          {{ "UsersPage.TheMemberWithId" | translate }}
-          <code>{{user_id}}</code>
-          {{ "UsersPage.WillBeRemoved" | translate }}
-        </h4> -->
-
       </div>
 
       <div class="modal-body">
         <p class="modal-body--content">
           {{ "UsersPage.AreYouSureRestore" | translate:{ firstname: user_firstname, lastname: user_lastname } }}
-          <!----
+          <!--
           <b>{{user_firstname}} {{user_lastname }} </b>
           in the project?
           -->
@@ -1133,8 +1020,8 @@
         </button>
        
         <button class="btn btn-tdblu-no-boxshadow" (click)="onCloseRestoreModalHandled()">
-          <!-- {{ "UsersPage.RestoreMember" | translate }} -->
-           {{ "Restore" | translate }}
+          <!-- {{ "UsersPage.RestoreMember" | translate }}  -->
+             {{ "Restore" | translate }}
         </button>
       </div>
 
@@ -1144,3 +1031,5 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+

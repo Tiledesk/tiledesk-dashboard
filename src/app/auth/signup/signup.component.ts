@@ -546,7 +546,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         grecaptcha.ready(() => {
           grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
             // Add your logic to submit to your backend server here.
-            this.logger.log('[SIGN-UP] grecaptcha ', token)
+            console.log('[SIGN-UP] grecaptcha ', token)
             if (token) {
               this.signup()
             }

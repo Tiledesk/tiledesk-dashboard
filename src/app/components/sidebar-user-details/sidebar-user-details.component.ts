@@ -455,9 +455,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   getProjectUser() {
     this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+    // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
+      console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
@@ -478,7 +478,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+          console.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;
@@ -519,7 +519,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       .subscribe((projectUser: any) => {
 
 
-        this.logger.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+       console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_btn_clicked(true)

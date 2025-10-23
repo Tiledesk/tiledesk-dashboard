@@ -1,16 +1,108 @@
 # tiledesk-dashboard
 
-## 2.7.134
+### 2.7.141-stage
+- Adds the ability to hide or show quota usage 
+- Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
+- Hides or shows the Settings sidebar menu item only if the permissions to edit tags and to edit canned responses are also enabled
+- Adds 'create', 'edit'  and 'delete' permissions for groups
+- Adds 'create', 'edit'  and 'delete' permissions for roles
+- Adds the ability to hide or show the ticket ID in the conversation details page via permissions
+
+### 2.7.140-stage
+- Improves the conversation details sidebar
+
+### 2.7.147-AR
+- Adds the ability to hide or show quota usage 
+- Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
+- Hides or shows the Settings sidebar menu item only if the permissions to edit tags and to edit canned responses are also enabled
+- Adds 'create', 'edit'  and 'delete' permissions for groups
+- Adds 'create', 'edit'  and 'delete' permissions for roles
+- Adds the ability to hide or show the ticket ID in the conversation details page via permissions
+
+### 2.7.146-AR
+- Improves the conversation details sidebar
+
+### 2.7.139-stage
+- Adds the ability to hide or show the conversation simulation button and the switch project combo box via permissions
+- Adds the ability to hide or show the sidebar menu item Home via permissions
+
+### 2.7.145-AR
+- Adds the ability to hide or show the conversation simulation button and the switch project combo box via permissions
+- Adds the ability to hide or show the sidebar menu item Home via permissions
+
+### 2.7.138-stage
+- Fixes the bug: Email search doesn't work in Teammates
+- Fixes the bug: the whitelist of allowed domains does not work properly
+
+### 2.7.144-AR
+- Fixes the bug: Email search doesn't work in Teammates
+- Fixes the bug: the whitelist of allowed domains does not work properly
+
+## 2.7.137-stage
+- Adds the ability to select LLM models from the Knowledge base preview settings dialog
+
+## 2.7.136-stage
+- Displays a confirmation dialog on the conversation details page when resolving a conversation only when panel is in chat mode
+- In the conversation details chat, if the Resolved option is selected, the conversation is closed without sending the message.
+
+### 2.7.143-AR
+- Displays a confirmation dialog on the conversation details page when resolving a conversation only when panel is in chat mode
+- In the conversation details chat, if the Resolved option is selected, the conversation is closed without sending the message.
+
+## 2.7.135-stage
+- Roles and LLM
+
+### 2.7.142-AR
+- Adds and fix translations
+- Does not allow deletion of groups associated with departments
+- Fixes the bug: duplicating an AI Agent does not work
+- Block file uploads in conversation details based on permission “Able to send message and upload file”
 - Adds a tooltip to the file upload button in the conversation detail that indicates the maximum size allowed
 - Displays a confirm dialog on delete Canned response 
 - Manage the Knowledge preview error “allowed max tokens”
 - Allows txt extension on Knowledge Base page > Add contents > Upload files
+- Disables Leave Conversation, Add Teammate, and Re-assign Conversation actions in conversation details when conversation is closed
+- Displays  a confirmation dialog on the conversation details page when resolving a conversation
+- Adds GPT-5 LLM models
 
-## 2.7.133
-- Updates markdown library
+### 2.7.141-AR
+- Adds the ability to hide the rating section via permissions
+- Removes the "Create Ticket" button
 
-## 2.7.132
-- Fixes the bug: Ai Agent duplicate not working
+### 2.7.140-AR
+- Adds in the groups list pagination and Search box
+
+### 2.7.139-AR
+- Prevents XSS attack via markdown
+
+### 2.7.138-AR
+- Hides sidebar menu items based on permissions
+- Manages permissions in the Home page
+- Hides sections based on permissions.
+- Does not allow to change the name of an existing role
+- Adds in the teammates list pagination and Search box
+- Fixes the bug: Served by tooltips are enabled in conversation details when panel is in a iframe
+
+### 2.7.137-AR
+- Minor improvements and bug fixing
+
+### 2.7.136-AR
+- Adds the ability to assign more than one group to a department and to define their load percentage
+
+### 2.7.135-AR
+- Improves groups load balancing
+- Fixes the bug: in the flows sidebar the icon of the first menu item is always active
+
+### 2.7.134-AR
+- Add the percentage of group load in the department details
+## 2.7.134-stage
+- Adds Ollama models to the knowledge base
+
+## 2.7.133-stage
+- Adds LLM models to the knowledge base
+
+## 2.7.132-stage
+- Adds vLLM integration
 
 ### 2.7.131
 - Adds the ability to manage which pages the widget can appear on in Widget Settings
@@ -19,11 +111,9 @@
 - Adds the ability to manage emoji sending in Project Settings > Advanced
 - Adds the ability to manage URL submission based on the domains whitelist in Project Settings > Advanced
 
-
 ### 2.7.130
 - Adds links to documentations
 - Adds translations
-
 
 ### 2.7.129
 - Adds the ability to create WhatsApp Broadcasts
@@ -75,11 +165,26 @@
 ### 2.7.114
 - Minor improvements and bug fixing
 
+### 2.7.114-rc5
+- changed: added request_id in flow-request-logs row
+
+### 2.7.114-rc4
+- Added: added flow request logs
+
+### 2.7.114-rc2
+- Fixes the bug: changed css module in knowledge-base
+
+### 2.7.114-rc1
+- Added: added flow webhooks logs
+
 ### 2.7.113
 - Adds the environment variable "oauth2SigninEnabled"
 
 ### 2.7.112
 - Adds the ability for teammates with admin roles to edit email templates
+
+### 2.7.112-rc5
+- Added: added unanswered-questions module in knowledge-base
 
 ### 2.7.111
 - Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari

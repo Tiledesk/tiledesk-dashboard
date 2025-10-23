@@ -24,7 +24,16 @@
 
                         <div class="add-content-cards-wpr">
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('urls')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('urls')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
 
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
@@ -38,16 +47,29 @@
                                         </span>
                                     </div>
                                     <span class="span-6"> </span>
-                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbURL' | translate }}
+                                    <p class="add-content-card-content-title"> 
+                                        <!-- {{'KbPage.AddKbURL' | translate }} -->
+                                        {{'KbPage.Websites' | translate }} 
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        {{'KbPage.AddsURLSDescription' | translate }}
+                                        <!-- {{'KbPage.AddsURLSDescription' | translate }} -->
+                                        {{'KbPage.AddsURLSAndSitemapDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('site-map')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('site-map')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
+
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -59,7 +81,9 @@
                                         </span>
                                     </div>
                                     <span class="span-6"> </span>
-                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbSitemap' | translate }}
+                                    <p class="add-content-card-content-title"> 
+                                        <!-- {{'KbPage.AddKbSitemap' | translate }} -->
+                                        {{'KbPage.SynchronizedSitemap' | translate }}
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
@@ -69,7 +93,17 @@
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('faq')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('faq')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
+
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -90,7 +124,17 @@
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('text-file')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('text-file')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
+
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -111,7 +155,16 @@
                             </div>
 
 
-                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('file-upload')">
+                            <div class="add-content-card-wpr" (click)="PERMISSION_TO_ADD_CONTENTS && onOpenAddKnowledgeBaseModal('file-upload')"
+                                matRipple
+                                [matRippleDisabled]="!PERMISSION_TO_ADD_CONTENTS"
+                                [ngClass]="{'add-content-card-wpr-disabled': !PERMISSION_TO_ADD_CONTENTS}"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="!PERMISSION_TO_ADD_CONTENTS ? ('YouDoNotHavePermissions' | translate) : ''" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="PERMISSION_TO_ADD_CONTENTS">
                                 <div class="add-content-card-content">
                                     <div class="add-content-card-content-icon-wpr">
                                         <span>
@@ -135,10 +188,12 @@
                     </div>
 
 
-                 <!--   <div class="link-to-docs-container">
-                      
+                    <!-- ---------------------------------- -->
 
 
+
+
+                    <!-- <div class="link-to-docs-container">
                         <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
                             <span>
 
@@ -154,8 +209,6 @@
                                 {{'KbPage.LearnMoreAboutKB' | translate}}
                             </span>
                         </div>
-
-                        
                     </div> -->
                 </div>
               
@@ -227,9 +280,12 @@
                             <ng-option value="pdf">
                                 PDF
                             </ng-option>
+                            <ng-option value="sitemap">
+                                {{'KbPage.AddKbSitemap'| translate}}
+                            </ng-option>
                             <!-- <ng-option value="txt">
-                        TXT
-                    </ng-option> -->
+                                TXT
+                            </ng-option> -->
                             <ng-option value="docx">
                                 DOCX
                             </ng-option>
@@ -274,9 +330,12 @@
                         <!-- ---------------------------------------- -->
                         <!-- custom--button preview-settings btn-outlined-round-blu-->
                         <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
+                            [disabled]="!PERMISSION_TO_UPDATE_SETTINGS"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
-                            matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            matTooltipClass="kb-custom-mat-tooltip" 
+                            matTooltip="AI settings" #tooltip="matTooltip"
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                     width="24px" fill="#fff" style="vertical-align: middle;">
@@ -292,6 +351,7 @@
                         <!-- KB preview custom--button preview btn-outlined-blu-->
                         <!-- ---------------------------------------- -->
                         <button id="kb-preview" class="btn custom--button preview" aria-label="Preview"
+                            [disabled]="!PERMISSION_TO_UPDATE_SETTINGS"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -310,6 +370,7 @@
                         <!-- ---------------------------------------- -->
                         <!-- custom--button add-content -->
                         <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                            [disabled]="!PERMISSION_TO_ADD_CONTENTS"
                             (click)="$event.stopPropagation(); onOpenAddContent()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -436,6 +497,12 @@
                                     style="font-size: 16px; color: white;">link</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
                             </div>
+                             <div *ngIf="kb.type == 'sitemap'" class="chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #ff6154; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span id="description" class="material-icons-outlined"
+                                    style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
+                            </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
@@ -447,34 +514,36 @@
 
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
-
-                            <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                class="material-icons-outlined status-icon">
-                                done
-                            </span>
-                            <span *ngIf="kb.status == 100" id="done"
-                                class="material-icons-outlined status-icon">
-                                done_all
-                            </span>
-                            <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                class="material-icons-outlined status-icon animated-icon">
-                                cached
-                            </span>
-                            <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                class="material-icons-outlined status-icon status-done">
-                               done_all
-                            </span>
-                            <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                class="material-icons-outlined status-icon status-error">
-                                error
-                            </span>
+                            <!-- <loading-spinner *ngIf="kb.status < -1 || kb.status > 4" class="custom-spinner"></loading-spinner> -->
+                            <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
+                            <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
+                            <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
+                            <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
+                            <ng-container *ngIf="kb.type !== 'sitemap'"> 
+                                <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
+                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done</span>
+                                <span *ngIf="kb.status == 100" id="done"
+                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done_all</span>
+                                <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
+                                    class="material-icons-outlined status-icon animated-icon"  style="vertical-align: middle;">cached</span>
+                                <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
+                                    class="material-icons-outlined status-icon status-done"  style="vertical-align: middle;">done_all</span>
+                                <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
+                                    class="material-icons-outlined status-icon status-error"  style="vertical-align: middle;">error</span>
+                            
+                            </ng-container>
+                            <ng-container *ngIf="kb.type === 'sitemap'"> 
+                                <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                    remove
+                                </span>
+                            </ng-container>
                         </td>
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
-                            <span *ngIf="kb.type === 'url'"
+                            <span *ngIf="kb.type === 'url' || kb.type === 'sitemap'"
                                 matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
@@ -497,8 +566,11 @@
                                     {{'Monthly' | translate}}
                                 </span>
                             </span>
-                            <span *ngIf="kb.type !== 'url'">
-                                —
+                            <span *ngIf="kb.type !== 'url' && kb.type !== 'sitemap'">
+                                <!-- — -->
+                                 <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                    remove
+                                </span>
                             </span>
 
                             
@@ -511,7 +583,13 @@
 
                         <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
                             <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
+                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="'URLAutomaticallySynchronized' | translate" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="!kb.sitemap_origin">
                                 {{ kb.name }}
                             </div>
 
@@ -521,9 +599,26 @@
                                 {{kb.content | slice:0:500 }}
 
                             </div>
-                            <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="max-width: 100%;">
 
-                                {{kb.source }}
+                              <span *ngIf="!kb.sitemap_origin"> 
+                               {{kb.source }}
+                             </span>  
+                             <!-- || kb.type === 'sitemap' -->
+                             <span *ngIf="kb.sitemap_origin"> 
+                               <span style="background: #ff6154;
+                                    color: #fff;
+                                    border-radius: 9999px;
+                                    padding: 0 5px;
+                                    font-size: 9px;
+                                    font-weight: 400;
+                                    margin-right: 3px;"> 
+                                    {{'KbPage.AddKbSitemap'| translate}}
+                                </span> 
+                                {{kb.sitemap_origin }}
+                                <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
+                                <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
+                             </span>
 
                             </div>
                         </td>
@@ -536,24 +631,31 @@
                                 </button>
                                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
                                     <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'"
-                                        mat-menu-item (click)="onRunIndexing(kb)">
+                                        mat-menu-item (click)="onRunIndexing(kb)"
+                                        [disabled]="!PERMISSION_TO_REINDEX_CONTENT">
                                         <mat-icon>play_arrow</mat-icon>
                                         <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
-                                    <button mat-menu-item (click)="onCheckStatus(kb)">
+                                    <button mat-menu-item (click)="onCheckStatus(kb)"
+                                        [disabled]="!PERMISSION_TO_CHECK_CONTENT_STATUS">
                                         <mat-icon>published_with_changes</mat-icon>
                                         <span>{{'KbPage.RunCheckStatus' | translate}}</span>
                                     </button>
-                                    <button mat-menu-item (click)="onOpenBaseModalDetail(kb)">
+                                    <button mat-menu-item (click)="onOpenBaseModalDetail(kb)"
+                                        [disabled]="!PERMISSION_TO_UPDATE_CONTENT">
                                         <mat-icon>edit</mat-icon>
                                         <span>{{'Edit' | translate}}</span>
                                     </button>
+                                     <!-- *ngIf="kb.type !== 'sitemap'" -->
                                     <button mat-menu-item [disabled]="kb.deleting == true"
-                                        (click)="onOpenBaseModalDelete(kb)">
+                                        (click)="onOpenBaseModalDelete(kb)"
+                                        [disabled]="!PERMISSION_TO_DELETE">
                                         <mat-icon>delete</mat-icon>
                                         <span>{{'KbPage.DeleteKb' | translate}}</span>
                                     </button>
+
+                                
 
 
                                 </mat-menu>

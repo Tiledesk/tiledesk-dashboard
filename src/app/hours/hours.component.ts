@@ -18,6 +18,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -28,7 +30,7 @@ const Swal = require('sweetalert2')
 
 
 export class HoursComponent implements OnInit, OnDestroy {
-  
+
   public days = [];
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -41,7 +43,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   // Operative Variables
   projectid: string;
-  project:any;
+  project: any;
   timeSlots: Object = {};
   selectedSlot: any;
   timeSlotsArray: Array<any> = [];
@@ -53,6 +55,13 @@ export class HoursComponent implements OnInit, OnDestroy {
   // System Variables
   USER_ROLE: string;
   public hideHelpLink: boolean;
+
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_CREATE: boolean;
+
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
@@ -66,17 +75,18 @@ export class HoursComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private roleService: RoleService,
     public brandService: BrandService,
-  ) { 
+    public rolesService: RolesService
+  ) {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('hours')
-    const brand = brandService.getBrand(); 
-    this.hideHelpLink= brand['DOCS'];
+    // this.roleService.checkRoleForCurrentProject('hours')
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit() {
-    
-    this.logger.log('Hello HOURS on init ' ) 
-    
+
+    this.logger.log('Hello HOURS on init ')
+
     this.getCurrentProject();
     this.getUserRole();
     this.getOSCODE();
@@ -85,6 +95,8 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.getTimezonesList();
 
     this.days = JSON.parse(JSON.stringify(DAYS));
+    this.checkPermissions();
+    this.listenToProjectUser()
   }
 
   ngOnDestroy() {
@@ -92,12 +104,81 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('hours')
+    console.log('[HOURS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[HOURS] isAuthorized ', this.isAuthorized)
+    console.log('[HOURS] permissionChecked ', this.permissionChecked)
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[HOURS] - Role:', status.role);
+        console.log('[HOURS] - Permissions:', status.matchedPermissions);
+
+        // PERMISSION TO UPDATE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.HOURS_UPDATE)) {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[HOURS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          } else {
+            this.PERMISSION_TO_UPDATE = false
+            console.log('[HOURS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE = true
+          console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        }
+
+        // PERMISSION TO DELETE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.HOURS_DELETE)) {
+            this.PERMISSION_TO_DELETE = true
+            console.log('[HOURS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          } else {
+            this.PERMISSION_TO_DELETE = false
+            console.log('[HOURS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          }
+        } else {
+          this.PERMISSION_TO_DELETE = true
+          console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+        }
+
+        // PERMISSION TO CREATE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.HOURS_CREATE)) {
+            this.PERMISSION_TO_CREATE = true
+            console.log('[HOURS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          } else {
+            this.PERMISSION_TO_CREATE = false
+            console.log('[HOURS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          }
+        } else {
+          this.PERMISSION_TO_CREATE = true
+          console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+        }
+
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+
   // View Functions - START
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
-  } 
+  }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -164,7 +245,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   async getProjectById() {
     let slot_id = await this.getQueryParamSlot();
-    
+
     this.projectService.getProjectById(this.projectid).subscribe((project: any) => {
 
       this.project = project;
@@ -180,7 +261,7 @@ export class HoursComponent implements OnInit, OnDestroy {
         this.timeSlotsArray = [];
       }
 
-      let slot = this.timeSlotsArray.find(s => s.id === slot_id );
+      let slot = this.timeSlotsArray.find(s => s.id === slot_id);
 
       if (slot) {
         this.onSelectSlot(slot);
@@ -220,14 +301,14 @@ export class HoursComponent implements OnInit, OnDestroy {
         if (operatingHours.hasOwnProperty(i)) {
           this.logger.log('[HOURS]', this.days[i].weekday, ' IS SETTED');
           this.logger.log('[HOURS] operating hours start ', operatingHours[i]);
-  
+
           this.days[i].operatingHours = operatingHours[i]; // not used?????
-  
+
           this.days[i].isOpen = true;
-  
+
           this.days[i].operatingHoursAmStart = operatingHours[i][0].start;
           this.days[i].operatingHoursAmEnd = operatingHours[i][0].end;
-  
+
           if (operatingHours[i][1]) {
             this.days[i].operatingHoursPmStart = operatingHours[i][1].start;
             this.days[i].operatingHoursPmEnd = operatingHours[i][1].end;
@@ -244,12 +325,21 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   resetToCurrentTimezone() {
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     this.selectedSlot.hours.tzname = this.currentUTCName;
   }
 
   onChangeOpenedClosedStatus($event, weekdayid: string, weekdayname: string) {
-
-    this.logger.log('[HOURS] - CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', $event.target.checked);
+    if (this.PERMISSION_TO_UPDATE === false) {
+      $event.preventDefault(); // Cancel visual toggle
+      $event.stopImmediatePropagation(); // Optional: stop further handlers
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
+    console.log('[HOURS] - CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', $event.target.checked);
 
     this.days[weekdayid].isOpen = $event.target.checked;
 
@@ -268,8 +358,12 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   save() {
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     //this.showSpinner = true;
-    for (let j=0; j<7; j++) {
+    for (let j = 0; j < 7; j++) {
       if (this.days[j].isOpen === true) {
         this.selectedSlot.hours[j] = [
           { start: this.days[j].operatingHoursAmStart, end: this.days[j].operatingHoursAmEnd },
@@ -279,12 +373,18 @@ export class HoursComponent implements OnInit, OnDestroy {
         delete this.selectedSlot.hours[j];
       }
     }
-    if (this.selectedSlot.id === 0) {
+    if (this.selectedSlot.id === 0) {
       this.updateProjectOperatingHours()
     } else {
       this.updateProjectTimeSlot();
     }
 
+  }
+
+  handleBlockedSelectClick(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.notify.presentDialogNoPermissionToPermomfAction();
   }
 
   updateProjectOperatingHours() {
@@ -362,6 +462,10 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   presentModalNewSlot() {
+    if(this.PERMISSION_TO_CREATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     const dialogRef = this.dialog.open(NewSlotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -409,7 +513,7 @@ export class HoursComponent implements OnInit, OnDestroy {
           this.getProjectById();
         }
         resolve(true)
-  
+
       }, (error) => {
         this.logger.error("error updating project: ", error);
         reject(error);
@@ -446,7 +550,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   onGeneralSelected() {
     this.selectedSlot = {
       id: 0,
-      name:  this.translate.instant("General"), // to be translated,
+      name: this.translate.instant("General"), // to be translated,
       active: this.project.activeOperatingHours || false,
       hours: null
     }
@@ -478,7 +582,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.days[dayid].operatingHoursPmStart = '14:00';
     this.days[dayid].operatingHoursPmEnd = '18:00';
   }
-  
+
   onChangeAmStartFromArrow(time, weekdayid) {
     this.logger.log('[HOURS] - ON CHANGE AM START FROM  UP/DOWN ARROW - DAY ID', weekdayid, ' - TIME: ', time);
     this.days[weekdayid].operatingHoursAmStart = time;
@@ -510,6 +614,10 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   presentModalDeleteSlot() {
+    if (this.PERMISSION_TO_DELETE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     Swal.fire({
       title: this.translate.instant("HoursPage.DeleteSlot"),
       html: this.translate.instant("HoursPage.SureDeleteSlot", { slotName: this.selectedSlot.name }),
@@ -537,7 +645,7 @@ export class HoursComponent implements OnInit, OnDestroy {
               setTimeout(() => {
                 Swal.hideLoading();
                 Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.SlotDeleteSuccess"), icon: 'success' })
-  
+
                 // setTimeout(() => {
                 //   Swal.close();
                 // }, 2000);
@@ -571,7 +679,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
   // Slot - END
 
-  
+
 
   // ngOnInit() {
   //   this.logger.log('[HOURS] - on init DAYS ', this.days);
@@ -1207,7 +1315,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   //   console.log("onSelectGeneralOperatingHours clicked")
   //   this.getProjectById();
   // }
-  
+
   // onSelectSlot(slot) {
   //   console.log("onSelectSlot slot: ", slot)
   //   this.isActiveOperatingHours = slot.active;
@@ -1244,7 +1352,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   // }
 
   // // SLOTS SECTION - END
-  
+
 
 
 

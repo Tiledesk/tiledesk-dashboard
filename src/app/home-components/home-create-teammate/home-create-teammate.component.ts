@@ -23,6 +23,8 @@ import { BrandService } from 'app/services/brand.service';
   styleUrls: ['./home-create-teammate.component.scss']
 })
 export class HomeCreateTeammateComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  @Input() PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean
+  @Input() PERMISSION_TO_INVITE: boolean
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;

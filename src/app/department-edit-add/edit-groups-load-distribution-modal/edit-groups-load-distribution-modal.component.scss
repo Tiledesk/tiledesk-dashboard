@@ -1,0 +1,35 @@
+.percentage-row {
+  margin-bottom: 16px;
+}
+
+.total--display {
+    margin-top: -70px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    position: fixed;
+    background: #fff;
+    width: 353px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.error-text {
+  color: #f44336; /* Material red */
+}
+
+.error-message {
+  margin-left: 2px;
+}
+
+.mat-form-field-invalid .mat-form-field-outline {
+  color: #f44336 !important;
+}
+
+.mat-form-field-invalid .mat-form-field-label {
+  color: #f44336 !important;
+}
+
+mat-form-field {
+  width: 100%;
+}

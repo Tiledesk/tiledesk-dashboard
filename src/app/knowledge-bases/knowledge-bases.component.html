@@ -36,7 +36,7 @@
             {{ 'KbPage.YourKnowledgeBases' | translate }}
           </div>
 
-           <button class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
+          <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
             <mat-icon style="vertical-align: middle;">add</mat-icon>
             <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
           </button>
@@ -185,7 +185,7 @@
                         <div *ngIf="selectedNamespace?.default" 
                           class="kb-default-badge"
                           matTooltipClass="kb-custom-mat-tooltip"
-                          matTooltip="This is the default Knowledge Base" 
+                          matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}" 
                           #tooltip="matTooltip" 
                           matTooltipPosition='after'
                           matTooltipHideDelay="100">
@@ -201,7 +201,7 @@
                         </div>
                         <div class="standard-search-badge" *ngIf="!selectedNamespace?.hybrid"
                             matTooltipClass="kb-custom-mat-tooltip"
-                            matTooltip="This Knowledge Base uses semantic search" 
+                            matTooltip="{{'KbPage.ThisKBUsesSemanticSearch' | translate}}" 
                             #tooltip="matTooltip" 
                             matTooltipPosition='after'
                             matTooltipHideDelay="100">
@@ -214,8 +214,8 @@
     
                     <div class="buttons-div">
       
-                      <!-- Export Button -->
-                      <button class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
+                      <!-- Export Button  -->
+                      <button *ngIf="PERMISSION_TO_EXPORT_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
                         matTooltip="{{'KbPage.ExportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100" (click)="presentDialogExportContents()">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -225,7 +225,7 @@
                       </button>
       
                       <!-- Import Button -->
-                      <button class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
+                      <button *ngIf="PERMISSION_TO_ADD_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
                         matTooltip="{{'KbPage.ImportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100" (click)="presentDialogImportContents()">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -235,7 +235,7 @@
                       </button>
       
                       <!-- Delete Button -->
-                      <button id="delete-kb" class="btn btn-red" [disabled]="addButtonDisabled" aria-label="Delete"
+                      <button id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
                         style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
                         <span *ngIf="selectedNamespace.default === false">
                           {{ 'Delete' | translate }}
@@ -314,7 +314,7 @@
                     <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
     
-                      <button class="custom-button xs" style="margin-left: 4px; font-size: 12px;"
+                      <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="margin-left: 4px; font-size: 12px;"
                         (click)="createChatbotfromKbOfficialResponderTemplate()">
       
                         <span *ngIf="!esportingKBChatBotTemplate">

@@ -22,6 +22,9 @@ import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateFlowsModalComponent } from '../bots-list/create-flows-modal/create-flows-modal.component';
 import { FaqService } from 'app/services/faq.service';
 import { ProjectService } from 'app/services/project.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 const Swal = require('sweetalert2')
 
@@ -95,6 +98,11 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   diplayTwilioVoiceChabotCard: boolean;
   diplayVXMLVoiceChabotCard:boolean;
 
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -109,8 +117,10 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     private webhookService: WebhookService,
     public brandService: BrandService,
     private botLocalDbService: BotLocalDbService,
-     private faqService: FaqService,
-     private projectService: ProjectService
+    private faqService: FaqService,
+    private projectService: ProjectService,
+    private roleService: RoleService,
+    private rolesService: RolesService
     // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
@@ -123,6 +133,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.roleService.checkRoleForCurrentProject('flows')
     this.getBrowserVersion();
     this.getTemplates()
     this.getCommunityTemplates()
@@ -135,8 +146,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getProfileImageStorage();
     this.getProjectPlan();
     this.getUserRole();
-    this.getOSCODE()
-    this.getCurreURL()
+    this.getOSCODE();
+    this.getCurreURL();
+    this.listenToProjectUser()
   }
 
 
@@ -145,13 +157,46 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('[BOTS-TEMPLATES] - this.ROLE:', this.ROLE);
+        console.log('[BOTS-TEMPLATES] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('[BOTS-TEMPLATES] - hasDefaultRole', this.hasDefaultRole);
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[BOTS-TEMPLATES] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[BOTS-TEMPLATES] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[BOTS-TEMPLATES] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+      });
+
+  }
+
   getLoggedUser() {
     this.auth.user_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user) => {
-        this.logger.log('[BOT-LIST] - USER GET IN HOME ', user)
+        this.logger.log('[BOTS-TEMPLATES] - getLoggedUser USER ', user)
 
         this.user = user;
       })
@@ -277,14 +322,17 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   goToBotCommunityTemplates() {
+     this.roleService.checkRoleForCurrentProject('flows')
     this.router.navigate(['project/' + this.project._id + '/bots/templates/community']);
   }
 
   goToBotIncreaseSalesTemplates() {
+    this.roleService.checkRoleForCurrentProject('flows')
     this.router.navigate(['project/' + this.project._id + '/bots/templates/increase-sales']);
   }
 
   goToBotCustomerSatisfactionTemplates() {
+    this.roleService.checkRoleForCurrentProject('flows')
     this.router.navigate(['project/' + this.project._id + '/bots/templates/customer-satisfaction']);
   }
 
@@ -357,6 +405,10 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   openDialog(template) {
+    if (!this.PERMISSION_TO_ADD_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log('openDialog TemplateDetailComponent')
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
@@ -542,7 +594,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
+        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
@@ -736,14 +788,13 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
 
   createBlankTilebot(botSubtype?: string) {
-    // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+  
     this.logger.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+
           this.createTilebotBotFromScratch(botSubtype)
 
         } else if (this.chatBotCount >= this.chatBotLimit) {
@@ -752,7 +803,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         }
       } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN Create')
-        // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+
         this.createTilebotBotFromScratch(botSubtype)
       }
     } if (this.USER_ROLE === 'agent') {

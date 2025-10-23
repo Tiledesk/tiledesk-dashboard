@@ -24,6 +24,8 @@ import { LoggerService } from '../../../services/logger/logger.service';
 // import * as moment from 'moment';
 import moment from "moment";
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -72,6 +74,10 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   join_polling: any
   archive_polling: any
   MORE_INFO_ACCORDION_IS_OPENED: boolean = false;
+  CHAT_PANEL_MODE: boolean = true;
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
 
   constructor(
     private wsMsgsService: WsMsgsService,
@@ -87,7 +93,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     public translate: TranslateService,
     public contactsService: ContactsService,
     public logger: LoggerService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    public rolesService: RolesService
   ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate); }
 
   ngOnInit() {
@@ -137,16 +144,63 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.setMomentLocale();
     this.getCurrentYear();
     this.manageMoreInfoAccordion();
+
+    this.listenToProjectUser()
   }
 
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+      
 
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[REQUEST-DTLS-X-PANEL] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[REQUEST-DTLS-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+          // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[REQUEST-DTLS-X-PANEL] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[REQUEST-DTLS-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // You can also check status.role === 'owner' if needed
+      });
+
+    
+  }
 
   getCurrentYear() {
     this.currentYear = moment().format('YYYY');
     this.logger.log('[REQUEST-DTLS-X-PANEL] - currentYear ', this.currentYear)
   }
 
-  
+
   setMomentLocale() {
     this.browserLang = this.translate.getBrowserLang();
     // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
@@ -196,13 +250,18 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   joinRequest(request_id: string) {
-    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
-    window.parent.postMessage(msg, '*')
-    this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
-    // ------------------------
-    // For test
-    // ------------------------
-    // this.onJoinHandledinWsRequestDetailForPanel(request_id, this.currentUserID)
+    if (!this.PERMISSION_TO_JOIN_REQUEST) { 
+      
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
+      const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
+      window.parent.postMessage(msg, '*')
+      this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
+      // ------------------------
+      // For test
+      // ------------------------
+      // this.onJoinHandledinWsRequestDetailForPanel(request_id, this.currentUserID)
   }
 
   listenToParentPostMessage() {
@@ -256,19 +315,23 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   archiveRequest(request_id) {
-    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 
-    // console.log('[REQUEST-DTLS-X-PANEL]  ARCHIVE waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
-    // this.archive_polling = setInterval(() => {
-    // if (this.webSocketJs.ws.readyState === 1) {
-    //   if (this.webSocketJs.ws.readyState === 1) {
-    //     clearInterval(this.archive_polling);
-    //   }
-    // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
-    this._closeSupportGroupAndCloseConvsDeatail(request_id)
-    //   }
-    // }, 100);
+      // console.log('[REQUEST-DTLS-X-PANEL]  ARCHIVE waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
+      // this.archive_polling = setInterval(() => {
+      // if (this.webSocketJs.ws.readyState === 1) {
+      //   if (this.webSocketJs.ws.readyState === 1) {
+      //     clearInterval(this.archive_polling);
+      //   }
+      // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
+      this._closeSupportGroupAndCloseConvsDeatail(request_id)
+      //   }
+      // }, 100);
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
 
   }
 

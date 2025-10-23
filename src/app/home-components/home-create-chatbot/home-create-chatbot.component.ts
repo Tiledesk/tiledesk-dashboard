@@ -305,8 +305,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.countOfChatbots < this.chatBotLimit) {
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: Go to crete chatbot')
-          // this.presentModalAddBotFromScratch()
-          // this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+  
           this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
 
         } else if (this.countOfChatbots >= this.chatBotLimit) {
@@ -315,8 +314,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         }
       } else if (this.chatBotLimit === null) {
         this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: Go to crete chatbot')
-        // this.presentModalAddBotFromScratch()
-        // this.router.navigate(['project/' + this.projectId  + '/bots/create/tilebot/blank']);
+     
         this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
       }
     } if (this.USER_ROLE === 'agent') {

@@ -27,7 +27,7 @@ export class WidgetDomainsWithelistModalComponent implements OnInit {
     private fb: FormBuilder,
     public logger: LoggerService,
   ) { 
-    this.logger.log(' UrlsWhitelistComponent data ', data)
+    console.log(' UrlsWhitelistComponent data ', data)
     if (data) {
       this.blacklistPatterns = data
     }

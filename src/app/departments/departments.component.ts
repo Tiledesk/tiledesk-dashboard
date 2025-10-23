@@ -15,6 +15,11 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+
 
 @Component({
   selector: 'departments',
@@ -69,8 +74,15 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   appSumoProfile: string;
- 
+
   appSumoProfilefeatureAvailableFromBPlan: string;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  PERMISSION_TO_CREATE_DEPT: boolean;
+  PERMISSION_TO_READ_DEPT_DETAILS: boolean;
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -82,14 +94,15 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    private roleService: RoleService
-  ) { 
+    private roleService: RoleService,
+    public rolesService: RolesService
+  ) {
     super(prjctPlanService, notify);
   }
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('depts')
+    // this.roleService.checkRoleForCurrentProject('depts')
     this.getOSCODE();
     this.getCurrentProject();
 
@@ -100,14 +113,69 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     this.getBrowserLanguage();
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
+    this.checkPermissions();
+    this.listenToProjectUser()
   }
 
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('departments-list')
+    console.log('[DEPTS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[DEPTS] isAuthorized ', this.isAuthorized)
+    console.log('[DEPTS] permissionChecked ', this.permissionChecked)
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[DEPTS] - Role:', status.role);
+        console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ)) {
+
+            this.PERMISSION_TO_CREATE_DEPT = true
+            console.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+          } else {
+            this.PERMISSION_TO_CREATE_DEPT = false
+            console.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+          }
+        } else {
+          this.PERMISSION_TO_CREATE_DEPT = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+        }
+
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ)) {
+
+            this.PERMISSION_TO_READ_DEPT_DETAILS = true
+            console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+          } else {
+            this.PERMISSION_TO_CREATE_DEPT = false
+            console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_DEPT_DETAILS = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_CREATE_DEPT);
+        }
+
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+
+
+
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }  
+  }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -147,10 +215,10 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-  
+
         } else {
           this.payIsVisible = true;
-       
+
         }
       }
 
@@ -193,13 +261,17 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
 
 
-  // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
+  // GO TO DEPT-EDIT-ADD COMPONENT 
   goToEditAddPage_EDIT(dept_id: string, dept_default: boolean) {
-    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT ID ', dept_id);
-    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
-    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
+    if (this.PERMISSION_TO_READ_DEPT_DETAILS) {
+      this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT ID ', dept_id);
+      this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
+      this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
 
-    this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+      this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
   }
 
 
@@ -208,7 +280,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
    * note: the project id is passed get and passed by deptService */
   getDeptsByProjectId() {
     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
-      this.logger.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
+      console.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       if (departments) {
         let count = 0;
@@ -285,6 +357,10 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
               this.getGroupById(dept.id_group)
             }
 
+            if(dept.groups && dept.groups.length > 0) {
+              this.getGroupsById(dept, dept.groups)
+            }
+
             if (dept.id_bot !== null && dept.id_bot !== undefined) {
               this.getBotById(dept.id_bot);
             }
@@ -310,10 +386,10 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[DEPTS] - updateDefaultDeptStatusIfIsZero - UPDATED DEPT ', department)
 
       }, error => {
-     
+
         this.logger.error('[DEPTS] - updateDefaultDeptStatusIfIsZero - ERROR', error);
       }, () => {
-      
+
         this.logger.log('[DEPTS] - updateDefaultDeptStatusIfIsZero - COMPLETE')
 
       });
@@ -355,43 +431,47 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    this.logger.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 
-    this.logger.log('DEPTS subscription_is_active ', this.subscription_is_active) 
-    this.logger.log('DEPTS trial_expired ', this.trial_expired) 
-    
-    this.router.navigate(['project/' + this.project._id + '/department/create']);
+    if (this.PERMISSION_TO_CREATE_DEPT) {
+      this.logger.log('DEPTS prjct_profile_type ', this.prjct_profile_type)
+      this.logger.log('DEPTS subscription_is_active ', this.subscription_is_active)
+      this.logger.log('DEPTS trial_expired ', this.trial_expired)
 
-    // if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
-    //   this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-    // } else {
-    //   this.router.navigate(['project/' + this.project._id + '/department/create']);
-    // }
+      this.router.navigate(['project/' + this.project._id + '/department/create']);
 
-    // if (
-    //   (this.profile_name === PLAN_NAME.A) ||
-    //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //   (this.profile_name === 'free' && this.trial_expired === true) ||  
-    //   (this.profile_name === PLAN_NAME.D) ||
-    //   (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-    //   (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
-    //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-    //   (this.profile_name === 'Sandbox' && this.trial_expired === true)
-    //   ) {
-    //     this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-    //   // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
-    // } else if (
-    //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-    //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-    //   (this.profile_name === 'free' && this.trial_expired === false) ||
-    //   (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
-    //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
-    //   (this.profile_name === 'Sandbox' && this.trial_expired === false)
-     
-    //   ) {
-    //     this.router.navigate(['project/' + this.project._id + '/department/create']);
-    //     // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
-    //   }
+      // if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
+      //   this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+      // } else {
+      //   this.router.navigate(['project/' + this.project._id + '/department/create']);
+      // }
+
+      // if (
+      //   (this.profile_name === PLAN_NAME.A) ||
+      //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      //   (this.profile_name === 'free' && this.trial_expired === true) ||  
+      //   (this.profile_name === PLAN_NAME.D) ||
+      //   (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      //   (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+      //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      //   (this.profile_name === 'Sandbox' && this.trial_expired === true)
+      //   ) {
+      //     this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+      //   // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
+      // } else if (
+      //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+      //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+      //   (this.profile_name === 'free' && this.trial_expired === false) ||
+      //   (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
+      //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
+      //   (this.profile_name === 'Sandbox' && this.trial_expired === false)
+
+      //   ) {
+      //     this.router.navigate(['project/' + this.project._id + '/department/create']);
+      //     // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
+      //   }
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
   }
 
   /**
@@ -459,6 +539,33 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
       this.logger.log('[DEPTS] --> GROUP GET BY ID - COMPLETE')
     });
   }
+
+ getGroupsById(dept, groups) {
+  let groupsName = []
+  groups.forEach(group => {
+    console.log('[DEPTS] GROUPS foreach  group', group) 
+
+     this.groupsService.getGroupById(group.group_id).subscribe((group: any) => {
+
+      console.log('[DEPTS] GROUPS getGroupById RES ', group) 
+      
+      groupsName.push(group.name)
+
+      if (groupsName.length > 0) {
+        dept.hasGroupsName =  groupsName.join(', ').trim()
+        console.log('[DEPTS] GROUPS dept.hasGroupsName ', dept.hasGroupsName) 
+      }
+
+      console.log('[DEPTS] GROUPS groupsName ', groupsName) 
+
+      }, error => {
+      this.logger.error('[DEPTS] --> GROUP GET BY ID - ERROR', error);
+    }, () => {
+      this.logger.log('[DEPTS] --> GROUP GET BY ID - COMPLETE')
+    });
+    
+  });
+ }
 
   /**
    * !!! USED ONLY FOR TESTING THE CALLBACK RUNNED BY THE OLD WIDGET VERSION
@@ -555,15 +662,15 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
       this.logger.log('[DEPTS] - DELETE DEPT RES ', data);
 
       this.getDeptsByProjectId();
-  
-    },(error) => {
-        this.logger.error('[DEPTS] DELETE DEPT - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-      },() => {
-        this.logger.log('[DEPTS] DELETE DEPT * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
 
-      });
+    }, (error) => {
+      this.logger.error('[DEPTS] DELETE DEPT - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[DEPTS] DELETE DEPT * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
+
+    });
   }
 
 

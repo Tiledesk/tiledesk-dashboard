@@ -23,29 +23,31 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
 
   <div class="page-title--sidebar-settings"
-  [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    
-    {{'RoutingAndDepts' | translate}} 
-    
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+    {{'RoutingAndDepts' | translate}}
+
   </div>
-  
+
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
-      
+
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
-            <div class="card card card--no-border" style="margin-top: -2px;">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                <div class="card card card--no-border" style="margin-top: -2px;">
 
-              <!--
-          // ---------------------------------------------------
-          // @ test buttons
-          // --------------------------------------------------- -->
-              <!-- 
+                  <!--
+              // ---------------------------------------------------
+              // @ test buttons
+              // --------------------------------------------------- -->
+                  <!-- 
           <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)=" getDepartments()">
               <span class="icon" style="padding-right:8px">
                 <i class="material-icons">add_circle</i>
@@ -53,14 +55,14 @@
                 GET DEPT - TEST CALLBACK RUNNED BY OLD WIDGET VERSION
             </button> -->
 
-              <!-- <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="getDeptsAsNewWidget()">
+                  <!-- <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="getDeptsAsNewWidget()">
               <span class="icon" style="padding-right:8px">
                 <i class="material-icons">add_circle</i>
               </span>
                 GET DEPT - TEST CALLBACK RUNNED BY NEW WIDGET VERSION
             </button> -->
 
-              <!-- <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="getVisitorCounter()">
+                  <!-- <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="getVisitorCounter()">
                 <span class="icon" style="padding-right:8px">
                   <i class="material-icons">add_circle</i>
                 </span>
@@ -68,11 +70,11 @@
               </button> -->
 
 
-              <!--
+                  <!--
           // ---------------------------------------------------
           // @ old add dept button
           // --------------------------------------------------- -->
-              <!-- <div class="card-header card-header-custom-bkgrnd" *ngIf="isVisibleDEP">
+                  <!-- <div class="card-header card-header-custom-bkgrnd" *ngIf="isVisibleDEP">
             <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;" (click)="goToEditAddPage_CREATE()">
               <span class="icon" style="padding-right:8px">
                 <i class="material-icons">add_circle</i>
@@ -81,319 +83,332 @@
             </button>
           </div> -->
 
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
 
-              <!-- style="overflow:visible;" -->
-              <div *ngIf="!showSpinner" class="card-content table-responsive" style="min-height: 200px;">
-
-
-
-                <!-- --------------------------------------------------------------------- -->
-                <!-- DAFAULT ROUTING -->
-                <!-- --------------------------------------------------------------------- -->
-                <section class="default-department-table" style="margin-bottom: 36px;">
-
-                  <div class="row table-title-wpr">
-                    <div class="col-xs-12">
-                      <h3 class="card_title__underlined ">
-                        <span class="card_title__underline">
-                          {{'Routing' | translate}}
-                        </span>
-                      </h3>
-                    </div>
-                    <div class="col-xs-12">
-                      <div class="section-subtitle"> </div>
-                    </div>
-                  </div>
-
-                  <table class="table depts-tabe">
-                    <thead>
-                      <tr>
-                        <th></th>
-
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{ "Name" | translate }}
-                          </span>
-                        </th>
-
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{'AIAgent' | translate}}
-                          </span>
-                        </th>
-
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{'Routing' | translate}}
-                          </span>
-                        </th>
-
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{ "TeammatesCapitalized" | translate }}
-                          </span>
-                        </th>
-
-                        <th>
-                          <span class="r-d--column-th-span">
-                            <!-- {{ "DepartmentsPage.Actions" | translate }} -->
-                            {{ "Actions" | translate }}
-                          </span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <!-- style="overflow:visible;" -->
+                  <div *ngIf="!showSpinner" class="card-content table-responsive" style="min-height: 200px;">
 
 
 
-                      <!-- /// DEFAULT ROUTING -->
-                      <ng-container *ngFor="let dept of departments">
-                        <tr *ngIf="dept?.default === true"
-                          [ngClass]="{'default-dept-disabled': dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0  }">
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- DAFAULT ROUTING -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <section class="default-department-table" style="margin-bottom: 36px;">
 
-
-                          <td class="dept-td"
-                            style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;"
-                            (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
-                            <!--  -->
-                            <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
-
-                              <span class="dept-avatar" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
-                                <!-- {{ dept?.dept_name_initial }} -->
-                                DD
-                              </span>
-
-
-                              <span class="default-dept-disabled-badge"
-                                *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0">
-                                <span class="tool_tip">
-                                  <span class="material-icons">
-                                    unpublished
-                                  </span>
-                                  <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                    <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Disabled' |
-                                      translate }}</h4>
-                                    <!-- {{'TheDefaulDeptIsDisabledBecause' | translate}} -->
-                                    {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
-                                    <i></i>
-                                  </span>
-                                </span>
-                              </span>
-
-
-                              <span class="default-dept-active-badge"
-                                *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT === 0">
-                                <span class="tool_tip">
-                                  <span class="material-icons">
-                                    check_circle
-                                  </span>
-                                  <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                    <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Enabled' |
-                                      translate }}</h4>
-                                    <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
-                                    {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
-                                    <i></i>
-                                  </span>
-                                </span>
-                              </span>
+                      <div class="row table-title-wpr">
+                        <div class="col-xs-12">
+                          <h3 class="card_title__underlined ">
+                            <span class="card_title__underline">
+                              {{'Routing' | translate}}
                             </span>
-                          </td>
+                          </h3>
+                        </div>
+                        <div class="col-xs-12">
+                          <div class="section-subtitle"> </div>
+                        </div>
+                      </div>
 
-                          <!-- *ngIf="dept?.default !== true" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'-->
-                          <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
-                            <span>
-                              <span style="font-weight: 400;font-size:13px" class="tool_tip">
-                                <!-- {{ dept?.display_name }} -->
-                                {{ dept?.name }}
+                      <table class="table depts-tabe">
+                        <thead>
+                          <tr>
+                            <th></th>
 
-                                <span *ngIf="dept?.default === true">
-                                  <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0"
-                                    style="font-weight:400;font-size: 11px;font-style: italic;color: #4caf50">
-                                    ({{ 'Enabled' | translate }})
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{ "Name" | translate }}
+                              </span>
+                            </th>
+
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{'AIAgent' | translate}}
+                              </span>
+                            </th>
+
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{'Routing' | translate}}
+                              </span>
+                            </th>
+
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{ "TeammatesCapitalized" | translate }}
+                              </span>
+                            </th>
+
+                            <th>
+                              <span class="r-d--column-th-span">
+                                <!-- {{ "DepartmentsPage.Actions" | translate }} -->
+                                {{ "Actions" | translate }}
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                          <!-- /// DEFAULT ROUTING -->
+                          <ng-container *ngFor="let dept of departments">
+                            <tr *ngIf="dept?.default === true"
+                              [ngClass]="{'default-dept-disabled': dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0  }">
+
+
+                              <td class="dept-td"
+                                style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;"
+                                (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
+                                <!--  -->
+                                <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
+
+                                  <span class="dept-avatar"
+                                    [ngStyle]="{'background-color': dept?.dept_name_fillcolour }">
+                                    <!-- {{ dept?.dept_name_initial }} -->
+                                    DD
                                   </span>
-                                  <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0"
-                                    style="font-weight:400;font-size: 11px;font-style: italic; color: #f44336;">
-                                    ({{ 'Disabled' | translate }})
+
+
+                                  <span class="default-dept-disabled-badge"
+                                    *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0">
+                                    <span class="tool_tip">
+                                      <span class="material-icons">
+                                        unpublished
+                                      </span>
+                                      <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                        <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Disabled' |
+                                          translate }}</h4>
+                                        <!-- {{'TheDefaulDeptIsDisabledBecause' | translate}} -->
+                                        {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
+                                        <i></i>
+                                      </span>
+                                    </span>
+                                  </span>
+
+
+                                  <span class="default-dept-active-badge"
+                                    *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT === 0">
+                                    <span class="tool_tip">
+                                      <span class="material-icons">
+                                        check_circle
+                                      </span>
+                                      <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                        <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Enabled' |
+                                          translate }}</h4>
+                                        <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
+                                        {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
+                                        <i></i>
+                                      </span>
+                                    </span>
                                   </span>
                                 </span>
+                              </td>
+
+                              <!-- *ngIf="dept?.default !== true" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'-->
+                              <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
+                                <span>
+                                  <span style="font-weight: 400;font-size:13px" class="tool_tip">
+                                    <!-- {{ dept?.display_name }} -->
+                                    {{ dept?.name }}
+
+                                    <span *ngIf="dept?.default === true">
+                                      <span *ngIf="COUNT_OF_VISIBLE_DEPT === 0"
+                                        style="font-weight:400;font-size: 11px;font-style: italic;color: #4caf50">
+                                        ({{ 'Enabled' | translate }})
+                                      </span>
+                                      <span *ngIf="COUNT_OF_VISIBLE_DEPT > 0"
+                                        style="font-weight:400;font-size: 11px;font-style: italic; color: #f44336;">
+                                        ({{ 'Disabled' | translate }})
+                                      </span>
+                                    </span>
 
 
-                                <div class="right" style="padding: 5px;" *ngIf="dept?.description">
-                                  <h4>{{ 'Description' | translate }}</h4>
-                                  <div class="line-clamp-dept-description-in-tooltip"> {{ dept?.description}} </div>
-                                  <i></i>
-                                </div>
-                              </span>
+                                    <div class="right" style="padding: 5px;" *ngIf="dept?.description">
+                                      <h4>{{ 'Description' | translate }}</h4>
+                                      <div class="line-clamp-dept-description-in-tooltip"> {{ dept?.description}} </div>
+                                      <i></i>
+                                    </div>
+                                  </span>
 
-                              <!-- class="tool_tip" -->
-                              <div *ngIf="dept?.description" style="display: block;">
-                                <div class="parent-div"
-                                  style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; ">
-                                  {{ dept?.truncated_desc}}
-                                  <!-- {{ dept?.description }} -->
-                                  <!-- <div class="text-div">
+                                  <!-- class="tool_tip" -->
+                                  <div *ngIf="dept?.description" style="display: block;">
+                                    <div class="parent-div"
+                                      style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; ">
+                                      {{ dept?.truncated_desc}}
+                                      <!-- {{ dept?.description }} -->
+                                      <!-- <div class="text-div">
                             {{ dept?.description }}
                           </div> -->
-                                </div>
+                                    </div>
 
-                              </div>
-                            </span>
-                          </td>
-                          <!-- *ngIf="dept?.default !== true" -->
+                                  </div>
+                                </span>
+                              </td>
+                              <!-- *ngIf="dept?.default !== true" -->
 
 
-                          <!-- // BOT -->
-                          <!-- *ngIf="dept?.default !== true" -->
-                          <td class="dept-td">
-                            <span *ngIf="dept?.id_bot">
-                              <!-- <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                              <!-- // BOT -->
+                              <!-- *ngIf="dept?.default !== true" -->
+                              <td class="dept-td">
+                                <span *ngIf="dept?.id_bot">
+                                  <!-- <span style="color: #7695a5; font-size: 12px; font-weight:400">
                             {{ 'DepartmentsPage.ActivatedBot' | translate }}
                           </span> -->
 
-                              <!-- use case: NO ERROR to get the bot -->
-                              <span style="font-size:13px; font-weight:400">
-                                {{ dept?.hasDeptName }}
-                              </span>
-                              <!-- <span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400">
+                                  <!-- use case: NO ERROR to get the bot -->
+                                  <span style="font-size:13px; font-weight:400">
+                                    {{ dept?.hasDeptName }}
+                                  </span>
+                                  <!-- <span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400">
                             {{ 'DepartmentsPage.OnlyBot' | translate }}
                           </span> -->
 
-                              <span *ngIf="dept.botHasBeenTrashed == true">
-                                <i class="material-icons"
-                                  style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                                <span style="color: #ff5252; font-size:12px;position: relative; top: 1px;">
-                                  {{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                  <span *ngIf="dept.botHasBeenTrashed == true">
+                                    <i class="material-icons"
+                                      style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                    <span style="color: #ff5252; font-size:12px;position: relative; top: 1px;">
+                                      {{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                    </span>
+                                  </span>
+
+                                  <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) so getBotById return an error  -->
+
                                 </span>
-                              </span>
 
-                              <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) so getBotById return an error  -->
-
-                            </span>
-
-                            <span *ngIf="!dept?.id_bot" class="no-bot">
-                              {{ 'DepartmentsPage.NoBotActivated' | translate }}
-                            </span>
-                          </td>
-
-                          <!-- *ngIf="dept?.default !== true" -->
-                          <td class="dept-td" style="text-transform: capitalize;">
-                            <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
-                          </td>
-
-                          <!-- // OPERATORS -->
-                          <!-- *ngIf="dept?.default !== true" -->
-                          <td class="dept-td" style="font-weight:400">
-
-                            <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
-                            <!-- dept?.routing !== 'fixed' &&  -->
-                            <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
-                              <span style="color: #7695a5; font-size: 12px; font-weight:400">
-                                {{ 'DepartmentsPage.Group' | translate }}
-                              </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
-                            </span>
-
-                            <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
-                            <!-- dept?.routing !== 'fixed' &&  -->
-                            <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
-                              <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' |
-                                translate
-                                }}
-                              </span>
-                              <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
-                              <i class="material-icons"
-                                style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                              <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
-                                'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
-                              </span>
-                            </span>
-
-                            <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
-                            <!-- dept?.routing !== 'fixed' &&  -->
-                            <span *ngIf="!dept?.hasGroupName" style="font-size:13px">
-                              {{ 'DepartmentsPage.AllUsers' | translate }}
-                            </span>
-
-                          </td>
-
-                          <!-- ACTIONS -->
-                          <td class="dept-td" class="td-actions text-right"
-                            style="padding-bottom: 6px !important;padding-top: 18px !important;">
-                            <button type="button" rel="tooltip"
-                              title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
-                              class="btn btn-primary btn-simple btn-xs"
-                              (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
-                              <i class="material-icons">edit</i>
-                            </button>
-                          </td>
-                        </tr>
-                      </ng-container>
-                    </tbody>
-                  </table>
-                </section>
-                <!-- ----- ./ DEFAULT DEPTS ------ -->
-
-
-                <!-- ---------------------------------------------------------- -->
-                <!-- DEPT LIST TABLE SECTION -->
-                <!-- ---------------------------------------------------------- -->
-                <section class="departments-table" *ngIf="isVisibleDEP">
-
-                  <div class="row table-title-wpr">
-                    <div class="col-xs-12">
-                      <h3 class="card_title__underlined">
-                        <span class="card_title__underline">
-                          {{ "Departments" | translate }}
-                          <ng-container *ngIf="payIsVisible">
-                            <span *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.B && !subscription_is_active || profile_name === PLAN_NAME.E && !subscription_is_active  || profile_name === PLAN_NAME.EE && !subscription_is_active || profile_name === PLAN_NAME.C && !subscription_is_active || profile_name === PLAN_NAME.F && !subscription_is_active || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
-                              class="from-b-plan-badge"> 
-                                <span *ngIf="!isAppSumo"> 
-                                  {{'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
+                                <span *ngIf="!dept?.id_bot" class="no-bot">
+                                  {{ 'DepartmentsPage.NoBotActivated' | translate }}
                                 </span>
-                                <span *ngIf="isAppSumo">  
-                                  {{'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+                              </td>
+
+                              <!-- *ngIf="dept?.default !== true" -->
+                              <td class="dept-td" style="text-transform: capitalize;">
+                                <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
+                              </td>
+
+                              <!-- // OPERATORS -->
+                              <!-- *ngIf="dept?.default !== true" -->
+                              <td class="dept-td" style="font-weight:400">
+
+                                <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
+                                <!-- dept?.routing !== 'fixed' &&  -->
+                                <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
+                                  <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                                    {{ 'DepartmentsPage.Group' | translate }}
+                                  </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
                                 </span>
-                            </span>
+
+                                <!-- USE CASE 2: THE DEPT HAS GROUP load balancing  -->
+                                <span *ngIf="dept?.hasGroupsName">
+                                  <span style="color: #7695a5; font-size: 12px; font-weight:400; text-transform: lowercase; position: relative; top: -2px;">
+                                    {{ 'Groups' | translate }}:
+                                  </span> 
+                                  <span style="font-weight:400;font-size:13px;width: 150px; display: inline-block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;top: 4px;"> 
+                                    {{ dept?.hasGroupsName }} 
+                                  </span>
+                                </span>
+
+                                <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
+                                <!-- dept?.routing !== 'fixed' &&  -->
+                                <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
+                                  <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' |
+                                    translate
+                                    }}
+                                  </span>
+                                  <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
+                                  <i class="material-icons"
+                                    style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                  <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
+                                    'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                                  </span>
+                                </span>
+
+                                <!-- USE CASE 4: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
+                                <!-- dept?.routing !== 'fixed' &&  -->
+                                <span *ngIf="!dept?.hasGroupName && !dept?.hasGroupsName" style="font-size:13px">
+        
+                                  {{ 'DepartmentsPage.AllUsers' | translate }}
+                                </span>
+
+                              </td>
+
+                              <!-- ACTIONS -->
+                              <td class="dept-td" class="td-actions text-right"
+                                style="padding-bottom: 6px !important;padding-top: 18px !important;">
+                                <button type="button" rel="tooltip"
+                                  title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
+                                  class="btn btn-primary btn-simple btn-xs"
+                                  (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
+                                  <i class="material-icons">edit</i>
+                                </button>
+                              </td>
+                            </tr>
                           </ng-container>
-                        </span>
-                      </h3>
-                    </div>
-                    <div class="col-xs-12">
-                      <div class="section-subtitle"> </div>
-                    </div>
-                  </div>
+                        </tbody>
+                      </table>
+                    </section>
+                    <!-- ----- ./ DEFAULT DEPTS ------ -->
 
-                  <table class="table depts-tabe">
-                    <thead>
-                      <tr>
-                        <th></th>
 
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{ "Name" | translate }}
-                          </span>
-                        </th>
+                    <!-- ---------------------------------------------------------- -->
+                    <!-- DEPT LIST TABLE SECTION -->
+                    <!-- ---------------------------------------------------------- -->
+                    <section class="departments-table" *ngIf="isVisibleDEP">
 
-                        <th style="white-space: nowrap;">
-                          <span class="r-d--column-th-span">
-
-                            {{ "DepartmentsPage.Visible" | translate }}
-                            <span class="tooltip_custom">
-                              <!-- class="tooltip-question-mark" -->
-                              <span>
-                                <i class="material-icons"
-                                  style="position: relative;top: 3px; font-size:16px; color:#7695a5">
-                                  help_outline
-                                </i>
-                              </span>
-                              <span class="tooltiptext_custom" style="white-space: normal;">
-                                {{"DepartmentsPage.VisibleColumnTooltip" | translate}}</span>
+                      <div class="row table-title-wpr">
+                        <div class="col-xs-12">
+                          <h3 class="card_title__underlined">
+                            <span class="card_title__underline">
+                              {{ "Departments" | translate }}
+                              <ng-container *ngIf="payIsVisible">
+                                <span
+                                  *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.B && !subscription_is_active || profile_name === PLAN_NAME.E && !subscription_is_active  || profile_name === PLAN_NAME.EE && !subscription_is_active || profile_name === PLAN_NAME.C && !subscription_is_active || profile_name === PLAN_NAME.F && !subscription_is_active || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
+                                  class="from-b-plan-badge">
+                                  <span *ngIf="!isAppSumo">
+                                    {{'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
+                                  </span>
+                                  <span *ngIf="isAppSumo">
+                                    {{'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+                                  </span>
+                                </span>
+                              </ng-container>
                             </span>
-                          </span>
-                        </th>
+                          </h3>
+                        </div>
+                        <div class="col-xs-12">
+                          <div class="section-subtitle"> </div>
+                        </div>
+                      </div>
 
-                        <!-- <th>
+                      <table class="table depts-tabe">
+                        <thead>
+                          <tr>
+                            <th></th>
+
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{ "Name" | translate }}
+                              </span>
+                            </th>
+
+                            <th style="white-space: nowrap;">
+                              <span class="r-d--column-th-span">
+
+                                {{ "DepartmentsPage.Visible" | translate }}
+                                <span class="tooltip_custom">
+                                  <!-- class="tooltip-question-mark" -->
+                                  <span>
+                                    <i class="material-icons"
+                                      style="position: relative;top: 3px; font-size:16px; color:#7695a5">
+                                      help_outline
+                                    </i>
+                                  </span>
+                                  <span class="tooltiptext_custom" style="white-space: normal;">
+                                    {{"DepartmentsPage.VisibleColumnTooltip" | translate}}</span>
+                                </span>
+                              </span>
+                            </th>
+
+                            <!-- <th>
                     <span style="color: #566787"> 
                       <strong>
                         Id
@@ -401,26 +416,26 @@
                     </span>
                   </th> -->
 
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{'AIAgent' | translate}}
-                          </span>
-                        </th>
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{'AIAgent' | translate}}
+                              </span>
+                            </th>
 
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{ 'Routing' | translate}}
-                          </span>
-                        </th>
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{ 'Routing' | translate}}
+                              </span>
+                            </th>
 
-                        <th>
-                          <span class="r-d--column-th-span">
-                            {{ "TeammatesCapitalized" | translate }}
-                          </span>
-                        </th>
+                            <th>
+                              <span class="r-d--column-th-span">
+                                {{ "TeammatesCapitalized" | translate }}
+                              </span>
+                            </th>
 
-                        <!-- Creation Date -->
-                        <!-- <th>
+                            <!-- Creation Date -->
+                            <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         {{ "DepartmentsPage.CreationDate" | translate }}
@@ -428,134 +443,138 @@
                     </span>
                   </th> -->
 
-                        <th>
-                          <span class="r-d--column-th-span">
-                            <!-- {{ "DepartmentsPage.Actions" | translate }} -->
-                            {{ "Actions" | translate }}
-                          </span>
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-
-
-
-                      <tr class="add-department-wpr" (click)='goToEditAddPage_CREATE()'>
-                        <td class="dept-td" style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;">
-                          <!--  -->
-                          <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
-                            <!-- <span class="tooltipx"> -->
-                            <span class="dept-avatar-add-dept">
-                              <span class="material-icons"> add </span>
-                            </span>
-                          </span>
-                        </td>
-                        <td class="add-department-text-wpr" colspan="4">
-                     
-                          <span class="add-department">
-                            {{ "DepartmentsPage.AddDepartment" | translate }}
-                          </span>
-                        </td>
-
-                      </tr>
-
-
-                      <!-- IF THERE ISN'T DEPARTMENTS -->
-                      <tr *ngIf="departments?.length === 1">
-                        <td colspan="8" style="text-align: center; padding-top: 16px;">
-                          <!-- color: #ff5252   -->
-                          <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                            <i class="material-icons"
-                              style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
-                              info
-                            </i>
-                            {{ 'DepartmentsPage.NoDept' | translate }}
-                          </p>
-                        </td>
-                      </tr>
-
-
-                      <!-- /// DEPTS for -->
-                      <ng-container *ngFor="let dept of departments; let i = index">
-                        <tr *ngIf="dept?.default !== true">
-                          <td class="dept-td"
-                            style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;"
-                            (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
-                            <!--  -->
-                            <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
-                              <!-- <span class="tooltipx"> -->
-                              <span class="dept-avatar" [ngStyle]="{'background-color': dept?.dept_name_fillcolour }"
-                                [ngClass]="{'dept-not-visible': dept?.status === 0}">
-                                {{ dept?.dept_name_initial }}
+                            <th>
+                              <span class="r-d--column-th-span">
+                                <!-- {{ "DepartmentsPage.Actions" | translate }} -->
+                                {{ "Actions" | translate }}
                               </span>
+                            </th>
+                          </tr>
+                        </thead>
 
-                              <!-- <span class="tooltiptext" style="margin-left: -43px;">
+                        <tbody>
+
+
+
+                          <tr class="add-department-wpr" (click)='goToEditAddPage_CREATE()'>
+                            <td class="dept-td"
+                              style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;">
+                              <!--  -->
+                              <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
+                                <!-- <span class="tooltipx"> -->
+                                <span class="dept-avatar-add-dept">
+                                  <span class="material-icons"> add </span>
+                                </span>
+                              </span>
+                            </td>
+                            <td class="add-department-text-wpr" colspan="4">
+
+                              <span class="add-department">
+                                {{ "DepartmentsPage.AddDepartment" | translate }}
+                              </span>
+                            </td>
+
+                          </tr>
+
+
+                          <!-- IF THERE ISN'T DEPARTMENTS -->
+                          <tr *ngIf="departments?.length === 1">
+                            <td colspan="8" style="text-align: center; padding-top: 16px;">
+                              <!-- color: #ff5252   -->
+                              <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                                <i class="material-icons"
+                                  style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                                  info
+                                </i>
+                                {{ 'DepartmentsPage.NoDept' | translate }}
+                              </p>
+                            </td>
+                          </tr>
+
+
+                          <!-- /// DEPTS for -->
+                          <ng-container *ngFor="let dept of departments; let i = index">
+                            <tr *ngIf="dept?.default !== true">
+                              <td class="dept-td"
+                                style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;"
+                                (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
+                                <!--  -->
+                                <span class="dept-avatar-wrapper" style="position: relative; top: -4px;">
+                                  <!-- <span class="tooltipx"> -->
+                                  <span class="dept-avatar"
+                                    [ngStyle]="{'background-color': dept?.dept_name_fillcolour }"
+                                    [ngClass]="{'dept-not-visible': dept?.status === 0}">
+                                    {{ dept?.dept_name_initial }}
+                                  </span>
+
+                                  <!-- <span class="tooltiptext" style="margin-left: -43px;">
                           {{'DeptId' | translate}}: <br> {{ dept?._id }}
                          </span>
                       </span> -->
-                              <!-- dept?.default === true && departments?.length > 1 -->
-                              <span class="default-dept-disabled-badge" *ngIf="dept?.status === 0">
-                                <span class="tool_tip">
-                                  <span class="material-icons" style="height: 17px;width: 19px;">
-                                    visibility_off
+                                  <!-- dept?.default === true && departments?.length > 1 -->
+                                  <span class="default-dept-disabled-badge" *ngIf="dept?.status === 0">
+                                    <span class="tool_tip">
+                                      <span class="material-icons" style="height: 17px;width: 19px;">
+                                        visibility_off
 
-                                  </span>
-                                  <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                    <h4 style="font-weight:400"> {{dept?.name}} {{ 'IsSetToNotVisible' | translate }}
-                                    </h4>
+                                      </span>
+                                      <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                        <h4 style="font-weight:400"> {{dept?.name}} {{ 'IsSetToNotVisible' | translate
+                                          }}
+                                        </h4>
 
-                                    <i></i>
+                                        <i></i>
+                                      </span>
+                                    </span>
                                   </span>
+
+
+                                  <span class="default-dept-active-badge" *ngIf="dept?.status === 1">
+                                    <span class="tool_tip">
+                                      <span class="material-icons" style="height: 17px;width: 19px;">
+                                        visibility
+                                      </span>
+                                      <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                        <h4 style="font-weight:400"> {{dept?.name}} {{ 'IsSetToVisible' | translate }}
+                                        </h4>
+
+                                        <i></i>
+                                      </span>
+                                    </span>
+                                  </span>
+
                                 </span>
-                              </span>
+                              </td>
+
+                              <!-- *ngIf="dept?.default !== true" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'-->
+                              <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
+                                <span>
+                                  <span style="font-weight: 400;font-size:13px" class="tool_tip">
+                                    {{ dept?.name }}
 
 
-                              <span class="default-dept-active-badge" *ngIf="dept?.status === 1">
-                                <span class="tool_tip">
-                                  <span class="material-icons" style="height: 17px;width: 19px;">
-                                    visibility
+                                    <div class="right" style="padding: 5px;" *ngIf="dept?.description">
+                                      <h4>{{ 'Description' | translate }}</h4>
+                                      <div class="line-clamp-dept-description-in-tooltip"> {{ dept?.description}} </div>
+                                      <i></i>
+                                    </div>
                                   </span>
-                                  <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                    <h4 style="font-weight:400"> {{dept?.name}} {{ 'IsSetToVisible' | translate }}</h4>
 
-                                    <i></i>
-                                  </span>
+                                  <!-- class="tool_tip" -->
+                                  <div *ngIf="dept?.description" style="display: block;">
+                                    <div class="parent-div"
+                                      style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; ">
+                                      {{ dept?.truncated_desc}}
+
+                                    </div>
+                                  </div>
                                 </span>
-                              </span>
-
-                            </span>
-                          </td>
-
-                          <!-- *ngIf="dept?.default !== true" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'-->
-                          <td class="dept-td" (click)='goToEditAddPage_EDIT(dept?._id, dept?.default)'>
-                            <span>
-                              <span style="font-weight: 400;font-size:13px" class="tool_tip">
-                                {{ dept?.name }}
+                              </td>
 
 
-                                <div class="right" style="padding: 5px;" *ngIf="dept?.description">
-                                  <h4>{{ 'Description' | translate }}</h4>
-                                  <div class="line-clamp-dept-description-in-tooltip"> {{ dept?.description}} </div>
-                                  <i></i>
-                                </div>
-                              </span>
-
-                              <!-- class="tool_tip" -->
-                              <div *ngIf="dept?.description" style="display: block;">
-                                <div class="parent-div"
-                                  style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; ">
-                                  {{ dept?.truncated_desc}}
-
-                                </div>
-                              </div>
-                            </span>
-                          </td>
-
-
-                          <!-- // VISIBILITY ON / OFF -->
-                          <td class="dept-td">
-                            <!-- <div *ngIf="dept?.default !== true" class="checkbox">
+                              <!-- // VISIBILITY ON / OFF -->
+                              <td class="dept-td">
+                                <!-- <div *ngIf="dept?.default !== true" class="checkbox">
                           <label>
                             <input [checked]="dept?.status" type="checkbox" name="optionsCheckboxes"
                               (change)="updateDeptStatus($event, dept?._id)">
@@ -563,211 +582,230 @@
                           </label>
                         </div> -->
 
-                            <div class="nw-onoffswitch-wrapper" style="clear: both;">
-                              <div class="nw-onoffswitch">
-                                <input (change)="updateDeptStatus($event, dept?._id)" type="checkbox"
-                                  name="{{'nw-visibility-switch_' + i}}" class="nw-onoffswitch-checkbox"
-                                  id="{{'nw-visibility-switch_'+ i}}" [checked]="dept?.status">
-                                <label class="nw-onoffswitch-label" for="{{'nw-visibility-switch_'+ i}}"
-                                  style="margin-bottom: 0px;"></label>
-                              </div>
-                            </div>
-                          </td>
+                                <div class="nw-onoffswitch-wrapper" style="clear: both;">
+                                  <div class="nw-onoffswitch">
+                                    <input (change)="updateDeptStatus($event, dept?._id)" type="checkbox"
+                                      name="{{'nw-visibility-switch_' + i}}" class="nw-onoffswitch-checkbox"
+                                      id="{{'nw-visibility-switch_'+ i}}" [checked]="dept?.status">
+                                    <label class="nw-onoffswitch-label" for="{{'nw-visibility-switch_'+ i}}"
+                                      style="margin-bottom: 0px;"></label>
+                                  </div>
+                                </div>
+                              </td>
 
 
-                          <!-- // BOT -->
-                          <!-- *ngIf="dept?.default !== true" -->
-                          <td class="dept-td">
-                            <span *ngIf="dept?.id_bot">
-                              <!-- <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                              <!-- // BOT -->
+                              <!-- *ngIf="dept?.default !== true" -->
+                              <td class="dept-td">
+                                <span *ngIf="dept?.id_bot">
+                                  <!-- <span style="color: #7695a5; font-size: 12px; font-weight:400">
                             {{ 'DepartmentsPage.ActivatedBot' | translate }}
                           </span> -->
 
-                              <!-- use case: NO ERROR to get the bot -->
-                              <span style="font-size:13px; font-weight:400">
-                                {{ dept?.hasDeptName }}
-                              </span>
-                              <!-- <span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400">
+                                  <!-- use case: NO ERROR to get the bot -->
+                                  <span style="font-size:13px; font-weight:400">
+                                    {{ dept?.hasDeptName }}
+                                  </span>
+                                  <!-- <span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400">
                             {{ 'DepartmentsPage.OnlyBot' | translate }}
                           </span> -->
 
-                              <span *ngIf="dept.botHasBeenTrashed == true">
-                                <i class="material-icons"
-                                  style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                                <span style="color: #ff5252; font-size:12px;position: relative; top: 1px;">
-                                  {{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
-                                </span>
-                              </span>
+                                  <span *ngIf="dept.botHasBeenTrashed == true">
+                                    <i class="material-icons"
+                                      style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                    <span style="color: #ff5252; font-size:12px;position: relative; top: 1px;">
+                                      {{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                    </span>
+                                  </span>
 
-                              <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) 
+                                  <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) 
                       so getBotById return an error  -->
-                              <!-- <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
+                                  <!-- <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
                       <span style="color: #ff5252; font-size:12px; vertical-align: middle;">      
                         bot non trovato 
                       </span>  -->
-                            </span>
+                                </span>
 
-                            <span *ngIf="!dept?.id_bot" class="no-bot">
-                              {{ 'DepartmentsPage.NoBotActivated' | translate }}
-                            </span>
-                          </td>
+                                <span *ngIf="!dept?.id_bot" class="no-bot">
+                                  {{ 'DepartmentsPage.NoBotActivated' | translate }}
+                                </span>
+                              </td>
 
-                          <!-- *ngIf="dept?.default !== true" -->
-                          <td class="dept-td" style="text-transform: capitalize;">
-                            <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
-                          </td>
+                              <!-- *ngIf="dept?.default !== true" -->
+                              <td class="dept-td" style="text-transform: capitalize;">
+                                <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
+                              </td>
 
-                          <!-- // OPERATORS -->
-                          <!-- *ngIf="dept?.default !== true" -->
-                          <td class="dept-td" style="font-weight:400">
+                              <!-- // OPERATORS -->
+                              <!-- *ngIf="dept?.default !== true" -->
+                              <td class="dept-td" style="font-weight:400">
 
-                            <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
-                            <!-- dept?.routing !== 'fixed' &&  -->
-                            <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
-                              <span style="color: #7695a5; font-size: 12px; font-weight:400">
-                                {{ 'DepartmentsPage.Group' | translate }}
-                              </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
-                            </span>
+                                <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
+                                <!-- dept?.routing !== 'fixed' &&  -->
+                                <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
+                                  <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                                    {{ 'DepartmentsPage.Group' | translate }}
+                                  </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
+                                </span>
 
-                            <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
-                            <!-- dept?.routing !== 'fixed' &&  -->
-                            <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
-                              <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' |
-                                translate
-                                }}
-                              </span>
-                              <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
-                              <i class="material-icons"
-                                style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                              <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
-                                'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
-                              </span>
-                            </span>
+                                <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
+                                <!-- dept?.routing !== 'fixed' &&  -->
+                                <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
+                                  <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' |
+                                    translate
+                                    }}
+                                  </span>
+                                  <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
+                                  <i class="material-icons"
+                                    style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                  <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
+                                    'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                                  </span>
+                                </span>
 
-                            <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
-                            <!-- dept?.routing !== 'fixed' &&  -->
-                            <span *ngIf="!dept?.hasGroupName" style="font-size:13px">
-                              {{ 'DepartmentsPage.AllUsers' | translate }}
-                            </span>
+                                <!-- USE CASE 3: THE DEPT HAS GROUP load balancing  -->
+                                <span *ngIf="dept?.hasGroupsName">
+                                  <span style="color: #7695a5; font-size: 12px; font-weight:400; text-transform: lowercase; position: relative; top: -2px;">
+                                    {{ 'Groups' | translate }}:
+                                  </span> 
+                                  <span style="font-weight:400;font-size:13px; width: 150px;display: inline-block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; position: relative;top: 4px;">
+                                     {{ dept?.hasGroupsName }} 
+                                  </span>
+                                </span>
 
-
-                          </td>
-
-                          <!-- <td *ngIf="dept?.default !== true">
-                    {{ dept?.createdAt | date: 'd/M/y'}}
-                  </td> -->
-
-
-                          <!-- <td style="text-align: center!important">
-                    <span class="button is-small is-danger" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
-                      Delete
-                    </span>
-                  </td>
-                  <td style="text-align: center!important">
-                    <span class="button is-small is-warning" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
-                      Edit
-                    </span>
-                  </td> -->
-
-                          <!-- NEW EDIT ADD -->
-                          <!-- *ngIf="dept?.default !== true"   [disabled]="dept?.default === true && departments?.length > 1"-->
-                          <td class="dept-td" class="td-actions text-right"
-                            style="padding-bottom: 6px !important;padding-top: 18px !important;">
-                            <button type="button" rel="tooltip"
-                              title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
-                              class="btn btn-primary btn-simple btn-xs"
-                              (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
-                              <i class="material-icons">edit</i>
-                            </button>
-                            <!-- *ngIf="dept?.default !== true" -->
-                            <button *ngIf="dept?.default !== true" type="button" rel="tooltip"
-                              title="{{ 'DepartmentsPage.tooltipDeleteDept' | translate }}"
-                              class="btn btn-danger btn-simple btn-xs"
-                              (click)='$event.stopPropagation(); openDeleteModal(dept?._id, dept?.name)'>
-                              <i class="material-icons">close</i>
-                            </button>
-                          </td>
-
-                        </tr>
-                      </ng-container>
-                    </tbody>
-                  </table>
-                </section>
-
-              </div>
-            </div>
-          </div> <!-- /. col-md-12 -->
+                                <!-- USE CASE 4: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
+                                <!-- dept?.routing !== 'fixed' &&  -->
+                                <span *ngIf="!dept?.hasGroupName && !dept?.hasGroupsName" style="font-size:13px">
+                                  {{ 'DepartmentsPage.AllUsers' | translate }}
+                                </span>
 
 
+                              </td>
 
-          <!-- --------------------------------------------------- -->
-          <!-- @ Right sidebar -->
-          <!-- --------------------------------------------------- -->
+                                            <!-- <td *ngIf="dept?.default !== true">
+                                  {{ dept?.createdAt | date: 'd/M/y'}}
+                                </td> -->
 
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 
-            <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
-              <div class="card-content" style="padding-top: 0px;">
-                <!-- <h4 class="card-title"
+                                            <!-- <td style="text-align: center!important">
+                                  <span class="button is-small is-danger" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
+                                    Delete
+                                  </span>
+                                </td>
+                                <td style="text-align: center!important">
+                                  <span class="button is-small is-warning" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
+                                    Edit
+                                  </span>
+                                </td> -->
+
+                              <!-- NEW EDIT ADD -->
+                              <!-- *ngIf="dept?.default !== true"   [disabled]="dept?.default === true && departments?.length > 1"-->
+                              <td class="dept-td" class="td-actions text-right"
+                                style="padding-bottom: 6px !important;padding-top: 18px !important;">
+                                <button type="button" rel="tooltip"
+                                  title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
+                                  class="btn btn-primary btn-simple btn-xs"
+                                  (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
+                                  <i class="material-icons">edit</i>
+                                </button>
+                                <!-- *ngIf="dept?.default !== true" -->
+                                <button *ngIf="dept?.default !== true" type="button" rel="tooltip"
+                                  title="{{ 'DepartmentsPage.tooltipDeleteDept' | translate }}"
+                                  class="btn btn-danger btn-simple btn-xs"
+                                  (click)='$event.stopPropagation(); openDeleteModal(dept?._id, dept?.name)'>
+                                  <i class="material-icons">close</i>
+                                </button>
+                              </td>
+
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </section>
+
+                  </div>
+                </div>
+              </div> <!-- /. col-md-12 -->
+
+
+
+              <!-- --------------------------------------------------- -->
+              <!-- @ Right sidebar -->
+              <!-- --------------------------------------------------- -->
+
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+
+                <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
+                  <div class="card-content" style="padding-top: 0px;">
+                    <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
                   {{ "QuickTips" | translate }}
                 </h4> -->
 
-                <div class="row">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined">
-                      <span class="card_title__underline">
-                        {{ "QuickTips" | translate }}
-                      </span>
-                    </h3>
-                  </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            {{ "QuickTips" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
+
+                    <p style="color:#7695a5">
+                      {{ "DeptQuickTips_1" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "DeptQuickTips_2" | translate }}
+                    </p>
+                    <p class="title-attribute" style="margin-bottom: 3px">
+                      {{'DefaultDepartment' | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "DeptQuickTips_3" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "DeptQuickTips_4" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "DeptQuickTips_5" | translate }}
+                    </p>
+
+                    <ng-container *ngIf="isVisibleDEP">
+                      <p class="title-attribute" style="margin-bottom: 3px">
+                        Widget & {{'Routing' | translate}}
+                      </p>
+                      <p style="color:#7695a5">
+                        {{ "DeptQuickTips_6" | translate }}
+                      </p>
+                      <p style="color:#7695a5">
+                        {{ "DeptQuickTips_7" | translate }}
+                      </p>
+                      <p style="color:#7695a5">
+                        {{ "DeptQuickTips_8" | translate }}
+                      </p>
+                      <div class="quick-tip-img-wpr" style="text-align: center;">
+                        <img src="assets/img/select_a_topic.png" style="max-width: 250px;">
+                      </div>
+                    </ng-container>
+
                   </div>
                 </div>
 
-                <p style="color:#7695a5">
-                  {{ "DeptQuickTips_1" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "DeptQuickTips_2" | translate }}
-                </p>
-                <p class="title-attribute" style="margin-bottom: 3px">
-                  {{'DefaultDepartment' | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "DeptQuickTips_3" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "DeptQuickTips_4" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "DeptQuickTips_5" | translate }}
-                </p>
-
-                <ng-container *ngIf="isVisibleDEP">
-                  <p class="title-attribute" style="margin-bottom: 3px">
-                    Widget & {{'Routing' | translate}}
-                  </p>
-                  <p style="color:#7695a5">
-                    {{ "DeptQuickTips_6" | translate }}
-                  </p>
-                  <p style="color:#7695a5">
-                    {{ "DeptQuickTips_7" | translate }}
-                  </p>
-                  <p style="color:#7695a5">
-                    {{ "DeptQuickTips_8" | translate }}
-                  </p>
-                  <div class="quick-tip-img-wpr" style="text-align: center;">
-                    <img src="assets/img/select_a_topic.png" style="max-width: 250px;">
-                  </div>
-                </ng-container>
-
               </div>
-            </div>
+            </div> <!-- /. row -->
 
-          </div>
-        </div> <!-- /. row -->
+
+          </ng-container>
+
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+
+          </ng-template>
+        </ng-container>
 
       </div>
 
@@ -791,7 +829,7 @@
         <h4 class="modal-title warning">
           <!-- Delete department with id: -->
           <!-- <i class="material-icons" style="vertical-align: middle;">report_problem</i> -->
-          <span class="modal-header-icon-wpr"> 
+          <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
                 d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
@@ -809,7 +847,7 @@
       </div>
 
       <div class="modal-body">
-       
+
         <p class="modal-body--content">
           {{ "DepartmentsPage.AreYouSure" | translate }}
           <span>
@@ -820,7 +858,7 @@
 
       <div class="modal-footer">
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
-         
+
           {{ "Cancel" | translate }}
         </button>
         <button type="button" class="btn btn-red" (click)="onCloseDeleteModalHandled()">

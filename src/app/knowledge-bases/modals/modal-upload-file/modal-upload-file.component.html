@@ -24,8 +24,8 @@
     <div [class.is-hidden]="hideDropZone === true" class="supported-file-text"> 
         <span *ngIf="!fileSizeExceeds && fileSupported">
             
-           {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}}
-           <!-- {{'SupportedFileTypesPdfDocx' | translate: tparams}} -->
+            {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}}
+            <!-- {{'SupportedFileTypesPdfDocx' | translate: tparams}} -->
             
         </span>
         <span class="file-size-exceeds" *ngIf="fileSizeExceeds">

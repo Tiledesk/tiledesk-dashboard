@@ -9,19 +9,7 @@
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span>
-<!-- <span class="navbar-brand navbar-brand-title">
-  {{ "Groups" | translate }}
-</span> -->
 
-
-<!-- <ul class="bottom-nav">
-    <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
-        <a> {{ "Users" | translate }} </a>
-    </li>
-    <li class="btn-with-border-effect li-active">
-        <a> {{ "Groups" | translate }} </a>
-    </li>
-</ul> -->
 
 <div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
   <div class="page-title--sidebar-settings"
@@ -38,409 +26,536 @@
 
       <div class="teplate-content" style="flex: 1 1 auto;">
 
-        <!-- box-shadow: unset -->
-        <ul class="bottom-nav" style="top:-9px;">
-          <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
+        <!-- box-shadow: unset  style="top:-9px;"-->
+        <ul [ngClass]="{ 'bottom-nav': isAuthorized, 'bottom-nav-fixed': !isAuthorized}">
+          <li *ngIf="PERMISSION_TO_VIEW_TEAMMATES" class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
             <a> {{ "TeammatesCapitalized" | translate }} </a>
           </li>
-          <li class="btn-with-border-effect li-active">
+          <li *ngIf="PERMISSION_TO_VIEW_ROLES" class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
+            <a style="text-transform: capitalize;"> {{ "Roles" | translate }} </a>
+          </li>
+          <li  class="btn-with-border-effect li-active">
             <a> {{ "Groups" | translate }} </a>
           </li>
         </ul>
 
-        <!-- New group list -->
-        <div class="row">
-          <div class="col-xs-8">
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-            <div class="main--wrapper">
-              <div class="page-title--wrapper">
-                <div class="title--header">
-                  <!-- {{ pageName }} -->
-                </div>
+            <!-- New group list -->
+            <div class="row">
+              <div class="col-xs-12">
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                <div *ngIf="!showSpinner" class="main--wrapper">
 
-                <div class="add-group-btn-wpr">
+                     <div class="container-flex">
+                    <div class="flex-left">
+                      
+                    </div>
 
-                  <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
-                    {{ "GroupsPage.AddGroup" | translate }}
+                    <div class="flex-center">
+                      <div class="search-bar" style="width: 100%;max-width: 300px;">
+                        <input id="search-box" type="text"
+                          [(ngModel)]="searchTerm" 
+                          (ngModelChange)="filterGroups($event)"
+                          placeholder="Search for a group..." 
+                          class="search-input" style="height: 40px;
+                              padding: 5px 10px;
+                              border: 1px solid lightgrey;
+                              border-radius: 9999px;width: 100%;">
+                      </div>
+                    </div>
 
-                  </button>
-                </div>
-              </div>
+                    <div class="flex-right">
+                       <div class="add-group-btn-wpr">
 
-              <div class="no-groups-wpr"  *ngIf="groupsList && groupsList.length === 0">
+                        <button *ngIf="PERMISSION_TO_CREATE_GROUP" class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                          {{ "GroupsPage.AddGroup" | translate }}
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- <div class="page-title--wrapper">
+                    <div class="title--header">
+                      <!- - {{ pageName }} - ->
+                    </div>
+
+                    <div class="add-group-btn-wpr">
+
+                      <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                        {{ "GroupsPage.AddGroup" | translate }}
+
+                      </button>
+                    </div>
+                  </div> -->
+
+                  <div class="no-groups-wpr" *ngIf="groupsList && groupsList.length === 0">
 
 
-                <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                  {{ 'GroupsPage.NoGroups' | translate }}
-                </p>
+                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                      {{ 'GroupsPage.NoGroups' | translate }}
+                    </p>
 
-              </div>
+                  </div>
 
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-              <div class="card-list-wpr" *ngIf="!showSpinner">
-                <div class="card-list" *ngFor="let group of groupsList | sortBy : 'name'">
-                  <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false}" (click)='goToEditAddPage_edit(group?._id)'>
-                    <div class="cl-card-content">
+                  
+                  <div class="card-list-wpr">
+                    <!-- groupsList -->
+                    <div class="card-list" *ngFor="let group of paginatedGroups | sortBy : 'name'">
+                      <div class="cl-card" [ngClass]="{'bg-disabled': group.enabled === false, 'edit-disabled': !PERMISSION_TO_EDIT_GROUP}"
+                        (click)='goToEditAddPage_edit(group?._id)'>
+                        <div class="cl-card-content">
 
-                      <div class="cl-card-first-column">
+                          <div class="cl-card-first-column">
 
-                        <div class="cl-card-img-wpr">
+                            <div class="cl-card-img-wpr">
 
-                          <div class="group-avatar"
-                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + group?.fillColour + ')'}">
-                            <span class="altenative-projetuser-avatar">
-                              {{ group?.groupName_initial }}
-                            </span>
-                          </div>
+                              <div class="group-avatar"
+                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + group?.fillColour + ')'}">
+                                <span class="altenative-projetuser-avatar">
+                                  {{ group?.groupName_initial }}
+                                </span>
+                              </div>
 
-                        </div>
+                            </div>
 
-                        <div class="cl-card-info-wpr">
+                            <div class="cl-card-info-wpr">
 
-                          <span class="cl-card-item-name-wpr">
-                            <div class="cl-card-item-name">
-                              <span>
-                                {{ group?.name }}
+                              <span class="cl-card-item-name-wpr">
+                                <div class="cl-card-item-name">
+                                  <span>
+                                    {{ group?.name }}
+                                  </span>
+                                </div>
                               </span>
                             </div>
-                          </span>
-                        </div>
 
-                      </div>
-
-                      <div class="cl-card-second-column">
-
-                        <div class="cl-card-stats-wpr">
-                          <div id="pu-status-wpr" class="cl-card-item-stats">
-                            <div id="pu-status" class="cl-card-item-stats-title">
-                              {{ "Status" | translate }}
-                            </div>
-
-                            <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
-
-                              <div style="width: 118px; display: flex; justify-content: center; align-items: center;">
-                                <!-- <span  *ngIf="group.enabled === false" class="material-icons-outlined" style="font-size: 16px;">block</span> -->
-                                <p *ngIf="group.enabled === false" style="margin: 0 4px;">{{ "Disabled" | translate }}</p>
-                                <p *ngIf="group.enabled === true" style="margin: 0 4px;">{{'GroupsPage.Active' | translate }}</p>
-                              </div>
-                            </div>
                           </div>
 
-                          <div id="pu-role-wpr" class="cl-card-item-stats">
-                              <div class="cl-card-item-stats-title">
-                                {{ "GroupsPage.Members" | translate }}
+                          <div class="cl-card-second-column">
+
+                            <div class="cl-card-stats-wpr">
+
+                              <!-- <div id="percentage-wpr" class="cl-card-item-stats">
+                                <div id="percentage-status" class="cl-card-item-stats-title">
+                                  Percentance
+                                  <span> </span>
+                                </div>
+
+                                <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+
+                                  <div
+                                    style="width: 118px; display: flex; justify-content: center; align-items: center;">
+                                    <input type="number" id="percentage" [(ngModel)]="group.percentage"
+                                      (ngModelChange)="onPercentageChange(group)" 
+                                        min="0" 
+                                        max="100" 
+                                        [ngStyle]="{
+                                            'border': overflowGroupId === group._id ? '1px solid red' : '1px solid rgba(30, 41, 59, 0.36)',
+                                            'border-radius': '4px',
+                                            'margin-right': '3px',
+                                            'text-align': 'center'
+                                           }" />%
+
+                                           <span *ngIf="overflowGroupId === group._id" style="color: red; font-size: 12px; margin-top: 4px;">
+                                            Total percentage exceeds 100%
+                                        </span> 
+
+
+                                  </div>
+                                </div>
+                              </div> -->
+
+
+                              <div id="pu-status-wpr" class="cl-card-item-stats">
+                                <div id="pu-status" class="cl-card-item-stats-title">
+                                  {{ "Status" | translate }}
+                                </div>
+
+                                <div class="cl-card-item-stats-values" (click)="$event.stopPropagation()">
+
+                                  <div
+                                    style="width: 118px; display: flex; justify-content: center; align-items: center;">
+                                    <!-- <span  *ngIf="group.enabled === false" class="material-icons-outlined" style="font-size: 16px;">block</span> -->
+                                    <p *ngIf="group.enabled === false" style="margin: 0 4px;">{{ "Disabled" | translate
+                                      }}
+                                    </p>
+                                    <p *ngIf="group.enabled === true" style="margin: 0 4px;">{{'GroupsPage.Active' |
+                                      translate }}</p>
+                                  </div>
+                                </div>
                               </div>
-                              <div id="pu-role" class="cl-card-item-stats-values">
-                                {{ group?.members.length }}
+
+                              <div id="pu-role-wpr" class="cl-card-item-stats">
+                                <div class="cl-card-item-stats-title">
+                                  {{ "GroupsPage.Members" | translate }}
+                                </div>
+                                <div id="pu-role" class="cl-card-item-stats-values">
+                                  {{ group?.members.length }}
+                                </div>
                               </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="cl-card-action-wpr">
-                            <div class="cl-card-action-group">
-                              <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                                <button mat-icon-button [matMenuTriggerFor]="moreactions"
-                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
-                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                                  <mat-icon>more_vert</mat-icon>
-                                </button>
-
-
-                                <mat-menu #moreactions="matMenu">
-
-                                  <!-- Modifica Gruppo -->
-                                  <button class="mat-menu-btn" mat-menu-item (click)='goToEditAddPage_edit(group?._id)'>
-                                    <mat-icon>edit</mat-icon>
-                                    <span>{{ 'GroupsPage.tooltipEditGroup' | translate }}</span>
+                            <div class="cl-card-action-wpr">
+                              <div class="cl-card-action-group">
+                                <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
+                                  <button mat-icon-button [matMenuTriggerFor]="moreactions"
+                                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                    <mat-icon>more_vert</mat-icon>
                                   </button>
 
-                                  
-                                  <!-- Disabilita Gruppo -->
-                                  <button class="mat-menu-btn"
-                                    *ngIf="group.enabled !== false"
-                                    mat-menu-item (click)='opendisableModal(group?._id, group?.name)'>
-                                    <mat-icon>close</mat-icon>
-                                    <span>{{'GroupsPage.DisableGroup' | translate }}</span>
-                                  </button>
 
-                                  <!-- Riabilita Gruppo 
+                                  <mat-menu #moreactions="matMenu">
+
+                                    <!-- Modifica Gruppo -->
+                                    <button class="mat-menu-btn" mat-menu-item
+                                      (click)='goToEditAddPage_edit(group?._id)' [disabled]="!PERMISSION_TO_EDIT_GROUP">
+                                      <mat-icon>edit</mat-icon>
+                                      <span>{{ 'GroupsPage.tooltipEditGroup' | translate }}</span>
+                                    </button>
+
+
+                                    <!-- Disabilita Gruppo -->
+                                    <button class="mat-menu-btn" *ngIf="group.enabled !== false" mat-menu-item
+                                      (click)='opendisableModal(group?._id, group?.name)' [disabled]="!PERMISSION_TO_EDIT_GROUP">
+                                      <mat-icon>close</mat-icon>
+                                      <span>{{'GroupsPage.DisableGroup' | translate }}</span>
+                                    </button>
+
+                                    <!-- Riabilita Gruppo 
                                   restoreGroup(group?._id)' -->
-                                  <button class="mat-menu-btn"
-                                    *ngIf="group.enabled === false"
-                                    mat-menu-item  (click)='openRestoreModal(group?._id, group?.name)'>
-                                    <mat-icon>undo</mat-icon>
-                                    <span>{{ "GroupsPage.RestoreGroup" | translate }}</span>
-                                  </button>
+                                    <button class="mat-menu-btn" *ngIf="group.enabled === false" mat-menu-item
+                                      (click)='openRestoreModal(group?._id, group?.name)' [disabled]="!PERMISSION_TO_EDIT_GROUP">
+                                      <mat-icon>undo</mat-icon>
+                                      <span>{{ "GroupsPage.RestoreGroup" | translate }}</span>
+                                    </button>
 
-                                  <!-- Elimima Gruppo -->
-                                  <button class="mat-menu-btn"
-                                    mat-menu-item  (click)='openDeleteModal(group?._id, group?.name)'>
-                                    <mat-icon>delete</mat-icon>
-                                    <span>{{ 'GroupsPage.tooltipDeleteGroup' | translate }}</span>
-                                  </button>
-                                </mat-menu>
+                                    <!-- Elimima Gruppo -->
+                                    <button class="mat-menu-btn" mat-menu-item
+                                      (click)='openDeleteModal(group?._id, group?.name)' [disabled]="!PERMISSION_TO_DELETE_GROUP">
+                                      <mat-icon>delete</mat-icon>
+                                      <span>{{ 'GroupsPage.tooltipDeleteGroup' | translate }}</span>
+                                    </button>
+                                  </mat-menu>
+                                </div>
                               </div>
                             </div>
-                        </div>
 
+                          </div>
+
+                        </div>
                       </div>
 
                     </div>
-                  </div> 
-
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- // RIGHT SIDEBAR -->
-          <div class="col-md-4">
-            <div class="card card card--no-border">
-              <div class="card-content">
-                <div class="row quick-tips-row" style="margin-top: -25px;">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined">
-                      <span class="card_title__underline">
-                        {{ "QuickTips" | translate }}
+  
+                <ng-container  *ngIf="!showSpinner">
+                  <div *ngIf="filteredGroups?.length === 0" class="no-results">
+                    No groups found matching your search criteria.
+                  </div>
+                </ng-container>
+
+                <div class="pagination-controls" *ngIf="totalPages > 1">
+                  <!-- <button (click)="prevPage()" [disabled]="currentPage === 1">Precedente</button> -->
+                   <button  class="btn " (click)="prevPage()" 
+                        style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;    border-top-left-radius: 9999px !important;
+                          border-bottom-left-radius: 9999px !important;
+                          box-shadow: unset; background-color: var(--blue-20);"
+                        [disabled]="currentPage === 1">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      </button>
+
+                  <!-- <span>Pagina {{ currentPage }} di {{ totalPages }}</span> -->
+                   <button class="btn "  style="border-radius: 0px !important;pointer-events: none;  box-shadow: unset;
+                            background-color: var(--blue-20);"> 
+                        {{currentPage}} / {{totalPages}}
+                      </button>
+                  <!-- <button (click)="nextPage()" [disabled]="currentPage === totalPages">Successiva</button> -->
+                   <button class="btn" (click)="nextPage()" 
+                        style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important; border-bottom-right-radius: 9999px !important;
+                            box-shadow: unset;
+                            background-color: var(--blue-20);
+                            border-top-right-radius: 9999px !important;"
+                        [disabled]="currentPage === totalPages">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      </button>
+              </div>
+
+
+              </div>
+
+              <!-- // RIGHT SIDEBAR -->
+              <div class="col-md-4" style="display: none;">
+                <div class="card card card--no-border">
+                  <div class="card-content">
+                    <div class="row quick-tips-row" style="margin-top: -25px;">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            {{ "QuickTips" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
+
+                    <p style="color: #7695a5;">
+
+                      {{ "GroupsQuickTips1" | translate }}
+                      <br>
+                      
+                      {{ "GroupsQuickTips2" | translate }}
+                    </p>
+
+                    <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
+                      {{ "RelatedKnowledgeBase" | translate }}
+                    </p>
+                    <p class="help-link" *ngIf="hideHelpLink">
+
+                      <span>
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                          fill="none" style="vertical-align: middle;">
+                          <path
+                            d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                        </svg>
                       </span>
-                    </h3>
-                  </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
+                      <a (click)="goToGroupsDoc()">
+
+                        {{ 'LearnHowCreateAGroup' | translate }}
+                      </a>
+                    </p>
                   </div>
                 </div>
-
-                <p style="color: #7695a5;">
-                  <!-- Use groups to organize support teams. -->
-                  {{ "GroupsQuickTips1" | translate }}
-                  <br>
-                  <!-- You can group agents based on skills and assign groups of agents to your departments. -->
-                  {{ "GroupsQuickTips2" | translate }}
-                </p>
-
-                <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
-                  {{ "RelatedKnowledgeBase" | translate }}
-                </p>
-                <p class="help-link" *ngIf="hideHelpLink">
-
-                  <span>
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                      fill="none" style="vertical-align: middle;">
-                      <path
-                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                    </svg>
-                  </span>
-                  <a (click)="goToGroupsDoc()">
-
-                    {{ 'LearnHowCreateAGroup' | translate }}
-                  </a>
-                </p>
               </div>
-            </div>
-          </div>
-          <!-- new group list -->
 
-          <!-- Old group list -->
-          <div class="row group-row" style=" margin-left: 20px;" style="display: none;">
-            <div class="col-md-8">
-              <div class="card card--no-border group-card">
+              <!-- Old group list -->
+              <div class="row group-row" style=" margin-left: 20px;" style="display: none;">
+                <div class="col-md-8">
 
-                <div class="card-header card-header-custom-bkgrnd">
-                  <!-- style="padding: 8px 16px;margin:0px;" -->
-                  <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
-                    <!-- <span class="icon" style="padding-right:8px">
-                    <i class="material-icons">add_circle</i>
-                  </span> -->
+                  <div class="page-title---wrapper">
+                    <div class="title--header">
+                      <!-- {{ pageName }} -->
+                    </div>
+                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                      {{ "GroupsPage.AddGroup" | translate }}
 
-                    {{ "GroupsPage.AddGroup" | translate }}
+                    </button>
+                  </div>
+                  <div class="card card--no-border group-card">
 
-                  </button>
-                </div>
+                    <!-- <div class="card-header card-header-custom-bkgrnd">
+                <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                  {{ "GroupsPage.AddGroup" | translate }}
 
-                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                </button>
+              </div> -->
 
-                <div *ngIf="!showSpinner" class="card-content table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>
-                          <span class="column-th-span">
-                            <!-- Name -->
-                            {{ "GroupsPage.Name" | translate }}
+                    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+                    <div *ngIf="!showSpinner" class="card-content table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>
+                              <span class="column-th-span">
+                                <!-- Name -->
+                                {{ "GroupsPage.Name" | translate }}
+                              </span>
+                            </th>
+
+                            <!-- <th>
+                          <span style="color: #566787">
+                            <strong>Id</strong>
                           </span>
-                        </th>
+                        </th> -->
 
-                        <!-- <th>
-                    <span style="color: #566787">
-                      <strong>Id</strong>
-                    </span>
-                  </th> -->
+                            <!-- Creation Date -->
+                            <!-- <th>
+                          <span style="color: #566787">
+                            <strong>
+                              {{ "GroupsPage.CreationDate" | translate }} 
+                            </strong>
+                          </span>  
+                        </th> -->
 
-                        <!-- Creation Date -->
-                        <!-- <th>
-                    <span style="color: #566787">
-                      <strong>
-                        {{ "GroupsPage.CreationDate" | translate }} 
-                      </strong>
-                    </span>  
-                  </th> -->
+                            <th>
+                              <span class="column-th-span">
+                                # {{ "GroupsPage.Members" | translate }}
+                              </span>
+                            </th>
 
-                        <th>
-                          <span class="column-th-span">
-                            # {{ "GroupsPage.Members" | translate }}
-                          </span>
-                        </th>
+                            <th>
+                              <span class="column-th-span">
+                                <!-- {{ "GroupsPage.Actions" | translate }} -->
+                                {{ "Actions" | translate }}
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
 
-                        <th>
-                          <span class="column-th-span">
-                            <!-- {{ "GroupsPage.Actions" | translate }} -->
-                            {{ "Actions" | translate }}
-                          </span>
-                        </th>
-                      </tr>
-                    </thead>
+                        <tbody>
 
-                    <tbody>
+                          <!-- IF THERE ISN'T GROUPS-->
+                          <tr *ngIf="groupsList && groupsList.length === 0">
+                            <td colspan="5" style="text-align: center; padding-top: 16px;">
+                              <!-- color: #ff5252   -->
+                              <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                                {{ 'GroupsPage.NoGroups' | translate }}
+                              </p>
+                            </td>
+                          </tr>
 
-                      <!-- IF THERE ISN'T GROUPS-->
-                      <tr *ngIf="groupsList && groupsList.length === 0">
-                        <td colspan="5" style="text-align: center; padding-top: 16px;">
-                          <!-- color: #ff5252   -->
-                          <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                            {{ 'GroupsPage.NoGroups' | translate }}
-                          </p>
-                        </td>
-                      </tr>
+                          <tr *ngFor="let group of groupsList | sortBy : 'name'">
+                            <!-- *ngIf="!group?.trashed" -->
+                            <!-- rel="tooltip" title="{{ group?._id }}" -->
+                            <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
+                              <span class="tooltipx">
+                                <span style="font-weight:400; font-size: 13px; display: flex;"> {{ group?.name }} <span
+                                    class="disabled-span" *ngIf="group.enabled === false"><span
+                                      class="material-icons-outlined"
+                                      style="font-size: 16px;">block</span>Disabled</span></span>
+                                <span class="tooltiptext">
+                                  {{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }}
+                                </span>
+                              </span>
+                            </td>
 
-                      <tr *ngFor="let group of groupsList | sortBy : 'name'">
-                        <!-- *ngIf="!group?.trashed" -->
-                        <!-- rel="tooltip" title="{{ group?._id }}" -->
-                        <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
-                          <span class="tooltipx">
-                            <span style="font-weight:400; font-size: 13px; display: flex;"> {{ group?.name }} <span
-                                class="disabled-span" *ngIf="group.enabled === false"><span
-                                  class="material-icons-outlined"
-                                  style="font-size: 16px;">block</span>Disabled</span></span>
-                            <span class="tooltiptext">
-                              {{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }}
-                            </span>
-                          </span>
-                        </td>
-
-                        <!-- <td>
+                            <!-- <td>
                     {{ group?._id }}
                   </td> -->
 
-                        <!-- <td>
+                            <!-- <td>
                     {{ group?.createdAt | date: 'd/M/y'}}
                   </td> -->
 
-                        <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
-                          <!-- class="tooltipx" -->
-                          <span style="font-weight:400">
-                            {{ group?.members.length }}
+                            <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
+                              <!-- class="tooltipx" -->
+                              <span style="font-weight:400">
+                                {{ group?.members.length }}
 
-                            <span *ngIf="group?.members.length === 0"
-                              style="padding-left: 8px; position: relative; top: -2px;">
-                              <i class="material-icons"
-                                style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
-                              <span style="vertical-align: middle; color:#ec971f; font-size: 12px">
-                                <!-- pending add members -->
-                                {{ 'GroupsPage.PendingAddMembers' | translate }}
+                                <span *ngIf="group?.members.length === 0"
+                                  style="padding-left: 8px; position: relative; top: -2px;">
+                                  <i class="material-icons"
+                                    style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
+                                  <span style="vertical-align: middle; color:#ec971f; font-size: 12px">
+                                    <!-- pending add members -->
+                                    {{ 'GroupsPage.PendingAddMembers' | translate }}
+                                  </span>
+                                </span>
+
+                                <!-- <span class="tooltiptext">{{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} </span> -->
                               </span>
-                            </span>
+                            </td>
 
-                            <!-- <span class="tooltiptext">{{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} </span> -->
-                          </span>
-                        </td>
+                            <!-- EDIT / DELETE GROUPS  -->
+                            <td class="td-actions text-right" style="padding-top:16px">
+                              <!-- Modifica Gruppo -->
+                              <button type="button" rel="tooltip"
+                                title="{{ 'GroupsPage.tooltipEditGroup' | translate }}"
+                                class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_edit(group?._id)'>
+                                <i class="material-icons">edit</i>
+                              </button>
+                              <!-- Disabilita Gruppo -->
+                              <button *ngIf="group.enabled !== false" type="button" rel="tooltip" title="Disable"
+                                class="btn btn-primary btn-simple btn-xs" (click)='disableGroup(group?._id)'>
+                                <i class="material-icons">do_not_disturb_on</i>
+                                <!-- <span class="material-icons-outlined">do_not_disturb_on</span> -->
+                              </button>
+                              <!-- Riabilita Gruppo -->
+                              <button *ngIf="group.enabled === false" type="button" rel="tooltip" title="Restore"
+                                class="btn btn-primary btn-simple btn-xs" (click)='restoreGroup(group?._id)'>
+                                <i class="material-icons">undo</i>
+                                <!-- <span class="material-icons-outlined">undo</span> -->
+                              </button>
+                              <!-- Elimima Gruppo -->
+                              <button type="button" rel="tooltip"
+                                title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}"
+                                class="btn btn-danger btn-simple btn-xs"
+                                (click)='openDeleteModal(group?._id, group?.name)'>
+                                <i class="material-icons">delete</i>
+                              </button>
+                            </td>
 
-                        <!-- EDIT / DELETE GROUPS  -->
-                        <td class="td-actions text-right" style="padding-top:16px">
-                          <!-- Modifica Gruppo -->
-                          <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipEditGroup' | translate }}"
-                            class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_edit(group?._id)'>
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <!-- Disabilita Gruppo -->
-                          <button *ngIf="group.enabled !== false" type="button" rel="tooltip" title="Disable"
-                            class="btn btn-primary btn-simple btn-xs" (click)='disableGroup(group?._id)'>
-                            <i class="material-icons">do_not_disturb_on</i>
-                            <!-- <span class="material-icons-outlined">do_not_disturb_on</span> -->
-                          </button>
-                          <!-- Riabilita Gruppo -->
-                          <button *ngIf="group.enabled === false" type="button" rel="tooltip" title="Restore"
-                            class="btn btn-primary btn-simple btn-xs" (click)='restoreGroup(group?._id)'>
-                            <i class="material-icons">undo</i>
-                            <!-- <span class="material-icons-outlined">undo</span> -->
-                          </button>
-                          <!-- Elimima Gruppo -->
-                          <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}"
-                            class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(group?._id, group?.name)'>
-                            <i class="material-icons">delete</i>
-                          </button>
-                        </td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-              </div>
-            </div>
-            <!-- /. end col-md-8 -->
-
-            <!-- // RIGHT SIDEBAR -->
-            <div class="col-md-4">
-              <div class="card card card--no-border">
-                <div class="card-content">
-                  <div class="row quick-tips-row" style="margin-top: -25px;">
-                    <div class="col-sm-12 col-md-12">
-                      <h3 class="card_title__underlined">
-                        <span class="card_title__underline">
-                          {{ "QuickTips" | translate }}
-                        </span>
-                      </h3>
-                    </div>
-                    <div class="col-sm-12 col-md-12">
-                      <div class="section-subtitle"> </div>
                     </div>
                   </div>
+                </div>
+                <!-- /. end col-md-8 -->
 
-                  <p style="color: #7695a5;">
-                    <!-- Use groups to organize support teams. -->
-                    {{ "GroupsQuickTips1" | translate }}
-                    <br>
-                    <!-- You can group agents based on skills and assign groups of agents to your departments. -->
-                    {{ "GroupsQuickTips2" | translate }}
-                  </p>
+                <!-- // RIGHT SIDEBAR -->
+                <div class="col-md-4">
+                  <div class="card card card--no-border">
+                    <div class="card-content">
+                      <div class="row quick-tips-row" style="margin-top: -25px;">
+                        <div class="col-sm-12 col-md-12">
+                          <h3 class="card_title__underlined">
+                            <span class="card_title__underline">
+                              {{ "QuickTips" | translate }}
+                            </span>
+                          </h3>
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                          <div class="section-subtitle"> </div>
+                        </div>
+                      </div>
 
-                  <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
-                    {{ "RelatedKnowledgeBase" | translate }}
-                  </p>
-                  <p class="help-link" *ngIf="hideHelpLink">
+                      <!-- <h4 class="card-title"
+                  style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+                  {{ "QuickTips" | translate }}
+                </h4> -->
 
-                    <span>
+                      <p style="color: #7695a5;">
+                        <!-- Use groups to organize support teams. -->
+                        {{ "GroupsQuickTips1" | translate }}
+                        <br>
+                        <!-- You can group agents based on skills and assign groups of agents to your departments. -->
+                        {{ "GroupsQuickTips2" | translate }}
+                      </p>
+
+                      <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
+                        {{ "RelatedKnowledgeBase" | translate }}
+                      </p>
+                      <p class="help-link" *ngIf="hideHelpLink">
+
+                        <span>
 
 
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="none" style="vertical-align: middle;">
-                        <path
-                          d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                      </svg>
-                    </span>
-                    <a (click)="goToGroupsDoc()">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="none" style="vertical-align: middle;">
+                            <path
+                              d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                          </svg>
+                        </span>
+                        <a (click)="goToGroupsDoc()">
 
-                      {{ 'LearnHowCreateAGroup' | translate }}
-                    </a>
-                  </p>
+                          {{ 'LearnHowCreateAGroup' | translate }}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </ng-container>
+
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+
+          </ng-template>
+        </ng-container>
+
       </div>
     </div>
   </div>
@@ -559,8 +674,119 @@
         </button>
 
         <h4 class="modal-title warning">
-        
-          <span class="modal-header-icon-wpr" style="background-color: #d1e3fb;"> 
+          <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
+          <span class="modal-header-icon-wpr">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
+          <span style="vertical-align: middle; padding-left:8px">
+
+            {{ "GroupsPage.DeleteGroup" | translate }}
+
+          </span>
+        </h4>
+
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
+          {{ "GroupsPage.TheGroupWithId" | translate }}
+          <code>{{ id_group_to_delete }}</code>
+          {{ "GroupsPage.WillBeRemoved" | translate }}>
+        </h4> -->
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-body--content">
+
+          {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
+
+          <span>
+            <strong> {{name_group_to_delete}} </strong>
+          </span>?
+
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteModal()">
+
+          {{ "Cancel" | translate }}
+        </button>
+        <button class="btn btn-red" (click)="deleteGroup()">
+
+          {{ "GroupsPage.DeleteGroup" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============= Disable MODAL ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDisableModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseDidableModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title warning">
+          <span class="modal-header-icon-wpr">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
+          <span style="vertical-align: middle; padding-left:8px">
+
+            {{ "GroupsPage.DisableGroup" | translate }}
+
+          </span>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p class="modal-body--content">
+
+          <!-- {{ "GroupsPage.AreYouSureDeleteGroup" | translate }} -->
+          {{'AreYouSure' | translate }}?
+          <!-- <span>
+              <strong> {{name_group_to_delete}} </strong>
+            </span>? -->
+        </p>
+        <p [innerHTML]="'GroupsPage.TheGroupWilBeDisabled' | translate:{ group_name: name_group_to_disable }"></p>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseDidableModal()">
+
+          {{ "Cancel" | translate }}
+        </button>
+        <button class="btn btn-red" (click)="disableGroup(id_group_to_disable)">
+
+          {{ "Disable" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============  RESTORE MODAL ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayRestoreModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseRestoreModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title warning">
+
+          <span class="modal-header-icon-wpr" style="background-color: #d1e3fb;">
             <mat-icon>undo</mat-icon>
           </span>
           <span style="vertical-align: middle; padding-left:8px">
@@ -580,13 +806,13 @@
 
       <div class="modal-footer">
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseRestoreModal()">
-        
+
           {{ "Cancel" | translate }}
         </button>
-       
+
         <button class="btn btn-tdblu-no-boxshadow" (click)="restoreGroup(id_group_to_restore)">
           <!-- {{ "UsersPage.RestoreMember" | translate }} -->
-           {{ "Restore" | translate }}
+          {{ "Restore" | translate }}
         </button>
       </div>
     </div>

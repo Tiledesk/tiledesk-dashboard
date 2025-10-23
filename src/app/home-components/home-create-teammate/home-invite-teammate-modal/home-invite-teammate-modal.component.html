@@ -20,6 +20,9 @@
                 <option label="Select a role"></option>
                 <option value="admin">Administrator</option>
                 <option value="agent">Agent</option>
+                <option *ngFor="let role of roles" [value]="role.name">
+                    {{ role.name }}
+                </option>
               </select>
               <mat-error *ngIf="selectFormControl.hasError('required')">
                 This field is required

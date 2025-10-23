@@ -28,6 +28,8 @@ import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-int
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
 import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { VLLMComponent } from './list/v-llm/v-llm.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -53,7 +55,8 @@ const routes: Routes = [
     OllamaIntegrationComponent,
     McpIntegrationComponent,
     McpServerTableComponent,
-    DeepseekIntegrationComponent
+    DeepseekIntegrationComponent,
+    VLLMComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -65,7 +68,8 @@ const routes: Routes = [
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class IntegrationsModule { }

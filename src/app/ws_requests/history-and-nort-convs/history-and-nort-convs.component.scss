@@ -259,9 +259,11 @@ input:-webkit-autofill:active {
   top: -2px;
 }
 
-.not_is_owner {
+.not_is_owner:not(.has-permission) {
   left: 33px;
 }
+
+
 
 .is_agent {
   left: 27px;

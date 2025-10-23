@@ -127,6 +127,49 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     // this.setMomentLocale()
   }
 
+   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('analytics');
+    // this.buildgraph(); // HEAT MAP GRAPH
+    // this.avarageWaitingTimeCLOCK(); // -->clock avg time response
+    // this.avgTimeResponsechart(); // --> avg time response bar chart
+    // this.durationConvTimeCLOCK(); // --> duration time clock
+    // this.durationConversationTimeCHART(); // --> duration conversation bar chart
+    // this.auth.checkProjectProfile('analytics');
+    // this.getRequestByLast7Day();
+
+    this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph) => {
+      this.logger.log("[ANALYTICS] CLICK hasClickedOnGraph:", hasClickedOnGraph)
+      this.logger.log("[ANALYTICS] Has click graph title... move to METRICHE");
+      if (hasClickedOnGraph) {
+        this.selected = 'metriche';
+      }
+
+    })
+
+ 
+
+    /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
+    this.getCurrentProject();
+    this.getStorageBucket();
+    // this.getCountOfRequestForAgent()
+    // this.servedAndUnservedRequestsCount();
+    // this.globalServedAndUnservedRequestsCount();
+    // this.getCountOf_AllRequestsForAgent();
+    // this.getRequestsByDay();
+    // this.getCountOf_AllRequestsForDept();
+
+    /** NOT  USED */
+    // this.daysHoursRequestsDistribution()
+
+    /** NOT YET USED */
+    // this.translateHours();
+    // this.translateMinutes();
+    // this.translateSeconds();
+    // this.getWaitingTimeAverage();
+
+  }
+
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
@@ -233,48 +276,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
-    // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('analytics');
-    // this.buildgraph(); // HEAT MAP GRAPH
-    // this.avarageWaitingTimeCLOCK(); // -->clock avg time response
-    // this.avgTimeResponsechart(); // --> avg time response bar chart
-    // this.durationConvTimeCLOCK(); // --> duration time clock
-    // this.durationConversationTimeCHART(); // --> duration conversation bar chart
-    // this.auth.checkProjectProfile('analytics');
-    // this.getRequestByLast7Day();
-
-    this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph) => {
-      this.logger.log("[ANALYTICS] CLICK hasClickedOnGraph:", hasClickedOnGraph)
-      this.logger.log("[ANALYTICS] Has click graph title... move to METRICHE");
-      if (hasClickedOnGraph) {
-        this.selected = 'metriche';
-      }
-
-    })
-
  
-
-    /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
-    this.getCurrentProject();
-    this.getStorageBucket();
-    // this.getCountOfRequestForAgent()
-    // this.servedAndUnservedRequestsCount();
-    // this.globalServedAndUnservedRequestsCount();
-    // this.getCountOf_AllRequestsForAgent();
-    // this.getRequestsByDay();
-    // this.getCountOf_AllRequestsForDept();
-
-    /** NOT  USED */
-    // this.daysHoursRequestsDistribution()
-
-    /** NOT YET USED */
-    // this.translateHours();
-    // this.translateMinutes();
-    // this.translateSeconds();
-    // this.getWaitingTimeAverage();
-
-  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

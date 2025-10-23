@@ -52,8 +52,7 @@ export class ProjectProfileGuard implements CanActivate {
     const project = await this.prjctPlanService._getProjectById(prjct_id);
     this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** project ****** ', project)
 
-    // const userRole = await this.prjctPlanService.getProjectUserByUserId(this.userId, prjct_id );
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userRole ****** ', userRole)
+  
 
     const type = project['profile'].type;
     const planName = project['profile'].name;

@@ -21,7 +21,6 @@ import { BrandService } from '../services/brand.service';
 import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 // import * as moment from 'moment';
 import moment from "moment";
-import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
@@ -37,10 +36,12 @@ import {
 import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKb } from 'app/models/faq_kb-model';
-import { AnalyticsService } from 'app/services/analytics.service';
+
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -282,7 +283,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   quotasLimits
   allQuotas
 
-
+  PERMISSION_TO_VIEW_FLOWS: boolean;
+  PERMISSION_TO_VIEW_KB: boolean;
+  PERMISSION_TO_VIEW_ANALYTICS: boolean;
+  PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
+  PERMISSION_TO_VIEW_TEAMMATES: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_INVITE: boolean;
+  PERMISSION_TO_VIEW_HISTORY: boolean;
+  PERMISSION_TO_VIEW_OP: boolean;
+  PERMISSION_TO_VIEW_WIDGET_SETUP: boolean;
+  PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
 
   constructor(
     public auth: AuthService,
@@ -295,15 +306,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private analyticsService: AnalyticsService,
-    private contactsService: ContactsService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     private departmentService: DepartmentService,
     public localDbService: LocalDbService,
-    private quotesService: QuotesService
+    private quotesService: QuotesService,
+    public rolesService: RolesService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -317,7 +327,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-
     this.getLoggedUser()
     this.getCurrentProjectProjectByIdAndBots();
     this.listenHasChangedProjectFroList()
@@ -326,7 +335,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.getBrowserLanguage();
     this.translateString();
-
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
@@ -350,8 +358,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
 
-
-
     // get if user has used Signin with Google
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
@@ -362,7 +368,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.listeHasOpenedNavbarQuotasMenu()
 
     this.listenToQuotas()
-
+    this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
@@ -385,6 +391,207 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.quotasSubscription) {
       this.quotasSubscription.unsubscribe();
     }
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[HOME] - Role:', status.role);
+        console.log('[HOME] - Permissions:', status.matchedPermissions);
+        // -------------------------------
+        // PERMISSION_TO_VIEW_QUOTA_USAGE
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
+
+            this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
+            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          } else {
+            this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
+            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
+          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_OP
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.HOURS_READ)) {
+            this.PERMISSION_TO_VIEW_OP = true
+            console.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
+          } else {
+            this.PERMISSION_TO_VIEW_OP = false
+
+            console.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_OP = true
+          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
+        }
+    
+
+        // ---------------------------------
+        // PERMISSION_TO_VIEW_WIDGET_SETUP
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_WIDGET_SETUP = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_WIDGET_SETUP = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_WIDGET_SETUP = status.matchedPermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO VIEW FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_FLOWS = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_FLOWS = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+        }
+
+        // -------------------------------
+        // PERMISSION TO VIEW KB
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_KB = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_KB = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.KB_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_ANALYTICS
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_WA_BRODCAST
+        // -------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_WA_BRODCAST = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_WA_BRODCAST = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_WA_BRODCAST = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_TEAMMATES
+        // -------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_TEAMMATES = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_TEAMMATES = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+        }
+
+        // -----------------------------------
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        // -----------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+        // -----------------------------------
+        // PERMISSION_TO_INVITE
+        // -----------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_INVITE = true;
+          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_INVITE = false;
+          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_INVITE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE);
+          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+        }
+
+        
+        
+      });
   }
 
   listenHasChangedProjectFroList() {
@@ -879,6 +1086,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
   }
+
+  
 
   manageVoiceQuotaVisibility(projectProfileData) {
     if (projectProfileData['customization']) {
@@ -1569,9 +1778,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-
-
   checkPlan(appTitle) {
     if (
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
@@ -1604,8 +1810,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-
   scrollToChild(el: ElementRef) {
     el.nativeElement.scrollIntoView({ behavior: 'smooth' });
 
@@ -1613,9 +1817,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.displayWhatsappAccountWizard = false; 
     }, 1500);
   }
-
-
-
 
   goToConnectWA() {
     this.logger.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
@@ -1625,7 +1826,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   onClickOnGoToLearnMoreOrManageApp() {
     this.logger.log('HAS CLICKED GO TO WhatsApp Details')
     this.goToWhatsAppDetails()
-
   }
 
   goToWhatsAppDetails() {
@@ -1904,10 +2104,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.popup_visibility = 'none'
     // this.logger.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
-
-
-
-
 
 
   public scrollRight(): void {
@@ -2223,8 +2419,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
-    this.logger.log('[HOME] CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    console.log('[HOME] CALL GET-PROJECT-USER')
+    // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
@@ -2236,7 +2433,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
         }
         if (projectUser[0].role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+          console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
           this.usersService.user_role(projectUser[0].role);

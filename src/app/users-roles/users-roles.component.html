@@ -1,0 +1,216 @@
+<span class="navbar-brand navbar-brand-sidebar-settings"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+    [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+    <i class="material-icons">settings</i>
+
+    <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+
+<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
+    <div class="page-title--sidebar-settings"
+        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+        {{ 'UsersAndGroups' | translate }}
+    </div>
+
+    <div class="container-fluid" style="padding-left: 0px;padding-right: 0px; margin-right: -5px;">
+        <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
+        <div class="row"></div>
+
+        <div class="content-wpr" style="display: flex;">
+
+            <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+
+            <div class="teplate-content" style="flex: 1 1 auto;">
+                <!-- style="top:-9px;" class="bottom-nav" -->
+                <ul [ngClass]="{ 'bottom-nav': isAuthorized, 'bottom-nav-fixed': !isAuthorized}">
+                    <li *ngIf="PERMISSION_TO_VIEW_TEAMMATES" class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
+                        <a> {{ "TeammatesCapitalized" | translate }} </a>
+                    </li>
+                    <li class="btn-with-border-effect li-active">
+                        <a style="text-transform: capitalize;"> {{ "Roles" | translate }}</a>
+                    </li>
+                    <li *ngIf="isVisibleGroups && PERMISSION_TO_VIEW_GROUPS" class="btn-with-border-effect border-from-center"
+                        (click)="goToGroups()">
+                        <a>{{ "Groups" | translate }} </a>
+                    </li>
+                </ul>
+
+                <ng-container *ngIf="permissionChecked">
+                    <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                                <!-- *ngIf="!showSpinner" -->
+
+                                <div class="page-title--wrapper-link-to-doc">
+                                    <div class="title--header-link-to-docs" *ngIf="hideHelpLink">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                                fill="none" style="vertical-align: middle;">
+                                            <path
+                                                d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                                            </svg>
+                                        </span>
+                                        <a style="margin-left: 4px;" href="{{CUSTOM_ROLES_AND_PERMISSIONS_DOCS_URL}}" target="_blank">
+                                             {{'LearnMoreAboutPermissionsAndCustomRoles' | translate}}
+                                        </a>
+                                       
+                                    </div>
+                                    <button class="btn btn-tdblu-no-boxshadow pull-right" *ngIf="PERMISSION_TO_CREATE_NEW_ROLE"
+                                        style="padding: 8px 16px;margin:0px;" (click)="goToCreateNewRole()">
+                                        {{ "NewRole" | translate }}
+                                    </button>
+                                </div>
+                                <div class="main--wrapper">
+                                    <div class="card roles-card">
+                                        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+                                        <div *ngIf="!showSpinner" class="card-content table-responsive">
+                                            <table class="table table-hover">
+
+                                                <thead class="text">
+                                                    <tr>
+                                                        <th
+                                                            style="font-family: var(--header-font-family);color: #647491;">
+                                                            <!-- Role -->
+                                                            {{ "Role" | translate }}
+                                                        </th>
+                                                        <th>
+
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="font-family: var(--header-font-family);">
+                                                            {{'owner' | translate }}
+                                                        </td>
+                                                        <td style="width: 1%; white-space: nowrap;;">
+                                                            <button type="button"
+                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                matTooltipClass="custom-mat-tooltip"
+                                                                matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
+                                                                #tooltip="matTooltip" matTooltipPosition='below'
+                                                                matTooltipHideDelay="100"
+                                                                style="cursor: not-allowed; opacity: 1;">
+                                                                <i class="material-icons"
+                                                                    style="color: #acb8cb;">edit</i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                matTooltipClass="custom-mat-tooltip"
+                                                                matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
+                                                                #tooltip="matTooltip" matTooltipPosition='below'
+                                                                matTooltipHideDelay="100"
+                                                                style="cursor: not-allowed;  opacity: 1;">
+                                                                <i class="material-icons"
+                                                                    style="color: #acb8cb;">delete</i>
+                                                            </button>
+
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-family: var(--header-font-family);">
+                                                            {{'admin' | translate }}
+                                                        </td>
+                                                        <td style="width: 1%; white-space: nowrap;">
+                                                            <button type="button"
+                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                matTooltipClass="custom-mat-tooltip"
+                                                                matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
+                                                                #tooltip="matTooltip" matTooltipPosition='below'
+                                                                matTooltipHideDelay="100"
+                                                                style="cursor: not-allowed; opacity: 1;">
+                                                                <i class="material-icons"
+                                                                    style="color: #acb8cb;">edit</i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                matTooltipClass="custom-mat-tooltip"
+                                                                matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
+                                                                #tooltip="matTooltip" matTooltipPosition='below'
+                                                                matTooltipHideDelay="100"
+                                                                style="cursor: not-allowed;opacity: 1;">
+                                                                <i class="material-icons"
+                                                                    style="color: #acb8cb;">delete</i>
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-family: var(--header-font-family);">
+                                                            {{'agent' | translate }}
+                                                        </td>
+
+                                                        <td style="width: 1%; white-space: nowrap;">
+                                                            <button type="button"
+                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                matTooltipClass="custom-mat-tooltip"
+                                                                matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
+                                                                #tooltip="matTooltip" matTooltipPosition='below'
+                                                                matTooltipHideDelay="100"
+                                                                style="cursor: not-allowed;opacity: 1;">
+                                                                <i class="material-icons"
+                                                                    style="color: #acb8cb;">edit</i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                matTooltipClass="custom-mat-tooltip"
+                                                                matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
+                                                                #tooltip="matTooltip" matTooltipPosition='below'
+                                                                matTooltipHideDelay="100"
+                                                                style="cursor: not-allowed;opacity: 1;">
+                                                                <i class="material-icons"
+                                                                    style="color: #acb8cb;">delete</i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr *ngFor="let role of roles">
+                                                        <td>
+                                                            <span
+                                                                style="font-family: var(--header-font-family);">
+                                                                {{role.name}}
+                                                            </span>
+                                                        </td>
+                                                        <td style="width: 1%; white-space: nowrap;">
+                                                            <button type="button"
+                                                                class="btn btn-primary btn-simple btn-xs"
+                                                                (click)="goToRoleDetail(role._id)"
+                                                                [disabled]="!PERMISSION_TO_UPDATE_ROLE">
+                                                                <i class="material-icons">edit</i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-simple btn-xs"
+                                                                (click)="deleteRole(role._id, role.name)"
+                                                                [disabled]="!PERMISSION_TO_DELETE_ROLE">
+                                                                <i class="material-icons">delete</i>
+                                                            </button>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-container>
+
+                    <ng-template #unauthorizedTpl>
+                        <unauthorized-for-settings></unauthorized-for-settings>
+
+                    </ng-template>
+                </ng-container>
+
+            </div> <!-- ./teplate-content -->
+        </div> <!-- ./content-wpr -->
+    </div> <!-- ./container-fluid -->
+</div> <!-- ./main-content -->

@@ -22,7 +22,7 @@ export class ModalFaqsComponent implements OnInit {
   parse_done: boolean;
   parse_err: boolean;
   modalChoosefileDisabled: boolean;
-  namespaceid: string
+  namespaceid: string;
   showBackButton: boolean = true;
 
   kb: KB = {
