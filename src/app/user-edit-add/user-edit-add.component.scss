@@ -625,3 +625,43 @@ input:checked+.slider:before {
 .help-link:hover>a {
   text-decoration: underline;
 }
+
+
+.groups-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px; 
+  margin-bottom: 12px;
+}
+
+.group {
+  // background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  // cursor: default;
+  transition: background-color 0.2s;
+      box-shadow: var(--card-elevation);
+    cursor: pointer;
+}
+
+.group:hover {
+  // background-color: #e0e0e0;
+  box-shadow:var(--card-light-elevation);
+}
+
+.group.not-enabled-group {
+  background-color: #e8e8e8;
+  // color: #888;
+}
+
+.group.disabled {
+  // opacity: 0.5;
+  pointer-events: none; /* evita il click anche via tastiera */
+  // cursor: default !important;
+}
+

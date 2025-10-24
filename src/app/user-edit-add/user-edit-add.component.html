@@ -344,20 +344,6 @@
 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
-                          <!-- currentUser_projectUserID !== projectUser?._id && -->
-                          <!-- <div class="onoffswitch__availability_status">
-                    <input (change)="changeAvailabilityStatus($event, projectUser?._id)"
-                      [checked]="projectUser?.user_available === true" type="checkbox" name="onoffswitch"
-                      class="onoffswitch-checkbox__availability_status" id="roleonoffswitch"
-                      [disabled]="CURRENT_USER_ROLE === 'agent'">
-                    <label class="onoffswitch-label__availability_status" for="roleonoffswitch"
-                      style="margin-bottom: 0px;">
-                      <span class="onoffswitch-inner__availability_status"></span>
-                      <span class="onoffswitch-switch__availability_status"></span>
-                    </label>
-                  </div> -->
-
-
                           <ng-select style="text-align: left;"
                             (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)"
                             [(ngModel)]="selectedStatus" class="teammate-status-in-pu-details" [items]="teammateStatus"
@@ -392,6 +378,28 @@
                             {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate }}
                           </span>
                         </div>
+                      </div>
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
+
+                      <div class="row">
+                        <label class="col-sm-2 custom-label" style="white-space: nowrap;">
+                          {{'Groups' | translate}}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          
+                          <div class="groups-container">
+                            <div class="group" *ngFor="let group of groupsList" 
+                            [ngClass]="{ 'not-enabled-group': !group.enabled }"
+                            (click)="goToGroup(group)"  
+                            [class.disabled]="!PERMISSION_TO_VIEW_GROUPS"
+                            [style.cursor]="PERMISSION_TO_VIEW_GROUPS ? 'pointer' : 'default'">
+                              {{group.name}}
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
                       <!-- ---------------------------------------------------- -->
                       <!-- start project user-tags -->

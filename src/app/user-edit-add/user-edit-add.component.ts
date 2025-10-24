@@ -20,6 +20,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { GroupService } from 'app/services/group.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const swal = require('sweetalert');
 
 @Component({
@@ -145,6 +146,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   isAuthorized = false;
   permissionChecked = false;
+  groupsList: [] = [];
+  PERMISSION_TO_VIEW_GROUPS: boolean;
 
   constructor(
     private router: Router,
@@ -205,7 +208,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.listenSidebarIsOpened();
     this.trackPage()
     this.getRoles()
+    this.listenToProjectUser()
   }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -234,77 +239,38 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   }
 
+ 
+   listenToProjectUser() {
+     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+     this.rolesService.getUpdateRequestPermission()
+       .pipe(takeUntil(this.unsubscribe$))
+       .subscribe(status => {
+         console.log('[USERS] - Role:', status.role);
+         console.log('[USERS] - Permissions:', status.matchedPermissions);
+       
 
-
-  // getGroupsByProjectId() {
-   
-  //   // this.HAS_COMPLETED_GET_GROUPS = false
-  //   this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-  //     console.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
-
-  //     if (Array.isArray(this.groupsParsedArray)) {
-  //       this.groupsParsedArray = this.groupsParsedArray.map(item => {
-  //         const matchedGroup = groups.find(group => group._id === item.group_id);
-  //         return {
-  //           ...item,
-  //           name: matchedGroup ? matchedGroup.name : 'Unknown group'
-  //         };
-  //       });
-
-  //       console.log('[DEPT-EDIT-ADD] - myParsedArray with group names:', this.groupsParsedArray);
-  //     }
-
-  //     if (groups) {
-  //       // this.groupsList = groups;
-
-  //       this.groupsList = groups.filter(group => group.enabled !== false);
-
-  //       this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
-  //       this.groupsList.forEach(group => {
-
-  //         if (this.selectedGroupId) {
-  //           if (group._id === this.selectedGroupId) {
-  //             this.logger.log('[DEPT-EDIT-ADD] - GROUP ASSIGNED TO THIS DEPT', group);
-  //             this.group_name = group.name
-  //             this.projectUsersInGroup = [];
-
-  //             group.members.forEach(member => {
-  //               this.logger.log('[DEPT-EDIT-ADD] - MEMBER OF THE GROUP ASSIGNED TO THIS DEPT', member);
-
-  //               this.projectUsers.forEach(projectuser => {
-  //                 // this.logger.log('DEPT EDIT-ADD - PROJECT USER ', projectuser);
-  //                 if (member === projectuser.id_user._id) {
-
-  //                   this.projectUsersInGroup.push(projectuser.id_user)
-  //                 }
-  //               });
-
-  //             });
-
-  //             this.logger.log('[DEPT-EDIT-ADD] - PROJECT USERS IN GROUP ', this.projectUsersInGroup);
-  //             // const filteredProjectUsers = group.members
-  //           }
-  //         } else {
-  //           this.logger.log('[DEPT-EDIT-ADD] - NO GROUP ASSIGNED TO THIS DEPT - GROUP ID', this.selectedGroupId);
-  //         }
-  //       });
-
-
-  //       // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
-  //       // IF THE GROUP-ID DOES NOT EXIST MEANS THAT WAS DELETED
-  //       if (this.selectedGroupId !== null && this.selectedGroupId !== undefined) {
-  //         this.checkGroupId(this.selectedGroupId, this.groupsList)
-  //       }
-  //     }
-  //   }, (error) => {
-  //     this.logger.error('[DEPT-EDIT-ADD] - GET GROUPS - ERROR ', error);
-  //     // this.HAS_COMPLETED_GET_GROUPS = false
-  //     // this.showSpinner = false;
-  //   },
-  //     () => {
-  //       this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS * COMPLETE');
-  //     });
-  // }
+ 
+         // -------------------------
+         // PERMISSION_TO_VIEW_GROUPS
+         // -------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+           // Owner and admin always has permission
+           this.PERMISSION_TO_VIEW_GROUPS = true;
+           console.log('[USER-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+ 
+         } else if (status.role === 'agent') {
+           // Agent never have permission
+           this.PERMISSION_TO_VIEW_GROUPS = false;
+           console.log('[USER-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+ 
+         } else {
+           // Custom roles: permission depends on matchedPermissions
+           this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
+           console.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+         }
+         // You can also check status.role === 'owner' if needed
+       });
+   }
 
   getRoles() {
     this.rolesService.getAllRoles()
@@ -437,7 +403,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
       }
     });
+
   }
+
+  
 
   getUserRole() {
     this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
@@ -548,11 +517,6 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
 
-
-
-
-
-
   getMoreOperatorsSeats() {
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
@@ -660,15 +624,15 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   getParamsProjectUserIdAndThenGetProjectUsersById() {
     this.project_user_id = this.route.snapshot.params['projectuserid'];
-    this.logger.log('[USER-EDIT-ADD] - GET PARAMS PROJ-USER ID ', this.project_user_id);
+    console.log('[USER-EDIT-ADD] - GET PARAMS PROJ-USER ID ', this.project_user_id);
 
     if (this.project_user_id) {
-      this.getProjectUsersById();
+      this.getProjectUsersByIdAndGroups();
     }
   }
 
 
-  getProjectUsersById() {
+  getProjectUsersByIdAndGroups() {
 
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
       console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', this.project_user_id);
@@ -704,6 +668,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         if (projectUser && projectUser.max_assigned_chat) {
           this.max_assigned_chat = projectUser.max_assigned_chat;
         }
+
+        this.getGroupsByProjectId(projectUser.id_user._id)
       }
     }, (error) => {
       this.logger.error('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ERR  ', error);
@@ -746,6 +712,40 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
     });
+  }
+
+   getGroupsByProjectId(userId) {
+    console.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID userId', userId);
+    // this.HAS_COMPLETED_GET_GROUPS = false
+    this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+
+      if (groups) {
+          this.groupsList = groups
+          .filter(group => group.members.includes(userId))
+          .map(group => ({
+            name: group.name,
+            enabled: group.enabled,
+            groupId: group._id
+          }));
+
+          console.log('[USER-EDIT-ADD] - GET GROUPS - groupsList in which the temmate is a member', this.groupsList);
+      
+
+
+      }
+    }, (error) => {
+      this.logger.error('[USER-EDIT-ADD] - GET GROUPS - ERROR ', error);
+      // this.HAS_COMPLETED_GET_GROUPS = false
+      // this.showSpinner = false;
+    },
+      () => {
+        this.logger.log('[USER-EDIT-ADD] - GET GROUPS * COMPLETE');
+      });
+  }
+
+  goToGroup(group) {
+     this.router.navigate(['project/' + this.project._id + '/group/edit/' + group.groupId]);
   }
 
   tagSelectedColor(hex: any) {
