@@ -402,7 +402,7 @@ export class WsRequestsService implements OnDestroy {
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
       // this.wsRequestsList$.next(this.wsRequestsList);
-      console.log('[WS-REQUESTS-SERV] wsRequestsList ', this.wsRequestsList ) 
+      // console.log('[WS-REQUESTS-SERV] wsRequestsList ', this.wsRequestsList ) 
 
     }
 
