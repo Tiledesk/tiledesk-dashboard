@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.148-AR
+- Adds the ability to view/hide conversation tags created by AI agents via permissions
+- Fixes the bug: When a tag is created by an AI agent on the tags page, the value of created by is n.a.
+- Adds the ability to manage the display of conversation details with dedicated permission
+- Adds the list of groups the teammate is a member of to the teammate's details page
+- Improves the service to create a new canned response
+- Adds the ability to hide the logout button based on query parameters
+
 ### 2.7.147-AR
 - Adds the ability to hide or show quota usage 
 - Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
