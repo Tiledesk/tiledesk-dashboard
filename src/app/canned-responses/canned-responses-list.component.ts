@@ -47,6 +47,7 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
   PERMISSION_TO_UPDATE: boolean;
   PERMISSION_TO_CREATE: boolean;
   PERMISSION_TO_DELETE: boolean;
+  // PERMISSION_TO_CREATE_PROJECT_SHARED:boolean;
 
   constructor(
     public cannedResponsesService: CannedResponsesService,
@@ -140,7 +141,22 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
             console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
           }
 
-           // PERMISSION TO 
+          // PERMISSION_TO_CREATE_PROJECT_SHARED
+          // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          //   if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_SHARED_CREATE)) {
+  
+          //     this.PERMISSION_TO_CREATE_PROJECT_SHARED = true
+          //     console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE_PROJECT_SHARED 1', this.PERMISSION_TO_CREATE_PROJECT_SHARED);
+          //   } else {
+          //     this.PERMISSION_TO_CREATE_PROJECT_SHARED = false
+          //     console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE_PROJECT_SHARED 2', this.PERMISSION_TO_CREATE_PROJECT_SHARED);
+          //   }
+          // } else {
+          //   this.PERMISSION_TO_CREATE_PROJECT_SHARED = true
+          //   console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_CREATE_PROJECT_SHARED ', this.PERMISSION_TO_CREATE_PROJECT_SHARED);
+          // }
+
+           // PERMISSION_TO_DELETE TO 
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
             if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_DELETE)) {
   

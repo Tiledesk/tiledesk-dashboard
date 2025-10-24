@@ -54,11 +54,12 @@
               <!-- [ngClass]="{'col-sm-12': innerWidthLessThan992 === true, 'col-sm-7': innerWidthLessThan992 === false }" -->
               <div class="col-sm-8 left-col-custom-padding">
               
-                <div class="page-title--wrapper">
+                <div class="page-title--wrapper" style="margin-right: 0px;">
                   <div class="title--header">
                     <!-- {{ pageName }} -->
                   </div>
-                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()">
+                    <button  class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()"
+                      [disabled]="!PERMISSION_TO_CREATE">
                 
                       {{ "CannedResponses.AddResponses" | translate }}
                     </button>
