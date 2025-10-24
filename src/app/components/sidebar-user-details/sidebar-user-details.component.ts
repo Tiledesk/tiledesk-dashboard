@@ -80,7 +80,6 @@ export class SidebarUserDetailsComponent implements OnInit {
     { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
   ];
 
-  tiledeskLogout: any
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
   public logoutBtnVisible: boolean;
@@ -142,19 +141,17 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
     getQueryParams() {
-    this.route.queryParamMap
-      .subscribe(params => {
-        // console.log('[SIDEBAR-USER-DETAILS]  queryParams', params['params']);
-        
-        if (params['params']['tiledesk_logOut']) {
-            this.tiledeskLogout = params['params']['tiledesk_logOut']
-          //  console.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.tiledeskLogout);
+      this.route.queryParamMap
+        .subscribe(params => {
+          // console.log('[SIDEBAR-USER-DETAILS]  queryParams', params['params']);
           
-        } else {
-            this.tiledeskLogout = true
-            //  console.log('[SIDEBAR-USER-DETAILS]  params tiledeskLogout', this.tiledeskLogout);
-        }
-      })
+          if (params['params']['tiledesk_logOut']) {
+            
+            this.logoutBtnVisible = params['params']['tiledesk_logOut'] == "true" ? true: false
+             console.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
+            
+          }
+        })
     }
 
 
