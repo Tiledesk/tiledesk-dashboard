@@ -849,6 +849,9 @@
     "YouRunOutOfVoice": "Vous n'avez plus de fonction vocale",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Ce nom de rôle est réservé et ne peut pas être utilisé",
     "ThisRoleNameAlreadyExists": "Ce nom de rôle existe déjà",
+    "NotAssignedToAnyGroups": "Non assigné à aucun groupe",
+    "GroupDisabled": "Groupe désactivé",
+    "ThisGroupIsDisabled": "Ce groupe est désactivé",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

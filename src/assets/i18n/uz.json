@@ -849,6 +849,9 @@
     "YouRunOutOfVoice": "Ovozingiz tugadi",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Bu rol nomi qo'riqlanadi va ishlatilishi mumkin emas",
     "ThisRoleNameAlreadyExists": "Bu rol nomi allaqachon mavjud",
+    "NotAssignedToAnyGroups": "Hech bir guruhga tayinlanmagan",
+    "GroupDisabled": "Guruh o'chirilgan",
+    "ThisGroupIsDisabled": "Bu guruh o'chirilgan",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

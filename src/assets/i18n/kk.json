@@ -849,6 +849,9 @@
     "YouRunOutOfVoice": "Сізде дауыс бітті",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Бұл рөл атауы қорғалған және пайдаланылуы мүмкін емес",
     "ThisRoleNameAlreadyExists": "Бұл рөл атауы бұрыннан бар",
+    "NotAssignedToAnyGroups": "Ешбір топқа тағайындалмаған",
+    "GroupDisabled": "Топ өшірілген",
+    "ThisGroupIsDisabled": "Бұл топ өшірілген",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

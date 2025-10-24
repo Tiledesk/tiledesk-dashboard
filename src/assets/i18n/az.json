@@ -850,6 +850,9 @@
     "YouRunOutOfVoice": "Səsiniz bitdi",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Bu rol adı qorunur və istifadə edilə bilməz",
     "ThisRoleNameAlreadyExists": "Bu rol adı artıq mövcuddur",
+    "NotAssignedToAnyGroups": "Heç bir qrupa təyin edilməyib",
+    "GroupDisabled": "Qrup deaktiv edilib",
+    "ThisGroupIsDisabled": "Bu qrup deaktiv edilib",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

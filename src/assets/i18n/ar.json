@@ -849,6 +849,9 @@
     "YouRunOutOfVoice": "لقد نفد الصوت",
     "ThisRoleNameIsReservedAndCannotBeUsed": "اسم الدور هذا محجوز ولا يمكن استخدامه",
     "ThisRoleNameAlreadyExists": "اسم الدور هذا موجود بالفعل",
+     "NotAssignedToAnyGroups": "غير معين إلى أي مجموعات",
+    "GroupDisabled": "مجموعة معطلة",
+    "ThisGroupIsDisabled": "هذه المجموعة معطلة",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

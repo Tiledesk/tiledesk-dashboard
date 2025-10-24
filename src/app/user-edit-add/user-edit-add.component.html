@@ -389,7 +389,7 @@
                         </label>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                           
-                          <div class="groups-container">
+                          <div class="groups-container" *ngIf="groupsList?.length > 0">
                             <div class="group" *ngFor="let group of groupsList" 
                             [ngClass]="{ 'not-enabled-group': !group.enabled }"
                             (click)="goToGroup(group)"  
@@ -398,7 +398,14 @@
                               {{group.name}}
                             </div>
                           </div>
+
+
+                          <div *ngIf="groupsList?.length === 0" style="margin-top: 7px">
+                            {{'NotAssignedToAnyGroups' | translate}}
+                          </div>
                         </div>
+
+                      
 
                       </div>
                       <!-- ---------------------------------------------------- -->

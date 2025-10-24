@@ -849,6 +849,9 @@
     "YouRunOutOfVoice": "Du har slut på röst",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Det här rollnamnet är reserverat och kan inte användas",
     "ThisRoleNameAlreadyExists": "Det här rollnamnet finns redan",
+    "NotAssignedToAnyGroups": "Inte tilldelad några grupper",
+    "GroupDisabled": "Grupp inaktiverad",
+    "ThisGroupIsDisabled": "Denna grupp är inaktiverad",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

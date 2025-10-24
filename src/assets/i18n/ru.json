@@ -850,6 +850,9 @@
     "YouRunOutOfVoice": "У вас закончилась голосовая функция",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Это название роли зарезервировано и не может быть использовано",
     "ThisRoleNameAlreadyExists": "Это название роли уже существует",
+    "NotAssignedToAnyGroups": "Не назначен ни в одну группу",
+    "GroupDisabled": "Группа отключена",
+    "ThisGroupIsDisabled": "Эта группа отключена",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

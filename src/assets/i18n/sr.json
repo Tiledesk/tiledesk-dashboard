@@ -850,6 +850,9 @@
     "YouRunOutOfVoice": "Понестало вам гласа",
     "ThisRoleNameIsReservedAndCannotBeUsed": "Ово име улоге је резервисано и не може се користити",
     "ThisRoleNameAlreadyExists": "Ово име улоге већ постоји",
+    "NotAssignedToAnyGroups": "Није додељен ниједној групи",
+    "GroupDisabled": "Група онемогућена",
+    "ThisGroupIsDisabled": "Ова група је онемогућена",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
