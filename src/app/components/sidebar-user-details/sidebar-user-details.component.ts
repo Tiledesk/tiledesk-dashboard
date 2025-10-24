@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -80,6 +80,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
   ];
 
+  tiledeskLogout: any
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
   public logoutBtnVisible: boolean;
@@ -99,7 +100,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     public notifyService: NotifyService,
     public projectService: ProjectService,
     public dialog: MatDialog,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private route: ActivatedRoute
   ) {
 
     const brand = brandService.getBrand(); 
@@ -112,6 +114,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   ngOnInit() {
+    // this.logOutParam = this.route.snapshot.queryParamMap.get('tiledesk_logOut');
+    // console.log('tiledesk_logOut:', this.logOutParam);
+    
     this.getOSCODE();
     this.logger.log('HELLO SIDEBAR-USER-DETAILS')
     this.getLoggedUserAndCurrentDshbrdLang();
@@ -133,7 +138,26 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserIsBusy$()
     this.getBrowserVersion()
     // this.setNotificationSound();
+    this.getQueryParams()
   }
+
+    getQueryParams() {
+    this.route.queryParamMap
+      .subscribe(params => {
+        // console.log('[SIDEBAR-USER-DETAILS]  queryParams', params['params']);
+        
+        if (params['params']['tiledesk_logOut']) {
+            this.tiledeskLogout = params['params']['tiledesk_logOut']
+          //  console.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.tiledeskLogout);
+          
+        } else {
+            this.tiledeskLogout = true
+            //  console.log('[SIDEBAR-USER-DETAILS]  params tiledeskLogout', this.tiledeskLogout);
+        }
+      })
+    }
+
+
 
 
   // setNotificationSound() {
@@ -176,7 +200,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   presentDialogResetBusy() {
-    this.logger.log('[SIDEBAR] presentDialogResetBusy ')
+    this.logger.log('[SIDEBAR-USER-DETAILS] presentDialogResetBusy ')
     if (this.dialogRef) {
       this.dialogRef.close();
       return
@@ -191,7 +215,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
     this.dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
+      this.logger.log(`[SIDEBAR-USER-DETAILS] Dialog result: ${result}`);
       this.dialogRef = null
     });
 
@@ -202,9 +226,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[SIDEBAR] AppConfigService getAppConfig public_Key', this.public_Key);
+    this.logger.log('[SIDEBAR-USER-DETAILS] AppConfigService getAppConfig public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    this.logger.log('[SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
+    this.logger.log('[SIDEBAR-USER-DETAILS] PUBLIC-KEY - public_Key keys', keys)
     keys.forEach(key => {
       if (key.includes("PAY")) {
         let pay = key.split(":");
