@@ -349,6 +349,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.CANNED_RESPONSES_READ, label: 'Able to view' },
         { key: PERMISSIONS.CANNED_RESPONSES_UPDATE, label: 'Able to edit' },
+        // { key: PERMISSIONS.CANNED_RESPONSES_SHARED_CREATE, label: 'Able to create project shared' }, 
         { key: PERMISSIONS.CANNED_RESPONSES_CREATE, label: 'Able to create' },
         { key: PERMISSIONS.CANNED_RESPONSES_DELETE, label: 'Able to delete' },
       ]

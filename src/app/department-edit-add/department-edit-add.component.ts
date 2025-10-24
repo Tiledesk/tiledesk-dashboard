@@ -404,7 +404,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
 
         // PERMISSION_TO_EDIT_FLOWS
-          if (status.role === 'owner' || status.role === 'admin') {
+        if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
           console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
@@ -1605,8 +1605,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
       }
     }
-
-
   }
 
   goToMemberProfile(memberid) {

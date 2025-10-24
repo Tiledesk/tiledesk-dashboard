@@ -245,9 +245,9 @@ export class GroupEditAddComponent implements OnInit {
     // this.getAllUsersOfCurrentProject();
   }
 
-  /**
-   * GET GROUP BY ID (FOR EDIT VIEW)
-   */
+  // ---------------------------------
+  // GET GROUP BY ID (FOR EDIT VIEW)
+  // ---------------------------------
   getGroupById() {
     this.groupsService.getGroupById(this.group_id).subscribe((group: any) => {
       this.logger.log('[GROUP-EDIT-ADD] - GROUP GET BY ID', group);
