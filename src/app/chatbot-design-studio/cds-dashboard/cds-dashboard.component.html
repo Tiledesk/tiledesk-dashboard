@@ -34,7 +34,7 @@
                 <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </div> -->
             <div *ngIf="isBetaUrl">
-                <button class="btn btn-primary pull-right cds-blue-button cds-beta"
+                <button class="btn btn-primary float-end cds-blue-button cds-beta"
                     type="button">
                     BETA
                 </button>
@@ -52,7 +52,7 @@
                 <!-- <button id="cds-publish-btn-option" type="button" class="btn btn-primary dropdown-toggle"
                     data-toggle="dropdown">
                     <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
+                    <span class="visually-hidden">Toggle Dropdown</span>
                 </button> -->
 
                 <!-- <ul class="dropdown-menu" role="menu" style="border-radius: 3px ;background-color: rgb(51, 64, 94)">
@@ -93,7 +93,7 @@
                 </button>
             </div>
             <div>
-                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button cds-test-it-out"
+                <button id="cds-test-it-out-btn" class="btn btn-primary float-end cds-blue-button cds-test-it-out"
                     type="button" (click)="openTestSiteInPopupWindow()"
                     matTooltipClass="custom-mat-tooltip"
                     matTooltip="Test it out" #tooltip="matTooltip" matTooltipPosition='below'
@@ -105,7 +105,7 @@
             </div>
             <div class="cds-close-btn-wpr">
 
-                <button class="btn pull-right cds-close-btn" (click)="goBack()">
+                <button class="btn float-end cds-close-btn" (click)="goBack()">
                     <span class="material-icons cds-close-btn-icon">
                         clear
                     </span>
@@ -117,7 +117,7 @@
 
 
     <!-- <button id="cds-add-new-intent-btn"
-    class="btn btn-primary pull-right" (click)="addNewIntent()" >
+    class="btn btn-primary float-end" (click)="addNewIntent()" >
    
        {{'AddIntent' | translate}}
   </button> -->
@@ -302,7 +302,7 @@
 
                 <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT" style="text-align: left;">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
                                 style="padding-right: 26px; padding-left: 26px;">
                                 <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"

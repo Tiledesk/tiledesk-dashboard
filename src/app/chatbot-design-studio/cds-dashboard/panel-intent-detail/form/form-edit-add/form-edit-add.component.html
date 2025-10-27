@@ -11,7 +11,7 @@
     <div class="form-field container">
         <div class="row">
             <div class="col-md-12">
-                <div class="form-group" [ngClass]="{'is-error':nameResult === false}">
+                <div class="mb-3" [ngClass]="{'is-error':nameResult === false}">
                     <label class="control-label">
                         {{ 'AddIntentPage.ParameterName' | translate }}
                     </label>
@@ -35,7 +35,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="form-group" [ngClass]="{'is-error':labelResult === false}">
+                <div class="mb-3" [ngClass]="{'is-error':labelResult === false}">
                     <label class="control-label">
                         {{ 'AddIntentPage.Label' | translate }}
                     </label>
@@ -69,7 +69,7 @@
                         </mat-expansion-panel-header>
                         <div *ngIf="showRegexField" class="field-validation">
                             <div class="col-md-4">
-                                <div class="form-group ng-select" [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
+                                <div class="mb-3 ng-select" [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
                                     <label class="control-label custom-control-label">
                                         {{ 'Type' | translate }}
                                     </label>
@@ -89,7 +89,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <div class="form-group" [ngClass]="{'is-error':regexResult === false}">
+                                <div class="mb-3" [ngClass]="{'is-error':regexResult === false}">
                                     <label class="control-label custom-control-label">
                                         {{ 'AddIntentPage.AddCustomRegex' | translate }}
                                     </label>
@@ -110,7 +110,7 @@
 
 
                         <div *ngIf="fieldType" class="col-md-12">
-                            <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
+                            <div class="mb-3" [ngClass]="{'is-error':errorLabelResult === false}">
                                 <label class="control-label custom-control-label">
                                     {{ 'AddIntentPage.ErrorMessage' | translate }}
                                 </label>
@@ -139,7 +139,7 @@
         </div>
 
 
-        <div *ngIf="displayAddForm === true" class="form-group form-footer">
+        <div *ngIf="displayAddForm === true" class="mb-3 form-footer">
             <button  class="btn btn-light" type="button" (click)="close()">
                 {{ 'Cancel' | translate }}
             </button>

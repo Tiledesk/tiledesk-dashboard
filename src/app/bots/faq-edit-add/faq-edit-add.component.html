@@ -31,7 +31,7 @@
             <!-- START Intent -->
             <div>
               <div class="row">
-                <div class="col-md-12 form-group label-floating" style="margin-bottom: 30px;">
+                <div class="col-md-12 mb-3 label-floating" style="margin-bottom: 30px;">
                   <label class="control-label intentTitle">
                     {{ 'EnterIntentName' | translate}}
                   </label>
@@ -66,7 +66,7 @@
                 </div>
               </div> 
               
-              <div class="form-group label-floating">
+              <div class="mb-3 label-floating">
                 <label class="control-label">
                   {{ 'TypeAddYourQuestionHere' | translate}}
                 </label>
@@ -128,7 +128,7 @@
                 </div>
               </div>
 
-              <div class="form-group label-floating">
+              <div class="mb-3 label-floating">
                 <label class="control-label">
                   {{ "FaqEditAddPage.InfoAnswer" | translate }}
                 </label>
@@ -187,7 +187,7 @@
 
             <!-- START buttons -->
             <div class="col-sm-12">
-              <button class="btn btn-primary pull-right create-answer-btn"
+              <button class="btn btn-primary float-end create-answer-btn"
                 [disabled]="question?.length < 2 || answer?.length < 2 || intent_name?.length < 1" (click)="create()">
                 <!-- Crea FAQ  -->
                 {{ "AddIntent" | translate }}
@@ -210,7 +210,7 @@
             <!-- START Intent -->
             <div>
               <div class="row">
-                <div class="col-md-12 form-group label-floating" style="margin-bottom: 30px;">
+                <div class="col-md-12 mb-3 label-floating" style="margin-bottom: 30px;">
                   <label class="control-label intentTitle">
                     {{ 'IntentName' | translate}}
                   </label>
@@ -264,7 +264,7 @@
                 </div>
               </div> 
               
-              <div class="form-group label-floating">
+              <div class="mb-3 label-floating">
                 <label class="control-label">
                   {{ 'TypeAddYourQuestionHere' | translate}}
                 </label>
@@ -350,7 +350,7 @@
                 </div>
               </div>
 
-              <div class="form-group label-floating">
+              <div class="mb-3 label-floating">
                 <label class="control-label">
                   {{ "FaqEditAddPage.InfoAnswer" | translate }}
                 </label>
@@ -480,11 +480,11 @@
 
             <!-- START buttons -->
             <div class="col-sm-12">
-              <button class="btn btn-primary pull-right update-answer-btn" (click)="edit()"
+              <button class="btn btn-primary float-end update-answer-btn" (click)="edit()"
                 [disabled]="question_toUpdate?.length < 2 || answer_toUpdate?.length < 2 || intent_name?.length < 1">
                 {{ "UpdateIntent" | translate }}
               </button>
-              <button class="btn btn-danger pull-right delete-answer-btn" (click)='presentSwalModalDeleteFaq()'
+              <button class="btn btn-danger float-end delete-answer-btn" (click)='presentSwalModalDeleteFaq()'
                 style="margin-right: 8px;">
                 {{ 'DeleteIntent' | translate }}
               </button>
@@ -503,7 +503,7 @@
                 <!-- --------------------------------------------------- -->
                 <!-- @ Test it out -->
                 <!-- --------------------------------------------------- -->
-                <button type="button" class=" btn btn-light-blu pull-right" (click)="openTestSiteInPopupWindow()" style="height: 34px;
+                <button type="button" class=" btn btn-light-blu float-end" (click)="openTestSiteInPopupWindow()" style="height: 34px;
                 padding-left: 12px;
                 padding-right: 12px;
                 margin-right: 23px;">
@@ -595,14 +595,14 @@
               <!-- style="margin-top: 6px;" -->
               <div class="col-sm-12">
                 <div class="row">
-                  <div class="col-xs-4">
+                  <div class="col-4">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name">
                         \agent
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-8">
+                  <div class="col-8">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name"> {{'HandoffToHumanAgents' | translate}}: </span>
                       <span class="faq-right-sidebar-attribute-value">
@@ -620,7 +620,7 @@
               <div class="col-sm-12" style="margin-top: 6px;">
 
                 <div class="row">
-                  <div class="col-xs-4">
+                  <div class="col-4">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name">
                         <span style="display: block;"> {{'YourAnswerText' | translate}} </span>
@@ -632,7 +632,7 @@
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-8">
+                  <div class="col-8">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name"> {{'RenderAbutton' | translate}}: </span>
                       <span class="faq-right-sidebar-attribute-value">
@@ -650,7 +650,7 @@
             <div class="row" style="margin-top:5px">
               <div class="col-sm-12">
                 <div class="row" style="margin-top: 6px;">
-                  <div class="col-xs-4">
+                  <div class="col-4">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name">
                         <span style="display: block;"> {{'YourAnswerText' | translate}} </span>
@@ -658,7 +658,7 @@
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-8">
+                  <div class="col-8">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name"> {{'Images' | translate}}: </span>
                       <span class="faq-right-sidebar-attribute-value">
@@ -684,14 +684,14 @@
             <!-- <div class="row" style="margin-top:5px">
               <div class="col-sm-12">
                 <div class="row" style="margin-top: 6px;">
-                  <div class="col-xs-6">
+                  <div class="col-6">
                     <div style="line-height: 14px;">
                       <span class="right-sidebar-attribute-name" >
                         <span style="display: block;"> \webhook:Endpoint </span>
                       </span>
                     </div>
                   </div>
-                  <div class="col-xs-6">
+                  <div class="col-6">
                     <div style="line-height: 14px;">
                       <span class="faq-right-sidebar-attribute-value">
                         {{"FaqEditAddPage.CallTheExternalWebhookToTheSpecifiedEndpoint" | translate}}

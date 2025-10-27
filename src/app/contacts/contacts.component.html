@@ -104,7 +104,7 @@
                             <!-- <div class="row"> -->
                             <div class="col-sm-6">
                               <div class="col-sm-12">
-                                <div class="form-group"
+                                <div class="mb-3"
                                   style="margin-top: 6px;padding-bottom: 0px !important;margin-right: 3px;;">
                                   <!-- class="form-control" -->
                                   <!-- <input id="lead--email" type="email" (keyup.enter)="search()"
@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-sm-6">
                               <div class="col-sm-12">
-                                <div class="form-group" style="margin-top: 8px;margin-left: 3px;">
+                                <div class="mb-3" style="margin-top: 8px;margin-left: 3px;">
                                   <!-- <input (keyup.enter)="search()" style="margin-top:2px;border-radius:5px!important"
                                 class="form-control" name="contactTag" autocomplete="off"
                                 [(ngModel)]="selectedContactTAG" placeholder="Search by TAG"> -->
@@ -164,12 +164,12 @@
 
                             <div class="col-sm-12" style="text-align: right;">
                               <button id="cnct-search-btn" type="submit"
-                                class="btn btn-tdblu-no-boxshadow searchbtn pull-right" (click)="search()">
+                                class="btn btn-tdblu-no-boxshadow searchbtn float-end" (click)="search()">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 {{'Search'|translate}}
                               </button>
                               <button id="clear-search-btn" type="submit"
-                                class="btn btn-gray-no-boxshadow clearsearchbtn pull-right" (click)="clearFullText()">
+                                class="btn btn-gray-no-boxshadow clearsearchbtn float-end" (click)="clearFullText()">
 
                                 {{'ResetFilters'|translate}}
                               </button>
@@ -320,14 +320,14 @@
               <!-- ------------------------------------------------------- -->
               <div id="contacts-content">
                 <div class="row">
-                  <div class="col-xs-12">
+                  <div class="col-12">
                     <div class="card contact-list" style="margin-top:0px; border-radius: 12px;">
                       <div class="card-header card-header-custom-bkgrnd"
                         [ngClass]="{'gray-bckgnd': hasClickedTrashed === true}">
 
                         <div class="row">
-                          <!-- [ngClass]="{'col-xs-6' : hasClickedTrashed === false, 'col-xs-12': hasClickedTrashed === true}"  -->
-                          <div class="col-xs-6">
+                          <!-- [ngClass]="{'col-6' : hasClickedTrashed === false, 'col-12': hasClickedTrashed === true}"  -->
+                          <div class="col-6">
                             <span *ngIf="hasClickedTrashed === false">
                               <button class="btn btn-outlined export-to-csv-btn" [disabled]="PERMISSION_TO_EXPORT_LEADS === false" (click)="exportContactsToCsv()">
                                 {{ 'ExportToCSV' | translate }}
@@ -347,7 +347,7 @@
 
                           </div>
 
-                          <div *ngIf="hasClickedTrashed === false" class="col-xs-6" style="text-align: right;">
+                          <div *ngIf="hasClickedTrashed === false" class="col-6" style="text-align: right;">
                             <div class="mobile-trash-contacs-btn">
                               <span style="cursor:pointer" (click)="openTrashedContact()">
                                 <span style="font-weight: 400;">
@@ -362,7 +362,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="hasClickedTrashed === true" class="col-xs-6" style="text-align: right;">
+                          <div *ngIf="hasClickedTrashed === true" class="col-6" style="text-align: right;">
                             <div class="mobile-trash-contacs-btn" (click)="closeTrashContacts()">
                               <i class="material-icons" style="vertical-align: middle;">
                                 clear
@@ -370,7 +370,7 @@
                               <span style="vertical-align: middle;">
                                 {{ 'CloseTrash' |translate}}
                               </span>
-                              <!-- <button style="padding: 9px 30px;margin-bottom:0px" class="btn btn-default"
+                              <!-- <button style="padding: 9px 30px;margin-bottom:0px" class="btn btn-secondary"
                 (click)="closeTrashContacts()">
                  {{ 'CloseTrash' |translate}}
 
@@ -604,11 +604,11 @@
                               <!-- ========== ICONS EDIT CONTACT - VIEW CONTACT REQUESTS - REMOVE CONTACT ========== -->
                               <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
 
-                              <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
+                              <td *ngIf="hasClickedTrashed === false" class="td-actions text-end"
                                 style="padding-left: 0px;padding-top: 17px!important;">
 
                                 <!-- VIEW CONVERSATIONS {{ 'ViewContactRequests' | translate }}  -->
-                                <button type="button" class="btn btn-primary btn-simple btn-xs"
+                                <button type="button" class="btn btn-primary btn-simple btn-sm"
                                   (click)='goToContactDetails(contact?._id)' 
                                   matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{ 'ContactDetails' | translate }}" 
@@ -622,7 +622,7 @@
                                 </button>
 
                                 <!-- EDIT CONTACT -->
-                                <!-- <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                                <!-- <button type="button" class="btn btn-primary btn-simple btn-sm tooltipx"
                               (click)='goToEditContact(contact?._id)'>
                               <i class="material-icons">edit</i>
                               <span class="tooltiptext-custom" style="text-transform:none">
@@ -631,7 +631,7 @@
                             </button> -->
 
                                 <!-- DELETE CONTACT {{ 'DeleteContact' | translate }} -->
-                                <button type="button" class="btn btn-danger btn-simple btn-xs"
+                                <button type="button" class="btn btn-danger btn-simple btn-sm"
                                   [disabled]="IS_CURRENT_USER_AGENT === true || PERMISSION_TO_TRASH_LEAD === false"
                                   (click)='moveContactToTrash(contact?._id, contact?.fullname)'
                                   matTooltipClass="custom-mat-tooltip" 
@@ -646,9 +646,9 @@
                                 </button>
                               </td>
 
-                              <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
+                              <td *ngIf="hasClickedTrashed === true" class="td-actions text-end"
                                 style="padding-left: 0px;padding-top: 17px !important;">
-                                <button type="button" class="btn btn-danger btn-simple btn-xs"
+                                <button type="button" class="btn btn-danger btn-simple btn-sm"
                                   [disabled]="USER_ROLE === 'admin' || USER_ROLE === 'agent' || PERMISSION_TO_DELETE_LEAD === false"
                                   (click)='deleteContactForever(contact?._id, contact?.fullname)'
                                   matTooltipClass="custom-mat-tooltip" 
@@ -659,7 +659,7 @@
                                   <i class="material-icons">delete_forever</i>
                                 </button>
 
-                                <button type="button" class="btn btn-default btn-simple btn-xs"
+                                <button type="button" class="btn btn-secondary btn-simple btn-sm"
                                   [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_RESTORE_LEAD === false" 
                                   (click)='restore_contact(contact?._id)'
                                   matTooltipClass="custom-mat-tooltip" 
@@ -732,7 +732,7 @@
           // ------------------------------------------------------- -->
 
               <!-- <div class="row">
-          <div class="col-xs-12" style="padding-right: 5px;padding-left: 0px;">
+          <div class="col-12" style="padding-right: 5px;padding-left: 0px;">
 
           <div class="card nav-card" style="margin-bottom: 0px;margin-top: 0px; padding: 15px 0px;">
             <div class="card-content"
@@ -757,7 +757,7 @@
           </div>
         </div>
 
-        <div class="col-xs-12 col-sm-9 col-md-9" style="padding-right: 0px;padding-left: 5px;">
+        <div class="col-12 col-sm-9 col-md-9" style="padding-right: 0px;padding-left: 5px;">
 
 
 

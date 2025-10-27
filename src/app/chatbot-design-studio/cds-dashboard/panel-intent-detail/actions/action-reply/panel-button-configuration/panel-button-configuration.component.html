@@ -15,7 +15,7 @@
        
         <div class="section displayed">
 
-            <div class="form-group" [ngClass]="{'is-error':buttonLabel}">
+            <div class="mb-3" [ngClass]="{'is-error':buttonLabel}">
                <label class="control-label ">
                     {{ 'Button title' | translate }}
                 </label>
@@ -36,7 +36,7 @@
 
         
         <div class="section displayed">
-            <div class="form-group ng-select">
+            <div class="mb-3 ng-select">
                 <label class="control-label">
                     {{ 'Type' | translate }}
                 </label>
@@ -57,7 +57,7 @@
 
         <div class="section" [ngClass]="{'displayed':buttonType === typeOfButton.URL}">
 
-            <div class="form-group ng-select">
+            <div class="mb-3 ng-select">
                 <label class="control-label">
                     {{ 'Open in' | translate }}
                 </label>
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="form-group" [ngClass]="{'is-error':errorUrl === true}">
+            <div class="mb-3" [ngClass]="{'is-error':errorUrl === true}">
                 <label class="control-label">
                     {{ 'Url' | translate }}
                 </label>
@@ -89,7 +89,7 @@
 
         <div class="section" 
             [ngClass]="{'displayed':buttonType === typeOfButton.ACTION}">
-            <div class="form-group ng-select">
+            <div class="mb-3 ng-select">
                 <label class="control-label">
                     {{ 'Go to block' | translate }}
                 </label>

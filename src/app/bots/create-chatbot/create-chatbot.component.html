@@ -43,9 +43,9 @@
 <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
         <div class="row" *ngIf=" HAS_SELECTED_CREATE_BOT === true">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <button 
-                    class="btn btn-new btn-size-m btn--primary pull-right" 
+                    class="btn btn-new btn-size-m btn--primary float-end" 
                     style="margin-right: 8px; box-shadow: unset;margin-top: -20px;" (click)="goToCommunity()"> 
                     More from community
                    </button>
@@ -53,7 +53,7 @@
         </div>
         
         <div class="row" *ngIf=" HAS_SELECTED_CREATE_BOT === true">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div class="create-chatbot-from-community" style="margin-left: 5px;">
                     Multilanguage bot from scratch
                 </div>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="row" *ngIf=" HAS_SELECTED_CREATE_BOT === false">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div class="create-chatbot-from-community">
                    Import from JSON
                 </div>
@@ -98,7 +98,7 @@
                                             style="width: auto; height: 40px;" />
 
                                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{startChatBot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{startChatBot?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
                                             style="width: auto; height: 40px;" />
                                     </span>

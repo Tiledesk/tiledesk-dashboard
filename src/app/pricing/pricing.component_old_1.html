@@ -65,7 +65,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
         <div class="row">
           <div class="col-md-12">
-              <!-- <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle"> -->
+              <!-- <img class="pricing__use-case-squiggle u__d-md-none d-lg-block-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle"> -->
              <div style="margin-bottom:15px">
                 <h3 *ngIf="selectedPlanName === 'pro'" style="color: #3EA9F5;line-height: 1.3em;"> 
                   <span style="font-weight:500"> Pro {{'Includes' | translate}} </span>
@@ -205,7 +205,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4"> 
+              <div class="col-4 col-sm-4 col-md-4"> 
                 <a>
                   <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
                  
@@ -219,14 +219,14 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 </a>
               </div>
 
-              <div class="col-xs-4 col-sm-4 col-md-4"> 
+              <div class="col-4 col-sm-4 col-md-4"> 
                 <div class="quantity" style="text-align:center; font-family: 'Lato', sans-serif;"
                   [ngClass]="{'pro-plan-quantity' : selectedPlanName === 'pro', 'enterprise-plan-quantity' : selectedPlanName === 'enterprise'}">
                   {{ operatorNo }}
                 </div>
               </div>
 
-              <div class="col-xs-4 col-sm-4 col-md-4"> 
+              <div class="col-4 col-sm-4 col-md-4"> 
                 <a>
 
                   <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->

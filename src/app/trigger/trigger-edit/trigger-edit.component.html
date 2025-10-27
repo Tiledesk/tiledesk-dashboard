@@ -18,7 +18,7 @@
             <div class="row" *ngIf="!showSpinner">
               <form (ngSubmit)="onSubmit()" [formGroup]="triggerForm">
 
-                <div class=" form-group row" style="border-bottom: solid 1px #ddd">
+                <div class=" mb-3 row" style="border-bottom: solid 1px #ddd">
 
                   <label class="col-sm-2 custom-label" style="white-space: nowrap">
                     {{ "Trigger.Add_Edit.TriggerStatus" | translate }}
@@ -47,7 +47,7 @@
 
                 <div style="border-bottom: solid 1px #ddd">
 
-                  <div class="form-group row" style="margin-top: 16px;">
+                  <div class="mb-3 row" style="margin-top: 16px;">
                     <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.TriggerName" | translate }}</label>
                     <div class="col-sm-4">
                       <input type="text" class="custom-input" style="width: 100%" formControlName="name" />
@@ -56,7 +56,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group row" style="margin-bottom: 10px;">
+                  <div class="mb-3 row" style="margin-bottom: 10px;">
                     <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.Description" | translate }}</label>
                     <div class=" col-sm-4">
                       <textarea type="text" class="custom-input" style="width: 100%; height: 50px;"
@@ -70,12 +70,12 @@
                 <!-- style="border-bottom: solid 1px #ddd" -->
                 <div>
                   <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 trigger-section-title">
+                    <div class="col-12 col-sm-6 col-md-12 col-lg-6 trigger-section-title">
                       {{ "Trigger.Add_Edit.CustomizeTrigger" | translate }}
                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="mb-3 row">
                     <label for="triggerEvent" class="col-sm-2 custom-label">
                       {{ "Trigger.Add_Edit.RunTrigger" | translate }}
                     </label>
@@ -103,7 +103,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="mb-3 row">
                     <label class="col-sm-2 custom-label" style="white-space: nowrap">
                       {{ "Trigger.Add_Edit.CheckConditions" | translate }}
                     </label>
@@ -128,7 +128,7 @@
                       <div formArrayName="any"
                         *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index; let last = last">
                         <div [formGroupName]="i">
-                          <div class="form-group row condition">
+                          <div class="mb-3 row condition">
 
                             <!-- -----first condition------- -->
                             <!-- nk replaced formControlName="path" with formControlName="key" -->
@@ -233,7 +233,7 @@
                       <div formArrayName="all"
                         *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index; let last = last">
                         <div [formGroupName]="i">
-                          <div class="form-group row condition">
+                          <div class="mb-3 row condition">
 
                             <!-- -----first condition------- -->
                             <div class="col-sm-3">
@@ -360,7 +360,7 @@
 
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< -->
                 <div>
-                  <div class="form-group row condition" style="background-color: #fff">
+                  <div class="mb-3 row condition" style="background-color: #fff">
                     <label class="col-sm-2 custom-label"
                       style="text-align: left!important;height: 17px;white-space: nowrap;padding-left: 0px!important;">
                       {{ "Trigger.Add_Edit.PerformFollowingActions" | translate }}
@@ -375,7 +375,7 @@
                     <div formArrayName="actions"
                       *ngFor="let action of triggerForm.get('actions').controls; let j = index; let last = last">
                       <div [formGroupName]="j">
-                        <div class="form-group row condition">
+                        <div class="mb-3 row condition">
 
                            
                           <!-- --------------------------- -->
@@ -494,13 +494,13 @@
                 </div>
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER END------<<<<<<<<< -->
 
-                <div class="form-group" style="border-top: solid 1px #ddd; padding-top: 18px;margin-top: 16px;">
+                <div class="mb-3" style="border-top: solid 1px #ddd; padding-top: 18px;margin-top: 16px;">
                   <button class="btn btn-primary" type="submit">
                     {{ "Trigger.Add_Edit.UpdateTriggerButton" | translate}}
                   </button>
-                  <button class="btn btn-default" type='button' (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button>
+                  <button class="btn btn-secondary" type='button' (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button>
 
-                  <button *ngIf="IS_PRE_BUILT_TRIGGER === true" class="btn btn-white pull-right" type='button'
+                  <button *ngIf="IS_PRE_BUILT_TRIGGER === true" class="btn btn-white float-end" type='button'
                     (click)="openModalConfirmResetSettings()">
                     {{ "Trigger.Add_Edit.ResetToDefaults" | translate }}
                   </button>

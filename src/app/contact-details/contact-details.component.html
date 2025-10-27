@@ -19,7 +19,7 @@
             style="padding-bottom:5px; padding-left: 0px;">
 
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-12 col-sm-12 col-md-12">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "Requests" | translate }}
@@ -27,7 +27,7 @@
                 </h3>
               </div>
 
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-12 col-sm-12 col-md-12">
                 <div class="section-subtitle"> </div>
               </div>
             </div>
@@ -383,7 +383,7 @@
             style="padding-top: 0px;    padding-left: 1px;padding-right: 1px;">
 
             <div class="row" style="border-bottom: 1px solid #ddd;">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <!-- style="top: 22px;" -->
                 <h3 class="card_title__underlined" >
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
@@ -459,7 +459,7 @@
 
 
               </div>
-              <!-- <div class="col-xs-6 col-sm-6 col-md-6"> -->
+              <!-- <div class="col-6 col-sm-6 col-md-6"> -->
 
               <div class="contact-action-wpr">
              
@@ -524,7 +524,7 @@
 
               </div>
 
-              <!-- <div style="display: none;" class="dropdown pull-right">
+              <!-- <div style="display: none;" class="dropdown float-end">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 14px;">
                       more_vert
@@ -546,7 +546,7 @@
                   </ul>
                 </div> -->
             </div>
-            <!-- <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- <div class="col-12 col-sm-12 col-md-12">
                 <div class="section-subtitle"> </div>
               </div> -->
           </div>
@@ -613,7 +613,7 @@
                     <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                       <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;;padding-bottom: 5px;">
+                        <div class="col-10" style="padding-right: 1px;;padding-bottom: 5px;">
                           <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                             {{attribute?.attributeName }}:
                           </div>
@@ -626,7 +626,7 @@
                         </div>
                         <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                         <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                           style="text-align: right; width:1%;">
                           <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                             style="cursor: pointer; color: #394f5a; font-size:18px;"
@@ -690,7 +690,7 @@
                     <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                       <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                        <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                           <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
                             class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> {{Attributes | translate}} </div>
@@ -708,7 +708,7 @@
                         <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                         <!-- [ngClass]="{'down' : attributeFullText === true}" -->
                         <!-- white-space: nowrap;width: 1%; -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                           style="text-align: right;">
                           <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                             style="cursor: pointer; color: #039be5; font-size:18px;"

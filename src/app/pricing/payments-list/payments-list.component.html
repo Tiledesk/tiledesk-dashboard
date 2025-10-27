@@ -210,8 +210,8 @@
                           subscription?.object?.data.object?.currency}}
 
                         </td>
-                        <td class="td-actions text-left">
-                          <button id="btn_openinnew_{{subscription?.object?.id}}" type="button" class="btn btn-primary btn-simple btn-xs btn_in_accordion_table tooltipx" style="padding-left: 1px; padding-right: 5px;"
+                        <td class="td-actions text-start">
+                          <button id="btn_openinnew_{{subscription?.object?.id}}" type="button" class="btn btn-primary btn-simple btn-sm btn_in_accordion_table tooltipx" style="padding-left: 1px; padding-right: 5px;"
                             (click)='$event.stopPropagation();viewRecepit(subscription?.object?.data?.object?.hosted_invoice_url)'>
                             <i class="material-icons accordion_table_icon" id="icon_{{subscription?.object?.id}}">open_in_new</i>
                             <span class="tooltiptext-custom"
@@ -220,7 +220,7 @@
                             </span>
                           </button>
 
-                          <button id="btn_dwnload_{{subscription?.object?.id}}" type="button" class="btn btn-primary btn-simple btn-xs btn_in_accordion_table tooltipx" style="padding-left: 1px; padding-right: 5px;"
+                          <button id="btn_dwnload_{{subscription?.object?.id}}" type="button" class="btn btn-primary btn-simple btn-sm btn_in_accordion_table tooltipx" style="padding-left: 1px; padding-right: 5px;"
                             (click)='$event.stopPropagation();viewInvoice(subscription?.object?.data?.object?.invoice_pdf)'>
                             <i class="material-icons accordion_table_icon"  id="icon_{{subscription?.object?.id}}">save_alt</i>
                             <span class="tooltiptext-custom"

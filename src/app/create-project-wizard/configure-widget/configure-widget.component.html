@@ -44,14 +44,14 @@
       <div class="row">
         <div class="col-md-12">
           <div class="col-md-12">
-            <div class="form-group no-top-padding" style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
+            <div class="mb-3 no-top-padding" style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
               <label class="control-label wizard-control-label">
                 {{ 'ReadyThemes' | translate }}
               </label>
               <div class="preset-colors-first-line" style="margin-bottom: 8px;max-width: 300px;">
                 <div class="row">
                   <!-- @ preset-color-ONE * primaryColor === '#d70af1'	* secondaryColor === '#fed2ff' 	-->
-                  <div class="col-xs-2 col-sm-2">
+                  <div class="col-2 col-sm-2">
                     <div class="preset-color-one" [ngClass]="{'checked-color' : primaryColor === '#d70af1' && secondaryColor === '#fed2ff', 
                                   'unchecked-color': primaryColor !== '#d70af1' && secondaryColor !== '#fed2ff'}"
                       style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
@@ -70,7 +70,7 @@
                   </div>
 
                   <!-- @ preset-color-EIGHT  * primaryColor === '#606060' 	* secondaryColor === '#D6ED17' 	-->
-                  <div class="col-xs-2 col-sm-2">
+                  <div class="col-2 col-sm-2">
                     <div class="preset-color-eight" [ngClass]="{'checked-color' : primaryColor === '#606060' && secondaryColor === '#D6ED17', 
                                   'unchecked-color': primaryColor !== '#606060' && secondaryColor !== '#D6ED17'}"
                       style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
@@ -87,7 +87,7 @@
                   </div>
 
                   <!-- @ preset-color-THREE  * primaryColor === '#990011' 	* secondaryColor === '#C7D3D4' 	-->
-                  <div class="col-xs-2 col-sm-2">
+                  <div class="col-2 col-sm-2">
                     <div class="preset-color-three" [ngClass]="{'checked-color' : primaryColor === '#990011' && secondaryColor === '#FCF6F5', 
                                   'unchecked-color': primaryColor !== '#990011' && secondaryColor !== '#FCF6F5'}"
                       style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
@@ -105,7 +105,7 @@
                     </div>
                   </div>
 
-                  <div class="col-xs-2 col-sm-2">
+                  <div class="col-2 col-sm-2">
 
                     <!-- @ preset-color-FOUR * primaryColor === '#76528B' * secondaryColor === '#C7D3D4' 	-->
                     <div class="preset-color-four" [ngClass]="{'checked-color' : primaryColor === '#76528B' && secondaryColor === '#CBCE91', 
@@ -125,7 +125,7 @@
                     </div>
                   </div>
 
-                  <div class="col-xs-2 col-sm-2">
+                  <div class="col-2 col-sm-2">
                     <!-- @ preset-color-SIX -	TILEDESK DEFAULT WIDGET COMBINATION COLORS 	* primaryColor === '#2a6ac1' * secondaryColor === '#ffffff' 	-->
                     <div class="preset-color-six" [ngClass]="{'checked-color' : primaryColor === '#2a6ac1' && secondaryColor === '#ffffff', 
                                     'unchecked-color': primaryColor !== '#2a6ac1' && secondaryColor !== '#ffffff'}"
@@ -158,7 +158,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="col-md-6">
-            <div class="form-group no-top-padding" style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+            <div class="mb-3 no-top-padding" style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
               <label class="control-label wizard-control-label" for="primaryColor">
                 {{ 'Primary' | translate}}
@@ -200,7 +200,7 @@
           <!-- @ Custom color - Select secondary color -->
           <!-- ---------------------------------------- -->
           <div class="col-md-6">
-            <div class="form-group no-top-padding" style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+            <div class="mb-3 no-top-padding" style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
               <label class="control-label wizard-control-label">
                 {{ 'Secondary' | translate}}
 

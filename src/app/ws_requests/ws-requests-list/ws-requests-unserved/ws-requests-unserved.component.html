@@ -2,7 +2,7 @@
   <div class="card-header card-header-custom">
 
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h4 class="title customh4" style="margin-bottom:2px;">
           <!-- + countRequestsServedByBotRr -->
           {{ 'VisitorsPage.UnservedRequests' | translate }} <span
@@ -1024,14 +1024,14 @@
           <!-- ------------------------------------------------------ -->
           <!-- @ ACTIONS -->
           <!-- ------------------------------------------------------ -->
-          <td class="td-actions text-right" style="padding-top: 9px !important;">
+          <td class="td-actions text-end" style="padding-top: 9px !important;">
 
 
             <!-- ------------------------------------------------------ -->
             <!--  Join ACTION -->
             <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='joinRequest(request?.request_id)'
+              class="btn btn-tdblu btn-simple btn-sm" (click)='joinRequest(request?.request_id)'
               matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}"
               #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
               [disabled]="!PERMISSION_TO_JOIN_REQUEST">
@@ -1058,7 +1058,7 @@
             <!--  Archive ACTION -->
             <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='archiveRequest(request?.request_id, request)'
+              class="btn btn-tdblu btn-simple btn-sm" (click)='archiveRequest(request?.request_id, request)'
               [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST" 
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 

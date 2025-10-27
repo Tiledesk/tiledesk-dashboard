@@ -1,8 +1,8 @@
 <!-- ROW AND CUSTOM COL RESOLVE THE ISSUE: THE NAVIGATION TO PREVIOUS PAGE IS IMPOSSIBLE BECAUSE THE NAVBAR IS OVER THE NAVBAR BRAND IN WHICH THERE IS THE BACK BUTTON -->
 <!-- <div class="row"> -->
-<!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
+<!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-9 col-offset-3" style="right:25px"> -->
 <!-- navbar-transparent -->
-<nav class="navbar navbar-absolute">
+<nav class="navbar fixed-top bg-white shadow-sm">
   <!-- <div *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false"> 
     <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false">
 
@@ -15,7 +15,7 @@
     <div class="navbar-header">
       <!-- <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
         (click)="sidebarToggle()">
-        <span class="sr-only">Toggle navigation</span>
+        <span class="visually-hidden">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -30,7 +30,7 @@
         <!-- <li>
                 <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="material-icons">dashboard</i>
-                    <p class="hidden-lg hidden-md">Dashboard</p>
+                    <p class="d-lg-none d-xl-block d-md-none d-lg-block">Dashboard</p>
                 </a>
             </li> -->
 
@@ -400,7 +400,7 @@
             <a class="tool_tip" style="cursor: pointer;" *ngIf="!OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
               <i class="material-icons" style="color:#AAA">access_time</i>
           
-              <p class="hidden-lg hidden-md">operatinghoursoff</p>
+              <p class="d-lg-none d-xl-block d-md-none d-lg-block">operatinghoursoff</p>
               <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
                 {{ 'OperatingHoursAreDisabled' | translate }}
                 <i></i>
@@ -408,7 +408,7 @@
             </a>
             <a class="tool_tip" style="cursor: pointer;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
               <i class="material-icons" style="color:#3ea9f5">access_time</i>
-              <p class="hidden-lg hidden-md">operatinghourson</p>
+              <p class="d-lg-none d-xl-block d-md-none d-lg-block">operatinghourson</p>
               <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
                 {{ 'OperatingHoursAreEnabled' | translate }}
 
@@ -452,7 +452,7 @@
           </a>
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
             <i class="material-icons">volume_off</i>
-            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
+            <!-- <p class="d-lg-none d-xl-block d-md-none d-lg-block">soundoff</p> -->
           </a>
         </li>
 
@@ -466,7 +466,7 @@
               <span style="text-transform: none"> {{ project.name }} </span>
               <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
               <!-- <b class="caret"></b> -->
-              <!-- <p class="hidden-lg hidden-md">Projects</p> -->
+              <!-- <p class="d-lg-none d-xl-block d-md-none d-lg-block">Projects</p> -->
             </a>
 
             <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">

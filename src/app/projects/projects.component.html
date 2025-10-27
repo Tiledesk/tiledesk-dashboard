@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px;">
+  <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-9 col-offset-3" style="right:25px;">
     <nav class="navbar navbar-transparent navbar-absolute">
       <div class="container-fluid">
         <div class="navbar-header">
           <!-- <button type="button" class="navbar-toggle" style="margin-top:-3px; color:#fff" data-toggle="collapse"
             (click)="sidebarToggle()">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="visually-hidden">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -66,7 +66,7 @@
                   <!-- --------------------------------------------------- -->
                   <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                   <img *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE " class="user-img-user-img-in-dropdown"
-                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                     onerror="this.src='assets/img/no_image_user.png'" />
 
                   <!-- --------------------------------------------------- -->
@@ -100,7 +100,7 @@
                       <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                       <img style="width:80px; height:80px" *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE "
                         class="user-img-user-img-in-dropdown"
-                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
                       <!-- --------------------------------------------------- -->
@@ -273,7 +273,7 @@
 
     <div *ngIf="!showSpinner" class="projects-cards">
       <div class="row">
-        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer"
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-12" style="cursor:pointer"
         (click)='goToCreateProject()'>
 
           <!-- CARD ADD PROJECT -->
@@ -299,7 +299,7 @@
 
 
         <div *ngIf="projects?.length === 0 && MT === false">
-          <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
+          <div class="col-4 col-offset-4" style="cursor:pointer">
 
             <div class="card prjct-card">
               <div class="card-content" style="height:203px">
@@ -481,7 +481,7 @@
                 style="color:#7695a5">
                 <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
 
-                <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
+                <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-sm" (click)='goToEditAddPage_EDIT(project?._id)'> -->
                 <!-- <i class="material-icons">edit</i> -->
                 <!-- </button> -->
               </div>

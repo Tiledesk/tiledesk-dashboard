@@ -48,7 +48,7 @@
                       <div class="chat-header-wpr-btn">
                         <!-- btn-primary chat-header-btn -->
                         <button #openChatBtn (click)="openChatAtSelectedConversation()"
-                          class="btn  btn-outlined plr-8 ptb-8 pull-right" role="button"
+                          class="btn  btn-outlined plr-8 ptb-8 float-end" role="button"
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='below' matTooltipHideDelay="100">
@@ -66,7 +66,7 @@
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                       <div class="chat-header-wpr-btn">
                         <!-- [matTooltip]="request?.status !== 1000 ? ( 'ThisConversationIsNotAssignedToYou' | translate ) : ( 'This conversation is closed, reopen it to Join' )"  -->
-                        <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                        <button class="btn btn-outlined plr-8 ptb-8 float-end" (click)="onJoinHandled()"
                           [disabled]="request?.status == 1000 || !PERMISSION_TO_JOIN_REQUEST" role="button"
                           matTooltipClass="custom-mat-tooltip" [matTooltip]="getJoinTooltipMessage()"
                           #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -85,7 +85,7 @@
                     && JOIN_TO_GROUP_HAS_ERROR === false">
                       <div class="chat-header-wpr-btn">
                         <!-- btn-primary chat-header-btn -->
-                        <button class="btn btn-outlined plr-8 ptb-8 pull-right">
+                        <button class="btn btn-outlined plr-8 ptb-8 float-end">
                           <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                           {{ 'RequestMsgsPage.Loading' | translate }}
                         </button>
@@ -100,7 +100,7 @@
 
                       <div class="chat-header-wpr-btn">
                         <!-- btn-danger chat-header-btn -->
-                        <button class="btn btn-red plr-8 ptb-8 pull-right" disabled>
+                        <button class="btn btn-red plr-8 ptb-8 float-end" disabled>
                           {{ 'Error' | translate }}
                         </button>
                       </div>
@@ -264,7 +264,7 @@
                                 <!-- Usecase  Native  -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-msg-list"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fcards_200_200-photo.jpg"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
 
@@ -287,7 +287,7 @@
                                 <!-- Usecase  Native (bot) -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-in-msg-list"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fcards_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
                             </div>
@@ -381,9 +381,9 @@
 
                 <!-- nk new -->
                 <div class="row chat-btns-and-text-row h-100 w-100">
-                  <div class="col-xs-12 plr-0">
+                  <div class="col-12 plr-0">
                     <div class="row w-100">
-                      <div class="col-xs-12 h-100 plr-0">
+                      <div class="col-12 h-100 plr-0">
                         <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
                           [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
                           (change)="onChangeReplyType(selectedResponseTypeID)">
@@ -405,7 +405,7 @@
                     <!-- ------------------------------------------------ -->
                     <!-- texarea send message  -->
                     <!-- ------------------------------------------------ -->
-                    <!-- <div class="col-xs-12  w-100 plr-0"> -->
+                    <!-- <div class="col-12  w-100 plr-0"> -->
                     <!-- row -->
                     <!-- <div class=" w-100"> -->
                     <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
@@ -459,7 +459,7 @@
 
 
 
-                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
+                    <div class="col-12 h-100 plr-0" style="position: relative;"
                       [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
 
                       <!-- For emojis -->
@@ -483,10 +483,10 @@
                     </div>
 
 
-                    <div class="col-xs-12  w-100 plr-0 chat-footer-actions">
+                    <div class="col-12  w-100 plr-0 chat-footer-actions">
                       <div class="row w-100">
-                        <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
-                          <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
+                        <div class="col-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
+                          <div class="btn-group dropup float-end" style="margin: 5px 1px;">
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
                               (click)="sendChatMessage()"
@@ -522,7 +522,7 @@
                                }" (click)="isOpenDropdown(isOpen = !isOpen)">
                               <span class="caret"
                                 [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
-                              <span class="sr-only">Toggle Dropdown</span>
+                              <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
 
                             <ul class="dropdown-menu dropdown-menu-custom" role="menu">
@@ -573,7 +573,7 @@
                             style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn"
+                            <button class="btn  float-start upload-btn"
                               (click)="PERMISSION_TO_SEND_REQUEST && fileUpload.click()"
                               matTooltipClass="custom-mat-tooltip"
                               [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })"
@@ -609,7 +609,7 @@
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
                   <button #openChatBtn (click)="openChatAtSelectedConversation()"
-                    class="btn btn-outlined plr-8 ptb-8 pull-right" role="button" matTooltipClass="custom-mat-tooltip"
+                    class="btn btn-outlined plr-8 ptb-8 float-end" role="button" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
@@ -625,7 +625,7 @@
                 *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
-                  <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                  <button class="btn btn-outlined plr-8 ptb-8 float-end" (click)="onJoinHandled()"
                     [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
                     [matTooltipDisabled]="request?.status == 1000" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -646,7 +646,7 @@
               && JOIN_TO_GROUP_HAS_ERROR === false">
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
-                  <button class="btn btn-outlined plr-8 ptb-8 pull-right">
+                  <button class="btn btn-outlined plr-8 ptb-8 float-end">
                     <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                     {{ 'RequestMsgsPage.Loading' | translate }}
                   </button>
@@ -661,7 +661,7 @@
 
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-danger chat-header-btn -->
-                  <button class="btn btn-red plr-8 ptb-8 pull-right" disabled>
+                  <button class="btn btn-red plr-8 ptb-8 float-end" disabled>
                     {{ 'Error' | translate }}
                   </button>
                 </div>
@@ -692,7 +692,7 @@
                     [ngClass]="{'conv-info-sidebar-header-wpr-chat': CHAT_PANEL_MODE === true}">
 
                     <div class="right-sidebar-actions">
-                      <div class="dropdown pull-right">
+                      <div class="dropdown float-end">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           <span class="material-icons">
                             more_vert
@@ -1078,7 +1078,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- (mouseenter)="agentntimg.open()" -->
                                 <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                   class="served-by-avatar--img" [satPopoverAnchor]="agentntimg"
                                   (click)="!CHAT_PANEL_MODE && agentntimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentntimg.close()" matTooltipClass="custom-mat-tooltip"
@@ -1169,7 +1169,7 @@
                                 <!-- satPopoverAnchor]="botntengine" (click)="botntengine.toggle()" (document:click)="botntengine.close()" {{'ClickToDisplayActions' | translate}}-->
                                 <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
                                   class="served-by-avatar--img"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fcards_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
                                   (click)="goToMemberProfile(agent, agent?._id )" matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
@@ -1193,7 +1193,7 @@
                               <li *ngIf="agents_array?.length > 2">
                                 <div class="other-agents-dropdown-wpr"
                                   style="position: absolute; top: 40px; right: 26px;">
-                                  <div class="dropdown pull-right">
+                                  <div class="dropdown float-end">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                       <div role="button" class="served-by-avatar--others-agents"
                                         style="position: absolute;z-index: 2;top: 0px;left:-6px">
@@ -1232,7 +1232,7 @@
                                         <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                             class="served-by-avatar--img"
                                             (click)="goToMemberProfile(agent, agent?._id )" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
@@ -1304,7 +1304,7 @@
                                         <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img class="served-by-avatar--img"
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fcards_200_200-photo.jpg"
                                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;"
                                             *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
@@ -1445,7 +1445,7 @@
                             matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="(request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true) || !PERMISSION_TO_ARCHIVE_REQUEST">
                               <i class="material-icons" style="vertical-align: middle; ">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
@@ -1458,7 +1458,7 @@
                             matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="((request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true) || !PERMISSION_TO_ARCHIVE_REQUEST)">
                               <i class="material-icons" style="vertical-align: middle;">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
@@ -1474,7 +1474,7 @@
                             matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REOPEN">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
@@ -1488,7 +1488,7 @@
                             matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REOPEN">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
@@ -1762,7 +1762,7 @@
                           {{ 'TicketId' | translate }}
                         </span>
 
-                        <div class="form-group" style="margin-top: 8px;">
+                        <div class="mb-3" style="margin-top: 8px;">
                     
                           <input *ngIf="!showSpinner" name="ticket_id" type="text" data-id="ticket_id"
                             class="form-control input-md" value="#{{ request?.ticket_id}}" disabled
@@ -1786,7 +1786,7 @@
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 2px;">
+                        <div class="mb-3" style="margin-top: 2px;">
                           <input type="text" name="ticket-subject" data-id="ticket-subject"
                             class="form-control input-md" 
                             [(ngModel)]="ticketSubject" maxlength="255"
@@ -2185,7 +2185,7 @@
                               fill="none"></path>
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 10px;">
+                        <div class="mb-3" style="margin-top: 10px;">
                           <input *ngIf="!showSpinner" name="project" type="text" data-id="project"
                             class="form-control input-md" style="width: 240px;cursor: default;" title="{{project_name}}"
                             value="{{project_name}}" disabled>
@@ -2217,7 +2217,7 @@
                             </g>
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="browser" type="text" data-id="browser"
                             class="form-control input-md" title="{{ request?.ua_browser }}, {{ request?.ua_os }}"
                             disabled style="width: 240px;cursor: default;"
@@ -2243,7 +2243,7 @@
                               d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="ip-address" type="text" data-id="ip-address"
                             class="form-control input-md" title="ip-address" disabled
                             style="width: 240px;cursor: default;" value="{{ ipAddress }}">
@@ -2268,7 +2268,7 @@
                               d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.1-.03-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.58l2.2-2.21c.28-.27.36-.66.25-1.01C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM5.03 5h1.5c.07.88.22 1.75.46 2.59L5.79 8.8c-.41-1.21-.67-2.48-.76-3.8zM19 18.97c-1.32-.09-2.6-.35-3.8-.76l1.2-1.2c.85.24 1.72.39 2.6.45v1.51zM12 3v10l3-3h6V3h-9zm7 5h-5V5h5v3z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="dnis" type="text" data-id="dnis"
                             class="form-control input-md" title="{{ dialedNumberIdentificationService}}" disabled
                             style="width: 240px;cursor: default;" value="{{ dialedNumberIdentificationService }}">
@@ -2302,7 +2302,7 @@
                           </svg>
 
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="duration" type="text" data-id="duration"
                             class="form-control input-md" title="{{ requestDuration }}" disabled
                             style="width: 240px;cursor: default;" value="{{ requestDuration }}">
@@ -2333,7 +2333,7 @@
                               d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="language" type="text" data-id="language"
                             class="form-control input-md" title="{{ request?.language }}" disabled
                             value="{{ request?.language }}" style="cursor: default;text-transform: capitalize;">
@@ -2357,7 +2357,7 @@
                               d="M6.5 10h-2v7h2v-7zm6 0h-2v7h2v-7zm8.5 9H2v2h19v-2zm-2.5-9h-2v7h2v-7zm-7-6.74L16.71 6H6.29l5.21-2.74m0-2.26L2 6v2h19V6l-9.5-5z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="deparment" type="text" data-id="deparment"
                             class="form-control input-md" title="{{request?.department?.name}}" disabled
                             value="{{request?.department?.name}}" style="cursor: default;width: 240px;">
@@ -2381,7 +2381,7 @@
                           </svg>
                         </span>
 
-                        <div class="form-group" style="margin-top: 9px;" (click)="toggleViewedPages()"
+                        <div class="mb-3" style="margin-top: 9px;" (click)="toggleViewedPages()"
                           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input id="source-page-input" name="sourcepage" type="text" data-id="sourcepage"
                             class="form-control input-md" disabled value="{{'ViewedPages' | translate}}"
@@ -2436,7 +2436,7 @@
                               d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="telegram-channel" type="text" data-id="telegram-channel"
                             class="form-control input-md" title="Telegram" disabled
                             value="Telegram ({{telegramPhoneNumber}})" style="cursor: default;width: 240px;">
@@ -2458,7 +2458,7 @@
                               d="M256 448c141.4 0 256-93.1 256-208S397.4 32 256 32S0 125.1 0 240c0 45.1 17.7 86.8 47.7 120.9c-1.9 24.5-11.4 46.3-21.4 62.9c-5.5 9.2-11.1 16.6-15.2 21.6c-2.1 2.5-3.7 4.4-4.9 5.7c-.6 .6-1 1.1-1.3 1.4l-.3 .3c0 0 0 0 0 0c0 0 0 0 0 0s0 0 0 0s0 0 0 0c-4.6 4.6-5.9 11.4-3.4 17.4c2.5 6 8.3 9.9 14.8 9.9c28.7 0 57.6-8.9 81.6-19.3c22.9-10 42.4-21.9 54.3-30.6c31.8 11.5 67 17.9 104.1 17.9zM96 212.8c0-20.3 16.5-36.8 36.8-36.8l19.2 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-19.2 0c-2.7 0-4.8 2.2-4.8 4.8c0 1.6 .8 3.1 2.2 4l29.4 19.6c10.3 6.8 16.4 18.3 16.4 30.7c0 20.3-16.5 36.8-36.8 36.8L112 304c-8.8 0-16-7.2-16-16s7.2-16 16-16l27.2 0c2.7 0 4.8-2.2 4.8-4.8c0-1.6-.8-3.1-2.2-4l-29.4-19.6C102.2 236.7 96 225.2 96 212.8zM372.8 176l19.2 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-19.2 0c-2.7 0-4.8 2.2-4.8 4.8c0 1.6 .8 3.1 2.2 4l29.4 19.6c10.2 6.8 16.4 18.3 16.4 30.7c0 20.3-16.5 36.8-36.8 36.8L352 304c-8.8 0-16-7.2-16-16s7.2-16 16-16l27.2 0c2.7 0 4.8-2.2 4.8-4.8c0-1.6-.8-3.1-2.2-4l-29.4-19.6c-10.2-6.8-16.4-18.3-16.4-30.7c0-20.3 16.5-36.8 36.8-36.8zm-152 6.4L256 229.3l35.2-46.9c4.1-5.5 11.3-7.8 17.9-5.6s10.9 8.3 10.9 15.2l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48-19.2 25.6c-3 4-7.8 6.4-12.8 6.4s-9.8-2.4-12.8-6.4L224 240l0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-6.9 4.4-13 10.9-15.2s13.7 .1 17.9 5.6z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="sms-channel" type="text" data-id="sms-channel"
                             class="form-control input-md" title="SMS" disabled value="SMS"
                             style="cursor: default;width: 240px;">
@@ -2491,7 +2491,7 @@
                             <path d="M7 18h2V6H7v12zm4 4h2V2h-2v20zm-8-8h2v-4H3v4zm12 4h2V6h-2v12zm4-8v4h2v-4h-2z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="voice-channel" type="text" data-id="voice-channel"
                             class="form-control input-md" title="voice" disabled value="Voice"
                             style="cursor: default;width: 240px;">
@@ -2515,7 +2515,7 @@
                               d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="whatsapp-channel" type="text" data-id="whatsapp-channel"
                             class="form-control input-md" title="WhatsApp" disabled
                             value="WhatsApp ({{whatsAppPhoneNumber}})" style="cursor: default;width: 240px;">
@@ -2540,7 +2540,7 @@
                           </svg>
 
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="messenger-channel" type="text" data-id="messenger-channel"
                             class="form-control input-md" title="Facebook Messenger" disabled value="Facebook Messenger"
                             style="cursor: default;width: 240px;">
@@ -2565,7 +2565,7 @@
                           </svg>
 
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="email-channel" type="text" data-id="email-channel"
                             class="form-control input-md" title="Email" disabled value="Email"
                             style="cursor: default;width: 240px;">
@@ -2591,7 +2591,7 @@
                           </svg>
 
                         </span>
-                        <div class="form-group" style="margin-top: 9px;">
+                        <div class="mb-3" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="form-channel" type="text" data-id="form-channel"
                             class="form-control input-md" title="Form" disabled value="Form"
                             style="cursor: default;width: 240px;">
@@ -2700,7 +2700,7 @@
                               </span>
 
                             </div>
-                            <button class="btn btn-get--feature-no-boxshadow pull-right" (click)="goToPricingFromChat()"
+                            <button class="btn btn-get--feature-no-boxshadow float-end" (click)="goToPricingFromChat()"
                               matTooltipClass="custom-mat-tooltip"
                               matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
                               matTooltipPosition='below' matTooltipHideDelay="100">
@@ -2783,7 +2783,7 @@
                           <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                             <div class="row">
-                              <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                                 <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                                   {{attribute?.attributeName }}:
                                 </div>
@@ -2793,7 +2793,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-xs-2 copy-icon-wpr"
+                              <div class="col-2 copy-icon-wpr"
                                 (click)="copyToClipboardPreChatFormValue(attribute?.attributeValue, attribute?.attributeName +'_tooltip')">
                                 <div [id]="attribute?.attributeName +'_tooltip'" class="has-copied-tooltip">
                                   {{ 'Copied' | translate }}
@@ -2851,7 +2851,7 @@
                             <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                               <div class="row">
-                                <div class="col-xs-12" style="padding-right: 1px;padding-bottom: 5px;">
+                                <div class="col-12" style="padding-right: 1px;padding-bottom: 5px;">
                                   <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                                     {{attribute?.attributeName }}:
                                   </div>
@@ -2890,7 +2890,7 @@
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
                       <!--  Btn Add Notes (note: is disabled if the current user has agent role and is not among the participants) -->
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
-                      <!-- btn-xs btn-primary -->
+                      <!-- btn-sm btn-primary -->
                       <button type="button" class="btn btn-tdblu-no-boxshadow add-note-btn" #cont
                         style="margin-bottom: 0px;" (click)="addNote()"
                         [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true || !PERMISSION_TO_UPDATE_REQUEST_NOTES">
@@ -3326,7 +3326,7 @@
                             No data available
                           </div>
 
-                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                             style="text-align: right;">
                             <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                               style="cursor: pointer; color: #039be5; font-size:18px;"
@@ -3370,7 +3370,7 @@
                         <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                           <div class="row">
-                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                            <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                               <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                                 {{attribute?.attributeName }}:
                               </div>
@@ -3382,7 +3382,7 @@
 
                             </div>
 
-                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                               style="text-align: right;">
                               <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                                 style="cursor: pointer; color: #039be5; font-size:18px;"
@@ -3435,7 +3435,7 @@
                         <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                           <div class="row">
-                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                            <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                               <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
                                 class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> Attributes </div>
@@ -3453,7 +3453,7 @@
                             <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                             <!-- [ngClass]="{'down' : attributeFullText === true}" -->
                             <!-- white-space: nowrap;width: 1%; -->
-                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                               style="text-align: right;">
                               <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                                 style="cursor: pointer; color: #039be5; font-size:18px;"
@@ -3692,7 +3692,7 @@
                             <!-- --------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -3864,7 +3864,7 @@
                             <!-- --------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                               onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
@@ -4437,7 +4437,7 @@
                         <!-- --------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                           [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -4617,7 +4617,7 @@
                           <!-- --------------------------------------- -->
                           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                             [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 

@@ -1,0 +1,50 @@
+// Bootstrap 5 Variables Update
+// Replace Bootstrap 3 variables with Bootstrap 5 equivalents
+
+// Breakpoints (Bootstrap 5 uses different naming)
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+
+// Container max widths
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px
+) !default;
+
+// Grid system
+$grid-columns: 12 !default;
+$grid-gutter-width: 30px !default;
+
+// Legacy support for old variable names (for backward compatibility)
+$screen-xs: 0 !default;
+$screen-xs-min: 0 !default;
+$screen-sm: 576px !default;
+$screen-sm-min: 576px !default;
+$screen-md: 768px !default;
+$screen-md-min: 768px !default;
+$screen-lg: 992px !default;
+$screen-lg-min: 992px !default;
+$screen-xl: 1200px !default;
+$screen-xl-min: 1200px !default;
+
+$screen-xs-max: 575.98px !default;
+$screen-sm-max: 767.98px !default;
+$screen-md-max: 991.98px !default;
+$screen-lg-max: 1199.98px !default;
+
+$container-sm: 540px !default;
+$container-md: 720px !default;
+$container-lg: 960px !default;
+$container-xl: 1140px !default;
+
+$grid-float-breakpoint: $screen-sm-min !default;
+$grid-float-breakpoint-max: ($grid-float-breakpoint - 0.02px) !default;

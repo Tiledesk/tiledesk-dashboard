@@ -64,7 +64,7 @@
                           <label class="col-sm-2 custom-label">
                             {{ "GroupsAddEditPage.GroupName" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                             <input [(ngModel)]="groupName" class="input" type="text"
                               placeholder='{{ "GroupsAddEditPage.GroupName" | translate }}'>
                           </div>
@@ -139,7 +139,7 @@
                         <label class="col-sm-2 custom-label">
                           {{ "GroupsAddEditPage.GroupName" | translate }}
                         </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <input [(ngModel)]="groupNameToUpdate" class="input" type="text">
                         </div>
 
@@ -239,13 +239,13 @@
 
                             ({{ count }})
                           </span>
-                          <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
+                          <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-sm addMember" style="padding: 2px" 
                           (click)='open_users_list_modal()'>
                           <i class="material-icons" style="padding-top: 1px;">add</i>
                         </button> -->
                         </h4>
                         <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
-                        <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="open_users_list_modal()">
+                        <button class="btn btn-tdblu-no-boxshadow float-end" (click)="open_users_list_modal()">
                           {{ 'GroupsAddEditPage.AddMembers' | translate }}
                           <!-- <span class="icon" style="padding-right:0px">
                               <i class="material-icons" style="font-size:18px; top:0px">add</i>
@@ -353,7 +353,7 @@
                                 <!-- USECASE uploadEngine Native -->
                                 <!-- --------------------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                   onerror="this.src='assets/img/no_image_user.png'" />
 
                                 <!-- <span class="tooltipx">
@@ -393,14 +393,14 @@
                             </td> -->
 
                               <!-- ACTIONS ========== DELETE -->
-                              <td *ngIf="projectUser?.is_group_member" class="td-actions text-right">
+                              <td *ngIf="projectUser?.is_group_member" class="td-actions text-end">
                                 <!-- <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"> -->
-                                <!-- <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                                <!-- <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-sm"
                                   (click)='goToEditUser(projectUser?._id)'>
                                   <i class="material-icons">edit</i>
                                 </button> -->
                                 <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
-                                  class="btn btn-danger btn-simple btn-xs"
+                                  class="btn btn-danger btn-simple btn-sm"
                                   (click)='openDeleteModal(projectUser?.id_user?._id, projectUser?.id_user?.email)'>
                                   <i class="material-icons" style="padding-top: 3px;">delete</i>
                                 </button>
@@ -511,7 +511,7 @@
                         <!-- USECASE uploadEngine Native -->
                         <!-- --------------------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 

@@ -284,14 +284,14 @@
         </div>
         <!-- style="padding-left: 10px !important;" -->
         <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
             <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
             <!-- style="display: none;" -->
             <!-- ---------------------------------------------------------- -->
             <!-- LEGEND OF COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED -->
             <!-- ---------------------------------------------------------- -->
             <div class="row">
-              <div class="col-xs-5">
+              <div class="col-5">
                 <div class="graph-legend" style="padding-left: 10px;">
                   <div class="advanced-pie-legend-wrapper" style="height: 107px;">
 
@@ -369,9 +369,9 @@
                     </div>
                   </div>
                 </div>
-              </div> <!-- ./ col-xs-4 -->
+              </div> <!-- ./ col-4 -->
 
-              <div class="col-xs-7" style="margin-top: 8px;">
+              <div class="col-7" style="margin-top: 8px;">
 
                 <div class="row" style="margin-bottom: 16px;">
                   <div class="col-sm-12 filter-convs-title-wpr">
@@ -448,7 +448,7 @@
               <!-- (ROLE_IS_AGENT === false) || (ROLE_IS_AGENT === true && DISPLAY_ALL_TEAMMATES_TO_AGENT) -->
               <!-- the last: ngIf="ROLE_IS_AGENT === false" -->
               <!--  -------------------------------------------------------------------------------------- -->
-              <!-- <div class="col-xs-12 teammates-carousel">
+              <!-- <div class="col-12 teammates-carousel">
                 <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
                   <div class="card-content"
                     style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -477,7 +477,7 @@
 
                            
                                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                     alt="" onerror="this.src='assets/img/no_image_user.png'">
 
                                   <div class="teammates-with-picture-status-icon"
@@ -542,10 +542,10 @@
           </div>
 
           <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
-          <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <!-- <div class="col-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card" style="margin: 5px 0; border: unset !important;">
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
               <h4 class="customh4" style="padding-left:22px; font-size:18px; margin-bottom: 0px; white-space: nowrap;">
                 {{ "RequestsForDept" | translate }}
               </h4>
@@ -556,7 +556,7 @@
             overflow: auto;
             height: 130px;">
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <table class="table table-hover">
                   <thead style="background-color: rgba(242, 246, 248, 1);">
                     <tr>
@@ -600,7 +600,7 @@
         <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND REQUESTS FOR DEPTS ======------ -->
         <!-- *ngIf="ROLE_IS_AGENT === false" -->
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <!-- style="background: rgb(231,241,255);" -->
             <div class="smart-assign-and-operatinghours-options">
 
@@ -897,7 +897,7 @@
                     <!-- ------ ====== ARCHIVE Action ====== ------ -->
                     <td>
                       <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                        class="btn btn-danger btn-simple btn-xs">
+                        class="btn btn-danger btn-simple btn-sm">
                         <i class="material-icons">clear</i>
                       </button>
                     </td>
@@ -1000,7 +1000,7 @@
                 <!-- ---------------------------------------- -->
                 <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
                   style="border-radius:50%;object-fit: cover;"
-                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fcards_200_200-photo.jpg"
                   alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
                 <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
@@ -1025,7 +1025,7 @@
                 <!-- ---------------------------------------- -->
                 <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
                   style="border-radius:50%;object-fit: cover;"
-                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fcards_200_200-photo.jpg"
                   alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
                 <img *ngIf="item.requestertype === 'lead'" height="24" width="24"

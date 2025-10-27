@@ -368,7 +368,7 @@
                               <!-- AM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
                               <button [disabled]="d.isOpen != true || !selectedSlot.active"
                                 [ngClass]="{'disabled' : d.isOpen != true || !selectedSlot.active}" type="button"
-                                rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-sm"
                                 (click)='openAmStart(d?._id)' style="padding-right: 4px; color: #7695a5">
                                 <span class="edithours_btnlabel">
                                   {{ "HoursPage.From" | translate }}
@@ -386,7 +386,7 @@
                               <!-- <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
                             [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
                             rel="tooltip" title="edit hour"
-                            class="btn btn-primary btn-simple btn-xs custom_schedule_btn"
+                            class="btn btn-primary btn-simple btn-sm custom_schedule_btn"
                             (click)='openAmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
                             <i class="material-icons">schedule</i>
                           </button> -->
@@ -397,7 +397,7 @@
                               <!-- AM END HOUR - ONLY THE LABEL-BTN 'TO' -->
                               <button [disabled]="d.isOpen != true || !selectedSlot.active"
                                 [ngClass]="{'disabled' : d.isOpen != true || !selectedSlot.active}" type="button"
-                                rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-sm"
                                 (click)='openAmEnd(d?._id)' style="padding-right: 4px; color: #7695a5">
                                 <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
                                   {{ "HoursPage.To" | translate }}
@@ -413,7 +413,7 @@
                               <!-- AM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
                               <!-- <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
                             [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
-                            rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                            rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-sm"
                             (click)='openAmEnd(d?._id)' style="padding-right: 7px; padding-left: 1px;">
                             <i class="material-icons">schedule</i>
                           </button> -->
@@ -425,7 +425,7 @@
                               <!-- placeholder button - is dispalyed when the day is closed and when operating hours are not active -->
                               <button *ngIf="d?.isOpen === false || !selectedSlot.active" type="button" rel="tooltip"
                                 title="remove second interval"
-                                class="btn btn-default btn-simple btn-xs  btn-circle close_pm disabled"
+                                class="btn btn-secondary btn-simple btn-sm  btn-circle close_pm disabled"
                                 style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
                                 <i class="material-icons"
                                   style="font-size: 12px; font-weight: 600; padding-bottom: 3px">
@@ -435,7 +435,7 @@
 
                               <button *ngIf="d?.isOpenPm === true && d?.isOpen === true && selectedSlot.active"
                                 type="button" rel="tooltip" title="remove second interval"
-                                class="btn btn-danger btn-simple btn-xs  btn-circle close_pm" (click)="close_Pm(d?._id)"
+                                class="btn btn-danger btn-simple btn-sm  btn-circle close_pm" (click)="close_Pm(d?._id)"
                                 style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
                                 <i class="material-icons"
                                   style="font-size: 12px; font-weight: 600; padding-bottom: 3px">
@@ -445,7 +445,7 @@
 
                               <button *ngIf="d?.isOpenPm === false && d?.isOpen === true && selectedSlot.active"
                                 type="button" rel="tooltip" title="add second interval"
-                                class="btn btn-success btn-simple btn-xs  btn-circle open_pm" (click)="open_Pm(d?._id)"
+                                class="btn btn-success btn-simple btn-sm  btn-circle open_pm" (click)="open_Pm(d?._id)"
                                 style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
                                 <i class="material-icons"
                                   style="font-size: 12px; font-weight: 600; padding-bottom: 2px; position: relative; top: -2px;">
@@ -462,7 +462,7 @@
                               <!-- =================================== PM START HOUR ========================================== -->
                               <!-- PM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
                               <button [disabled]="d.isOpen != true || d.isOpenPm == false || !selectedSlot.active"
-                                type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-sm"
                                 [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !selectedSlot.active}"
                                 (click)='openPmStart(d?._id)' style="padding-right: 4px;color: #566787">
                                 <span class="edithours_btnlabel">
@@ -480,7 +480,7 @@
                               <!-- PM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
                               <!-- <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
                             type="button" rel="tooltip" title="edit hour"
-                            class="btn btn-primary btn-simple btn-xs"
+                            class="btn btn-primary btn-simple btn-sm"
                             [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
                             (click)='openPmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
                             <i class="material-icons">schedule</i>
@@ -491,7 +491,7 @@
                               <!-- =================================== PM END HOUR ========================================== -->
                               <!-- PM END HOUR - ONLY THE LABEL-BTN 'TO' -->
                               <button [disabled]="d.isOpen != true || d.isOpenPm == false || !selectedSlot.active"
-                                type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-sm"
                                 [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !selectedSlot.active}"
                                 (click)='openPmEnd(d?._id)' style="padding-right: 4px; color: #566787">
                                 <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
@@ -509,7 +509,7 @@
                               <!-- PM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
                               <!-- <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
                             type="button" rel="tooltip" title="edit hour"
-                            class="btn btn-primary btn-simple btn-xs"
+                            class="btn btn-primary btn-simple btn-sm"
                             [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
                             (click)='openPmEnd(d?._id)' style="padding-right: 7px;padding-left: 1px;">
                             <i class="material-icons">schedule</i>

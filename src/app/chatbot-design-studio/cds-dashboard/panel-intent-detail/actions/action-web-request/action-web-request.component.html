@@ -6,7 +6,7 @@
 <div class="content" #scrollMe id="scrollMe" >
 
     <div class="input-group cds-input-group">
-        <span class="input-group-addon">
+        <span class="input-group-text">
             <ng-select 
                 class = "form-control-select" 
                 [items] = "methods" 
@@ -41,7 +41,7 @@
             <span [ngClass]="{'cds-action-active': methodSelectedBody}">Body</span>
         </div>
         <div  *ngIf="methodSelectedBody" class="cds-rigth">
-            <button id="cds-community-btn" type="button" class="btn btn-primary pull-right cds-blue-button" (click)="onJsonFormatter()">format JSON </button>
+            <button id="cds-community-btn" type="button" class="btn btn-primary float-end cds-blue-button" (click)="onJsonFormatter()">format JSON </button>
         </div>
     </div>
     

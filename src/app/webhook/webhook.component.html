@@ -31,7 +31,7 @@
           <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
                 <!-- <div *ngIf="hideHelpLink" class="row"> -->
-                <!-- <div class="col-xs-12 link-to-webhook-doc">
+                <!-- <div class="col-12 link-to-webhook-doc">
                 <div class="link-to-doc-icon-wpr">
                   <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="readme"
                     class="svg-inline--fa fa-readme fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@
                 <div class="card card-custom-margin">
                   <div class="card-header card-header-custom-bkgrnd">
                     <!-- btn-primary -->
-                    <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
+                    <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn float-end"
                       (click)="presentWebhookModal_inAddMode()">
                       <!-- <span class="icon" style="padding-right: 8px;">
                     <i class="material-icons">add_circle</i>
@@ -125,13 +125,13 @@
                             </span>
                           </td>
 
-                          <td class="td-actions text-right" style="padding-top:20px">
-                            <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          <td class="td-actions text-end" style="padding-top:20px">
+                            <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-sm"
                               (click)='presentWebhookModal_inEditMode(subscription?._id)'>
                               <i class="material-icons">edit</i>
                             </button>
 
-                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-sm"
                               (click)='showModal_ConfirmDeleteSubscription(subscription?._id)'>
                               <i class="material-icons">close</i>
                             </button>

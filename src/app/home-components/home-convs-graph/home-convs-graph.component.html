@@ -1,10 +1,10 @@
 <div class="convesations-analytics-report-wpr">
 
   <div class="sm:col-span-2 lg:col-span-3 dark flex flex-col flex-auto bg-card overflow-hidden">
-    <div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10 mb-12">
+    <div class="flex items-center justify-between mt-10 ms-10 mr-6 sm:me-10 mb-12">
      
       <div class="flex flex-col gap-6" >
-        <div class="mr-4 text-2xl md:text-3xl graph-title tracking-tight leading-7">
+        <div class="me-4 text-2xl md:text-3xl graph-title tracking-tight leading-7">
           Conversations Overview
         </div>
         <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
@@ -19,7 +19,7 @@
       </div>
 
 
-      <div class="ml-2">
+      <div class="ms-2">
         <button [ngClass]="{'active-period': numOfDays === 30}" class="period-switch-btn"
           (click)="selectConversationsRange(30)">
           Last 30 days

@@ -15,7 +15,7 @@
     <!-- Link to documentation / tutorial -->
     <!-- ------------------------------------------------------ -->
     <div class="row" style="margin-right: -30px; margin-left: -30px;">
-      <div class="col-xs-12"
+      <div class="col-12"
         style="background-color: rgb(241,241,241);margin-top: -15px;	padding: 20px 20px 10px 36px;">
         <div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
           <span>
@@ -44,7 +44,7 @@
 
             <div class="row">
               <!-- <label class="col-sm-2 custom-label"> </label> -->
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12">
 
                 <div class="row">
                   <div class="col-md-12">
@@ -72,7 +72,7 @@
 
                 {{ "BotsAddEditPage.BotName" | translate }}
               </label>
-              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="col-12 col-sm-8 col-md-8 col-lg-8">
 
                 <input [(ngModel)]="faqKbName" class="input" type="text"
                   placeholder='{{ "BotsAddEditPage.BotName" | translate }}'>
@@ -86,7 +86,7 @@
             <!-- ------------------------------------------------------ -->
             <div class="row" style="margin-top: 8px;">
               <label class="col-sm-2 custom-label">RASA URL</label>
-              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="col-12 col-sm-8 col-md-8 col-lg-8">
                 <input [(ngModel)]="rasaServerUrl" class="input" type="text"
                   placeholder="e.g. http(s)://{RASA_HOSTNAME}/webhooks/rest/webhook">
 
@@ -104,7 +104,7 @@
                 {{ "Description" | translate }}
 
               </label>
-              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="col-12 col-sm-8 col-md-8 col-lg-8">
                 <textarea [(ngModel)]="rasaBotDescription" placeholder="{{ 'Description' | translate }}" class="input"
                   type="text" rows="3" style="margin-bottom: 0px;"></textarea>
               </div>
@@ -320,7 +320,7 @@
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT" style="text-align: left;">
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
               <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
                 style="padding-right: 26px; padding-left: 26px;">
                 <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"

@@ -3,7 +3,7 @@
 
     <div class="row">
 
-      <div class="col-xs-12">
+      <div class="col-12">
         <!-- + countRequestsServedByBotRr -->
         <h4 class="title customh4" style="margin-bottom:2px;">
           <!-- + countRequestsServedByBotRr -->
@@ -14,7 +14,7 @@
         </h4>
       </div>
 
-      <!-- <div class="col-xs-6">
+      <!-- <div class="col-6">
      
       </div> -->
 
@@ -915,7 +915,7 @@
                     <!-- Usecase  Native (bot) -->
                     <!-- --------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                     <span class="served-by-agent">
@@ -979,7 +979,7 @@
                     <!-- Usecase  Native -->
                     <!-- --------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                       onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -1036,7 +1036,7 @@
                         <!-- --------------------------------------- -->
                         <img *ngIf="agent?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                           alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)">
 
                         <!-- --------------------------------------- -->
@@ -1095,7 +1095,7 @@
                     <!-- Usecase  Native (bot) -->
                     <!-- --------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
@@ -1171,14 +1171,14 @@
           <!-- @ Actions -->
           <!-- ------------------------------------------------------ -->
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
-          <td class="td-actions text-right" style="padding-top: 9px !important;">
+          <td class="td-actions text-end" style="padding-top: 9px !important;">
 
 
             <!-- -------------------------- -->
             <!-- JOIN Action   -->
             <!-- -------------------------- -->
             <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
-              title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
+              title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-sm"
               (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id, request?.channel)'
               [disabled]="request?.currentUserIsJoined === true || !PERMISSION_TO_JOIN_REQUEST"
               matTooltipClass="mat-white-tooltip"
@@ -1208,7 +1208,7 @@
             <!-- ------------------------------------- -->
             <!-- (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)' -->
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
-              title="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
+              title="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" class="btn btn-tdblu btn-simple btn-sm"
               (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" 
@@ -1236,7 +1236,7 @@
             <!-- ARCHIVE Action  -->
             <!-- -------------------------- -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='archiveRequest(request?.request_id)'
+              class="btn btn-tdblu btn-simple btn-sm" (click)='archiveRequest(request?.request_id)'
               [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || !PERMISSION_TO_ARCHIVE_REQUEST"
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{'VisitorsPage.Resolve' | translate}}" 

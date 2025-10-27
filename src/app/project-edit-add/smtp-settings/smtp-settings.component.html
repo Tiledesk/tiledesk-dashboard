@@ -47,7 +47,7 @@
                     <label class="col-sm-3  custom-label">
                       {{'ProjectEditPage.HostName' | translate}}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="smtphost" [(ngModel)]="smtp_host_name" class="input" type="text">
                     </div>
                   </div>
@@ -59,7 +59,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ "ProjectEditPage.Port" | translate }}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="smtp_port" [(ngModel)]="smtp_port" class="input" type="text">
                     </div>
                   </div>
@@ -71,7 +71,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ "ProjectEditPage.SenderAddress" | translate }}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="senderaddress" [(ngModel)]="sender_email_address"
                         (ngModelChange)="senderEmailChange($event)" class="input" type="email"
                         [ngClass]="{'invalid-email' : !SENDER_EMAIL_IS_VALID}" style="margin-bottom:3px">
@@ -103,7 +103,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ "ProjectEditPage.UserName" | translate }}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="smtpemail" [(ngModel)]="smtp_usermame" class="input" type="text">
 
                     </div>
@@ -116,7 +116,7 @@
                     <label class="col-sm-3  custom-label">
                       Password
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <!-- <input name="smtpswd" [(ngModel)]="smtp_pswd" class="input" type="password"
                     autocomplete="new-password"> -->
 
@@ -147,7 +147,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ 'ProjectEditPage.ConnectionSecurity' | translate}}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <div class="checkbox">
                         <label>
                           <input [(ngModel)]="smtp_connetion_security" type="checkbox" name="connectionSecurity">
@@ -161,7 +161,7 @@
 
                 <div class="row"
                   style="border-top:1px solid  #ddd !important;width: calc((100% / 3) + 360px); margin-left:18px">
-                  <div class="col-xs-6" style=" padding-left:0px">
+                  <div class="col-6" style=" padding-left:0px">
                     <!-- btn-primary send-smtp-test-email -->
                     <button class="btn btn-outlined" (click)="sendSMTPTestEmail()">
                       <span class="material-icons">
@@ -170,7 +170,7 @@
                       {{ "ProjectEditPage.SendSMPTTestEmail" | translate }}
                     </button>
                   </div>
-                  <div class="col-xs-6" style="text-align: right; padding-right:0px">
+                  <div class="col-6" style="text-align: right; padding-right:0px">
                
                     <!-- <button type="submit" class="btn btn-gray-no-boxshadow"
                       (click)="resetToDefaultSMTPConfiguration()" style="margin-right: 8px;">

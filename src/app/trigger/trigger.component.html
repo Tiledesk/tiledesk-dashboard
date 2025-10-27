@@ -41,7 +41,7 @@
 
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <ul class="bottom-nav" style="top:-9px; box-shadow: unset; margin-bottom: 0px;">
 
 
@@ -178,10 +178,10 @@
 
                       <!-- // ACTIONS -->
                       <!-- font-weight:400; text-align: center; display: flex; overflow: unset -->
-                      <td class="td-actions text-right">
+                      <td class="td-actions text-end">
 
                         <!-- EDIT - BRAND VERSION-->
-                        <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                        <button type="button" class="btn btn-primary btn-simple btn-sm tooltipx"
                           (click)='goToEditTrigger(trigger?._id)'>
                           <i class="material-icons">edit</i>
                           <span class="tooltiptext-custom" style="text-transform:none">
@@ -189,7 +189,7 @@
                           </span>
                         </button>
                         <!-- DELETE - BRAND VERSION -->
-                        <button *ngIf="!trigger.type" type="button" class="btn btn-danger btn-simple btn-xs tooltipx"
+                        <button *ngIf="!trigger.type" type="button" class="btn btn-danger btn-simple btn-sm tooltipx"
                           (click)='onDeleteTriggerModal(trigger)'>
                           <i class="material-icons">close</i>
                           <span class="tooltiptext-custom" style="text-transform:none">

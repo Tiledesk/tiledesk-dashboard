@@ -3679,4 +3679,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
 
+  updateUrl($event, agent) {
+    this.logger.log('[HISTORY & NORT-CONVS] - UPDATE-URL IMAGE ERROR  event ', $event)
+    this.logger.log('[HISTORY & NORT-CONVS] - UPDATE-URL IMAGE ERROR  agent ', agent)
+    agent['has__image'] = false
+  }
+
 }

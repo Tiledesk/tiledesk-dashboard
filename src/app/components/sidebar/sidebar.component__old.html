@@ -127,7 +127,7 @@
 
   <!-- SEARCH MOBILE MENU -->
   <!-- <form class="navbar-form navbar-right" role="search" *ngIf="isMobileMenu()">
-        <div class="form-group form-black is-empty">
+        <div class="mb-3 form-black is-empty">
             <input type="text" class="form-control" placeholder="Search">
             <span class="material-input"></span>
         </div>
@@ -140,7 +140,7 @@
     <!-- <li  *ngIf="project">
       <a style="margin-bottom:0px"> 
         <i class="material-icons sidebar-icons" style="margin-right: 0px">apps</i>
-        <p class="hidden-lg hidden-md">{{ project?.name }}  </p>
+        <p class="d-lg-none d-xl-block d-md-none d-lg-block">{{ project?.name }}  </p>
       </a>
     </li> -->
 
@@ -149,7 +149,7 @@
       <a>
           <i class="material-icons sidebar-icons"  style="margin-right: 0px">person</i>
          
-          <p class="hidden-lg hidden-md">
+          <p class="d-lg-none d-xl-block d-md-none d-lg-block">
        
              {{ user?.firstname }} {{ user?.lastname }}
               

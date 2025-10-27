@@ -40,7 +40,7 @@
           <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-8">
                 <div class="card card card--no-border" style="margin-top: -2px;">
 
                   <!--
@@ -97,14 +97,14 @@
                     <section class="default-department-table" style="margin-bottom: 36px;">
 
                       <div class="row table-title-wpr">
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <h3 class="card_title__underlined ">
                             <span class="card_title__underline">
                               {{'Routing' | translate}}
                             </span>
                           </h3>
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <div class="section-subtitle"> </div>
                         </div>
                       </div>
@@ -332,11 +332,11 @@
                               </td>
 
                               <!-- ACTIONS -->
-                              <td class="dept-td" class="td-actions text-right"
+                              <td class="dept-td" class="td-actions text-end"
                                 style="padding-bottom: 6px !important;padding-top: 18px !important;">
                                 <button type="button" rel="tooltip"
                                   title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
-                                  class="btn btn-primary btn-simple btn-xs"
+                                  class="btn btn-primary btn-simple btn-sm"
                                   (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
                                   <i class="material-icons">edit</i>
                                 </button>
@@ -355,7 +355,7 @@
                     <section class="departments-table" *ngIf="isVisibleDEP">
 
                       <div class="row table-title-wpr">
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <h3 class="card_title__underlined">
                             <span class="card_title__underline">
                               {{ "Departments" | translate }}
@@ -374,7 +374,7 @@
                             </span>
                           </h3>
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <div class="section-subtitle"> </div>
                         </div>
                       </div>
@@ -700,18 +700,18 @@
 
                               <!-- NEW EDIT ADD -->
                               <!-- *ngIf="dept?.default !== true"   [disabled]="dept?.default === true && departments?.length > 1"-->
-                              <td class="dept-td" class="td-actions text-right"
+                              <td class="dept-td" class="td-actions text-end"
                                 style="padding-bottom: 6px !important;padding-top: 18px !important;">
                                 <button type="button" rel="tooltip"
                                   title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}"
-                                  class="btn btn-primary btn-simple btn-xs"
+                                  class="btn btn-primary btn-simple btn-sm"
                                   (click)='$event.stopPropagation();goToEditAddPage_EDIT(dept?._id,dept?.default)'>
                                   <i class="material-icons">edit</i>
                                 </button>
                                 <!-- *ngIf="dept?.default !== true" -->
                                 <button *ngIf="dept?.default !== true" type="button" rel="tooltip"
                                   title="{{ 'DepartmentsPage.tooltipDeleteDept' | translate }}"
-                                  class="btn btn-danger btn-simple btn-xs"
+                                  class="btn btn-danger btn-simple btn-sm"
                                   (click)='$event.stopPropagation(); openDeleteModal(dept?._id, dept?.name)'>
                                   <i class="material-icons">close</i>
                                 </button>
@@ -733,7 +733,7 @@
               <!-- @ Right sidebar -->
               <!-- --------------------------------------------------- -->
 
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-4">
 
                 <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
                   <div class="card-content" style="padding-top: 0px;">

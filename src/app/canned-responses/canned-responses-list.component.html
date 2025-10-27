@@ -58,7 +58,7 @@
                   <div class="title--header">
                     <!-- {{ pageName }} -->
                   </div>
-                    <button  class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()"
+                    <button  class="btn btn-tdblu-no-boxshadow float-end" (click)="presentResponseModal_inAddMode()"
                       [disabled]="!PERMISSION_TO_CREATE">
                 
                       {{ "CannedResponses.AddResponses" | translate }}
@@ -68,7 +68,7 @@
                 <div class="card left-card-custom-margin ">
                   <!-- <div class="card-header card-header-custom-bkgrnd">
                  
-                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()">
+                    <button class="btn btn-tdblu-no-boxshadow float-end" (click)="presentResponseModal_inAddMode()">
                    
                       {{ "CannedResponses.AddResponses" | translate }}
                     </button>
@@ -142,7 +142,7 @@
                             <!-- USECASE uploadEngine Native -->
                             <!-- --------------------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{response?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{response?.createdBy}}%2Fimages%2Fcards_200_200-photo.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
 
                             <span class="td-tag-table">
@@ -157,14 +157,14 @@
                           </td>
 
 
-                          <td class="td-actions text-right">
-                            <button [disabled]="response?.createdBy_user?._id !== currentUserId" type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          <td class="td-actions text-end">
+                            <button [disabled]="response?.createdBy_user?._id !== currentUserId" type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-sm"
                               (click)='presentResponseModal_inEditMode(response?._id, response?.createdBy_user?._id)'>
                             
                               <i class="material-icons">edit</i>
                             </button>
 
-                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-sm"
                               (click)='openConfirmDialogDeleteResponse(response?._id)'>
                               <i class="material-icons">delete_forever</i>
                             </button>

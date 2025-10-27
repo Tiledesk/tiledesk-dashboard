@@ -78,7 +78,7 @@
           <div>
             <div>
               <button id="update-bot-btn" #editbotbtn
-                class="btn btn-primary pull-right cds-blue-button" (click)="editBot()"
+                class="btn btn-primary float-end cds-blue-button" (click)="editBot()"
                 [disabled]="(chatbot.webhook_enabled === true && WEBHOOK_URL_HAS_ERROR === true) || (chatbot.webhook_enabled === false  && chatbot.webhook_url === undefined)">
                 {{ "BotsAddEditPage.UpdateBotName" | translate }}
               </button>

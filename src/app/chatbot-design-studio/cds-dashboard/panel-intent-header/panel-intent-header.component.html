@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="form-group" [ngClass]="{'is-error':intentNameResult === false || intentNameAlreadyExist}">
+    <div class="mb-3" [ngClass]="{'is-error':intentNameResult === false || intentNameAlreadyExist}">
         <i class="i-priority-color-mark"
             [ngClass]="{'has--error': intentNameResult === false || intentNameAlreadyExist }"></i>
         <label class="control-label title" [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">

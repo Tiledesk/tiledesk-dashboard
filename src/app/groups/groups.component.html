@@ -44,7 +44,7 @@
 
             <!-- New group list -->
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <loading-spinner *ngIf="showSpinner"></loading-spinner>
                 <div *ngIf="!showSpinner" class="main--wrapper">
 
@@ -69,7 +69,7 @@
                     <div class="flex-right">
                        <div class="add-group-btn-wpr">
 
-                        <button *ngIf="PERMISSION_TO_CREATE_GROUP" class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                        <button *ngIf="PERMISSION_TO_CREATE_GROUP" class="btn btn-tdblu-no-boxshadow float-end" (click)="goToEditAddPage_create()">
                           {{ "GroupsPage.AddGroup" | translate }}
                         </button>
                       </div>
@@ -83,7 +83,7 @@
 
                     <div class="add-group-btn-wpr">
 
-                      <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                      <button class="btn btn-tdblu-no-boxshadow float-end" (click)="goToEditAddPage_create()">
                         {{ "GroupsPage.AddGroup" | translate }}
 
                       </button>
@@ -345,7 +345,7 @@
                     <div class="title--header">
                       <!-- {{ pageName }} -->
                     </div>
-                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                    <button class="btn btn-tdblu-no-boxshadow float-end" (click)="goToEditAddPage_create()">
                       {{ "GroupsPage.AddGroup" | translate }}
 
                     </button>
@@ -353,7 +353,7 @@
                   <div class="card card--no-border group-card">
 
                     <!-- <div class="card-header card-header-custom-bkgrnd">
-                <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="goToEditAddPage_create()">
+                <button class="btn btn-tdblu-no-boxshadow float-end" (click)="goToEditAddPage_create()">
                   {{ "GroupsPage.AddGroup" | translate }}
 
                 </button>
@@ -457,29 +457,29 @@
                             </td>
 
                             <!-- EDIT / DELETE GROUPS  -->
-                            <td class="td-actions text-right" style="padding-top:16px">
+                            <td class="td-actions text-end" style="padding-top:16px">
                               <!-- Modifica Gruppo -->
                               <button type="button" rel="tooltip"
                                 title="{{ 'GroupsPage.tooltipEditGroup' | translate }}"
-                                class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_edit(group?._id)'>
+                                class="btn btn-primary btn-simple btn-sm" (click)='goToEditAddPage_edit(group?._id)'>
                                 <i class="material-icons">edit</i>
                               </button>
                               <!-- Disabilita Gruppo -->
                               <button *ngIf="group.enabled !== false" type="button" rel="tooltip" title="Disable"
-                                class="btn btn-primary btn-simple btn-xs" (click)='disableGroup(group?._id)'>
+                                class="btn btn-primary btn-simple btn-sm" (click)='disableGroup(group?._id)'>
                                 <i class="material-icons">do_not_disturb_on</i>
                                 <!-- <span class="material-icons-outlined">do_not_disturb_on</span> -->
                               </button>
                               <!-- Riabilita Gruppo -->
                               <button *ngIf="group.enabled === false" type="button" rel="tooltip" title="Restore"
-                                class="btn btn-primary btn-simple btn-xs" (click)='restoreGroup(group?._id)'>
+                                class="btn btn-primary btn-simple btn-sm" (click)='restoreGroup(group?._id)'>
                                 <i class="material-icons">undo</i>
                                 <!-- <span class="material-icons-outlined">undo</span> -->
                               </button>
                               <!-- Elimima Gruppo -->
                               <button type="button" rel="tooltip"
                                 title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}"
-                                class="btn btn-danger btn-simple btn-xs"
+                                class="btn btn-danger btn-simple btn-sm"
                                 (click)='openDeleteModal(group?._id, group?.name)'>
                                 <i class="material-icons">delete</i>
                               </button>
@@ -793,9 +793,9 @@
                     {{project_user?.id_user?.email}}
                   </td>
 
-                  <td class="td-actions text-left td_table-fixed" style="padding-top:10px">
+                  <td class="td-actions text-start td_table-fixed" style="padding-top:10px">
 
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faqkb?._id, HAS_FAQ_RELATED=faqkb?.has_faq)'>
+                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-sm" (click)='openDeleteModal(faqkb?._id, HAS_FAQ_RELATED=faqkb?.has_faq)'>
                       <i class="material-icons">close</i>
                     </button>
                   </td>

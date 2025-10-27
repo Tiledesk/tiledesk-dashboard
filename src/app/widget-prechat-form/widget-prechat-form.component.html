@@ -67,7 +67,7 @@
         <div *ngIf="!preChatFormCustomFieldsEnabled" class="row"
           style="width: 100%; margin: auto; padding-left: 15px;padding-right: 15px;">
           <div class="col-sm-12">
-            <div class="form-group label-floating" style="width: 100%;">
+            <div class="mb-3 label-floating" style="width: 100%;">
               <!-- <label *ngIf="displayNewCustomPrechatFormBuilder === true"
                 class="control-label">{{LABEL_FIELD_NAME}}</label> -->
               <!-- *ngIf="displayNewCustomPrechatFormBuilder === false" -->
@@ -76,7 +76,7 @@
             </div>
           </div>
           <div class="col-sm-12">
-            <div class="form-group label-floating" style="width: 100%;margin-top: 20px;">
+            <div class="mb-3 label-floating" style="width: 100%;margin-top: 20px;">
               <!-- <label *ngIf="displayNewCustomPrechatFormBuilder === true"
                 class="control-label">{{LABEL_FIELD_NAME}}</label> -->
               <!-- *ngIf="displayNewCustomPrechatFormBuilder === false"  -->
@@ -97,7 +97,7 @@
             <div *ngIf="preChatFormCustomFieldsEnabled" class="row" style="width: 100%; margin: auto;">
 
               <div class="col-sm-12" *ngIf="element?.type === 'text'">
-                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <div class="mb-3 label-floating" style="width: 100%; margin-top: 15px;">
                   <label class="control-label">
                     <span *ngIf="element?.name === 'userFullname'"> {{ LABEL_PRECHAT_USER_FULLNAME }} </span>
                     <span *ngIf="element?.name === 'userEmail'"> {{ LABEL_PRECHAT_USER_EMAIL }} </span>
@@ -114,7 +114,7 @@
               </div>
 
               <div class="col-sm-12" *ngIf="element?.type === 'static'">
-                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <div class="mb-3 label-floating" style="width: 100%; margin-top: 15px;">
                   <label *ngIf="element?.name === 'termsPrivacyLabel'" style="color: #616161;"
                     [innerHTML]="LABEL_PRECHAT_STATIC_TERMS_PRIVACY">
                   </label>
@@ -133,7 +133,7 @@
               </div>
 
               <div class="col-sm-12" *ngIf="element?.type === 'textarea'">
-                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <div class="mb-3 label-floating" style="width: 100%; margin-top: 15px;">
                   <label class="control-label">
                     <span *ngIf="element?.name === 'firstMessage'">
                       {{LABEL_PRECHAT_FIRST_MESSAGE}}
@@ -170,7 +170,7 @@
             <div *ngIf="preChatFormCustomFieldsEnabled" class="row" style="width: 100%; margin: auto;">
 
               <div class="col-sm-12" *ngIf="element?.type === 'text' || element?.type === 'string' || !element?.type">
-                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <div class="mb-3 label-floating" style="width: 100%; margin-top: 15px;">
                   
                   <label class="control-label" >
                     
@@ -187,7 +187,7 @@
               </div>
 
               <div class="col-sm-12" *ngIf="element?.type === 'static'">
-                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <div class="mb-3 label-floating" style="width: 100%; margin-top: 15px;">
                   <label *ngIf="element?.label?.en" style="color: #616161;" [innerHTML]="element?.label.en"> </label>
                   <label *ngIf="!element?.label?.en" style="color: #616161;" [innerHTML]="element?.label?.default"> </label>
                 </div>
@@ -210,7 +210,7 @@
               </div>
 
               <div class="col-sm-12" *ngIf="element?.type === 'textarea'">
-                <div class="form-group label-floating" style="width: 100%; margin-top: 15px;">
+                <div class="mb-3 label-floating" style="width: 100%; margin-top: 15px;">
                   <label class="control-label">
                     <span *ngIf="element?.label?.en">
                       {{ element?.label?.en }} 
@@ -286,7 +286,7 @@
 
 
           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-            src="{{imageUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+            src="{{imageUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fcards_200_200-photo.jpg"
             onerror="this.src='assets/img/no_image_user.png'" />
         </div>
         <div>

@@ -23,9 +23,9 @@
                         <!-- <label class="col-sm-2 custom-label">
                           {{ "FaqTestPage.Question" | translate }}
                         </label> -->
-                        <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> -->
-                            <!-- col-xs-6 col-xs-offset-3 -->
-                        <div class="col-xs-8 col-xs-offset-2">
+                        <!-- <div class="col-12 col-sm-6 col-md-6 col-lg-6"> -->
+                            <!-- col-6 col-offset-3 -->
+                        <div class="col-8 col-offset-2">
                           <form>
                             <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion"
                             style="padding-left: 16px;">
@@ -38,7 +38,7 @@
                           </form>
 
                         </div>
-                        <div class="col-xs-2" style="text-align: center;">
+                        <div class="col-2" style="text-align: center;">
                           <span class="tooltip-new"> 
                             <i class="material-icons" style="position: relative; top: 6px;color: #039be5;cursor:pointer" (click)="startOver()">
                                 refresh
@@ -71,7 +71,7 @@
                 <div class="card-content" style="height: 500px; overflow-y: auto;" >
             
                   <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
+                    <div class="col-8 col-offset-2">
 
                       <!-- <div class="parent" style="display: flex;">
 
@@ -116,7 +116,7 @@
                   <!-- class="row"  -->
                   <!-- questionsAndAnswersArray -->
                   <div *ngFor="let faq of reverseQuestionsAndAnswersArray">
-                    <!-- <div class="col-xs-8 col-xs-offset-2"> -->
+                    <!-- <div class="col-8 col-offset-2"> -->
                     
                       <div class="speech-wrapper" style="display: flex;; flex-wrap: wrap;">
                       <div class="bubble">

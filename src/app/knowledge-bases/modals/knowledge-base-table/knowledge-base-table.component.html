@@ -314,7 +314,7 @@
 
     <div class="card contents-card">
         <div class="card-header card-header-custom-bkgrnd">
-            <div class="form-group preview-count-n">
+            <div class="mb-3 preview-count-n">
                 <div class="preview-count-left">
                     <div>
                         <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="onLoadByFilter()">
@@ -678,7 +678,7 @@
                     </tr>
                 </tbody>
             </table>
-            <!-- btn btn-more btn-new btn-size-m btn--primary btn-xs center -->
+            <!-- btn btn-more btn-new btn-size-m btn--primary btn-sm center -->
         </div>
         <div *ngIf="isLoading" [ngStyle]="{'margin-top':SHOW_MORE_BTN === true ? '20px' : '80px' }"
             class="loading-indicator">{{'KbPage.Loading' | translate}}</div>

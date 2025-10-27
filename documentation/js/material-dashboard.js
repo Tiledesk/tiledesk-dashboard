@@ -28,7 +28,7 @@ $(document).ready(function(){
 
     $sidebar = $('.sidebar');
 
-    $.material.init();
+    // $.material.init(); // REMOVED: bootstrap-material-design is no longer supported with Bootstrap 5
 
     window_width = $(window).width();
     // check if there is an image set for the sidebar's background

@@ -31,7 +31,7 @@
 
       <div class="teplate-content" style="flex: 1 1 auto;">
         <div class="row">
-          <div class="col-xs-12" style="padding-right: 0px;">
+          <div class="col-12" style="padding-right: 0px;">
             <!-- box-shadow: unset -->
             <ul class="bottom-nav" style="top:-9px; ">
               <li *ngIf="PERMISSION_TO_VIEW_GENERAL" (click)="goToProjectSettings_General()" class="btn-with-border-effect"
@@ -143,7 +143,7 @@
                           <label for="project-name" class="col-sm-2 custom-label">
                             {{ "ProjectEditPage.ProjectName" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="input--group">
                               <input name="project-name" id="project-name" [(ngModel)]="projectName_toUpdate"
                                 (ngModelChange)="onProjectNameChange($event)" class="input" type="text"
@@ -161,7 +161,7 @@
                           <label for="project-id" class="col-sm-2 custom-label">
                             {{ "ProjectEditPage.ProjectId" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                             <input name="project-id" id="project-id" style="color:#999999" [(ngModel)]="id_project"
                               class="input" type="text" disabled>
                           </div>
@@ -248,7 +248,7 @@
                           <label class="col-sm-3 custom-label">
                             {{ 'YourCurrentPlan' | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                             <!-- ------------------------------------------------------------------- -->
                             <!-- YOUR CURRENT PLAN: PAYMENT  -->
                             <!-- ------------------------------------------------------------------- -->
@@ -327,7 +327,7 @@
                           <label class="col-sm-3 custom-label" style="height: 46px; padding-top: 15px">
                             {{ "SubscriptionStatus" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                             <!-- -------------------------------------------------------------------------------- -->
                             <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION ACTIVE  -->
                             <!-- -------------------------------------------------------------------------------- -->
@@ -502,7 +502,7 @@
                             <label class="col-sm-3 custom-label">
                               {{"PaymentInformation" | translate }}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
 
                               <span class="subscription-info">
 
@@ -537,7 +537,7 @@
                               *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
                               {{ "PlanStartDate" | translate }}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
 
                               <span class="subscription-info">
                                 <i class="material-icons" style="vertical-align: middle;color: #697386;">
@@ -587,7 +587,7 @@
                             <label class="col-sm-3 custom-label">
                               {{ "CurrentInvoiceStartDate" | translate }}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
 
                               <span class="subscription-info">
                                 <i class="material-icons" style="vertical-align: middle;color: #697386;">
@@ -617,7 +617,7 @@
                               *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
                               {{ "PlanExpirationDate" | translate }}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                               <span class="subscription-info">
                                 <i class="material-icons" style="vertical-align: middle;color: #697386;">
                                   calendar_today
@@ -642,7 +642,7 @@
                               <!-- {{ "NumberOfAgentSeats" | translate }} -->
                               {{ "SeatsRedeemed" | translate }}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                               <span class="subscription-info">
                                 <i class="material-icons"
                                   [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#697386'}"
@@ -676,7 +676,7 @@
                             <label class="col-sm-3 custom-label">
                               {{ "ProjectEditPage.Payments" | translate }}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                               <!-- btn-primary -->
                               <button class="btn btn-tdblu-no-boxshadow" (click)="goToPayments()"
                                 style="margin-top: 0px;">
@@ -711,7 +711,7 @@
 
                           <div class="row">
                             <!-- <label class="col-sm-3"> </label> -->
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                               <!-- btn-danger -->
                               <button class="btn btn-red" (click)="viewCancelSubscription()">
                                 {{ "CancelSubscription" | translate }}
@@ -730,7 +730,7 @@
                             *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
                             <label class="col-sm-3 custom-label" style="padding-top:15px">
                               {{ "ProjectEditPage.Payments" | translate }} </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                               <!-- <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
                             {{ "CancelSubscription" | translate }}
                           </button> -->
@@ -747,8 +747,8 @@
                           <div style="margin-top: 16px;" class="row upgrade-plan-btn-row"
                             *ngIf="prjct_profile_type !== 'payment'">
                             <label class="col-sm-3"> </label>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                              <!-- <div class="col-xs-12" style="text-align: center;"> -->
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                              <!-- <div class="col-12" style="text-align: center;"> -->
 
                               <button class="btn btn-tdblu-no-boxshadow" (click)="goToPricing()">
                                 {{ "Pricing.UpgradePlan" | translate }}
@@ -904,7 +904,7 @@
                         </div>
 
                         <div class="row">
-                          <div class="col-xs-12">
+                          <div class="col-12">
                             <!-- btn-primary -->
                             <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-tdblu-no-boxshadow"
                               style="margin-top:5px; padding:6px 15px ">
@@ -949,7 +949,7 @@
                         </div>
 
                         <div class="row">
-                          <div class="col-xs-12">
+                          <div class="col-12">
                             <!-- btn-primary -->
                             <button (click)="goToWebhookPage()" class="btn btn-tdblu-no-boxshadow"
                               style="margin-top:5px; padding:6px 15px ">
@@ -962,7 +962,7 @@
                               {{'AvailableFromThePlan' | translate: t_params }}
                             </div>
                             <div class="upgrade-btn-wpr">
-                              <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
+                              <button class="btn btn-get-feature-no-boxshadow custom-margin float-start"
                                 [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                                 (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
                                 matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
@@ -1009,7 +1009,7 @@
 
                         <div class="row">
 
-                          <div class="col-xs-12">
+                          <div class="col-12">
                             <!-- btn-primary -->
                             <button (click)="goToWidgetTestPage()"
                               class="btn btn-tdblu-no-boxshadow test-widget-api-btn"
@@ -1177,7 +1177,7 @@
                       <div *ngIf="isVisibleAutoSendTranscript" class="input-wrapper" style="max-width: 992px;">
 
                         <div class="row">
-                          <div class="col-xs-12 col-sm-10" style="margin-bottom: 12px;">
+                          <div class="col-12 col-sm-10" style="margin-bottom: 12px;">
 
                             <div class="upgrade-for-webhook" style="margin-left: 0px;"
                               *ngIf="DISPLAY_ADVANCED_TAB === false">
@@ -1185,7 +1185,7 @@
                                 {{'AvailableFromThePlan' | translate: t_params }}
                               </div>
                               <div class="upgrade-btn-wpr">
-                                <button class="btn btn-get-feature-no-boxshadow pull-left"
+                                <button class="btn btn-get-feature-no-boxshadow float-start"
                                   [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                                   (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
                                   matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
@@ -1223,7 +1223,7 @@
                           </p>
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <!-- btn-primary -->
                           <button id="customize-email-template" (click)="goToCustomizeNotificationEmailPage()"
                             class="btn btn-tdblu-no-boxshadow">
@@ -1231,13 +1231,13 @@
                           </button>
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="!isTier3Plans">
                             <div *ngIf="isVisiblePaymentTab" class="c-plan-only-badge">
                               {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
                             </div>
                             <div class="upgrade-btn-wpr">
-                              <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
+                              <button class="btn btn-get-feature-no-boxshadow custom-margin float-start"
                                 [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                                 (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
                                 matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
@@ -1273,14 +1273,14 @@
                           </p>
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <!-- btn-primary -->
                           <button (click)="goToManageEmailSettings()" class="btn btn-tdblu-no-boxshadow">
                             {{ "ProjectEditPage.ManageSMTPSettings" | translate }}
                           </button>
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-12">
                           <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="!isTier3Plans">
                             <div *ngIf="isVisiblePaymentTab" class="c-plan-only-badge">
                               {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
@@ -1288,7 +1288,7 @@
 
                             <div class="upgrade-btn-wpr">
                               <!--  -->
-                              <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
+                              <button class="btn btn-get-feature-no-boxshadow custom-margin float-start"
                                 [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                                 (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
                                 matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
@@ -1523,11 +1523,11 @@
                                       </p>
                                     </td>
 
-                                    <td class="td-actions text-right"
+                                    <td class="td-actions text-end"
                                       style="padding-left: 0px;padding-top: 17px!important;">
 
                                       <!-- UNBAN CONTACT click)='unbanVisitor(visitor?._id)'-->
-                                      <button type="button" class="btn btn-primary btn-simple btn-xs unban-visitor"
+                                      <button type="button" class="btn btn-primary btn-simple btn-sm unban-visitor"
                                         [disabled]="(USER_ROLE === 'admin'  || USER_ROLE === 'agent') || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin'  && USER_ROLE !== 'agent' && !PERMISSION_TO_UNBAN_VISITOR)"
                                         (click)='unbanVisitor(visitor?.bannedUsers_Id)'
                                         matTooltipClass="custom-mat-tooltip-in-widget-setup"
@@ -1572,7 +1572,7 @@
                   <ng-container *ngIf="permissionCheckedSmartAssign">
                     <ng-container *ngIf="isAuthorizedSmartAssign; else unauthorizedTplSmartAssign">
                       <div *ngIf="hideHelpLink" class="row link-to-automatic-assignment-doc-wpr">
-                        <div class="col-xs-12 link-to-automatic-assignment-doc">
+                        <div class="col-12 link-to-automatic-assignment-doc">
                           <div class="link-to-doc-icon-wpr">
                             <span>
                               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -1621,10 +1621,10 @@
                         <!-- Automatic Assignment On / Off switch -->
                         <!-- ------------------------------------ -->
                         <div class="row">
-                          <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                          <label class="col-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                             {{ 'Enable' | translate}}
                           </label>
-                          <div class="col-xs-12 col-sm-10">
+                          <div class="col-12 col-sm-10">
 
                             <div class="onoffswitch">
                               <input (click)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
@@ -1667,10 +1667,10 @@
 
                         <span class="span-12"></span>
                         <div class="row">
-                          <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                          <label class="col-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                             {{ 'ProjectEditPage.MaximumChats' | translate}}
                           </label>
-                          <div class="col-xs-12 col-sm-10">
+                          <div class="col-12 col-sm-10">
 
 
                             <!--  -------------------------------------------------------- -->
@@ -1731,10 +1731,10 @@
                         <span class="span-12"></span>
 
                         <div class="row">
-                          <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                          <label class="col-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                             {{ 'Enable' | translate}}
                           </label>
-                          <div class="col-xs-12 col-sm-10">
+                          <div class="col-12 col-sm-10">
 
                             <div class="onoffswitch">
                               <input (click)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
@@ -1751,10 +1751,10 @@
 
                         <span class="span-20"></span>
                         <div class="row">
-                          <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
+                          <label class="col-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
                             {{ "ProjectEditPage.ReassignmentTimeout" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-10">
+                          <div class="col-12 col-sm-10">
 
                             <div class="chat-limit">
                               <!-- -------------------------------------------------------- -->
@@ -1808,11 +1808,11 @@
                         <span class="span-12"></span>
 
                         <div class="row">
-                          <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                          <label class="col-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                             {{ 'Enable' | translate}}
                           </label>
 
-                          <div class="col-xs-12 col-sm-10">
+                          <div class="col-12 col-sm-10">
                             <div class="onoffswitch">
                               <input (click)="toggleUnavailable_status_on($event)"
                                 [checked]="automatic_unavailable_status_on === true" type="checkbox"
@@ -1829,10 +1829,10 @@
                         <span class="span-20"></span>
 
                         <div class="row">
-                          <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
+                          <label class="col-12 col-sm-2 custom-label custom-label-left">
                             {{ "ProjectEditPage.ChatsReassigned" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-10">
+                          <div class="col-12 col-sm-10">
 
                             <div class="chat-limit">
 

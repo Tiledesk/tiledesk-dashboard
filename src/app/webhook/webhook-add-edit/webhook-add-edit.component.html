@@ -47,11 +47,11 @@
 
         <div *ngIf="showSkeleton === false" class="edit-response_view">
 
-          <div class="form-group row" style="margin-top: 15px;">
-            <label for="webhookEvent" class="col-xs-3 custom-label">
+          <div class="mb-3 row" style="margin-top: 15px;">
+            <label for="webhookEvent" class="col-3 custom-label">
               {{ "Webhook.SelectEvent" | translate }}
             </label>
-            <div class="col-xs-9">
+            <div class="col-9">
               <ng-select placeholder="{{'Webhook.SelectEvent' | translate}}" [(ngModel)]="subscriptionEvent">
                 <ng-option [value]="webhook.id" *ngFor="let webhook of webHookEvents">{{webhook.name}}</ng-option>
               </ng-select>
@@ -64,8 +64,8 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group" style="margin-top: 20px;">
+            <div class="col-12">
+              <div class="mb-3" style="margin-top: 20px;">
                 <input id="webhook-title" name="webhook-title" [(ngModel)]="webhookTarget" value=""
                   placeholder='Enter Webhook Target (example: "https://www.yourwebsite.com/")' class="form-control" />
                 <span *ngIf="targetIsEmpty === true" class="error-message" style="color: #f6303a;font-size: 14px;">

@@ -18,13 +18,13 @@
   </div>
 
   <div class="row" style="margin-bottom: 15px;">
-    <label *ngIf="!deptName_toUpdate" class="col-xs-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
+    <label *ngIf="!deptName_toUpdate" class="col-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
       {{ "GroupName" | translate}}
     </label>
-    <label *ngIf="deptName_toUpdate" class="col-xs-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
+    <label *ngIf="deptName_toUpdate" class="col-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
       {{ "GroupName" | translate}} ({{'suggested' | translate }})
     </label>
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="group-name-input-wrap">
         <input [(ngModel)]="group_name" class="input" (ngModelChange)="onChangeGroupName($event)" type="text"
           style="margin-top: 2px;margin-bottom: 0px;" placeholder="{{'EnterTheGroupName' | translate}}">
@@ -97,7 +97,7 @@
                   <!-- --------------------------------------------------- -->
                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                     class="user-img-in-create-group-right-sidebar"
-                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                     onerror="this.src='assets/img/no_image_user.png'" />
 
                   <span class="teammate-fullname" style="font-size:12px">
@@ -128,7 +128,7 @@
     <div class="col-md-12">
       <div class="add-teammates-to-group-wrap">
         <!-- group_name.length  {{ group_name?.length }} -->
-        <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow pull-right"
+        <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow float-end"
           (click)="createGroupAndAddMembers()" style="padding:9px 30px; width: 100%;"
           [disabled]="(create_group_and_add_members_btn_disabled) || (!group_name) || (group_name?.length === 0)">
 

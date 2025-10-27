@@ -30,7 +30,7 @@
         </button>
 
         <!-- only-icon btn-settings -->
-        <button *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
+        <button *ngIf="displayCancelButton" class="btn btn-secondary add-form" (click)="closeGeneral()">
             <span class="icon-label opened">{{ "Close" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">cancel</i>
@@ -74,7 +74,7 @@
         </div>
 
         <div *ngIf="displaySettingForm" class="box-buttons">
-            <!-- <button class="btn btn-default" (click)="closeSettingsForm()">
+            <!-- <button class="btn btn-secondary" (click)="closeSettingsForm()">
                 <span>{{ "Cancel" | translate }}</span>
             </button> -->
             <!-- <button class="btn btn-primary" >

@@ -39,7 +39,7 @@
                     <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-12">
                                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
                                 <!-- *ngIf="!showSpinner" -->
 
@@ -57,7 +57,7 @@
                                         </a>
                                        
                                     </div>
-                                    <button class="btn btn-tdblu-no-boxshadow pull-right" *ngIf="PERMISSION_TO_CREATE_NEW_ROLE"
+                                    <button class="btn btn-tdblu-no-boxshadow float-end" *ngIf="PERMISSION_TO_CREATE_NEW_ROLE"
                                         style="padding: 8px 16px;margin:0px;" (click)="goToCreateNewRole()">
                                         {{ "NewRole" | translate }}
                                     </button>
@@ -88,7 +88,7 @@
                                                         </td>
                                                         <td style="width: 1%; white-space: nowrap;;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                class="btn btn-primary btn-simple btn-sm" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -98,7 +98,7 @@
                                                                     style="color: #acb8cb;">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                class="btn btn-danger btn-simple btn-sm" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -117,7 +117,7 @@
                                                         </td>
                                                         <td style="width: 1%; white-space: nowrap;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                class="btn btn-primary btn-simple btn-sm" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -127,7 +127,7 @@
                                                                     style="color: #acb8cb;">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                class="btn btn-danger btn-simple btn-sm" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -146,7 +146,7 @@
 
                                                         <td style="width: 1%; white-space: nowrap;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                class="btn btn-primary btn-simple btn-sm" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -156,7 +156,7 @@
                                                                     style="color: #acb8cb;">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                class="btn btn-danger btn-simple btn-sm" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -177,13 +177,13 @@
                                                         </td>
                                                         <td style="width: 1%; white-space: nowrap;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs"
+                                                                class="btn btn-primary btn-simple btn-sm"
                                                                 (click)="goToRoleDetail(role._id)"
                                                                 [disabled]="!PERMISSION_TO_UPDATE_ROLE">
                                                                 <i class="material-icons">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs"
+                                                                class="btn btn-danger btn-simple btn-sm"
                                                                 (click)="deleteRole(role._id, role.name)"
                                                                 [disabled]="!PERMISSION_TO_DELETE_ROLE">
                                                                 <i class="material-icons">delete</i>

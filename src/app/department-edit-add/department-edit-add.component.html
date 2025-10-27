@@ -74,7 +74,7 @@
                           <label class="col-sm-2 custom-label">
                             {{ "Name" | translate}}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
+                          <div class="col-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
                             <input [(ngModel)]="deptName_toUpdate"
                               placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' class="input" type="text"
                               style="margin-top: 2px;margin-bottom: 5px;"
@@ -92,7 +92,7 @@
                           <label class="col-sm-2 custom-label">
                             {{ "DeptsAddEditPage.Description" | translate}}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-12 col-lg-6">
                             <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
                               (ngModelChange)="onChangeDeptDescription($event)"
                               placeholder='{{ "DeptsAddEditPage.Description" | translate}}'
@@ -109,7 +109,7 @@
                       <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
                       <section *ngIf="IS_DEFAULT_DEPT === true">
                         <div class="row">
-                          <div class="col-xs-12">
+                          <div class="col-12">
                             <h4 style="text-transform: none; color: rgba(0,0,0,.54); font-size: 20px;margin-top:0px">
 
                               <!-- {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate }} -->
@@ -119,7 +119,7 @@
                         </div>
 
                         <div class="row">
-                          <div class="col-xs-12">
+                          <div class="col-12">
                             <div class="alert dd-info-alert">
                               <i class="material-icons">info
                               </i>
@@ -138,7 +138,7 @@
                           <!-- Section title Activate bot  -->
                           <!-- ------------------------------------------------------------------- -->
                           <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-6 col-sm-6 col-md-6">
                               <h3 class="card_title__underlined" style="margin-top: 5px;">
                                 <span class="card_title__underline">
                                   {{ "RoutingPage.ActivateBOT" | translate }}
@@ -146,7 +146,7 @@
                               </h3>
                             </div>
 
-                            <div class="col-xs-6 col-sm-6 col-md-6" style=" margin-top: 6px;">
+                            <div class="col-6 col-sm-6 col-md-6" style=" margin-top: 6px;">
 
                               <!-- (change)=toggleActivateBot($event) -->
                               <div class="onoffswitch">
@@ -160,7 +160,7 @@
                               </div>
                             </div>
 
-                            <div class="col-xs-12">
+                            <div class="col-12">
                               <div class="section-subtitle" style="height: 5px;"> </div>
                             </div>
                           </div>
@@ -181,11 +181,11 @@
                           </div>
 
                           <div class="row">
-                            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 38px;"> -->
+                            <!-- <div class="col-4 col-sm-4 col-md-4 col-lg-4" style="height: 38px;"> -->
                             <label class="col-sm-2 custom-label">
                               {{'AIAgent' | translate}}
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-12 col-lg-6">
                               <!-- <select #selectBot (change)="setSelectedBot(selectBot.value)"
                             [disabled]="has_selected_bot === false">
                             <option style="color: #d9d9d9 !important; font-weight: 200 !important;" class="not_selected"
@@ -254,7 +254,7 @@
                           <!-- Section title Routing rules -->
                           <!-- ------------------------------------------------------------------- -->
                           <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-12">
                               <h3 class="card_title__underlined" style="margin-top: 25px;">
                                 <span class="card_title__underline">
 
@@ -263,7 +263,7 @@
                               </h3>
                             </div>
 
-                            <div class="col-xs-12">
+                            <div class="col-12">
                               <div class="section-subtitle" style="height: 5px;"> </div>
                             </div>
                           </div>
@@ -311,7 +311,7 @@
                             <!-- ------------------------------------------------------------------- -->
                             <div class="row aligned-row">
 
-                              <div class="col-xs-12">
+                              <div class="col-12">
                           
 
                                 <div class="routing-rules">
@@ -388,7 +388,7 @@
                               <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                                 {{ "DeptsAddEditPage.AssignTo" | translate }}
                               </label>
-                              <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                              <div class="col-12 col-sm-6 col-md-12 col-lg-6">
                                 
     
                                 <ng-select (change)="_setSelectedGroup()" 
@@ -426,7 +426,7 @@
 
                           <!--  -->
                           <div class="row" *ngIf="displayAssignTo === false && groupsParsedArray?.length > 0">
-                            <div class="col-xs-12">
+                            <div class="col-12">
                               <div class="card-title-wpr" style="max-width: 538px;
                                                             display: flex;
                                                             flex-direction: row;
@@ -462,7 +462,7 @@
 
                             
 
-                            <div class="col-xs-12">
+                            <div class="col-12">
                               <div class="section-subtitle" style="height: 5px;"> </div>
                             </div>
                             
@@ -659,7 +659,7 @@
                       </div>
 
                       <div class="row" style="height: 50px;">
-                        <div class="col-xs-12">
+                        <div class="col-12">
 
                           <section *ngIf="IS_DEFAULT_DEPT === true">
                             <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
@@ -785,7 +785,7 @@
                                 <!-- Bot profile photo usecase uploadEngine Native -->
                                 <!-- --------------------------------------------------------------------- -->
                                 <img *ngIf="selectedId && !UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-dept-edit-add"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fcards_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                                 <span *ngIf="bot_type === 'internal'">
@@ -928,7 +928,7 @@
                                   <!-- USECASE uploadEngine Native -->
                                   <!-- --------------------------------------------------- -->
                                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                     onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -970,7 +970,7 @@
                                   <!-- USECASE uploadEngine Native -->
                                   <!-- --------------------------------------------------- -->
                                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                     onerror="this.src='assets/img/no_image_user.png'" />
 
 

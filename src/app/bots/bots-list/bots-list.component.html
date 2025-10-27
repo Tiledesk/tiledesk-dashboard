@@ -78,9 +78,9 @@
         </ng-container>
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <!-- createBlankTilebot() -->
-            <button *ngIf="isChatbotRoute !== 'all'" class="btn btn-tdblu-no-boxshadow pull-right"
+            <button *ngIf="isChatbotRoute !== 'all'" class="btn btn-tdblu-no-boxshadow float-end"
               [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
               [disabled]="!PERMISSION_TO_ADD_FLOWS"
               (click)="PERMISSION_TO_ADD_FLOWS && presentDialogCreateFlows(isChatbotRoute)" style="margin-right: 25px">
@@ -98,7 +98,7 @@
             </button>
       
 
-            <div class="dropdown pull-right" *ngIf="isChatbotRoute === 'all'">
+            <div class="dropdown float-end" *ngIf="isChatbotRoute === 'all'">
               <a  class="btn dropdown-toggle select-flow-btn" data-toggle="dropdown" 
                 [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
                 (click)="PERMISSION_TO_ADD_FLOWS && isOpenSelecFlowTypeDropdown(isOpen = !isOpen)">
@@ -123,7 +123,7 @@
             </div>
 
 
-            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
+            <button class="btn btn-outlined float-end" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               <!-- Add from template -->
               {{'AddFromTemplate' | translate}}
 
@@ -133,7 +133,7 @@
 
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
 
             <div class="card card--no-border" style="margin-top: 5px;">
            

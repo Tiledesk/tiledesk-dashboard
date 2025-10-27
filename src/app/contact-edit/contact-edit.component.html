@@ -24,7 +24,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "Name" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="fullname" [(ngModel)]="lead_fullname" class="input" type="text">
                 </div>
               </div>
@@ -38,7 +38,7 @@
                 <label class="col-sm-2 custom-label">
                   Email
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="email" [(ngModel)]="lead_email" (ngModelChange)="emailChange($event)" class="input"
                     type="text" [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}" style="margin-bottom:3px">
 
@@ -56,7 +56,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "Company" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="company" [(ngModel)]="lead_company" class="input" type="text">
                 </div>
               </div>
@@ -85,7 +85,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "StreetAddress" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="street_address" [(ngModel)]="lead_street_address" class="input" type="text">
                 </div>
               </div>
@@ -98,7 +98,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "City" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="city" [(ngModel)]="lead_city" class="input" type="text">
                 </div>
               </div>
@@ -111,7 +111,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "State" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="state" [(ngModel)]="lead_state" class="input" type="text">
                 </div>
               </div>
@@ -124,7 +124,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "PostalCode" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="postalcode" [(ngModel)]="lead_postalcode" class="input" type="text">
                 </div>
               </div>
@@ -137,7 +137,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "Country" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="country" [(ngModel)]="lead_country" class="input" type="text">
                 </div>
               </div>
@@ -166,7 +166,7 @@
                 <label class="col-sm-2  custom-label">
                   {{ "PhoneNumber" | translate }}
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <input name="phone_number" [(ngModel)]="lead_phone_number" class="input" type="text">
                 </div>
               </div>
@@ -195,7 +195,7 @@
                 <label class="col-sm-2  custom-label">
                   Note
                 </label>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <textarea name="note" [(ngModel)]="lead_note" rows="3" class="input" type="text">   </textarea>
                 </div>
               </div>

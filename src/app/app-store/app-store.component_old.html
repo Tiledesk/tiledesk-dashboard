@@ -9,7 +9,7 @@
 
     <!-- <div class="row">
 
-      <div class="col-xs-12">
+      <div class="col-12">
         <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;" (click)="goToCreateApp()">
           <span class="icon" style="padding-right:8px">
             <i class="material-icons">add_circle</i>
@@ -22,7 +22,7 @@
     <!-- @ Chatbot section -->
     <!-- ---------------------------------------------------------------------------- -->
     <!-- <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="section-title">
           <span> Chatbot</span>
         </div>
@@ -38,7 +38,7 @@
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="app-icon">
                   <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 189.9 189.9"
@@ -82,7 +82,7 @@
 
             <div class="row" style="display: block;">
             
-              <div class="col-xs-6 app-store-left-col-btn"  (click)="openExternalBotIntegrationTutorial()">
+              <div class="col-6 app-store-left-col-btn"  (click)="openExternalBotIntegrationTutorial()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
@@ -90,7 +90,7 @@
 
 
               
-              <div class="col-xs-6 app-store-right-col-btn" (click)="goToCreateBot('external')"> 
+              <div class="col-6 app-store-right-col-btn" (click)="goToCreateBot('external')"> 
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>
@@ -107,7 +107,7 @@
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="app-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 34 40">
                   <path fill="#5a17ee" fill-rule="evenodd"
@@ -136,7 +136,7 @@
 
             <div class="row" style="display: block;">
             
-              <div class="col-xs-6 app-store-left-col-btn"  (click)="openRasaIntegrationTutorial()">
+              <div class="col-6 app-store-left-col-btn"  (click)="openRasaIntegrationTutorial()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
@@ -144,7 +144,7 @@
 
 
               
-              <div class="col-xs-6 app-store-right-col-btn" (click)="goToCreateRasaBot()"> 
+              <div class="col-6 app-store-right-col-btn" (click)="goToCreateRasaBot()"> 
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>
@@ -161,7 +161,7 @@
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="app-icon">
                   <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 189.9 189.9"
@@ -214,7 +214,7 @@
 
             <div class="row" style="display: block;">
             
-              <div class="col-xs-6 app-store-left-col-btn"  (click)="openDocsTiledeskDialogflowConnector()">
+              <div class="col-6 app-store-left-col-btn"  (click)="openDocsTiledeskDialogflowConnector()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
@@ -222,7 +222,7 @@
 
 
               
-              <div class="col-xs-6 app-store-right-col-btn" (click)="goToCreateBot('dialogflow')"> 
+              <div class="col-6 app-store-right-col-btn" (click)="goToCreateBot('dialogflow')"> 
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>
@@ -238,7 +238,7 @@
     <!-- @ Apps section -->
     <!-- ---------------------------------------------------------------------------- -->
     <!-- <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="section-title">
           <span> Apps</span>
         </div>
@@ -280,18 +280,18 @@
 
           <div class="card-content">
             <div class="row app-card-header">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="app-icon" style="height:50px">
                   <img [src]="app.logo" />
                 </div>
               </div>
               <!-- flex: 1; width: 50%; -->
-              <div class="col-xs-6">
+              <div class="col-6">
 
                 <div *ngIf="app.createdBy === userId" class="edit-app-wpr" style="height: 50px;text-align: right;">
                   <div class="row">
-                    <div class="col-xs-4"> </div>
-                    <div class="col-xs-4" style="padding-right: 2px; padding-left: 3px;" (click)="goToEditApp(app._id)">
+                    <div class="col-4"> </div>
+                    <div class="col-4" style="padding-right: 2px; padding-left: 3px;" (click)="goToEditApp(app._id)">
                       <div class="edit-app-btn" role="button" 
                         matTooltipClass="custom-mat-tooltip" 
                         matTooltip="Edit App"
@@ -303,7 +303,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-xs-4" style="padding-left: 2px;" (click)="deleteNewApp(app._id, app?.title)">
+                    <div class="col-4" style="padding-left: 2px;" (click)="deleteNewApp(app._id, app?.title)">
                       <div class="delete-app-btn" role="button" matTooltipClass="custom-mat-tooltip"
                         matTooltip="Delete App" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100">
@@ -341,7 +341,7 @@
 
             <div class="row" style="display: block;">
 
-              <div *ngIf="app.version === 'v1'" class="col-xs-6 app-store-left-col-btn"
+              <div *ngIf="app.version === 'v1'" class="col-6 app-store-left-col-btn"
                 (click)="learnmore(app.learnMore, app._id)">
                 <a>
                   {{'LearnMore' | translate}}
@@ -353,14 +353,14 @@
               <!-- app.where.appsstore >  {{app.where.appsstore }}  -->
               <div *ngIf="!app.installed && app.version === 'v1'"
                 [ngClass]="{'div-disabled': app._id === '5fecb0d08b2c259c6e4a9706' }"
-                class="col-xs-6 app-store-right-col-btn"
+                class="col-6 app-store-right-col-btn"
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
                   {{'Install' | translate}}
                 </a>
               </div>
 
-              <div *ngIf="app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn manage-btn"
+              <div *ngIf="app.installed && app.version === 'v1'" class="col-6 app-store-right-col-btn manage-btn"
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a style="color: white;">
                   {{'Manage' | translate}}
@@ -371,7 +371,7 @@
               <!-- --------------------------------------------------- -->
               <ng-container *ngIf="app.version === 'v2'">
                 <div *ngIf="app.installActionURL === undefined"
-                  [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
+                  [ngClass]="{'col-4': app.where.appsstore === true && app.installed, 'col-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
                   class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
                   <a>
                     {{'LearnMore' | translate}}
@@ -380,7 +380,7 @@
 
 
                 <div *ngIf="app.installActionURL !== undefined"
-                  [ngClass]="{'col-xs-3': app.where.appsstore === true && app.installed, 'col-xs-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-xs-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
+                  [ngClass]="{'col-3': app.where.appsstore === true && app.installed, 'col-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
                   class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
                   <a>
                     {{'LearnMore' | translate}}
@@ -388,7 +388,7 @@
                 </div>
 
                 <div *ngIf="!app.installed"
-                  [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
+                  [ngClass]="{'col-4': app.where.appsstore === true && app.installed, 'col-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
                   class="app-store-right-col-btn"
                   (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                   <a>
@@ -397,14 +397,14 @@
                 </div>
 
                 <div *ngIf="app?.installed && app.installActionURL === undefined"
-                  [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore }"
+                  [ngClass]="{'col-4': app.where.appsstore === true, 'col-6': app.where.appsstore === false || !app.where.appsstore }"
                   class="app-store-right-col-btn uninstall-btn" (click)="unistallApp(app._id, app.title)">
                   <a style="color: white;">
                     {{'Uninstall' | translate}}
                   </a>
                 </div>
                 <div *ngIf="app?.installed && app.installActionURL !== undefined"
-                  [ngClass]="{'col-xs-3': app.where.appsstore === true , 'col-xs-4': app.where.appsstore === false || !app.where.appsstore }"
+                  [ngClass]="{'col-3': app.where.appsstore === true , 'col-4': app.where.appsstore === false || !app.where.appsstore }"
                   class="app-store-right-col-btn uninstall-btn" (click)="unistallApp(app._id, app.title)">
                   <a style="color: white;">
                     {{'Uninstall' | translate}}
@@ -412,7 +412,7 @@
                 </div>
 
                 <div *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL === undefined"
-                  class="col-xs-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
+                  class="col-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
                   [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
                   <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
                     <!-- <span class="material-icons icon-start-app-in-app-store-istall">
@@ -423,7 +423,7 @@
                 </div>
 
                 <div *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL !== undefined"
-                  class="col-xs-3 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
+                  class="col-3 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
                   [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
                   <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
                     <!-- <span class="material-icons icon-start-app-in-app-store-istall">
@@ -436,7 +436,7 @@
 
 
                 <div *ngIf="app.installed && app.where.appsstore === true &&  app.installActionURL !== undefined"
-                  class="col-xs-3 app-store-right-col-btn manage-btn"
+                  class="col-3 app-store-right-col-btn manage-btn"
                   (click)="openConfigureUrlInAppStoreInstall(app, app.installActionType, app.installActionURL, app.title, app._id)">
                   <a style="color: white;">
                     <!-- {{'Manage' | translate}} -->
@@ -447,7 +447,7 @@
 
                 <div
                   *ngIf="app.installed && (app.where.appsstore === false || !app.where.appsstore)  &&  app.installActionURL !== undefined"
-                  class="col-xs-4 app-store-right-col-btn manage-btn"
+                  class="col-4 app-store-right-col-btn manage-btn"
                   (click)="openConfigureUrlInAppStoreInstall(app, app.installActionType, app.installActionURL, app.title, app._id)">
                   <a style="color: white;">
                     <!-- {{'Manage' | translate}} -->
@@ -473,7 +473,7 @@
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="app-icon" style="height:50px">
                   <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 189.9 189.9"
@@ -517,7 +517,7 @@
 
             <div class="row" style="display: block;">
 
-              <div class="col-xs-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
+              <div class="col-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
@@ -525,7 +525,7 @@
 
 
 
-              <div class="col-xs-6 app-store-right-col-btn" (click)="goToCreateBot('external')">
+              <div class="col-6 app-store-right-col-btn" (click)="goToCreateBot('external')">
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>

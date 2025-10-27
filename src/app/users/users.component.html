@@ -151,7 +151,7 @@
              
 
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <!-- New teammates list -->
                 <loading-spinner *ngIf="showSpinner"></loading-spinner>
                 <div *ngIf="!showSpinner" class="main--wrapper">
@@ -177,7 +177,7 @@
                     <div class="flex-right">
                       <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
                       
-                        <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
+                        <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow float-end"
                           style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
                           [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
                     
@@ -207,7 +207,7 @@
                     </div>
 
                     <div class="invite-teammate-btn-wpr" *ngIf="displayInviteTeammateBtn">
-                      <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow pull-right"
+                      <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-tdblu-no-boxshadow float-end"
                         style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
                         [disabled]="(projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE ">
                         {{ "UsersPage.Invites" | translate }}
@@ -261,7 +261,7 @@
                               <!-- projectUser?.hasImage &&  onerror="this.src='assets/img/no_image_user.png'"-->
                               <img *ngIf="projectUser?.hasImage === true && !UPLOAD_ENGINE_IS_FIREBASE"
                                 id="img-{{projectUser?.id_user?._id}}"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fcards_200_200-photo.jpg"
                                 onerror="this.src='assets/img/no_image_user_2.png'" />
 
                               <!-- --------------------------------------------------- -->

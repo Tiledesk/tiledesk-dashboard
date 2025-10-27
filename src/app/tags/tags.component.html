@@ -252,7 +252,7 @@
                             <!-- USECASE uploadEngine Native -->
                             <!-- --------------------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-tags"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{tag?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{tag?.createdBy}}%2Fimages%2Fcards_200_200-photo.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
 
                             <span class="td-tag-table">
@@ -266,13 +266,13 @@
                             </span>
                           </td>
 
-                          <td class="td-actions text-right" style="padding-top:20px">
-                            <!-- <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          <td class="td-actions text-end" style="padding-top:20px">
+                            <!-- <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-sm"
                           (click)='presentModaleditTag(tag?._id)'>
                           <i class="material-icons">edit</i>
                        </button> -->
 
-                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-sm"
                               (click)='presentModalDeleteTag(tag?._id, tag?.tag)'>
                               <i class="material-icons">delete_forever</i>
                             </button>

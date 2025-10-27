@@ -154,7 +154,7 @@
                         <!-- {{ "UserEditAddPage.UserEmail" | translate }} -->
                         Email
                       </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                         <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="email"
                           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                           placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}'
@@ -172,7 +172,7 @@
                       <label class="col-sm-2 custom-label">
                       {{ "UserEditAddPage.Role" | translate }}
                       </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                         <select #selectElem (change)="setSelected(selectElem.value)" 
                           [(ngModel)]="selectedRole"
                           style="width: 100%;border-radius: 5px;"
@@ -195,7 +195,7 @@
 
 
                       <!-- New role select  -->
-                      <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <!-- <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                     <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class=""
                       style="width: 100%;border-radius: 5px;"
                       [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
@@ -254,7 +254,7 @@
                               onerror="this.src='assets/img/no_image_user.png'" />
 
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fcards_200_200-photo.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
                           </div>
                         </div>
@@ -265,7 +265,7 @@
                         <label class="col-sm-2 custom-label">
                           {{ "UserProfile.Name" | translate }}
                         </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <input style="color:#999999" [(ngModel)]="user_fullname" type="text" disabled>
                         </div>
                       </div>
@@ -278,7 +278,7 @@
                           Email
                         </label>
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <input style="color:#999999" [(ngModel)]="user_email" type="text"
                             placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' disabled>
                         </div>
@@ -293,7 +293,7 @@
                         </label>
 
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <div *ngIf="user_role">
                             <select #selectElem (change)="setSelected(selectElem.value)" style="width: 100%;"
                               id="userrole"
@@ -326,7 +326,7 @@
                           ID
                         </label>
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <input style="color:#999999" [(ngModel)]="user_id" type="text" disabled>
                         </div>
                       </div>
@@ -342,7 +342,7 @@
                         </label>
 
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
 
                           <ng-select style="text-align: left;"
                             (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)"
@@ -370,7 +370,7 @@
                         <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                           {{'ChatLimit' | translate}}
                         </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number"
                             [disabled]="CURRENT_USER_ROLE === 'agent'">
                           <span
@@ -387,7 +387,7 @@
                         <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                           {{'Groups' | translate}}
                         </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           
                           <div class="groups-container" *ngIf="groupsList?.length > 0">
                             <div class="group" *ngFor="let group of groupsList" 
@@ -415,7 +415,7 @@
                         <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                           {{'Tags.Tag' | translate}}
                         </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <div class="pu-tag-input-wrapper">
 
                             <div class="dropdown" style="float: left;">

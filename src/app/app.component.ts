@@ -496,7 +496,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.logger.log('APP COMP - MAIN PANEL ', _elemMainPanel)
         _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
         // _elemMainPanel.setAttribute('style', 'overflow-x: auto !important;');
-        $.material.init();
+        // $.material.init(); // REMOVED: bootstrap-material-design is no longer supported with Bootstrap 5
 
         // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
         this.hideElementsInAuthPage()

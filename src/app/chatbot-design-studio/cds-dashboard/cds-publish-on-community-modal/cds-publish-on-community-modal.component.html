@@ -19,11 +19,11 @@
                 <!- - Bot name  - ->
                 <!- - ------------------------------------------------------------------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;">
-                    <label class="col-xs-12 cds-custom-label">
+                    <label class="col-12 cds-custom-label">
                         <!- - {{ "BotsAddEditPage.BotName" | translate }} - ->
                         Name
                     </label>
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <input placeholder="" id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name" class="input"
                             type="text">
                     </div>
@@ -33,11 +33,11 @@
                 <!- - Description  - ->
                 <!- - ------------------------------------------------------------------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;">
-                    <label class="col-xs-12 cds-custom-label">
+                    <label class="col-12 cds-custom-label">
                         <!- - {{ 'Description' | translate }} - ->
                         Description
                     </label>
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="4"
                             style="resize: vertical;margin-bottom: 4px;" class="input" type="text"
                             placeholder="{{ 'Description' | translate }}"> </textarea>
@@ -52,8 +52,8 @@
                 <!- - ------------------------------------------------------------------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;">
 
-                    <div class="col-xs-12">
-                        <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left"
+                    <div class="col-12">
+                        <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary float-start"
                             (click)="editBot()" [disabled]="faqKb_name?.length === 0">
                             <!- - {{ "BotsAddEditPage.UpdateBotName" | translate }} - ->
                             Update bot
@@ -64,7 +64,7 @@
 
             </div>
             <div class="button-wpr">
-                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 1">
+                <button id="cds-navigation-btn" class="btn btn-primary float-end" (click)="tabGroup.selectedIndex = 1">
                     Next
                     <span class="material-icons">
                         arrow_forward
@@ -133,7 +133,7 @@
             </div>
             <div class="button-wpr">
 
-                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 1"
+                <button id="cds-navigation-btn" class="btn btn-primary float-end" (click)="tabGroup.selectedIndex = 1"
                     style="margin-left: 12px;">
 
                     Next
@@ -141,7 +141,7 @@
                         arrow_forward
                     </span>
                 </button>
-                <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 0">
+                <button id="cds-navigation-btn" class="btn btn-primary float-start" (click)="tabGroup.selectedIndex = 0">
                     <span class="material-icons">
                         arrow_back
                     </span>
@@ -187,7 +187,7 @@
             </div>
 
             <div class="button-wpr">
-                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 3"
+                <button id="cds-navigation-btn" class="btn btn-primary float-end" (click)="tabGroup.selectedIndex = 3"
                     style="margin-left: 12px;">
 
                     Next
@@ -195,7 +195,7 @@
                         arrow_forward
                     </span>
                 </button>
-                <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 1">
+                <button id="cds-navigation-btn" class="btn btn-primary float-start" (click)="tabGroup.selectedIndex = 1">
                     <span class="material-icons">
                         arrow_back
                     </span>
@@ -214,7 +214,7 @@
             <div class="publishing-wpr">
 
                 <div class="row" style="margin-right: 0px;margin-left: 0px;width: 639px;">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="deploy-to-community-text" style="margin-top: 30px;">
                             <h3 style="line-height: 22px;">
                                 Publish your chatbot on the tiledesk community. Allow other users to clone and customize
@@ -233,7 +233,7 @@
 
 
                 <div class="row" style="margin-right: 0px;margin-left: 0px;">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="publish-bot-to-community-btn-wpr" style="    display: flex;
                         justify-content: center;
                         align-items: center;">
@@ -246,7 +246,7 @@
                 </div>
             </div>
 
-            <!-- <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 0">
+            <!-- <button id="cds-navigation-btn" class="btn btn-primary float-start" (click)="tabGroup.selectedIndex = 0">
                 <span class="material-icons">
                     arrow_back
                 </span>

@@ -26,7 +26,7 @@
           </svg>
         </span>
 
-        <div class="form-group" style="margin-top: 2px; position: relative;"
+        <div class="mb-3" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
           <input #inputleademail id="lead-email" type="email" name="email" data-id="email" class="form-control input-md"
@@ -98,7 +98,7 @@
 
         </span>
         <!-- (keydown.enter)='editContactPhone()' -->
-        <div class="form-group" style="margin-top: 2px; position: relative;"
+        <div class="mb-3" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
           <input #inputleadphone type="tel" name="phone" data-id="phone" class="form-control input-md"
@@ -155,7 +155,7 @@
           </svg>
         </span>
         <!-- (keydown.enter)='editContactCompany()'  -->
-        <div class="form-group" style="margin-top: 2px; position: relative;"
+        <div class="mb-3" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
           <input #inputcompany type="text" id="lead-company" name="company" data-id="company"
@@ -224,7 +224,7 @@
           </svg>
         </span>
 
-        <div class="form-group" style="margin-top: 2px;cursor: pointer;padding-bottom: 2px;"
+        <div class="mb-3" style="margin-top: 2px;cursor: pointer;padding-bottom: 2px;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
           <input id="lead-address" type="text" name="address" data-id="address" class="form-control input-md"
@@ -267,7 +267,7 @@
     <li class="street" *ngIf="showAllAddress">
       <div class="contact-row input-row">
 
-        <div class="form-group" style="margin-top: 2px; width: 100%;"
+        <div class="mb-3" style="margin-top: 2px; width: 100%;"
           [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'Street' | translate}}: </div>
@@ -299,7 +299,7 @@
     <li class="city" *ngIf="showAllAddress">
       <!-- margin-left: 34px 'width':CHAT_PANEL_MODE === true ? 'unset' : '100%',-->
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 2px; width: 100%"
+        <div class="mb-3" style="margin-top: 2px; width: 100%"
           [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'City' | translate}}: </div>
@@ -330,7 +330,7 @@
     <li class="province" *ngIf="showAllAddress">
       <div class="contact-row input-row">
 
-        <div class="form-group" style="margin-top: 2px; width: 100%"
+        <div class="mb-3" style="margin-top: 2px; width: 100%"
           [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'State' | translate}}: </div>
@@ -362,7 +362,7 @@
     <li class="postalzip" *ngIf="showAllAddress">
       <div class="contact-row input-row">
 
-        <div class="form-group" style="margin-top: 2px; width: 100%"
+        <div class="mb-3" style="margin-top: 2px; width: 100%"
           [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px'}">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'PostalCode' | translate}}: </div>
@@ -393,7 +393,7 @@
     <li class="country" *ngIf="showAllAddress">
       <div class="contact-row input-row">
 
-        <div class="form-group" style="margin-top: 2px; width: 100%;"
+        <div class="mb-3" style="margin-top: 2px; width: 100%;"
           [ngStyle]="{'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'Country' | translate}}: </div>
@@ -426,7 +426,7 @@
       *ngFor="let property of contactCustomProperties">
 
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 6px; width: 100%;">
+        <div class="mb-3" style="margin-top: 6px; width: 100%;">
           <!-- ----------------------------------------------------- -->
           <!-- Assigned custom properties -->
           <!-- ----------------------------------------------------- -->

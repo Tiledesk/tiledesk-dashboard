@@ -40,7 +40,7 @@
                 <ng-container *ngIf="permissionChecked">
                     <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-12">
 
                                 <div class="new-role-page-content">
 
@@ -116,7 +116,7 @@
                                         </mat-accordion>
 
                                         <div class="submit-btn-wpr">
-                                            <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="submit()"
+                                            <button class="btn btn-tdblu-no-boxshadow float-end" (click)="submit()"
                                                 [disabled]="isSubmitDisabled || reservedName">
                                                 {{'Save' | translate}}
                                             </button>
