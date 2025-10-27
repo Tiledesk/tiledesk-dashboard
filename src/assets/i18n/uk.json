@@ -852,6 +852,10 @@
     "NotAssignedToAnyGroups": "Не призначено до жодної групи",
     "GroupDisabled": "Групу вимкнено",
     "ThisGroupIsDisabled": "Цю групу вимкнено",
+    "TheKBHasBeenSuccessfullyCreated": "Базу знань успішно створено",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Ви впевнені, що хочете видалити весь вміст бази знань?",
+    "AreYouSureYouWantToDeleteTheKB": "Ви впевнені, що хочете видалити базу знань?",
+    "ToDeleteTheKBaseTypeItsId": "Щоб видалити базу знань, введіть її ID",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

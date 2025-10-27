@@ -852,6 +852,10 @@
     "NotAssignedToAnyGroups": "Inte tilldelad några grupper",
     "GroupDisabled": "Grupp inaktiverad",
     "ThisGroupIsDisabled": "Denna grupp är inaktiverad",
+    "TheKBHasBeenSuccessfullyCreated": "Kunskapsbasen har skapats framgångsrikt",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Är du säker på att du vill ta bort allt innehåll i kunskapsbasen?",
+    "AreYouSureYouWantToDeleteTheKB": "Är du säker på att du vill ta bort kunskapsbasen?",
+    "ToDeleteTheKBaseTypeItsId": "För att ta bort kunskapsbasen, skriv in dess ID",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

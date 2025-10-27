@@ -852,6 +852,10 @@
     "NotAssignedToAnyGroups": "Ешбір топқа тағайындалмаған",
     "GroupDisabled": "Топ өшірілген",
     "ThisGroupIsDisabled": "Бұл топ өшірілген",
+    "TheKBHasBeenSuccessfullyCreated": "Білім базасы сәтті құрылды",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Білім базасының барлық мазмұнын жойғыңыз келетініне сенімдісіз бе?",
+    "AreYouSureYouWantToDeleteTheKB": "Білім базасын жойғыңыз келетініне сенімдісіз бе?",
+    "ToDeleteTheKBaseTypeItsId": "Білім базасын жою үшін оның ID нөмірін енгізіңіз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

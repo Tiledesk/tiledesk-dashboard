@@ -3,10 +3,12 @@
 <div mat-dialog-content>
 
     <div *ngIf="kbsList?.length > 0" class="form-container">
-        <p [innerHTML]="'KbPage.SureToDeleteNamespaceContents' | translate: {namespace_name: selectedNamespace.name}"> </p>
+        <!-- <p>Are you sure you want to delete all contents of the Knowledge Base <strong>{{selectedNamespace.name}}</strong>?</p> -->
+        <p>{{'AreYouSureYouWantToDeleteAllContentsOfTheKB' | translate}} </p>
     </div>
     <div *ngIf="kbsList?.length === 0" class="form-container">
-        <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: selectedNamespace.name}"> </p>
+        <!-- <p>Are you sure you want to delete the Knowledge Base <strong>{{selectedNamespace.name}}</strong>?</p> -->
+         <p> {{'AreYouSureYouWantToDeleteTheKB' | translate}} </p>
     </div>
 
 
@@ -22,8 +24,10 @@
             </div>
             <div class="delete-namespace-input-wpr">
                 <label for="delete-namespace-input"  [ngStyle]="{'color':deleteAlsoNamespace === true ? '#3c4858' : '#00000042' }">
-                    <!-- To delete the Namespace type the namespace name -->
-                    {{ 'KbPage.ToDeleteTheNamespaceTypeTheNamespaceName' | translate }}
+                  
+             
+                    {{ 'ToDeleteTheKBaseTypeItsId' | translate }}
+                    <code>  {{selectedNamespace.id }}  </code> 
                 </label>
                 <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder=" {{ 'KbPage.NamespaceName' | translate }}" [disabled]="!deleteAlsoNamespace">
             </div>

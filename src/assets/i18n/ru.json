@@ -853,6 +853,10 @@
     "NotAssignedToAnyGroups": "Не назначен ни в одну группу",
     "GroupDisabled": "Группа отключена",
     "ThisGroupIsDisabled": "Эта группа отключена",
+    "TheKBHasBeenSuccessfullyCreated": "База знаний была успешно создана",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Вы уверены, что хотите удалить все содержимое базы знаний?",
+    "AreYouSureYouWantToDeleteTheKB": "Вы уверены, что хотите удалить базу знаний?",
+    "ToDeleteTheKBaseTypeItsId": "Чтобы удалить базу знаний, введите её ID",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

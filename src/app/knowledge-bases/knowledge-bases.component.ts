@@ -900,7 +900,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
 
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("KbPage.NewNamespaceCreatedSuccessfully", { namespace_name: this.selectedNamespace.name }), 2, 'done');
+      // Build safe message without using translate with parameters (to avoid XSS)
+      // const safeNamespaceName = this.sanitizeForNotification(this.selectedNamespace.name);
+      // const message = `The Knowledge Base ${safeNamespaceName} has been successfully created`;
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('TheKBHasBeenSuccessfullyCreated') , 2, 'done');
     });
   }
 
@@ -3714,6 +3717,17 @@ _presentDialogImportContents() {
           this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
         }
       );
+  }
+
+  private sanitizeForNotification(value: string): string {
+    if (!value) return '';
+    // Escape HTML special characters for safe display in notifications
+    return value
+      .replace(/&/g, '&amp;')  // Must be first
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
 }

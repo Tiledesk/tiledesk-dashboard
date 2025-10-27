@@ -853,6 +853,10 @@
     "NotAssignedToAnyGroups": "Heç bir qrupa təyin edilməyib",
     "GroupDisabled": "Qrup deaktiv edilib",
     "ThisGroupIsDisabled": "Bu qrup deaktiv edilib",
+    "TheKBHasBeenSuccessfullyCreated": "Bilik Bazası uğurla yaradıldı",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Bilik Bazasının bütün məzmununu silmək istədiyinizə əminsiniz?",
+    "AreYouSureYouWantToDeleteTheKB": "Bilik Bazasını silmək istədiyinizə əminsiniz?",
+    "ToDeleteTheKBaseTypeItsId": "Bilik Bazasını silmək üçün onun ID-ni yazın",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

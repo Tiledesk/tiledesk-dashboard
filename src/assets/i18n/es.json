@@ -827,6 +827,10 @@
     "NotAssignedToAnyGroups": "No asignado a ningún grupo",
     "GroupDisabled": "Grupo deshabilitado",
     "ThisGroupIsDisabled": "Este grupo está deshabilitado",
+    "TheKBHasBeenSuccessfullyCreated": "La Base de Conocimiento se ha creado correctamente",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "¿Estás seguro de que quieres eliminar todos los contenidos de la Base de Conocimiento?",
+    "AreYouSureYouWantToDeleteTheKB": "¿Estás seguro de que quieres eliminar la Base de Conocimiento?",
+    "ToDeleteTheKBaseTypeItsId": "Para eliminar la Base de Conocimiento, escribe su ID",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -854,6 +854,10 @@
     "NotAssignedToAnyGroups": "Herhangi bir gruba atanmamış",
     "GroupDisabled": "Grup devre dışı",
     "ThisGroupIsDisabled": "Bu grup devre dışı",
+    "TheKBHasBeenSuccessfullyCreated": "Bilgi Bankası başarıyla oluşturuldu",
+    "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Bilgi Bankası'nın tüm içeriğini silmek istediğinizden emin misiniz?",
+    "AreYouSureYouWantToDeleteTheKB": "Bilgi Bankası'nı silmek istediğinizden emin misiniz?",
+    "ToDeleteTheKBaseTypeItsId": "Bilgi Bankası'nı silmek için ID'sini yazın",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
