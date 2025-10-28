@@ -34,6 +34,7 @@ export class BrandService {
       "contact_us_email": "support@tiledesk.com",
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,
+      "display_forgot_pwd": true,
       "display_help_in_installation": true,
       "display_invite_teammate_btn": true,
       "display_contact_us_email": true,

@@ -44,7 +44,8 @@ export class SigninComponent implements OnInit {
   isVisibleV1L: boolean = true;
   secondaryBrandColor: string;
   primaryBrandColor: string;
-  hideGoogleAuthBtn: string;
+  displayGoogleAuthBtn: string;
+  displayForgotPswBtn: string;
   areActivePay: boolean
   OAUTH2_SIGNIN_ENABLED: boolean 
   reCaptchaSiteKey: string;
@@ -87,7 +88,9 @@ export class SigninComponent implements OnInit {
     this.company_site_url = brand['COMPANY_SITE_URL'];
     this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
     this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
-    this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
+    this.displayGoogleAuthBtn = brand['display_google_auth_btn'];
+    this.displayForgotPswBtn = brand['display_forgot_pwd'];
+    this.logger.log('[SIGN-IN] displayGoogleAuthBtn',  this.displayGoogleAuthBtn) 
   }
 
   ngOnInit() {
