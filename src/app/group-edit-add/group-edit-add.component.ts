@@ -11,6 +11,10 @@ import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
+import { DepartmentService } from 'app/services/department.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
@@ -70,6 +74,11 @@ export class GroupEditAddComponent implements OnInit {
 
   isAuthorized = false;
   permissionChecked = false;
+  departmentsOfGroup: any
+
+   private unsubscribe$: Subject<any> = new Subject<any>();
+    PERMISSION_TO_VIEW_DEPT: boolean;
+    PERMISSION_TO_READ_DEPT_DETAILS: boolean;
 
   constructor(
     private router: Router,
@@ -84,7 +93,8 @@ export class GroupEditAddComponent implements OnInit {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private deptService: DepartmentService,
   ) { }
 
   ngOnInit() {
@@ -102,8 +112,51 @@ export class GroupEditAddComponent implements OnInit {
     this.getProfileImageStorage();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
+    this.listenToProjectUser()
   }
 
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[DEPTS] - Role:', status.role);
+          console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+          
+          // PERMISSION_TO_VIEW_DEPT
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENTS_LIST_READ)) {
+  
+              this.PERMISSION_TO_VIEW_DEPT = true
+              console.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+            } else {
+              this.PERMISSION_TO_VIEW_DEPT = false
+              console.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+            }
+          } else {
+            this.PERMISSION_TO_VIEW_DEPT = true
+            console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+          }
+  
+          // PERMISSION_TO_READ_DEPT_DETAILS
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ)) {
+  
+              this.PERMISSION_TO_READ_DEPT_DETAILS = true
+              console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            } else {
+              this.PERMISSION_TO_READ_DEPT_DETAILS = false
+              console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            }
+          } else {
+            this.PERMISSION_TO_READ_DEPT_DETAILS = true
+            console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+          }
+  
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
 
     
   async checkEditPermissions() {
@@ -227,6 +280,7 @@ export class GroupEditAddComponent implements OnInit {
       this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED EDIT ');
       this.checkEditPermissions();
       this.EDIT_VIEW = true;
+
       
       // this.showSpinner = false;
 
@@ -234,16 +288,22 @@ export class GroupEditAddComponent implements OnInit {
       this.getGroupId();
     }
   }
+
+
+
+
   getGroupId() {
     this.group_id = this.route.snapshot.params['groupid'];
     this.logger.log('[GROUP-EDIT-ADD] - GROUP-LIST PAGE HAS PASSED group_id ', this.group_id);
 
     if (this.group_id) {
       this.getGroupById();
+      
     }
 
     // this.getAllUsersOfCurrentProject();
   }
+
 
   // ---------------------------------
   // GET GROUP BY ID (FOR EDIT VIEW)
@@ -273,8 +333,42 @@ export class GroupEditAddComponent implements OnInit {
       this.logger.log('[GROUP-EDIT-ADD] - HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
       this.getAllUsersOfCurrentProject();
+      this.getDeptsByProjectId(this.group_id)
     });
   }
+
+
+  getDeptsByProjectId(groupid: string) {
+  console.log('[GROUP-EDIT-ADD] - GET DEPTS groupid', groupid);
+  this.deptService.getDeptsByProjectId().subscribe((departments: any[]) => {
+    console.log('[GROUP-EDIT-ADD] - GET DEPTS (RAW)', departments);
+
+    if (Array.isArray(departments)) {
+      // filtra e salva il risultato in una proprietà dell'istanza
+      this.departmentsOfGroup = departments.filter(dept =>
+        Array.isArray(dept.groups) && dept.groups.some(g => g.group_id === groupid)
+      );
+
+      console.log('[GROUP-EDIT-ADD] - GET DEPTS (FILTERED) departmentsOfGroup', this.departmentsOfGroup);
+    } else {
+      this.departmentsOfGroup = [];
+      console.warn('[GROUP-EDIT-ADD] - GET DEPTS: response non è un array');
+    }
+  }, error => {
+    this.logger.error('[GROUP-EDIT-ADD] - GET DEPTS - ERROR', error);
+    this.departmentsOfGroup = [];
+  }, () => {
+    this.logger.log('[GROUP-EDIT-ADD] - GET DEPTS - COMPLETE');
+  });
+}
+
+goToDeptDetail(dept_id){
+   if (this.PERMISSION_TO_READ_DEPT_DETAILS) {
+      this.router.navigate(['project/' + this.project_id + '/department/edit', dept_id]);
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+}
 
   // is used to display name lastname role in the members list table
   // if the id of the user in the project_user object is equal match with one of id contains 

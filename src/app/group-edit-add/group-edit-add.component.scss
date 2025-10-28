@@ -300,3 +300,32 @@ button.close {
     align-items: center;
     justify-content: space-between;
 }
+
+
+.department-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.dep-of-group {
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background-color .2s;
+    box-shadow: var(--card-elevation);
+}
+
+.dep-of-group:hover {
+    box-shadow: var(--card-light-elevation);
+}
+
+.no-department-associated {
+    font-family: var(--header-font-family);
+    color: #394f5a;
+}

@@ -204,8 +204,42 @@
                         <p class="attribute" style="margin-bottom: 9px">
                           {{ groupCreatedAt | date: 'd/M/y'}}
                         </p>
+
+
+                        <!-- ------ -->
+                        <ng-container *ngIf="PERMISSION_TO_VIEW_DEPT">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                              <h3 class="card_title__underlined">
+                                <span class="card_title__underline">
+                                  {{ "Departments" | translate }}
+                                </span>
+                              </h3>
+                            </div>
+                            <div class="col-sm-12 col-md-12">
+                              <div class="section-subtitle"> </div>
+                            </div>
+                          </div>
+
+                          <div *ngIf="departmentsOfGroup?.length > 0" class="department-container" style="display: flex;flex-wrap: wrap;gap: 6px;margin-bottom: 12px;">
+                              <div class="dep-of-group"  *ngFor="let dept of departmentsOfGroup" (click)="goToDeptDetail(dept?._id)">
+                                {{dept.name}}
+                              </div>
+                          </div>
+
+                          <div class="no-department-associated" *ngIf="departmentsOfGroup?.length === 0" >
+                            {{'NoDepartmentAssigned' | translate}}
+                          </div>
+                        </ng-container>
+
+                        <!-- ------------ -->
                       </div>
                     </div>
+
+
+                     
+
+
                   </div>
 
                 </div>
