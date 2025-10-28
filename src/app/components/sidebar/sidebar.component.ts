@@ -207,6 +207,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   MONITOR_ROUTE_IS_ACTIVE: boolean;
   MONITOR_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
   HISTORY_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
+  CONVERSATION_DETAIL_ROUTE_IS_ACTIVE: boolean;
   
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
@@ -2016,6 +2017,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           console.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/conversation-detail') !== -1) {
+          this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - CONVERSATION_DETAIL_ROUTE_IS_ACTIVE ', this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - CONVERSATION_DETAIL_ROUTE_IS_ACTIVE ', this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE);
+        }
+
         
 
         
@@ -2570,15 +2579,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           if (data['user_available'] === false && data['profileStatus'] === "inactive") {
             this.IS_AVAILABLE = false;
             this.IS_INACTIVE = true;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
+            this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
           } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
             this.IS_AVAILABLE = false;
             this.IS_INACTIVE = false;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+            this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
           } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
             this.IS_AVAILABLE = true;
             this.IS_INACTIVE = false;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+            this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
           }
 
           // if (this.IS_AVAILABLE === true) {
@@ -3086,30 +3095,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (this.project) {
       this.project['role'] = this.USER_ROLE
       localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
+      
+      // Navigate to conversation-detail iframe component
+      this.router.navigate(['project/' + this.project._id + '/conversation-detail']);
+    } else {
+      // Fallback if no project is selected
+      this.router.navigate(['/conversation-detail']);
     }
-    // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    // let url = baseUrl
-    // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    // myWindow.focus();
-
-
-    // --- already commented ---
-    // const chatTabCount = localStorage.getItem('tabCount');
-    // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
-    // if (chatTabCount) {
-    //     if (+chatTabCount > 0) {
-    //         this.logger.log('[SIDEBAR] openChat chatTabCount > 0 ')
-
-    //         this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
-    //         // this.focusWin('Tiledesk - Open Source Live Chat')
-    //         // window.open('Tiledesk - Open Source Live Chat', url).focus();
-    //     } else if (chatTabCount && +chatTabCount === 0) {
-    //         this.openWindow('Tiledesk - Open Source Live Chat', url);
-    //     }
-    // } else {
-    //     this.openWindow('Tiledesk - Open Source Live Chat', url);
-    // }
-    // this.redirectToPricing(this.currentProjectUser)
   }
 
   redirectToPricing(projectUser) {

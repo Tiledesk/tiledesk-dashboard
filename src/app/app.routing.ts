@@ -77,6 +77,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 
 // Andrea
 import { ChatComponent } from './chat/chat.component';
+import { ConversationDetailIframeComponent } from './conversation-detail-iframe/conversation-detail-iframe.component';
 
 // import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy 
 // import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
@@ -1571,7 +1572,10 @@ const routes: Routes = [
 
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
-
+  
+  // Conversation detail iframe
+  { path: 'conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
 
 
 
