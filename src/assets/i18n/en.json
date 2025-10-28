@@ -856,6 +856,7 @@
     "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Are you sure you want to delete all contents of the Knowledge Base?",
     "AreYouSureYouWantToDeleteTheKB": "Are you sure you want to delete the Knowledge Base?",
     "ToDeleteTheKBaseTypeItsId": "To delete the Knowledge Base, type its ID",
+    "NoDepartmentAssigned": "No department assigned",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

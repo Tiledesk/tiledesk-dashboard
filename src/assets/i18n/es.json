@@ -831,6 +831,7 @@
     "AreYouSureYouWantToDeleteAllContentsOfTheKB": "¿Estás seguro de que quieres eliminar todos los contenidos de la Base de Conocimiento?",
     "AreYouSureYouWantToDeleteTheKB": "¿Estás seguro de que quieres eliminar la Base de Conocimiento?",
     "ToDeleteTheKBaseTypeItsId": "Para eliminar la Base de Conocimiento, escribe su ID",
+    "NoDepartmentAssigned": "Ningún departamento asignado",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

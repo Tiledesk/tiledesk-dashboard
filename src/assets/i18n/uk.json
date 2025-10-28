@@ -856,6 +856,7 @@
     "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Ви впевнені, що хочете видалити весь вміст бази знань?",
     "AreYouSureYouWantToDeleteTheKB": "Ви впевнені, що хочете видалити базу знань?",
     "ToDeleteTheKBaseTypeItsId": "Щоб видалити базу знань, введіть її ID",
+     "NoDepartmentAssigned": "Відділ не призначено",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

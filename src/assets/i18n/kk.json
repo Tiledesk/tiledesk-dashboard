@@ -856,6 +856,7 @@
     "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Білім базасының барлық мазмұнын жойғыңыз келетініне сенімдісіз бе?",
     "AreYouSureYouWantToDeleteTheKB": "Білім базасын жойғыңыз келетініне сенімдісіз бе?",
     "ToDeleteTheKBaseTypeItsId": "Білім базасын жою үшін оның ID нөмірін енгізіңіз",
+    "NoDepartmentAssigned": "Ешбір бөлім тағайындалмаған",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

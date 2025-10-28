@@ -858,6 +858,7 @@
     "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Bilgi Bankası'nın tüm içeriğini silmek istediğinizden emin misiniz?",
     "AreYouSureYouWantToDeleteTheKB": "Bilgi Bankası'nı silmek istediğinizden emin misiniz?",
     "ToDeleteTheKBaseTypeItsId": "Bilgi Bankası'nı silmek için ID'sini yazın",
+    "NoDepartmentAssigned": "Departman atanmamış",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

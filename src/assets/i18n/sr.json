@@ -857,6 +857,7 @@
     "AreYouSureYouWantToDeleteAllContentsOfTheKB": "Да ли сте сигурни да желите да обришете сав садржај базе знања?",
     "AreYouSureYouWantToDeleteTheKB": "Да ли сте сигурни да желите да обришете базу знања?",
     "ToDeleteTheKBaseTypeItsId": "Да бисте обрисали базу знања, упишите њен ID",
+    "NoDepartmentAssigned": "Није додељен ниједан одељак",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
