@@ -340,10 +340,14 @@
                     {{ 'MessageChannel' | translate }}
                   </label>
                   <div class="col-sm-12">
-                    <ng-select name="conversationtype" [(ngModel)]="conversation_type"
-                      style="text-transform: capitalize;" (change)="requestsTypeSelectFromAdvancedOption()"
-                      [items]="conversationType | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                      [searchable]="false" bindValue="id" placeholder="{{'SelectConversationType' | translate }}">
+                    <ng-select name="conversationtype" 
+                      [(ngModel)]="conversation_type"
+                      style="text-transform: capitalize;" 
+                      (change)="requestsTypeSelectFromAdvancedOption()"
+                      [items]="conversationType | selectOptionsTranslate" 
+                      bindLabel="name" [clearable]='false'
+                      [searchable]="false" bindValue="id" 
+                      placeholder="{{'SelectConversationType' | translate }}">
                     </ng-select>
                   </div>
                 </div>
