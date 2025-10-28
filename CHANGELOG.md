@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.149-AR
+- Fixes the bug: Creating a new Knowledge Base is exposed to Cross-site scripting (reflected) attacks
+- Fixes the bug: combo boxes to filter conversations by channels display items that shouldn't display
+- Hides the Signup and Forgot Password buttons on the login page
+- Adds the ability to view the departments to which the group is assigned to on the group details page
+
 ### 2.7.148-AR
 - Adds the ability to view/hide conversation tags created by AI agents via permissions
 - Fixes the bug: When a tag is created by an AI agent on the tags page, the value of created by is n.a.
