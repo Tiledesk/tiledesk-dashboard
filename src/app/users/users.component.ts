@@ -214,6 +214,16 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     // }, 500);
   }
 
+  private sanitizeForNotification(value: string): string {
+    if (!value) return '';
+    return value
+      .replace(/&/g, '&amp;')  // Must be first
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   listenToProjectUser() {
     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
     this.rolesService.getUpdateRequestPermission()
@@ -1260,7 +1270,9 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         }, () => {
           this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - COMPLETE')
           // =========== NOTIFY SUCCESS===========
-          this.notify.showWidgetStyleUpdateNotification(this.resendInviteSuccessNoticationMsg + this.pendingInvitationEmail, 2, 'done')
+          const safeEmail = this.sanitizeForNotification(this.pendingInvitationEmail);
+          const message = `${this.resendInviteSuccessNoticationMsg}${safeEmail}`;
+          this.notify.showWidgetStyleUpdateNotification(message, 2, 'done')
         },
       )
   }
@@ -1333,7 +1345,9 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
           this.notify.showWidgetStyleUpdateNotification(this.canceledInviteErrorMsg, 4, 'report_problem')
         }, () => {
           this.logger.log('[USERS] DELETE PENDING INVITATION * COMPLETE *')
-          this.notify.showWidgetStyleUpdateNotification(this.canceledInviteSuccessMsg + this.pendingInvitationEmailToCancel, 2, 'done')
+          const safeEmail = this.sanitizeForNotification(this.pendingInvitationEmailToCancel);
+          const message = `${this.canceledInviteSuccessMsg}${safeEmail}`;
+          this.notify.showWidgetStyleUpdateNotification(message, 2, 'done')
           this.getPendingInvitation()
         },
       )

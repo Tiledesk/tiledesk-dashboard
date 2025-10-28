@@ -383,7 +383,7 @@
                       <!-- SPACER -->
                       <div class="col-sm-12" style="height:15px"></div>
 
-                      <div class="row">
+                      <div class="row" *ngIf="PERMISSION_TO_VIEW_GROUPS">
                         <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                           {{'Groups' | translate}}
                         </label>
@@ -393,8 +393,8 @@
                             <div class="group" *ngFor="let group of groupsList" 
                             [ngClass]="{ 'not-enabled-group': !group.enabled }"
                             (click)="goToGroup(group)"  
-                            [class.disabled]="!PERMISSION_TO_VIEW_GROUPS"
-                            [style.cursor]="PERMISSION_TO_VIEW_GROUPS ? 'pointer' : 'default'">
+                            [class.disabled]="!PERMISSION_TO_EDIT_GROUPS"
+                            [style.cursor]="PERMISSION_TO_EDIT_GROUPS ? 'pointer' : 'default'">
                               {{group.name}}
                             </div>
                           </div>

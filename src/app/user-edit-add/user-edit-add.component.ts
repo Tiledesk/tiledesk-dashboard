@@ -148,6 +148,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   permissionChecked = false;
   groupsList: [] = [];
   PERMISSION_TO_VIEW_GROUPS: boolean;
+  PERMISSION_TO_EDIT_GROUPS: boolean;
 
   constructor(
     private router: Router,
@@ -268,6 +269,27 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
            this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
            console.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
          }
+
+         // -------------------------
+         // PERMISSION_TO_EDIT_GROUPS
+         // -------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+           // Owner and admin always has permission
+           this.PERMISSION_TO_EDIT_GROUPS = true;
+           console.log('[USER-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
+ 
+         } else if (status.role === 'agent') {
+           // Agent never have permission
+           this.PERMISSION_TO_EDIT_GROUPS = false;
+           console.log('[USER-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
+ 
+         } else {
+           // Custom roles: permission depends on matchedPermissions
+           this.PERMISSION_TO_EDIT_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUP_UPDATE);
+           console.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
+         }
+
+      
          // You can also check status.role === 'owner' if needed
        });
    }
@@ -745,6 +767,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   goToGroup(group) {
+    if(!this.PERMISSION_TO_EDIT_GROUPS) {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+      return;
+    }
      this.router.navigate(['project/' + this.project._id + '/group/edit/' + group.groupId]);
   }
 
