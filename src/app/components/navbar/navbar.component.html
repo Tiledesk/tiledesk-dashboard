@@ -2,7 +2,7 @@
 <!-- <div class="row"> -->
 <!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-9 col-offset-3" style="right:25px"> -->
 <!-- navbar-transparent -->
-<nav class="navbar fixed-top bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white shadow-sm">
   <!-- <div *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false"> 
     <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false">
 
@@ -21,12 +21,16 @@
         <span class="icon-bar"></span>
       </button> -->
       <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
-      <!-- <a class="navbar-brand" href="#">Testina</a> -->
+      <!-- <div class="navbar-brand">{{pageTitle}}</div> -->
     </div>
-    <div class="collapse navbar-collapse">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+      aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
 
 
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="navbar-nav ms-auto align-items-center">
         <!-- <li>
                 <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="material-icons">dashboard</i>
@@ -56,10 +60,10 @@
         <!--  ------------------------------------------------ -->
         <!-- *ngIf="isVisiblePay" -->
         <ng-container>
-          <li
+          <li class="nav-item"
             [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
             id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
-            <a>
+            <a class="nav-link px-2">
               <!--  ------------------------------------------------ -->
               <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
               <!--  ------------------------------------------------ -->
@@ -88,9 +92,10 @@
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
         <ng-container *ngIf="isVisiblePay">
-          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
+          <li class="nav-item dropdown" id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
 
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
+            <a href="#" class="nav-link dropdown-toggle px-0" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" style="padding:0px;">
               <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
                 <span class="progress-left">
                   <span class="progress-bar"
@@ -113,7 +118,7 @@
               </div>
             </a>
 
-            <ul class="dropdown-menu"
+            <ul class="dropdown-menu dropdown-menu-end"
               style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
               <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
                 {{ "Pricing.Your" | translate }}
@@ -149,8 +154,8 @@
         <!--  UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisiblePay">
-          <li id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()">
+          <li class="nav-item" id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
+            <a class="nav-link p-0 upgrade-btn-trial-expired" (click)="goToPricingPlanFree()">
               <button class="btn btn-success-no-boxshadow upgrade-plan-btn">
                 {{ "Pricing.UpgradePlan" | translate }}
               </button>
@@ -163,7 +168,7 @@
         <!-- -------------------------------------------- -->
         <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
         <ng-container *ngIf="project && isVisibleQuoteBtn && PERMISSION_TO_VIEW_QUOTA_USAGE">
-          <li id="usage-stats">
+          <li class="nav-item" id="usage-stats">
 
             <!-- mat-mini-fab -->
             <button mat-button aria-label="trend icon" [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
@@ -429,10 +434,10 @@
         <!-- test site btn -->
         <!-- ------------------------------------------------------ -->
         <ng-container class="test-site" *ngIf="PERMISSION_TO_SIMULATE_CONVERSATION">
-          <li *ngIf="project" matTooltipClass="custom-mat-tooltip-navbar"
+          <li class="nav-item" *ngIf="project" matTooltipClass="custom-mat-tooltip-navbar"
             matTooltip="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #tooltip="matTooltip"
             matTooltipPosition='above' matTooltipHideDelay="100">
-            <a role="button">
+            <a role="button" class="nav-link p-0">
               <button class="simulate-visitor-btn" (click)="testWidgetPage()">
                 <i class="material-icons">play_arrow</i>
               </button>
@@ -446,11 +451,11 @@
         <!--  ------------------------------------------------ -->
         <!--  Sound on / off -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
+        <li class="nav-item" *ngIf="project">
+          <a class="nav-link" style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
             <i class="material-icons">volume_up</i>
           </a>
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
+          <a class="nav-link" style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
             <i class="material-icons">volume_off</i>
             <!-- <p class="d-lg-none d-xl-block d-md-none d-lg-block">soundoff</p> -->
           </a>
@@ -460,8 +465,9 @@
         <!--  ------ PROJECTS  DROPDOWN ------ -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="PERMISSION_TO_CHANGE_PROJECT">
-          <li *ngIf="project">
-            <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
+          <li class="nav-item dropdown" *ngIf="project">
+            <a href="#" id="projectDropdown" class="nav-link dropdown-toggle project-dropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
 
               <span style="text-transform: none"> {{ project.name }} </span>
               <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
@@ -469,7 +475,7 @@
               <!-- <p class="d-lg-none d-xl-block d-md-none d-lg-block">Projects</p> -->
             </a>
 
-            <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
+            <ul id="navbar_dropdown" class="dropdown-menu dropdown-menu-end" style="max-height: 240px;overflow-y: auto;" aria-labelledby="projectDropdown">
 
 
               <!--  ------------------------------------------------ -->
@@ -506,7 +512,8 @@
 
 
               <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
+                <a class="dropdown-item"
+                  (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
                   [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
                   <span> {{ prjct?.id_project?.name }} </span>
@@ -522,7 +529,8 @@
                 </li>
 
                 <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                  <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
+                  <a class="dropdown-item"
+                    (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
                     {{ prjct?.id_project?.name }}
                   </a>
                 </li>
@@ -535,8 +543,8 @@
         <!-- Sleekplan -->
         <!-- -------------------------------------------- -->
         <ng-container *ngIf="isVisiblePay" style="position: relative;">
-          <li *ngIf="project">
-            <a>
+          <li class="nav-item" *ngIf="project">
+            <a class="nav-link p-0">
               <button class="give-feedback" (click)="openFeedback()">
 
                 <i class="material-icons">notifications</i>
@@ -559,8 +567,8 @@
 
         </ng-container>
 
-        <li *ngIf="!project">
-          <a style="cursor: pointer;" (click)="goToProjects()">
+        <li class="nav-item" *ngIf="!project">
+          <a class="nav-link" style="cursor: pointer;" (click)="goToProjects()">
             <i class="material-icons">close</i>
           </a>
         </li>
