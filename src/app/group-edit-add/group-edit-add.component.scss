@@ -319,6 +319,7 @@ button.close {
     white-space: nowrap;
     transition: background-color .2s;
     box-shadow: var(--card-elevation);
+    cursor: pointer;
 }
 
 .dep-of-group:hover {
