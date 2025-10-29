@@ -324,6 +324,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
+  PERMISSION_TO_FILTER_BY_AGENT: boolean;
 
   /**
    * 
@@ -488,6 +489,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.PERMISSION_TO_REOPEN = true
           console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
         }
+
+        // PERMISSION_TO_FILTER_BY_AGENT
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.HISTORY_FILTER_BY_AGENT)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_FILTER_BY_AGENT', PERMISSIONS.HISTORY_FILTER_BY_AGENT)
+
+            this.PERMISSION_TO_FILTER_BY_AGENT = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 1 ', this.PERMISSION_TO_FILTER_BY_AGENT);
+          } else {
+            this.PERMISSION_TO_FILTER_BY_AGENT = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 2', this.PERMISSION_TO_FILTER_BY_AGENT);
+          }
+        } else {
+          this.PERMISSION_TO_FILTER_BY_AGENT = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_FILTER_BY_AGENT ', this.PERMISSION_TO_FILTER_BY_AGENT);
+        }
+
+        
 
         // PERMISSION_TO_DELETE
         if (status.role === 'owner') {

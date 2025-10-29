@@ -278,7 +278,7 @@
                   </label>
                   <div class="col-sm-12">
                     <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
-                      (change)="agentSelected(selectedAgentId)">
+                      (change)="agentSelected(selectedAgentId)" [disabled]="!PERMISSION_TO_FILTER_BY_AGENT">
                       <ng-option [value]="''">
                         {{ 'HistoryPage.AllAgents' | translate }}
                       </ng-option>
