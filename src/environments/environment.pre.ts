@@ -1,4 +1,3 @@
-
 export const environment = {
   production: true,
   remoteConfig: true,
@@ -33,3 +32,12 @@ export const environment = {
       vapidKey: 'CHANGEIT'
   }
 };
+
+
+
+
+
+
+
+
+
