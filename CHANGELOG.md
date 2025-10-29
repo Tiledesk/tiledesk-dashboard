@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.150-AR
+- Adds permission to manage the ability to filter conversations on the History page per agent
+
 ### 2.7.149-AR
 - Fixes the bug: Creating a new Knowledge Base is exposed to Cross-site scripting (reflected) attacks
 - Fixes the bug: combo boxes to filter conversations by channels display items that shouldn't display
