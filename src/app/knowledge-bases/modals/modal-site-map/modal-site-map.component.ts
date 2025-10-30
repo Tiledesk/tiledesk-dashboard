@@ -52,7 +52,7 @@ export class ModalSiteMapComponent implements OnInit {
   unwanted_classnames = [];
 
   refresh_rate: Array<any> = [ 
-    { name: "Never", value: 'never' },
+    // { name: "Never", value: 'never' },
     { name: "Daily", value: 'daily' },
     { name: "Weekly", value: 'weekly' },
     { name: "Monthly", value: 'monthly'}
@@ -60,6 +60,7 @@ export class ModalSiteMapComponent implements OnInit {
 
   // selectedRefreshRate = 0;
   selectedRefreshRate: any;
+  
   isAvailableRefreshRateFeature: boolean;
   refreshRateIsEnabled : boolean;
   id_project: string;
@@ -81,10 +82,15 @@ export class ModalSiteMapComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-     public brandService: BrandService
+    public brandService: BrandService,
+    private kbService: KnowledgeBaseService
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-SITEMAP] data: ", data);
+   
+    this.selectedRefreshRate = this.refresh_rate[2].value
+    this.logger.log("[MODALS-SITEMAP] this.refresh_rate[2]: ", this.refresh_rate[2].value);
+
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
       this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
@@ -132,37 +138,41 @@ export class ModalSiteMapComponent implements OnInit {
     );
   }
 
-  // ngOnChanges(changes: SimpleChanges){
-  //   // this.logger.log('ModalSiteMapComponent changes: ', changes);
-  //   if(this.listSitesOfSitemap.length > 0){
-  //     this.buttonDisabled = false;
-  //     this.listOfUrls = this.listSitesOfSitemap.join('\n');
-  //     // this.logger.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
-  //     this.countSitemap = this.listSitesOfSitemap.length;
-  //     this.isSitemapLoaded = true;
-  //   } else {
-  //     this.buttonDisabled = true;
-  //     this.isSitemapLoaded = false;
-  //   }
+
+
+
+
+
+  // createConditionGroup(): FormGroup {
+  //   const namePattern = /^[^&<>]{3,}$/;
+  //   return this.formBuilder.group({
+  //     //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+  //     // url: ['', [Validators.required]],
+  //     siteMap: ['', [Validators.required]],
+  //     // name: ['', [Validators.required, Validators.pattern(namePattern)]]
+  //   })
   // }
 
-
-  createConditionGroup(): FormGroup {
-    const namePattern = /^[^&<>]{3,}$/;
-    return this.formBuilder.group({
-      //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      url: ['', [Validators.required]],
-      // name: ['', [Validators.required, Validators.pattern(namePattern)]]
-    })
-  }
-
   onChangeInput(event): void {
-   // if (this.kbForm.valid) {
-   //   this.buttonDisabled = false;
-   // } else {
-   //   this.buttonDisabled = true;
-   // }
+    // if (this.kbForm.valid) {
+    //   this.buttonDisabled = false;
+    // } else {
+    //   this.buttonDisabled = true;
+    // }
   }
+
+  // importSitemap() {
+  //   let body  = {
+  //       "name": "https://www.sitemaps.org/sitemap.xml",
+  //       "source": "https://www.sitemaps.org/sitemap.xml",
+  //       "content": "",
+  //       "type": "sitemap",
+  //       "namespace": "{{namespace_id}}",
+  //       "refresh_rate": "never",
+  //       "scrape_type": 2
+  //     }
+    
+  // }
 
 
   onChangeList(event):void {
@@ -202,7 +212,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
-    // this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
+    this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
 
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });
@@ -215,7 +225,10 @@ export class ModalSiteMapComponent implements OnInit {
     this.logger.log("[MODALS-SITEMAP] onSelectRefreshRate: ", refreshRateSelected);
   }
 
- onSaveKnowledgeBase(){
+  onSaveKnowledgeBase(){
+   if(!this.refreshRateIsEnabled) {
+    return
+   } 
     // if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
     //   this.errorLimit = true;
     // } else {
