@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Component, OnInit, /* HostListener, */ OnDestroy } from '@angular/core';
+// import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // NON PIÙ NECESSARIO: URL gestito nel service
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { RouteReuseStrategy, Router, NavigationStart } from '@angular/router';
@@ -14,11 +14,14 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./conversation-detail-iframe.component.scss']
 })
 export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
-  CONVERSATION_DETAIL_URL: SafeResourceUrl;
-  actualHeight: any;
-  navbarAndFooterHeight = 67;
-  newInnerHeight: any;
-  iframeHeight: any;
+  // NON PIÙ NECESSARIO: L'iframe e il suo URL sono gestiti dal service
+  // CONVERSATION_DETAIL_URL: SafeResourceUrl;
+  
+  // NON PIÙ NECESSARIO: L'altezza dell'iframe è gestita con CSS nel service
+  // actualHeight: any;
+  // navbarAndFooterHeight = 67;
+  // newInnerHeight: any;
+  // iframeHeight: any;
 
   // Tracking istanza componente per badge debug
   private static instanceCounter = 0;
@@ -31,9 +34,12 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
   
   // Contatore reload iframe per badge
   public iframeLoadCount = 0;
+
+  // NON PIÙ NECESSARIO: CHAT_BASE_URL è usato solo nel service
+  // CHAT_BASE_URL: string;
   
   constructor(
-    private sanitizer: DomSanitizer,
+    // private sanitizer: DomSanitizer, // NON PIÙ NECESSARIO: sanitizzazione gestita nel service
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     private routeReuseStrategy: RouteReuseStrategy,
@@ -75,14 +81,21 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.logger.log('[CONVERSATION-DETAIL-IFRAME] Componente inizializzato');
-    this.getAndSanitizeConversationDetailUrl();
-    this.onInitframeHeight();
     
-    // Mostra iframe globale
+    // NON PIÙ NECESSARIO: URL gestito nel service
+    // this.getAndSanitizeConversationDetailUrl();
+    
+    // NON PIÙ NECESSARIO: Altezza gestita con CSS nel service
+    // this.onInitframeHeight();
+    
+    // Mostra iframe globale (gestito dal service)
     this.iframeService.show();
     
-    // Aggiorna contatore per badge
+    // Aggiorna contatore per badge debug
     this.iframeLoadCount = this.iframeService.getLoadCount();
+    
+    // NON PIÙ NECESSARIO: CHAT_BASE_URL è usato solo nel service
+    // this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
   }
 
   ngAfterViewInit() {
@@ -92,30 +105,32 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.logger.log('[CONVERSATION-DETAIL-IFRAME] Componente distrutto');
-    
-    // Nascondi iframe
+    // Nascondi iframe (gestito dal service)
     this.iframeService.hide();
   }
 
-  getAndSanitizeConversationDetailUrl() {
-    const conversationDetailUrl = 'https://stage.eks.tiledesk.com/chat/#/conversation-detail/';
-    this.CONVERSATION_DETAIL_URL = this.sanitizer.bypassSecurityTrustResourceUrl(conversationDetailUrl);
-    this.logger.log('[CONVERSATION-DETAIL-IFRAME] URL:', conversationDetailUrl);
-  }
+  // NON PIÙ NECESSARIO: URL e sanitizzazione gestiti nel service
+  // getAndSanitizeConversationDetailUrl() {
+  //   const conversationDetailUrl = this.CHAT_BASE_URL+'#/conversation-detail/?tiledesk_supportMode=false';
+  //   this.CONVERSATION_DETAIL_URL = this.sanitizer.bypassSecurityTrustResourceUrl(conversationDetailUrl);
+  //   this.logger.log('[CONVERSATION-DETAIL-IFRAME] URL:', conversationDetailUrl);
+  // }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.newInnerHeight = event.target.innerHeight;
-    this.iframeHeight = this.newInnerHeight - this.navbarAndFooterHeight;
-  }
+  // NON PIÙ NECESSARIO: Resize gestito con CSS nel service (height: calc(100vh - 70px))
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event: any) {
+  //   this.newInnerHeight = event.target.innerHeight;
+  //   this.iframeHeight = this.newInnerHeight - this.navbarAndFooterHeight;
+  // }
 
-  onInitframeHeight(): any {
-    this.actualHeight = window.innerHeight;
-    this.logger.log('[CONVERSATION-DETAIL-IFRAME] ACTUAL HEIGHT', this.actualHeight);
-    this.iframeHeight = this.actualHeight - this.navbarAndFooterHeight;
-    this.logger.log('[CONVERSATION-DETAIL-IFRAME] ON INIT -> IFRAME HEIGHT', this.iframeHeight);
-    return { 'height': this.iframeHeight += 'px' };
-  }
+  // NON PIÙ NECESSARIO: Altezza gestita con CSS nel service
+  // onInitframeHeight(): any {
+  //   this.actualHeight = window.innerHeight;
+  //   this.logger.log('[CONVERSATION-DETAIL-IFRAME] ACTUAL HEIGHT', this.actualHeight);
+  //   this.iframeHeight = this.actualHeight - this.navbarAndFooterHeight;
+  //   this.logger.log('[CONVERSATION-DETAIL-IFRAME] ON INIT -> IFRAME HEIGHT', this.iframeHeight);
+  //   return { 'height': this.iframeHeight += 'px' };
+  // }
 
   /**
    * Force reload - Usa il service per ricaricare l'iframe

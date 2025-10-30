@@ -23,7 +23,7 @@ export class ConversationDetailIframeService {
   private isInitialized = false;
   
   // Configurazione
-  private readonly IFRAME_URL = 'https://stage.eks.tiledesk.com/chat/#/conversation-detail/';
+  private readonly IFRAME_URL = 'https://stage.eks.tiledesk.com/chat/#/conversation-detail/?tiledesk_supportMode=false';
   private readonly CONTAINER_ID = 'global-iframe-container';
   
   // Contatore per debug
@@ -61,14 +61,13 @@ export class ConversationDetailIframeService {
     
     // Stili per il container
     this.iframeContainer.style.position = 'fixed';
-    this.iframeContainer.style.top = '0px';
-    this.iframeContainer.style.left = '0';
-    this.iframeContainer.style.width = '100%';
-    this.iframeContainer.style.height = 'calc(100vh - 70px)';
+    this.iframeContainer.style.top = '60px'; //'0px';
+    this.iframeContainer.style.left = '70px'; //'0';
+    this.iframeContainer.style.width = 'calc(100% - 70px)'; //'100%';
+    this.iframeContainer.style.height = 'calc(100vh - 139px)'; //'calc(100vh - 70px)';
     this.iframeContainer.style.zIndex = '999';
     this.iframeContainer.style.display = 'none';
     this.iframeContainer.style.backgroundColor = '#fff';
-    
     document.body.appendChild(this.iframeContainer);
   }
 
