@@ -35,6 +35,7 @@ export class BrandService {
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,
       "display_forgot_pwd": true,
+      "display_edit_profile": true,
       "display_help_in_installation": true,
       "display_invite_teammate_btn": true,
       "display_contact_us_email": true,
