@@ -35,7 +35,6 @@ export class BrandService {
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,
       "display_forgot_pwd": true,
-      "display_edit_profile": true,
       "display_help_in_installation": true,
       "display_invite_teammate_btn": true,
       "display_contact_us_email": true,
@@ -105,7 +104,8 @@ export class BrandService {
       BRAND_PRIMARY_COLOR: "#f0806f",
       BRAND_SECONDARY_COLOR: "#f0806f",
       DOCS: true,
-      LOGOUT_ENABLED: true
+      LOGOUT_ENABLED: true,
+      DISPLAY_EDIT_PROFILE: true,
     }
   }
 

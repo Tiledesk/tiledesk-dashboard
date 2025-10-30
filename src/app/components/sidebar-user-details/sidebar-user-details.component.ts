@@ -108,7 +108,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
-    this.editProfileBtnVisible = brand['display_edit_profile'];
+    this.editProfileBtnVisible = brand['DISPLAY_EDIT_PROFILE'];
 
   // this.logger.log('[SIDEBAR-USER-DETAILS] logoutBtnVisible ', this.logoutBtnVisible)
   // const brand = brandService.getBrand(); 

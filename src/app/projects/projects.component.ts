@@ -103,7 +103,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
-    this.editProfileBtnVisible = brand['display_edit_profile'];
+    this.editProfileBtnVisible = brand['DISPLAY_EDIT_PROFILE'];
     this.tparams = brand;
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
