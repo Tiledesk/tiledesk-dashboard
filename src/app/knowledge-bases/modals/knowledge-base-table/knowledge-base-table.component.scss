@@ -518,7 +518,7 @@ td {
     color: #353f45;
     font-weight: 400;
     // font-family: "Poppins";
-    margin-top: 25px;
+    // margin-top: 25px;
     text-align: center;
     width: 100%;
 }
@@ -545,6 +545,7 @@ td {
 .card.filters-card {
     border-radius: var(--card-border-radius);
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .btn {
@@ -936,4 +937,17 @@ td {
 .add-content-card-wpr.add-content-card-wpr-disabled:hover {
     box-shadow: none !important;
     background-color: inherit; // prevent color changes if any
+}
+.sitemap-badge {
+    background: #ff6154;
+    color: #fff;
+    border-radius: 9999px;
+    padding: 0 5px;
+    font-size: 9px;
+    font-weight: 400;
+    margin-right: 3px;
+}
+
+.sitemap-badge:hover { 
+    opacity: .6;
 }
