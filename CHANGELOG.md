@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.151-AR
+- Hides the "Edit Profile" and the "Support" buttons based on the values passed from the brand file
+
 ### 2.7.150-AR
 - Adds permission to manage the ability to filter conversations on the History page per agent
 
