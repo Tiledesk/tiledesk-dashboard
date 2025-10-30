@@ -84,6 +84,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   prjct_profile_name: string;
   DISPLAY_PROJECT_ID: boolean = false;
   public logoutBtnVisible: boolean;
+  public editProfileBtnVisible: boolean;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -102,6 +103,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
+    this.editProfileBtnVisible = brand['display_edit_profile'];
     this.tparams = brand;
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
@@ -161,12 +163,17 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
-      this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
+      console.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.showid) {
         this.logger.log('[PROJECTS] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.showid)
         if (params.showid === 'y') {
           this.DISPLAY_PROJECT_ID = true;
         }
+      }
+
+      if (params['tiledesk_logOut']) { 
+        this.logoutBtnVisible = params['tiledesk_logOut'] == "true" ? true: false
+        this.logger.log('[PROJECTS] params tiledeskLogout', this.logoutBtnVisible);  
       }
     });
   }

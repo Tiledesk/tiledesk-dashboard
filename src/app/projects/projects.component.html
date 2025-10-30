@@ -121,9 +121,9 @@
                       {{ user?.email }}
                     </h4>
 
-                    <li class="divider"></li>
+                    <li *ngIf="editProfileBtnVisible" class="divider"></li>
 
-                    <div class="user-profile-link" routerLink="/user-profile">
+                    <div *ngIf="editProfileBtnVisible" class="user-profile-link" routerLink="/user-profile">
 
                       <div class="user-profile-link-icon">
 

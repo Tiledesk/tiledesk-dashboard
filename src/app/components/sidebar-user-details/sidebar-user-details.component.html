@@ -77,7 +77,7 @@
     <div class="user-details-role">
         <h3>{{ USER_ROLE | translate }} </h3>
 
-        <div class="user-details-view-profile" (click)="goToUserProfile()">
+        <div *ngIf="editProfileBtnVisible" class="user-details-view-profile" (click)="goToUserProfile()">
             {{ 'EditProfile' | translate }}
         </div>
     </div>
