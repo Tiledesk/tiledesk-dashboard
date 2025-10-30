@@ -22,6 +22,8 @@ import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
 import { Project } from 'app/models/project-model';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -84,7 +86,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   public hideHelpLink: boolean;
   public logoutBtnVisible: boolean;
   public editProfileBtnVisible: boolean;
-
+  PERMISSION_TO_LOGOUT: boolean;
 
   constructor(
     public auth: AuthService,
@@ -102,7 +104,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     public projectService: ProjectService,
     public dialog: MatDialog,
     public brandService: BrandService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private rolesService: RolesService
   ) {
 
     const brand = brandService.getBrand(); 
@@ -142,7 +145,39 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getBrowserVersion()
     // this.setNotificationSound();
     this.getQueryParams()
+    // this.listenToProjectUser()
   }
+
+   listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[SIDEBAR-USER-DETAILS] - Role:', status.role);
+      
+          console.log('[SIDEBAR-USER-DETAILS] - Permissions:', status.matchedPermissions);
+  
+  
+          // -------------------------------
+          // PERMISSION_TO_LOGOUT
+          // -------------------------------
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+  
+            if (status.matchedPermissions.includes(PERMISSIONS.LOGOUT)) {
+              this.PERMISSION_TO_LOGOUT = true
+              console.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+            } else {
+              this.PERMISSION_TO_LOGOUT = false
+  
+              console.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+            }
+          } else {
+            this.PERMISSION_TO_LOGOUT = true
+            console.log('[SIDEBAR-USER-DETAILS] - Project user has a default role ', status.role, 'PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+          }
+  
+        });
+    }
 
     getQueryParams() {
       this.route.queryParamMap
