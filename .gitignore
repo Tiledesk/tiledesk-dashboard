@@ -50,3 +50,7 @@ Thumbs.db
 *.sublime-workspace
 
 /src/environments/env-locali
+DOCUMENTAZIONE_INDICE.md
+ESEMPI_PRATICI_ROUTE_CACHE.md
+IFRAME_CACHING_FINAL.md
+QUICK_TEST_GUIDE.md
