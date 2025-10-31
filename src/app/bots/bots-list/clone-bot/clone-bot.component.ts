@@ -17,7 +17,6 @@ export class CloneBotComponent implements OnInit {
   public selectedProjectId: Project;
   public selectedProject: Project;
   public storedCurrentrojectId: string;
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CloneBotComponent>,
@@ -30,14 +29,14 @@ export class CloneBotComponent implements OnInit {
     this.bot_name = data.botName;
     this.current_project_id = data.currentProjectId
     this.logger.log('[CLONE-BOT] data botName  ', this.bot_name)
-    // console.log('[CLONE-BOT] data projects  ', this.projects)
+    this.logger.log('[CLONE-BOT] data projects  ', this.projects)
     this.logger.log('[CLONE-BOT] data current_project_id  ', this.current_project_id)
 
   this.activeProjects = this.projects.filter( (project) => {
       return project.id_project.status === 100
     });
 
-    // console.log('[CLONE-BOT] newArray  ', this.activeProjects)
+    this.logger.log('[CLONE-BOT] newArray  ', this.activeProjects)
   }
 
   ngOnInit(): void {
@@ -53,6 +52,7 @@ export class CloneBotComponent implements OnInit {
   onSelectProject(selectedprojectid) {
     // console.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', selectedprojectid)
     this.selectedProjectId = selectedprojectid
+    this.logger.log('[CLONE-BOT] - ON SELECTED PROJECT - this.selectedProjectId ', this.selectedProjectId)
   }
 
   onOkPresssed(){
@@ -70,9 +70,9 @@ export class CloneBotComponent implements OnInit {
     this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
     
     this.projects.forEach(project => {
-      // this.logger.log('[CLONE-BOT] - GET PROJECTS  project ', project);
+      this.logger.log('[CLONE-BOT] - GET PROJECTS  project ', project);
       if (project.id_project.id === this.selectedProjectId) {
-        // console.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
+        this.logger.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
         const _project = project.id_project
         console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
         // console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
