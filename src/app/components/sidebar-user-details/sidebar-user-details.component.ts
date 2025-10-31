@@ -74,7 +74,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   currentUserId: string;
   selectedStatus: any;
   isChromeVerGreaterThan100: boolean;
-    NOTIFICATION_SOUND: string;
+  NOTIFICATION_SOUND: string;
   storedValuePrefix = 'dshbrd----'
   teammateStatus = [
     { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
@@ -801,11 +801,17 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   goToUserProfileLanguageSection() {
+    if(!this.editProfileBtnVisible) {
+      return;
+    }
     this.router.navigate(['project/' + this.projectId + '/user-profile'], { fragment: 'language' });
     this.closeUserDetailSidePanel();
   }
 
   goToUserProfile() {
+    if(!this.editProfileBtnVisible) {
+      return;
+    }
     this.router.navigate(['project/' + this.projectId + '/user-profile']);
     this.closeUserDetailSidePanel();
   }
