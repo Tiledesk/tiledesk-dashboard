@@ -550,6 +550,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.listenToSwPostMessage();
 
+        this.listenToPostMessage();
         // this.keycloakInit()
         // this.getCurrentProject()
     }
@@ -674,6 +675,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 const count = +that.usersLocalDbService.getForegrondNotificationsCount();
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count)
                 that.wsRequestsService.publishAndStoreForegroundRequestCount(count, 'App-comp listenToSwPostMessage')
+            })
+        }
+    }
+
+    listenToPostMessage(){
+        this.logger.log('[APP-COMPONENT] listenToPostMessage - CALLED: ')
+        if(window){
+            const that = this
+            window.addEventListener('message', function(event) {
+                if(event && event.data?.type === 'onUpdateNewConversationBadge'){
+                    that.logger.log('[APP-COMPONENT] catched event:', event.data)
+                    if(window['AGENTDESKTOP']){
+                        that.logger.log('[APP-COMPONENT] setNotification to AgentDesktop:', event.data)
+                        window['AGENTDESKTOP']['TAB'].Badge(event.data.detail.count)
+                    }
+                    
+                }
             })
         }
     }
