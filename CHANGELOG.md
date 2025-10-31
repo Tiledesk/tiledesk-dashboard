@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+
+### 2.7.152-AR
+- Added ionic chat in an iframe
+- Fixes the bug: The user profile page is still accessible by clicking on the avatar
+- Fixes the bug: Operator logging in
+
 ### 2.7.151-AR
 - Hides the "Edit Profile" and the "Support" buttons based on the values passed from the brand file
 
