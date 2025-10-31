@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.149-stage-test-2
+- test fix monitor 2
+
 ### 2.7.149-stage-test
-- tesy fix monitor 1
+- test fix monitor 1
 
 ### 2.7.148-stage
 - Fixes the bug: The user profile page is still accessible by clicking on the avatar
