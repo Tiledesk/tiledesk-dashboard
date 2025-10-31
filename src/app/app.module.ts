@@ -45,6 +45,7 @@ import { SharedModule } from './shared/shared.module';
 
 
 import { ChatComponent } from './chat/chat.component';
+import { ConversationDetailIframeComponent } from './conversation-detail-iframe/conversation-detail-iframe.component';
 
 import { UsersService } from './services/users.service';
 import { ContactsService } from './services/contacts.service';
@@ -502,6 +503,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HomeComponent, // now lazy
     // ContactsComponent, // now lazy
     ChatComponent,
+    ConversationDetailIframeComponent,
     // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy
