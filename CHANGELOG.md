@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.148-stage
+- Fixes the bug: The user profile page is still accessible by clicking on the avatar
+- Fixes the bug: Operator logging in
+
 ### 2.7.147-stage
 - Adds the ability to view/hide conversation tags created by AI agents via permissions
 - Fixes the bug: When a tag is created by an AI agent on the tags page, the value of created by is n.a.
