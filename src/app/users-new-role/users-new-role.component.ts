@@ -168,6 +168,17 @@ export class UsersNewRoleComponent implements OnInit {
       ]
     },
 
+    // {
+    //   key: 'sidebar',
+    //   title: 'Sidebar',
+    //   parentLabel: 'Select all',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: PERMISSIONS.LOGOUT, label: 'Able to Log out' },
+    //   ]
+    // },
+
     {
       key: 'homePage',
       title: 'Home Page',

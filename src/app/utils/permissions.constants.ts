@@ -35,6 +35,7 @@ export const PERMISSIONS = {
   CHANGE_PROJECT:'change_project',
   SIMULATE_CONV:'simulate_conv',
   QUOTA_USAGE_READ: 'quota_usage_read',
+  LOGOUT: 'logout',
   HOME_READ: 'home_read',
 
   AUTOMATIONSLOG_READ: "automationslog_read",
