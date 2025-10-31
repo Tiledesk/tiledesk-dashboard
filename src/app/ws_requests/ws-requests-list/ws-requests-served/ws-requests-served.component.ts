@@ -188,23 +188,29 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      scrollToWithAnimation(
-        this.scrollEl, // element to scroll
-        'scrollTop', // direction to scroll
-        +this.scrollYposition, // target scrollY (0 means top of the page)
-        500, // duration in ms
-        'easeInOutCirc',
-        // Can be a name of the list of 'Possible easing equations' or a callback
-        // that defines the ease. # http://gizma.com/easing/
+    // setTimeout(() => {
+    //   if (!this.isEmbeddedInForeignFrame()) {
+    //     scrollToWithAnimation(
+    //       this.scrollEl,
+    //       'scrollTop',
+    //       +this.scrollYposition,
+    //       500,
+    //       'easeInOutCirc',
+    //     )
+    //   } else if (this.scrollEl) {
+    //     this.scrollEl.scrollTop = +this.scrollYposition;
+    //   }
+    //   this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
+    // }, 100);
+  }
 
-        () => { // callback function that runs after the animation (optional)
-          this.logger.log('done!')
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
-        }
-      );
-    }, 100);
+  private isEmbeddedInForeignFrame(): boolean {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

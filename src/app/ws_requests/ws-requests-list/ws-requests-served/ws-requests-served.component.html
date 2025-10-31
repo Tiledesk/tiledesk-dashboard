@@ -277,15 +277,16 @@
               matTooltipPosition='right' matTooltipHideDelay="100">
               #{{request?.ticket_id }}
             </span>
-            <!-- [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)' -->
+            <!-- *ngIf="request?.channel?.name !== 'email'" -->
             <p class="column-td request-first-text"
-              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
+              [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
               {{ request?.first_text }}
             </p>
 
 
 
-            <!-- <ng-template #HtmlContent>
+            <ng-template #HtmlContent>
               <div class="ng2-tooltip-header">
                 <span class="ng2-tooltip-badge--assigned-to-cu"
                   *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && !request?.subject">
@@ -332,7 +333,7 @@
                 <hr class='ng2-tooltip-divider-line'>
                 <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
                   <p class='ng2-comment-sender'> 
-                 
+                    <!--  {{ request?.msgsArray[0]?.senderFullname}} -->
                     {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
                   </p>
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
@@ -347,7 +348,7 @@
                 </div>
 
               </span>
-            </ng-template> -->
+            </ng-template>
 
 
             <!-- *ngIf="request?.channel?.name === 'email'" -->
@@ -685,7 +686,7 @@
               </div>
 
               <div class="column-td lead-data-wpr" style="white-space: nowrap;">
-               <!-- lead_id >  {{ request?.lead?.lead_id }}  -->
+
                 <div class="requester---fullname-wpr">
                   
                   <span class="requester---fullname" [ngClass]="
@@ -941,7 +942,7 @@
                       </div>
                     </div>
                     <!-- <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
-                      <img class="served-by-bot-type-logo" src="assets/img/tilebot_logo_small.png" />
+                      <img class="served-by-bot--type-logo" src="assets/img/tilebot_logo_small.png" />
                     </div> -->
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
                       <div class="bot-type-logo-img-wpr">
@@ -1245,21 +1246,6 @@
 
               <i class="material-icons">archive</i>
 
-            </button>
-
-            <!-- -------------------------- -->
-            <!-- LOG Action  -->
-            <!-- -------------------------- -->
-            <button type="button" rel="tooltip" title="Log" class="btn btn-tdblu btn-simple btn-xs"
-              (click)="onLogClick(request)"
-              matTooltipClass="mat-white-tooltip"
-              matTooltip="Log"
-              #tooltip="matTooltip"
-              matTooltipPosition='above'
-              matTooltipHideDelay="100">
-              <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px; width: 15px;" viewBox="0 -960 960 960" fill="currentColor">
-                <path fill="currentColor" d="M180-215.39V-280h360v60l-360 4.61Zm0-155.76v-60h600v60H180Zm0-157.7v-60h600v60H180ZM180-680v-64.61h600V-680H180Z"/>
-              </svg>
             </button>
 
           </td>
