@@ -376,13 +376,14 @@
               #{{request?.ticket_id }}
             </span>
 
+            <!-- [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)' -->
             <p class="column-td request-first-text" rel="tooltip" title="{{ request?._id }}"
               style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
-              [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
+              >
               {{ request?.first_text }}
             </p>
 
-            <ng-template #HtmlContent>
+            <!-- <ng-template #HtmlContent>
               <div class="ng2-tooltip-header">
                 <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && !request?.subject">
                   {{ 'RequestMsgsPage.RequestUnserved' | translate }}
@@ -420,7 +421,7 @@
                 <hr class='ng2-tooltip-divider-line'>
                 <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
                   <p class='ng2-comment-sender'> 
-                   <!-- {{ request?.msgsArray[0]?.senderFullname}} -->  
+               
                    {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
                   </p>
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
@@ -434,7 +435,7 @@
                   <span class="ng2-latest-comment-loading">{{'ProcessingNoDot' | translate}} </span>
                 </div>
               </span>
-            </ng-template>
+            </ng-template> -->
 
             <!-- --------------------------------------- -->
             <!-- Request Tag -->
