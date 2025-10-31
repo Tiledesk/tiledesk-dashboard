@@ -1,5 +1,61 @@
 # tiledesk-dashboard
 
+### 2.7.151-AR
+- Hides the "Edit Profile" and the "Support" buttons based on the values passed from the brand file
+
+### 2.7.150-AR
+- Adds permission to manage the ability to filter conversations on the History page per agent
+
+### 2.7.149-AR
+- Fixes the bug: Creating a new Knowledge Base is exposed to Cross-site scripting (reflected) attacks
+- Fixes the bug: combo boxes to filter conversations by channels display items that shouldn't display
+- Hides the Signup and Forgot Password buttons on the login page
+- Adds the ability to view the departments to which the group is assigned to on the group details page
+
+### 2.7.148-AR
+- Adds the ability to view/hide conversation tags created by AI agents via permissions
+- Fixes the bug: When a tag is created by an AI agent on the tags page, the value of created by is n.a.
+- Adds the ability to manage the display of conversation details with dedicated permission
+- Adds the list of groups the teammate is a member of to the teammate's details page
+- Improves the service to create a new canned response
+- Adds the ability to hide the logout button based on query parameters
+
+### 2.7.147-AR
+- Adds the ability to hide or show quota usage 
+- Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
+- Hides or shows the Settings sidebar menu item only if the permissions to edit tags and to edit canned responses are also enabled
+- Adds 'create', 'edit'  and 'delete' permissions for groups
+- Adds 'create', 'edit'  and 'delete' permissions for roles
+- Adds the ability to hide or show the ticket ID in the conversation details page via permissions
+
+### 2.7.146-AR
+- Improves the conversation details sidebar
+
+### 2.7.145-AR
+- Adds the ability to hide or show the conversation simulation button and the switch project combo box via permissions
+- Adds the ability to hide or show the sidebar menu item Home via permissions
+
+### 2.7.144-AR
+- Fixes the bug: Email search doesn't work in Teammates
+- Fixes the bug: the whitelist of allowed domains does not work properly
+
+### 2.7.143-AR
+- Displays a confirmation dialog on the conversation details page when resolving a conversation only when panel is in chat mode
+- In the conversation details chat, if the Resolved option is selected, the conversation is closed without sending the message.
+
+### 2.7.142-AR
+- Adds and fix translations
+- Does not allow deletion of groups associated with departments
+- Fixes the bug: duplicating an AI Agent does not work
+- Block file uploads in conversation details based on permission “Able to send message and upload file”
+- Adds a tooltip to the file upload button in the conversation detail that indicates the maximum size allowed
+- Displays a confirm dialog on delete Canned response 
+- Manage the Knowledge preview error “allowed max tokens”
+- Allows txt extension on Knowledge Base page > Add contents > Upload files
+- Disables Leave Conversation, Add Teammate, and Re-assign Conversation actions in conversation details when conversation is closed
+- Displays  a confirmation dialog on the conversation details page when resolving a conversation
+- Adds GPT-5 LLM models
+
 ### 2.7.105
 - Renames the sidebar menu item "Bot" in "Flows"
 - Moves the menu items Templates from the Flows sidebar in the Templates page
