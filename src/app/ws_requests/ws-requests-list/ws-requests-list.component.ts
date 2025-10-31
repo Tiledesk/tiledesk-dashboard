@@ -20,7 +20,6 @@ import { Subject } from 'rxjs';
 import { filter, skip, switchMap, take, takeUntil, throttleTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
-import { Chart } from 'chart.js';
 import { ContactsService } from '../../services/contacts.service';
 import { Observable } from 'rxjs';
 import { ProjectUser } from '../../models/project-user';
@@ -2061,30 +2060,7 @@ getProjectUserRole() {
         this.served_unserved_sum = sum;
         // this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
 
-        // ---------------------------------------------
-        // @ Init dognut chart - to do 
-        // ---------------------------------------------
-        // this.initRequestsDoughnutChart();
-
-        // this.initStackedBarChart();
-        // this.initStackedBarChart_two();
-
-        // var self = this
-        // // https://stackoverflow.com/questions/8267857/how-to-wait-until-array-is-filled-asynchronous
-        // var isFinished = false;
-        // var count = 0 
-        // // if (self.wsRequestsServed !== undefined) {
-        //   var timeout = setInterval(function () {
-        //     count++
-        //     this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests$ (served) isFinished ', count);
-        //     if (self.checkIfFinished(self.wsRequestsServed)) {
-        //       this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests$ (served) isFinished 2', count);
-        //       clearInterval(timeout);
-        //       isFinished = true;
-        //       this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests$ (served) isFinished ', isFinished, 'wsRequestsServed length ', self.wsRequestsServed.length);
-        //     }
-        //   }, 100);
-        // }
+    
 
       }, error => {
         this.logger.error('[WS-REQUESTS-LIST] getWsRequests$ - ERROR ', error)
