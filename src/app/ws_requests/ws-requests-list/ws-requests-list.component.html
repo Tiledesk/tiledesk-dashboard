@@ -809,15 +809,18 @@
             <div class="col-md-12" style="padding-left:10px !important; padding-right:10px !important;">
 
               <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false"
-                [wsRequestsUnserved]="wsRequestsUnserved" [ws_requests_length]="ws_requests?.length"
+                [wsRequestsUnserved]="wsRequestsUnserved" 
+                [ws_requests_length]="ws_requests?.length"
                 [requestCountResp]="requestCountResp">
               </appdashboard-ws-requests-unserved>
-              <!-- *ngIf="wsRequestsServed" -->
+           
               <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
-                [wsRequestsServed]="wsRequestsServed" [current_selected_prjct]="current_selected_prjct"
-                [ws_requests_length]="ws_requests?.length" [requestCountResp]="requestCountResp">
+                [wsRequestsServed]="wsRequestsServed" 
+                [current_selected_prjct]="current_selected_prjct"
+                [ws_requests_length]="ws_requests?.length" 
+                [requestCountResp]="requestCountResp">
               </appdashboard-ws-requests-served>
-              <!-- Chiamare il componente qui -->
+              
             </div>
           </div>
         </section>
@@ -1292,7 +1295,8 @@
 </app-department-edit-add>  -->
 
 <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-  <appdashboard-map-request [ngStyle]="{'height': map_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
+  <appdashboard-map-request [ngStyle]="{'height': map_sidebar_height }" 
+  [wsRequestsServed]="wsRequestsServed"
     [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page"
     (closeMapsView)='handleCloseRightSidebar($event)'>
   </appdashboard-map-request>
