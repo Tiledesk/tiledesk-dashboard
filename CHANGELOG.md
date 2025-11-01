@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.153-AR
+- Adds eventListener to chat-ionic events
+- Fixes bug: Unable to access monitor page if dashboard is embedded in iframe due to security policies
 
 ### 2.7.152-AR
 - Added ionic chat in an iframe
