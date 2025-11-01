@@ -50,8 +50,7 @@ import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
-
-import { removeEmojis } from 'app/utils/utils-message';
+import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -1862,10 +1861,10 @@ updateTagContainerHeight() {
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      if (this.current_selected_prjct && 
-          this.current_selected_prjct.id_project &&
-          this.current_selected_prjct.id_project.settings) {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.settings) {
+        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
         if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
 
           this.HIDE_CHATBOT_ATTRIBUTES = this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden;
@@ -1881,30 +1880,40 @@ updateTagContainerHeight() {
 
         if (allowSendEmoji !== undefined) {
           this.ALLOW_TO_SEND_EMOJI = allowSendEmoji;
-          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
         } else {
           this.ALLOW_TO_SEND_EMOJI = true;
-          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
         }
 
         // Is Enabled URLs Whitelist
         const isEnabledURLsWhitelist = this.current_selected_prjct.id_project.settings.allowed_urls;
         if (isEnabledURLsWhitelist !== undefined) {
           this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
-          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
+          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
             const urlsWitheList = this.current_selected_prjct.id_project.settings.allowed_urls_list
             if (urlsWitheList !== undefined) {
               this.URLS_WITHELIST = urlsWitheList;
-              this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+              console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
             }
-            this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
+            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
-          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
+          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
         }
 
+
+        // if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.allow_send_emoji) {
+
+        //   this.ALLOW_TO_SEND_EMOJI = this.current_selected_prjct.id_project.settings.allow_send_emoji;
+        //   console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+
+        // } else {
+        //   this.ALLOW_TO_SEND_EMOJI = true;
+        //  console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
+        // }
       } else {
         this.HIDE_CHATBOT_ATTRIBUTES = false;
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
@@ -2644,7 +2653,6 @@ updateTagContainerHeight() {
           // ---------------------------------------------------------
           // Contact
           // ---------------------------------------------------------
-
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
 
@@ -2987,8 +2995,6 @@ updateTagContainerHeight() {
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ * COMPLETE *')
       });
   }
-
- 
 
   onChangeContactEmail(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event)
