@@ -140,7 +140,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
     this.getRouteParams();
-    this.listenToProjectUser();
+    // this.listenToProjectUser();
   }
 
   ngAfterContentInit(): void {

@@ -145,7 +145,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getBrowserVersion()
     // this.setNotificationSound();
     this.getQueryParams()
-    this.listenToProjectUser()
+    // this.listenToProjectUser()
   }
 
    listenToProjectUser() {

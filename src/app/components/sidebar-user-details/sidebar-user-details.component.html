@@ -180,7 +180,7 @@
 
     <!-- (click)=logout() -->
 
-    <ng-container *ngIf="PERMISSION_TO_LOGOUT"> 
+    <!-- <ng-container *ngIf="PERMISSION_TO_LOGOUT">  -->
         <section *ngIf="logoutBtnVisible" class="user-details-footer-section"
             [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
             <div role="button" class="logout-btn-wpr" (click)=openLogoutModal()>
@@ -192,7 +192,7 @@
                 </div>
             </div>
         </section>
-    </ng-container>
+    <!-- </ng-container> -->
  
 
 
