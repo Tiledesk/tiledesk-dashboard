@@ -25,7 +25,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
-import scrollToWithAnimation from 'scrollto-with-animation'
+// import scrollToWithAnimation from 'scrollto-with-animation'
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
@@ -188,23 +188,23 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      scrollToWithAnimation(
-        this.scrollEl, // element to scroll
-        'scrollTop', // direction to scroll
-        +this.scrollYposition, // target scrollY (0 means top of the page)
-        500, // duration in ms
-        'easeInOutCirc',
-        // Can be a name of the list of 'Possible easing equations' or a callback
-        // that defines the ease. # http://gizma.com/easing/
+    // setTimeout(() => {
+    //   scrollToWithAnimation(
+    //     this.scrollEl, // element to scroll
+    //     'scrollTop', // direction to scroll
+    //     +this.scrollYposition, // target scrollY (0 means top of the page)
+    //     500, // duration in ms
+    //     'easeInOutCirc',
+    //     // Can be a name of the list of 'Possible easing equations' or a callback
+    //     // that defines the ease. # http://gizma.com/easing/
 
-        () => { // callback function that runs after the animation (optional)
-          this.logger.log('done!')
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
-        }
-      );
-    }, 100);
+    //     () => { // callback function that runs after the animation (optional)
+    //       this.logger.log('done!')
+    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+    //       this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
+    //     }
+    //   );
+    // }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -231,27 +231,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
 
-
-      // if (this.wsRequestsServed.length > 0) {
-      //   setTimeout(() => {
-      //     scrollToWithAnimation(
-      //       this.scrollEl, // element to scroll
-      //       'scrollTop', // direction to scroll
-      //       +this.scrollYposition, // target scrollY (0 means top of the page)
-      //       500, // duration in ms
-      //       'easeInOutCirc', 
-      //       // Can be a name of the list of 'Possible easing equations' or a callback
-      //       // that defines the ease. # http://gizma.com/easing/
-
-      //       () => { // callback function that runs after the animation (optional)
-      //         this.logger.log('done!')
-      //         this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-      //         this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId',  this.storedRequestId)
-      //       }
-      //     );
-      //   }, 100);
-
-      // }
     }
   }
 
