@@ -21,7 +21,7 @@
     "after_logout_redirect_URL": "",
     "display_chatbots_community": true,
     "display_templates_category": true,
-    "display_change_pwd": false,
+    "display_change_pwd": true,
     "EXTREME_MEASURES": true,
     "SUPPORT_MENU": false,
     "footer": {

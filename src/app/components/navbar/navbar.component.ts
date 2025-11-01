@@ -952,14 +952,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
-
       if (projects) {
         // this.projects = projects;
-
         this.projects = projects.filter((project: any) => {
           // this.logger.log('[NAVBAR] getProjects PROJECTS status ', project.id_project.status);
           return project.id_project.status === 100;
-
         });
         this.logger.log('[NAVBAR] getProjects this.projects ', this.projects);
       }
