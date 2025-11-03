@@ -692,6 +692,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                     
                 }
+
+                if(event && event.data?.type === 'onOpenTicketExternally'){
+                    that.logger.log('[APP-COMPONENT] catched event:', event.data)
+                    if(window['openTicketOnHDA']){
+                        that.logger.log('[APP-COMPONENT] openTIcket on External Service:', event.data)
+                        window['openTicketOnHDA'](event.data.detail.request_id)
+                    }
+                }
             })
         }
     }
