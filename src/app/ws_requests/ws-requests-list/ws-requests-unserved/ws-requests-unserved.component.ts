@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-import scrollToWithAnimation from 'scrollto-with-animation'
+// import scrollToWithAnimation from 'scrollto-with-animation'
 import { CHANNELS_NAME } from 'app/utils/util';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
@@ -191,22 +191,22 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      scrollToWithAnimation(
-        this.scrollEl, // element to scroll
-        'scrollTop', // direction to scroll
-        +this.scrollYposition, // target scrollY (0 means top of the page)
-        500, // duration in ms
-        'easeInOutCirc',
-        // Can be a name of the list of 'Possible easing equations' or a callback
-        // that defines the ease. # http://gizma.com/easing/
+    // setTimeout(() => {
+    //   scrollToWithAnimation(
+    //     this.scrollEl, // element to scroll
+    //     'scrollTop', // direction to scroll
+    //     +this.scrollYposition, // target scrollY (0 means top of the page)
+    //     500, // duration in ms
+    //     'easeInOutCirc',
+    //     // Can be a name of the list of 'Possible easing equations' or a callback
+    //     // that defines the ease. # http://gizma.com/easing/
 
-        () => { // callback function that runs after the animation (optional)
-          this.logger.log('done!')
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-        }
-      );
-    }, 100);
+    //     () => { // callback function that runs after the animation (optional)
+    //       this.logger.log('done!')
+    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+    //     }
+    //   );
+    // }, 100);
   }
 
 
@@ -234,26 +234,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
       this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
 
-      // if (this.wsRequestsUnserved.length > 0) {
-      //   this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
-      // setTimeout(() => {
-      //   scrollToWithAnimation(
-      //     this.scrollEl, // element to scroll
-      //     'scrollTop', // direction to scroll
-      //     +this.scrollYposition, // target scrollY (0 means top of the page)
-      //     500, // duration in ms
-      //     'easeInOutCirc',
-      //     // Can be a name of the list of 'Possible easing equations' or a callback
-      //     // that defines the ease. # http://gizma.com/easing/
-
-      //     () => { // callback function that runs after the animation (optional)
-      //       this.logger.log('done!')
-      //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-      //     }
-      //   );
-      // }, 100);
-
-      // }
+      
     }
 
   }

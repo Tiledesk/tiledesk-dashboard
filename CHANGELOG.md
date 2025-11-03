@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.149-stage
+- Adds eventListener to chat-ionic events
+- Fixes bug: Unable to access monitor page if dashboard is embedded in iframe due to security policies
+
+### 2.7.153-AR
+- Adds eventListener to chat-ionic events
+- Fixes bug: Unable to access monitor page if dashboard is embedded in iframe due to security policies
+
 ### 2.7.148-stage
 - Fixes the bug: The user profile page is still accessible by clicking on the avatar
 - Fixes the bug: Operator logging in

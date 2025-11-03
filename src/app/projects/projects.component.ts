@@ -20,6 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -85,6 +87,8 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   DISPLAY_PROJECT_ID: boolean = false;
   public logoutBtnVisible: boolean;
   public editProfileBtnVisible: boolean;
+  PERMISSION_TO_LOGOUT:boolean;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -100,6 +104,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     private translate: TranslateService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    private rolesService: RolesService
   ) {
     const brand = brandService.getBrand();
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
@@ -135,6 +140,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
     this.getRouteParams();
+    // this.listenToProjectUser();
   }
 
   ngAfterContentInit(): void {
@@ -161,6 +167,39 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[PROJECTS] - Role:', status.role);
+    
+        console.log('[PROJECTS] - Permissions:', status.matchedPermissions);
+
+
+        // -------------------------------
+        // PERMISSION_TO_LOGOUT
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.LOGOUT)) {
+            this.PERMISSION_TO_LOGOUT = true
+            console.log('[PROJECTS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+          } else {
+            this.PERMISSION_TO_LOGOUT = false
+
+            console.log('[PROJECTS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+          }
+        } else {
+          this.PERMISSION_TO_LOGOUT = true
+          console.log('[PROJECTS] - Project user has a default role ', status.role, 'PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+        }
+
+      });
+  }
+
+
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
       console.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
