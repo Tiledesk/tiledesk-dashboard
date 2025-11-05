@@ -3156,7 +3156,7 @@ updateTagContainerHeight() {
         this.showSpinner = false;
 
         if (this.messagesList && this.messagesList.length !== this.ALL_MSG_LENGTH) {
-          this.scrollCardContetToBottom();
+          this.scrollCardContentToBottom();
         }
 
       }, error => {
@@ -3170,8 +3170,9 @@ updateTagContainerHeight() {
   // -------------------------------------------------------------------------
   // Scroll
   // -------------------------------------------------------------------------
-  scrollCardContetToBottom() {
+  scrollCardContentToBottom() {
     setTimeout(() => {
+     console.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ')
       // CHECK THIS
       const initialScrollPosition = this.myScrollContainer.nativeElement;
       // this.logger.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ', initialScrollPosition)
@@ -3263,14 +3264,14 @@ updateTagContainerHeight() {
   // ---------------------------------------------------------------------------------------
   // @ Tags
   // ---------------------------------------------------------------------------------------
-  toggleAddTagInputAndGetTags() {
-    const elem_add_tag_btn = <HTMLElement>document.querySelector('.add_tag_btn');
-    this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
-    elem_add_tag_btn.blur();
-    this.getTag();
-    this.diplayAddTagInput = !this.diplayAddTagInput
-    this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
-  }
+  // toggleAddTagInputAndGetTags() {
+  //   const elem_add_tag_btn = <HTMLElement>document.querySelector('.add_tag_btn');
+  //   this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
+  //   elem_add_tag_btn.blur();
+  //   this.getTag();
+  //   this.diplayAddTagInput = !this.diplayAddTagInput
+  //   this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
+  // }
 
   addTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
@@ -3327,72 +3328,8 @@ updateTagContainerHeight() {
       });
   }
 
-  // No more used - replace with manageRequestTags
-  // updateRequestTags(id_request, tagsArray, fromaction) {
-  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
-  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
-  //   this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
-  //     .subscribe((data: any) => {
-  //       this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
-  //     }, (err) => {
-  //       this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
-  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
-  //     }, () => {
-  //       this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
-  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
-  //       this.getTagContainerElementHeight()
-  //     });
-  // }
 
-  // _getTag() {
-  //   this.loadingTags = true
-  //   this.tagsService.getTags().subscribe((tags: any) => {
-  //     if (tags) {
-  //       // tagsList are the available tags that the administrator has set on the tag management page
-  //       // and that are displayed in the combo box 'Add tag' of this template
-  //       // this.tagsList = tags
-       
-
-
-
-  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tags ', tags);
-  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
-  //       if (!this.PERMISSION_TO_VIEW_ALL_TAGS) {
-  //         const validUserIds = this.projectTeammates.map(u => u.userid);
-  //         this.tagsList = tags.filter(tag => validUserIds.includes(tag.createdBy));
-  //       } else {
-  //         this.tagsList = tags;
-  //       }
-  //       this.tagsList = this.tagsList.slice(0)
-  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.tagsList ', this.tagsList);
-  //       console.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.projectTeammates ',  this.projectTeammates);
-
-  //       // "tagArray" are the tags present in the "this.request" object
-  //       this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
-  //       this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
-
-  //       // if (this.tagsList.length > 0) {
-  //       // this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
-  //       this.typeALabelAndPressEnter = this.translate.instant('AddTagToConversation');
-  //       // } else {
-  //       //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
-  //       // }
-  //       // -----------------------------------------------------------------------------------
-  //       // Splice tags from the tagslist the tags already present in the "this.request" object
-  //       // ------------------------------------------------------------------------------------
-  //       // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
-  //     }
-  //   }, (error) => {
-  //     this.logger.error('[WS-REQUESTS-MSGS] - GET TAGS - ERROR  ', error);
-  //     this.loadingTags = false
-  //   }, () => {
-  //     this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray)
-  //     this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS * COMPLETE *');
-  //     this.loadingTags = false
-  //   });
-  // }
-  // ------------------
-async getTag() {
+  async getTag() {
   this.loadingTags = true;
 
   try {
@@ -3439,20 +3376,22 @@ async getTag() {
           };
           // Aggiungi a allProjectUsers
           this.allProjectUsers.push(user);
-        } else {
-          // Recupero l'utente da remoto
-          const remoteUser = await this.getMemberFromRemoteForTag(tag.createdBy);
-          if (remoteUser) {
-            user = { 
-              label: remoteUser['id_user']['firstname'] + ' ' + remoteUser['id_user']['lastname'], 
-              value: remoteUser._id, 
-              userid: remoteUser['id_user']['_id']
-            };
-            // Aggiorno l'array allProjectUsers
-            this.allProjectUsers.push(user);
-            // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Added user to allProjectUsers:', user);
-          }
-        }
+        } 
+        
+        // else {
+        //   // Recupero l'utente da remoto
+        //   const remoteUser = await this.getMemberFromRemoteForTag(tag.createdBy);
+        //   if (remoteUser) {
+        //     user = { 
+        //       label: remoteUser['id_user']['firstname'] + ' ' + remoteUser['id_user']['lastname'], 
+        //       value: remoteUser._id, 
+        //       userid: remoteUser['id_user']['_id']
+        //     };
+        //     // Aggiorno l'array allProjectUsers
+        //     this.allProjectUsers.push(user);
+        //     // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Added user to allProjectUsers:', user);
+        //   }
+        // }
       }
       
       return user;
@@ -7664,10 +7603,10 @@ extractUrls(text: string): string[] {
     this.tab3 = false;
     this.tab4 = false;
     this.logger.log('haSelectedTab1 ', this.tab1)
-    this.getTag();
-    setTimeout(() => {
-      this.getTagContainerElementHeight()
-    }, 1000);
+    // this.getTag();
+    // setTimeout(() => {
+    //   this.getTagContainerElementHeight()
+    // }, 1000);
   }
 
   hasSelectedTab2() {

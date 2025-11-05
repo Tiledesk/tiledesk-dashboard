@@ -718,13 +718,13 @@ getProjectUserRole() {
   getAllProjectUsers(imagestorage: string, isfirebaseuploadengine: boolean) {
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
-      // this.logger.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
-      //  this.logger.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
+      console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', _projectUsers);
+
       if (_projectUsers) {
         this.project_users = _projectUsers
         this.project_user_length = _projectUsers.length;
         // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
-        // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
+        console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
         this.projectUserArray = _projectUsers;
 
         _projectUsers.forEach(projectuser => {
