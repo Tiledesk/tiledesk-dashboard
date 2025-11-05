@@ -248,6 +248,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   statusInHistory = [
     { id: '1000', name: 'Closed' },
     { id: '100', name: 'Unserved' },
+    { id: '150', name: 'Abandoned' },
     { id: '200', name: 'Served' }
   ];
 
@@ -815,6 +816,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                   this.operator = '='
                   this.requests_status_selected_from_advanced_option = '200'
                   this.requests_status = '200'
+                } else if (requetStatusValue === '150') {
+                  this.operator = '='
+                  this.requests_status_selected_from_advanced_option = '150'
+                  this.requests_status = '150'
                 }
                 // else if (requetStatusValue === '1000') {
                 //   this.operator = '='
@@ -855,7 +860,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
-          this.search();
+          this.search('get-query-params');
         }
 
       });
@@ -1477,17 +1482,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsStatusesSelectFromAdvancedOption(requests_statuses) {
-    this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
+    console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
 
     if (this.requests_statuses.length === 0) {
-      this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses 2', this.requests_statuses);
+      console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses USE CASE requests_statuses.length === 0', this.requests_statuses);
       // this.requests_statuses = ['1000', '100', '200', '50']
       // this.requests_status = "1000,100,200,50"
-      this.requests_status = "1000,100,200"
+      this.requests_status = [1000,100,200,150]
+      // this.requests_statuses = [1000,100,200,150]
       this.getRequests()
+      return;
     }
-    this.requests_status = requests_statuses.join()
-    this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_status', this.requests_status);
+    if (requests_statuses && Array.isArray(requests_statuses) && requests_statuses.length > 0) {
+       console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses USE CASE requests_statuses.length > 0', this.requests_statuses);
+      this.requests_status = requests_statuses.join()
+    } else {
+    // Se requests_statuses è null/undefined/vuoto, mantieni il valore esistente o imposta un default
+    // this.requests_status = null; // oppure un valore di default
+    }
+    // this.requests_status = requests_statuses.join()
+    // console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_status use case ', this.requests_status);
   }
 
   getAllRequests() {
@@ -1640,10 +1654,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-    this.logger.log('getRequests queryString', this.queryString)
+    this.logger.log('[HISTORY & NORT-CONVS] getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    this.logger.log('getRequests requests_statuses ', this.requests_statuses)
-    this.logger.log('getRequests requests_status ', this.requests_status)
+    console.log('[HISTORY & NORT-CONVS] getRequests requests_statuses ', this.requests_statuses)
+    this.logger.log('[HISTORY & NORT-CONVS] getRequests requests_status ', this.requests_status)
 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
@@ -2437,7 +2451,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     if (event.key === "Enter") {
-      this.search()
+      this.search('on-enter-pressed')
     }
   }
 
@@ -2445,7 +2459,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     return /^[0-9]+$/.test(stringWithoutHash);
   }
 
-  search() {
+  search(calledby) {
+    console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH calledby ', calledby)
     this.logger.log('HERE IN SEARCH duration operator ', this.duration_op)
     this.logger.log('HERE IN SEARCH duration ', this.duration)
     this.logger.log('HERE IN SEARCH duration called_phone ', this.called_phone)
@@ -2456,7 +2471,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
     this.logger.log('HERE IN SEARCH this.startDate', this.startDate)
     this.logger.log('HERE IN SEARCH this.endDate', this.endDate)
-    this.logger.log('HERE IN SEARCH this.requests_status', this.requests_status)
+    console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH this.requests_status', this.requests_status)
     this.logger.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
 
 
@@ -2670,7 +2685,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // + 'preflight=' + this.preflightValue
 
 
-    this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+    console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
@@ -2956,7 +2971,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'requester_email=' + '&'
       + 'tags=' + '&'
       + 'channel=';
-    + 'rstatus=' + '&'
+      + 'rstatus=' + '&'
       + 'duration_op=' + '&'
       + 'duration=' + '&'
       + 'called=' + '&'

@@ -115,7 +115,9 @@
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
                 <button class="custom-input-group---btn tool_tip" type="submit">
-                  <i class="fa fa-search fa-search-btn" (click)="search()" style="color:grey; font-size: 18px;"></i>
+                  <i class="fa fa-search fa-search-btn" 
+                  (click)="search('fiter-central-section')" 
+                  style="color:grey; font-size: 18px;"></i>
                   <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'Search' | translate}}
                     <i></i>
@@ -531,7 +533,7 @@
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
                   <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search()">
+                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search('template')">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     {{ 'Search' | translate}}
                   </button>
@@ -682,6 +684,9 @@
         </div>
         <div *ngIf="status === '200'" class="applied-filter">
           {{'Served' | translate}}
+        </div>
+        <div *ngIf="status === '150'" class="applied-filter">
+            {{'Abandoned' | translate}}
         </div>
         <!-- <div *ngIf="status === '50'" class="applied-filter">
           Temporary
@@ -845,7 +850,7 @@
                   </div>
                 </th>
 
-                <th class="table-header-option " style="text-align: center" (click)="search()">
+                <th class="table-header-option " style="text-align: center" (click)="search('refresh')">
                   <div class="refresh-icon-wpr"
                     [ngClass]="{'not_is_owner': USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'has-permission':PERMISSION_TO_DELETE && IS_HERE_FOR_HISTORY,  'is_agent': USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
