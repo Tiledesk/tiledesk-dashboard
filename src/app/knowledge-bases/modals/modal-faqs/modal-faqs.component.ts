@@ -45,7 +45,7 @@ export class ModalFaqsComponent implements OnInit {
     if (data && data.selectedNamespace) {
       this.namespaceid = data.selectedNamespace.id
     }
-
+    // Se arriva un oggetto prefillKb, precompila la KB
     if (data && data.prefillKb) {
       this.kb = { ...this.kb, ...data.prefillKb };
       this.displayAddManuallySection = true;
