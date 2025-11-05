@@ -140,7 +140,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
     this.getRouteParams();
-    this.listenToProjectUser();
+    // this.listenToProjectUser();
   }
 
   ngAfterContentInit(): void {
@@ -213,9 +213,12 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
       if (params['tiledesk_logOut']) { 
         this.logoutBtnVisible = params['tiledesk_logOut'] == "true" ? true: false
         this.logger.log('[PROJECTS] params tiledeskLogout', this.logoutBtnVisible);  
+      } else {
+        this.logoutBtnVisible = true
       }
     });
   }
+
 
   getLoggedUserAndCheckProfilePhoto() {
     // this.logger.log('window.opener.location ', window.opener.location )

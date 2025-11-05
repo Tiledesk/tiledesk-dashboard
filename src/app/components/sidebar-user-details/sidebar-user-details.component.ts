@@ -24,6 +24,7 @@ import { Project } from 'app/models/project-model';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { LocalDbService } from 'app/services/users-local-db.service';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -105,7 +106,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     public dialog: MatDialog,
     public brandService: BrandService,
     private route: ActivatedRoute,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private localDbService: LocalDbService
   ) {
 
     const brand = brandService.getBrand(); 
@@ -144,9 +146,15 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserIsBusy$()
     this.getBrowserVersion()
     // this.setNotificationSound();
-    this.getQueryParams()
-    this.listenToProjectUser()
+    // this.listenToProjectUser()
+    this.getQueryParams(); // is used to hide the logout in the quey params exist tiledesk_logOut
+    
+  //  this.checkLogoutVisibility();
   }
+
+  
+
+  
 
    listenToProjectUser() {
       this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
@@ -189,9 +197,20 @@ export class SidebarUserDetailsComponent implements OnInit {
             this.logoutBtnVisible = params['params']['tiledesk_logOut'] == "true" ? true: false
              console.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
             
+          } else {
+            this.logoutBtnVisible = true
           }
         })
     }
+
+
+  checkLogoutVisibility(): void {
+    const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+    console.log('[SIDEBAR] tiledesk_logOut:', tiledeskLogOut);
+
+    // Nasconde il logout solo se tiledesk_logOut === 'false'
+    this.logoutBtnVisible = tiledeskLogOut !== 'false';
+  }
 
 
 

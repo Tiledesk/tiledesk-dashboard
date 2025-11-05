@@ -1100,11 +1100,13 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
-    this.cacheService.clearCache()
+    this.cacheService.clearCache();
+    
     // this.resetSleekplanUser()
     this.closeSleekplanWidget()
-    // this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    console.log('[AUTH-SERV] SSO Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
+      this.localDbService.removeFromStorage('tiledesk_logOut');
       try {
         if (window && window['tiledesk_widget_logout']) {
           // this.logger.log('window', window)

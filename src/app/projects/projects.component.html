@@ -150,11 +150,10 @@
 
                     </div>
 
-                   
-                    <li *ngIf="logoutBtnVisible && PERMISSION_TO_LOGOUT" class="divider"></li>
+                   <!-- && PERMISSION_TO_LOGOUT -->
+                    <li *ngIf="logoutBtnVisible" class="divider"></li>
                     
-
-                    <ng-container *ngIf="PERMISSION_TO_LOGOUT">
+                    <!-- <ng-container *ngIf="PERMISSION_TO_LOGOUT"> -->
                       <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
                         <div  class="user-profile-link-icon">
 
@@ -174,7 +173,7 @@
                           {{ 'NavBar.LogOut' | translate }}
                         </div>
                       </div>
-                    </ng-container>
+                    <!-- </ng-container> -->
 
                   </div>
 

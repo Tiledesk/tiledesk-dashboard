@@ -3,7 +3,7 @@ import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from 
 
 import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { Router, NavigationEnd, NavigationStart, Event as NavigationEvent } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, Event as NavigationEvent, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs'
 import PerfectScrollbar from 'perfect-scrollbar'; // https://github.com/mdbootstrap/perfect-scrollbar
 
@@ -110,9 +110,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private sleekplanSsoService: SleekplanSsoService,
         private sleekplanService: SleekplanService,
         private sleekplanApiService: SleekplanApiService,
-        private keycloakService: KeycloakService
+        private keycloakService: KeycloakService,
+        private localDbService: LocalDbService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
+        
     ) {
 
       
@@ -269,6 +271,32 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
                 this.logger.log('[APP-COMPONENT] browserRefresh ', browserRefresh)
                 this.logger.log('[APP-COMPONENT] browserRefresh ', event)
+                this.logger.log('[APP-COMPONENT] router ', router)
+
+                // ------------------------------------------------------------------------------------------
+                // Adds the tiledesk_logOut query parameter to each path change if the "autologin" 
+                // was performed with tiledesk_logOut=false
+                // ------------------------------------------------------------------------------------------  
+                        
+                const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+                console.log('[APP-COMPONENT] SSO tiledeskLogOut ', tiledeskLogOut)
+
+                if (!tiledeskLogOut) return;
+
+                const urlTree: UrlTree = this.router.parseUrl(event.url);
+
+                // Aggiungo solo se non esiste già
+                if (!urlTree.queryParams['tiledesk_logOut']) {
+                    urlTree.queryParams['tiledesk_logOut'] = tiledeskLogOut;
+
+                    // Navigazione solo se URL cambia
+                    const newUrl = this.router.serializeUrl(urlTree);
+                    if (newUrl !== event.url) {
+                    this.router.navigateByUrl(newUrl);
+                    }
+                }
+                // ./ --------------------------------------------------------------------------------------- 
+
                 if (browserRefresh === true) {
                     window.addEventListener('load', () => {
                         this.logger.log('Page fully loaded');
@@ -1187,6 +1215,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // (this.route === '/signup') ||
                 if ((this.route === '/login') ||
+                    (this.route === '/login?tiledesk_logOut=false') ||
+                    (this.route === '/login?tiledesk_logOut=true') ||
                     (this.route === '/signup') ||
                     (this.route.indexOf('/signup') !== -1) ||
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
@@ -1194,6 +1224,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route === '/projects') ||
                     (this.route === '/projects?showid=y') ||
                     (this.route === '/projects?tiledesk_logOut=false') ||
+                    (this.route === '/projects?tiledesk_logOut=true') ||
                     (this.route.indexOf('/verify') !== -1) ||
                     (this.route.indexOf('/resetpassword') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1) ||
