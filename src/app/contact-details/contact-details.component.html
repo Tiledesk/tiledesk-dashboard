@@ -32,7 +32,7 @@
               </div>
             </div>
 
-            <ng-container *ngIf="PERMISSION_TO_VIEW_CONVS; else unauthorizedTpl">
+            <!-- <ng-container *ngIf="PERMISSION_TO_VIEW_CONVS; else unauthorizedTpl"> -->
               <table class="table table-hover">
 
                 <tbody>
@@ -312,19 +312,17 @@
                 </tbody>
               </table>
 
-            </ng-container>
+            <!-- </ng-container>
             <ng-template #unauthorizedTpl>
               <div class="restricted-access-container">
                 <h2 class="restricted-access-title">
                   Access restricted
                 </h2>
                 <h3 class="restricted-access-subtitle">
-
-                  <!-- {{ "UnauthorizedPage.OopsYouDontHave" | translate }} -->
                   Oops! You don't have permission to view this section.
                 </h3>
               </div>
-            </ng-template>
+            </ng-template> -->
 
           </div> <!-- ./ card-content table-responsive -->
 

@@ -175,20 +175,20 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
         // --------------------------
         // PERMISSION_TO_VIEW_CONVS
         // -------------------------
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+        // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
-          if (status.matchedPermissions.includes(PERMISSIONS.INBOX_READ)) {
-            this.PERMISSION_TO_VIEW_CONVS = true
-            console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
-          } else {
-            this.PERMISSION_TO_VIEW_CONVS = false
+        //   if (status.matchedPermissions.includes(PERMISSIONS.INBOX_READ)) {
+        //     this.PERMISSION_TO_VIEW_CONVS = true
+        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
+        //   } else {
+        //     this.PERMISSION_TO_VIEW_CONVS = false
 
-            console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
-          }
-        } else {
-          this.PERMISSION_TO_VIEW_CONVS = true
-          console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
-        }
+        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
+        //   }
+        // } else {
+        //   this.PERMISSION_TO_VIEW_CONVS = true
+        //   console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
+        // }
 
         // --------------------------------
         // PERMISSION_TO_TRASH_LEAD
