@@ -1,8 +1,15 @@
 # tiledesk-dashboard
 
+### 2.7.154-AR
+- Manages the "tiledesk_logOut" query parameter which shows/hides the logout button
+- Removes permission to view conversations on the contact details page
+- Adds the ability to search for abandoned conversations to the Status combobox of the History page
+- Fixes the bug: on the History page, search does not work if the Status combobox is empty
+- Adds an event listener to the onOpenTicketExternally event
+
 ### 2.7.153-AR
-- Adds eventListener to chat-ionic events
-- Fixes bug: Unable to access monitor page if dashboard is embedded in iframe due to security policies
+- Adds an eventListener to chat-ionic events
+- Fixes the bug: Unable to access monitor page if dashboard is embedded in iframe due to security policies
 
 ### 2.7.152-AR
 - Added ionic chat in an iframe
