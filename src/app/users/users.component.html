@@ -343,7 +343,7 @@
                                   [matTooltip]="!PERMISSION_TO_UPDATE ? ('YouDoNotHavePermissions' | translate) : ''"
                                   #tooltip="matTooltip"
                                   matTooltipPosition='above' 
-                                   matTooltipHideDelay="100">
+                                  matTooltipHideDelay="100">
     
                                   <option value="available"
                                     [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
@@ -416,9 +416,12 @@
                               <!-- More Actions -->
                               <!-- -------------------------------------------- -->
                               <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                                <button mat-icon-button [matMenuTriggerFor]="moreactions"
-                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'Actions' | translate}}"
-                                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                                <button mat-icon-button 
+                                  [matMenuTriggerFor]="moreactions"
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="{{'Actions' | translate}}"
+                                  #tooltip="matTooltip" 
+                                  matTooltipPosition='below' matTooltipHideDelay="100">
                                   <mat-icon>more_vert</mat-icon>
                                 </button>
 
@@ -455,7 +458,7 @@
                                   <button class="mat-menu-btn"
                                     *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
                                     mat-menu-item
-                                    (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                    (click)='openDeleteModal(projectUser, projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
                                     [disabled]="USER_ROLE === 'agent'">
                                     <mat-icon>delete</mat-icon>
                                     <!-- <mat-icon>close</mat-icon> -->
