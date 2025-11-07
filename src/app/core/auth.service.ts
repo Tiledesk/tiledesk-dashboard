@@ -28,6 +28,7 @@ import { BrandService } from 'app/services/brand.service'
 import { CacheService } from 'app/services/cache.service'
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service'
 import { SleekplanService } from 'app/services/sleekplan.service'
+import { CachePuService } from 'app/services/cache-pu.service'
 // import { ProjectService } from 'app/services/project.service'
 // import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
@@ -110,6 +111,7 @@ export class AuthService {
     public brandService: BrandService,
     private scriptService: ScriptService,
     private cacheService: CacheService,
+    private cachePuService: CachePuService,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService
     // private projectService: ProjectService,
@@ -1101,6 +1103,8 @@ export class AuthService {
 
   signOut(calledby: string) {
     this.cacheService.clearCache();
+    this.cachePuService.clearCache()
+    
     
     // this.resetSleekplanUser()
     this.closeSleekplanWidget()

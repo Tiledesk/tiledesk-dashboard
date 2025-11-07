@@ -87,7 +87,8 @@
     <section class="availability-section">
        
         <!--  -->
-        <ng-select style="text-align: left;width: 100%;" (change)="changeAvailabilityState(selectedStatus)"
+        <ng-select style="text-align: left;width: 100%;" 
+            (change)="changeAvailabilityState(selectedStatus)"
             [(ngModel)]="selectedStatus" 
             class="teammate-status-in-drawer"
             [items]="teammateStatus" 
