@@ -1225,7 +1225,14 @@
         "ResendInviteSuccessNoticationMsg": "تم إرسال بريد إلكتروني للدعوة إلى ",
         "ResendInviteErrorNoticationMsg": "حدث خطأ أثناء إرسال البريد الإلكتروني ",
         "CanceledInviteSuccessMsg": "تم إلغاء الدعوة لـ ",
-        "CanceledInviteErrorMsg": "حدث خطأ أثناء إلغاء الدعوة"
+        "CanceledInviteErrorMsg": "حدث خطأ أثناء إلغاء الدعوة",
+        "TheUserIsMemberOfGroup": "المستخدم عضو في المجموعة: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "المستخدم عضو في المجموعات: {{groups_name}}",
+        "TheUserHasCreatedTag": "أنشأ المستخدم العلامة: {{tags_name}}",
+        "TheUserHasCreatedTags": "أنشأ المستخدم العلامات: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "قم بإزالة المستخدم من المجموعات والعلامات قبل حذفه.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "قم بإزالة المستخدم من المجموعات والعلامات قبل تعطيله.",
+        "AndOthers": "و{{count}} أخرى"
     },
     "UserEditAddPage": {
         "AddUser": "اضف شريكك في الفريق",

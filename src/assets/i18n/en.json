@@ -1224,7 +1224,14 @@
         "ResendInviteSuccessNoticationMsg": "Invitation email has been sent to ",
         "ResendInviteErrorNoticationMsg": "An error occurred sending the email ",
         "CanceledInviteSuccessMsg": "Invitation canceled for ",
-        "CanceledInviteErrorMsg": "An error occurred cancelling the invite"
+        "CanceledInviteErrorMsg": "An error occurred cancelling the invite",
+        "TheUserIsMemberOfGroup": "The user is a member of the group: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "The user is a member of the groups: {{groups_name}}",
+        "TheUserHasCreatedTag": "The user has created the tag: {{tags_name}}",
+        "TheUserHasCreatedTags": "The user has created the tags: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Remove the user from groups and tags before deleting them.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Remove the user from groups and tags before disabling them.",
+        "AndOthers": "and {{count}} others"
     },
     "UserEditAddPage": {
         "AddUser": "Add Teammate",

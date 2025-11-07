@@ -1224,7 +1224,14 @@
         "ResendInviteSuccessNoticationMsg": "Taklif elektron pochta manziliga yuborildi ",
         "ResendInviteErrorNoticationMsg": "Elektron pochta xabarini yuborishda xatolik yuz berdi ",
         "CanceledInviteSuccessMsg": "Taklif bekor qilindi ",
-        "CanceledInviteErrorMsg": "Taklifni bekor qilishda xatolik yuz berdi"
+        "CanceledInviteErrorMsg": "Taklifni bekor qilishda xatolik yuz berdi",
+        "TheUserIsMemberOfGroup": "Foydalanuvchi guruh a'zosi: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "Foydalanuvchi guruhlar a'zosi: {{groups_name}}",
+        "TheUserHasCreatedTag": "Foydalanuvchi tegn yaratdi: {{tags_name}}",
+        "TheUserHasCreatedTags": "Foydalanuvchi teglarni yaratdi: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "O'chirishdan oldin foydalanuvchini guruhlar va teglardan olib tashlang.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "O'chirib qo'yishdan oldin foydalanuvchini guruhlar va teglardan olib tashlang.",
+        "AndOthers": "va yana {{count}} ta"
     },
     "UserEditAddPage": {
         "AddUser": "Jamoadosh qo'shing",

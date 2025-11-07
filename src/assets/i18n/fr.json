@@ -1224,7 +1224,14 @@
         "ResendInviteSuccessNoticationMsg": "L'e-mail d'invitation a été envoyé à ",
         "ResendInviteErrorNoticationMsg": "Une erreur s'est produite lors de l'envoi de l'e-mail ",
         "CanceledInviteSuccessMsg": "Invitation annulée pour ",
-        "CanceledInviteErrorMsg": "Une erreur s'est produite lors de l'annulation de l'invitation"
+        "CanceledInviteErrorMsg": "Une erreur s'est produite lors de l'annulation de l'invitation",
+        "TheUserIsMemberOfGroup": "L'utilisateur est membre du groupe : {{groups_name}}",
+        "TheUserIsMemberOfGroups": "L'utilisateur est membre des groupes : {{groups_name}}",
+        "TheUserHasCreatedTag": "L'utilisateur a créé l'étiquette : {{tags_name}}",
+        "TheUserHasCreatedTags": "L'utilisateur a créé les étiquettes : {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Retirez l'utilisateur des groupes et des étiquettes avant de le supprimer.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Retirez l'utilisateur des groupes et des étiquettes avant de le désactiver.",
+        "AndOthers": "et {{count}} autres"
     },
     "UserEditAddPage": {
         "AddUser": "Ajouter un joueur",
