@@ -648,7 +648,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
     // this.dept_description_toUpdate = $event;
     // this.dept_description_toUpdate_temp = "";
-    // this.groupsParsedArray = [];
     // this.displayAssignTo = true;
 
     this.NOT_HAS_EDITED = false
@@ -1203,7 +1202,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }
   }
 
-  _setSelectedGroup() {
+  __setSelectedGroup() {
     console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
     this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
@@ -1227,11 +1226,45 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         }
       }
     }
-
     // this.NOT_HAS_EDITED = false
     this.getGroupsByProjectId()
 
   }
+
+  _setSelectedGroup() {
+  console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
+  this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
+
+  if (this.allowMultipleGroups) {
+    if (this.selectedGroupId && Array.isArray(this.selectedGroupId) && this.selectedGroupId.length > 0) {
+      // 1. Crea una mappa con le percentuali esistenti
+      const currentMap = new Map(
+        this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+      );
+
+      // 2. Ricostruisci l'array mantenendo le percentuali già salvate
+      //    e includendo SOLO i gruppi ancora presenti in selectedGroupId
+      this.groupsParsedArray = this.selectedGroupId.map(id => ({
+        group_id: id,
+        percentage: currentMap.get(id) ?? 0   // se esiste lo recupera, altrimenti parte da 0
+      }));
+
+      console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
+      if (this.groupsParsedArray?.length > 0) {
+        this.displayAssignTo = false
+      }
+    } else {
+      // Intercetta la cancellazione: se selectedGroupId è null/undefined/array vuoto
+      // rimuovi tutti i gruppi da groupsParsedArray
+      this.groupsParsedArray = [];
+      this.displayAssignTo = true;
+      console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY svuotato (gruppo rimosso)');
+    }
+  }
+
+  // this.NOT_HAS_EDITED = false
+  this.getGroupsByProjectId()
+}
 
   
 
