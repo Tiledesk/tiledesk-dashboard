@@ -782,6 +782,9 @@ export function loadTokenMultiplier(ai_models) {
 // ]
 
 export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: string, status: "active" | "inactive"}> = [
+    { name: "Gpt-5",                            value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
+    { name: "Gpt-5-mini",                       value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
+    { name: "Gpt-5-nano",                       value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
     { name: "GPT-4.1",                          value: "gpt-4.1",               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
     { name: "GPT-4.1 mini",                     value: "gpt-4.1-mini",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
     { name: "GPT-4.1 nano",                     value: "gpt-4.1-nano",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
