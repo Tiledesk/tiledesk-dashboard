@@ -249,13 +249,34 @@
                         <div class="col-sm-10">
 
                           <div class="card-avatar" style="padding-bottom:15px">
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
-                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media"
-                              onerror="this.src='assets/img/no_image_user.png'" />
+                            <!-- Avatar con iniziali (mostrato di default) -->
+                            <div class="user-img-in-edit-profile avatar-with-initials" 
+                              [ngStyle]="{'background': 'linear-gradient(rgb(255,255,255) -125%,' + (projectUser?.id_user?.fillColour || 'rgb(98, 100, 167)') + ')', 'display': 'flex'}"
+                              style="align-items: center; justify-content: center; border-radius: 50%; position: relative;">
+                              <span class="avatar-initials-text">
+                                {{ projectUser?.id_user?.fullname_initial || 'N/A' }}
+                              </span>
+                              
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Firebase -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
+                                #firebaseImg
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media"
+                                (load)="firebaseImg.style.display='block'; firebaseImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                (error)="firebaseImg.style.display='none';"
+                                style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
 
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                              onerror="this.src='assets/img/no_image_user.png'" />
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Native -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
+                                #nativeImg
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                (load)="nativeImg.style.display='block'; nativeImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                (error)="nativeImg.style.display='none';"
+                                style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -346,8 +367,13 @@
 
                           <ng-select style="text-align: left;"
                             (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)"
-                            [(ngModel)]="selectedStatus" class="teammate-status-in-pu-details" [items]="teammateStatus"
-                            bindLabel="name" bindValue="id" [clearable]="false" [searchable]="false">
+                            [(ngModel)]="selectedStatus" 
+                            class="teammate-status-in-pu-details" 
+                            [items]="teammateStatus"
+                            bindLabel="name" 
+                            bindValue="id" 
+                            [clearable]="false" 
+                            [searchable]="false">
                             <ng-template ng-label-tmp let-item="item">
                               <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
                               <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
@@ -440,8 +466,11 @@
                               </ul>
                             </div>
 
-                            <input id="tag_name" name="tag_name" (keyup.enter)="onPressEnterInIputTypeNewTag()"
-                              (ngModelChange)="onChangeTagname($event)" [(ngModel)]="tagname" class="input" type="text"
+                            <input id="tag_name" name="tag_name" 
+                              (keyup.enter)="onPressEnterInIputTypeNewTag()"
+                              (ngModelChange)="onChangeTagname($event)" 
+                              [(ngModel)]="tagname" 
+                              class="input" type="text"
                               placeholder="{{ 'Tags.AddTags' | translate }} ..." style="height: 37px;">
                             <div class="tag-color-dot" [ngStyle]="{'background-color':tag_selected_color}"></div>
                             <button class="btn btn-primary add-tag-to-pu-btn" (click)="addTagToProjectUser()"
