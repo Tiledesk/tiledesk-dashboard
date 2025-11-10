@@ -12,6 +12,7 @@
 	"Default Department": "Vorgabeabteilung",
 	"Teammate": "teamkollege",
 	"Teammates": "teamkollegen",
+	"TeammatesCapitalized": "Teamkollegen",
 	"TeammateInitial": "T",
 	"ProjectSettings_Initials": "PE",
 	"ProjectSettings": "Projekt Einstellungen",
@@ -708,7 +709,7 @@
 	"ThisMessageContainsURLFromDomainNotAllowed":"Diese Nachricht enthält eine URL von einer Domäne, die nicht zulässig ist",
 	"AllowedFileExtensions": "Erlaubte Dateierweiterungen",
     "AllowedFileExtensionsWidgetDesc": "Verwalten Sie die Art von Dateien, die Benutzer vom Widget hochladen können",
-    "AllowedFileExtensionsAgentChatDesc": "Verwalten Sie die Dateitypen, die Benutzer vom Agenten-Chat hochladen können",
+    "AllowedFileExtensionsAgentChatDesc": "Verwalten Sie die Dateitypen, die Teammitglieder aus dem Agenten-Chat hochladen können",
     "AddExtension": "Erweiterung hinzufügen",
     "QuotaResetsOn": "Quote wird am {{reset_date}} zurückgesetzt",
 	"AllExtensions": "Alle",
@@ -800,6 +801,17 @@
     "OnlyAllowsLinksFrom": "erlaubt nur Links von https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "erlaubt Links von jeder Subdomain von example.com (z.B. https://www.example.com/..., https://blog.example.com/...)",
+	"TheTeammate": "komanda yoldaşı",
+    "TheTeammates": "komanda yoldaşları",
+    "CannotDeleteRole": "<b>{{role_name}}</b> rolunu silmək mümkün deyil",
+    "ThisRoleIsCurrentlyAssignedTo": "Bu rol hazırda {{total_associations}} {{association_type}} təyin edilib",
+    "ReassignDifferentRoleBeforeDeleting": "Bunu silməzdən əvvəl {{pronoun}} fərqli bir rol verin",
+    "RoleCannotBeDeleted": "Rol silinə bilməz",
+	"MaxAllowedSize":"Maximal zulässige Größe {{file_size_limit}} MB",
+	"Attachments": "Anhänge",
+    "Emoji": "Emoji",
+    "VoiceRecorder": "Sprachrecorder",
+	"TheConversationWillBeResolved": "Die Konversation wird abgeschlossen",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -853,7 +865,10 @@
 			"CreateCannedResError": "Ein Fehler ist während dem Erstellen der Antwort aufgetreten",
 			"UpdateCannedResSuccess": "Antwort erfolgreich erstellt",
 			"UpdateCannedResError": "Ein Fehler ist während der Aktualisierung der Antwort aufgetreten"
-		}
+		},
+		"DeleteCannedResponse": "Vorgefertigte Antwort löschen",
+		"DoYouReallyWantToDeleteTheResponse": "Möchten Sie die Antwort wirklich löschen?",
+		"DeleteResponse": "Antwort löschen"
 	},
 	"Pricing": {
 		"Operators": "Sitze",

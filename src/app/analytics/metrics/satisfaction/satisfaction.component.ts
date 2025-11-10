@@ -10,7 +10,9 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { AnalyticsService } from 'app/services/analytics.service';
-import { CHANNELS } from 'app/utils/util';
+import { CHANNELS, CHANNELS_NAME } from 'app/utils/util';
+import { AuthService } from 'app/core/auth.service';
+import { ProjectService } from 'app/services/project.service';
 
 @Component({
   selector: 'appdashboard-satisfaction',
@@ -49,13 +51,17 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     ... CHANNELS
   ];
 
+  CHANNELS_NAME = CHANNELS_NAME;
+  
   constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private auth: AuthService,
+    private projectService: ProjectService
   ) {
 
     this.lang = this.translate.getBrowserLang();
@@ -82,13 +88,71 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     this.getProjectUsersAndBots();
     this.getAvgSatisfaction();
     this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
+    this.getCurrentProject();
   }
 
   ngOnDestroy() {
     this.logger.log('[ANALYTICS - SATISFACTION] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+   getCurrentProject() {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      this.logger.log('[ANALYTICS - SATISFACTION] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
+      if (project) {
+        const projectId = project._id;
+        this.findCurrentProjectAmongAll(projectId)
+      }
+    });
+  }
+    
+  findCurrentProjectAmongAll(projectId: string) {
+
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[ANALYTICS - SATISFACTION] - GET PROJECTS - projects ', projects);  
+      const current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[ANALYTICS - SATISFACTION] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+      if (current_selected_prjct && current_selected_prjct.id_project.profile) {
+        const projectProfile = current_selected_prjct.id_project.profile
+        
+        // voice -> VXML voice
+        // voice_twilio -> Twilio voice
+        if (projectProfile && projectProfile.customization) {
+            const customization = projectProfile.customization;
+            this.logger.log('[ANALYTICS - SATISFACTION] - customization', customization);
+
+            // Filtra i canali in base alle customizzazioni
+            this.conversationType = this.conversationType.filter(channel => {
+              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
+                return false; // escludi TWILIO
+              }
+              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
+                return false; // escludi VXML
+              }
+              return true; // mantieni gli altri
+            });
+
+          } else {
+            // Se non c’è alcuna customizzazione, rimuovi entrambi
+            this.conversationType = this.conversationType.filter(channel =>
+              channel.id !== CHANNELS_NAME.VOICE_TWILIO && channel.id !== CHANNELS_NAME.VOICE_VXML
+            );
+          }
+      }
+      this.logger.log('[ANALYTICS - SATISFACTION] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[ANALYTICS - SATISFACTION] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[ANALYTICS - SATISFACTION] - GET PROJECTS * COMPLETE * ');
+    });
   }
 
   switchMonthName() {

@@ -166,15 +166,19 @@ button.user-details-btn-close {
 }
 
 .user-details-role > h3 {
-    font-size: 11px;
+    //font-size: 11px;
+    font-size: 14px;
     text-align: center;
-    margin-top: 5px;
-    text-transform: uppercase;
+    // margin-top: 5px;
+    margin-top: 0px;
+    // text-transform: uppercase;
     color: #a9afbb;
-    font-weight: 500;
+    // font-weight: 500;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    margin-bottom: 2px !important;
+    // margin-bottom: 2px !important;
+    margin-bottom: 8px !important;
 }
 
 .user-details-view-profile {

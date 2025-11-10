@@ -12,6 +12,7 @@
     "Default Department": "Departamento Predeterminado",
     "Teammate": "collaboratore",
     "Teammates": "collaboratori",
+    "TeammatesCapitalized": "Collaboratori",
     "TeammateInitial": "C",
     "ProjectSettings_Initials": "IP",
     "ProjectSettings": "Impostazioni progetto",
@@ -708,7 +709,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Questo messaggio contiene un URL da un dominio non consentito",
     "AllowedFileExtensions": "Estensioni file consentite",
     "AllowedFileExtensionsWidgetDesc": "Gestisci il tipo di file che gli utenti possono caricare dal widget",
-    "AllowedFileExtensionsAgentChatDesc": "Gestisci i tipi di file che gli utenti possono caricare dalla chat dell'agente",
+    "AllowedFileExtensionsAgentChatDesc": "Gestisci i tipi di file che i membri del team possono caricare dalla chat dell'agente",
     "AddExtension": "Aggiungi estensione",
     "QuotaResetsOn": "Quota si reimposta il {{reset_date}}",
     "AllExtensions": "Tutte",
@@ -801,6 +802,17 @@
     "OnlyAllowsLinksFrom": "consente solo link da https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "consente link da qualsiasi sottodominio di example.com (es. https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "Il membro del team",
+    "TheTeammates": "I membri del team",
+    "CannotDeleteRole": "Impossibile eliminare il ruolo <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "Questo ruolo è attualmente assegnato a {{total_associations}} {{association_type}}",
+    "ReassignDifferentRoleBeforeDeleting": "Riassegna {{pronoun}} a un ruolo diverso prima di eliminare questo",
+    "RoleCannotBeDeleted": "Il ruolo non può essere eliminato",
+    "MaxAllowedSize":"Dimensione massima consentita {{file_size_limit}} Mb",
+    "Attachments": "Allegati",
+    "Emoji": "Emoji",
+    "VoiceRecorder": "Registratore vocale",
+    "TheConversationWillBeResolved": "La conversation sera résolue",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -854,7 +866,10 @@
             "CreateCannedResError": "Si è verificato un errore durante la creazione della risposta",
             "UpdateCannedResSuccess": "Risposta aggiornata con successo",
             "UpdateCannedResError": "Si è verificato un errore durante l'aggiornamento della risposta"
-        }
+        },
+        "DeleteCannedResponse": "Elimina risposta predefinita",
+        "DoYouReallyWantToDeleteTheResponse": "Vuoi davvero eliminare la risposta?",
+        "DeleteResponse": "Elimina risposta"
     },
     "Pricing": {
         "Operators": "Posti",

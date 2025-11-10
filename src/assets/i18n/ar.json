@@ -12,6 +12,7 @@
     "Default Department": "القسم الافتراضي",
     "Teammate": "زميله",
     "Teammates": "زملائه",
+    "TeammatesCapitalized": "زملاء الفريق",
     "TeammateInitial": "ز",
     "ProjectSettings_Initials": "ملاحظة",
     "ProjectSettings": "إعدادات المشروع",
@@ -708,7 +709,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"تحتوي هذه الرسالة على عنوان URL من نطاق غير مسموح به",
     "AllowedFileExtensions": "امتدادات الملفات المسموحة",
     "AllowedFileExtensionsWidgetDesc": "إدارة نوع الملفات التي يمكن للمستخدمين تحميلها من الودجت",
-    "AllowedFileExtensionsAgentChatDesc": "إدارة أنواع الملفات التي يمكن للمستخدمين تحميلها من دردشة الوكيل",
+    "AllowedFileExtensionsAgentChatDesc":  "إدارة أنواع الملفات التي يمكن لزملاء الفريق تحميلها من دردشة الوكيل",
     "AddExtension": "إضافة امتداد",
     "QuotaResetsOn": "إعادة تعيين الحصة في {{reset_date}}",
     "AllExtensions": "الكل",
@@ -801,6 +802,17 @@
     "OnlyAllowsLinksFrom": "يسمح فقط بالروابط من https://example.com/...",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "يسمح بالروابط من أي نطاق فرعي لـ example.com (مثال: https://www.example.com/...، https://blog.example.com/...)",
+    "TheTeammate": "زميل الفريق",
+    "TheTeammates": "زملاء الفريق",
+    "CannotDeleteRole": "لا يمكن حذف الدور <b>{{role_name}}</b>",
+    "ThisRoleIsCurrentlyAssignedTo": "هذا الدور معين حالياً إلى {{total_associations}} {{associationType}}",
+    "ReassignDifferentRoleBeforeDeleting": "أعِد تعيين {{pronoun}} إلى دور مختلف قبل حذف هذا الدور",
+    "RoleCannotBeDeleted": "لا يمكن حذف الدور",
+    "MaxAllowedSize":"الحد الأقصى المسموح به للحجم {{file_size_limit}} ميجابايت",
+    "Attachments": "المرفقات",
+    "Emoji": "الرموز التعبيرية",
+    "VoiceRecorder": "مسجل الصوت",
+    "TheConversationWillBeResolved": "سيتم حل المحادثة",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -854,7 +866,10 @@
             "CreateCannedResError": "حدث خطأ أثناء تكوين الاستجابة",
             "UpdateCannedResSuccess": "تم تحديث الاستجابة بنجاح",
             "UpdateCannedResError": "حدث خطأ أثناء تحديث الاستجابة"
-        }
+        },
+        "DeleteCannedResponse": "حذف الرد الجاهز",
+        "DoYouReallyWantToDeleteTheResponse": "هل تريد حقًا حذف الرد؟",
+        "DeleteResponse": "حذف الرد"
     },
     "Pricing": {
         "Operators": "مقاعد",
