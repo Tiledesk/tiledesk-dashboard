@@ -127,7 +127,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
       this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject 1", this.aiSettingsObject)
 
       // new
@@ -301,7 +301,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.loadModelGroups();
 
     // const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    // console.log('LLM_MODEL' , LLM_MODEL)
+    // this.logger.log('LLM_MODEL' , LLM_MODEL)
     // const orderedProviders = [
     //   ...LLM_MODEL.filter(p => p.value === 'openai'),
     //   ...LLM_MODEL.filter(p => p.value !== 'openai')
@@ -319,7 +319,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //     }))
     // }));
 
-    // console.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
+    // this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
 
     // this.flattenedModels = this.modelGroups.flatMap(group => {
     //   // trova il provider corrispondente in LLM_MODEL
@@ -333,7 +333,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //   }));
     // });
 
-    // console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
     // // eventualmente seleziona il modello corrente
     // const selectedProvider = this.modelGroups.find(g =>
     //   g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
@@ -345,15 +345,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //   this.selectedModel = selectedModelObj?.value;
     // }
 
-    // console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
-    // console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    // console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
 
     // this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    // console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
     // const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    // console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     // this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
 
 
@@ -369,7 +369,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     const integrationName = 'vllm';
     this.integrationService.getIntegrationByName(integrationName).subscribe({
       next: (res: any) => {
-        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
 
         const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
         if (vllmProvider && res?.value?.models?.length) {
@@ -379,19 +379,19 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
             status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
           }));
 
-          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
         } else {
-          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
         }
 
         // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
         this.loadModelGroups();
       },
       error: (err) => {
-        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+         this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
       },
       complete: () => {
-        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+         this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
       }
     });
   }
@@ -400,7 +400,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     const integrationName = 'ollama';
     this.integrationService.getIntegrationByName(integrationName).subscribe({
       next: (res: any) => {
-        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
 
         const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
         if (ollamaProvider && res?.value?.models?.length) {
@@ -410,19 +410,19 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
             status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
           }));
 
-          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
         } else {
-          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
         }
 
         // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
         this.loadModelGroups();
       },
       error: (err) => {
-        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
       },
       complete: () => {
-        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+        this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
       }
     });
   }
@@ -430,7 +430,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   loadModelGroups() {
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    console.log('LLM_MODEL', LLM_MODEL)
+    this.logger.log('LLM_MODEL', LLM_MODEL)
     const orderedProviders = [
       ...LLM_MODEL.filter(p => p.value === 'openai'),
       ...LLM_MODEL.filter(p => p.value !== 'openai')
@@ -448,7 +448,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         }))
     }));
 
-    console.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
+    this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
 
     this.flattenedModels = this.modelGroups.flatMap(group => {
       // trova il provider corrispondente in LLM_MODEL
@@ -462,7 +462,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }));
     });
 
-    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
     // eventualmente seleziona il modello corrente
     const selectedProvider = this.modelGroups.find(g =>
       g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
@@ -474,17 +474,17 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedModel = selectedModelObj?.value;
     }
 
-    console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
-    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+    this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
 
 
 
     this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
     const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
   }
 
@@ -498,10 +498,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
         resolve(res)
       }, err => {
-        console.error(err);
+        this.logger.error(err);
         reject([])
       }, () => {
-        console.log('POST REQUEST * COMPLETE *');
+        this.logger.log('POST REQUEST * COMPLETE *');
       });
     })
 
@@ -511,7 +511,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     LLM_MODEL.forEach(async (model) => {
       if (model.value === "ollama") {
         const NEW_MODELS = await this.getIntegrationByName();
-        console.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS);
+        this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS);
 
         if (NEW_MODELS['value']?.models) {
           this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS['value'].models);
@@ -548,13 +548,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
   onSelectModel(selectedModel) {
-    console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
 
     const selected = this.flattenedModels.find(m => m.value === selectedModel);
     if (selected) {
-      console.log('Modello selezionato:', selected.name);
-      console.log('LLM Provider:', selected.llmValue);
-      console.log('Icona provider:', selected.llmSrc);
+      this.logger.log('Modello selezionato:', selected.name);
+      this.logger.log('LLM Provider:', selected.llmValue);
+      this.logger.log('Icona provider:', selected.llmSrc);
       this.selectedNamespace.preview_settings.llm = selected.llmValue
     }
 
