@@ -772,7 +772,24 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
 
-  forkTemplate(bot_id, selectedProjectId) {
+  // forkTemplate(bot_id, selectedProjectId) {
+  //   this.faqKbService.duplicateChatbot(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
+  //     this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
+  //     // this.botid = res.bot_id
+  //     this.getFaqKbById(res.bot_id, selectedProjectId);
+  //   }, (error) => {
+  //     this.logger.error('[BOTS-LIST] FORK TEMPLATE - ERROR ', error);
+
+  //   }, () => {
+  //     this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+  
+      
+  //   });
+  // }
+
+  forkTemplate(bot_id,  selectedProjectId) {
+    this.logger.log('forkTemplate this.currentProjectId ', this.currentProjectId) 
+    this.logger.log('forkTemplate selectedProjectId ', selectedProjectId) 
     this.faqKbService.duplicateChatbot(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
       // this.botid = res.bot_id
@@ -782,8 +799,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     }, () => {
       this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+      // this.router.navigate(['project/' + selectedProjectId + '/bots/my-chatbots/all']);
+      
     });
   }
+
 
   getFaqKbById(botid, selectedProjectId) {
     this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
@@ -1263,21 +1283,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           }
 
 
-          const messageRequests = this.faqkbList.map(bot =>
-            this.faqKbService.getNumberOfMessages(bot._id, bot.type)
-          );
+          // const messageRequests = this.faqkbList.map(bot =>
+          //   this.faqKbService.getNumberOfMessages(bot._id, bot.type)
+          // );
 
-          forkJoin(messageRequests)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((results: any[]) => {
-            results.forEach((res, i) => {
-              if (res.length === 0) {
-                this.faqkbList[i].message_count = 0;
-              } else {
-                this.faqkbList[i].message_count = res[0].totalCount;
-              }
-            });
-          });
+          // forkJoin(messageRequests)
+          // .pipe(takeUntil(this.unsubscribe$))
+          // .subscribe((results: any[]) => {
+          //   results.forEach((res, i) => {
+          //     if (res.length === 0) {
+          //       this.faqkbList[i].message_count = 0;
+          //     } else {
+          //       this.faqkbList[i].message_count = res[0].totalCount;
+          //     }
+          //   });
+          // });
         }
       }
 

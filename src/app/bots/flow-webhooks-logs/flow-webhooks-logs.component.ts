@@ -244,7 +244,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
   deleteWebhook(webhookid: string): void {
     this.logger.log('[FLOW-WEBHOOKS] delete flow webhook - webhookid ', webhookid);
     Swal.fire({
-      title: this.translate.instant('AreYouSure'),
+      title: this.translate.instant('AreYouSure') + "?",
       text: this.translate.instant('TheWebhookWillBeDeleted'),
       icon: 'warning',
       showCloseButton: false,
