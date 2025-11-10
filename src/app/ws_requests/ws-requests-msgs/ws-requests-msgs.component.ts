@@ -3172,7 +3172,7 @@ updateTagContainerHeight() {
   // -------------------------------------------------------------------------
   scrollCardContentToBottom() {
     setTimeout(() => {
-     console.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ')
+     this.logger.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ')
       // CHECK THIS
       const initialScrollPosition = this.myScrollContainer.nativeElement;
       // this.logger.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ', initialScrollPosition)
