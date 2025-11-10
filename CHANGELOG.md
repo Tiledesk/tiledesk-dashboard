@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.152-stage
+- Fixes the bug: Some sidebar items do not become active if a query parameter is present
+- Fixes the bug: Non-real-time conversations and conversation history are not loaded if there is a query parameter different from the ones used by the search
+- Fixes the bug: in department details, if a group is deleted, it remains visible in the groups load balance section
+
 ### 2.7.155-AR
 - Fixes the bug: Some sidebar items do not become active if a query parameter is present
 - Fixes the bug: Non-real-time conversations and conversation history are not loaded if there is a query parameter different from the ones used by the search
