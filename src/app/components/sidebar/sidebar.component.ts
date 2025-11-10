@@ -2092,7 +2092,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // if (event.url.indexOf('/automations') !== -1) {
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'automations') {
+        // Estrae l'ultimo segmento dell'URL rimuovendo i query parameters
+        const automationsLastSegment = event.url.substring(event.url.lastIndexOf('/') + 1).split('?')[0];
+        if (automationsLastSegment === 'automations') {
           this.AUTOMATIONS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         } else {
@@ -2100,7 +2102,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'automations-demo') {
+        // Estrae l'ultimo segmento dell'URL rimuovendo i query parameters
+        const lastSegment = event.url.substring(event.url.lastIndexOf('/') + 1).split('?')[0];
+        if (lastSegment === 'automations-demo') {
           this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE);
         } else {
@@ -2108,7 +2112,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/automations?id') !== -1) {
+        // Verifica se siamo sulla pagina dei dettagli delle automazioni (con queryParam 'id')
+        // Usa parseUrl per verificare correttamente i queryParams indipendentemente dall'ordine
+        const urlTree = this.router.parseUrl(event.url);
+        const isAutomationsRoute = event.url.indexOf('/automations') !== -1;
+        const hasIdParam = urlTree.queryParams && urlTree.queryParams['id'] !== undefined;
+        if (isAutomationsRoute && hasIdParam) {
           this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE);
         } else {
