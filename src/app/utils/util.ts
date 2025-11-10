@@ -737,7 +737,7 @@ export function getIndexOfdialogflowLanguage(langcode: string): number {
 
 
 export function loadTokenMultiplier(ai_models) {
-    console.log('loadTokenMultiplier ai_models ',ai_models) 
+    // console.log('loadTokenMultiplier ai_models ',ai_models) 
     let models_string = ai_models.replace(/ /g, '');
 
     let models = {};
