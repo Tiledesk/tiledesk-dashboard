@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.151-stage
+- Manages the "tiledesk_logOut" query parameter which shows/hides the logout button
+- Removes permission to view conversations on the contact details page
+- Adds the ability to search for abandoned conversations to the Status combobox of the History page
+- Fixes the bug: on the History page, search does not work if the Status combobox is empty
+- Adds an event listener to the onOpenTicketExternally event
+
 ### 2.7.150-stage
 - Manages the "tiledesk_logOut" query parameter which shows/hides the logout button
 - Removes permission to view conversations on the contact details page
