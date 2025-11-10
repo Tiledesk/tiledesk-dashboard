@@ -927,12 +927,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     const currentUrl = this.router.url;
     // this.logger.log('[HISTORY & NORT-CONVS] current_url ', currentUrl);
 
+    // Verifica se ci sono query parameters rilevanti (escludendo tiledesk_logOut)
+    const queryParams = this.route.snapshot.queryParamMap;
+    const hasRelevantQueryParams = queryParams.has('qs') || queryParams.has('leftfilter');
+
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
       this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
-      if (currentUrl.indexOf('?') === -1) {
+      if (!hasRelevantQueryParams) {
         this._preflight = false;
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
@@ -951,12 +955,27 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.preflight = true;
       // this.queryString = 'preflight=' + true
 
-      if (currentUrl.indexOf('?') === -1) {
+      if (!hasRelevantQueryParams) {
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
 
       }
     }
+  }
+
+  /**
+   * Helper method to preserve tiledesk_logOut query parameter when navigating
+   */
+  private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
+    const currentParams = this.route.snapshot.queryParamMap;
+    const tiledeskLogOut = currentParams.get('tiledesk_logOut');
+    
+    const queryParams = { ...customParams };
+    if (tiledeskLogOut) {
+      queryParams['tiledesk_logOut'] = tiledeskLogOut;
+    }
+    
+    return queryParams;
   }
 
   goToRequestMsgs(request_recipient: string) {
@@ -970,25 +989,32 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
       if (this.has_searched === true) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ qs: JSON.stringify(this.queryString) });
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams })
       } else if (this.has_searched === false) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'])
+        const queryParams = this.getQueryParamsWithTiledeskLogOut();
+        const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], navigationExtras)
       }
     }
     else {
       this.logger.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
 
       if (this.has_searched === true) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ qs: JSON.stringify(this.queryString) });
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams })
       } else if (this.has_searched === false) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'])
+        const queryParams = this.getQueryParamsWithTiledeskLogOut();
+        const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], navigationExtras)
       }
 
       // this.logger.log('goToRequestMsgs requests_status_selected_from_left_filter ', this.requests_status_selected_from_left_filter)
       // this.logger.log('goToRequestMsgs requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option)
       if (this.requests_status_selected_from_left_filter && !this.requests_status_selected_from_advanced_option) {
         if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
-          this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { leftfilter: this.requests_status_selected_from_left_filter } })
+          const queryParams = this.getQueryParamsWithTiledeskLogOut({ leftfilter: this.requests_status_selected_from_left_filter });
+          this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams })
         }
       }
     }
