@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.136
+- Adds a link to the documentation on the New Broadcast page
+
 ### 2.7.135
 - Adds the ability to select between multiple LLMs in the AI ​​settings dialog
 
