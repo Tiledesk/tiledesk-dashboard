@@ -518,7 +518,9 @@
 
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow dropdown-toggle send-msg-dropdown-toggle" data-toggle="dropdown"
-                              (click)="isOpenDropdown(isOpen = !isOpen)">
+                              (click)="isOpenDropdown(isOpen = !isOpen)"
+                              [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)"
+                              [ngClass]="{'send-msg-dropdown-toggle-disabled': (!chat_message || chat_message?.length === 0) && (existAnAttacment === false)}" >
                               <span class="caret"
                                 [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
                               <span class="sr-only">Toggle Dropdown</span>
@@ -572,7 +574,12 @@
                             style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
+                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()"
+                              matTooltipClass="custom-mat-tooltip"
+                              [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100">
                               <span class="material-icons">
                                 attach_file
                               </span>
@@ -1416,7 +1423,7 @@
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
-                            <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                            <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                               <i class="material-icons" style="vertical-align: middle; ">archive</i>
@@ -1429,7 +1436,7 @@
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
-                            <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                            <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                               <i class="material-icons" style="vertical-align: middle;">archive</i>

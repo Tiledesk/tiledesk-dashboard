@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
 
 // import * as moment from 'moment';
 import moment from "moment"
-import { Subscription, zip } from 'rxjs';
+import { Subject, Subscription, zip } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
-import { CHANNELS } from 'app/utils/util';
+import { CHANNELS, CHANNELS_NAME } from 'app/utils/util';
+import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'app/core/auth.service';
+import { ProjectService } from 'app/services/project.service';
 
 @Component({
   selector: 'appdashboard-messages',
@@ -17,7 +20,7 @@ import { CHANNELS } from 'app/utils/util';
   styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit {
-
+  private unsubscribe$: Subject<any> = new Subject<any>();
   lang: string;
   monthNames: any;
   selected: string;
@@ -41,12 +44,16 @@ export class MessagesComponent implements OnInit {
     ... CHANNELS
   ];
 
+  CHANNELS_NAME = CHANNELS_NAME;
+
   constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private usersService: UsersService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public auth: AuthService,
+    private projectService: ProjectService
     ) {
 
     this.lang = this.translate.getBrowserLang();
@@ -68,6 +75,71 @@ export class MessagesComponent implements OnInit {
     this.logger.log("[ANALYTICS - MSGS] INIT", this.initDay, "END", this.endDay);
 
     this.getMessagesByLastNDays(this.selectedDaysId, this.selectedAgentId, this.selectedChannelId);
+     this.getCurrentProject();
+  }
+
+   ngOnDestroy() {
+    this.logger.log('[ANALYTICS - MSGS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+   getCurrentProject() {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      this.logger.log('[ANALYTICS - MSGS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
+      if (project) {
+        const projectId = project._id;
+        this.findCurrentProjectAmongAll(projectId)
+      }
+    });
+  }
+  
+  findCurrentProjectAmongAll(projectId: string) {
+
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[ANALYTICS - MSGS] - GET PROJECTS - projects ', projects);  
+      const current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[ANALYTICS - MSGS] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+      if (current_selected_prjct && current_selected_prjct.id_project.profile) {
+        const projectProfile = current_selected_prjct.id_project.profile
+        
+        // voice -> VXML voice
+        // voice_twilio -> Twilio voice
+        if (projectProfile && projectProfile.customization) {
+            const customization = projectProfile.customization;
+            this.logger.log('[ANALYTICS - MSGS] - customization', customization);
+
+       
+            this.conversationType = this.conversationType.filter(channel => {
+              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
+                return false; 
+              }
+              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
+                return false; 
+              }
+              return true; 
+            });
+
+          } else {
+          
+            this.conversationType = this.conversationType.filter(channel =>
+              channel.id !== CHANNELS_NAME.VOICE_TWILIO && channel.id !== CHANNELS_NAME.VOICE_VXML
+            );
+          }
+      }
+      this.logger.log('[ANALYTICS - MSGS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[ANALYTICS - MSGS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[ANALYTICS - MSGS] - GET PROJECTS * COMPLETE * ');
+    });
   }
 
   switchMonthName() {
@@ -144,10 +216,7 @@ export class MessagesComponent implements OnInit {
       });
   }
 
-  ngOnDestroy() {
-    this.logger.log('[ANALYTICS - MSGS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
-    this.subscription.unsubscribe();
-  }
+ 
 
   daysSelect(value, $event) {
     this.logger.log("[ANALYTICS - MSGS] daysSelect EVENT: ", $event)

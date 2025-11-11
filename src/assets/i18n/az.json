@@ -12,6 +12,7 @@
     "Default Department": "Standart şöbə",
     "Teammate": "komanda yoldaşı",
     "Teammates": "komanda yoldaşları",
+    "TeammatesCapitalized": "Komanda yoldaşları",
     "TeammateInitial": "T",
     "ProjectSettings_Initials": "PS",
     "ProjectSettings": "Layihə Parametrləri",
@@ -709,7 +710,7 @@
     "ThisMessageContainsURLFromDomainNotAllowed":"Bu mesajda icazə verilməyən domendən olan URL var",
     "AllowedFileExtensions": "İcazə verilən fayl uzantıları",
     "AllowedFileExtensionsWidgetDesc": "İstifadəçilərin vidjetdən yükləyə biləcəyi fayl növlərini idarə edin",
-    "AllowedFileExtensionsAgentChatDesc": "İstifadəçilərin agent söhbətindən yükləyə biləcəyi fayl növlərini idarə edin",
+    "AllowedFileExtensionsAgentChatDesc": "Komanda yoldaşlarının agent söhbətindən yükləyə biləcəyi fayl növlərini idarə edin",
     "AddExtension": "Uzantı əlavə et",
     "QuotaResetsOn": "Kvota {{reset_date}} tarixində sıfırlanır",
     "AllExtensions": "Hamısı",
@@ -802,6 +803,17 @@
     "OnlyAllowsLinksFrom": "yalnız https://example.com/... keçidlərə icazə verir",
     "WildcardExampleDotCom": "*.example.com",
     "AllowsLinksFromAnySubdomainOf": "example.com-un hər hansı alt domenindən keçidlərə icazə verir (məsələn: https://www.example.com/..., https://blog.example.com/...)",
+    "TheTeammate": "komanda yoldaşı",
+    "TheTeammates": "komanda yoldaşları",
+    "CannotDeleteRole": "<b>{{role_name}}</b> rolunu silmək mümkün deyil",
+    "ThisRoleIsCurrentlyAssignedTo": "Bu rol hazırda {{total_associations}} {{association_type}} təyin edilib",
+    "ReassignDifferentRoleBeforeDeleting": "Bunu silməzdən əvvəl {{pronoun}} fərqli bir rol verin",
+    "RoleCannotBeDeleted": "Rol silinə bilməz",
+    "MaxAllowedSize":"Maksimum icazə verilən ölçü {{file_size_limit}} Mb",
+    "Attachments": "Əlavələr",
+    "Emoji": "Emociya",
+    "VoiceRecorder": "Səs yazıcısı",
+    "TheConversationWillBeResolved": "Söhbət həll ediləcək",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -855,7 +867,10 @@
             "CreateCannedResError": "Cavab yaratarkən xəta baş verdi",
             "UpdateCannedResSuccess": "Cavab uğurla yeniləndi",
             "UpdateCannedResError": "Cavab yenilənərkən xəta baş verdi"
-        }
+        },
+        "DeleteCannedResponse": "Hazır cavabı sil",
+        "DoYouReallyWantToDeleteTheResponse": "Cavabı həqiqətən silmək istəyirsiniz?",
+        "DeleteResponse": "Cavabı sil"
     },
     "Pricing": {
         "Operators": "Oturacaqlar",
