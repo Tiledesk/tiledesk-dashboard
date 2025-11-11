@@ -756,7 +756,7 @@
     "Rejected": "المرفوضة",
     "Failed": "الفاشلة",
     "SentTo": "تم الإرسال إلى",
-      "read": "مقروء",
+    "read": "مقروء",
     "delivered": "تم التوصيل",
     "sent": "تم الإرسال",
     "accepted": "مقبول",
@@ -813,6 +813,7 @@
     "Emoji": "الرموز التعبيرية",
     "VoiceRecorder": "مسجل الصوت",
     "TheConversationWillBeResolved": "سيتم حل المحادثة",
+    "LearnHowToCreateWhatsAppBroadcasts": "تعلم كيفية إنشاء بثوات واتساب",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

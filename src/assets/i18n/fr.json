@@ -813,6 +813,7 @@
     "Emoji": "Émoji",
     "VoiceRecorder": "Enregistreur vocal",
     "TheConversationWillBeResolved": "La conversation sera résolue",
+    "LearnHowToCreateWhatsAppBroadcasts": "Apprenez à créer des diffusions WhatsApp",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

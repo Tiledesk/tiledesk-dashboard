@@ -569,6 +569,32 @@ button.icon-only {
   font-style: normal !important;
 }
 
+.kb-link-to-docs-wpr {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    line-height: 20px;
+    // background-color: rgb(241, 241, 241);
+    // padding: 15px;
+    width: 100%;
+  }
+
+  .kb-link-to-docs-wpr > span > svg {
+    fill: var(--blue-light);
+  }
+  
+  .kb-link-to-docs {
+    margin-left: 8px;
+    vertical-align: middle;
+    color: var(--blue-light); // #0f62ff;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  
+  .kb-link-to-docs:hover {
+    text-decoration: underline;
+  }
 
 // ::ng-deep .custom-csv-table {
 //   width: 100%;
