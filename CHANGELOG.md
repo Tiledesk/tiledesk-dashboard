@@ -1,15 +1,18 @@
 # tiledesk-dashboard
 
-## 2.7.134
+### 2.7.135
+- Adds the ability to select between multiple LLMs in the AI ​​settings dialog
+
+### 2.7.134
 - Adds a tooltip to the file upload button in the conversation detail that indicates the maximum size allowed
 - Displays a confirm dialog on delete Canned response 
 - Manage the Knowledge preview error “allowed max tokens”
 - Allows txt extension on Knowledge Base page > Add contents > Upload files
 
-## 2.7.133
+### 2.7.133
 - Updates markdown library
 
-## 2.7.132
+### 2.7.132
 - Fixes the bug: Ai Agent duplicate not working
 
 ### 2.7.131
