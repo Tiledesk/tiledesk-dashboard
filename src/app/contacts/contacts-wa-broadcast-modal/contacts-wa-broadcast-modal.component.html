@@ -1,0 +1,126 @@
+<div class="contacts-wa-broadcast-modal-container">
+  
+  <div class="b-flex-container">
+    
+    <div class="b-left-columns-container">
+      
+      <div class="b-left--columns">
+        
+        <div class="choose-wa-tmplt-label-and-select-wpr">
+          <div class="template-select-label">{{ 'ChooseTemplate' | translate }}</div>
+          
+          <div class="select-and-btn-wpr">
+            <ng-select id="template-select" 
+              [clearable]="false" 
+              [searchable]="false"
+              [(ngModel)]="templateName" 
+              [items]="templates_list" 
+              bindLabel="name"
+              bindValue="name" 
+              placeholder="{{ 'ChooseTemplate' | translate }}" 
+              style="width: 250px;"
+              (change)="onSelectTemplate()">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="contact-name-input-wpr" *ngIf="selected_template">
+          <div class="template-select-label">{{ 'Name' | translate }}</div>
+          <div class="select-and-btn-wpr">
+            <input 
+              type="text" 
+              class="form-control input-md contact-name-input"
+              [(ngModel)]="contactName" 
+              (input)="onContactNameChange()"
+              placeholder="{{ 'Name' | translate }}"
+              style="width: 250px;">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <!-- -------------------------------------------------- -->
+    <!-- Template Preview -->
+    <!-- -------------------------------------------------- -->
+    <div class="b-right-column">
+      <div class="preview-template-header">
+        {{ 'TemplatePreview' | translate }}
+      </div>
+      
+      <div class="no-template-selected-container" *ngIf="!selected_template">
+        <div class="no-template-selected">
+          {{ 'NoTemplateSelected' | translate }}
+        </div>
+      </div>
+      
+      <div id="preview-container" class="preview-container" *ngIf="selected_template">
+        <div class="inner-preview-container">
+          <div class="message-cloud">
+            
+            <!-- // Header -->
+            <div class="header-preview">
+              <span *ngIf="header_component?.format === 'TEXT'"
+                [innerHTML]="header_component?.text | htmlEntitiesEncode | waToMarkdown | marked">
+              </span>
+              
+              <span *ngIf="header_component?.format === 'IMAGE'">
+                <img [src]="header_params[0]?.image?.link"
+                  (error)="onHeaderImageError($event)" />
+              </span>
+              
+              <span *ngIf="header_component?.format === 'DOCUMENT'">
+                <div class="pdf-preview">
+                  <p>PDF</p>
+                </div>
+              </span>
+              
+              <span *ngIf="header_component?.format === 'LOCATION'">
+                <div class="location-preview">
+                  {{ 'Location' | translate }}
+                </div>
+              </span>
+            </div>
+            
+            <!-- Body | formatColLabels-->
+            <div class="body-preview" >
+              <span [innerHTML]="body_component?.text | waToMarkdown | marked | formatColLabels"></span>
+            </div>
+            
+            <!-- // Footer -->
+            <div class="footer-preview">
+              <span [innerHTML]="footer_component?.text | htmlEntitiesEncode | waToMarkdown | marked"></span>
+            </div>
+            
+            <!-- // Call to action preview -->
+            <div *ngIf="buttons_component && (buttons_component.buttons[0].type === 'URL' || buttons_component.buttons[0].type === 'PHONE_NUMBER')"
+              class="call-to-action-preview">
+              
+              <button *ngFor="let btn of buttons_component.buttons"
+                class="btn whatsapp-call-to-action">
+                <span *ngIf="btn.type === 'URL'"
+                  class="material-icons-outlined call-to-action-icon">open_in_new</span>
+                <span *ngIf="btn.type === 'PHONE_NUMBER'"
+                  class="material-icons-round call-to-action-icon">phone</span>
+                {{ btn.text }}
+              </button>
+            </div>
+            
+          </div>
+          
+          <div class="message-cloud-buttons-container"
+            *ngIf="buttons_component && buttons_component.buttons[0].type === 'QUICK_REPLY'">
+            <div class="message-cloud-buttons">
+              <button *ngFor="let btn of buttons_component.buttons" fill="clear"
+                class="message-cloud-button">
+                <span class="_2VWlB">{{btn.text}}</span>
+              </button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <!-- ./ preview -->
+    </div>
+  </div>
+</div>

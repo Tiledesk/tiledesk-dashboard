@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
+import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal/contacts-wa-broadcast-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -129,7 +131,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -167,6 +170,22 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+   presentDialogWABroadcast(contact) {
+      this.logger.log('[CONTACTS-COMP] openDialog presentDialogWABroadcast chatbot ', contact)
+      const dialogRef = this.dialog.open(ContactsWaBroadcastModalComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '800px',
+        data: {
+          contact: contact,
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(res => {
+        
+        
+      });
+    }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
