@@ -12,6 +12,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { WaToMarkdownPipe } from 'app/wa-to-markdown.pipe';
 import { FormatColLabelsPipe } from 'app/format-col-labels-pipe';
 import { FormatPhonePipe } from 'app/format-phone.pipe';
+import { HighlightTemplateVariablesPipe } from 'app/highlight-template-variables.pipe';
 
 
 
@@ -30,7 +31,8 @@ import { FormatPhonePipe } from 'app/format-phone.pipe';
     SelectOptionsTranslatePipe, 
     WaToMarkdownPipe,
     FormatColLabelsPipe,
-    FormatPhonePipe
+    FormatPhonePipe,
+    HighlightTemplateVariablesPipe
   ],
   exports: [
     LoadingSpinnerComponent,
@@ -43,6 +45,7 @@ import { FormatPhonePipe } from 'app/format-phone.pipe';
     WaToMarkdownPipe,
     FormatColLabelsPipe,
     FormatPhonePipe,
+    HighlightTemplateVariablesPipe,
     ColorPickerModule
   ],
   providers: [ 

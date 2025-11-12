@@ -16,7 +16,11 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   selected_template_name: any;
   selected_template_lang: any;
   templateName: string;
-  contactName: string;
+  phoneNumber: string = ''; // Numero di telefono del contatto
+  bodyParamsValues: string[] = []; // Array per i valori dei parametri del body
+  headerParamsValues: string[] = []; // Array per i valori dei parametri dell'header
+  buttonParamsValues: string[] = []; // Array per i valori dei parametri dei button
+  private previewUpdateTimeout: any;
 
   // Template Preview components
   header_component: any;
@@ -41,12 +45,14 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     private logger: LoggerService,
     public sanitizer: DomSanitizer,
   ) {
-    this.logger.log('[MODAL-WA-BROADCAST] data ', data)
+    console.log('[MODAL-WA-BROADCAST] data ', data)
+    // Inizializza il numero di telefono dal contact
+    if (this.data?.contact?.phone) {
+      this.phoneNumber = this.data.contact.phone;
+    }
    }
 
   ngOnInit(): void {
-    // Inizializza il nome del contatto dai dati passati al modal
-    this.contactName = this.data?.contact?.fullname || 'Nome Contatto';
     this.getWATemplates();
   }
 
@@ -64,12 +70,89 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   onSelectTemplate() {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
-    console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
+   console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
     if (this.selected_template) {
       this.selected_template_name = this.selected_template.name
       this.selected_template_lang = this.selected_template.language
       this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template_name', this.selected_template_name)
+      
+      // Resetta body_component_temp quando si seleziona un nuovo template
+      this.body_component_temp = null;
+      
+      // Inizializza i valori dei parametri con gli esempi del template
+      this.initializeBodyParams();
+      this.initializeHeaderParams();
+      this.initializeButtonParams();
       this.createTemplatePreview()
+    }
+  }
+
+  initializeBodyParams() {
+    this.bodyParamsValues = [];
+    const bodyComponent = this.selected_template.components.find(c => c.type === 'BODY');
+    if (bodyComponent) {
+      const bodyValues = bodyComponent.example?.body_text?.[0] || [];
+      // Inizializza con i valori di esempio, o con il nome del contatto per il primo parametro se disponibile
+      bodyValues.forEach((val, i) => {
+        if (i === 0 && this.data?.contact?.fullname) {
+          this.bodyParamsValues.push(this.data.contact.fullname);
+        } else {
+          this.bodyParamsValues.push(val || '');
+        }
+      });
+    }
+  }
+
+  initializeHeaderParams() {
+    this.headerParamsValues = [];
+    const headerComponent = this.selected_template.components.find(c => c.type === 'HEADER');
+    if (headerComponent) {
+      if (headerComponent.format === 'TEXT') {
+        const headerValues = headerComponent.example?.header_text || [];
+        headerValues.forEach((val) => {
+          this.headerParamsValues.push(val || '');
+        });
+      } else if (headerComponent.format === 'IMAGE' || headerComponent.format === 'DOCUMENT') {
+        const links = headerComponent.example?.header_handle || [];
+        links.forEach((link) => {
+          this.headerParamsValues.push(link || '');
+        });
+      }
+    }
+  }
+
+  initializeButtonParams() {
+    this.buttonParamsValues = [];
+    const buttonsComponent = this.selected_template.components.find(c => c.type === 'BUTTONS');
+    if (buttonsComponent) {
+      const urlButton = buttonsComponent.buttons.find(b => b.type === 'URL');
+      if (urlButton && urlButton.url && urlButton.url.includes('{{1}}')) {
+        const exampleUrl = urlButton.example?.[0] || '';
+        const originalUrl = urlButton.url || '';
+        const [prefix, suffix] = originalUrl.split('{{1}}');
+        let paramText = '';
+        if (exampleUrl.startsWith(prefix) && exampleUrl.endsWith(suffix)) {
+          // Estrae il valore che sostituisce {{1}}
+          const extractedValue = exampleUrl.slice(prefix.length, exampleUrl.length - suffix.length);
+          
+          // Se il valore estratto contiene un query parameter (inizia con ? o &), estrae solo quello
+          // Altrimenti usa il valore completo
+          if (extractedValue.includes('?')) {
+            // Estrae solo la parte del query parameter
+            const queryIndex = extractedValue.indexOf('?');
+            paramText = extractedValue.substring(queryIndex);
+          } else if (extractedValue.includes('&')) {
+            // Se inizia con &, estrae da & in poi
+            const andIndex = extractedValue.indexOf('&');
+            paramText = extractedValue.substring(andIndex);
+          } else {
+            // Altrimenti usa il valore completo
+            paramText = extractedValue;
+          }
+        }
+        this.buttonParamsValues.push(paramText);
+      }
+      // Se l'URL non contiene {{1}}, non aggiungere nessun input (buttonParamsValues rimane vuoto)
     }
   }
 
@@ -95,30 +178,30 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     if (this.header_component) {
       this.header_component_temp = JSON.parse(JSON.stringify(this.header_component));
       if (this.header_component.format === 'TEXT') {
-        const headerValues = this.header_component.example?.header_text || [];
-        headerValues.forEach((val, i) => {
+        // Usa i valori dagli input invece degli esempi
+        this.headerParamsValues.forEach((val, i) => {
           const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
-          this.header_component.text = (this.header_component.text || '').replace(re, val);
-          this.header_params.push({ index: i + 1, type: 'TEXT', text: val });
+          this.header_component.text = (this.header_component.text || '').replace(re, val || `{{${i + 1}}}`);
+          this.header_params.push({ index: i + 1, type: 'TEXT', text: val || '' });
         });
       }
       else if (this.header_component.format === 'IMAGE') {
-        const links = this.header_component.example?.header_handle || [];
-        links.forEach((link, i) => {
-          this.header_params.push({ index: i + 1, type: 'IMAGE', image: { link } });
+        // Usa i valori dagli input invece degli esempi
+        this.headerParamsValues.forEach((link, i) => {
+          this.header_params.push({ index: i + 1, type: 'IMAGE', image: { link: link || '' } });
         });
       }
       else if (this.header_component.format === 'DOCUMENT') {
-        const handles = this.header_component.example?.header_handle || [];
-        if (handles.length) {
+        // Usa i valori dagli input invece degli esempi
+        if (this.headerParamsValues.length) {
           this.fileUploadAccept = '.pdf';
-          this.src = handles[0];
-          this.sanitizeUrl(handles[0]);
-          handles.forEach((link, i) => {
+          this.src = this.headerParamsValues[0];
+          this.sanitizeUrl(this.headerParamsValues[0]);
+          this.headerParamsValues.forEach((link, i) => {
             this.header_params.push({
               index: i + 1,
               type: 'DOCUMENT',
-              document: { link }
+              document: { link: link || '' }
             });
           });
         }
@@ -132,34 +215,29 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     }
 
     if (this.body_component) {
-      // Usa il nome del contatto dalla proprietà (modificabile dall'utente)
-      const bodyValues = this.body_component.example?.body_text?.[0] || [];
-      bodyValues.forEach((val, i) => {
-        const colLabel = `[body_${i}]`;
+      // Salva il testo originale se non è già stato salvato
+      if (!this.body_component_temp) {
+        this.body_component_temp = JSON.parse(JSON.stringify(this.body_component));
+      }
+      // Ripristina il testo originale prima di fare le sostituzioni
+      this.body_component.text = this.body_component_temp.text;
+      this.body_params = [];
+      
+      // Usa i valori dai parametri modificabili dall'utente
+      this.bodyParamsValues.forEach((paramValue, i) => {
         const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
-        
-        // Se è il primo placeholder ({{1}}), usa il nome del contatto modificabile
-        if (i === 0) {
-          this.body_component.text = (this.body_component.text || '').replace(re, this.contactName);
-          this.body_params.push({ index: i + 1, type: 'text', text: this.contactName });
-        } else {
-          // Per gli altri placeholder, usa i valori di esempio con l'etichetta
-          this.body_component.text = (this.body_component.text || '').replace(re, `${val} [body_${i}]`);
-          this.body_params.push({ index: i + 1, type: 'text', text: val });
-        }
+        // Sostituisce il placeholder con il valore dell'utente
+        const displayValue = paramValue || `{{${i + 1}}}`;
+        this.body_component.text = (this.body_component.text || '').replace(re, displayValue);
+        this.body_params.push({ index: i + 1, type: 'text', text: paramValue || '' });
       });
     }
 
-    if (this.url_button_component?.example?.[0]) {
+    if (this.url_button_component && this.buttonParamsValues.length > 0) {
       const originalUrl = this.url_button_component.url || '';
-      const exampleUrl = this.url_button_component.example[0];
+      const paramText = this.buttonParamsValues[0] || '';
 
       if (originalUrl.includes('{{1}}')) {
-        const [prefix, suffix] = originalUrl.split('{{1}}');
-        let paramText = '';
-        if (exampleUrl.startsWith(prefix) && exampleUrl.endsWith(suffix)) {
-          paramText = exampleUrl.slice(prefix.length, exampleUrl.length - suffix.length);
-        }
         this.buttons_params = [{ index: 1, type: 'text', text: paramText }];
         this.url_button_component.url = originalUrl.replace('{{1}}', paramText);
 
@@ -180,11 +258,45 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     }
   }
 
-  onContactNameChange() {
-    // Aggiorna il preview quando l'utente modifica il nome del contatto
-    if (this.selected_template) {
-      this.createTemplatePreview();
+  trackByIndex(index: number, item: any): any {
+    return index;
+  }
+
+  onBodyParamChange() {
+    // Aggiorna il preview quando l'utente modifica qualsiasi parametro del body
+    // Usa un debounce per evitare chiamate troppo frequenti che interferiscono con l'input
+    if (this.previewUpdateTimeout) {
+      clearTimeout(this.previewUpdateTimeout);
     }
+    this.previewUpdateTimeout = setTimeout(() => {
+      if (this.selected_template) {
+        this.createTemplatePreview();
+      }
+    }, 500);
+  }
+
+  onHeaderParamChange() {
+    // Aggiorna il preview quando l'utente modifica qualsiasi parametro dell'header
+    if (this.previewUpdateTimeout) {
+      clearTimeout(this.previewUpdateTimeout);
+    }
+    this.previewUpdateTimeout = setTimeout(() => {
+      if (this.selected_template) {
+        this.createTemplatePreview();
+      }
+    }, 500);
+  }
+
+  onButtonParamChange() {
+    // Aggiorna il preview quando l'utente modifica qualsiasi parametro del button
+    if (this.previewUpdateTimeout) {
+      clearTimeout(this.previewUpdateTimeout);
+    }
+    this.previewUpdateTimeout = setTimeout(() => {
+      if (this.selected_template) {
+        this.createTemplatePreview();
+      }
+    }, 500);
   }
 
 }

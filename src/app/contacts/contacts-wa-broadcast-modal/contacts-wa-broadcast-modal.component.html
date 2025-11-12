@@ -24,17 +24,100 @@
           </div>
         </div>
 
-        <div class="contact-name-input-wpr" *ngIf="selected_template">
-          <div class="template-select-label">{{ 'Name' | translate }}</div>
-          <div class="select-and-btn-wpr">
-            <input 
-              type="text" 
-              class="form-control input-md contact-name-input"
-              [(ngModel)]="contactName" 
-              (input)="onContactNameChange()"
-              placeholder="{{ 'Name' | translate }}"
-              style="width: 250px;">
+        <!-- All Parameters in one section -->
+        <div class="template-params-input-wpr">
+          
+          <!-- Phone Number - Always visible -->
+          <div class="params-section-title">Phone number</div>
+          <div class="params-container">
+            <div class="param-input-wpr">
+              <div class="param-label-container">
+                <i class="material-icons-outlined param-phone-icon">phone</i>
+              </div>
+              <div class="param-input-container">
+                <input 
+                  type="text" 
+                  class="form-control input-md param-input"
+                  [(ngModel)]="phoneNumber"
+                  placeholder="+1555123456"
+                  style="width: 100%;">
+                <div class="param-input-icons">
+                  <i class="material-icons-outlined param-icon">info_outline</i>
+                  <i class="material-icons-outlined param-icon">code</i>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Header Parameters -->
+          <div *ngIf="selected_template && headerParamsValues.length > 0">
+            <div class="params-section-title">Header parameters</div>
+            <div class="params-section-description" *ngIf="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT'">
+              The header contains a Media to customize
+            </div>
+            <div class="params-container">
+              <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
+                <div class="param-label-container">
+                  <span class="param-number-badge">{{ i + 1 }}</span>
+                </div>
+                <div class="param-input-container">
+                  <input 
+                    type="text" 
+                    class="form-control input-md param-input"
+                    [ngModel]="headerParamsValues[i]" 
+                    (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
+                    [placeholder]="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT' ? 'Insert a valid URL or update a file' : '{{' + (i + 1) + '}}'"
+                    style="width: 100%;">
+                  <div class="param-input-icons">
+                    <i class="material-icons-outlined param-icon" *ngIf="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT'">cloud_upload</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body Parameters -->
+          <div *ngIf="selected_template && bodyParamsValues.length > 0">
+            <div class="params-section-title">Body parameters</div>
+            <div class="params-container">
+              <div class="param-input-wpr" *ngFor="let param of bodyParamsValues; let i = index; trackBy: trackByIndex">
+                <div class="param-label-container">
+                  <span class="param-number-badge">{{ i + 1 }}</span>
+                </div>
+                <div class="param-input-container">
+                  <input 
+                    type="text" 
+                    class="form-control input-md param-input"
+                    [ngModel]="bodyParamsValues[i]" 
+                    (ngModelChange)="bodyParamsValues[i] = $event; onBodyParamChange()"
+                    [placeholder]="'{{' + (i + 1) + '}}'"
+                    style="width: 100%;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Button Parameters -->
+          <div *ngIf="selected_template && buttonParamsValues.length > 0">
+            <div class="params-section-title">Buttons parameters</div>
+            <div class="params-container">
+              <div class="param-input-wpr" *ngFor="let param of buttonParamsValues; let i = index; trackBy: trackByIndex">
+                <div class="param-label-container">
+                  <span class="param-number-badge">{{ i + 1 }}</span>
+                </div>
+                <div class="param-input-container">
+                  <input 
+                    type="text" 
+                    class="form-control input-md param-input"
+                    [ngModel]="buttonParamsValues[i]" 
+                    (ngModelChange)="buttonParamsValues[i] = $event; onButtonParamChange()"
+                    placeholder="Insert a valid URL"
+                    style="width: 100%;">
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
         
       </div>
@@ -65,7 +148,7 @@
               </span>
               
               <span *ngIf="header_component?.format === 'IMAGE'">
-                <img [src]="header_params[0]?.image?.link"
+                <img [src]="headerParamsValues[0] || header_params[0]?.image?.link"
                   (error)="onHeaderImageError($event)" />
               </span>
               
@@ -82,9 +165,9 @@
               </span>
             </div>
             
-            <!-- Body | formatColLabels-->
-            <div class="body-preview" >
-              <span [innerHTML]="body_component?.text | waToMarkdown | marked | formatColLabels"></span>
+            <!-- Body -->
+            <div class="body-preview">
+              <span [innerHTML]="body_component?.text | waToMarkdown | marked"></span>
             </div>
             
             <!-- // Footer -->

@@ -39,20 +39,111 @@
   border-radius: var(--cl-card-border-radius);
   padding: 16px;
   max-height: fit-content;
+  margin-bottom: 12px;
 }
 
-.contact-name-input-wpr {
+.template-params-input-wpr {
   box-shadow: var(--card-elevation);
   border-radius: var(--cl-card-border-radius);
   padding: 16px;
   max-height: fit-content;
+  margin-bottom: 16px;
 }
 
-.contact-name-input {
-  padding: 8px 12px;
+.params-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  font-family: var(--header-font-family);
+  margin-bottom: 8px;
+  margin-top: 16px;
+  
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.params-section-description {
+  font-size: 12px;
+  color: #666;
+  font-family: var(--header-font-family);
+  margin-bottom: 12px;
+}
+
+.params-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.param-input-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.param-label-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+}
+
+.param-number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #0f62ff;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--header-font-family);
+}
+
+.param-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.param-input {
+  padding: 8px 40px 8px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
+  width: 100%;
+}
+
+.param-input-icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  right: 8px;
+  pointer-events: none;
+}
+
+.param-icon {
+  font-size: 18px;
+  color: #666;
+  cursor: pointer;
+  pointer-events: auto;
+  
+  &:hover {
+    color: #0f62ff;
+  }
+}
+
+.param-phone-icon {
+  font-size: 20px;
+  color: #666;
 }
 
 .b-right-column {
@@ -282,6 +373,16 @@
   font-weight: 400;
   letter-spacing: 0px;
   border: none;
+}
+
+.body-preview > span ::ng-deep .template-variable-highlight {
+  display: inline-block;
+  background: #fff3cd;
+  color: #856404;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid #ffc107;
 }
 
 .body-preview > span ::ng-deep .csv-col-label {
