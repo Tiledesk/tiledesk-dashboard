@@ -2490,7 +2490,13 @@
         "Failed": "Failed!",
         "Save": "Save",
         "Clear": "Clear",
-        "Delete": "Delete"
+        "Delete": "Delete",
+        "Transport": "Transport",
+        "AddMCPServer": "Add MCP Server",
+        "EditMCPServer": "Edit MCP Server",
+        "TotalMCPServers": "Total MCP Servers",
+        "SearchByNameURLOrType": "Search by name, URL or type",
+        "NoMCPServersFound": "No MCP servers found"
     },
     "ViewTeammates": "Takım arkadaşlarını görüntüle",
     "AddNewTeammate": "Yeni takım arkadaşı ekle",
