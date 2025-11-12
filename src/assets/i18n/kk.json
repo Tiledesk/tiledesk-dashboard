@@ -813,6 +813,7 @@
     "Emoji": "Эмоджи",
     "VoiceRecorder": "Дыбыс жазушы",
     "TheConversationWillBeResolved": "Өтініш шешіледі",
+    "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp таратуларды қалай жасауды үйреніңіз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

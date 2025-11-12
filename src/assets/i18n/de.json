@@ -812,6 +812,7 @@
     "Emoji": "Emoji",
     "VoiceRecorder": "Sprachrecorder",
 	"TheConversationWillBeResolved": "Die Konversation wird abgeschlossen",
+	"LearnHowToCreateWhatsAppBroadcasts": "Erfahren Sie, wie Sie WhatsApp-Broadcasts erstellen",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -38,11 +38,17 @@
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
-        <ng-select appendTo="body" [items]="model_list" bindLabel="name" bindValue="value"
-            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" [clearable]="false" [searchable]="false"
-            [(ngModel)]="selectedModel" (change)="onSelectModel(selectedModel)">
+        <!-- <ng-select appendTo="body" 
+            [items]="model_list" 
+            bindLabel="name" 
+            bindValue="value"
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
+            [clearable]="false" [searchable]="false"
+            [(ngModel)]="selectedModel" 
+            (change)="onSelectModel(selectedModel)"
+            [searchable]="true"> -->
 
-            <ng-template ng-label-tmp let-item="item">
+            <!-- <ng-template ng-label-tmp let-item="item">
                 <div style="display: flex; flex-direction: row; align-items: center;">
                     <div class="model-icon">
                         <svg width="18" height="18" fill="none" style="position: relative;top: 3px;margin-right: 3px;"
@@ -57,12 +63,9 @@
                     <div style="font-weight: 400;">
                         {{item.name}}
                     </div>
-                    <!-- <div *ngIf="item.multiplier" style="color: rgba(0, 0, 0, .6);font-weight: 400; position: absolute;right: 25px;"> 
-                        {{item.multiplier }} 
-                    </div> -->
                 </div>
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item" let-index="index">
+            </ng-template> -->
+            <!-- <ng-template ng-option-tmp let-item="item" let-index="index">
                 <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
                     <div class="model-icon-and-name" style="display: flex;flex-direction: row; align-items: center;">
                         <div class="model-icon">
@@ -82,13 +85,37 @@
                         </div>
 
                     </div>
-                    <!-- <div style="display: flex;flex-direction: row; justify-content: space-between;"> -->
+                   
                     <div *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
                         {{item.multiplier }}
                     </div>
                 </div>
+            </ng-template> -->
+        <!-- </ng-select> -->
+
+        <ng-select
+            appendTo="body"
+            [items]="flattenedModels"
+            bindLabel="name"
+            bindValue="value"
+            [groupBy]="'providerName'"
+            [virtualScroll]="true"
+            [searchable]="true"
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+            [(ngModel)]="selectedModel"
+            (change)="onSelectModel(selectedModel)"
+            [clearable]="false">
+
+            <ng-template ng-option-tmp let-item="item">
+                <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
+                 {{ item.name }}
+                    <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
+                    {{ item.multiplier }}
+                    </span>
+                </div>
             </ng-template>
         </ng-select>
+
     </div>
 
     <sat-popover id="ai-settings-label" #aiModel horizontalAlign="before" verticalAlign="center"
@@ -133,10 +160,12 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">{{max_tokens_min}}</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" [min]="max_tokens_min" max="9999" [(ngModel)]="max_tokens"
+                <!-- [max]="max_tokens_max" -->
+                <mat-slider class="wait-slider" thumbLabel step="1" [min]="max_tokens_min" max="100000" [(ngModel)]="max_tokens"
                     (change)="updateSliderValue($event.value, 'max_tokens')" aria-label="units">
                 </mat-slider>
-                <div class="action-wait-range">9999</div>
+                <!-- {{max_tokens_max}} -->
+                <div class="action-wait-range"> 100000</div>
             </div>
             <!-- <input type="text" class="slider-output" value="{{max_tokens}}" disabled> -->
         </div>
@@ -186,7 +215,8 @@
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
                 <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="temperature"
-                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units">
+                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units" [disabled]="temperature_slider_disabled"
+                    [ngClass]="{'mat-slider-disabled': temperature_slider_disabled}">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
