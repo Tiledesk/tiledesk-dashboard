@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.137
+- Adds MCP server to integrations
+
 ### 2.7.136
 - Adds a link to the documentation on the New Broadcast page
 
