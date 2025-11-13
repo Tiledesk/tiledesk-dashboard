@@ -178,6 +178,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         width: '800px',
         data: {
           contact: contact,
+          projectId: this.projectId
         },
       });
   

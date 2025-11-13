@@ -115,4 +115,21 @@ export class AutomationsService {
       .post(url, formData, options)
   }
 
+  public sendBroadcast(broadcastData: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    broadcastData.broadcast = true
+
+    const url = this.SERVER_BASE_PATH + "modules/whatsapp/api/tiledesk/broadcast";
+    this.logger.log('[AUTOMATIONS.SERVICE] - SEND BROADCAST - URL ', url);
+    console.log('[AUTOMATIONS.SERVICE] - SEND BROADCAST - DATA ', broadcastData);
+
+    return this.httpClient.post(url, JSON.stringify(broadcastData), httpOptions);
+  }
+
 }

@@ -24,7 +24,7 @@
 .b-left--columns {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0px;
   min-width: 0; /* allow shrink to enable horizontal scroll */
 }
 

@@ -17,6 +17,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   selected_template_lang: any;
   templateName: string;
   phoneNumber: string = ''; // Numero di telefono del contatto
+  phone_number_id: string = '110894941712700'; // WhatsApp Phone Number ID
   bodyParamsValues: string[] = []; // Array per i valori dei parametri del body
   headerParamsValues: string[] = []; // Array per i valori dei parametri dell'header
   buttonParamsValues: string[] = []; // Array per i valori dei parametri dei button
@@ -37,6 +38,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   src: any;
   sanitizedUrl: any;
   fileUploadAccept: string;
+  projectId: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -50,11 +52,16 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     if (this.data?.contact?.phone) {
       this.phoneNumber = this.data.contact.phone;
     }
+    if (this.data?.projectId) {
+      this.projectId = this.data.projectId;
+    }
    }
 
   ngOnInit(): void {
     this.getWATemplates();
+    
   }
+
 
   getWATemplates() {
     this.automationsService.getWATemplates().subscribe((templates: any) => {
@@ -127,30 +134,9 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     if (buttonsComponent) {
       const urlButton = buttonsComponent.buttons.find(b => b.type === 'URL');
       if (urlButton && urlButton.url && urlButton.url.includes('{{1}}')) {
+        // Mostra l'intero URL dell'esempio nell'input
         const exampleUrl = urlButton.example?.[0] || '';
-        const originalUrl = urlButton.url || '';
-        const [prefix, suffix] = originalUrl.split('{{1}}');
-        let paramText = '';
-        if (exampleUrl.startsWith(prefix) && exampleUrl.endsWith(suffix)) {
-          // Estrae il valore che sostituisce {{1}}
-          const extractedValue = exampleUrl.slice(prefix.length, exampleUrl.length - suffix.length);
-          
-          // Se il valore estratto contiene un query parameter (inizia con ? o &), estrae solo quello
-          // Altrimenti usa il valore completo
-          if (extractedValue.includes('?')) {
-            // Estrae solo la parte del query parameter
-            const queryIndex = extractedValue.indexOf('?');
-            paramText = extractedValue.substring(queryIndex);
-          } else if (extractedValue.includes('&')) {
-            // Se inizia con &, estrae da & in poi
-            const andIndex = extractedValue.indexOf('&');
-            paramText = extractedValue.substring(andIndex);
-          } else {
-            // Altrimenti usa il valore completo
-            paramText = extractedValue;
-          }
-        }
-        this.buttonParamsValues.push(paramText);
+        this.buttonParamsValues.push(exampleUrl);
       }
       // Se l'URL non contiene {{1}}, non aggiungere nessun input (buttonParamsValues rimane vuoto)
     }
@@ -235,9 +221,19 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
     if (this.url_button_component && this.buttonParamsValues.length > 0) {
       const originalUrl = this.url_button_component.url || '';
-      const paramText = this.buttonParamsValues[0] || '';
+      const fullUrl = this.buttonParamsValues[0] || '';
 
       if (originalUrl.includes('{{1}}')) {
+        // Se l'URL originale contiene {{1}}, sostituiscilo con l'URL completo inserito dall'utente
+        // Ma dobbiamo estrarre solo la parte che sostituisce {{1}} per il parametro
+        const [prefix, suffix] = originalUrl.split('{{1}}');
+        let paramText = fullUrl;
+        
+        // Se l'URL inserito inizia con il prefix e finisce con il suffix, estrai solo la parte variabile
+        if (fullUrl.startsWith(prefix) && fullUrl.endsWith(suffix)) {
+          paramText = fullUrl.slice(prefix.length, fullUrl.length - suffix.length);
+        }
+        
         this.buttons_params = [{ index: 1, type: 'text', text: paramText }];
         this.url_button_component.url = originalUrl.replace('{{1}}', paramText);
 
@@ -297,6 +293,121 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
         this.createTemplatePreview();
       }
     }, 500);
+  }
+
+  createReceiversList() {
+    // Crea un array con un solo receiver (il contatto corrente)
+    const phone_number = this.phoneNumber.startsWith('+') ? this.phoneNumber : `+${this.phoneNumber}`;
+    const receiver: any = { phone_number };
+
+    // Header params
+    if (this.headerParamsValues.length > 0) {
+      const header_params = [];
+      this.headerParamsValues.forEach((value, index) => {
+        if (!value) return;
+        
+        if (this.header_component?.format === 'IMAGE' || this.header_component?.format === 'DOCUMENT') {
+          if (value.startsWith('http')) {
+            header_params.push({
+              type: "IMAGE",
+              image: { link: value }
+            });
+          }
+        } else if (this.header_component?.format === 'TEXT') {
+          header_params.push({
+            type: "text",
+            text: value
+          });
+        }
+      });
+      if (header_params.length) receiver.header_params = header_params;
+    }
+
+    // Body params
+    if (this.bodyParamsValues.length > 0) {
+      const body_params = [];
+      this.bodyParamsValues.forEach((value) => {
+        if (!value) return;
+        body_params.push({
+          type: "text",
+          text: value
+        });
+      });
+      if (body_params.length) receiver.body_params = body_params;
+    }
+
+    // Buttons params
+    if (this.buttonParamsValues.length > 0) {
+      const buttons_params = [];
+      this.buttonParamsValues.forEach((value) => {
+        if (!value) return;
+        // Per i button, il valore è l'URL completo che sostituisce {{1}}
+        // Dobbiamo estrarre solo la parte variabile se l'URL originale contiene {{1}}
+        let paramText = value;
+        if (this.url_button_component?.url && this.url_button_component.url.includes('{{1}}')) {
+          const [prefix, suffix] = this.url_button_component.url.split('{{1}}');
+          if (value.startsWith(prefix) && value.endsWith(suffix)) {
+            paramText = value.slice(prefix.length, value.length - suffix.length);
+          }
+        }
+        buttons_params.push({
+          type: "text",
+          text: paramText
+        });
+      });
+      if (buttons_params.length) receiver.buttons_params = buttons_params;
+    }
+
+    return [receiver];
+  }
+
+  sendBroadcast() {
+    if (!this.selected_template) {
+      this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No template selected');
+      return;
+    }
+
+    if (!this.phoneNumber) {
+      this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No phone number');
+      return;
+    }
+
+    // Crea la receiver_list
+    const receiver_list = this.createReceiversList();
+    console.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
+    
+    // Prepara i dati per il broadcast
+    const broadcastData = {
+      id_project: this.automationsService.project_id,
+      receiver_list: receiver_list,
+      phone_number_id: this.data?.phone_number_id || this.phone_number_id,
+      template: this.selected_template_name,
+      transaction_id: `automation-request-${this.projectId}-${Date.now()}`,
+      // broadcast: true
+    };
+    console.log('[CONTACTS-WA-BROADCAST-MODAL] broadcastData' , broadcastData )
+
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Sending broadcast with data:', broadcastData);
+
+    this.automationsService.sendBroadcast(broadcastData).subscribe(
+      (response) => {
+       console.log('[CONTACTS-WA-BROADCAST-MODAL] Broadcast sent successfully:', response);
+        this.dialogRef.close({ success: true, response });
+      },
+      (error) => {
+        this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] Error sending broadcast:', error);
+        // Potresti mostrare un messaggio di errore all'utente qui
+        this.dialogRef.close({ success: false, error });
+      }
+    );
+  }
+
+   onOkPresssed(){
+    this.sendBroadcast();
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
