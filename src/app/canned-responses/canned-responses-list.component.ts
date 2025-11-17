@@ -68,7 +68,7 @@ export class CannedResponsesListComponent implements OnInit {
 
    getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[CANNED-RES-LIST] - LoggedUser ', user);
+      this.logger.log('[CANNED-RES-LIST] - LoggedUser ', user);
 
       if (user && user._id) {
         this.currentUserId = user._id;
@@ -79,7 +79,7 @@ export class CannedResponsesListComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -148,14 +148,14 @@ export class CannedResponsesListComponent implements OnInit {
   getResponses() {
     // this.contactsService.getLeads(this.queryString, this.pageNo).subscribe((leads_object: any) => {
     this.cannedResponsesService.getCannedResponses().subscribe((responses: any) => {
-      // console.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
+      // this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
       if (responses) {
         this.responsesList = responses;
 
         this.responsesList.forEach(cannedresponse => {
           const user = this.usersLocalDbService.getMemberFromStorage(cannedresponse.createdBy);
-          // console.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response user from local', user);
-          // console.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response ', cannedresponse);
+          // this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response user from local', user);
+          // this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response ', cannedresponse);
           if (user !== null) {
             cannedresponse.createdBy_user = user;
           } else {

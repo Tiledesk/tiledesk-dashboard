@@ -207,6 +207,8 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
    * GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
    * note: the project id is passed get and passed by deptService */
   getDeptsByProjectId() {
+    // Clear cache to ensure fresh data when entering the component
+    this.deptService.clearDepartmentsCache();
     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
       this.logger.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
 

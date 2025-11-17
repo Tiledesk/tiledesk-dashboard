@@ -12,6 +12,7 @@ import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME, APP_SUMO_PLAN_NA
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
 import { BrandService } from 'app/services/brand.service'
+import { CachePuService } from 'app/services/cache/cache-pu.service'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
@@ -141,7 +142,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     public dialog: MatDialog,
     public wsRequestsService: WsRequestsService,
     private clipboard: Clipboard,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private cachePuService: CachePuService
 
   ) {
     super(prjctPlanService, notify);
@@ -604,6 +606,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getAllUsersOfCurrentProject(storage) {
+    // Pulisci la cache per assicurarsi di vedere sempre i dati aggiornati quando si entra nel componente
+    this.cachePuService.clearPuCache();
+    this.logger.log('[USERS] - GET ALL USERS OF CURRENT PROJECT - Cleared project users cache to ensure fresh data');
+    
     let users_id_array = [];
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {

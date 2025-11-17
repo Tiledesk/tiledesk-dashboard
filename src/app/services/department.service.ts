@@ -1,13 +1,14 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Department } from '../models/department-model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { map } from 'rxjs/operators';
+import { DepartmentsCacheService } from './cache/departments-cache.service';
+import { map, shareReplay, tap } from 'rxjs/operators';
 @Injectable()
 
 export class DepartmentService {
@@ -24,7 +25,8 @@ export class DepartmentService {
     private httpClient: HttpClient,
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private departmentsCacheService: DepartmentsCacheService
   ) {
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
@@ -136,7 +138,6 @@ export class DepartmentService {
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IS NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
   public getDeptsByProjectId(): Observable<Department[]> {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -144,10 +145,44 @@ export class DepartmentService {
       })
     };
 
-    const url = this.DEPTS_URL + 'allstatus';
-    this.logger.log('[DEPTS-SERV] GET DEPTS ALL STATUS - DEPTS URL', url);
-    return this.httpClient
-      .get<Department[]>(url, httpOptions)
+    // Check if we have cached data first
+    const cachedData = this.departmentsCacheService.getCachedData();
+    if (cachedData) {
+      this.logger.log('[DEPTS-SERV] - GET DEPTS BY PROJECT ID - Using cached data (no HTTP request)');
+      return of(cachedData);
+    }
+
+    // Check if there's an Observable in progress
+    let departments$ = this.departmentsCacheService.getValue();
+    
+    if (!departments$) {
+      const url = this.DEPTS_URL + 'allstatus';
+      this.logger.log('[DEPTS-SERV] - GET DEPTS BY PROJECT ID - Cache miss, making HTTP request - URL:', url);
+      this.logger.log('[DEPTS-SERV] GET DEPTS ALL STATUS - DEPTS URL', url);
+      departments$ = this.httpClient
+        .get<Department[]>(url, httpOptions)
+        .pipe(
+          map((response: any) => response),
+          tap((data: Department[]) => {
+            // Cache the actual data when it arrives
+            this.departmentsCacheService.setCachedData(data);
+          }),
+          shareReplay(1)
+        );
+      this.departmentsCacheService.setValue(departments$);
+    } else {
+      this.logger.log('[DEPTS-SERV] - GET DEPTS BY PROJECT ID - Using cached Observable (HTTP request may be in progress)');
+    }
+
+    return departments$;
+  }
+
+  /**
+   * Clear departments cache
+   * Public method to allow components to clear cache when needed
+   */
+  public clearDepartmentsCache() {
+    this.departmentsCacheService.clearDepartmentsCache();
   }
 
   public getDeptsByProjectIdToHookTemplates(projectid): Observable<Department[]> {
@@ -165,25 +200,12 @@ export class DepartmentService {
       .get<Department[]>(url, httpOptions)
   }
 
-  public getDeptsByProjectIdToPromise(): any {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-
-    const url = this.DEPTS_URL + 'allstatus';
-    this.logger.log('[DEPTS-SERV] GET DEPTS TO PROMISE - DEPTS URL', url);
-
-    return this.httpClient
-      .get(url, httpOptions)
-      .pipe(
-        map((response) => {
-          return response
-        })
-      )
-      .toPromise();
+  public getDeptsByProjectIdToPromise(): Promise<any> {
+    // Use the cached method which already handles caching
+    const departments$ = this.getDeptsByProjectId();
+    this.logger.log('[DEPTS-SERV] GET DEPTS TO PROMISE - Using cached getDeptsByProjectId()');
+    // Convert Observable to Promise
+    return departments$.toPromise();
   }
 
   /**
@@ -247,8 +269,17 @@ export class DepartmentService {
 
     this.logger.log('[DEPTS-SERV] ADD-DEPT BODY ', body);
 
-    return this.httpClient
+    const add$ = this.httpClient
       .post(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful creation
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - ADD DEPT - Cleared departments cache');
+        })
+      );
+
+    return add$;
   }
 
   /**
@@ -267,8 +298,17 @@ export class DepartmentService {
       })
     };
 
-    return this.httpClient
+    const delete$ = this.httpClient
       .delete(url, httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful deletion
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - DELETE DEPT - Cleared departments cache');
+        })
+      );
+
+    return delete$;
   }
 
   /**
@@ -300,8 +340,17 @@ export class DepartmentService {
 
     this.logger.log('[DEPTS-SERV] UPDATE DEPT - BODY ', body);
 
-    return this.httpClient
+    const update$ = this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful update
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - UPDATE DEPT - Cleared departments cache');
+        })
+      );
+
+    return update$;
   }
 
 
@@ -320,9 +369,17 @@ export class DepartmentService {
     const body = { 'id_bot': id_bot };
     this.logger.log('[DEPTS-SERV] - UPDATE EXISTING DEPT WITH SELECED BOT - BODY', body);
 
-    return this.httpClient
+    const update$ = this.httpClient
       .patch(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful update
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - UPDATE EXISTING DEPT WITH SELECTED BOT - Cleared departments cache');
+        })
+      );
 
+    return update$;
   }
 
   /**
@@ -345,8 +402,17 @@ export class DepartmentService {
     const body = { 'status': status };
     this.logger.log('[DEPTS-SERV] UPDATE DEPT STATUS - BODY ', body);
 
-    return this.httpClient
+    const update$ = this.httpClient
       .patch(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful status update
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - UPDATE DEPT STATUS - Cleared departments cache');
+        })
+      );
+
+    return update$;
   }
 
   // --------------------------------------------------------------
@@ -368,9 +434,17 @@ export class DepartmentService {
     const body = { 'online_msg': onlineMsg };
 
     this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPARTMENT ONLINE MSG - BODY  ', body);
-    return this.httpClient
+    const update$ = this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
-    // .map((res) => res.json());
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful update
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPT ONLINE MSG - Cleared departments cache');
+        })
+      );
+
+    return update$;
   }
 
   // --------------------------------------------------------------
@@ -391,8 +465,17 @@ export class DepartmentService {
     const body = { 'offline_msg': offlineMsg };
 
     this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPARTMENT OFFLINE MSG - BODY ', body);
-    return this.httpClient
+    const update$ = this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the departments cache after successful update
+          this.departmentsCacheService.clearDepartmentsCache();
+          this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPT OFFLINE MSG - Cleared departments cache');
+        })
+      );
+
+    return update$;
   }
 
   /**
