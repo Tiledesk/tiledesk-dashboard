@@ -2499,7 +2499,13 @@
         "Failed": "¡Fallido!",
         "Save": "Ahorrar",
         "Clear": "Claro",
-        "Delete": "Borrar"
+        "Delete": "Borrar",
+        "Transport": "Transporte",
+        "AddMCPServer": "Agregar Servidor MCP",
+        "EditMCPServer": "Editar Servidor MCP",
+        "TotalMCPServers": "Total Servidores MCP",
+        "SearchByNameURLOrType": "Buscar por nombre, URL o tipo",
+        "NoMCPServersFound": "No se encontraron servidores MCP"
     },
     "ViewTeammates": "Ver compañeros",
     "AddNewTeammate": "Añadir nuevo compañero",

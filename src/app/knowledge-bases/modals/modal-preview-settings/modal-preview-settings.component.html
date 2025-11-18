@@ -38,11 +38,17 @@
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
-        <ng-select appendTo="body" [items]="model_list" bindLabel="name" bindValue="value"
-            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" [clearable]="false" [searchable]="false"
-            [(ngModel)]="selectedModel" (change)="onSelectModel(selectedModel)">
+        <!-- <ng-select appendTo="body" 
+            [items]="model_list" 
+            bindLabel="name" 
+            bindValue="value"
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
+            [clearable]="false" [searchable]="false"
+            [(ngModel)]="selectedModel" 
+            (change)="onSelectModel(selectedModel)"
+            [searchable]="true"> -->
 
-            <ng-template ng-label-tmp let-item="item">
+            <!-- <ng-template ng-label-tmp let-item="item">
                 <div style="display: flex; flex-direction: row; align-items: center;">
                     <div class="model-icon">
                         <svg width="18" height="18" fill="none" style="position: relative;top: 3px;margin-right: 3px;"
@@ -57,12 +63,9 @@
                     <div style="font-weight: 400;">
                         {{item.name}}
                     </div>
-                    <!-- <div *ngIf="item.multiplier" style="color: rgba(0, 0, 0, .6);font-weight: 400; position: absolute;right: 25px;"> 
-                        {{item.multiplier }} 
-                    </div> -->
                 </div>
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item" let-index="index">
+            </ng-template> -->
+            <!-- <ng-template ng-option-tmp let-item="item" let-index="index">
                 <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
                     <div class="model-icon-and-name" style="display: flex;flex-direction: row; align-items: center;">
                         <div class="model-icon">
@@ -82,13 +85,37 @@
                         </div>
 
                     </div>
-                    <!-- <div style="display: flex;flex-direction: row; justify-content: space-between;"> -->
+                   
                     <div *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
                         {{item.multiplier }}
                     </div>
                 </div>
+            </ng-template> -->
+        <!-- </ng-select> -->
+
+        <ng-select
+            appendTo="body"
+            [items]="flattenedModels"
+            bindLabel="name"
+            bindValue="value"
+            [groupBy]="'providerName'"
+            [virtualScroll]="true"
+            [searchable]="true"
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+            [(ngModel)]="selectedModel"
+            (change)="onSelectModel(selectedModel)"
+            [clearable]="false">
+
+            <ng-template ng-option-tmp let-item="item">
+                <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
+                 {{ item.name }}
+                    <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
+                    {{ item.multiplier }}
+                    </span>
+                </div>
             </ng-template>
         </ng-select>
+
     </div>
 
     <sat-popover id="ai-settings-label" #aiModel horizontalAlign="before" verticalAlign="center"
