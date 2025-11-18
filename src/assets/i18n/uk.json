@@ -812,6 +812,8 @@
     "Attachments": "Вкладення",
     "Emoji": "Емодзі",
     "VoiceRecorder": "Диктофон",
+    "TheConversationWillBeResolved": "Розмова буде вирішена",
+    "LearnHowToCreateWhatsAppBroadcasts": "Дізнайтеся, як створювати розсилки в WhatsApp",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2460,7 +2462,13 @@
         "Failed": "Не вдалося!",
         "Save": "зберегти",
         "Clear": "ясно",
-        "Delete": "Видалити"
+        "Delete": "Видалити",
+        "Transport": "Транспорт",
+        "AddMCPServer": "Додати MCP Сервер",
+        "EditMCPServer": "Редагувати MCP Сервер",
+        "TotalMCPServers": "Всього MCP Серверів",
+        "SearchByNameURLOrType": "Пошук за ім'ям, URL або типом",
+        "NoMCPServersFound": "MCP сервери не знайдені"
     },
     "ViewTeammates": "Переглянути товаришів по команді",
     "AddNewTeammate": "Додати нового товариша по команді",

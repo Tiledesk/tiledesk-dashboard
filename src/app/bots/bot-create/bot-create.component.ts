@@ -680,7 +680,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.project = project
         this.getProjectById(this.project._id)
       }
-      // this.logger.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
+       this.logger.log('[BOT-CREATE] -> project from AUTH sub  ', this.project)
     });
   }
 

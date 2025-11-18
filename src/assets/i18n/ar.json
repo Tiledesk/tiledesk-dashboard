@@ -756,7 +756,7 @@
     "Rejected": "المرفوضة",
     "Failed": "الفاشلة",
     "SentTo": "تم الإرسال إلى",
-      "read": "مقروء",
+    "read": "مقروء",
     "delivered": "تم التوصيل",
     "sent": "تم الإرسال",
     "accepted": "مقبول",
@@ -812,6 +812,8 @@
     "Attachments": "المرفقات",
     "Emoji": "الرموز التعبيرية",
     "VoiceRecorder": "مسجل الصوت",
+    "TheConversationWillBeResolved": "سيتم حل المحادثة",
+    "LearnHowToCreateWhatsAppBroadcasts": "تعلم كيفية إنشاء بثوات واتساب",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2461,7 +2463,13 @@
         "Failed": "فشل!",
         "Save": "يحفظ",
         "Clear": "واضح",
-        "Delete": "يمسح"
+        "Delete": "يمسح",
+        "Transport": "نقل",
+        "AddMCPServer": "إضافة خادم MCP",
+        "EditMCPServer": "تحرير خادم MCP",
+        "TotalMCPServers": "إجمالي خوادم MCP",
+        "SearchByNameURLOrType": "البحث بالاسم أو URL أو النوع",
+        "NoMCPServersFound": "لم يتم العثور على خوادم MCP"
     },
     "ViewTeammates": "عرض زملائه",
     "AddNewTeammate": "أضف زميلًا جديدًا في الفريق",

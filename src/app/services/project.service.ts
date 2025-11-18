@@ -6,8 +6,9 @@ import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { map, shareReplay } from 'rxjs/operators';
-import { CacheService } from './cache.service';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { AllProjectsCacheService } from './cache/all-projects-cache.service';
+import { ProjectCacheService } from './cache/project-cache.service';
 
 @Injectable()
 export class ProjectService {
@@ -33,7 +34,8 @@ export class ProjectService {
     public _httpclient: HttpClient,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    private cacheService: CacheService
+    private cacheService: AllProjectsCacheService,
+    private projectCacheService: ProjectCacheService
   ) {
 
     this.user = auth.user_bs.value
@@ -116,11 +118,11 @@ export class ProjectService {
   
 
     let projects$ = this.cacheService.getValue();
-    this.logger.log('[PROJECT-SERV] - GET  projects$ from cacheService');
 
     if (!projects$) {
+      // Cache non trovata o scaduta, faccio la chiamata HTTP
       const url = this.PROJECTS_URL;
-      this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
+      this.logger.log('[PROJECT-SERV] - GET PROJECTS - Cache miss, making HTTP request - URL:', url);
       projects$ = this._httpclient.get(url, httpOptions)
       .pipe( // Chains RxJS operators
         map((response: any) => response), // Maps the response to itself. In this case, it's necessary because the response is expected to be an array of Project objects. 
@@ -128,6 +130,9 @@ export class ProjectService {
       );
       this.logger.log('[PROJECT-SERV] - GET  projects$ from HTTP REQUEST  projects$');
       this.cacheService.setValue(projects$);
+    } else {
+      // Cache trovata, uso quella
+      this.logger.log('[PROJECT-SERV] - GET PROJECTS - Using cached projects$');
     }
 
     return  projects$;
@@ -162,6 +167,14 @@ export class ProjectService {
    * @returns 
    */
   public getProjectById(id: string): Observable<Project[]> {
+    // Controlla se il progetto è in cache
+    const cachedProject$ = this.projectCacheService.getProjectById(id);
+    if (cachedProject$) {
+      this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - Using cached project:', id);
+      return cachedProject$;
+    }
+
+    // Se non in cache, fai la chiamata HTTP
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -171,10 +184,19 @@ export class ProjectService {
     };
 
     let url = this.PROJECTS_URL + id;
+    this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - Cache miss, making HTTP request - URL:', url);
     this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - URL', url);
 
-    return this._httpclient
+    const project$ = this._httpclient
       .get<Project[]>(url, httpOptions)
+      .pipe(
+        shareReplay(1) // Condivide il risultato tra più subscriber
+      );
+
+    // Salva in cache
+    this.projectCacheService.setProjectById(id, project$);
+
+    return project$;
   }
 
   /**
@@ -198,8 +220,18 @@ export class ProjectService {
     const body = { 'name': name };
     this.logger.log('[PROJECT-SERV] CREATE PROJECT POST REQUEST - BODY ', body);
 
-    return this._httpclient
+    const create$ = this._httpclient
       .post(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the all projects cache after successful creation
+          // (no need to clear ProjectCacheService because the new project is not yet in cache)
+          this.cacheService.clearAllProjectsCache();
+          this.logger.log('[PROJECT-SERV] - CREATE PROJECT - Cleared all projects cache');
+        })
+      );
+
+    return create$;
   }
 
   // ----------------------------------------------------------
@@ -357,8 +389,17 @@ export class ProjectService {
     const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid };
     this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .post(url, body, httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful update
+          this.projectCacheService.clearProjectCache(proiectid);
+          this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PROJECT - Cleared cache for project:', proiectid);
+        })
+      );
+
+    return update$;
   }
 
   public updateProject(id: string, project: Object) {
@@ -371,7 +412,17 @@ export class ProjectService {
     }
 
     let url = this.PROJECTS_URL + id;
-    return this._httpclient.put(url, project, httpOptions);
+    const update$ = this._httpclient.put(url, project, httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful update
+          this.projectCacheService.clearProjectCache(id);
+          this.cacheService.clearAllProjectsCache()
+          this.logger.log('[PROJECT-SERV] - UPDATE PROJECT - Cleared cache for project:', id);
+        })
+      );
+    
+    return update$;
   }
 
   // -----------------------------------------------------------------
@@ -392,8 +443,17 @@ export class ProjectService {
     const body = { 'name': `${name}` };
     this.logger.log('[PROJECT-SERV] - UPDATE PROJECT NAME - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful name update
+          this.projectCacheService.clearProjectCache(id);
+          this.logger.log('[PROJECT-SERV] - UPDATE PROJECT NAME - Cleared cache for project:', id);
+        })
+      );
+
+    return update$;
   }
 
   public updateHasEmittedTrialEnded(id: string, triaended: boolean) {
@@ -411,8 +471,17 @@ export class ProjectService {
     const body = { 'trialEnded': triaended };
     this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WHITH THE KEY TRIAL ENDED - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful trial ended update
+          this.projectCacheService.clearProjectCache(id);
+          this.logger.log('[PROJECT-SERV] - UPDATE HAS EMITTED TRIAL ENDED - Cleared cache for project:', id);
+        })
+      );
+
+    return update$;
   }
 
 
@@ -432,9 +501,17 @@ export class ProjectService {
     const body = { 'ipFilterEnabled': ipFilterEnabled, 'ipFilter': ipFilterArray };
     this.logger.log('[PROJECT-SERV] - ADD ALLOWED IP RANGES - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful IP ranges update
+          this.projectCacheService.clearProjectCache(id);
+          this.logger.log('[PROJECT-SERV] - ADD ALLOWED IP RANGES - Cleared cache for project:', id);
+        })
+      );
 
+    return update$;
   }
 
   // --------------------------------
@@ -463,8 +540,17 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] - UPDATE ADVANCED SETTINGS - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful advanced settings update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UPDATE ADVANCED SETTINGS - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
 
   // -------------------------------------------------------------------------------------
@@ -485,8 +571,17 @@ export class ProjectService {
     const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
     this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful auto send transcript update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UPDATE AUTO SEND TRANSCRIPT TO REQUESTER - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
 
   /**
@@ -542,8 +637,19 @@ export class ProjectService {
     // let body = { settings: { email: { templates: { }} } }
     // body.settings.email.templates[temaplateName] = template
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful email template update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          // Also clear all projects cache since project settings are updated
+          this.cacheService.clearAllProjectsCache();
+          this.logger.log('[PROJECT-SERV] - UPDATE EMAIL TEMPLATE - Cleared cache for project:', this.projectID, 'and all projects cache');
+        })
+      );
+
+    return update$;
   }
 
   // ------------------------------
@@ -569,8 +675,17 @@ export class ProjectService {
       'settings.email.config.pass': smtp_pswd,
     }
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful SMTP settings update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UPDATE SMTP SETTINGS - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
 
 
@@ -595,8 +710,17 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] RESET TO DEFAULT SMTP - body ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful SMTP reset
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - RESET TO DEFAULT SMTP SETTINGS - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
 
   public sendTestEmail(recipientemail, smtp_host_name, smtp_port_number, smtp_connetion_security, smtp_usermame, smtp_pswd) {
@@ -638,8 +762,17 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] UPDATE WIDGET PROJECT - PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful widget update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UPDATE WIDGET PROJECT - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
 
 
@@ -662,8 +795,17 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] - UPDATE PROJECT OPERATING HOURS PUT BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put<Project[]>(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful operating hours update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UPDATE PROJECT OPERATING HOURS - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
   /// UPDATE TIMETABLE AND GET AVAILABLE PROJECT USER
 
@@ -713,8 +855,17 @@ export class ProjectService {
 
     const body = { "id": leadid, "ip": ipaddress }
 
-    return this._httpclient
+    const ban$ = this._httpclient
       .post(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful ban (updates bannedUsers)
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - BAN VISITOR - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return ban$;
   }
 
 
@@ -733,8 +884,17 @@ export class ProjectService {
       })
     };
 
-    return this._httpclient
+    const unban$ = this._httpclient
       .delete(url, httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful unban (updates bannedUsers)
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UNBAN VISITOR - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return unban$;
   }
 
 
@@ -759,8 +919,17 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] UPDATE GETTING-STARTED - BODY ', body);
 
-    return this._httpclient
+    const update$ = this._httpclient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project cache after successful getting started update
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - UPDATE GETTING STARTED PROJECT - Cleared cache for project:', this.projectID);
+        })
+      );
+
+    return update$;
   }
 
   // --------------------------------------------------------------------------------------
@@ -777,6 +946,8 @@ export class ProjectService {
 
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.assigned": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - ENABLE/DISABLE ASSIGNED NOTIFICATION - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -799,6 +970,8 @@ export class ProjectService {
 
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.displayWidget": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - ENABLE/DISABLE SUPPORT WIDGET VISIBILITY - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -820,6 +993,8 @@ export class ProjectService {
 
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.pooled": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - ENABLE/DISABLE UNASSIGNED NOTIFICATION - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -841,6 +1016,8 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.current_agent_my_chats_only": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - AGENT VIEW ONLY OWN CONV - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -863,6 +1040,8 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.chatbots_attributes_hidden": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - SWITCH CHATBOT ATTRIBUTES VISIBILITY - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -885,6 +1064,8 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allow_send_emoji": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - SWITCH ALLOW TO SEND EMOJI - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -906,6 +1087,8 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_urls": status }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - SWITCH ALLOWED URLS - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -927,6 +1110,8 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_urls_list": urlWhitelist }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - SAVE URLS WHITELIST - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -948,6 +1133,8 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_upload_extentions": allowed_upload_extentions }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV] - SAVE AGENTS CHAT ALLOWED EXTENSIONS - Cleared cache for project:', this.projectID);
           resolve(res)
         }).catch((err) => {
           reject(err)
@@ -975,8 +1162,21 @@ export class ProjectService {
     // const body = { [key]: propertyValue };
     const body = { userPreferences: segmentIdentifyAttributes }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES- BODY', body);
-    return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+    const update$ = this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH USER PREFERENCES - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH USER PREFERENCES - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   checkWAConnection() {
@@ -1006,8 +1206,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = { wastep: wastep }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEPS - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEPS - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   updateProjectWithWAWizardStep1(step1) {
@@ -1022,8 +1235,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - URL', url);
     const body = { wastep1: step1 }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEP 1 - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEP 1 - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   updateProjectWithWAWizardStep2(step2) {
@@ -1038,8 +1264,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - URL', url);
     const body = { wastep2: step2 }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEP 2 - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEP 2 - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   updateProjectWithWAWizardStep3(step3) {
@@ -1054,8 +1293,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - URL', url);
     const body = { wastep3: step3 }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEP 3 - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD STEP 3 - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
 
@@ -1071,8 +1323,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = { oneStepWizard: oneStepWizard }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA ONE STEP WIZARD - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA ONE STEP WIZARD - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   updateProjectWithWASettings(wasettings) {
@@ -1087,8 +1352,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - URL', url);
     const body = { wasettings: wasettings }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA SETTINGS - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA SETTINGS - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   updateProjectRemoveWASettings() {
@@ -1103,8 +1381,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = { wasettings: {} }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT REMOVE WA SETTINGS - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT REMOVE WA SETTINGS - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
 
@@ -1120,8 +1411,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - URL', url);
     const body = { wizardCompleted: true }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD COMPLETED - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH WA WIZARD COMPLETED - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
 
@@ -1137,8 +1441,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - URL', url);
     const body = { userHasReMovedWA: hasuninstalled }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - BODY', body);
-    return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+    const update$ = this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT USER HAS REMOVED WA - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT USER HAS REMOVED WA - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
 
@@ -1154,8 +1471,21 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DISPLAY WA WIZARD - URL', url);
     const body = { displayWAWizard: displaywawizard }
     this.logger.log('[PROJECT-SERV] - UPDATE PRJCT WITH DISPLAY WA WIZARD - BODY', body);
-    return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+    const update$ = this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WITH DISPLAY WA WIZARD - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE PROJECT WITH DISPLAY WA WIZARD - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   updateDashletsPreferences(
@@ -1192,8 +1522,21 @@ export class ProjectService {
     }
     // JSON.stringify()
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - BODY', body);
-    return this._httpclient
-      .patch(url, body, httpOptions)
+    const update$ = this._httpclient
+      .patch(url, body, httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE DASHLETS PREFERENCES - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE DASHLETS PREFERENCES - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
 
@@ -1221,8 +1564,21 @@ export class ProjectService {
     const body = { 'projectid': this.projectID, 'userid': this.user._id, price: price };
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT  BODY ', body);
 
-    return this._httpclient
-      .put(url, JSON.stringify(body), httpOptions)
+    const update$ = this._httpclient
+      .put(url, JSON.stringify(body), httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(this.projectID);
+        this.logger.log('[PROJECT-SERV] - UPDATE SUBSCRIPTION - Cleared cache for project:', this.projectID);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - UPDATE SUBSCRIPTION - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   // ----------------------------------------------------------------
@@ -1291,8 +1647,21 @@ export class ProjectService {
     const body = { 'profile.type': 'free', 'profile.name': 'free' };
     this.logger.log('[PROJECT-SERV] - DOWNGRADE PLAN TO FREE - body ', body);
 
-    return this._httpclient
-      .put(url, JSON.stringify(body), httpOptions)
+    const update$ = this._httpclient
+      .put(url, JSON.stringify(body), httpOptions);
+
+    // Dopo l'update, pulisci la cache del progetto
+    update$.subscribe(
+      () => {
+        this.projectCacheService.clearProjectCache(projectid);
+        this.logger.log('[PROJECT-SERV] - DOWNGRADE PLAN TO FREE - Cleared cache for project:', projectid);
+      },
+      (error) => {
+        this.logger.error('[PROJECT-SERV] - DOWNGRADE PLAN TO FREE - Error:', error);
+      }
+    );
+
+    return update$;
   }
 
   // --------------------------------

@@ -45,7 +45,7 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
-import { CacheService } from 'app/services/cache.service';
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { removeEmojis } from 'app/utils/utils-message';
 
@@ -433,7 +433,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService: CacheService
+    private cacheService: AllProjectsCacheService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -1372,7 +1372,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
-    this.cacheService.clearCache()
+    this.cacheService.clearAllProjectsCache()
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -4233,6 +4233,71 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+ resolveRequest(requestid) {
+    if (this.CHAT_PANEL_MODE) {
+      this.archiveRequestWithConfimationDialog(requestid)
+    } else {
+      this.archiveRequest(requestid)
+    }
+
+  }
+
+
+   archiveRequestWithConfimationDialog(requestid) {
+
+    Swal.fire({
+      title: this.translationMap.get('AreYouSure') + "?",
+      text: this.translate.instant('TheConversationWillBeResolved'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('VisitorsPage.Resolve'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    })
+      .then((result) => {
+        if (result.isDenied) {
+
+          this.wsRequestsService.closeSupportGroup(requestid).subscribe((data: any) => {
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+
+            this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
+
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+            //  NOTIFY ERROR 
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
+          }, () => {
+
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+            //  NOTIFY SUCCESS
+            this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
+
+            let convWokingStatus = ''
+            this.updateRequestWorkingStatus(convWokingStatus)
+          });
+
+        } else {
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
+        }
+      });
+
+  }
+
+
   archiveRequest(requestid) {
     this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
@@ -4958,7 +5023,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((result) => {
                 if (result.isConfirmed) {
-                  this.cacheService.clearCache()
+                  this.cacheService.clearAllProjectsCache()
                   this.findCurrentProjectAmongAll(this.id_project)
                 }
               });
@@ -5881,16 +5946,39 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           let convWokingStatus = ""
           if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'open'
+            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
           } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'pending'
+            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
           } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
             convWokingStatus = ''
+            if (this.CHAT_PANEL_MODE) {
+                this.archiveRequestWithConfimationDialog(this.id_request)
+              } else {
+                this.archiveRequest(this.id_request)
+              }
+
           }
 
-          this.updateRequestWorkingStatus(convWokingStatus)
+          //this.updateRequestWorkingStatus(convWokingStatus)
 
         });
     }
+  }
+
+   updateRequestWorkingStatusAndReopen(convWokingStatus) {
+    this.logger.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
+    this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
+      .subscribe((request) => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
+        this.reopenConversation(this.id_request)
+      })
   }
 
   updateRequestWorkingStatus(convWokingStatus) {
@@ -5955,8 +6043,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (calledby === 'updatedWorkingStatus') {
       let convWokingStatus = ''
       this.updateRequestWorkingStatus(convWokingStatus)
+
+       if (this.CHAT_PANEL_MODE) {
+        this.archiveRequestWithConfimationDialog(this.id_request)
+      } else {
+        this.archiveRequest(this.id_request)
+      }
+
     }
-    this.archiveRequest(this.id_request)
+   // this.archiveRequest(this.id_request)
 
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -6364,7 +6459,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.manageImageUploadOnPaste($event.target.files[0])
 
       }
-    } else if ($event.target.files[0].type.startsWith("application/")) {
+    } else if ($event.target.files[0].type.startsWith("application/") || ($event.target.files[0].type === 'text/plain')) {
 
 
       this.uploadedFiles = $event.target.files[0];

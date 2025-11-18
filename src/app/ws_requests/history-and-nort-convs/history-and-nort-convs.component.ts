@@ -685,42 +685,29 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
       if (this.current_selected_prjct && this.current_selected_prjct.id_project.profile) {
         const projectProfile = this.current_selected_prjct.id_project.profile
-        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
-        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
-        // && projectProfile.customization.voice && projectProfile.customization.voice === true
+        // voice -> VXML voice
+        // voice_twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
+            const customization = projectProfile.customization;
+            this.logger.log('[HISTORY & NORT-CONVS] - customization', customization);
 
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-          if (projectProfile.customization.voice && projectProfile.customization.voice === true) {
-            let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
-            this.conversationType.splice(voice_twilio_index, 1);
-          } 
-          else if (projectProfile.customization['voice_twilio'] && projectProfile.customization['voice_twilio'] === true) {
-            let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
-            this.conversationType.splice(voice_vxml_index, 1);
+            // Filter channels based on customizations
+            this.conversationType = this.conversationType.filter(channel => {
+              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
+                return false; // exclude TWILIO
+              }
+              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
+                return false; // exclude VXML
+              }
+              return true; // keep the others
+            });
+
+          } else {
+            // If there is no customization, remove both
+            this.conversationType = this.conversationType.filter(channel =>
+              channel.id !== CHANNELS_NAME.VOICE_TWILIO && channel.id !== CHANNELS_NAME.VOICE_VXML
+            );
           }
-
-
-
-          //   let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
-          //   this.conversationType.splice(voice_vxml_index, 1);
-          // } else {
-          // let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
-          // this.conversationType.splice(voice_twilio_index, 1);
-          // }
-
-
-
-        } else {
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
-          let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
-          let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', voice_vxml_index);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_TWILIO ++++ 1 index', voice_twilio_index);
-          this.conversationType.splice(voice_vxml_index, 1);
-          this.conversationType.splice(voice_twilio_index, 1);
-        }
 
       }
 

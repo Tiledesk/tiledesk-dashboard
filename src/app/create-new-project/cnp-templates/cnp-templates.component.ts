@@ -485,9 +485,6 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
           }
         });
         this.logger.log('[CNP-TEMPLATES] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
-
-
-
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
         }
@@ -496,7 +493,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
-    
+    this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT kbOfficialResponderTemplate_id ', kbOfficialResponderTemplate_id)
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
       this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
       this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
@@ -517,7 +514,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
         }
         // ----------------------------------------------------------------------------
-        // Find a solution! This no more working affter that the template was changed
+        // Find a solution! This no more working after that the template was changed
         // ----------------------------------------------------------------------------
         // const replyActionWithWelcomeMsg = intent.actions.find(x => x.text !== undefined);
         // if(replyActionWithWelcomeMsg) {

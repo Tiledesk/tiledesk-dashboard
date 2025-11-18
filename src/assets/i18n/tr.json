@@ -814,6 +814,8 @@
     "Attachments": "Ekler",
     "Emoji": "Emoji",
     "VoiceRecorder": "Ses kaydedici",
+    "TheConversationWillBeResolved": "Görüşme çözülecek",
+    "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Yayınları nasıl oluşturulur öğrenin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2461,7 +2463,13 @@
         "Failed": "Arızalı!",
         "Save": "Kaydetmek",
         "Clear": "Temizlemek",
-        "Delete": "Silmek"
+        "Delete": "Silmek",
+        "Transport": "Taşıma",
+        "AddMCPServer": "MCP Sunucusu Ekle",
+        "EditMCPServer": "MCP Sunucusunu Düzenle",
+        "TotalMCPServers": "Toplam MCP Sunucuları",
+        "SearchByNameURLOrType": "Ad, URL veya türe göre ara",
+        "NoMCPServersFound": "MCP sunucusu bulunamadı"
     },
     "ViewTeammates": "Takım arkadaşlarını görüntüle",
     "AddNewTeammate": "Yeni takım arkadaşı ekle",

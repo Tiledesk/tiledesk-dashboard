@@ -4,24 +4,28 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-// import { tap } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators';
-
-// import { TranslateService } from '@ngx-translate/core';
-// import { NotifyService } from 'app/core/notify.service';
+import { tap, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-// const Swal = require('sweetalert2')
+import { HttpStatsService } from '../http-stats.service';
 
+interface EndpointStats {
+  count: number;
+  totalTime: number;
+  avgTime: number;
+}
 
 
 @Injectable()
 export class LogRequestsInterceptor implements HttpInterceptor {
-  
+
+  private stats: Record<string, EndpointStats> = {};
+
   constructor(
-    //  public notify: NotifyService,
+    private httpStats: HttpStatsService,
     private snackBar: MatSnackBar
   ) {
    
@@ -47,17 +51,25 @@ export class LogRequestsInterceptor implements HttpInterceptor {
     //     panelClass: ['custom-error-snackbar'] // apply your own style 
     //   }
     // );
+    const startTime = Date.now();
+    const endpoint = request.url;
+    const method = request.method;  
 
     return next.handle(request).pipe(
+       tap(event => {
+        if (event instanceof HttpResponse) {
+          const elapsed = Date.now() - startTime;  // <-- Cambiato da performance.now() a Date.now()
+
+          // USA IL SERVIZIO invece delle statistiche interne
+         this.httpStats.updateStats(endpoint, method, elapsed);
+
+          // Log in console (opzionale)
+          // console.log(`HTTP-INTERCEPTOR [HTTP] ${request.method} ${request.url} - ${elapsed.toFixed(1)}ms`);
+        }
+      }),
       catchError((error: HttpErrorResponse) => {
 
       
-        // console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
-        // if (request.method === 'GET') {
-          // Handle request error
-          // console.log('[HTTP-INTERCEPTOR] GET request error:', error);
-          // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
-          // console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
           if (error.status === 429) {
             // this.notify.showWidgetStyleUpdateNotification("429 Too many requests", 4, 'report_problem');
             this.snackBar.open( `429 Too many requests`, '✕',
@@ -93,8 +105,12 @@ export class LogRequestsInterceptor implements HttpInterceptor {
         return throwError(error);
       })
     );
+    
   }
-  
+  /** Metodo per leggere le statistiche da un servizio o componente */
+  getStats(): Record<string, EndpointStats> {
+    return this.stats;
+  }
 
 
   // presentAlert() {

@@ -813,6 +813,8 @@
     "Attachments": "Əlavələr",
     "Emoji": "Emociya",
     "VoiceRecorder": "Səs yazıcısı",
+    "TheConversationWillBeResolved": "Söhbət həll ediləcək",
+    "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Yayımı yaratmağı öyrənin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2461,7 +2463,13 @@
         "Failed": "Uğursuz oldu!",
         "Save": "Yadda saxla",
         "Clear": "Təmiz",
-        "Delete": "Sil"
+        "Delete": "Sil",
+        "Transport": "Nəqliyyat",
+        "AddMCPServer": "MCP Server Əlavə Et",
+        "EditMCPServer": "MCP Server Redaktə Et",
+        "TotalMCPServers": "Ümumi MCP Serverlər",
+        "SearchByNameURLOrType": "Ad, URL və ya tipə görə axtar",
+        "NoMCPServersFound": "MCP server tapılmadı"
     },
     "ViewTeammates": "Komanda yoldaşlarına baxın",
     "AddNewTeammate": "Yeni komanda yoldaşı əlavə edin",

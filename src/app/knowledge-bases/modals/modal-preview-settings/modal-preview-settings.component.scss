@@ -77,6 +77,11 @@
 .action-wait-slider>mat-slider {
     width: 100%;
     margin-left: 6px;
+
+    &.mat-slider-disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
 }
 
 .action-wait-range {

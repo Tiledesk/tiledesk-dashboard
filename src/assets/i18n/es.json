@@ -812,6 +812,8 @@
     "Attachments": "Adjuntos",
     "Emoji": "Emoji",
     "VoiceRecorder": "Grabadora de voz",
+    "TheConversationWillBeResolved": "La conversación será resuelta",
+    "LearnHowToCreateWhatsAppBroadcasts": "Aprende a crear difusiones de WhatsApp",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2460,7 +2462,13 @@
         "Failed": "¡Fallido!",
         "Save": "Ahorrar",
         "Clear": "Claro",
-        "Delete": "Borrar"
+        "Delete": "Borrar",
+        "Transport": "Transporte",
+        "AddMCPServer": "Agregar Servidor MCP",
+        "EditMCPServer": "Editar Servidor MCP",
+        "TotalMCPServers": "Total Servidores MCP",
+        "SearchByNameURLOrType": "Buscar por nombre, URL o tipo",
+        "NoMCPServersFound": "No se encontraron servidores MCP"
     },
     "ViewTeammates": "Ver compañeros",
     "AddNewTeammate": "Añadir nuevo compañero",
