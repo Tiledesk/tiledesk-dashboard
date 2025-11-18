@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.156-AR
+- Implements caching strategy for project users to reduce redundant HTTP requests and improve performance
+- Check if a teammate is a member of any groups or has created tags before deleting them
+- Fixes the bug: Group members are not updated correctly when switching between groups
+- Adds permission to show/hide unassigned chat notifications
+- Fixes the bug: project user permissions and role data are not refreshed when switching between projects, requiring a page refresh to display correct permissions
+
 ### 2.7.155-AR
 - Fixes the bug: Some sidebar items do not become active if a query parameter is present
 - Fixes the bug: Non-real-time conversations and conversation history are not loaded if there is a query parameter different from the ones used by the search
