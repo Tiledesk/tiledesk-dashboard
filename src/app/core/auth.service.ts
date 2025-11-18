@@ -25,10 +25,12 @@ import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
 import { BrandService } from 'app/services/brand.service'
-import { CacheService } from 'app/services/cache.service'
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service'
+import { ProjectCacheService } from 'app/services/cache/project-cache.service'
+import { CachePuService } from 'app/services/cache/cache-pu.service'
+import { DepartmentsCacheService } from 'app/services/cache/departments-cache.service'
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service'
 import { SleekplanService } from 'app/services/sleekplan.service'
-import { CachePuService } from 'app/services/cache-pu.service'
 import { UsersService } from 'app/services/users.service'
 import { RolesService } from 'app/services/roles.service'
 // import { ProjectService } from 'app/services/project.service'
@@ -112,9 +114,11 @@ export class AuthService {
     private logger: LoggerService,
     public brandService: BrandService,
     private scriptService: ScriptService,
-    private cacheService: CacheService,
-    private cachePuService: CachePuService,
     private injector: Injector,
+    private cacheService: AllProjectsCacheService,
+    private projectCacheService: ProjectCacheService,
+    private cachePuService: CachePuService,
+    private departmentsCacheService: DepartmentsCacheService,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService
     // private projectService: ProjectService,
@@ -306,7 +310,7 @@ export class AuthService {
 
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
-    this.cachePuService.clearCache();
+    this.cachePuService.clearPuCache();
     
     // Reset BehaviorSubjects BEFORE publishing project to prevent stale permission data when switching projects
     // Project user permissions are different per project (e.g., admin in one project, agent in another)
@@ -333,6 +337,14 @@ export class AuthService {
     // PUBLISH THE project so components (sidebar, navbar) can react and reload project user data
     this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project, ' calledBy ', calledBy)
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
+    
+    // Clear cache when switching projects
+    this.cacheService.clearAllProjectsCache();
+    this.projectCacheService.clearAllProjectCache();
+    this.cachePuService.clearPuCache();
+    this.departmentsCacheService.clearDepartmentsCache();
+    this.logger.log('[AUTH-SERV] - PROJECT SELECTED - Cleared all projects cache, project cache, project users cache and departments cache')
+    
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
 
@@ -1128,11 +1140,15 @@ export class AuthService {
     }
   }
 
-  signOut(calledby: string) {
-    this.cacheService.clearCache();
-    this.cachePuService.clearCache()
-    
-    
+  signOut(calledby: string) {    
+    this.cacheService.clearAllProjectsCache()
+    // Pulisci anche la cache dei progetti al logout
+    this.projectCacheService.clearAllProjectCache()
+    // Pulisci anche la cache dei project users al logout
+    this.cachePuService.clearPuCache()
+    // Pulisci anche la cache dei departments al logout
+    this.departmentsCacheService.clearDepartmentsCache()
+    this.logger.log('[AUTH-SERV] - SIGNOUT - Cleared all project cache, project users cache and departments cache')
     // this.resetSleekplanUser()
     this.closeSleekplanWidget()
     console.log('[AUTH-SERV] SSO Signout calledby +++++ ', calledby)

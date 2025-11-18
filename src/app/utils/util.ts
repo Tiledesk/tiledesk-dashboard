@@ -738,7 +738,7 @@ export function getIndexOfdialogflowLanguage(langcode: string): number {
 
 
 export function loadTokenMultiplier(ai_models) {
-    console.log('loadTokenMultiplier ai_models ',ai_models) 
+    // console.log('loadTokenMultiplier ai_models ',ai_models) 
     let models_string = ai_models.replace(/ /g, '');
 
     let models = {};
@@ -850,18 +850,21 @@ export const GROQ_MODEL: Array<{ name: string, value: string, description:string
   { name: "Deepseek-r1-distill-llama-70b",                    value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Qwen-2.5-32b",                                     value: "qwen-2.5-32b",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Mixtral-8x7b-32768",                               value: "mixtral-8x7b-32768",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  
-  { name: "Llama 3.1 8B – Instant/Low-latency",               value: "llama-3.1-8b-instant",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Llama 3.3 70B – Versatile",                        value: "llama-3.3-70b-versatile",                           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Gemma 2 – 9B Instruct (Italian tuned)",            value: "gemma2-9b-it",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Allam 2 – 7B",                                     value: "allam-2-7b",                                        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Llama 3.1 8B – Instant/Low-latency",               value: "llama-3.1-8b-instant",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Llama 3.3 70B – Versatile",                        value: "llama-3.3-70b-versatile",                           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Gemma 2 – 9B Instruct (Italian tuned)",            value: "gemma2-9b-it",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
+  { name: "Allam 2 – 7B",                                     value: "allam-2-7b",                                        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
   { name: "Llama 3 70B – 8K context",                         value: "llama3-70b-8192",                                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama Guard 4 – 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "DeepSeek R1 Distilled Llama 70B",                  value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Llama 4 Scout – 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Kimi K2 Instruct (Moonshot AI)",                   value: "moonshotai/kimi-k2-instruct",                       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Qwen 3 – 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Llama Guard 4 – 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "DeepSeek R1 Distilled Llama 70B",                  value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
+  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Llama 4 Scout – 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Kimi K2 Instruct (Moonshot AI)",                   value: "moonshotai/kimi-k2-instruct",                       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Qwen 3 – 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Groq Compound",                                    value: "groq/compound",                                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "Groq Compound Mini",                               value: "groq/compound-mini",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "OpenAI GPT-OSS 120B",                              value: "openai/gpt-oss-120b",                               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+  { name: "OpenAI GPT-OSS 20B",                               value: "openai/gpt-oss-20b",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
 ]
 
 export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
@@ -881,8 +884,8 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
   { name: "GPT-4 Turbo Preview",  value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",   status: "active"    },
   { name: "GPT-3 (DaVinci)",      value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive"  },
   { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "active"    },
-  { name: "OpenAI o1-mini",       value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",               status: "active"    },
-  { name: "OpenAI o1-preview",    value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",            status: "active"    }
+  { name: "OpenAI o1-mini",       value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",               status: "inactive"    },
+  { name: "OpenAI o1-preview",    value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",            status: "inactive"    }
 
 ]
 // export const OPENAI_MODEL = [
@@ -1208,4 +1211,5 @@ export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/a
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"
+export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
 

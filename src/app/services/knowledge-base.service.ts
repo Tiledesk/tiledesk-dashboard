@@ -352,7 +352,7 @@ export class KnowledgeBaseService {
       }),
       //body: JSON.stringify(data)
     }
-    // https://api.tiledesk.com/v3/649007cf2b0ceb0013adb39a/kbsettings/6581af98e677a60013cdccbe/65c4abc25fc7b7001300069a
+    
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id + "/" + id;
     // const url = this.SERVER_BASE_PATH + this.project_id + "/kb/"+data.id;

@@ -64,7 +64,7 @@ export class ResponseTimesComponent implements OnInit {
   ];
   
   CHANNELS_NAME = CHANNELS_NAME;
-
+  
   constructor(
     private analyticsService: AnalyticsService,
     private translate: TranslateService,

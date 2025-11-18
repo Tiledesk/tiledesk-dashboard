@@ -14,6 +14,8 @@ import { AuthService } from 'app/core/auth.service';
 import { ProjectService } from 'app/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 
+
+
 @Component({
   selector: 'appdashboard-messages',
   templateUrl: './messages.component.html',
@@ -45,6 +47,7 @@ export class MessagesComponent implements OnInit {
   ];
     
   CHANNELS_NAME = CHANNELS_NAME;
+
 
   constructor(
     private translate: TranslateService,

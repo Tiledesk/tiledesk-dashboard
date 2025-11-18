@@ -607,8 +607,13 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
           this.setImageProfileUrl(this.storageBucket)
 
-          const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+          let stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
           this.logger.log('[USER-PROFILE] stored_user', stored_user)
+          // Check if stored_user is a valid object (not empty string or null)
+          if (!stored_user || typeof stored_user !== 'object' || stored_user === '') {
+            // If user is not in storage, create a basic object from current user
+            stored_user = this.user ? { ...this.user } : {};
+          }
           stored_user['hasImage'] = true;
           this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
         }else if (image_exist === false){
@@ -620,14 +625,19 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
         this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
-        this.userImageHasBeenUploaded = image_exist;
-        if (this.userImageHasBeenUploaded === true) {
-          this.showSpinnerInUploadImageBtn = false;
+          this.userImageHasBeenUploaded = image_exist;
+          if (this.userImageHasBeenUploaded === true) {
+            this.showSpinnerInUploadImageBtn = false;
 
-          const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
-          this.logger.log('[USER-PROFILE] stored_user', stored_user)
-          stored_user['hasImage'] = true;
-          this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
+            let stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+            this.logger.log('[USER-PROFILE] stored_user', stored_user)
+            // Check if stored_user is a valid object (not empty string or null)
+            if (!stored_user || typeof stored_user !== 'object' || stored_user === '') {
+              // If user is not in storage, create a basic object from current user
+              stored_user = this.user ? { ...this.user } : {};
+            }
+            stored_user['hasImage'] = true;
+            this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
 
         }
         // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 

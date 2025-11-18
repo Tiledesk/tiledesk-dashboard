@@ -2069,8 +2069,9 @@ getProjectUserRole() {
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(30000))
       .pipe(
+        skip(1), // Skip the initial value from BehaviorSubject to avoid duplicate call
+        debounceTime(500), // Wait 500ms after the last message before updating count (prevents too many HTTP calls)
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsConv) => {

@@ -21,8 +21,8 @@ import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { GroupService } from 'app/services/group.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-import { CachePuService } from 'app/services/cache-pu.service';
 import { avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { CachePuService } from 'app/services/cache/cache-pu.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -168,6 +168,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     private roleService: RoleService,
     private groupService: GroupService,
     private cachePuService: CachePuService
+
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -196,7 +197,6 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     }
 
     this.getCurrentProject();
-    this.getAllUsersOfCurrentProject();
     this.getProjectPlan();
     this.getPendingInvitation();
     this.getBrowserLang();
@@ -520,19 +520,27 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getAllUsersOfCurrentProject() {
+    // Clear the cache to ensure fresh data is always seen when entering the component
+    this.cachePuService.clearPuCache();
+    this.logger.log('[USER-EDIT-ADD] - GET ALL USERS OF CURRENT PROJECT - Cleared project users cache to ensure fresh data');
+    
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
+     this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
 
-      if (projectUsers) {
+      if (projectUsers && projectUsers.length > 0) {
         this.projectUsersLength = projectUsers.length;
         this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - PROJECT USERS Length ', this.projectUsersLength);
 
         const filteredProjectUser = projectUsers.filter((obj: any) => {
-          return obj.id_user._id === this.CURRENT_USER_ID;
+          return obj.id_user && obj.id_user._id === this.CURRENT_USER_ID;
         });
         this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser FOR CURRENT_USER_ID ', filteredProjectUser);
-        this.currentUser_projectUserID = filteredProjectUser[0]._id
-
+        if (filteredProjectUser && filteredProjectUser.length > 0) {
+          this.currentUser_projectUserID = filteredProjectUser[0]._id;
+        }
+      } else {
+        this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - Empty array or no project users');
+        this.projectUsersLength = 0;
       }
     }, error => {
       this.logger.error('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - ERROR', error);
@@ -769,7 +777,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       // =========== NOTIFY SUCCESS ==========
       // this.notify.showNotification('status successfully updated', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
-      this.cachePuService.clearCache()
+      this.cachePuService.clearPuCache()
     });
   }
 
@@ -918,7 +926,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         // NOTIFY SUCCESS 
         // -----------------------
         this.notify.showWidgetStyleUpdateNotification(this.successfullyUpdatedNoticationMsg, 2, 'done');
-        this.cachePuService.clearCache()
+        this.cachePuService.clearPuCache()
       });
   }
 
@@ -944,7 +952,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         }
 
         this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
-        this.cachePuService.clearCache();
+        this.cachePuService.clearPuCache();
       });
 
   }
@@ -957,6 +965,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.project_name = project.name;
         this.id_project = project._id;
         this.logger.log('[USER-EDIT-ADD] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+        // Call getAllUsersOfCurrentProject() when project is available
+        this.getAllUsersOfCurrentProject();
       }
     });
   }
@@ -1115,7 +1125,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
       this.INVITE_USER_NOT_FOUND = false;
       // this.PENDING_INVITATION_ALREADY_EXIST = false;
-      this.cachePuService.clearCache()
+      this.cachePuService.clearPuCache()
 
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();

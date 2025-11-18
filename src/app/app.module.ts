@@ -409,6 +409,8 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { RolesService } from './services/roles.service';
 import { KeycloakService } from './services/keycloak.service';
+import { HttpStatsService } from './services/http-stats.service';
+import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
 
 
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
@@ -727,7 +729,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
     LogoutModalComponent,
-    UnauthorizedToUpgradeComponent
+    UnauthorizedToUpgradeComponent,
+    HttpStatsDashboardComponent,
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
@@ -860,6 +863,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SleekplanApiService,
     RolesService,
     KeycloakService,
+    HttpStatsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

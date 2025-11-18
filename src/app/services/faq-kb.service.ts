@@ -487,7 +487,7 @@ export class FaqKbService {
   // -------------------------------------------------------------------------------------- 
   // Export chatbot to JSON
   // --------------------------------------------------------------------------------------
-  public exportChatbotToJSON(id_faq_kb: string) {
+  public exportChatbotToJSON(id_faq_kb: string, projectid?:string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

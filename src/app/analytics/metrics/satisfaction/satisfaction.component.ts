@@ -52,7 +52,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
   ];
 
   CHANNELS_NAME = CHANNELS_NAME;
-
+  
   constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
@@ -100,7 +100,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  getCurrentProject() {
+   getCurrentProject() {
     this.auth.project_bs
     .pipe(
       takeUntil(this.unsubscribe$)

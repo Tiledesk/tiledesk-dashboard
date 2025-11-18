@@ -215,22 +215,17 @@
 
                                 </div>
 
-
-                                <div *ngIf="integrationSelectedName === 'none'" class="empty-menu-container">
-                                    <img src="assets/img/int/getstarted.svg" class="getstarted-icon" alt="Get started">
-                                    <p class="no-integration-selected">{{ 'Integration.SelectToStart' | translate }}</p>
-                                </div>
                             </ng-container>
-
                         </div>
-
                     </ng-container>
-                    <ng-template #unauthorizedTpl>
-                        <unauthorized-for-settings></unauthorized-for-settings>
-                    </ng-template>
-                </ng-container>
-
             </div>
+
+
+            <ng-template #unauthorizedTpl>
+                <unauthorized-for-settings></unauthorized-for-settings>
+            </ng-template>
+            </ng-container>
+
         </div>
     </div>
 </div>

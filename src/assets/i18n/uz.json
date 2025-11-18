@@ -858,6 +858,7 @@
     "AreYouSureYouWantToDeleteTheKB": "Bilimlar Bazasini o'chirishni istaysizmi?",
     "ToDeleteTheKBaseTypeItsId": "Bilimlar Bazasini o'chirish uchun uning ID sini yozing",
     "NoDepartmentAssigned": "Hech bir bo'lim tayinlanmagan",
+    "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Broadcastlarini qanday yaratishni o'rganing",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

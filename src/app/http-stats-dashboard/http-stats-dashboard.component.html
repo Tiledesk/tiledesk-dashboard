@@ -1,0 +1,69 @@
+<div class="floating-dashboard" cdkDrag>
+  <mat-card  style="border: 1px solid #ccc">
+    <mat-card-title cdkDragHandle class="drag-handle">
+      📊 HTTP Requests Stats
+      <button mat-icon-button (click)="toggleMinimize()" style="float: right;">
+        <mat-icon>{{ isMinimized ? 'expand_more' : 'expand_less' }}</mat-icon>
+      </button>
+    </mat-card-title>
+
+    <mat-card-content *ngIf="!isMinimized">
+      <mat-form-field appearance="outline" class="full-width mt-2">
+        <mat-label>Filtra per endpoint</mat-label>
+        <input matInput [(ngModel)]="filterValue" (keyup)="applyFilter()" placeholder="Es. /api/users" />
+      </mat-form-field>
+
+      <table mat-table [dataSource]="dataSource" matSort class="full-width-table">
+
+        <!-- NUOVA COLONNA METODO -->
+        <ng-container matColumnDef="method">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Metodo </th>
+          <td mat-cell *matCellDef="let row">
+            <span [class]="'method-badge method-' + row.method.toLowerCase()">
+              {{ row.method }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="endpoint">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Endpoint </th>
+          <td mat-cell *matCellDef="let row"> {{ row.endpoint }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="count">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Chiamate </th>
+          <td mat-cell *matCellDef="let row"> {{ row.count }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="avgTime">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tempo medio (ms) </th>
+          <td mat-cell *matCellDef="let row"> {{ row.avgTime | number:'1.0-1' }} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <p *ngIf="dataSource.data.length === 0" class="text-gray-500 text-sm mt-2">
+        Nessuna richiesta eseguita ancora.
+      </p>
+
+      <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee;">
+        <div class="total-stats">
+          <div><strong>Totale richieste: {{ getTotalRequests() }}</strong></div>
+          <div style="font-size: 0.9em; color: #666;">
+            Tempo medio totale: {{ getTotalAvgTime() | number:'1.0-1' }}ms
+          </div>
+        </div>
+        <button 
+          mat-raised-button 
+          color="warn" 
+          (click)="resetStats()"
+          [disabled]="dataSource.data.length === 0">
+          <mat-icon>refresh</mat-icon>
+          Reset
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

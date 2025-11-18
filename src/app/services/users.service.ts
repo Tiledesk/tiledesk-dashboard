@@ -15,8 +15,8 @@ import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { of } from 'rxjs';
-import { CachePuService } from './cache-pu.service';
-import { map, shareReplay } from 'rxjs/operators';
+import { CachePuService } from './cache/cache-pu.service';
+import { map, shareReplay, tap } from 'rxjs/operators';
 
 interface NewUser {
   displayName: string;
@@ -354,8 +354,7 @@ export class UsersService {
       .get<ProjectUser[]>(url, httpOptions);
   }
 
-
-  public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
  
     const httpOptions = {
       headers: new HttpHeaders({
@@ -365,19 +364,19 @@ export class UsersService {
     };
 
     let projectUsers$ = this.cachePuService.getValue();
-
-    console.log('[USER-SERV] - GET  projectUsers$ from cacheService projectUsers$', projectUsers$);
     
     if (!projectUsers$) {
       const url = this.PROJECT_USER_URL;
-      this.logger.log('[USER-SERV] - GET PROJECTS URL', url);
-      projectUsers$ = this._httpClient.get(url, httpOptions)
+      this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - Cache miss, making HTTP request - URL:', url);
+      this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+      projectUsers$ = this._httpClient.get<ProjectUser[]>(url, httpOptions)
       .pipe( // Chains RxJS operators
         map((response: any) => response), // Maps the response to itself. In this case, it's necessary because the response is expected to be an array of ProjectUser objects. 
         shareReplay(1) // Shares the response with all subscribers and replays it for new subscribers. 1 indicates it keeps the latest emitted value and replays it for new subscribers.
       );
-      console.log('[USER-SERV] - GET  projects$ from HTTP REQUEST projectUsers$ ',projectUsers$);
       this.cachePuService.setValue(projectUsers$);
+    } else {
+      this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - Using cached projectUsers$');
     }
     
     return projectUsers$;
@@ -464,8 +463,17 @@ export class UsersService {
     const body = { 'email': email, 'role': role, 'user_available': false };
     this.logger.log('[USER-SERV] INVITE PROJECT-USER - POST REQUEST BODY ', body);
 
-    return this._httpClient
+    const invite$ = this._httpClient
       .post(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful invitation
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - INVITE USER - Cleared project users cache');
+        })
+      );
+
+    return invite$;
   }
 
   // -------------------------------------------------------
@@ -1061,8 +1069,17 @@ export class UsersService {
     const body = { 'user_available': user_is_available,  'profileStatus': profilestatus, 'status': status };
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
-    return this._httpClient
+    const update$ = this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful update
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - UPDATE PROJECT USER - Cleared project users cache');
+        })
+      );
+
+    return update$;
   }
 
   public resetBusyStatus() {
@@ -1080,8 +1097,17 @@ export class UsersService {
     const body = { 'number_assigned_requests': 0 };
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
-    return this._httpClient
+    const update$ = this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful reset
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - RESET BUSY STATUS - Cleared project users cache');
+        })
+      );
+
+    return update$;
   }
 
   // DONE - WORKS NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
@@ -1110,8 +1136,17 @@ export class UsersService {
     const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
 
-    return this._httpClient
+    const update$ = this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful availability update
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - Cleared project users cache');
+        })
+      );
+
+    return update$;
   }
 
   /**
@@ -1137,8 +1172,17 @@ export class UsersService {
     const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT  BODY ', body);
 
-    return this._httpClient
+    const update$ = this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful role and max-chat update
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - UPDATE PROJECT USER ROLE & MAX-CHAT - Cleared project users cache');
+        })
+      );
+
+    return update$;
   }
 
 
@@ -1158,9 +1202,17 @@ export class UsersService {
     const body = { 'tags': tagarray };
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER TAG  BODY ', body);
 
-    return this._httpClient
+    const update$ = this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful tags update
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - UPDATE PROJECT USER TAGS - Cleared project users cache');
+        })
+      );
 
+    return update$;
   }
 
 
@@ -1191,8 +1243,17 @@ export class UsersService {
       })
     };
 
-    return this._httpClient
+    const delete$ = this._httpClient
       .delete(url, httpOptions)
+      .pipe(
+        tap(() => {
+          // Clear the project users cache after successful deletion
+          this.cachePuService.clearPuCache();
+          this.logger.log('[USER-SERV] - DELETE PROJECT USER - Cleared project users cache');
+        })
+      );
+
+    return delete$;
   }
 
 

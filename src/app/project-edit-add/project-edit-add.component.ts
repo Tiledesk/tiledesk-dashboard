@@ -27,7 +27,7 @@ import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATi
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
-import { CacheService } from 'app/services/cache.service';
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
@@ -343,9 +343,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private _fb: FormBuilder,
     private contactsService: ContactsService,
-    private cacheService: CacheService,
     private widgetService: WidgetService,
     public rolesService: RolesService,
+    private cacheService: AllProjectsCacheService,
     private roleService: RoleService,
     public dialog: MatDialog,
     // private formGroup: FormGroup
@@ -3278,7 +3278,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.switchChatbotAttributesVisibility(this.areHideChatbotAttributesInConvDtls).then((result) => {
       this.logger.log("[PRJCT-EDIT-ADD] - toggleVisibilityOfChatbotAttributes RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
-      this.cacheService.clearCache()
+      this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
@@ -3302,7 +3302,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
        
       // this.logger.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
 
-      this.cacheService.clearCache()
+      this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
@@ -3317,7 +3317,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
      
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
-      this.cacheService.clearCache()
+      this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
@@ -3368,7 +3368,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
      
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
-      this.cacheService.clearCache()
+      this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - saveURLs Whitelist ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
@@ -3413,7 +3413,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
-      this.cacheService.clearCache()
+      this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')

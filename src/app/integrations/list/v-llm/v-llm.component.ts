@@ -22,7 +22,7 @@ export class VLLMComponent implements OnInit {
    ) { }
  
    ngOnInit(): void {
-     console.log("[INT-vLLM] integration ", this.integration)
+     this.logger.log("[INT-vLLM] integration ", this.integration)
      this.translateparams = { intname: 'vLLM' };
    }
  

@@ -24,7 +24,6 @@ import { ProjectService } from 'app/services/project.service';
   styleUrls: ['./convsduration.component.scss']
 })
 export class ConvsDurationComponent implements OnInit {
-  
   private unsubscribe$: Subject<any> = new Subject<any>();  
   // duration time clock variable
   numberDurationCNVtime: String;
@@ -65,7 +64,7 @@ export class ConvsDurationComponent implements OnInit {
     { id: '', name: 'All' },
     ... CHANNELS
   ];
-
+ 
   CHANNELS_NAME = CHANNELS_NAME;
 
   constructor(
@@ -105,7 +104,7 @@ export class ConvsDurationComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
-  getCurrentProject() {
+   getCurrentProject() {
     this.auth.project_bs
     .pipe(
       takeUntil(this.unsubscribe$)

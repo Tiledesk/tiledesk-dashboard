@@ -486,10 +486,12 @@
                                   n.a
                                 </span>
 
-                                <!-- --------------------------------------- -->
-                                <!-- Request Tag -->
-                                <!-- --------------------------------------- -->
-                                <section style="max-width: 210px;position: absolute; left: 60px;top: 35px;" *ngIf="contact?.tags?.length > 0">
+                            <!-- --------------------------------------- -->
+                            <!--  Tag -->
+                            <!-- --------------------------------------- -->
+                            <section style="max-width: 210px;position: absolute;
+                        left: 60px;
+                        top: 35px;" *ngIf="contact?.tags?.length > 0">
 
                                   <div style="display: inline-block;" *ngFor="let tag of contact?.tags;  let i=index">
                                     <div *ngIf="i<2">

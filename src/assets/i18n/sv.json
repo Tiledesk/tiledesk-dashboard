@@ -858,6 +858,7 @@
     "AreYouSureYouWantToDeleteTheKB": "Är du säker på att du vill ta bort kunskapsbasen?",
     "ToDeleteTheKBaseTypeItsId": "För att ta bort kunskapsbasen, skriv in dess ID",
     "NoDepartmentAssigned": "Ingen avdelning tilldelad",
+    "LearnHowToCreateWhatsAppBroadcasts": "Lär dig hur du skapar WhatsApp-utsändningar",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

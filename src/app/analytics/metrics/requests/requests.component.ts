@@ -14,11 +14,13 @@ import { AuthService } from 'app/core/auth.service';
 import { ProjectService } from 'app/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 
+
 @Component({
   selector: 'appdashboard-requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss']
 })
+
 export class RequestsComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
   lineChart: any;
@@ -94,7 +96,7 @@ export class RequestsComponent implements OnInit {
 
   ngOnDestroy() {
     this.logger.log('[ANALYTICS - CONVS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
-    if (this.subscription) {
+     if (this.subscription) {
       this.subscription.unsubscribe();
     }
     this.unsubscribe$.next();

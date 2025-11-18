@@ -842,7 +842,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.project = project
       if (this.project) {
         this.currentProjectId = this.project._id
-        // this.logger.log('[BOTS-LIST] 00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
+         this.logger.log('[BOTS-LIST] 00 -> project from AUTH service subs  ', this.project)
         this.getProjectById(this.currentProjectId)
       }
     });

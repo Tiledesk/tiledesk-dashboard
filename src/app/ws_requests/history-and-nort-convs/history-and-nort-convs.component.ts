@@ -887,27 +887,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
       if (this.current_selected_prjct && this.current_selected_prjct.id_project.profile) {
         const projectProfile = this.current_selected_prjct.id_project.profile
-        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
-        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
         // voice -> VXML voice
         // voice_twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
             const customization = projectProfile.customization;
-            console.log('[HISTORY & NORT-CONVS] - customization', customization);
+            this.logger.log('[HISTORY & NORT-CONVS] - customization', customization);
 
-            // Filtra i canali in base alle customizzazioni
+            // Filter channels based on customizations
             this.conversationType = this.conversationType.filter(channel => {
               if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
-                return false; // escludi TWILIO
+                return false; // exclude TWILIO
               }
               if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
-                return false; // escludi VXML
+                return false; // exclude VXML
               }
-              return true; // mantieni gli altri
+              return true; // keep the others
             });
 
           } else {
-            // Se non c’è alcuna customizzazione, rimuovi entrambi
+            // If there is no customization, remove both
             this.conversationType = this.conversationType.filter(channel =>
               channel.id !== CHANNELS_NAME.VOICE_TWILIO && channel.id !== CHANNELS_NAME.VOICE_VXML
             );

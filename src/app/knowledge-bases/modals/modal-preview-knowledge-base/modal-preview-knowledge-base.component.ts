@@ -88,7 +88,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private router: Router
   ) {
     super(prjctPlanService, notify);
-    console.log('[MODAL-PREVIEW-KB] data ', data)
+    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
@@ -98,7 +98,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
-      console.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
+      this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
       if (!this.selectedNamespace.preview_settings.chunks_only) {
@@ -391,74 +391,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     this.askAI(this.body, startTime)
-
-    // this.openaiService.askGpt(this.body).subscribe((response: any) => {
-
-    //   this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
-    //   response['ai_model'] = this.selectedModel
-    //   this.prompt_token_size = response.prompt_token_size;
-    //   this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
-    //   const endTime = performance.now();
-    //   this.responseTime = Math.round((endTime - startTime) / 1000); 
-    //   this.translateparam = { respTime: this.responseTime };
-    //   this.qa = response;
-    //   this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
-    //   // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
-    //   if (response.answer) {
-    //     this.answer = response.answer;
-    //   }
-
-    //   if (response && response.source && this.isValidURL(response.source)) {
-    //     this.source_url = response.source;
-    //   }
-
-    //   if (response.success == false) {
-    //     // this.error_answer = true;
-    //   } else {
-    //     //this.answer = response.answer;
-    //   }
-    //   this.show_answer = true;
-    //   this.searching = false;
-    // }, (err) => {
-    //   this.logger.log("ask gpt preview response error: ", err);
-    //   // this.logger.log("ask gpt preview response error message: ", error.message);
-    //   // this.logger.log("ask gpt preview response error error: ", error.error);
-    //   if (err && err.error && err.error.error_code === 13001) {
-    //     this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
-    //     this.aiQuotaExceeded = true
-    //   } else if (err && err.error && err.error.message) {
-    //     this.answer = err.error.message;
-    //   } else if (err.error && err.error.error && err.error.error.answer)  {
-    //     this.answer = err.error.error.answer;
-    //     // && err.headers.statusText
-    //     if (err.statusText) {
-    //       this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
-    //       this.answer = this.answer + ' (' + err.statusText + ')'
-    //     }
-    //   }
-
-    //   this.logger.error("ERROR ask gpt: ", err.message);
-
-    //   // this.error_answer = true;
-    //   this.show_answer = true;
-    //   this.searching = false;
-    // }, () => {
-    //   this.logger.log("ask gpt *COMPLETE*")
-    //   this.searching = false;
-    //   this.aiQuotaExceeded = false
-
-    //   const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
-    //   if (storedQuestion) {
-    //     this.hasStoredQuestion = true;
-    //     this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-    //     this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-    //     this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
-    //   } else {
-    //     this.hasStoredQuestion = false;
-    //     this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-    //   }
-    // })
   }
 
   askAI(body, startTime) {

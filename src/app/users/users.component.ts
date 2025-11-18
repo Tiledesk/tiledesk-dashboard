@@ -12,6 +12,7 @@ import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME, APP_SUMO_PLAN_NA
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
 import { BrandService } from 'app/services/brand.service'
+import { CachePuService } from 'app/services/cache/cache-pu.service'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
@@ -26,7 +27,6 @@ import { ProjectUser } from 'app/models/project-user'
 import { RoleService } from 'app/services/role.service'
 import { RolesService } from 'app/services/roles.service'
 import { PERMISSIONS } from 'app/utils/permissions.constants'
-import { CachePuService } from 'app/services/cache-pu.service'
 import { GroupService } from 'app/services/group.service'
 import { TagsService } from 'app/services/tags.service'
 
@@ -177,9 +177,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     private _snackBar: MatSnackBar,
     private roleService: RoleService,
     public rolesService: RolesService,
-    private cachePuService: CachePuService,
     private groupService: GroupService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private cachePuService: CachePuService
+
   ) {
     super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
@@ -783,8 +784,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getAllUsersOfCurrentProject(storage) {
+    // Pulisci la cache per assicurarsi di vedere sempre i dati aggiornati quando si entra nel componente
+    this.cachePuService.clearPuCache();
+    this.logger.log('[USERS] - GET ALL USERS OF CURRENT PROJECT - Cleared project users cache to ensure fresh data');
+    
     let users_id_array = [];
-    this.cachePuService.clearCache()
+    this.cachePuService.clearPuCache()
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
@@ -1594,7 +1599,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
         this.projectUsersLength = this.projectUsersList.length;
-        this.cachePuService.clearCache()
+        this.cachePuService.clearPuCache()
       },
     )
   }
@@ -1654,7 +1659,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
           userToDisable.status = 'disabled';
         }
 
-        this.cachePuService.clearCache()
+        this.cachePuService.clearPuCache()
 
       },
     )
@@ -1682,7 +1687,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
       if (userToEnable) {
         userToEnable.status = 'active';
       }
-      this.cachePuService.clearCache()
+      this.cachePuService.clearPuCache()
     })
   }
 
@@ -1749,7 +1754,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         //  NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
-        this.cachePuService.clearCache();
+        this.cachePuService.clearPuCache();
         // this.getUploadEgineAndProjectUsers()
       },)
     } else {
