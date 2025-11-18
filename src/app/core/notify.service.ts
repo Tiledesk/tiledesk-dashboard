@@ -624,7 +624,7 @@ export class NotifyService {
 
 
   showUnservedNotication(sender, msg, link) {
-    // console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
+     console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_initial', requester_avatar_initial)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_bckgrnd', requester_avatar_bckgrnd)
     $.notifyDefaults({
