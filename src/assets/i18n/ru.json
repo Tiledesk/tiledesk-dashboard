@@ -1225,7 +1225,14 @@
         "ResendInviteSuccessNoticationMsg": "Письмо с приглашением отправлено на ",
         "ResendInviteErrorNoticationMsg": "Произошла ошибка при отправке письма ",
         "CanceledInviteSuccessMsg": "Приглашение отменено для ",
-        "CanceledInviteErrorMsg": "Произошла ошибка при отмене приглашения"
+        "CanceledInviteErrorMsg": "Произошла ошибка при отмене приглашения",
+        "TheUserIsMemberOfGroup": "Пользователь является членом группы: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "Пользователь является членом групп: {{groups_name}}",
+        "TheUserHasCreatedTag": "Пользователь создал тег: {{tags_name}}",
+        "TheUserHasCreatedTags": "Пользователь создал теги: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Удалите пользователя из групп и тегов перед удалением.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Удалите пользователя из групп и тегов перед отключением.",
+        "AndOthers": "и еще {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Добавить товарища по команде",

@@ -119,6 +119,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.INBOX_READ, label: 'Able to view real time and opened' },
+        { key: PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ, label: 'Able to view notifications of unassigned chat' },
         { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
         { key: PERMISSIONS.HISTORY_FILTER_BY_AGENT, label: 'Able to filter conversations by Agent in History' },
         // { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },

@@ -1225,7 +1225,14 @@
         "ResendInviteSuccessNoticationMsg": "Dəvət e-poçtu göndərildi ",
         "ResendInviteErrorNoticationMsg": "E-poçt göndərilərkən xəta baş verdi ",
         "CanceledInviteSuccessMsg": "üçün dəvət ləğv edildi ",
-        "CanceledInviteErrorMsg": "Dəvət ləğv edilərkən xəta baş verdi"
+        "CanceledInviteErrorMsg": "Dəvət ləğv edilərkən xəta baş verdi",
+        "TheUserIsMemberOfGroup": "İstifadəçi qrupun üzvüdür: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "İstifadəçi qrupların üzvüdür: {{groups_name}}",
+        "TheUserHasCreatedTag": "İstifadəçi teq yaratdı: {{tags_name}}",
+        "TheUserHasCreatedTags": "İstifadəçi teqlər yaratdı: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Silmədən əvvəl istifadəçini qruplardan və teqlərdən çıxarın.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Deaktiv etmədən əvvəl istifadəçini qruplardan və teqlərdən çıxarın.",
+        "AndOthers": "və digər {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Komanda yoldaşı əlavə edin",

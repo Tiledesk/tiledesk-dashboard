@@ -1240,7 +1240,14 @@
         "ResendInviteSuccessNoticationMsg": "Inbjudningsmail har skickats till ",
         "ResendInviteErrorNoticationMsg": "Ett fel uppstod när e-postmeddelandet skickades ",
         "CanceledInviteSuccessMsg": "Inbjudan avbruten för ",
-        "CanceledInviteErrorMsg": "Ett fel uppstod när inbjudan skulle avbrytas"
+        "CanceledInviteErrorMsg": "Ett fel uppstod när inbjudan skulle avbrytas",
+        "TheUserIsMemberOfGroup": "Användaren är medlem i gruppen: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "Användaren är medlem i grupperna: {{groups_name}}",
+        "TheUserHasCreatedTag": "Användaren har skapat taggen: {{tags_name}}",
+        "TheUserHasCreatedTags": "Användaren har skapat taggarna: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Ta bort användaren från grupper och taggar innan du tar bort dem.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Ta bort användaren från grupper och taggar innan du inaktiverar dem.",
+        "AndOthers": "och {{count}} andra"
     },
     "UserEditAddPage": {
         "AddUser": "Lägg till lagkamrat",

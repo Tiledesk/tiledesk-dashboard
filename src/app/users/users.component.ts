@@ -26,8 +26,13 @@ import { ProjectUser } from 'app/models/project-user'
 import { RoleService } from 'app/services/role.service'
 import { RolesService } from 'app/services/roles.service'
 import { PERMISSIONS } from 'app/utils/permissions.constants'
+import { CachePuService } from 'app/services/cache-pu.service'
+import { GroupService } from 'app/services/group.service'
+import { TagsService } from 'app/services/tags.service'
 
-const swal = require('sweetalert')
+// const swal = require('sweetalert')
+const Swal = require('sweetalert2')
+
 
 @Component({
   selector: 'appdashboard-users',
@@ -171,8 +176,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
     private roleService: RoleService,
-    public rolesService: RolesService
-
+    public rolesService: RolesService,
+    private cachePuService: CachePuService,
+    private groupService: GroupService,
+    private tagsService: TagsService
   ) {
     super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
@@ -777,6 +784,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   getAllUsersOfCurrentProject(storage) {
     let users_id_array = [];
+    this.cachePuService.clearCache()
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
@@ -869,36 +877,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
    // Metodo per applicare filtro e paginazione
-  _applyFilterAndPagination() {
-    // Applica filtro
-    this.filteredUsers = this.filterUsers(this.projectUsersList, this.searchTerm);
-    console.log('applyFilterAndPagination Original users count:', this.projectUsersList.length);
-    console.log('applyFilterAndPagination Filtered users count:', this.filteredUsers.length);
-    // console.log('[USERS] - PROJECT USERS filterUsers ' , this.filterUsers)
-
-    this.filteredUsers.forEach(item => item.type = 'user');
-    this.pendingInvitationList.forEach(item => item.type = 'invitation');
-
-    //  const combinedItems = [
-    //   ...this.filteredUsers.map(item => ({ ...item, type: 'user' })),
-    //   ...this.pendingInvitationList.map(item => ({ ...item, type: 'invitation' }))
-    // ];
-
-    const combinedItems = [
-        ...this.filteredUsers,
-        ...this.pendingInvitationList
-    ];
-
-    console.log('applyFilterAndPagination combinedItems:', combinedItems);
-    
-    // Aggiorna totalItems
-    // this.totalItems = this.filteredUsers.length;
-    this.totalItems = combinedItems.length;
-    
-    // Applica paginazione
-    this.applyPagination(combinedItems);
-    
-  }
 
  applyFilterAndPagination() {
   // Imposta il tipo per ciascun elemento
@@ -996,7 +974,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
 
-  filterUsers(items: any[], searchTerm: string): any[] {
+filterUsers(items: any[], searchTerm: string): any[] {
   if (!searchTerm.trim()) {
     return items;
   }
@@ -1401,12 +1379,13 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
 
 
   openDeleteModal(
+    projectUser: any,
     projectUser_id: string,
     userID: string,
     userFirstname: string,
     userLastname: string,
   ) {
-    this.displayDeleteModal = 'block'
+    console.log('[USERS] openDeleteModal projectUser', projectUser ,'  projectUser_id ', projectUser_id , ' userID ', userID) 
     this.id_projectUser = projectUser_id
     this.user_id = userID
     this.user_firstname = userFirstname
@@ -1424,6 +1403,141 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     }
 
     this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
+    this.checkUserAssociations(userID, 'delete')
+  }
+
+  checkUserAssociations(userId: string, reason?: string) {
+    console.log('[USERS] checkUserAssociations - DELETE / DISABLE reason ', reason);
+    console.log('[USERS] checkUserAssociations - ID OF THE USER TO DELETE / DISABLE ', userId);
+
+    // Controlla sia i gruppi che le tag in parallelo
+    this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('[USERS] ON MODAL DELETE OPEN - GET GROUPS RES', groups);
+
+      this.tagsService.getTags().subscribe((tags: any) => {
+        console.log('[USERS] ON MODAL DELETE OPEN - GET TAGS RES', tags);
+
+        // ✅ Controlla se l'utente è membro di un gruppo
+        const groupsListWithUser = groups?.filter((group: any) => 
+          Array.isArray(group.members) && group.members.includes(userId)
+        ) || [];
+
+        // ✅ Controlla se l'utente ha creato una tag
+        const tagsCreatedByUser = tags?.filter((tag: any) => 
+          tag.createdBy === userId
+        ) || [];
+
+        console.log('[USERS] ON MODAL DELETE OPEN - groupsListWithUser', groupsListWithUser);
+        console.log('[USERS] ON MODAL DELETE OPEN - tagsCreatedByUser', tagsCreatedByUser);
+
+        // Se l'utente non è associato a gruppi né ha creato tag, procedi con l'eliminazione/disabilitazione
+        if (groupsListWithUser.length === 0 && tagsCreatedByUser.length === 0) {
+          console.log('[USERS] ON MODAL DELETE/DISABLE OPEN - USER NOT ASSOCIATED');
+          if (reason === 'delete') {
+            this.displayDeleteModal = 'block';
+          } else {
+            this.displayDisableModal = 'block';
+          }
+          return;
+        }
+
+        // ✅ Utente associato ad almeno un gruppo o ha creato tag
+        console.log('[USERS] ON MODAL DELETE OPEN - USER ASSOCIATED');
+        
+        const warnings: string[] = [];
+
+        if (groupsListWithUser.length > 0) {
+          const MAX_NAMES_TO_SHOW = 3;
+          const groupsNames = groupsListWithUser.map((g: any) => g.name);
+          const isPlural = groupsListWithUser.length > 1;
+          
+          let groupsDisplayText = '';
+          if (groupsNames.length <= MAX_NAMES_TO_SHOW) {
+            // Mostra tutti i nomi se sono pochi
+            groupsDisplayText = groupsNames.join(', ');
+          } else {
+            // Mostra solo i primi N nomi e aggiungi "... e altri X"
+            const namesToShow = groupsNames.slice(0, MAX_NAMES_TO_SHOW).join(', ');
+            const remainingCount = groupsNames.length - MAX_NAMES_TO_SHOW;
+            const andOthersText = this.translate.instant('UsersPage.AndOthers', { count: remainingCount });
+            groupsDisplayText = `${namesToShow} ${andOthersText}`;
+          }
+          
+          const translationKey = isPlural
+            ? 'UsersPage.TheUserIsMemberOfGroups'
+            : 'UsersPage.TheUserIsMemberOfGroup';
+          
+          warnings.push(
+            this.translate.instant(translationKey, { groups_name: groupsDisplayText })
+          );
+        }
+
+        if (tagsCreatedByUser.length > 0) {
+          const MAX_NAMES_TO_SHOW = 3;
+          const tagsNames = tagsCreatedByUser.map((t: any) => t.tag || t.name || t.label || 'Tag');
+          const isPlural = tagsCreatedByUser.length > 1;
+          
+          let tagsDisplayText = '';
+          if (tagsNames.length <= MAX_NAMES_TO_SHOW) {
+            // Mostra tutti i nomi se sono pochi
+            tagsDisplayText = tagsNames.join(', ');
+          } else {
+            // Mostra solo i primi N nomi e aggiungi "... e altri X"
+            const namesToShow = tagsNames.slice(0, MAX_NAMES_TO_SHOW).join(', ');
+            const remainingCount = tagsNames.length - MAX_NAMES_TO_SHOW;
+            const andOthersText = this.translate.instant('UsersPage.AndOthers', { count: remainingCount });
+            tagsDisplayText = `${namesToShow} ${andOthersText}`;
+          }
+          
+          const translationKey = isPlural
+            ? 'UsersPage.TheUserHasCreatedTags'
+            : 'UsersPage.TheUserHasCreatedTag';
+          
+          warnings.push(
+            this.translate.instant(translationKey, { tags_name: tagsDisplayText })
+          );
+        }
+
+        const actionMessage = reason === 'delete'
+          ? this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDelete')
+          : this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDisable');
+
+        const warningMessage = warnings.join('. ') + '. ' + actionMessage;
+
+        this.showWarningAlert(
+          this.translate.instant('Warning'),
+          warningMessage
+        );
+      }, (error) => {
+        this.logger.error('[USERS] - GET TAGS - ERROR ', error);
+        // In caso di errore, procedi comunque con l'eliminazione/disabilitazione
+        if (reason === 'delete') {
+          this.displayDeleteModal = 'block';
+        } else {
+          this.displayDisableModal = 'block';
+        }
+      });
+    }, (error) => {
+      this.logger.error('[USERS] - GET GROUPS - ERROR ', error);
+      // In caso di errore, procedi comunque con l'eliminazione/disabilitazione
+      if (reason === 'delete') {
+        this.displayDeleteModal = 'block';
+      } else {
+        this.displayDisableModal = 'block';
+      }
+    });
+  }
+
+  private showWarningAlert(title: string, text: string): void {
+    Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonText: this.translate.instant('Ok'),
+    });
   }
 
   onCloseDeleteModalHandled() {
@@ -1461,6 +1575,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
         this.projectUsersLength = this.projectUsersList.length;
+        this.cachePuService.clearCache()
       },
     )
   }
@@ -1472,7 +1587,6 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     userFirstname: string,
     userLastname: string,
   ) {
-    this.displayDisableModal = 'block'
     this.id_projectUser = projectUser_id
     this.user_id = userID
     this.user_firstname = userFirstname
@@ -1490,6 +1604,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     }
 
     this.logger.log('[USERS] OPEN DISABLE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
+    this.checkUserAssociations(userID, 'disable')
   }
 
 
@@ -1519,6 +1634,9 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         if (userToDisable) {
           userToDisable.status = 'disabled';
         }
+
+        this.cachePuService.clearCache()
+
       },
     )
   }
@@ -1545,6 +1663,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
       if (userToEnable) {
         userToEnable.status = 'active';
       }
+      this.cachePuService.clearCache()
     })
   }
 
@@ -1611,7 +1730,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         //  NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
-
+        this.cachePuService.clearCache();
         // this.getUploadEgineAndProjectUsers()
       },)
     } else {

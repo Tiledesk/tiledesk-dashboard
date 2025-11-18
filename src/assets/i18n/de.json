@@ -1223,7 +1223,14 @@
 		"ResendInviteSuccessNoticationMsg": "Einladungsmail wurde gesendet an ",
 		"ResendInviteErrorNoticationMsg": "Ein Fehler ist während des Sendens aufgetreten ",
 		"CanceledInviteSuccessMsg": "Einladung abgebrochen für ",
-		"CanceledInviteErrorMsg": "Ein Fehler ist während der Einladung aufgetreten"
+		"CanceledInviteErrorMsg": "Ein Fehler ist während der Einladung aufgetreten",
+		"TheUserIsMemberOfGroup": "Der Benutzer ist Mitglied der Gruppe: {{groups_name}}",
+		"TheUserIsMemberOfGroups": "Der Benutzer ist Mitglied der Gruppen: {{groups_name}}",
+		"TheUserHasCreatedTag": "Der Benutzer hat das Tag erstellt: {{tags_name}}",
+		"TheUserHasCreatedTags": "Der Benutzer hat die Tags erstellt: {{tags_name}}",
+		"RemoveUserFromGroupsAndTagsBeforeDelete": "Entfernen Sie den Benutzer aus Gruppen und Tags, bevor Sie ihn löschen.",
+		"RemoveUserFromGroupsAndTagsBeforeDisable": "Entfernen Sie den Benutzer aus Gruppen und Tags, bevor Sie ihn deaktivieren.",
+		"AndOthers": "und {{count}} weitere"
 	},
 	"UserEditAddPage": {
 		"AddUser": "Teamkollege hinzufügen",

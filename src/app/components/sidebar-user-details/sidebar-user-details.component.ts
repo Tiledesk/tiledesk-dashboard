@@ -25,6 +25,7 @@ import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.compone
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { CachePuService } from 'app/services/cache-pu.service';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -107,7 +108,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     public brandService: BrandService,
     private route: ActivatedRoute,
     private rolesService: RolesService,
-    private localDbService: LocalDbService
+    private localDbService: LocalDbService,
+    private cachePuService: CachePuService
   ) {
 
     const brand = brandService.getBrand(); 
@@ -615,7 +617,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         // =========== NOTIFY SUCCESS===========
         // this.notifyService.showNotification('status successfully updated', 2, 'done');
         // this.notifyService.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
-
+        this.cachePuService.clearCache()
 
 
         // this.getProjectUser();

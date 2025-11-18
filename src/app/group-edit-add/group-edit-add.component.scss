@@ -293,6 +293,27 @@ button.close {
     object-fit: cover;
 }
 
+.avatar-with-initials {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-right: 15px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.avatar-initials-text {
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
 
 .card-header-flex {
     display: flex;

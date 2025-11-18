@@ -1240,7 +1240,14 @@
         "ResendInviteSuccessNoticationMsg": "Шақыру электрондық поштасы жіберілді ",
         "ResendInviteErrorNoticationMsg": "Электрондық поштаны жіберу кезінде қате орын алды ",
         "CanceledInviteSuccessMsg": "Шақырудан бас тартылды ",
-        "CanceledInviteErrorMsg": "Шақырудан бас тарту кезінде қате орын алды"
+        "CanceledInviteErrorMsg": "Шақырудан бас тарту кезінде қате орын алды",
+        "TheUserIsMemberOfGroup": "Пайдаланушы топтың мүшесі: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "Пайдаланушы топтардың мүшесі: {{groups_name}}",
+        "TheUserHasCreatedTag": "Пайдаланушы тег жасады: {{tags_name}}",
+        "TheUserHasCreatedTags": "Пайдаланушы тегтерді жасады: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Жою алдында пайдаланушыны топтар мен тегтерден алып тастаңыз.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Өшіру алдында пайдаланушыны топтар мен тегтерден алып тастаңыз.",
+        "AndOthers": "және тағы {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Командалас қосу",

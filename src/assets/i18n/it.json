@@ -1224,7 +1224,14 @@
         "ResendInviteSuccessNoticationMsg": "L' email di invito è stata inviata a  ",
         "ResendInviteErrorNoticationMsg": "Si è verificato un errore durante l'invio dell'email",
         "CanceledInviteSuccessMsg": "Invito annullato per ",
-        "CanceledInviteErrorMsg": "Si è verificato un errore durante l'annullamento dell'invito"
+        "CanceledInviteErrorMsg": "Si è verificato un errore durante l'annullamento dell'invito",
+        "TheUserIsMemberOfGroup": "L'utente è membro del gruppo: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "L'utente è membro dei gruppi: {{groups_name}}",
+        "TheUserHasCreatedTag": "L'utente ha creato la tag: {{tags_name}}",
+        "TheUserHasCreatedTags": "L'utente ha creato le tag: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Rimuovi l'utente dai gruppi e dalle tag prima di eliminarlo.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Rimuovi l'utente dai gruppi e dalle tag prima di disabilitarlo.",
+        "AndOthers": "e altri {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Aggiungi Collaboratore",

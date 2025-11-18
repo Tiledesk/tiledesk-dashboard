@@ -15,6 +15,8 @@ import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { of } from 'rxjs';
+import { CachePuService } from './cache-pu.service';
+import { map, shareReplay } from 'rxjs/operators';
 interface NewUser {
   displayName: string;
   email: string;
@@ -73,7 +75,8 @@ export class UsersService {
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
-    private _httpClient: HttpClient
+    private _httpClient: HttpClient,
+    private cachePuService: CachePuService
   ) {
 
     // SUBSCRIBE TO USER BS
@@ -336,9 +339,9 @@ export class UsersService {
   }
 
 
-  public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+  public old_getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
-    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+    console.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -349,6 +352,36 @@ export class UsersService {
     return this._httpClient
       .get<ProjectUser[]>(url, httpOptions);
   }
+
+
+  public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+ 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let projectUsers$ = this.cachePuService.getValue();
+
+    console.log('[USER-SERV] - GET  projectUsers$ from cacheService projectUsers$', projectUsers$);
+    
+    if (!projectUsers$) {
+      const url = this.PROJECT_USER_URL;
+      this.logger.log('[USER-SERV] - GET PROJECTS URL', url);
+      projectUsers$ = this._httpClient.get(url, httpOptions)
+      .pipe( // Chains RxJS operators
+        map((response: any) => response), // Maps the response to itself. In this case, it's necessary because the response is expected to be an array of ProjectUser objects. 
+        shareReplay(1) // Shares the response with all subscribers and replays it for new subscribers. 1 indicates it keeps the latest emitted value and replays it for new subscribers.
+      );
+      console.log('[USER-SERV] - GET  projects$ from HTTP REQUEST projectUsers$ ',projectUsers$);
+      this.cachePuService.setValue(projectUsers$);
+    }
+    
+    return projectUsers$;
+  }
+
 
   // -------------------------------------------------------------
   // GET VISITORS WITH ROLE GUEST & ONLINE

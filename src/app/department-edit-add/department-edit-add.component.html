@@ -76,10 +76,12 @@
                           </label>
                           <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
                             <input [(ngModel)]="deptName_toUpdate"
-                              placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' class="input" type="text"
+                              placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' 
+                              class="input" type="text"
                               style="margin-top: 2px;margin-bottom: 5px;"
                               [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}"
-                              [disabled]="IS_DEFAULT_DEPT === true" (ngModelChange)="onChangeDeptName($event)">
+                              [disabled]="IS_DEFAULT_DEPT === true" 
+                              (ngModelChange)="onChangeDeptName($event)">
                           </div>
                         </div>
                       </section>
@@ -93,10 +95,14 @@
                             {{ "DeptsAddEditPage.Description" | translate}}
                           </label>
                           <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                            <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
+                            <textarea [(ngModel)]="dept_description_toUpdate" 
+                              class="" 
+                              type="text" 
+                              rows="2"
                               (ngModelChange)="onChangeDeptDescription($event)"
                               placeholder='{{ "DeptsAddEditPage.Description" | translate}}'
-                              style="margin-top: 2px"> </textarea>
+                              style="margin-top: 2px"> 
+                            </textarea>
                           </div>
                         </div>
                       
@@ -202,10 +208,17 @@
                             </ng-container>
                           </select> -->
 
-                              <ng-select [items]="botsList" bindValue="_id" bindLabel="name"
-                                placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" [(ngModel)]="selectedBotId"
-                                (change)="_setSelectedBot()" [searchable]="false" [clearable]="false" [loading]=loadingBot
-                                loadingText='Loading...' [disabled]="has_selected_bot === false">
+                              <ng-select 
+                                [items]="botsList" 
+                                bindValue="_id" 
+                                bindLabel="name"
+                                placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" 
+                                [(ngModel)]="selectedBotId"
+                                (change)="_setSelectedBot()" 
+                                [searchable]="false" 
+                                [clearable]="false" [loading]=loadingBot
+                                loadingText='Loading...' 
+                                [disabled]="has_selected_bot === false">
 
                                 <ng-template ng-label-tmp let-item="item">
                                   {{item.name}}
@@ -391,7 +404,8 @@
                               <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
                                 
     
-                                <ng-select (change)="_setSelectedGroup()" 
+                                <ng-select 
+                                  (change)="_setSelectedGroup()" 
                                   [(ngModel)]="selectedGroupId"
                                   [items]="groupsList" 
                                   bindLabel="name" 
@@ -469,8 +483,8 @@
                             
                           </div>
                             <!-- matTooltip= "{{'EditLoadDistribution' | translate}}" -->
-                            <div class="row" style="margin-top: 12px; max-width: 523px;" *ngIf="displayAssignTo === false && groupsParsedArray?.length > 0" class="groups-container">
-                                <!-- groupsParsedArray   {{groupsParsedArray | json}} -->
+                            <div class="row" style="margin-top: 12px; max-width: 523px;" 
+                              *ngIf="displayAssignTo === false && groupsParsedArray?.length > 0" class="groups-container">
                                 <div class="gropus-wpr" *ngFor="let group of groupsParsedArray" (click)="openEditGroupsLoadDistributionDialog()"> 
                                   <div class="custom-group-row" >
                                     <!-- {{ group?.name || 'Unknown group' }} -->

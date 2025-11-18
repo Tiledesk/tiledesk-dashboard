@@ -360,8 +360,7 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
   getTag() {
-  this.tagsService.getTags().subscribe(
-    (tags: any) => {
+    this.tagsService.getTags().subscribe((tags: any) => {
       this.logger.log('[TAGS] - GET TAGS - RES ', tags);
 
       if (tags) {
@@ -406,7 +405,7 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSpinner = false;
     }
   );
-}
+  }
 
 
 

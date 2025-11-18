@@ -1225,7 +1225,14 @@
         "ResendInviteSuccessNoticationMsg": "Имејл са позивницом је послат на ",
         "ResendInviteErrorNoticationMsg": "Дошло је до грешке при слању е-поште ",
         "CanceledInviteSuccessMsg": "Позив је отказан за ",
-        "CanceledInviteErrorMsg": "Дошло је до грешке при отказивању позива"
+        "CanceledInviteErrorMsg": "Дошло је до грешке при отказивању позива",
+        "TheUserIsMemberOfGroup": "Корисник је члан групе: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "Корисник је члан група: {{groups_name}}",
+        "TheUserHasCreatedTag": "Корисник је креирао ознаку: {{tags_name}}",
+        "TheUserHasCreatedTags": "Корисник је креирао ознаке: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Уклоните корисника из група и ознака пре брисања.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Уклоните корисника из група и ознака пре онемогућавања.",
+        "AndOthers": "и још {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Додај саиграча",

@@ -6,7 +6,6 @@ import { AuthService } from 'app/core/auth.service';
 import { UsersService } from './users.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
-import { skipWhile } from 'rxjs/operators';
 // Define a type for the emitted value
 interface UpdatePermissionStatus {
   role: string;
@@ -113,13 +112,19 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
   this.usersService.projectUser_bs
     .pipe(
       takeUntil(unsubscribe$),
-      skipWhile((projectUser) =>
-        !projectUser ||
-        typeof projectUser !== 'object' ||
-        !projectUser.role // ✅ Allow even if rolePermissions is empty
+      filter((projectUser) =>
+        projectUser &&
+        typeof projectUser === 'object' &&
+        projectUser.role // ✅ Filter out null/undefined/invalid values
       )
     )
     .subscribe((projectUser) => {
+      // Additional safety check as a defensive measure
+      if (!projectUser || typeof projectUser !== 'object' || !projectUser.role) {
+        this.logger.log('[ROLES-SERV] - listenToProjectUserPermissions - Invalid projectUser, skipping');
+        return;
+      }
+
       const rolePermissions: string[] = Array.isArray(projectUser.rolePermissions)
         ? projectUser.rolePermissions
         : [];
@@ -135,6 +140,15 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
 
   getUpdateRequestPermission(): Observable<UpdatePermissionStatus> {
     return this.updateRequestPermission$.asObservable();
+  }
+
+  // Reset permissions when project changes to prevent stale permission data
+  resetPermissions() {
+    this.updateRequestPermission$.next({
+      role: '',
+      matchedPermissions: []
+    });
+    this.logger.log('[ROLES-SERV] - Reset permissions BehaviorSubject');
   }
 
   //  listenToProjectUserPermissions(unsubscribe$: Observable<void>) {

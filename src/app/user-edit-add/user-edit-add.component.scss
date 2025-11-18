@@ -382,6 +382,27 @@ input:checked+.slider:before {
   object-fit: cover;
 }
 
+.avatar-with-initials {
+  vertical-align: middle;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  margin-right: 15px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.avatar-initials-text {
+  color: #fff;
+  font-weight: 500;
+  font-size: 24px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
 .card-custom-margin {
   margin-top: 5px;
 }

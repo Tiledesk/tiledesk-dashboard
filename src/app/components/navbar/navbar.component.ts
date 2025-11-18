@@ -223,6 +223,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   PERMISSION_TO_CHANGE_PROJECT: boolean;
   PERMISSION_TO_SIMULATE_CONVERSATION: boolean;
   PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
+  PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS:boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -393,6 +394,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           } else {
             this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
             console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          }
+
+          // -------------------------------------------
+          // PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS
+          // -------------------------------------------
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ)) {
+  
+              this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true
+              console.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+            } else {
+              this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = false
+              console.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+            }
+          } else {
+            this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true
+            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
           }
 
         
@@ -1745,7 +1763,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   notifyLastUnserved() {
-    // this.requestsService.requestsList_bs.subscribe((requests) => {
     this.subscription = this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -1813,6 +1830,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   playSoundForUnservedNotifications() {
+    // Check permission before playing sound for unassigned notifications
+    if (!this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS) {
+      this.logger.log('[NAVBAR] - playSoundForUnservedNotifications - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
+      return;
+    }
+
     this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
       // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
@@ -1858,20 +1881,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
 
     if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
-      this.notifyService.showUnservedNotication(contact_fullname, r.first_text, url)
+      // Check permission before showing unassigned chat notification
+      if (this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS) {
+        this.notifyService.showUnservedNotication(contact_fullname, r.first_text, url)
 
-      // const count = +this.localDbService.getForegrondNotificationsCount();
-      // this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
+        // const count = +this.localDbService.getForegrondNotificationsCount();
+        // this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
 
-      this.shown_requests[r.id] = true;
+        this.shown_requests[r.id] = true;
 
-
-      // --------------------------------------------------------------------------
-      // @ set request to store (doUnservedDateDiffAndShowNotification)
-      // --------------------------------------------------------------------------
-      localStorage.setItem(r.id + '_' + r.status, 'true');
-
-
+        // --------------------------------------------------------------------------
+        // @ set request to store (doUnservedDateDiffAndShowNotification)
+        // --------------------------------------------------------------------------
+        localStorage.setItem(r.id + '_' + r.status, 'true');
+      } else {
+        console.log('[NAVBAR] - displayUnservedInAppNotification - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
+      }
     }
 
   }

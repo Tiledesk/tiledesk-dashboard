@@ -21,6 +21,8 @@ import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { GroupService } from 'app/services/group.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { CachePuService } from 'app/services/cache-pu.service';
+import { avatarPlaceholder, getColorBck } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -165,6 +167,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     private rolesService: RolesService,
     private roleService: RoleService,
     private groupService: GroupService,
+    private cachePuService: CachePuService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -687,6 +690,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.user_role = projectUser.role;
         this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
 
+        // Crea avatar con iniziali
+        this.createUserAvatar(projectUser.id_user);
+
         if (projectUser && projectUser.max_assigned_chat) {
           this.max_assigned_chat = projectUser.max_assigned_chat;
         }
@@ -700,6 +706,37 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.showSpinner = false;
       this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) * COMPLETE *');
     });
+  }
+
+  // Crea avatar con iniziali per l'utente
+  createUserAvatar(user: any) {
+    if (!user) {
+      return;
+    }
+
+    // Se già esistono, non ricrearli
+    if (user.fullname_initial && user.fillColour) {
+      return;
+    }
+
+    let fullname = '';
+    if (user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else if (user.firstname) {
+      fullname = user.firstname;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else if (user.email) {
+      // Usa l'email come fallback
+      fullname = user.email;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else {
+      user.fullname_initial = 'N/A';
+      user.fillColour = 'rgb(98, 100, 167)';
+    }
   }
 
   changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string) {
@@ -732,11 +769,11 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       // =========== NOTIFY SUCCESS ==========
       // this.notify.showNotification('status successfully updated', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
-
+      this.cachePuService.clearCache()
     });
   }
 
-   getGroupsByProjectId(userId) {
+  getGroupsByProjectId(userId) {
     console.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID userId', userId);
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
@@ -881,7 +918,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         // NOTIFY SUCCESS 
         // -----------------------
         this.notify.showWidgetStyleUpdateNotification(this.successfullyUpdatedNoticationMsg, 2, 'done');
-
+        this.cachePuService.clearCache()
       });
   }
 
@@ -907,7 +944,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         }
 
         this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
-
+        this.cachePuService.clearCache();
       });
 
   }
@@ -1078,6 +1115,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
       this.INVITE_USER_NOT_FOUND = false;
       // this.PENDING_INVITATION_ALREADY_EXIST = false;
+      this.cachePuService.clearCache()
 
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();

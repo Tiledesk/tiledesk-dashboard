@@ -1226,7 +1226,14 @@
         "ResendInviteSuccessNoticationMsg": "Davet e-postası şu adrese gönderildi ",
         "ResendInviteErrorNoticationMsg": "E-posta gönderilirken bir hata oluştu ",
         "CanceledInviteSuccessMsg": "Davetiye için iptal edildi ",
-        "CanceledInviteErrorMsg": "Davet iptal edilirken bir hata oluştu"
+        "CanceledInviteErrorMsg": "Davet iptal edilirken bir hata oluştu",
+        "TheUserIsMemberOfGroup": "Kullanıcı grubun üyesidir: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "Kullanıcı grupların üyesidir: {{groups_name}}",
+        "TheUserHasCreatedTag": "Kullanıcı etiketi oluşturdu: {{tags_name}}",
+        "TheUserHasCreatedTags": "Kullanıcı etiketleri oluşturdu: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Silmeden önce kullanıcıyı gruplardan ve etiketlerden kaldırın.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Devre dışı bırakmadan önce kullanıcıyı gruplardan ve etiketlerden kaldırın.",
+        "AndOthers": "ve diğer {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Takım Arkadaşı Ekle",

@@ -1224,7 +1224,14 @@
         "ResendInviteSuccessNoticationMsg": "O e-mail de convite foi enviado para ",
         "ResendInviteErrorNoticationMsg": "Ocorreu um erro ao enviar o e-mail ",
         "CanceledInviteSuccessMsg": "Convite cancelado para ",
-        "CanceledInviteErrorMsg": "Ocorreu um erro ao cancelar o convite"
+        "CanceledInviteErrorMsg": "Ocorreu um erro ao cancelar o convite",
+        "TheUserIsMemberOfGroup": "O usuário é membro do grupo: {{groups_name}}",
+        "TheUserIsMemberOfGroups": "O usuário é membro dos grupos: {{groups_name}}",
+        "TheUserHasCreatedTag": "O usuário criou a tag: {{tags_name}}",
+        "TheUserHasCreatedTags": "O usuário criou as tags: {{tags_name}}",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Remova o usuário dos grupos e tags antes de excluí-lo.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Remova o usuário dos grupos e tags antes de desabilitá-lo.",
+        "AndOthers": "e outros {{count}}"
     },
     "UserEditAddPage": {
         "AddUser": "Adicionar companheiro de equipe",
