@@ -1229,8 +1229,12 @@
         "TheUserIsMemberOfGroups": "L'utilisateur est membre des groupes : {{groups_name}}",
         "TheUserHasCreatedTag": "L'utilisateur a créé l'étiquette : {{tags_name}}",
         "TheUserHasCreatedTags": "L'utilisateur a créé les étiquettes : {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Retirez l'utilisateur des groupes et des étiquettes avant de le supprimer.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Retirez l'utilisateur des groupes et des étiquettes avant de le désactiver.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Retirez le coéquipier des groupes et des étiquettes avant de le supprimer.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Retirez le coéquipier des groupes et des étiquettes avant de le désactiver.",
+        "RemoveUserFromGroupsBeforeDelete": "Retirez le coéquipier des groupes avant de le supprimer.",
+        "RemoveUserFromGroupsBeforeDisable": "Retirez le coéquipier des groupes avant de le désactiver.",
+        "RemoveUserFromTagsBeforeDelete": "Retirez le coéquipier des étiquettes avant de le supprimer.",
+        "RemoveUserFromTagsBeforeDisable": "Retirez le coéquipier des étiquettes avant de le désactiver.",
         "AndOthers": "et {{count}} autres"
     },
     "UserEditAddPage": {

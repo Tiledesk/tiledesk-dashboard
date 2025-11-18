@@ -1228,8 +1228,12 @@
 		"TheUserIsMemberOfGroups": "Der Benutzer ist Mitglied der Gruppen: {{groups_name}}",
 		"TheUserHasCreatedTag": "Der Benutzer hat das Tag erstellt: {{tags_name}}",
 		"TheUserHasCreatedTags": "Der Benutzer hat die Tags erstellt: {{tags_name}}",
-		"RemoveUserFromGroupsAndTagsBeforeDelete": "Entfernen Sie den Benutzer aus Gruppen und Tags, bevor Sie ihn löschen.",
-		"RemoveUserFromGroupsAndTagsBeforeDisable": "Entfernen Sie den Benutzer aus Gruppen und Tags, bevor Sie ihn deaktivieren.",
+		"RemoveUserFromGroupsAndTagsBeforeDelete": "Entfernen Sie den Teamkollegen aus Gruppen und Tags, bevor Sie ihn löschen.",
+		"RemoveUserFromGroupsAndTagsBeforeDisable": "Entfernen Sie den Teamkollegen aus Gruppen und Tags, bevor Sie ihn deaktivieren.",
+		"RemoveUserFromGroupsBeforeDelete": "Entfernen Sie den Teamkollegen aus Gruppen, bevor Sie ihn löschen.",
+		"RemoveUserFromGroupsBeforeDisable": "Entfernen Sie den Teamkollegen aus Gruppen, bevor Sie ihn deaktivieren.",
+		"RemoveUserFromTagsBeforeDelete": "Entfernen Sie den Teamkollegen aus Tags, bevor Sie ihn löschen.",
+		"RemoveUserFromTagsBeforeDisable": "Entfernen Sie den Teamkollegen aus Tags, bevor Sie ihn deaktivieren.",
 		"AndOthers": "und {{count}} weitere"
 	},
 	"UserEditAddPage": {

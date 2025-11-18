@@ -1229,8 +1229,12 @@
         "TheUserIsMemberOfGroups": "Foydalanuvchi guruhlar a'zosi: {{groups_name}}",
         "TheUserHasCreatedTag": "Foydalanuvchi tegn yaratdi: {{tags_name}}",
         "TheUserHasCreatedTags": "Foydalanuvchi teglarni yaratdi: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "O'chirishdan oldin foydalanuvchini guruhlar va teglardan olib tashlang.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "O'chirib qo'yishdan oldin foydalanuvchini guruhlar va teglardan olib tashlang.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "O'chirishdan oldin jamoadoshni guruhlar va teglardan olib tashlang.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "O'chirib qo'yishdan oldin jamoadoshni guruhlar va teglardan olib tashlang.",
+        "RemoveUserFromGroupsBeforeDelete": "O'chirishdan oldin jamoadoshni guruhlardan olib tashlang.",
+        "RemoveUserFromGroupsBeforeDisable": "O'chirib qo'yishdan oldin jamoadoshni guruhlardan olib tashlang.",
+        "RemoveUserFromTagsBeforeDelete": "O'chirishdan oldin jamoadoshni teglardan olib tashlang.",
+        "RemoveUserFromTagsBeforeDisable": "O'chirib qo'yishdan oldin jamoadoshni teglardan olib tashlang.",
         "AndOthers": "va yana {{count}} ta"
     },
     "UserEditAddPage": {

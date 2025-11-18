@@ -1203,8 +1203,12 @@
         "TheUserIsMemberOfGroups": "El usuario es miembro de los grupos: {{groups_name}}",
         "TheUserHasCreatedTag": "El usuario ha creado la etiqueta: {{tags_name}}",
         "TheUserHasCreatedTags": "El usuario ha creado las etiquetas: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Elimina al usuario de los grupos y etiquetas antes de eliminarlo.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Elimina al usuario de los grupos y etiquetas antes de deshabilitarlo.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Elimina al compañero de los grupos y etiquetas antes de eliminarlo.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Elimina al compañero de los grupos y etiquetas antes de deshabilitarlo.",
+        "RemoveUserFromGroupsBeforeDelete": "Elimina al compañero de los grupos antes de eliminarlo.",
+        "RemoveUserFromGroupsBeforeDisable": "Elimina al compañero de los grupos antes de deshabilitarlo.",
+        "RemoveUserFromTagsBeforeDelete": "Elimina al compañero de las etiquetas antes de eliminarlo.",
+        "RemoveUserFromTagsBeforeDisable": "Elimina al compañero de las etiquetas antes de deshabilitarlo.",
         "AndOthers": "y otros {{count}}"
     },
     "UserEditAddPage": {

@@ -1245,8 +1245,12 @@
         "TheUserIsMemberOfGroups": "Користувач є членом груп: {{groups_name}}",
         "TheUserHasCreatedTag": "Користувач створив тег: {{tags_name}}",
         "TheUserHasCreatedTags": "Користувач створив теги: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Видаліть користувача з груп і тегів перед видаленням.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Видаліть користувача з груп і тегів перед вимкненням.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Видаліть товариша по команді з груп і тегів перед видаленням.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Видаліть товариша по команді з груп і тегів перед вимкненням.",
+        "RemoveUserFromGroupsBeforeDelete": "Видаліть товариша по команді з груп перед видаленням.",
+        "RemoveUserFromGroupsBeforeDisable": "Видаліть товариша по команді з груп перед вимкненням.",
+        "RemoveUserFromTagsBeforeDelete": "Видаліть товариша по команді з тегів перед видаленням.",
+        "RemoveUserFromTagsBeforeDisable": "Видаліть товариша по команді з тегів перед вимкненням.",
         "AndOthers": "та ще {{count}}"
     },
     "UserEditAddPage": {

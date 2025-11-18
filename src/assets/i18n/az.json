@@ -1230,8 +1230,12 @@
         "TheUserIsMemberOfGroups": "İstifadəçi qrupların üzvüdür: {{groups_name}}",
         "TheUserHasCreatedTag": "İstifadəçi teq yaratdı: {{tags_name}}",
         "TheUserHasCreatedTags": "İstifadəçi teqlər yaratdı: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Silmədən əvvəl istifadəçini qruplardan və teqlərdən çıxarın.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Deaktiv etmədən əvvəl istifadəçini qruplardan və teqlərdən çıxarın.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Silmədən əvvəl komanda yoldaşını qruplardan və teqlərdən çıxarın.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Deaktiv etmədən əvvəl komanda yoldaşını qruplardan və teqlərdən çıxarın.",
+        "RemoveUserFromGroupsBeforeDelete": "Silmədən əvvəl komanda yoldaşını qruplardan çıxarın.",
+        "RemoveUserFromGroupsBeforeDisable": "Deaktiv etmədən əvvəl komanda yoldaşını qruplardan çıxarın.",
+        "RemoveUserFromTagsBeforeDelete": "Silmədən əvvəl komanda yoldaşını teqlərdən çıxarın.",
+        "RemoveUserFromTagsBeforeDisable": "Deaktiv etmədən əvvəl komanda yoldaşını teqlərdən çıxarın.",
         "AndOthers": "və digər {{count}}"
     },
     "UserEditAddPage": {

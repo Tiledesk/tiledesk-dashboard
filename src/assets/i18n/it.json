@@ -1229,8 +1229,12 @@
         "TheUserIsMemberOfGroups": "L'utente è membro dei gruppi: {{groups_name}}",
         "TheUserHasCreatedTag": "L'utente ha creato la tag: {{tags_name}}",
         "TheUserHasCreatedTags": "L'utente ha creato le tag: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Rimuovi l'utente dai gruppi e dalle tag prima di eliminarlo.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Rimuovi l'utente dai gruppi e dalle tag prima di disabilitarlo.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Rimuovi il collaboratore dai gruppi e dalle tag prima di eliminarlo.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Rimuovi il collaboratore dai gruppi e dalle tag prima di disabilitarlo.",
+        "RemoveUserFromGroupsBeforeDelete": "Rimuovi il collaboratore dai gruppi prima di eliminarlo.",
+        "RemoveUserFromGroupsBeforeDisable": "Rimuovi il collaboratore dai gruppi prima di disabilitarlo.",
+        "RemoveUserFromTagsBeforeDelete": "Rimuovi il collaboratore dalle tag prima di eliminarlo.",
+        "RemoveUserFromTagsBeforeDisable": "Rimuovi il collaboratore dalle tag prima di disabilitarlo.",
         "AndOthers": "e altri {{count}}"
     },
     "UserEditAddPage": {

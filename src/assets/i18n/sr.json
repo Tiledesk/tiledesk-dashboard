@@ -1230,8 +1230,12 @@
         "TheUserIsMemberOfGroups": "Корисник је члан група: {{groups_name}}",
         "TheUserHasCreatedTag": "Корисник је креирао ознаку: {{tags_name}}",
         "TheUserHasCreatedTags": "Корисник је креирао ознаке: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Уклоните корисника из група и ознака пре брисања.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Уклоните корисника из група и ознака пре онемогућавања.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Уклоните саиграча из група и ознака пре брисања.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Уклоните саиграча из група и ознака пре онемогућавања.",
+        "RemoveUserFromGroupsBeforeDelete": "Уклоните саиграча из група пре брисања.",
+        "RemoveUserFromGroupsBeforeDisable": "Уклоните саиграча из група пре онемогућавања.",
+        "RemoveUserFromTagsBeforeDelete": "Уклоните саиграча из ознака пре брисања.",
+        "RemoveUserFromTagsBeforeDisable": "Уклоните саиграча из ознака пре онемогућавања.",
         "AndOthers": "и још {{count}}"
     },
     "UserEditAddPage": {

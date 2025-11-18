@@ -1230,8 +1230,12 @@
         "TheUserIsMemberOfGroups": "المستخدم عضو في المجموعات: {{groups_name}}",
         "TheUserHasCreatedTag": "أنشأ المستخدم العلامة: {{tags_name}}",
         "TheUserHasCreatedTags": "أنشأ المستخدم العلامات: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "قم بإزالة المستخدم من المجموعات والعلامات قبل حذفه.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "قم بإزالة المستخدم من المجموعات والعلامات قبل تعطيله.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "قم بإزالة شريك الفريق من المجموعات والعلامات قبل حذفه.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "قم بإزالة شريك الفريق من المجموعات والعلامات قبل تعطيله.",
+        "RemoveUserFromGroupsBeforeDelete": "قم بإزالة شريك الفريق من المجموعات قبل حذفه.",
+        "RemoveUserFromGroupsBeforeDisable": "قم بإزالة شريك الفريق من المجموعات قبل تعطيله.",
+        "RemoveUserFromTagsBeforeDelete": "قم بإزالة شريك الفريق من العلامات قبل حذفه.",
+        "RemoveUserFromTagsBeforeDisable": "قم بإزالة شريك الفريق من العلامات قبل تعطيله.",
         "AndOthers": "و{{count}} أخرى"
     },
     "UserEditAddPage": {

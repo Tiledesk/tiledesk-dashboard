@@ -1229,8 +1229,12 @@
         "TheUserIsMemberOfGroups": "The user is a member of the groups: {{groups_name}}",
         "TheUserHasCreatedTag": "The user has created the tag: {{tags_name}}",
         "TheUserHasCreatedTags": "The user has created the tags: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Remove the user from groups and tags before deleting them.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Remove the user from groups and tags before disabling them.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Remove the teammate from groups and tags before deleting them.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Remove the teammate from groups and tags before disabling them.",
+        "RemoveUserFromGroupsBeforeDelete": "Remove the teammate from groups before deleting them.",
+        "RemoveUserFromGroupsBeforeDisable": "Remove the teammate from groups before disabling them.",
+        "RemoveUserFromTagsBeforeDelete": "Remove the teammate from tags before deleting them.",
+        "RemoveUserFromTagsBeforeDisable": "Remove the teammate from tags before disabling them.",
         "AndOthers": "and {{count}} others"
     },
     "UserEditAddPage": {

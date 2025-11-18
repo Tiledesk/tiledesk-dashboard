@@ -1230,8 +1230,12 @@
         "TheUserIsMemberOfGroups": "Пользователь является членом групп: {{groups_name}}",
         "TheUserHasCreatedTag": "Пользователь создал тег: {{tags_name}}",
         "TheUserHasCreatedTags": "Пользователь создал теги: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Удалите пользователя из групп и тегов перед удалением.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Удалите пользователя из групп и тегов перед отключением.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Удалите товарища по команде из групп и тегов перед удалением.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Удалите товарища по команде из групп и тегов перед отключением.",
+        "RemoveUserFromGroupsBeforeDelete": "Удалите товарища по команде из групп перед удалением.",
+        "RemoveUserFromGroupsBeforeDisable": "Удалите товарища по команде из групп перед отключением.",
+        "RemoveUserFromTagsBeforeDelete": "Удалите товарища по команде из тегов перед удалением.",
+        "RemoveUserFromTagsBeforeDisable": "Удалите товарища по команде из тегов перед отключением.",
         "AndOthers": "и еще {{count}}"
     },
     "UserEditAddPage": {

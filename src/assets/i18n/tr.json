@@ -1231,8 +1231,12 @@
         "TheUserIsMemberOfGroups": "Kullanıcı grupların üyesidir: {{groups_name}}",
         "TheUserHasCreatedTag": "Kullanıcı etiketi oluşturdu: {{tags_name}}",
         "TheUserHasCreatedTags": "Kullanıcı etiketleri oluşturdu: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Silmeden önce kullanıcıyı gruplardan ve etiketlerden kaldırın.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Devre dışı bırakmadan önce kullanıcıyı gruplardan ve etiketlerden kaldırın.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Silmeden önce takım arkadaşını gruplardan ve etiketlerden kaldırın.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Devre dışı bırakmadan önce takım arkadaşını gruplardan ve etiketlerden kaldırın.",
+        "RemoveUserFromGroupsBeforeDelete": "Silmeden önce takım arkadaşını gruplardan kaldırın.",
+        "RemoveUserFromGroupsBeforeDisable": "Devre dışı bırakmadan önce takım arkadaşını gruplardan kaldırın.",
+        "RemoveUserFromTagsBeforeDelete": "Silmeden önce takım arkadaşını etiketlerden kaldırın.",
+        "RemoveUserFromTagsBeforeDisable": "Devre dışı bırakmadan önce takım arkadaşını etiketlerden kaldırın.",
         "AndOthers": "ve diğer {{count}}"
     },
     "UserEditAddPage": {

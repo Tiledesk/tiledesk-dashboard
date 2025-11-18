@@ -1498,9 +1498,27 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
           );
         }
 
-        const actionMessage = reason === 'delete'
-          ? this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDelete')
-          : this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDisable');
+        // Determine the appropriate action message based on what associations exist
+        let actionMessage = '';
+        const hasGroups = groupsListWithUser.length > 0;
+        const hasTags = tagsCreatedByUser.length > 0;
+        
+        if (hasGroups && hasTags) {
+          // Both groups and tags
+          actionMessage = reason === 'delete'
+            ? this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDelete')
+            : this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDisable');
+        } else if (hasGroups) {
+          // Only groups
+          actionMessage = reason === 'delete'
+            ? this.translate.instant('UsersPage.RemoveUserFromGroupsBeforeDelete')
+            : this.translate.instant('UsersPage.RemoveUserFromGroupsBeforeDisable');
+        } else if (hasTags) {
+          // Only tags
+          actionMessage = reason === 'delete'
+            ? this.translate.instant('UsersPage.RemoveUserFromTagsBeforeDelete')
+            : this.translate.instant('UsersPage.RemoveUserFromTagsBeforeDisable');
+        }
 
         const warningMessage = warnings.join('. ') + '. ' + actionMessage;
 

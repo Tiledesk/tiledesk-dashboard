@@ -1245,8 +1245,12 @@
         "TheUserIsMemberOfGroups": "Пайдаланушы топтардың мүшесі: {{groups_name}}",
         "TheUserHasCreatedTag": "Пайдаланушы тег жасады: {{tags_name}}",
         "TheUserHasCreatedTags": "Пайдаланушы тегтерді жасады: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Жою алдында пайдаланушыны топтар мен тегтерден алып тастаңыз.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Өшіру алдында пайдаланушыны топтар мен тегтерден алып тастаңыз.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Жою алдында командаласты топтар мен тегтерден алып тастаңыз.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Өшіру алдында командаласты топтар мен тегтерден алып тастаңыз.",
+        "RemoveUserFromGroupsBeforeDelete": "Жою алдында командаласты топтардан алып тастаңыз.",
+        "RemoveUserFromGroupsBeforeDisable": "Өшіру алдында командаласты топтардан алып тастаңыз.",
+        "RemoveUserFromTagsBeforeDelete": "Жою алдында командаласты тегтерден алып тастаңыз.",
+        "RemoveUserFromTagsBeforeDisable": "Өшіру алдында командаласты тегтерден алып тастаңыз.",
         "AndOthers": "және тағы {{count}}"
     },
     "UserEditAddPage": {

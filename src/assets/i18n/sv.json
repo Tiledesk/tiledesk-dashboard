@@ -1245,8 +1245,12 @@
         "TheUserIsMemberOfGroups": "Användaren är medlem i grupperna: {{groups_name}}",
         "TheUserHasCreatedTag": "Användaren har skapat taggen: {{tags_name}}",
         "TheUserHasCreatedTags": "Användaren har skapat taggarna: {{tags_name}}",
-        "RemoveUserFromGroupsAndTagsBeforeDelete": "Ta bort användaren från grupper och taggar innan du tar bort dem.",
-        "RemoveUserFromGroupsAndTagsBeforeDisable": "Ta bort användaren från grupper och taggar innan du inaktiverar dem.",
+        "RemoveUserFromGroupsAndTagsBeforeDelete": "Ta bort lagkamraten från grupper och taggar innan du tar bort dem.",
+        "RemoveUserFromGroupsAndTagsBeforeDisable": "Ta bort lagkamraten från grupper och taggar innan du inaktiverar dem.",
+        "RemoveUserFromGroupsBeforeDelete": "Ta bort lagkamraten från grupper innan du tar bort dem.",
+        "RemoveUserFromGroupsBeforeDisable": "Ta bort lagkamraten från grupper innan du inaktiverar dem.",
+        "RemoveUserFromTagsBeforeDelete": "Ta bort lagkamraten från taggar innan du tar bort dem.",
+        "RemoveUserFromTagsBeforeDisable": "Ta bort lagkamraten från taggar innan du inaktiverar dem.",
         "AndOthers": "och {{count}} andra"
     },
     "UserEditAddPage": {
