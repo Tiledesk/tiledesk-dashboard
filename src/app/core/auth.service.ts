@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Injectable } from '@angular/core'
+import { Injectable, Injector } from '@angular/core'
 import {
   Router,
   NavigationEnd,
@@ -29,6 +29,8 @@ import { CacheService } from 'app/services/cache.service'
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service'
 import { SleekplanService } from 'app/services/sleekplan.service'
 import { CachePuService } from 'app/services/cache-pu.service'
+import { UsersService } from 'app/services/users.service'
+import { RolesService } from 'app/services/roles.service'
 // import { ProjectService } from 'app/services/project.service'
 // import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
@@ -112,6 +114,7 @@ export class AuthService {
     private scriptService: ScriptService,
     private cacheService: CacheService,
     private cachePuService: CachePuService,
+    private injector: Injector,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService
     // private projectService: ProjectService,
@@ -305,7 +308,29 @@ export class AuthService {
   projectSelected(project: Project, calledBy) {
     this.cachePuService.clearCache();
     
-    // PUBLISH THE project
+    // Reset BehaviorSubjects BEFORE publishing project to prevent stale permission data when switching projects
+    // Project user permissions are different per project (e.g., admin in one project, agent in another)
+    // This ensures that checkRoleForCurrentProject() won't use old permission data from the previous project
+    // Sidebar and Navbar will reload project user data via getProjectUser() after receiving the new project
+    // Using Injector to avoid circular dependency issues
+    try {
+      const usersService = this.injector.get(UsersService);
+      if (usersService && usersService.project_user_role_bs && usersService.projectUser_bs) {
+        usersService.project_user_role_bs.next('');
+        usersService.projectUser_bs.next(null);
+        this.logger.log('[AUTH-SERV] - PROJECT SELECTED - Reset project user BehaviorSubjects to ensure fresh permission data for new project');
+      }
+      
+      // Also reset permissions in RolesService to ensure listenToProjectUser() gets fresh data
+      const rolesService = this.injector.get(RolesService);
+      if (rolesService) {
+        rolesService.resetPermissions();
+      }
+    } catch (error) {
+      this.logger.error('[AUTH-SERV] - PROJECT SELECTED - Error resetting BehaviorSubjects:', error);
+    }
+    
+    // PUBLISH THE project so components (sidebar, navbar) can react and reload project user data
     this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project, ' calledBy ', calledBy)
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
