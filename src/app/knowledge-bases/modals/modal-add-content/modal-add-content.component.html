@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<div mat-dialog-content >
+<div mat-dialog-content>
     <div class="add-content-cards-wpr" style="    padding: 10px;">
 
         <div class="add-content-card-wpr" (click)="onOkPresssed('urls')">
@@ -25,12 +25,15 @@
                     </span>
                 </div>
                 <span class="span-6"> </span>
-                <p class="add-content-card-content-title"> {{'KbPage.AddKbURL' | translate }}
+                <p class="add-content-card-content-title"> 
+                    <!-- {{'KbPage.AddKbURL' | translate }} -->
+                     {{'KbPage.Websites' | translate }} 
+                     
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    <!-- Adds specific web pages or articles to your Knowledge Base -->
-                     {{'KbPage.AddsURLSDescription' | translate }}
+                     <!-- {{'KbPage.AddsURLSDescription' | translate }} -->
+                    {{'KbPage.AddsURLSAndSitemapDescription' | translate }}
                 </p>
             </div>
         </div>
@@ -47,7 +50,10 @@
                     </span>
                 </div>
                 <span class="span-6"> </span>
-                <p class="add-content-card-content-title"> {{'KbPage.AddKbSitemap' | translate }}
+                <p class="add-content-card-content-title"> 
+                    <!-- {{'KbPage.AddKbSitemap' | translate }} -->
+                     {{'KbPage.SynchronizedSitemap' | translate }}
+                  
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
@@ -139,9 +145,6 @@
             </span>
         </div>
     </div>
-
-
-
 </div>
 
 

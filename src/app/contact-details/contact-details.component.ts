@@ -701,6 +701,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           }
           this.contact_details = lead;
 
+
           if (this.contact_details && this.contact_details.lead_id) {
             this.lead_id = this.contact_details.lead_id;
             this.getProjectUserById(this.lead_id)
