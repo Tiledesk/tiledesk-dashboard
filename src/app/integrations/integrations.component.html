@@ -148,12 +148,6 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </ollama-integration>
 
-                                        <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
-                                            [integration]="selectedIntegration"
-                                            (onUpdateIntegration)=integrationUpdateEvent($event)
-                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                        </v-llm>
-
                                         <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
@@ -173,12 +167,6 @@
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </ext-integration>
-
-                                        <mcp-integration *ngIf="integrationSelectedName === INT_KEYS.MCP"
-                                            [integration]="selectedIntegration"
-                                            (onUpdateIntegration)=integrationUpdateEvent($event)
-                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                        </mcp-integration>
 
                                     </div>
 
@@ -215,17 +203,22 @@
 
                                 </div>
 
+
+                                <div *ngIf="integrationSelectedName === 'none'" class="empty-menu-container">
+                                    <img src="assets/img/int/getstarted.svg" class="getstarted-icon" alt="Get started">
+                                    <p class="no-integration-selected">{{ 'Integration.SelectToStart' | translate }}</p>
+                                </div>
                             </ng-container>
+
                         </div>
+
                     </ng-container>
+                    <ng-template #unauthorizedTpl>
+                        <unauthorized-for-settings></unauthorized-for-settings>
+                    </ng-template>
+                </ng-container>
+
             </div>
-
-
-            <ng-template #unauthorizedTpl>
-                <unauthorized-for-settings></unauthorized-for-settings>
-            </ng-template>
-            </ng-container>
-
         </div>
     </div>
 </div>
