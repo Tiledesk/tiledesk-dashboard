@@ -1377,7 +1377,6 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
   }
 
 
-
   openDeleteModal(
     projectUser: any,
     projectUser_id: string,
@@ -1589,6 +1588,8 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
                 i--;
               }
         }
+
+        
 
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
         console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)

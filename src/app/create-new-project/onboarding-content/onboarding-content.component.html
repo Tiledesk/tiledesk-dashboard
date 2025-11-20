@@ -47,7 +47,8 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 
    
     <!-- <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
-    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width':  arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width':  arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}" 
+       [ngStyle]="!IS_SAFARI ? { height: 'calc(100vh - 75px)' } : {}">
         <!-- arrayOfSteps {{ arrayOfSteps }} arrayOfSteps length {{ arrayOfSteps.length}} -->
         <div *ngFor="let nameStep of arrayOfSteps; index as i" 
             class="step-page"
