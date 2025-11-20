@@ -629,7 +629,9 @@ updateTagContainerHeight() {
       this.getfromStorageIsOpenAppSidebar()
     }
 
-    this.getAppsInstalledApps()
+    // this.getAppsInstalledApps() // moved in get getProjectUserRole()
+
+
     this.getTagContainerElementHeight()
   }
 
@@ -1538,7 +1540,7 @@ updateTagContainerHeight() {
   getAppsInstalledApps() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallationWithApp(this.id_project).then((installations: any) => {
-        // this.logger.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
+        console.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
 
         this.dashboardApps = []
         this.webchatApps = []
@@ -1825,9 +1827,12 @@ updateTagContainerHeight() {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+        console.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.CURRENT_USER_ROLE = userRole;
+        if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
+            this.getAppsInstalledApps();
+        }
       })
   }
 
