@@ -2162,6 +2162,14 @@ footer ul {
   border: unset !important;
 }
 
+.ng-select.select-wa-template.custom-panel-height .ng-dropdown-panel {
+  max-height: 200px !important;
+}
+
+.ng-select.select-wa-template.custom-panel-height .ng-dropdown-panel .scroll-host {
+  max-height: 200px !important;
+}
+
 // FOREGROUND NOTIFICATION
 .alert-minimalist {
   // background-color: rgb(241, 242, 240);

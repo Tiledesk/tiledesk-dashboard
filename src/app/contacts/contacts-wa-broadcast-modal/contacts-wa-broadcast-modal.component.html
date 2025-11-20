@@ -2,7 +2,33 @@
   
    {{ 'WhatsAppBroadcasts' | translate}} 
 </h1>
-<div mat-dialog-content> 
+
+<!-- Loading state: show nothing or a loading indicator while checking -->
+<div *ngIf="wa_is_installed === null" mat-dialog-content>
+  <div class="wa-loading-container">
+    <div class="wa-loading-text">{{ 'Loading' | translate }}...</div>
+  </div>
+</div>
+
+<div *ngIf="wa_is_installed === false"  mat-dialog-content> 
+
+  <div class="wa-not-installed-title">
+    {{'WhatsAppNotConfigured' | translate}}
+  </div>
+
+  <div class="wa-not-installed-desc-wpr"> 
+
+      <div class="wa-not-installed-desc">
+          {{'UnableToCreateBroadcastWAIsNotInstalled'| translate}}
+      </div>
+    
+  </div>
+
+
+
+</div>
+
+<div *ngIf="wa_is_installed === true"  mat-dialog-content> 
   <div class="contacts-wa-broadcast-modal-container">
     
     <div class="b-flex-container">
@@ -15,7 +41,8 @@
             <div class="template-select-label">{{ 'ChooseTemplate' | translate }}</div>
             
             <div class="select-and-btn-wpr">
-              <ng-select id="template-select" 
+              <ng-select id="template-select" class="select-wa-template custom-panel-height"
+                appendTo="body"  
                 [clearable]="false" 
                 [searchable]="false"
                 [(ngModel)]="templateName" 
@@ -33,7 +60,7 @@
           <div class="template-params-input-wpr">
             
             <!-- Phone Number - Always visible -->
-            <div class="params-section-title">Phone number</div>
+            <div class="params-section-title" style="margin-top: 0px;">Phone number</div>
             <div class="params-container">
               <div class="param-input-wpr">
                 <div class="param-label-container">
@@ -67,9 +94,10 @@
                     <span class="param-number-badge">{{ i + 1 }}</span>
                   </div>
                   <div class="param-input-container">
+                    <!-- form-control -->
                     <input 
                       type="text" 
-                      class="form-control input-md param-input"
+                      class=" input-md param-input"
                       [ngModel]="headerParamsValues[i]" 
                       (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
                       [placeholder]="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT' ? 'Insert a valid URL or update a file' : '{{' + (i + 1) + '}}'"
@@ -91,9 +119,10 @@
                     <span class="param-number-badge">{{ i + 1 }}</span>
                   </div>
                   <div class="param-input-container">
+                    <!-- form-control -->
                     <input 
                       type="text" 
-                      class="form-control input-md param-input"
+                      class=" input-md param-input"
                       [ngModel]="bodyParamsValues[i]" 
                       (ngModelChange)="bodyParamsValues[i] = $event; onBodyParamChange()"
                       [placeholder]="'{{' + (i + 1) + '}}'"
@@ -112,9 +141,10 @@
                     <span class="param-number-badge">{{ i + 1 }}</span>
                   </div>
                   <div class="param-input-container">
+                    <!-- form-control -->
                     <input 
                       type="text" 
-                      class="form-control input-md param-input"
+                      class=" input-md param-input"
                       [ngModel]="buttonParamsValues[i]" 
                       (ngModelChange)="buttonParamsValues[i] = $event; onButtonParamChange()"
                       placeholder="Insert a valid URL"
@@ -213,17 +243,34 @@
       </div>
     </div>
   </div>
+
+
+
 </div>
-<div mat-dialog-actions style="justify-content: center;">
+<div *ngIf="wa_is_installed === true" mat-dialog-actions style="justify-content: center;">
     <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
         {{ "Cancel" | translate }}
        
     </button>
-    <!-- [mat-dialog-close]="newKb.url" -->
+
     <button [disabled]="!selected_template" class="mat-dialog-ok-btn" mat-button
         (click)="onOkPresssed()" cdkFocusInitial>
         
           {{'StartBroadcast' | translate}}
+        
+    </button>
+</div>
+
+<div *ngIf="wa_is_installed === false" mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+
+    <button class="mat-dialog-ok-btn" mat-button
+        (click)="onConfigureWAPresssed()" cdkFocusInitial>
+        
+          {{'OnboardPage.Configure' | translate}}
         
     </button>
 </div>

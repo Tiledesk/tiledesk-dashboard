@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-contacts-wa-broadcast-modal',
@@ -39,6 +40,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   sanitizedUrl: any;
   fileUploadAccept: string;
   projectId: string;
+  wa_is_installed: boolean | null = null; // null = loading, true = installed, false = not installed
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -46,6 +48,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     private automationsService: AutomationsService,
     private logger: LoggerService,
     public sanitizer: DomSanitizer,
+    private router: Router,
   ) {
     console.log('[MODAL-WA-BROADCAST] data ', data)
     // Inizializza il numero di telefono dal contact
@@ -65,13 +68,20 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   getWATemplates() {
     this.automationsService.getWATemplates().subscribe((templates: any) => {
-      this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates ", templates);
+      console.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates ", templates);
       this.templates_list = templates;
+       console.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates_list ", this.templates_list);
     }, (error) => {
       this.logger.error("[CONTACTS-WA-BROADCAST-MODAL] - GET WA TEMPLATES - ERROR: ", error)
       this.logger.log(error.error?.message)
+      if (error.error.message.includes('WhatsApp not installed for the project_id')  ) {
+        console.log('[CONTACTS-WA-BROADCAST-MODAL] - WA not installed');
+        this.wa_is_installed = false
+        // this.presentDialogWANotInstalledFoTheCurrentProject()
+      }
     }, () => {
       this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] - GET WA TEMPLATES * COMPLETE *');
+      this.wa_is_installed = true
     });
   }
 
@@ -402,8 +412,13 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     );
   }
 
-   onOkPresssed(){
+  onOkPresssed(){
     this.sendBroadcast();
+  }
+
+  onConfigureWAPresssed() {
+    this.dialogRef.close();
+    this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
   }
 
   onNoClick(): void {

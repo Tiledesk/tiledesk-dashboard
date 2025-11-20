@@ -18,21 +18,28 @@
 
 .b-left-columns-container {
   flex: 1;
-  min-width: 0; /* allow shrink to enable horizontal scroll */
+  min-width: 0;
+  /* allow shrink to enable horizontal scroll */
 }
 
 .b-left--columns {
   display: flex;
   flex-direction: column;
   gap: 0px;
-  min-width: 0; /* allow shrink to enable horizontal scroll */
+  min-width: 0;
+  /* allow shrink to enable horizontal scroll */
 }
 
 .template-select-label {
   font-family: var(--header-font-family);
   font-weight: 400;
   margin-bottom: 8px;
+  color: #333
 }
+
+
+
+
 
 .choose-wa-tmplt-label-and-select-wpr {
   box-shadow: var(--card-elevation);
@@ -52,15 +59,15 @@
 
 .params-section-title {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   color: #333;
   font-family: var(--header-font-family);
   margin-bottom: 8px;
   margin-top: 16px;
-  
-  &:first-child {
-    margin-top: 0;
-  }
+
+  // &:first-child {
+  //   margin-top: 0;
+  // }
 }
 
 .params-section-description {
@@ -88,6 +95,10 @@
   align-items: center;
   justify-content: center;
   min-width: 32px;
+  height: 36px;
+  width: 36px;
+  border: 1px solid #DDD;
+  border-radius: 5PX;
 }
 
 .param-number-badge {
@@ -97,10 +108,10 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #0f62ff;
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
+  // background-color: #0f62ff;
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
   font-family: var(--header-font-family);
 }
 
@@ -113,7 +124,7 @@
 }
 
 .param-input {
-  padding: 8px 40px 8px 12px;
+  padding: 8px 4px 8px 4px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
@@ -135,7 +146,7 @@
   color: #666;
   cursor: pointer;
   pointer-events: auto;
-  
+
   &:hover {
     color: #0f62ff;
   }
@@ -375,7 +386,7 @@
   border: none;
 }
 
-.body-preview > span ::ng-deep .template-variable-highlight {
+.body-preview>span ::ng-deep .template-variable-highlight {
   display: inline-block;
   background: #fff3cd;
   color: #856404;
@@ -385,7 +396,7 @@
   border: 1px solid #ffc107;
 }
 
-.body-preview > span ::ng-deep .csv-col-label {
+.body-preview>span ::ng-deep .csv-col-label {
   display: inline-block;
   background: #e3e9f6;
   color: #0f62ff;
@@ -396,3 +407,29 @@
   font-style: normal !important;
 }
 
+.wa-loading-text {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 18px;
+}
+
+.wa-not-installed-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.wa-not-installed-desc-wpr {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0px;
+
+}
+
+.wa-not-installed-desc {
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  max-width: 400px;
+}
