@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.157-AR
+- Fixes the bug: Fixed REST call generating 504 error message in conversation details
+
 ### 2.7.156-AR
 - Implements caching strategy for project users to reduce redundant HTTP requests and improve performance
 - Check if a teammate is a member of any groups or has created tags before deleting them
