@@ -644,7 +644,7 @@ updateTagContainerHeight() {
 
     this.unsuscribeRequesterPresence(this.requester_id);
     if (this.id_request) {
-      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
+      console.log('[WS-REQUESTS-MSGS] - sub flow ngOnDestroy 2 this.id_request run unsubscribe', this.id_request)
       this.unsuscribeRequestById(this.id_request);
       this.unsuscribeMessages(this.id_request);
     }
@@ -1959,13 +1959,13 @@ updateTagContainerHeight() {
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      console.log('[WS-REQUESTS-MSGS] - sub flow getParamRequestId  ', params);
       if (params.requestid) {
         this.getRequesByIdRest(params.requestid)
       }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
-        // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId - id_request ', this.id_request);
+        console.log('[WS-REQUESTS-MSGS] - sub flow getParamRequestId - id_request ', this.id_request , 'here run unsuscribe from reuqest by id and message ');
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -2091,7 +2091,7 @@ updateTagContainerHeight() {
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    console.log('[WS-REQUESTS-MSGS] - sub flow CALLING SUBSCRIBE to Request-By-Id: ', id_request)
     let _id_request = ''
     if (id_request.includes('%2B')) {
       // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
@@ -2237,7 +2237,7 @@ updateTagContainerHeight() {
       )
       .subscribe(async (wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - sub flow getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
         console.log('[WS-REQUESTS-MSGS] wsrequest status this.request ', this.request.status)
@@ -3087,7 +3087,7 @@ updateTagContainerHeight() {
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
 
-    //  this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    console.log('[WS-REQUESTS-MSGS] - sub flow subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
@@ -7661,7 +7661,7 @@ extractUrls(text: string): string[] {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
     } else if (this.CHAT_PANEL_MODE === true) {
       const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-      window.open(url, '_blank');
+      window.open(url, '_top');
     }
   }
 
