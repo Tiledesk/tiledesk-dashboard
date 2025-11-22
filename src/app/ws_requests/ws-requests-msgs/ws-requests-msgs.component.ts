@@ -50,7 +50,8 @@ import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
-import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
+
+import { removeEmojis } from 'app/utils/utils-message';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -643,7 +644,7 @@ updateTagContainerHeight() {
 
     this.unsuscribeRequesterPresence(this.requester_id);
     if (this.id_request) {
-      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
+      console.log('[WS-REQUESTS-MSGS] - sub flow ngOnDestroy 2 this.id_request run unsubscribe', this.id_request)
       this.unsuscribeRequestById(this.id_request);
       this.unsuscribeMessages(this.id_request);
     }
@@ -1866,10 +1867,10 @@ updateTagContainerHeight() {
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      if (this.current_selected_prjct &&
-        this.current_selected_prjct.id_project &&
-        this.current_selected_prjct.id_project.settings) {
-        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
+      if (this.current_selected_prjct && 
+          this.current_selected_prjct.id_project &&
+          this.current_selected_prjct.id_project.settings) {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
         if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
 
           this.HIDE_CHATBOT_ATTRIBUTES = this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden;
@@ -1885,40 +1886,30 @@ updateTagContainerHeight() {
 
         if (allowSendEmoji !== undefined) {
           this.ALLOW_TO_SEND_EMOJI = allowSendEmoji;
-          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
         } else {
           this.ALLOW_TO_SEND_EMOJI = true;
-          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
         }
 
         // Is Enabled URLs Whitelist
         const isEnabledURLsWhitelist = this.current_selected_prjct.id_project.settings.allowed_urls;
         if (isEnabledURLsWhitelist !== undefined) {
           this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
-          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
             const urlsWitheList = this.current_selected_prjct.id_project.settings.allowed_urls_list
             if (urlsWitheList !== undefined) {
               this.URLS_WITHELIST = urlsWitheList;
-              console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+              this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
             }
-            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
+            this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
-          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
         }
 
-
-        // if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.allow_send_emoji) {
-
-        //   this.ALLOW_TO_SEND_EMOJI = this.current_selected_prjct.id_project.settings.allow_send_emoji;
-        //   console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
-
-        // } else {
-        //   this.ALLOW_TO_SEND_EMOJI = true;
-        //  console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
-        // }
       } else {
         this.HIDE_CHATBOT_ATTRIBUTES = false;
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
@@ -1968,13 +1959,13 @@ updateTagContainerHeight() {
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      console.log('[WS-REQUESTS-MSGS] - sub flow getParamRequestId  ', params);
       if (params.requestid) {
         this.getRequesByIdRest(params.requestid)
       }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
-        // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId - id_request ', this.id_request);
+        console.log('[WS-REQUESTS-MSGS] - sub flow getParamRequestId - id_request ', this.id_request , 'here run unsuscribe from reuqest by id and message ');
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -2100,7 +2091,7 @@ updateTagContainerHeight() {
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    console.log('[WS-REQUESTS-MSGS] - sub flow CALLING SUBSCRIBE to Request-By-Id: ', id_request)
     let _id_request = ''
     if (id_request.includes('%2B')) {
       // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
@@ -2246,7 +2237,7 @@ updateTagContainerHeight() {
       )
       .subscribe(async (wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - sub flow getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
         console.log('[WS-REQUESTS-MSGS] wsrequest status this.request ', this.request.status)
@@ -2658,6 +2649,7 @@ updateTagContainerHeight() {
           // ---------------------------------------------------------
           // Contact
           // ---------------------------------------------------------
+
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
 
@@ -3001,6 +2993,8 @@ updateTagContainerHeight() {
       });
   }
 
+ 
+
   onChangeContactEmail(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event)
     this.contactNewEmail = event;
@@ -3093,7 +3087,7 @@ updateTagContainerHeight() {
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
 
-    //  this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    console.log('[WS-REQUESTS-MSGS] - sub flow subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
@@ -7703,7 +7697,7 @@ extractUrls(text: string): string[] {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
     } else if (this.CHAT_PANEL_MODE === true) {
       const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-      window.open(url, '_blank');
+      window.open(url, '_top');
     }
   }
 
