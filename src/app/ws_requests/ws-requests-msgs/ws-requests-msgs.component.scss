@@ -2945,8 +2945,8 @@ span .conv-svg-icon {
   padding: 0px;
   padding-left: 25px;
   padding-right: 25px;
-  // border-bottom: 2px solid #3ea9f5;
-  border-bottom: 1px solid #e5effe;
+
+  // border-bottom: 1px solid #e5effe;
 }
 
 .card---footer {
@@ -2954,6 +2954,7 @@ span .conv-svg-icon {
   margin-bottom: 0px;
   padding-top: 2px;
   margin-left: 32px;
+  min-height: 4px;
 }
 
 // Custom scollbar fo the chat right sidebar

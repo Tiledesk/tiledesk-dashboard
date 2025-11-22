@@ -4852,17 +4852,51 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
   }
 
 
-  handleDropdownClick(event: MouseEvent): void {
+  handleDropdownClick(event: MouseEvent, request?: any): void {
     console.log('[WS-REQUESTS-MSGS] - handleDropdownClick ');
+    
+    // Check if request is archived for more than 10 days
+    if (request && this.checkIfReopenIsDisabled(request)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.presentModalReopenConvIsNotPossible();
+      return;
+    }
+    
     if (!this.PERMISSION_TO_UPDATE_REQUEST_STATUS) {
       event.preventDefault(); // Prevent dropdown from opening
       // event.stopPropagation();
       event.stopImmediatePropagation();
       this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-
+      return;
     }
 
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  // Check if reopening is disabled for a specific request (archived for more than 10 days)
+  checkIfReopenIsDisabled(request: any): boolean {
+    if (!request || !request.closed_at) {
+      return false;
+    }
+    const requestclosedAt = moment(request.closed_at);
+    const currentTime = moment();
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    return daysDiff > 10;
+  }
+
+  // Handle click on dropdown menu panel
+  handleDropdownMenuClick(event: MouseEvent, request?: any): void {
+    // Check if request is archived for more than 10 days
+    if (request && this.checkIfReopenIsDisabled(request)) {
+      // Only show modal if clicking on the menu itself, not on items
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'UL' || target.classList.contains('dropdown-menu')) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.presentModalReopenConvIsNotPossible();
+      }
+    }
   }
 
   resolveRequest(requestid) {
@@ -7663,6 +7697,8 @@ extractUrls(text: string): string[] {
   }
 
   goToRequestMsgs(request_recipient: string) {
+    const calledFromIframe = (window.self !== window.top);
+   console.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", calledFromIframe);
     if (this.CHAT_PANEL_MODE === false) {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
     } else if (this.CHAT_PANEL_MODE === true) {
