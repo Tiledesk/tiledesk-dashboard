@@ -308,12 +308,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
       }
     })
   }
-  // per creare un ruolo: curl -v -X POST -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 -d '{ "name":"role1", "permissions":["lead_create","request_read_group"]}' http://localhost:3000/68222598665ba5461066bad9/roles/
-  // per aggiornare un ruolo : curl -v -X PUT -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 -d '{ "name":"role1.1", "permissions":["lead_create"]}' http://localhost:3000/68222598665ba5461066bad9/roles/682cafa3e7ee4068aebbdd51
-  // per eliminare un ruolo: curl -v -X DELETE -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 http://localhost:3000/68222598665ba5461066bad9/roles/682cad3f1c674b5fc76e855c
-  // per elenco ruoli : curl -v -X GET -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 http://localhost:3000/68222598665ba5461066bad9/roles/
-  // ritorna un array di ruoli cosi: [{ "name":"role1", "permissions":["lead_create","request_read_group"]}, { "name":"role2", "permissions":["request_read_group"]}]
-  // per dettaglio ruolo: curl -v -X GET -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 http://localhost:3000/68222598665ba5461066bad9/roles/682cad08a54f645ea74af03d
+
 
   /**
    * CREATE NEW ROLE
