@@ -82,11 +82,11 @@
               </div>
             </div>
 
-            <!-- Header Parameters -->
-            <div *ngIf="selected_template && headerParamsValues.length > 0">
+            <!-- Header Parameters - IMAGE -->
+            <div *ngIf="selected_template && headerParamsValues.length > 0 && header_component?.format === 'IMAGE'">
               <div class="params-section-title">Header parameters</div>
-              <div class="params-section-description" *ngIf="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT'">
-                The header contains a Media to customize
+              <div class="params-section-description">
+                The header contains an image to customize
               </div>
               <div class="params-container">
                 <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
@@ -94,17 +94,102 @@
                     <span class="param-number-badge">{{ i + 1 }}</span>
                   </div>
                   <div class="param-input-container">
-                    <!-- form-control -->
                     <input 
                       type="text" 
-                      class=" input-md param-input"
+                      class="input-md param-input"
                       [ngModel]="headerParamsValues[i]" 
                       (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
-                      [placeholder]="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT' ? 'Insert a valid URL or update a file' : '{{' + (i + 1) + '}}'"
+                      placeholder="Insert a valid image URL or upload a file"
                       style="width: 100%;">
-                    <div class="param-input-icons">
-                      <i class="material-icons-outlined param-icon" *ngIf="header_component?.format === 'IMAGE' || header_component?.format === 'DOCUMENT'">cloud_upload</i>
-                    </div>
+                  </div>
+                  <div class="param-action-button">
+                    <button type="button" 
+                            class="btn-param-action btn-param-clear" 
+                            *ngIf="headerParamsValues[i]"
+                            (click)="clearHeaderParam(i)"
+                            title="Clear">
+                      <i class="material-icons-outlined">close</i>
+                    </button>
+                    <button type="button" 
+                            class="btn-param-action btn-param-upload" 
+                            *ngIf="!headerParamsValues[i]"
+                            (click)="triggerFileUpload(i, 'image')"
+                            title="Upload image">
+                      <i class="material-icons-outlined">cloud_upload</i>
+                    </button>
+                    <input 
+                      type="file" 
+                      [id]="'imageUploadInput_' + i"
+                      accept="image/*"
+                      style="display: none;"
+                      (change)="onFileSelected($event, i, 'image')">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header Parameters - DOCUMENT -->
+            <div *ngIf="selected_template && headerParamsValues.length > 0 && header_component?.format === 'DOCUMENT'">
+              <div class="params-section-title">Header parameters</div>
+              <div class="params-section-description">
+                The header contains a document to customize
+              </div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <input 
+                      type="text" 
+                      class="input-md param-input"
+                      [ngModel]="headerParamsValues[i]" 
+                      (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
+                      placeholder="Insert a valid document URL or upload a file"
+                      style="width: 100%;">
+                  </div>
+                  <div class="param-action-button">
+                    <button type="button" 
+                            class="btn-param-action btn-param-clear" 
+                            *ngIf="headerParamsValues[i]"
+                            (click)="clearHeaderParam(i)"
+                            title="Clear">
+                      <i class="material-icons-outlined">close</i>
+                    </button>
+                    <button type="button" 
+                            class="btn-param-action btn-param-upload" 
+                            *ngIf="!headerParamsValues[i]"
+                            (click)="triggerFileUpload(i, 'document')"
+                            title="Upload document">
+                      <i class="material-icons-outlined">cloud_upload</i>
+                    </button>
+                    <input 
+                      type="file" 
+                      [id]="'documentUploadInput_' + i"
+                      accept=".pdf"
+                      style="display: none;"
+                      (change)="onFileSelected($event, i, 'document')">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header Parameters - TEXT -->
+            <div *ngIf="selected_template && headerParamsValues.length > 0 && header_component?.format === 'TEXT'">
+              <div class="params-section-title">Header parameters</div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <input 
+                      type="text" 
+                      class="input-md param-input"
+                      [ngModel]="headerParamsValues[i]" 
+                      (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
+                      [placeholder]="'{{' + (i + 1) + '}}'"
+                      style="width: 100%;">
                   </div>
                 </div>
               </div>
@@ -180,15 +265,15 @@
               <!-- // Header -->
               <div class="header-preview">
                 <span *ngIf="header_component?.format === 'TEXT'"
-                  [innerHTML]="header_component?.text | htmlEntitiesEncode | waToMarkdown | marked">
+                  [innerHTML]="header_component?.text | htmlEntitiesEncode | waToMarkdown | marked | formatParamBadges">
                 </span>
                 
-                <span *ngIf="header_component?.format === 'IMAGE'">
-                  <img [src]="headerParamsValues[0] || header_params[0]?.image?.link"
+                <span *ngIf="header_component?.format === 'IMAGE' && headerParamsValues[0]">
+                  <img [src]="headerParamsValues[0]"
                     (error)="onHeaderImageError($event)" />
                 </span>
                 
-                <span *ngIf="header_component?.format === 'DOCUMENT'">
+                <span *ngIf="header_component?.format === 'DOCUMENT' && headerParamsValues[0]">
                   <div class="pdf-preview">
                     <p>PDF</p>
                   </div>
@@ -203,7 +288,7 @@
               
               <!-- Body -->
               <div class="body-preview">
-                <span [innerHTML]="body_component?.text | waToMarkdown | marked"></span>
+                <span [innerHTML]="body_component?.text | waToMarkdown | marked | formatParamBadges"></span>
               </div>
               
               <!-- // Footer -->
@@ -221,7 +306,7 @@
                     class="material-icons-outlined call-to-action-icon">open_in_new</span>
                   <span *ngIf="btn.type === 'PHONE_NUMBER'"
                     class="material-icons-round call-to-action-icon">phone</span>
-                  {{ btn.text }}
+                  <span [innerHTML]="btn.text | htmlEntitiesEncode | formatParamBadges"></span>
                 </button>
               </div>
               

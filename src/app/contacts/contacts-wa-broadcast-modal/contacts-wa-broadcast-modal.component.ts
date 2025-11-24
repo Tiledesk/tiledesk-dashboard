@@ -4,6 +4,9 @@ import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { AppConfigService } from 'app/services/app-config.service';
+import { NotifyService } from 'app/core/notify.service';
 
 @Component({
   selector: 'appdashboard-contacts-wa-broadcast-modal',
@@ -49,6 +52,9 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     private logger: LoggerService,
     public sanitizer: DomSanitizer,
     private router: Router,
+    private uploadImageNativeService: UploadImageNativeService,
+    private appConfigService: AppConfigService,
+    private notify: NotifyService,
   ) {
     console.log('[MODAL-WA-BROADCAST] data ', data)
     // Inizializza il numero di telefono dal contact
@@ -177,29 +183,44 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
         // Usa i valori dagli input invece degli esempi
         this.headerParamsValues.forEach((val, i) => {
           const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
-          this.header_component.text = (this.header_component.text || '').replace(re, val || `{{${i + 1}}}`);
+          const paramNumber = i + 1;
+          // Usa un marker temporaneo che verrà sostituito con il badge dopo il processing del markdown
+          const displayValue = val 
+            ? `${val}__PARAM_BADGE_${paramNumber}__`
+            : `{{${paramNumber}}}`;
+          this.header_component.text = (this.header_component.text || '').replace(re, displayValue);
           this.header_params.push({ index: i + 1, type: 'TEXT', text: val || '' });
         });
       }
       else if (this.header_component.format === 'IMAGE') {
         // Usa i valori dagli input invece degli esempi
+        // Solo se il link non è vuoto
         this.headerParamsValues.forEach((link, i) => {
-          this.header_params.push({ index: i + 1, type: 'IMAGE', image: { link: link || '' } });
+          if (link && link.trim()) {
+            this.header_params.push({ index: i + 1, type: 'IMAGE', image: { link: link.trim() } });
+          }
         });
       }
       else if (this.header_component.format === 'DOCUMENT') {
         // Usa i valori dagli input invece degli esempi
-        if (this.headerParamsValues.length) {
+        // Solo se il link non è vuoto
+        if (this.headerParamsValues.length && this.headerParamsValues[0] && this.headerParamsValues[0].trim()) {
           this.fileUploadAccept = '.pdf';
-          this.src = this.headerParamsValues[0];
-          this.sanitizeUrl(this.headerParamsValues[0]);
+          this.src = this.headerParamsValues[0].trim();
+          this.sanitizeUrl(this.headerParamsValues[0].trim());
           this.headerParamsValues.forEach((link, i) => {
-            this.header_params.push({
-              index: i + 1,
-              type: 'DOCUMENT',
-              document: { link: link || '' }
-            });
+            if (link && link.trim()) {
+              this.header_params.push({
+                index: i + 1,
+                type: 'DOCUMENT',
+                document: { link: link.trim() }
+              });
+            }
           });
+        } else {
+          // Reset se l'input è vuoto
+          this.src = null;
+          this.sanitizeUrl(null);
         }
       }
       else if (this.header_component.format === 'LOCATION') {
@@ -222,8 +243,11 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       // Usa i valori dai parametri modificabili dall'utente
       this.bodyParamsValues.forEach((paramValue, i) => {
         const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
-        // Sostituisce il placeholder con il valore dell'utente
-        const displayValue = paramValue || `{{${i + 1}}}`;
+        // Usa un marker temporaneo che verrà sostituito con il badge dopo il processing del markdown
+        const paramNumber = i + 1;
+        const displayValue = paramValue 
+          ? `${paramValue}__PARAM_BADGE_${paramNumber}__`
+          : `{{${paramNumber}}}`;
         this.body_component.text = (this.body_component.text || '').replace(re, displayValue);
         this.body_params.push({ index: i + 1, type: 'text', text: paramValue || '' });
       });
@@ -245,7 +269,11 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
         }
         
         this.buttons_params = [{ index: 1, type: 'text', text: paramText }];
-        this.url_button_component.url = originalUrl.replace('{{1}}', paramText);
+        // Usa un marker temporaneo che verrà sostituito con il badge dopo il processing
+        const displayUrl = paramText 
+          ? `${paramText}__PARAM_BADGE_1__`
+          : '{{1}}';
+        this.url_button_component.url = originalUrl.replace('{{1}}', displayUrl);
 
         const bi = this.buttons_component.buttons.findIndex(b => b.type === 'URL');
         if (bi > -1) this.buttons_component.buttons[bi] = this.url_button_component;
@@ -255,7 +283,11 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   }
 
   sanitizeUrl(url) {
-    this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    if (url) {
+      this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } else {
+      this.sanitizedUrl = null;
+    }
   }
 
   onHeaderImageError(event) {
@@ -303,6 +335,64 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
         this.createTemplatePreview();
       }
     }, 500);
+  }
+
+  clearHeaderParam(index: number) {
+    // Cancella il contenuto del parametro header e aggiorna il preview
+    if (this.headerParamsValues[index] !== undefined) {
+      this.headerParamsValues[index] = '';
+      this.onHeaderParamChange();
+    }
+  }
+
+  triggerFileUpload(index: number, type: 'image' | 'document') {
+    // Triggera il click sull'input file nascosto
+    const inputId = type === 'image' ? `imageUploadInput_${index}` : `documentUploadInput_${index}`;
+    const fileInput = document.getElementById(inputId) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+
+  onFileSelected(event: any, index: number, type: 'image' | 'document') {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    // Verifica il tipo di file
+    if (type === 'image') {
+      if (!file.type.startsWith('image/')) {
+        this.notify.showToast('Please select a valid image file', 4, 'report_problem');
+        event.target.value = '';
+        return;
+      }
+    } else if (type === 'document') {
+      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        this.notify.showToast('Please select a valid PDF file', 4, 'report_problem');
+        event.target.value = '';
+        return;
+      }
+    }
+
+    this.logger.log(`[CONTACTS-WA-BROADCAST-MODAL] Uploading ${type} file:`, file.name);
+
+    // Upload del file
+    this.uploadImageNativeService.uploadAttachment_Native(file).then((downloadURL: string) => {
+      this.logger.log(`[CONTACTS-WA-BROADCAST-MODAL] ${type} uploaded successfully:`, downloadURL);
+      // Aggiorna il valore del parametro con l'URL del file caricato
+      if (this.headerParamsValues[index] !== undefined) {
+        this.headerParamsValues[index] = downloadURL;
+        this.onHeaderParamChange();
+      }
+      // Reset dell'input file
+      event.target.value = '';
+    }).catch((error) => {
+      this.logger.error(`[CONTACTS-WA-BROADCAST-MODAL] Error uploading ${type}:`, error);
+      this.notify.showToast(`Error uploading ${type}. Please try again.`, 4, 'report_problem');
+      // Reset dell'input file
+      event.target.value = '';
+    });
   }
 
   createReceiversList() {

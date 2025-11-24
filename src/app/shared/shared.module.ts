@@ -13,6 +13,7 @@ import { WaToMarkdownPipe } from 'app/wa-to-markdown.pipe';
 import { FormatColLabelsPipe } from 'app/format-col-labels-pipe';
 import { FormatPhonePipe } from 'app/format-phone.pipe';
 import { HighlightTemplateVariablesPipe } from 'app/highlight-template-variables.pipe';
+import { FormatParamBadgesPipe } from 'app/format-param-badges.pipe';
 
 
 
@@ -32,7 +33,8 @@ import { HighlightTemplateVariablesPipe } from 'app/highlight-template-variables
     WaToMarkdownPipe,
     FormatColLabelsPipe,
     FormatPhonePipe,
-    HighlightTemplateVariablesPipe
+    HighlightTemplateVariablesPipe,
+    FormatParamBadgesPipe
   ],
   exports: [
     LoadingSpinnerComponent,
@@ -46,6 +48,7 @@ import { HighlightTemplateVariablesPipe } from 'app/highlight-template-variables
     FormatColLabelsPipe,
     FormatPhonePipe,
     HighlightTemplateVariablesPipe,
+    FormatParamBadgesPipe,
     ColorPickerModule
   ],
   providers: [ 
