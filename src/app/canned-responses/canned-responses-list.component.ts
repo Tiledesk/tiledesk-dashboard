@@ -68,7 +68,7 @@ export class CannedResponsesListComponent implements OnInit {
 
    getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[CANNED-RES-LIST] - LoggedUser ', user);
+      this.logger.log('[CANNED-RES-LIST] - LoggedUser ', user);
 
       if (user && user._id) {
         this.currentUserId = user._id;

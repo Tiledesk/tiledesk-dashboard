@@ -322,7 +322,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     private contactsService: ContactsService,
     private translate: TranslateService,
   ) {
-    console.log('[MODAL-WA-BROADCAST] data ', data)
+    this.logger.log('[MODAL-WA-BROADCAST] data ', data)
     if (this.data?.projectId) {
       this.projectId = this.data.projectId;
     }
@@ -359,12 +359,12 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     if (this.data?.contact?._id) {
       this.contactsService.getLeadById(this.data.contact._id).subscribe(
         (contact: any) => {
-          console.log('[CONTACTS-WA-BROADCAST-MODAL] Contact data refreshed:', contact);
+          this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Contact data refreshed:', contact);
           if (contact) {
             // La response è un oggetto, non un array
             // Aggiorna i dati del contatto con quelli freschi dal server
             this.data.contact = contact;
-            console.log('[CONTACTS-WA-BROADCAST-MODAL] Contact data refreshed:', contact);
+            this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Contact data refreshed:', contact);
             
             // Inizializza il numero telefonico con i dati aggiornati
             this.initializePhoneNumber(contact);
@@ -391,14 +391,14 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   getWATemplates() {
     this.automationsService.getWATemplates().subscribe((templates: any) => {
-      console.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates ", templates);
+      this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates ", templates);
       this.templates_list = templates;
-       console.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates_list ", this.templates_list);
+      this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates_list ", this.templates_list);
     }, (error) => {
       this.logger.error("[CONTACTS-WA-BROADCAST-MODAL] - GET WA TEMPLATES - ERROR: ", error)
       this.logger.log(error.error?.message)
       if (error.error.message.includes('WhatsApp not installed for the project_id')  ) {
-        console.log('[CONTACTS-WA-BROADCAST-MODAL] - WA not installed');
+        this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] - WA not installed');
         this.wa_is_installed = false
         // this.presentDialogWANotInstalledFoTheCurrentProject()
       }
@@ -410,7 +410,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   onSelectTemplate() {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
-    console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
     if (this.selected_template) {
       // Check if template uses NAMED parameters
       this.isNamedTemplate = this.selected_template.parameter_format === 'NAMED';
@@ -796,7 +796,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       if (country) {
         this.phoneCountryCode = country;
         this.phoneCountryName = this.countryNames[country] || country;
-        console.log('[CONTACTS-WA-BROADCAST-MODAL] Country detected:', country, 'Name:', this.phoneCountryName);
+        this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Country detected:', country, 'Name:', this.phoneCountryName);
         
         // Se il dial code è stato rilevato, rimuovi l'errore "PhoneNumberMustStartWithPlus" se presente
         // perché ora il + è presente e il dial code è valido
@@ -1057,7 +1057,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       if (country) {
         this.phoneCountryCode = country;
         this.phoneCountryName = this.countryNames[country] || country;
-        console.log('[CONTACTS-WA-BROADCAST-MODAL] Country detected:', country, 'Name:', this.phoneCountryName);
+        this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Country detected:', country, 'Name:', this.phoneCountryName);
       } else {
         this.phoneCountryCode = null;
         this.phoneCountryName = null;
@@ -1253,6 +1253,105 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     return [receiver];
   }
 
+  /**
+   * Genera un CSV a partire dalla receiver_list creata da createReceiversList()
+   * Il formato CSV deve corrispondere a quello generato da generateCSVFromWhatsAppTemplate in automation-create
+   */
+  generateCSVFromReceiverList(receiver_list: any[]): string {
+    if (!receiver_list || receiver_list.length === 0) {
+      return '';
+    }
+
+    const receiver = receiver_list[0];
+    const headerFields: string[] = [];
+    const rows: string[][] = [];
+
+    // Header fields
+    headerFields.push('phone_number');
+    
+    // Header parameter
+    if (this.header_component) {
+      headerFields.push('header_0');
+    }
+
+    // Body parameters
+    if (this.bodyParamsValues.length > 0) {
+      for (let i = 0; i < this.bodyParamsValues.length; i++) {
+        headerFields.push(`body_${i}`);
+      }
+    }
+
+    // Button parameter
+    if (this.buttonParamsValues.length > 0) {
+      headerFields.push('buttons_0');
+    }
+
+    // Build data row
+    const row: string[] = [];
+    
+    // Phone number (senza spazi, già pulito in createReceiversList)
+    row.push(receiver.phone_number);
+
+    // Header value
+    if (this.header_component) {
+      if (receiver.header_params && receiver.header_params.length > 0) {
+        const headerParam = receiver.header_params[0];
+        if (headerParam.image?.link) {
+          row.push(headerParam.image.link);
+        } else if (headerParam.document?.link) {
+          row.push(headerParam.document.link);
+        } else if (headerParam.text) {
+          row.push(headerParam.text);
+        } else {
+          row.push('');
+        }
+      } else {
+        row.push('');
+      }
+    }
+
+    // Body values
+    if (receiver.body_params && receiver.body_params.length > 0) {
+      receiver.body_params.forEach((param: any) => {
+        row.push(param.text || '');
+      });
+    } else {
+      // Se non ci sono body_params ma ci sono bodyParamsValues, usa quelli
+      this.bodyParamsValues.forEach((value) => {
+        row.push(value || '');
+      });
+    }
+
+    // Button value
+    if (this.buttonParamsValues.length > 0) {
+      if (receiver.buttons_params && receiver.buttons_params.length > 0) {
+        row.push(receiver.buttons_params[0].text || '');
+      } else {
+        row.push(this.buttonParamsValues[0] || '');
+      }
+    }
+
+    rows.push(row);
+
+    // Convert to CSV string
+    const delimiter = ';';
+    let csvContent = headerFields.join(delimiter) + '\n';
+    
+    rows.forEach((row) => {
+      const escapedRow = row.map(cell => {
+        const cellStr = String(cell || '');
+        // Escape cells that contain delimiter, newline, or quotes
+        if (cellStr.includes(delimiter) || cellStr.includes('\n') || cellStr.includes('"')) {
+          return `"${cellStr.replace(/"/g, '""')}"`;
+        }
+        return cellStr;
+      });
+      csvContent += escapedRow.join(delimiter) + '\n';
+    });
+
+    return csvContent;
+  }
+
   sendBroadcast() {
     if (!this.selected_template) {
       this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No template selected');
@@ -1266,7 +1365,130 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
     // Crea la receiver_list
     const receiver_list = this.createReceiversList();
-    console.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
+    
+    // Genera CSV dalla receiver_list (workaround: usa uploadCsv finché il server non implementa sendBroadcast)
+    const csvContent = this.generateCSVFromReceiverList(receiver_list);
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] CSV content:', csvContent);
+
+    // Crea un Blob dal CSV
+    const csvBlob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const csvFile = new File([csvBlob], 'broadcast.csv', { type: 'text/csv' });
+
+    // Prepara FormData per uploadCsv
+    const formData = new FormData();
+    formData.append('delimiter', ';');
+    formData.append('id_project', this.automationsService.project_id);
+    formData.append('template_name', this.selected_template_name);
+    formData.append('template_language', this.selected_template_lang);
+    formData.append('uploadFile', csvFile, csvFile.name);
+
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Sending broadcast via CSV upload (workaround)');
+    
+    // Reset status
+    this.broadcastStatus = 'sending';
+    this.broadcastErrorMessage = null;
+
+    // Usa uploadCsv invece di sendBroadcast (workaround finché il server non implementa sendBroadcast)
+    this.automationsService.uploadCsv(formData).subscribe(
+      (response) => {
+        this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Broadcast sent successfully:', response);
+        this.broadcastStatus = 'success';
+        // La response contiene automation_id, ma per la modale non è necessario gestirlo
+        // Non chiudere automaticamente la modale, lascia che l'utente la chiuda manualmente
+      },
+      (error) => {
+        this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] Error sending broadcast:', error);
+        this.broadcastStatus = 'error';
+        this.broadcastErrorMessage = error?.error?.message || error?.error?.error || error?.message || this.translate.instant('ErrorSendingWhatsAppMessage');
+      }
+    );
+  }
+
+ 
+
+  _createReceiversList() {
+    // Crea un array con un solo receiver (il contatto corrente)
+    // Rimuovi spazi dal numero telefonico prima di inviarlo al server
+    const phoneNumberCleaned = this.phoneNumber.replace(/\s/g, '');
+    const phone_number = phoneNumberCleaned.startsWith('+') ? phoneNumberCleaned : `+${phoneNumberCleaned}`;
+    const receiver: any = { phone_number };
+
+    // Header params
+    if (this.headerParamsValues.length > 0) {
+      const header_params = [];
+      this.headerParamsValues.forEach((value, index) => {
+        if (!value) return;
+        
+        if (this.header_component?.format === 'IMAGE' || this.header_component?.format === 'DOCUMENT') {
+          if (value.startsWith('http')) {
+            header_params.push({
+              type: "IMAGE",
+              image: { link: value }
+            });
+          }
+        } else if (this.header_component?.format === 'TEXT') {
+          header_params.push({
+            type: "text",
+            text: value
+          });
+        }
+      });
+      if (header_params.length) receiver.header_params = header_params;
+    }
+
+    // Body params
+    if (this.bodyParamsValues.length > 0) {
+      const body_params = [];
+      this.bodyParamsValues.forEach((value) => {
+        if (!value) return;
+        body_params.push({
+          type: "text",
+          text: value
+        });
+      });
+      if (body_params.length) receiver.body_params = body_params;
+    }
+
+    // Buttons params
+    if (this.buttonParamsValues.length > 0) {
+      const buttons_params = [];
+      this.buttonParamsValues.forEach((value) => {
+        if (!value) return;
+        // Per i button, il valore è l'URL completo che sostituisce {{1}}
+        // Dobbiamo estrarre solo la parte variabile se l'URL originale contiene {{1}}
+        let paramText = value;
+        if (this.url_button_component?.url && this.url_button_component.url.includes('{{1}}')) {
+          const [prefix, suffix] = this.url_button_component.url.split('{{1}}');
+          if (value.startsWith(prefix) && value.endsWith(suffix)) {
+            paramText = value.slice(prefix.length, value.length - suffix.length);
+          }
+        }
+        buttons_params.push({
+          type: "text",
+          text: paramText
+        });
+      });
+      if (buttons_params.length) receiver.buttons_params = buttons_params;
+    }
+
+    return [receiver];
+  }
+
+  _sendBroadcast() {
+    if (!this.selected_template) {
+      this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No template selected');
+      return;
+    }
+
+    if (!this.phoneNumber) {
+      this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No phone number');
+      return;
+    }
+
+    // Crea la receiver_list
+    const receiver_list = this.createReceiversList();
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
     
     // Prepara i dati per il broadcast
     const broadcastData = {
@@ -1277,7 +1499,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       transaction_id: `automation-request-${this.projectId}-${Date.now()}`,
       // broadcast: true
     };
-    console.log('[CONTACTS-WA-BROADCAST-MODAL] broadcastData' , broadcastData )
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] broadcastData' , broadcastData )
 
     this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Sending broadcast with data:', broadcastData);
     
@@ -1287,7 +1509,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
     this.automationsService.sendBroadcast(broadcastData).subscribe(
       (response) => {
-       console.log('[CONTACTS-WA-BROADCAST-MODAL] Broadcast sent successfully:', response);
+        this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Broadcast sent successfully:', response);
         this.broadcastStatus = 'success';
         // Non chiudere automaticamente la modale, lascia che l'utente la chiuda manualmente
       },
@@ -1298,6 +1520,8 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       }
     );
   }
+
+
 
   onOkPresssed(){
     this.sendBroadcast();

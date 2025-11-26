@@ -127,7 +127,7 @@ export class AutomationsService {
 
     const url = this.SERVER_BASE_PATH + "modules/whatsapp/api/tiledesk/broadcast";
     this.logger.log('[AUTOMATIONS.SERVICE] - SEND BROADCAST - URL ', url);
-    console.log('[AUTOMATIONS.SERVICE] - SEND BROADCAST - DATA ', broadcastData);
+    this.logger.log('[AUTOMATIONS.SERVICE] - SEND BROADCAST - DATA ', broadcastData);
 
     return this.httpClient.post(url, JSON.stringify(broadcastData), httpOptions);
   }
