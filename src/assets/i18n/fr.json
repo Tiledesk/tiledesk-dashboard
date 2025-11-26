@@ -2489,7 +2489,13 @@
         "Failed": "Échoué!",
         "Save": "Sauvegarder",
         "Clear": "Clair",
-        "Delete": "Supprimer"
+        "Delete": "Supprimer",
+        "Transport": "Transport",
+        "AddMCPServer": "Ajouter Serveur MCP",
+        "EditMCPServer": "Modifier Serveur MCP",
+        "TotalMCPServers": "Total Serveurs MCP",
+        "SearchByNameURLOrType": "Rechercher par nom, URL ou type",
+        "NoMCPServersFound": "Aucun serveur MCP trouvé"
     },
     "ViewTeammates": "Voir les coéquipiers",
     "AddNewTeammate": "Ajouter un nouveau coéquipier",

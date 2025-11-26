@@ -2489,7 +2489,13 @@
         "Failed": "Неуспешный!",
         "Save": "Сохранять",
         "Clear": "Прозрачный",
-        "Delete": "Удалить"
+        "Delete": "Удалить",
+        "Transport": "Транспорт",
+        "AddMCPServer": "Добавить MCP Сервер",
+        "EditMCPServer": "Редактировать MCP Сервер",
+        "TotalMCPServers": "Всего MCP Серверов",
+        "SearchByNameURLOrType": "Поиск по имени, URL или типу",
+        "NoMCPServersFound": "MCP серверы не найдены"
     },
     "ViewTeammates": "Посмотреть товарищей по команде",
     "AddNewTeammate": "Добавить нового товарища по команде",

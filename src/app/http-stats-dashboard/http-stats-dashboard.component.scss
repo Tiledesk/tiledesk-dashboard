@@ -1,0 +1,111 @@
+/* Contenitore flottante */
+.floating-dashboard {
+  position: fixed;       /* Sempre visibile */
+  top: 66px;           /* Distanza dal top */
+  right: 10px;           /* Distanza dal lato destro */
+  width: 800px;          /* Larghezza fissa */
+  max-height: 80vh;      /* Altezza massima (80% viewport) */
+  overflow-y: auto;      /* Scroll se ci sono troppe righe */
+  z-index: 1000;         /* Sopra tutti gli elementi */
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  cursor: grab;
+
+  &.cdk-drag-preview {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border-radius: 8px;
+  }
+
+  &.cdk-drag-placeholder {
+    opacity: 0;
+  }
+}
+
+.drag-handle {
+  cursor: move;
+}
+
+/* Card Material */
+mat-card {
+  border-radius: 8px;
+}
+
+/* Intestazione */
+mat-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Tabella a tutta larghezza */
+.full-width-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+/* Celle */
+td, th {
+  padding: 8px 12px;
+  word-break: break-word;
+}
+
+/* Intestazioni ordinate */
+th.mat-sort-header-sorted {
+  color: #1976d2;
+}
+
+/* Input filtro */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* Testo grigio per messaggi vuoti */
+.text-gray-500 {
+  color: #6b6b6b;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* Pulsante minimizza in alto a destra */
+mat-card-title button {
+  padding: 0;
+  min-width: 0;
+}
+
+/* Scroll interno */
+mat-card-content {
+  max-height: 60vh;      /* Massimo 60% viewport per scroll */
+  overflow-y: auto;
+}
+
+.method-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: white;
+}
+
+.method-get {
+  background-color: #28a745; /* Verde per GET */
+}
+
+.method-post {
+  background-color: #007bff; /* Blu per POST */
+}
+
+.method-put {
+  background-color: #ffc107; /* Giallo per PUT */
+  color: #000;
+}
+
+.method-delete {
+  background-color: #dc3545; /* Rosso per DELETE */
+}
+
+.method-patch {
+  background-color: #6f42c1; /* Viola per PATCH */
+}

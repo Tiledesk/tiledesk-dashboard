@@ -2489,7 +2489,13 @@
         "Failed": "Сәтсіз!",
         "Save": "Сақтау",
         "Clear": "Таза",
-        "Delete": "Жою"
+        "Delete": "Жою",
+        "Transport": "Көлік",
+        "AddMCPServer": "MCP Серверін Қосу",
+        "EditMCPServer": "MCP Серверін Редакциялау",
+        "TotalMCPServers": "Барлығы MCP Серверлері",
+        "SearchByNameURLOrType": "Аты, URL немесе түрі бойынша іздеу",
+        "NoMCPServersFound": "MCP серверлері табылмады"
     },
     "ViewTeammates": "Командаластарды көру",
     "AddNewTeammate": "Жаңа командалас қосыңыз",

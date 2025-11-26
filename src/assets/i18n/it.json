@@ -653,7 +653,7 @@
     "ManageYourContents": "Gestisci i tuoi Contenuti",
     "CreateChatbot": "Crea un chatbot",
     "CreateYuorAIAgent": "Crea il tuo agente AI",
-    "CreateYourAIAgentWithOneClick": "Crea il tuo agente AI con un clic",
+    "CreateYourAIAgentWithOneClick": "Crea il tuo agente AI con un click",
     "ChooseNameForYourAIAgent":"Scegli un nome per il tuo agente AI",
     "MyAIAgentName": "Il nome del mio agente AI",
     "ChatbotName":"Nome dell'agente AI",
@@ -2499,7 +2499,13 @@
         "Failed": "Fallito!",
         "Save": "Salva",
         "Clear": "Cancella",
-        "Delete": "Elimina"
+        "Delete": "Elimina",
+        "Transport": "Trasporto",
+        "AddMCPServer": "Aggiungi Server MCP",
+        "EditMCPServer": "Modifica Server MCP",
+        "TotalMCPServers": "Totale Server MCP",
+        "SearchByNameURLOrType": "Cerca per nome, URL o tipo",
+        "NoMCPServersFound": "Nessun server MCP trovato"
     },
     "ViewTeammates": "Visualizza collaboratori",
     "AddNewTeammate": "Aggiungi collaboratore",

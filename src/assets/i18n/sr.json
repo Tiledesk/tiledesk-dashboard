@@ -2490,7 +2490,13 @@
         "Failed": "Није успео!",
         "Save": "сачувати",
         "Clear": "Јасно",
-        "Delete": "Избриши"
+        "Delete": "Избриши",
+        "Transport": "Транспорт",
+        "AddMCPServer": "Додај MCP Сервер",
+        "EditMCPServer": "Уреди MCP Сервер",
+        "TotalMCPServers": "Укупно MCP Сервера",
+        "SearchByNameURLOrType": "Претрага по имену, URL или типу",
+        "NoMCPServersFound": "MCP сервери нису пронађени"
     },
     "ViewTeammates": "Погледајте саиграче",
     "AddNewTeammate": "Додајте новог саиграча",

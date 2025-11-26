@@ -115,6 +115,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   HAS_COMPLETED_GET_GROUPS: boolean;
   NOT_HAS_EDITED: boolean = true;
+  isCreatingDepartment: boolean = false; // Flag to prevent double submission
 
   areYouSureMsg: string;
   youHaveUnsavedChangesMsg: string;
@@ -1397,6 +1398,13 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.dept_description,
  */
   createDepartment() {
+    // Prevent double submission
+    if (this.isCreatingDepartment) {
+      this.logger.log('[DEPT-EDIT-ADD] createDepartment - Already creating, ignoring duplicate call');
+      return;
+    }
+    
+    this.isCreatingDepartment = true;
     this.NOT_HAS_EDITED = true;
     this.logger.log('[DEPT-EDIT-ADD] createDepartment DEPT NAME  ', this.deptName_toUpdate);
     this.logger.log('[DEPT-EDIT-ADD] createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
@@ -1412,9 +1420,11 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       .subscribe((department) => {
         this.logger.log('[DEPT-EDIT-ADD] - createDepartment - POST DATA DEPT', department);
       }, (error) => {
+        this.isCreatingDepartment = false; // Reset flag on error
         this.logger.error('[DEPT-EDIT-ADD] createDepartment - ERROR ', error);
         this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
       }, () => {
+        this.isCreatingDepartment = false; // Reset flag on complete
         this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
         this.logger.log('[DEPT-EDIT-ADD] - createDepartment * COMPLETE *');
         this.router.navigate(['project/' + this.project._id + '/departments']);
