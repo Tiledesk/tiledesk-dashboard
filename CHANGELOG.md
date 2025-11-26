@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.155-stage
+- Fixes the bug: wss is closed if tab is in background in Chrome 
+
 ### 2.7.154-stage
 - Opens contacts conversations selected from the chat in dashboard (no longer in a new tab)
 - Fixes the bug: Fixed REST call generating 504 error message in conversation details
