@@ -45,7 +45,7 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
-import { CacheService } from 'app/services/cache.service';
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { removeEmojis } from 'app/utils/utils-message';
 
@@ -433,7 +433,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService: CacheService
+    private cacheService: AllProjectsCacheService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -1372,7 +1372,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
-    this.cacheService.clearCache()
+    this.cacheService.clearAllProjectsCache()
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -5023,7 +5023,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((result) => {
                 if (result.isConfirmed) {
-                  this.cacheService.clearCache()
+                  this.cacheService.clearAllProjectsCache()
                   this.findCurrentProjectAmongAll(this.id_project)
                 }
               });
@@ -5967,11 +5967,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
    updateRequestWorkingStatusAndReopen(convWokingStatus) {
-    console.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
+    this.logger.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
     this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
       .subscribe((request) => {
 
-        console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
 

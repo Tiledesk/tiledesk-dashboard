@@ -19,7 +19,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -35,7 +38,11 @@ import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.
     MatIconModule,
     MatProgressSpinnerModule,
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
+    MatCardModule,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule
   ],
   declarations: [
     FooterComponent,

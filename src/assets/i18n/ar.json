@@ -2490,7 +2490,13 @@
         "Failed": "فشل!",
         "Save": "يحفظ",
         "Clear": "واضح",
-        "Delete": "يمسح"
+        "Delete": "يمسح",
+        "Transport": "نقل",
+        "AddMCPServer": "إضافة خادم MCP",
+        "EditMCPServer": "تحرير خادم MCP",
+        "TotalMCPServers": "إجمالي خوادم MCP",
+        "SearchByNameURLOrType": "البحث بالاسم أو URL أو النوع",
+        "NoMCPServersFound": "لم يتم العثور على خوادم MCP"
     },
     "ViewTeammates": "عرض زملائه",
     "AddNewTeammate": "أضف زميلًا جديدًا في الفريق",

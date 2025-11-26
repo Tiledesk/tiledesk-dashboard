@@ -230,6 +230,11 @@ export class SmtpSettingsComponent implements OnInit {
   sendTestEmail(recipientemail) {
     this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security
     // this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd,
+    // Handle case where recipientemail might be undefined or null
+    if (!recipientemail) {
+      this.logger.log('[SMTP-SETTINGS] - SEND TEST EMAIL - recipientemail is undefined or null');
+      return;
+    }
     this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name, this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd)
       .subscribe((res: any) => {
         //  console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
@@ -310,7 +315,9 @@ export class SmtpSettingsComponent implements OnInit {
     // console.log('[SMTP-SETTINGS] - smtp_pswd', this.smtp_pswd)
     // console.log('[SMTP-SETTINGS] - smtp_connetion_security', this.smtp_connetion_security)
 
-    this.projectService.updateSMPTSettings(this.smtp_host_name, this.smtp_port, this.sender_email_address.toLowerCase(), this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security)
+    // Handle case where sender_email_address might be undefined or null
+    const senderEmail = this.sender_email_address ? this.sender_email_address.toLowerCase() : '';
+    this.projectService.updateSMPTSettings(this.smtp_host_name, this.smtp_port, senderEmail, this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security)
       .subscribe((res: any) => {
         this.logger.log('[[SMTP-SETTINGS] - SAVE SMTP SETTINGS res ', res)
         if (res) {

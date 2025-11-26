@@ -689,7 +689,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         // voice_twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
             const customization = projectProfile.customization;
-            console.log('[HISTORY & NORT-CONVS] - customization', customization);
+            this.logger.log('[HISTORY & NORT-CONVS] - customization', customization);
 
             // Filter channels based on customizations
             this.conversationType = this.conversationType.filter(channel => {

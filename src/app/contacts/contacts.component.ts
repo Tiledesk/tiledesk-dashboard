@@ -794,18 +794,15 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         contact.avatar_fill_colour = newFillColour;
         contact.name_initial = newInitials
-        contact.contact_is_verified = this.CONTACT_IS_VERIFIED
-
-        this.getProjectUserById(contact, leadid)
-        // for (const c of contacts_list) {
-
-        //   if (c._id === id_contact) {
-        //     // this.logger.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
-        //     c.avatar_fill_colour = newFillColour;
-        //     c.name_initial = newInitials
-        //     c.contact_is_verified = this.CONTACT_IS_VERIFIED
-        //   }
-        // }
+        // Set contact_is_verified to false by default
+        // NOTE: The call to getProjectUserById() has been commented out because it made 40 separate HTTP calls
+        // per page (one for each contact) just to get isAuthenticated.
+        // TODO: When a batch call is available to retrieve isAuthenticated for all contacts
+        // in a single HTTP request, uncomment the following lines:
+        // contact.contact_is_verified = this.CONTACT_IS_VERIFIED
+        // this.getProjectUserById(contact, leadid)
+        contact.contact_is_verified = false;
+        
       }
     });
   }
@@ -837,23 +834,33 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     moreTagsBtn.style.display = "inline-block";
   }
 
+  /**
+   * COMMENTED: This method made 40 separate HTTP calls per page (one for each contact)
+   * just to get isAuthenticated. Too expensive in terms of performance.
+   * 
+   * TODO: When a batch solution or lazy loading is available:
+   * 1. Uncomment the code below
+   * 2. In the generateAvatarFromNameAndGetIfContactIsAuthenticated method:
+   *    - Uncomment `contact.contact_is_verified = this.CONTACT_IS_VERIFIED`
+   *    - Uncomment `this.getProjectUserById(contact, leadid)`
+   *    - Remove the default value `contact.contact_is_verified = false`
+   * 
+   * @param contact 
+   * @param leadid 
+   */
   getProjectUserById(contact, leadid) {
-    this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
-
-
-      this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
-      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
-      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
-      // this.CONTACT_IS_VERIFIED = projectUser[0]['isAuthenticated']
-      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
-      contact.contact_is_verified = projectUser[0]['isAuthenticated']
-    },
-      (error) => {
-        this.logger.error('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID ERR  ', error);
-      },
-      () => {
-        this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID * COMPLETE *');
-      });
+    // COMMENTED: Too many HTTP calls just to get isAuthenticated
+    // Uncomment when a batch solution or lazy loading is available
+    // this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
+    //   this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
+    //   contact.contact_is_verified = projectUser[0]['isAuthenticated']
+    // },
+    //   (error) => {
+    //     this.logger.error('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID ERR  ', error);
+    //   },
+    //   () => {
+    //     this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID * COMPLETE *');
+    //   });
   }
 
   // --------------------------------------------------

@@ -9,7 +9,7 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from './app-config.service';
-import { CacheService } from './cache.service';
+import { AllProjectsCacheService } from './cache/all-projects-cache.service';
 import { UsersService } from './users.service';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class ProjectPlanService {
     private translate: TranslateService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    private cacheService: CacheService,
+    private cacheService: AllProjectsCacheService,
     private usersService: UsersService,
   ) {
     this.getOSCODE()
@@ -46,7 +46,7 @@ export class ProjectPlanService {
     this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
       this.logger.log('[PROJECT-PLAN-SERV] hasCreatedNewProject', hasCreatedNewProject)
       if (hasCreatedNewProject) {
-        this.cacheService.clearCache()
+        this.cacheService.clearAllProjectsCache()
       }
     })
   }
@@ -198,7 +198,7 @@ export class ProjectPlanService {
         this.projectPlan$.next(projectPlanData);
       } else {
         this.logger.error('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - ERROR - PROJECT NOT FOUND') 
-        this.cacheService.clearCache()
+        this.cacheService.clearAllProjectsCache()
       }
 
     }, error => {

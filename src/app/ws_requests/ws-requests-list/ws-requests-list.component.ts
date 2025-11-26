@@ -17,7 +17,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { Subscription, zip } from 'rxjs'
 import { DepartmentService } from '../../services/department.service';
 import { Subject } from 'rxjs';
-import { skip, takeUntil, throttleTime } from 'rxjs/operators'
+import { skip, takeUntil, debounceTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -29,7 +29,6 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
-import { debounceTime } from 'rxjs/operators';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -1889,8 +1888,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(30000))
       .pipe(
+        skip(1), // Skip the initial value from BehaviorSubject to avoid duplicate call
+        debounceTime(500), // Wait 500ms after the last message before updating count (prevents too many HTTP calls)
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsConv) => {
