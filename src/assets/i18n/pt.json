@@ -828,6 +828,7 @@
     "WhatsAppBroadcast": "Difusão WhatsApp",
     "WhatsAppMessage": "Mensagem WhatsApp",
     "BroadcastList": "Lista de transmissões",
+    "TemplateTypeNotSupported": "Este tipo de modelo não é suportado",
     "HeaderParameters": "Parâmetros do cabeçalho",
     "BodyParameters": "Parâmetros do corpo",
     "ButtonsParameters": "Parâmetros dos botões",

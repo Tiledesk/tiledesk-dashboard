@@ -828,6 +828,7 @@
     "WhatsAppBroadcast": "WhatsApp tarqatish",
     "WhatsAppMessage": "WhatsApp xabari",
     "BroadcastList": "Tarqatishlar ro'yxati",
+    "TemplateTypeNotSupported": "Ushbu andozalar turi qo'llab-quvvatlanmaydi",
     "HeaderParameters": "Sarlavha parametrlari",
     "BodyParameters": "Tana parametrlari",
     "ButtonsParameters": "Tugma parametrlari",

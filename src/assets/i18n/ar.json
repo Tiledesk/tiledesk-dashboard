@@ -828,6 +828,7 @@
     "WhatsAppBroadcast": "بث واتساب",
     "WhatsAppMessage": "رسالة واتساب",
     "BroadcastList": "قائمة البث",
+    "TemplateTypeNotSupported": "هذا النوع من القوالب غير مدعوم",
     "HeaderParameters": "معاملات الرأس",
     "BodyParameters": "معاملات الجسم",
     "ButtonsParameters": "معاملات الأزرار",

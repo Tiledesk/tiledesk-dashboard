@@ -828,6 +828,7 @@
     "WhatsAppBroadcast": "WhatsApp Broadcast",
     "WhatsAppMessage": "Messaggio WhatsApp",
     "BroadcastList": "Lista broadcast",
+    "TemplateTypeNotSupported": "Questo tipo di template non è supportato",
     "HeaderParameters": "Parametri header",
     "BodyParameters": "Parametri body",
     "ButtonsParameters": "Parametri pulsanti",

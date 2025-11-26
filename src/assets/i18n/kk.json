@@ -828,6 +828,7 @@
     "WhatsAppBroadcast": "WhatsApp тарату",
     "WhatsAppMessage": "WhatsApp хабарламасы",
     "BroadcastList": "Тарату тізімі",
+    "TemplateTypeNotSupported": "Бұл шаблон түрі қолдау көрсетілмейді",
     "HeaderParameters": "Тақырып параметрлері",
     "BodyParameters": "Дене параметрлері",
     "ButtonsParameters": "Батырма параметрлері",

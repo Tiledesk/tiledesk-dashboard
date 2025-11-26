@@ -829,6 +829,7 @@
     "WhatsAppBroadcast": "WhatsApp Yayımı",
     "WhatsAppMessage": "WhatsApp Mesajı",
     "BroadcastList": "Yayım siyahısı",
+    "TemplateTypeNotSupported": "Bu növ şablon dəstəklənmir",
     "HeaderParameters": "Başlıq parametrləri",
     "BodyParameters": "Bədən parametrləri",
     "ButtonsParameters": "Düymə parametrləri",

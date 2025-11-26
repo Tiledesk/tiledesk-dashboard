@@ -828,6 +828,7 @@
     "WhatsAppBroadcast": "Difusión de WhatsApp",
     "WhatsAppMessage": "Mensaje de WhatsApp",
     "BroadcastList": "Lista de difusiones",
+    "TemplateTypeNotSupported": "Este tipo de plantilla no es compatible",
     "HeaderParameters": "Parámetros de encabezado",
     "BodyParameters": "Parámetros del cuerpo",
     "ButtonsParameters": "Parámetros de botones",

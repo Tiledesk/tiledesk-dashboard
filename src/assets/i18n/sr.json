@@ -829,6 +829,7 @@
     "WhatsAppBroadcast": "WhatsApp емисија",
     "WhatsAppMessage": "WhatsApp порука",
     "BroadcastList": "Списак емисија",
+    "TemplateTypeNotSupported": "Овај тип шаблона није подржан",
     "HeaderParameters": "Параметри заглавља",
     "BodyParameters": "Параметри тела",
     "ButtonsParameters": "Параметри дугмића",

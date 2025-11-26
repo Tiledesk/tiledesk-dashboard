@@ -829,6 +829,7 @@
     "WhatsAppBroadcast": "Рассылка WhatsApp",
     "WhatsAppMessage": "Сообщение WhatsApp",
     "BroadcastList": "Список рассылок",
+    "TemplateTypeNotSupported": "Этот тип шаблона не поддерживается",
     "HeaderParameters": "Параметры заголовка",
     "BodyParameters": "Параметры тела",
     "ButtonsParameters": "Параметры кнопок",

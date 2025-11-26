@@ -830,6 +830,7 @@
     "WhatsAppBroadcast": "WhatsApp-utsändning",
     "WhatsAppMessage": "WhatsApp-meddelande",
     "BroadcastList": "Sändningslista",
+    "TemplateTypeNotSupported": "Denna typ av mall stöds inte",
     "HeaderParameters": "Rubrikparametrar",
     "BodyParameters": "Kroppsparametrar",
     "ButtonsParameters": "Knappparametrar",

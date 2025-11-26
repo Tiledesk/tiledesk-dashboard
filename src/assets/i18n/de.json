@@ -827,6 +827,7 @@
 	"WhatsAppBroadcast": "WhatsApp-Broadcast",
 	"WhatsAppMessage": "WhatsApp-Nachricht",
 	"BroadcastList": "Broadcast-Liste",
+	"TemplateTypeNotSupported": "Diese Art von Vorlage wird nicht unterstützt",
 	"HeaderParameters": "Header-Parameter",
 	"BodyParameters": "Body-Parameter",
 	"ButtonsParameters": "Button-Parameter",
