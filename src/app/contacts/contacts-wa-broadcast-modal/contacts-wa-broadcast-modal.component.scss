@@ -77,6 +77,18 @@
   margin-bottom: 12px;
 }
 
+.param-info-message {
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: #e3f2fd;
+  // border-left: 4px solid #2196f3;
+  color: #1976d2;
+  font-size: 13px;
+  font-family: var(--header-font-family);
+  line-height: 16px;
+  font-weight: 400;
+}
+
 .params-container {
   display: flex;
   flex-direction: column;
@@ -122,14 +134,109 @@
   align-items: center;
   flex: 1;
   min-width: 0; // Permette all'input di ridursi se necessario
+  position: relative;
 }
 
-.param-input {
-  padding: 8px 4px 8px 4px;
+.param-input-phone {
+  padding: 8px 4px 8px 40px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
   width: 100%;
+  height: 36px;
+
+  &.param-input-error {
+    border-color: #f44336;
+    // background-color: #ffebee;
+  }
+
+  &.param-input-valid {
+    border-color: #28a745 !important; // Green border
+    // background-color: #f0fff4 !important; // Light green background
+  }
+}
+
+.param-input-error-msg {
+  color: #dc3545; // Red text
+  font-size: 12px;
+  margin-top: -8px;
+  margin-left: 48px;
+}
+
+.param-input-success-msg {
+  color: #28a745; // Green text
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.param-input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  height: 36px;
+}
+
+.btn-update-contact {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+.param-error-message {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 44px; // Allineato con l'input (36px label + 8px gap)
+}
+
+.param-flag-container {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.param-flag-container-left {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  
+  // Rimuovi pointer-events: none per permettere al tooltip di funzionare
+  // pointer-events: none; // Commentato per permettere al tooltip di funzionare
+}
+
+.param-flag-icon {
+  width: 24px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  pointer-events: none; // L'immagine non deve intercettare i click, ma il wrapper sì per il tooltip
 }
 
 .param-action-button {
@@ -211,6 +318,27 @@
 .param-phone-icon {
   font-size: 20px;
   color: #666;
+  transition: color 0.2s ease;
+}
+
+.param-save-icon {
+  color: #4caf50 !important; // Verde per indicare che si può salvare
+  &:hover {
+    color: #43a047 !important; // Verde più scuro al hover
+  }
+}
+
+.param-saving-icon {
+  color: #ff9800 !important; // Arancione durante il salvataggio
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .b-right-column {
@@ -301,6 +429,24 @@
       to {
         opacity: 1;
       }
+    }
+
+    .pdf-preview-link {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      // &:focus {
+      //   outline: 2px solid #2196f3;
+      //   outline-offset: 2px;
+      // }
     }
 
     .pdf-preview {
@@ -490,6 +636,47 @@
   max-width: 400px;
 }
 
+// Broadcast status messages
+.broadcast-success-container,
+.broadcast-error-container,
+.broadcast-sending-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 200px;
+}
+
+.broadcast-success-icon,
+.broadcast-error-icon,
+.broadcast-sending-spinner {
+  margin-bottom: 20px;
+}
+
+.broadcast-success-message {
+  font-family: var(--header-font-family);
+  font-size: 16px;
+  color: #333;
+  font-weight: 400;
+}
+
+.broadcast-error-message {
+  font-family: var(--header-font-family);
+  font-size: 16px;
+  color: #f44336;
+  font-weight: 400;
+}
+
+.broadcast-sending-message {
+  font-family: var(--header-font-family);
+  font-size: 16px;
+  color: #2196f3;
+  font-weight: 500;
+  margin-top: 16px;
+}
+
 // Badge for parameters in preview
 // Use ::ng-deep to apply styles to dynamically inserted HTML content
 .body-preview ::ng-deep .param-badge-preview,
@@ -511,4 +698,14 @@
   margin-left: 4px;
   vertical-align: middle;
   line-height: 1;
+}
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  color: #fff !important;
 }

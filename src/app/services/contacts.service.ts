@@ -236,7 +236,7 @@ export class ContactsService {
     };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
-    this.logger.log('[CONTACTS-SERV] - GET LEAD BY ID URL', url);
+    console.log('[CONTACTS-SERV] - GET LEAD BY ID URL', url);
 
     return this.httpClient
       .get<Contact[]>(url, httpOptions)

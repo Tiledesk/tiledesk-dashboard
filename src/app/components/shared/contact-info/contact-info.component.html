@@ -83,8 +83,9 @@
           </svg> -->
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
             style="min-width: 22px; min-height: 22px;" fill="none" 
+            [ngClass]="{'phone-icon-error': contactPhoneError && contactPhone}"
             matTooltipClass="conv-dtls-custom-mat-tooltip"
-            matTooltip="{{ 'PhoneNumber' | translate }}" 
+            [matTooltip]="(contactPhoneError && contactPhone) ? contactPhoneError : ('PhoneNumber' | translate)" 
             #tooltip="matTooltip" 
             matTooltipPosition='right'
             matTooltipHideDelay="100">
@@ -95,19 +96,20 @@
 
         </span>
         <!-- (keydown.enter)='editContactPhone()' -->
-        <div class="form-group" style="margin-top: 2px;"
+        <div class="form-group phone-input-wrapper" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
           <input #inputleadphone type="tel" 
             name="phone" data-id="phone" 
             class="form-control input-md"
-            [(ngModel)]="contactPhone" 
+            [ngModel]="contactPhone" 
+            (ngModelChange)="onContactPhoneChange($event)"
             placeholder="{{'PhoneNumber' | translate }}..." 
             maxlength="255"
             (keydown.enter)='inputleadphone.blur()' 
             (blur)="editContactPhoneOnBlur()" 
             autocomplete="doNotAutoComplete"
-            style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+            style="padding-bottom: 2px" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
         </div>
         <div class="action-btns">
           <button *ngIf="contactPhone?.length > 0" type="button" data-id="delete-phone-btn"
