@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.139
+- Adds the ability to send a WhatsApp message to a single contact from the contact list page
+- Adds the LLM models: Gpt-5.1, Claude-4.5 Sonnet, Claude 4.5 Haiku, Claude Opus 4.5, Claude Opus 4.1
+
 ### 2.7.138
 - Implements caching strategy for projects, project users, and departments to reduce redundant HTTP requests and improve performance
 - Adds cache invalidation on data updates to ensure data consistency
