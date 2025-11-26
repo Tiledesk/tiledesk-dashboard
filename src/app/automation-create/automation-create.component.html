@@ -66,15 +66,17 @@
                                             (change)="onSelectTemplate()">
                                         </ng-select>
 
-
-
                                         <div class="upload-csv-btn-wpr">
                                             <button class="button--only--text" (click)="openUploadCSVDialog()"
-                                                [disabled]="!selected_template"
-                                                [ngClass]="{'button--only--text-disabled': !selected_template}">
+                                                [disabled]="!selected_template || isNamedTemplate"
+                                                [ngClass]="{'button--only--text-disabled': !selected_template || isNamedTemplate}">
                                                 {{'ImportFromCSV' | translate}}
                                             </button>
                                         </div>
+                                    </div>
+                                    
+                                    <div *ngIf="isNamedTemplate" class="template-error-message" style="color: #f44336; margin-top: 8px; font-size: 12px;">
+                                        {{ 'TemplateTypeNotSupported' | translate }}
                                     </div>
 
                                 </div>
@@ -87,7 +89,7 @@
 
                                         <div class="button-wpr">
                                            <!-- (click)="sendToServer()" -->
-                                            <button class="btn send-wa-btn" (click)="presentDialogBeforeToSendToServer()" [disabled]="!parsedCsvData">
+                                            <button class="btn send-wa-btn" (click)="presentDialogBeforeToSendToServer()" [disabled]="!parsedCsvData || isNamedTemplate">
                                                 {{'StartBroadcast' | translate}}
                                                 <!-- <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff" style="vertical-align: middle;">
                                                     <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z"/></svg> -->

@@ -34,6 +34,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   isSavingPhone: boolean = false; // Indicates whether saving contact phone number is in progress
   broadcastStatus: 'idle' | 'sending' | 'success' | 'error' = 'idle'; // Status of broadcast sending
   broadcastErrorMessage: string = null; // Error message if broadcast fails
+  isNamedTemplate: boolean = false; // Indicates if the selected template uses NAMED parameters
    
   // Country Name Map (ISO Code -> Name)
  private countryNames: { [key: string]: string } = {
@@ -411,6 +412,9 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
     console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
     if (this.selected_template) {
+      // Check if template uses NAMED parameters
+      this.isNamedTemplate = this.selected_template.parameter_format === 'NAMED';
+      
       this.selected_template_name = this.selected_template.name
       this.selected_template_lang = this.selected_template.language
       this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template_name', this.selected_template_name)
@@ -418,10 +422,15 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       // Reset body_component_temp when selecting a new template
       this.body_component_temp = null;
       
-      // Initialize parameter values ​​with template examples
-      this.initializeBodyParams();
-      this.initializeHeaderParams();
-      this.initializeButtonParams();
+      // If template is NAMED, don't initialize parameters (not supported yet) but still show the template
+      if (!this.isNamedTemplate) {
+        // Initialize parameter values ​​with template examples only for POSITIONAL templates
+        this.initializeBodyParams();
+        this.initializeHeaderParams();
+        this.initializeButtonParams();
+      }
+      
+      // Always create template preview to show the template (even if NAMED and not supported)
       this.createTemplatePreview()
     }
   }

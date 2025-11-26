@@ -56,6 +56,7 @@ export class AutomationCreateComponent implements OnInit {
   parsedCsvData: any;
   displayedColumns: string[] = [];
   automation_id: string;
+  isNamedTemplate: boolean = false; // Indicates if the selected template uses NAMED parameters
 
   public hideHelpLink: boolean;
 
@@ -198,17 +199,26 @@ export class AutomationCreateComponent implements OnInit {
   onSelectTemplate() {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
     this.logger.log('[AUTOMATION-CREATE] onSelectTemplate selected_template', this.selected_template)
+    
+    // Check if template uses NAMED parameters
+    this.isNamedTemplate = this.selected_template?.parameter_format === 'NAMED';
+    
     this.selected_template_name = this.selected_template.name
     this.selected_template_lang = this.selected_template.language
 
     this.logger.log('[AUTOMATION-CREATE] onSelectTemplate selected_template_name', this.selected_template_name)
-    const phoneNumbers = ['3931234567'];
-    this.csvOutput = this.generateCSVFromWhatsAppTemplate(this.selected_template, phoneNumbers);
-
-    this.logger.log('[AUTOMATION-CREATE] csvOutput', this.csvOutput)
-    // if (csvOutput) {
-    //  this.downloadFile(csvOutput, 'example.csv');
-    // }
+    
+    // If template is NAMED, don't generate CSV (not supported yet) but still show the template
+    if (!this.isNamedTemplate) {
+      const phoneNumbers = ['+3931234567'];
+      this.csvOutput = this.generateCSVFromWhatsAppTemplate(this.selected_template, phoneNumbers);
+      this.logger.log('[AUTOMATION-CREATE] csvOutput', this.csvOutput)
+      // if (csvOutput) {
+      //  this.downloadFile(csvOutput, 'example.csv');
+      // }
+    }
+    
+    // Always create template preview to show the template (even if NAMED and not supported)
     this.createTemplatePreview()
   }
 

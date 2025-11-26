@@ -87,6 +87,10 @@
                 (change)="onSelectTemplate()">
               </ng-select>
             </div>
+            
+            <div *ngIf="isNamedTemplate" class="template-error-message" style="color: #f44336; margin-top: 8px; font-size: 12px;">
+              {{ 'TemplateTypeNotSupported' | translate }}
+            </div>
           </div>
 
           <!-- All Parameters in one section -->
@@ -427,7 +431,7 @@
        
     </button>
 
-    <button [disabled]="!selected_template || !phoneNumber || !phoneNumber.trim() || !phoneNumberValid" class="mat-dialog-ok-btn" mat-button
+    <button [disabled]="!selected_template || !phoneNumber || !phoneNumber.trim() || !phoneNumberValid || isNamedTemplate" class="mat-dialog-ok-btn" mat-button
         (click)="onOkPresssed()" cdkFocusInitial>
         
           {{'Send' | translate}}
