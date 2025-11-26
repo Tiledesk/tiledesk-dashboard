@@ -1185,7 +1185,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       );
   }
 
-  createReceiversList() {
+  __createReceiversList() {
     // Crea un array con un solo receiver (il contatto corrente)
     // Rimuovi spazi dal numero telefonico prima di inviarlo al server
     const phoneNumberCleaned = this.phoneNumber.replace(/\s/g, '');
@@ -1352,7 +1352,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     return csvContent;
   }
 
-  sendBroadcast() {
+  __sendBroadcast() {
     if (!this.selected_template) {
       this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No template selected');
       return;
@@ -1407,7 +1407,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
  
 
-  _createReceiversList() {
+  createReceiversList() {
     // Crea un array con un solo receiver (il contatto corrente)
     // Rimuovi spazi dal numero telefonico prima di inviarlo al server
     const phoneNumberCleaned = this.phoneNumber.replace(/\s/g, '');
@@ -1475,7 +1475,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     return [receiver];
   }
 
-  _sendBroadcast() {
+  sendBroadcast() {
     if (!this.selected_template) {
       this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] No template selected');
       return;
@@ -1489,13 +1489,13 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     // Crea la receiver_list
     const receiver_list = this.createReceiversList();
     this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
-    
+
     // Prepara i dati per il broadcast
     const broadcastData = {
       id_project: this.automationsService.project_id,
       receiver_list: receiver_list,
       phone_number_id: this.data?.phone_number_id || this.phone_number_id,
-      template: this.selected_template_name,
+      template: {name: this.selected_template_name, language: this.selected_template_lang},
       transaction_id: `automation-request-${this.projectId}-${Date.now()}`,
       // broadcast: true
     };
