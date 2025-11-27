@@ -1620,9 +1620,19 @@ div.card-content>div>div>div>div>div>div>div.txt>div.message.ow>div>p>p {
 }
 
 /* USE CASE MESSSAGE SENT BY THE AGENT */
-div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
+// div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
+//   color: #fff;
+// }
+
+div.card-content div.txt p.message.ow.alt {
   color: #fff;
 }
+
+div.card-content div.txt p.message.ow.alt * {
+  color: #fff;
+}
+
+
 
 div.card-content>div>div>div>div>div>div>div.txt>p.internal-note-text-color>p {
   color: #222 !important;
