@@ -830,6 +830,7 @@
     "WhatsAppMessage": "WhatsApp порука",
     "BroadcastList": "Списак емисија",
     "TemplateTypeNotSupported": "Овај тип шаблона није подржан",
+    "MessageWillBeSentTo": "Порука ће бити послата {{contactFullname}}",
     "HeaderParameters": "Параметри заглавља",
     "BodyParameters": "Параметри тела",
     "ButtonsParameters": "Параметри дугмића",

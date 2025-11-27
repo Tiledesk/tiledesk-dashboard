@@ -34,8 +34,8 @@ import { FormatParamBadgesPipe } from 'app/format-param-badges.pipe';
     FormatColLabelsPipe,
     FormatPhonePipe,
     HighlightTemplateVariablesPipe,
-    FormatParamBadgesPipe
-  ],
+           FormatParamBadgesPipe
+         ],
   exports: [
     LoadingSpinnerComponent,
     TranslateModule,
@@ -48,8 +48,8 @@ import { FormatParamBadgesPipe } from 'app/format-param-badges.pipe';
     FormatColLabelsPipe,
     FormatPhonePipe,
     HighlightTemplateVariablesPipe,
-    FormatParamBadgesPipe,
-    ColorPickerModule
+           FormatParamBadgesPipe,
+           ColorPickerModule
   ],
   providers: [ 
     SelectOptionsTranslatePipe

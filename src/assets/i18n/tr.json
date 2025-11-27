@@ -831,6 +831,7 @@
     "WhatsAppMessage": "WhatsApp Mesajı",
     "BroadcastList": "Yayın listesi",
     "TemplateTypeNotSupported": "Bu şablon türü desteklenmiyor",
+    "MessageWillBeSentTo": "Mesaj {{contactFullname}} adresine gönderilecek",
     "HeaderParameters": "Başlık parametreleri",
     "BodyParameters": "Gövde parametreleri",
     "ButtonsParameters": "Düğme parametreleri",

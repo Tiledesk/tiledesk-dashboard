@@ -800,7 +800,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         // TODO: When a batch call is available to retrieve isAuthenticated for all contacts
         // in a single HTTP request, uncomment the following lines:
         // contact.contact_is_verified = this.CONTACT_IS_VERIFIED
-        // this.getProjectUserById(contact, leadid)
+        this.getProjectUserById(contact, leadid)
         contact.contact_is_verified = false;
         
       }
@@ -851,16 +851,16 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUserById(contact, leadid) {
     // COMMENTED: Too many HTTP calls just to get isAuthenticated
     // Uncomment when a batch solution or lazy loading is available
-    // this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
-    //   this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
-    //   contact.contact_is_verified = projectUser[0]['isAuthenticated']
-    // },
-    //   (error) => {
-    //     this.logger.error('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID ERR  ', error);
-    //   },
-    //   () => {
-    //     this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID * COMPLETE *');
-    //   });
+    this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
+      this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
+      contact.contact_is_verified = projectUser[0]['isAuthenticated']
+    },
+      (error) => {
+        this.logger.error('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID ERR  ', error);
+      },
+      () => {
+        this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID * COMPLETE *');
+      });
   }
 
   // --------------------------------------------------

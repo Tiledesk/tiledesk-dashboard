@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -25,7 +25,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   templateName: string;
   phoneNumber: string = ''; // Contact phone number
   originalPhoneNumber: string = ''; // Original phone number (to check if it has been changed)
-  phone_number_id: string = '110894941712700'; // WhatsApp Phone Number ID
+  phone_number_id: string // = '110894941712700';
   phoneCountryCode: string = null; // Country code for the flag (e.g. 'IT', 'US', 'GB')
   phoneCountryName: string = null; // Country name (e.g. 'Italy', 'United States')
   phoneNumberError: string = null; // Error message for phone number
@@ -322,7 +322,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     private contactsService: ContactsService,
     private translate: TranslateService,
   ) {
-    this.logger.log('[MODAL-WA-BROADCAST] data ', data)
+    // console.log('[MODAL-WA-BROADCAST] data ', data)
     if (this.data?.projectId) {
       this.projectId = this.data.projectId;
     }
@@ -341,6 +341,45 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       setTimeout(() => {
         this.onPhoneNumberChange(cleanedPhone);
       }, 100);
+    } else if (contact?.lead_id && contact.lead_id.startsWith('wab-')) {
+      // Se non c'è phone ma c'è lead_id con formato wab-XXXXX, ricava il numero da lead_id
+      const whatsAppPhoneNumber = contact.lead_id.slice(4); // Rimuove "wab-"
+      // Pulisci il numero rimuovendo spazi
+      let cleanedPhone = whatsAppPhoneNumber.replace(/\s/g, '');
+      // Aggiungi il + se manca
+      if (!cleanedPhone.startsWith('+')) {
+        cleanedPhone = '+' + cleanedPhone;
+      }
+      this.phoneNumber = cleanedPhone;
+      this.originalPhoneNumber = cleanedPhone;
+      // Process the number (formatting and validation)
+      setTimeout(() => {
+        this.onPhoneNumberChange(cleanedPhone);
+        // Salva il numero nel contatto se il contatto ha un _id
+        if (contact?._id && this.projectId) {
+          // Imposta il projectId nel servizio se necessario
+          this.contactsService.projectId = this.projectId;
+          // Salva il numero senza formattazione (senza spazi) e assicurati che abbia il +
+          let phoneNumberToSave = cleanedPhone.replace(/\s/g, '');
+          // Aggiungi + se manca (richiesto per WhatsApp)
+          if (phoneNumberToSave && !phoneNumberToSave.startsWith('+')) {
+            phoneNumberToSave = '+' + phoneNumberToSave;
+          }
+          this.contactsService.updateLeadPhone(contact._id, phoneNumberToSave)
+            .subscribe(
+              (updatedContact) => {
+                this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Contact phone saved from lead_id:', updatedContact);
+                // Aggiorna i dati del contatto con quelli aggiornati
+                if (updatedContact) {
+                  this.data.contact = updatedContact;
+                }
+              },
+              (error) => {
+                this.logger.error('[CONTACTS-WA-BROADCAST-MODAL] Error saving contact phone from lead_id:', error);
+              }
+            );
+        }
+      }, 100);
     } else {
       // If there is no phone number, it displays a "Field required" error.
       this.phoneNumberError = this.translate.instant('FieldRequired');
@@ -352,14 +391,14 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   ngOnInit(): void {
     // Imposta il projectId nel servizio se necessario
     if (this.projectId) {
-      this.contactsService.projectId = this.projectId;
+      this.contactsService.projectId = this.projectId; 
     }
     
     // Recupera i dati aggiornati del contatto se disponibile
     if (this.data?.contact?._id) {
       this.contactsService.getLeadById(this.data.contact._id).subscribe(
         (contact: any) => {
-          this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Contact data refreshed:', contact);
+          // console.log('[CONTACTS-WA-BROADCAST-MODAL] Contact data refreshed:', contact);
           if (contact) {
             // La response è un oggetto, non un array
             // Aggiorna i dati del contatto con quelli freschi dal server
@@ -384,8 +423,45 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       this.initializePhoneNumber(this.data?.contact);
     }
     
-    this.getWATemplates();
+    this.getWaSettings()
+   
     
+  }
+
+  getWaSettings() {
+      this.automationsService.getWASettings().subscribe((wasettings: any) => {
+      this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS  ", wasettings);
+      this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS success ", wasettings?.success);
+      this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS full structure ", JSON.stringify(wasettings));
+      
+      if (wasettings?.success) {
+       
+        const phoneNumberId = wasettings?.settings?.phone_number_id 
+     
+        
+        this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS phoneNumberId found: ", phoneNumberId);
+        this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS wasettings.settings: ", wasettings?.settings);
+        
+        if (phoneNumberId) {
+          this.phone_number_id = phoneNumberId;
+          this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS success phone_number_id", this.phone_number_id);
+          this.wa_is_installed = true;
+          this.getWATemplates();
+        } else {
+          this.logger.warn("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS success but phone_number_id not found in any expected location");
+          this.logger.warn("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS wasettings.settings structure: ", wasettings?.settings);
+          this.wa_is_installed = false;
+        }
+      } else {
+        this.wa_is_installed = false;
+        this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA SETTINGS - WhatsApp not installed (success: false)");
+      }
+    }, (error) => {
+      this.logger.error("[CONTACTS-WA-BROADCAST-MODAL] - GET WA SETTINGS - ERROR: ", error);
+      this.wa_is_installed = false;
+    }, () => {
+      this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] - GET WA SETTINGS * COMPLETE *');
+    });
   }
 
 
@@ -395,16 +471,13 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       this.templates_list = templates;
       this.logger.log("[CONTACTS-WA-BROADCAST-MODAL] GET WA TEMPLATES templates_list ", this.templates_list);
     }, (error) => {
-      this.logger.error("[CONTACTS-WA-BROADCAST-MODAL] - GET WA TEMPLATES - ERROR: ", error)
-      this.logger.log(error.error?.message)
-      if (error.error.message.includes('WhatsApp not installed for the project_id')  ) {
-        this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] - WA not installed');
-        this.wa_is_installed = false
-        // this.presentDialogWANotInstalledFoTheCurrentProject()
-      }
+      this.logger.error("[CONTACTS-WA-BROADCAST-MODAL] - GET WA TEMPLATES - ERROR: ", error);
+      this.logger.log(error.error?.message);
+      // Se getWATemplates fallisce, WhatsApp potrebbe non essere configurato correttamente
+      // ma non impostiamo wa_is_installed = false perché getWaSettings ha già verificato l'installazione
+      // Potremmo voler mostrare un messaggio di errore specifico per i template
     }, () => {
       this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] - GET WA TEMPLATES * COMPLETE *');
-      this.wa_is_installed = true
     });
   }
 
@@ -1164,8 +1237,12 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       this.contactsService.projectId = this.projectId;
     }
 
-    // Salva il numero senza formattazione (senza spazi)
-    const phoneNumberToSave = this.phoneNumber.replace(/\s/g, '');
+    // Salva il numero senza formattazione (senza spazi) e assicurati che abbia il +
+    let phoneNumberToSave = this.phoneNumber.replace(/\s/g, '');
+    // Aggiungi + se manca (richiesto per WhatsApp)
+    if (phoneNumberToSave && !phoneNumberToSave.startsWith('+')) {
+      phoneNumberToSave = '+' + phoneNumberToSave;
+    }
     this.contactsService.updateLeadPhone(this.data.contact._id, phoneNumberToSave)
       .subscribe(
         (contact) => {
@@ -1489,12 +1566,12 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     // Crea la receiver_list
     const receiver_list = this.createReceiversList();
     this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
-
+    console.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list this.phone_number_id' , this.phone_number_id )
     // Prepara i dati per il broadcast
     const broadcastData = {
       id_project: this.automationsService.project_id,
       receiver_list: receiver_list,
-      phone_number_id: this.data?.phone_number_id || this.phone_number_id,
+      phone_number_id: this.phone_number_id,
       template: {name: this.selected_template_name, language: this.selected_template_lang},
       transaction_id: `automation-request-${this.projectId}-${Date.now()}`,
       // broadcast: true

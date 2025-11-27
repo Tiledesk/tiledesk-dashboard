@@ -829,6 +829,7 @@
     "WhatsAppMessage": "Message WhatsApp",
     "BroadcastList": "Liste des diffusions",
     "TemplateTypeNotSupported": "Ce type de modèle n'est pas pris en charge",
+    "MessageWillBeSentTo": "Le message sera envoyé à {{contactFullname}}",
     "HeaderParameters": "Paramètres d'en-tête",
     "BodyParameters": "Paramètres du corps",
     "ButtonsParameters": "Paramètres des boutons",

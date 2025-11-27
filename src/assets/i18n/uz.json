@@ -829,6 +829,7 @@
     "WhatsAppMessage": "WhatsApp xabari",
     "BroadcastList": "Tarqatishlar ro'yxati",
     "TemplateTypeNotSupported": "Ushbu andozalar turi qo'llab-quvvatlanmaydi",
+    "MessageWillBeSentTo": "Xabar {{contactFullname}} ga yuboriladi",
     "HeaderParameters": "Sarlavha parametrlari",
     "BodyParameters": "Tana parametrlari",
     "ButtonsParameters": "Tugma parametrlari",

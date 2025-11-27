@@ -828,6 +828,7 @@
 	"WhatsAppMessage": "WhatsApp-Nachricht",
 	"BroadcastList": "Broadcast-Liste",
 	"TemplateTypeNotSupported": "Diese Art von Vorlage wird nicht unterstützt",
+	"MessageWillBeSentTo": "Die Nachricht wird an {{contactFullname}} gesendet",
 	"HeaderParameters": "Header-Parameter",
 	"BodyParameters": "Body-Parameter",
 	"ButtonsParameters": "Button-Parameter",

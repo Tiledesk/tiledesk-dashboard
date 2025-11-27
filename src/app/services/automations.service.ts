@@ -84,6 +84,20 @@ export class AutomationsService {
     return this.httpClient.get(url, httpOptions);
   }
 
+  getWASettings() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH  + "modules/whatsapp/api/"  + this.project_id;
+    this.logger.debug('[AUTOMATIONS.SERVICE] - get WA settings url ' + url);
+
+    return this.httpClient.get(url, httpOptions);
+  }
+
   getWATemplates() {
     const httpOptions = {
       headers: new HttpHeaders({

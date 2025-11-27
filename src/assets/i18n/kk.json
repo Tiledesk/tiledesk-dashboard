@@ -829,6 +829,7 @@
     "WhatsAppMessage": "WhatsApp хабарламасы",
     "BroadcastList": "Тарату тізімі",
     "TemplateTypeNotSupported": "Бұл шаблон түрі қолдау көрсетілмейді",
+    "MessageWillBeSentTo": "Хабарлама {{contactFullname}} адресіне жіберіледі",
     "HeaderParameters": "Тақырып параметрлері",
     "BodyParameters": "Дене параметрлері",
     "ButtonsParameters": "Батырма параметрлері",

@@ -4,6 +4,10 @@
   
 </h1>
 
+<h2 mat-dialog-subtitle *ngIf="wa_is_installed === true && data?.contact?.fullname" style="margin-top: 0; margin-bottom: 0px; font-size: 14px; font-weight: 400; color: #666;">
+  {{ 'MessageWillBeSentTo' | translate: { contactFullname: data.contact.fullname } }}
+</h2>
+
 <!-- Loading state: show nothing or a loading indicator while checking -->
 <div *ngIf="wa_is_installed === null" mat-dialog-content>
   <div class="wa-loading-container">
@@ -64,13 +68,18 @@
 <div *ngIf="wa_is_installed === true && broadcastStatus === 'idle'"  mat-dialog-content> 
   <div class="contacts-wa-broadcast-modal-container">
     
+    
     <div class="b-flex-container">
       
       <div class="b-left-columns-container">
-        
+
         <div class="b-left--columns">
-          
           <div class="choose-wa-tmplt-label-and-select-wpr">
+
+          <div style="margin-bottom: 10px; font-size: 12px; color: #666;">
+            WhatsApp phone id: {{phone_number_id}}
+          </div>
+
             <div class="template-select-label">{{ 'ChooseTemplate' | translate }}</div>
             
             <div class="select-and-btn-wpr">

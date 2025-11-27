@@ -133,7 +133,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   ngOnChanges() {
-    this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
+    // console.log('[CONTACT-INFO] contact_details', this.contact_details)
     if (this.contact_details) {
 
       if (this.contact_details._id) {
@@ -168,12 +168,23 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         this.originalContactPhone = this.contact_details.phone.replace(/\s/g, '');
         // Formatta il numero per la visualizzazione
         this.formatPhoneNumber(this.originalContactPhone);
-        this.logger.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
+        // console.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
       } else {
-        this.logger.log('[CONTACT-INFO] else contactPhone ', this.contactPhone)
+        // console.log('[CONTACT-INFO] else this.contact_details.phone ', this.contact_details.phone)
         if (this.whatsAppPhoneNumber) {
-          this.originalContactPhone = this.whatsAppPhoneNumber.replace(/\s/g, '');
+          // Pulisci il numero rimuovendo spazi
+          let cleanedPhone = this.whatsAppPhoneNumber.replace(/\s/g, '');
+          // Aggiungi il + se manca
+          if (!cleanedPhone.startsWith('+')) {
+            cleanedPhone = '+' + cleanedPhone;
+          }
+          this.originalContactPhone = cleanedPhone;
+          // Formatta il numero per la visualizzazione
           this.formatPhoneNumber(this.originalContactPhone);
+          // Aggiorna il contatto con il numero ricavato da whatsAppPhoneNumber
+          if (this.contact_details?._id) {
+            this.updateContactPhone(this.contact_details._id, cleanedPhone);
+          }
         } else {
           this.contactPhone = '';
           this.originalContactPhone = '';
@@ -542,7 +553,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       contactid,
       phoneNumberToSave
     ).subscribe((contact) => {
-      this.logger.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
+      console.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
       // Aggiorna il numero originale dopo il salvataggio
       this.originalContactPhone = phoneNumberToSave;
       // Formatta di nuovo per la visualizzazione

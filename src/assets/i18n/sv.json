@@ -831,6 +831,7 @@
     "WhatsAppMessage": "WhatsApp-meddelande",
     "BroadcastList": "Sändningslista",
     "TemplateTypeNotSupported": "Denna typ av mall stöds inte",
+    "MessageWillBeSentTo": "Meddelandet kommer att skickas till {{contactFullname}}",
     "HeaderParameters": "Rubrikparametrar",
     "BodyParameters": "Kroppsparametrar",
     "ButtonsParameters": "Knappparametrar",
