@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AppConfigService } from '../../../services/app-config.service';
 import { avatarPlaceholder, getColorBck } from '../../../utils/util';
 import { AuthService } from '../../../core/auth.service';
+import { ConversationDetailIframeService } from '../../../services/conversation-detail-iframe.service';
 import { TranslateService } from '@ngx-translate/core';
 
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
@@ -94,8 +95,9 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     public contactsService: ContactsService,
     public logger: LoggerService,
     public webSocketJs: WebSocketJs,
-    public rolesService: RolesService
-  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate); }
+    public rolesService: RolesService,
+    iframeService: ConversationDetailIframeService
+  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate, iframeService, auth); }
 
   ngOnInit() {
     this.getProfileImageStorage();

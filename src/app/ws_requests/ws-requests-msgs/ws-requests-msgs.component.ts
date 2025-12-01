@@ -50,6 +50,7 @@ import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
+import { ConversationDetailIframeService } from '../../services/conversation-detail-iframe.service';
 
 import { removeEmojis } from 'app/utils/utils-message';
 
@@ -475,8 +476,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private cacheService: CacheService,
     public rolesService: RolesService,
     private roleService: RoleService,
+    iframeService: ConversationDetailIframeService,
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate, iframeService, auth)
     this.jira_issue_types = [
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
@@ -5916,7 +5918,15 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
   openChatAtSelectedConversation() {
     this.openChatBtn.nativeElement.blur();
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
+    
+    // Determina lo status della conversazione basandosi su request.status
+    // Se request.status === 1000, la conversazione è archived, altrimenti è active
+    let conversationStatus = 'active';
+    if (this.request?.status === 1000) {
+      conversationStatus = 'archived';
+    }
+    
+    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname, conversationStatus)
   }
 
   // openChatInNewWindow() {
@@ -5982,12 +5992,31 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
     // window.open(url, '_blank');
 
 
-    // ---- new
+    // Salva il progetto corrente nel localStorage
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + agentId + '/' + agentFullname + '/new'
-    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    myWindow.focus();
+
+    // Usa openDirectChat del servizio per aprire una nuova conversazione diretta
+    // Questo metodo imposta automaticamente lo status a 'new' e salva l'URL in sessionStorage
+    this.iframeService.openDirectChat(agentId, agentFullname);
+
+    // Ottieni il projectId corrente
+    const currentProject = this.auth.project_bs.value;
+    const projectId = currentProject?._id;
+
+    // Naviga alla route conversation-detail che mostrerà l'iframe
+    // Usa setTimeout per assicurarsi che updateConversationUrl() abbia impostato il flag prima della navigazione
+    setTimeout(() => {
+      if (projectId) {
+        this.router.navigate(['project/' + projectId + '/conversation-detail']);
+      } else {
+        this.router.navigate(['/conversation-detail']);
+      }
+
+      // Mostra l'iframe
+      this.iframeService.show();
+
+      this.logger.log('[WS-REQUESTS-MSGS] chatWithAgent - Navigated to conversation-detail route with agentId:', agentId);
+    }, 0);
 
 
     // const chatTabCount = localStorage.getItem('tabCount')
@@ -7692,7 +7721,7 @@ extractUrls(text: string): string[] {
 
   goToRequestMsgs(request_recipient: string) {
     const calledFromIframe = (window.self !== window.top);
-   console.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", calledFromIframe);
+    console.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", this.CURRENT_USER_ROLE);
     if (this.CHAT_PANEL_MODE === false) {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
     } else if (this.CHAT_PANEL_MODE === true) {

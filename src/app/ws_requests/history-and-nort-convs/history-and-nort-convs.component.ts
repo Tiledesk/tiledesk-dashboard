@@ -3,6 +3,7 @@ import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/co
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { ConversationDetailIframeService } from '../../services/conversation-detail-iframe.service';
 // import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import { DepartmentService } from '../../services/department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
@@ -368,9 +369,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public route: ActivatedRoute,
     public brandService: BrandService,
     public rolesService: RolesService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    iframeService: ConversationDetailIframeService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate, iframeService, auth);
 
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']

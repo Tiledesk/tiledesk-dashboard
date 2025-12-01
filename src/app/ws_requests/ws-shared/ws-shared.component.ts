@@ -9,6 +9,8 @@ import { UsersService } from '../../services/users.service';
 import { NotifyService } from '../../core/notify.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ConversationDetailIframeService } from '../../services/conversation-detail-iframe.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'appdashboard-ws-shared',
@@ -91,7 +93,9 @@ export class WsSharedComponent implements OnInit {
     public usersService: UsersService,
     public notify: NotifyService,
     public logger: LoggerService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    protected iframeService: ConversationDetailIframeService,
+    protected auth: AuthService
   ) { }
 
   ngOnInit() { }
@@ -104,42 +108,35 @@ export class WsSharedComponent implements OnInit {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
   //   return index
   // }
-  openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
-    let _requester_fullanme = ""
-    if (requester_fullanme.indexOf("#") !== -1) {
-      this.logger.log("requester_fullanme contains #");
-      _requester_fullanme = requester_fullanme.replace(/#/g, "%23")
-
+  openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string, status: string = 'active') {
+    console.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
+    console.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
+    console.log('[WS-SHARED] - openChatToTheSelectedConversation - status', status);
+    
+    // Ottieni il projectId corrente
+    const currentProject = this.auth.project_bs.value;
+    const projectId = currentProject?._id;
+    
+    // Aggiorna l'URL dell'iframe con l'ID conversazione PRIMA di navigare
+    // Questo imposta il flag urlManuallySet che impedirà il reset durante la navigazione
+    // CHAT_BASE_URL non è più necessario perché viene gestito dal servizio
+    // IMPORTANTE: Chiamare openExistingConversation in modo sincrono PRIMA della navigazione
+    // per assicurarsi che il flag urlManuallySet sia impostato prima che il listener di navigazione venga eseguito
+    this.iframeService.openExistingConversation(requestid, requester_fullanme, status);
+    
+    // Naviga alla route conversation-detail che mostrerà l'iframe
+    // Non usare setTimeout perché updateConversationUrl() è sincrono e imposta il flag immediatamente
+    // Il listener di navigazione userà un delay per verificare il flag
+    if (projectId) {
+      this.router.navigate(['project/' + projectId + '/conversation-detail']);
     } else {
-      this.logger.log("String does not contain #");
-      _requester_fullanme = requester_fullanme
+      this.router.navigate(['/conversation-detail']);
     }
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
-    const chatTabCount = localStorage.getItem('tabCount')
-    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
-
-    let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + requestid + '/' + _requester_fullanme.trim() + '/active'
-    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
-    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    myWindow.focus();
-
-    // if (chatTabCount) {
-    //   if (+chatTabCount > 0) {
-    //     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')
-
-    //     url = CHAT_BASE_URL + '#/conversation-detail?convId=' + requestid
-    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
-    //   } else if (chatTabCount && +chatTabCount === 0) {
-    //     url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
-    //   }
-    // } else {
-    //   url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
-    //   this.openWindow('Tiledesk - Open Source Live Chat', url)
-    // }
+    
+    // Mostra l'iframe
+    this.iframeService.show();
+    
+    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation - Navigated to conversation-detail route with requestId:', requestid, 'status:', status);
   }
 
   openWindow(winName: any, winURL: any) {

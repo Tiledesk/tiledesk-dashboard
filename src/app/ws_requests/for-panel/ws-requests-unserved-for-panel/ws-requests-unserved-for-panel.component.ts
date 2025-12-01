@@ -5,6 +5,7 @@ import { LocalDbService } from '../../../services/users-local-db.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
+import { ConversationDetailIframeService } from '../../../services/conversation-detail-iframe.service';
 import { avatarPlaceholder, getColorBck, isValidEmail } from '../../../utils/util';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -159,9 +160,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public webSocketJs: WebSocketJs,
     public rolesService: RolesService,
     private roleService: RoleService,
-
+    iframeService: ConversationDetailIframeService,
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate, iframeService, auth);
     this.zone = new NgZone({ enableLongStackTrace: false });
     // this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] !!!!')
   }

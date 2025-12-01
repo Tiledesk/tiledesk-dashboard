@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, SimpleChange
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
+import { ConversationDetailIframeService } from '../../../services/conversation-detail-iframe.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
@@ -136,9 +137,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
     public route: ActivatedRoute,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    iframeService: ConversationDetailIframeService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate, iframeService, auth);
 
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']

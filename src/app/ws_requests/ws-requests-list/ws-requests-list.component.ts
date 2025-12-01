@@ -4,6 +4,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { ConversationDetailIframeService } from '../../services/conversation-detail-iframe.service';
 import { avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
 
@@ -254,9 +255,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public logger: LoggerService,
     public groupService: GroupService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    iframeService: ConversationDetailIframeService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate, iframeService, auth);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 

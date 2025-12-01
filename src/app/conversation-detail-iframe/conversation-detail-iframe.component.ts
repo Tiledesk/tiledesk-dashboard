@@ -50,6 +50,26 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
       
       if (url.includes('/conversation-detail')) {
         // Navigando VERSO questa route
+        // Se l'URL è esattamente /conversation-detail (senza query params), resetta all'URL generico
+        // Questo evita che venga mostrata l'ultima conversazione quando si clicca sulla sidebar
+        // Ma solo se l'URL non è stato impostato manualmente (flag urlManuallySet)
+        const urlMatch = url.match(/\/conversation-detail\/?(\?|$)/);
+        if (urlMatch) {
+          // Navigazione senza query params (dalla sidebar)
+          // Usa un delay più lungo per assicurarsi che updateConversationUrl() abbia impostato il flag
+          // Il flag viene impostato in modo sincrono in updateConversationUrl(), ma il listener
+          // viene eseguito quando la navigazione inizia, quindi serve un delay per essere sicuri
+          console.log('[CONVERSATION-DETAIL-IFRAME] setupNavigationListener - Navigazione verso /conversation-detail, verifico flag dopo delay');
+          setTimeout(() => {
+            // Usa force=false per rispettare il flag urlManuallySet
+            // Se l'URL è stato impostato manualmente (clic su conversazione), non resettare
+            console.log('[CONVERSATION-DETAIL-IFRAME] setupNavigationListener - Chiamando resetToDefaultUrl dopo delay');
+            this.iframeService.resetToDefaultUrl(false);
+          }, 100); // Aumentato il delay per dare più tempo
+        }
+        // Se l'URL contiene query params (ID conversazione), non resettare
+        // Il flag urlManuallySet impedirà il reset se l'URL è stato impostato con updateConversationUrl()
+        
         this.iframeService.show();
         
         // Aggiorna contatore badge
@@ -65,6 +85,11 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.logger.log('[CONVERSATION-DETAIL-IFRAME] Componente inizializzato');
+    
+    // NON resettare l'URL in ngOnInit se è stato impostato manualmente
+    // Il reset viene gestito dal listener di navigazione che distingue tra navigazione dalla sidebar
+    // e navigazione da una conversazione specifica (tramite il flag urlManuallySet)
+    // Se l'URL è stato impostato manualmente (urlManuallySet = true), non resettare
     
     // Mostra iframe globale (gestito dal service)
     this.iframeService.show();
