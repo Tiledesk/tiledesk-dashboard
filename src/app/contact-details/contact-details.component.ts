@@ -34,6 +34,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   totalPagesNo_roundToUp: number;
   showSpinner = true;
   currentUserID: string;
+  
+  // Tab management
+  selectedTab: 'requests' | 'sent-messages' = 'requests';
   CONTACT_IS_VERIFIED = false;
   contact_fullname_initial: string;
   fillColour: string;

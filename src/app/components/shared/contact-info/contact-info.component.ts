@@ -553,7 +553,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       contactid,
       phoneNumberToSave
     ).subscribe((contact) => {
-      console.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
+      this.logger.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
       // Aggiorna il numero originale dopo il salvataggio
       this.originalContactPhone = phoneNumberToSave;
       // Formatta di nuovo per la visualizzazione

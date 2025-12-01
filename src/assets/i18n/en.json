@@ -23,6 +23,8 @@
     "Visitors": "Visitors",
     "Requests": "Conversations",
     "Request": "Conversation",
+    "SentMessages": "Sent Messages",
+    "SentMessagesContentComingSoon": "Sent messages content will be displayed here soon.",
     "Usage": "Usage",
     "ConverationRemoved": "This conversation has been removed",
     "History": "History",

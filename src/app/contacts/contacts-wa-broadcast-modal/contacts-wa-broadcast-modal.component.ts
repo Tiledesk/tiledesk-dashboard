@@ -1566,7 +1566,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     // Crea la receiver_list
     const receiver_list = this.createReceiversList();
     this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list' , receiver_list )
-    console.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list this.phone_number_id' , this.phone_number_id )
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] receiver_list this.phone_number_id' , this.phone_number_id )
     // Prepara i dati per il broadcast
     const broadcastData = {
       id_project: this.automationsService.project_id,
