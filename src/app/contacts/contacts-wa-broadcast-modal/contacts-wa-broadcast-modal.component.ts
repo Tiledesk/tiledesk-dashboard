@@ -483,7 +483,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   onSelectTemplate() {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
-    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
+    console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
     if (this.selected_template) {
       // Check if template uses NAMED parameters
       this.isNamedTemplate = this.selected_template.parameter_format === 'NAMED';
@@ -577,6 +577,37 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       this.url_button_component = this.buttons_component.buttons.find(c => c.type === 'URL')
     }
 
+    // Per i template NAMED, mostra il template originale senza sostituzioni
+    if (this.isNamedTemplate) {
+      // Salva i componenti originali per la preview
+      if (this.header_component) {
+        this.header_component_temp = JSON.parse(JSON.stringify(this.header_component));
+        
+        // Per i template NAMED con formato IMAGE, usa l'immagine di esempio per la preview
+        if (this.header_component.format === 'IMAGE' && this.header_component.example?.header_handle?.[0]) {
+          // Inizializza headerParamsValues con l'immagine di esempio per permettere la visualizzazione nella preview
+          if (!this.headerParamsValues || this.headerParamsValues.length === 0) {
+            this.headerParamsValues = [this.header_component.example.header_handle[0]];
+          }
+        }
+        
+        // Per i template NAMED con formato DOCUMENT, usa il documento di esempio per la preview
+        if (this.header_component.format === 'DOCUMENT' && this.header_component.example?.header_handle?.[0]) {
+          if (!this.headerParamsValues || this.headerParamsValues.length === 0) {
+            this.headerParamsValues = [this.header_component.example.header_handle[0]];
+            this.fileUploadAccept = '.pdf';
+            this.src = this.header_component.example.header_handle[0];
+            this.sanitizeUrl(this.header_component.example.header_handle[0]);
+          }
+        }
+      }
+      if (this.body_component) {
+        this.body_component_temp = JSON.parse(JSON.stringify(this.body_component));
+      }
+      // Non fare sostituzioni, mostra il template così com'è
+      return;
+    }
+
     if (this.header_component) {
       this.header_component_temp = JSON.parse(JSON.stringify(this.header_component));
       if (this.header_component.format === 'TEXT') {
@@ -640,7 +671,10 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
       this.body_component.text = this.body_component_temp.text;
       this.body_params = [];
       
-      // Usa i valori dai parametri modificabili dall'utente
+      // Per i template NAMED, non fare sostituzioni (il template viene mostrato così com'è)
+      // La gestione è già stata fatta all'inizio del metodo con il return anticipato
+      
+      // Usa i valori dai parametri modificabili dall'utente (solo per template POSITIONAL)
       this.bodyParamsValues.forEach((paramValue, i) => {
         const re = new RegExp('\\{\\{' + (i + 1) + '\\}\\}', 'g');
         // Usa un marker temporaneo che verrà sostituito con il badge dopo il processing del markdown
@@ -785,6 +819,9 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
     // Upload del file
     this.uploadImageNativeService.uploadAttachment_Native(file).then((downloadURL: string) => {
       this.logger.log(`[CONTACTS-WA-BROADCAST-MODAL] ${type} uploaded successfully:`, downloadURL);
+      this.logger.log(`[CONTACTS-WA-BROADCAST-MODAL] ${type} downloadURL type:`, typeof downloadURL);
+      this.logger.log(`[CONTACTS-WA-BROADCAST-MODAL] ${type} downloadURL full object:`, downloadURL);
+      
       // Aggiorna il valore del parametro con l'URL del file caricato
       if (this.headerParamsValues[index] !== undefined) {
         this.headerParamsValues[index] = downloadURL;
@@ -1484,56 +1521,54 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
  
 
+  // Metodo helper per rilevare il tipo di media
+  detectMediaType(value: string): string {
+    if (!value || !value.startsWith("http")) return "text";
+
+    const lower = value.toLowerCase();
+
+    // Cerca l'estensione nell'intero URL (inclusi query parameters)
+    // Questo gestisce anche URL come: https://api.com/files?path=uploads/file.pdf
+    // Cerca l'estensione seguita da ? # & / o fine stringa (per gestire anche URL con path nei query params)
+    const imageMatch = lower.match(/\.(jpg|jpeg|png|gif|webp)(\?|#|&|\/|$)/);
+    const videoMatch = lower.match(/\.(mp4|mov|avi|mkv)(\?|#|&|\/|$)/);
+    const documentMatch = lower.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx)(\?|#|&|\/|$)/);
+
+    if (imageMatch) return "image";
+    if (videoMatch) return "video";
+    if (documentMatch) return "document";
+
+    // default: text (come fa WhatsApp)
+    return "text";
+  }
+
   createReceiversList() {
-    // Crea un array con un solo receiver (il contatto corrente)
-    // Rimuovi spazi dal numero telefonico prima di inviarlo al server
+    // Crea un record virtuale dal contesto attuale del componente
     const phoneNumberCleaned = this.phoneNumber.replace(/\s/g, '');
-    const phone_number = phoneNumberCleaned.startsWith('+') ? phoneNumberCleaned : `+${phoneNumberCleaned}`;
-    const receiver: any = { phone_number };
+    const phone_number = phoneNumberCleaned.startsWith('+') 
+      ? phoneNumberCleaned 
+      : `+${phoneNumberCleaned}`;
 
-    // Header params
-    if (this.headerParamsValues.length > 0) {
-      const header_params = [];
-      this.headerParamsValues.forEach((value, index) => {
-        if (!value) return;
-        
-        if (this.header_component?.format === 'IMAGE' || this.header_component?.format === 'DOCUMENT') {
-          if (value.startsWith('http')) {
-            header_params.push({
-              type: "IMAGE",
-              image: { link: value }
-            });
-          }
-        } else if (this.header_component?.format === 'TEXT') {
-          header_params.push({
-            type: "text",
-            text: value
-          });
-        }
-      });
-      if (header_params.length) receiver.header_params = header_params;
-    }
+    const row: any = { phone_number };
 
-    // Body params
-    if (this.bodyParamsValues.length > 0) {
-      const body_params = [];
-      this.bodyParamsValues.forEach((value) => {
-        if (!value) return;
-        body_params.push({
-          type: "text",
-          text: value
-        });
-      });
-      if (body_params.length) receiver.body_params = body_params;
-    }
+    // Aggiungi header params al record virtuale
+    this.headerParamsValues.forEach((value, index) => {
+      if (value) {
+        row[`header${index}`] = value;
+      }
+    });
 
-    // Buttons params
-    if (this.buttonParamsValues.length > 0) {
-      const buttons_params = [];
-      this.buttonParamsValues.forEach((value) => {
-        if (!value) return;
-        // Per i button, il valore è l'URL completo che sostituisce {{1}}
-        // Dobbiamo estrarre solo la parte variabile se l'URL originale contiene {{1}}
+    // Aggiungi body params al record virtuale
+    this.bodyParamsValues.forEach((value, index) => {
+      if (value) {
+        row[`body${index}`] = value;
+      }
+    });
+
+    // Aggiungi buttons params al record virtuale
+    this.buttonParamsValues.forEach((value, index) => {
+      if (value) {
+        // Per i button, gestisci l'estrazione del parametro se necessario
         let paramText = value;
         if (this.url_button_component?.url && this.url_button_component.url.includes('{{1}}')) {
           const [prefix, suffix] = this.url_button_component.url.split('{{1}}');
@@ -1541,13 +1576,74 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
             paramText = value.slice(prefix.length, value.length - suffix.length);
           }
         }
-        buttons_params.push({
+        row[`buttons${index}`] = paramText;
+      }
+    });
+
+    // Applica la logica del nuovo metodo
+    const receiver: any = { phone_number };
+
+    let header_params: any[] = [];
+    let body_params: any[] = [];
+    let buttons_params: any[] = [];
+
+    for (const [key, value] of Object.entries(row)) {
+      if (!value || key === 'phone_number') continue;
+
+      if (key.startsWith('header')) {
+        const type = this.detectMediaType(value as string);
+        this.logger.log(`[CONTACTS-WA-BROADCAST-MODAL] detectMediaType for ${key}: value="${value}", detected type="${type}"`);
+
+        if (type === "text") {
+          header_params.push({
+            type: "text",
+            text: value
+          });
+        } else if (type === "image") {
+          header_params.push({
+            type: "image",
+            image: { link: value }
+          });
+        } else if (type === "video") {
+          header_params.push({
+            type: "video",
+            video: { link: value }
+          });
+        } else if (type === "document") {
+          header_params.push({
+            type: "document",
+            document: { link: value }
+          });
+        }
+
+        continue;
+      } else if (key.startsWith('body')) {
+        body_params.push({
           type: "text",
-          text: paramText
+          text: value
         });
-      });
-      if (buttons_params.length) receiver.buttons_params = buttons_params;
+      } else if (key.startsWith('buttons')) {
+        if ((value as string).startsWith("http")) {
+          buttons_params.push({
+            type: "payload",
+            payload: value
+          });
+        } else {
+          buttons_params.push({
+            type: "text",
+            text: value
+          });
+        }
+
+        continue;
+      }
     }
+
+    if (header_params.length) receiver.header_params = header_params;
+    if (body_params.length) receiver.body_params = body_params;
+    if (buttons_params.length) receiver.buttons_params = buttons_params;
+
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] createReceiversList - Final receiver_list:', JSON.stringify([receiver], null, 2));
 
     return [receiver];
   }

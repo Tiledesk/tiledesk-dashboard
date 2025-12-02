@@ -364,8 +364,8 @@
                   [innerHTML]="header_component?.text | htmlEntitiesEncode | waToMarkdown | marked | formatParamBadges">
                 </span>
                 
-                <span *ngIf="header_component?.format === 'IMAGE' && headerParamsValues[0]">
-                  <img [src]="headerParamsValues[0]"
+                <span *ngIf="header_component?.format === 'IMAGE' && (headerParamsValues[0] || (isNamedTemplate && header_component?.example?.header_handle?.[0]))">
+                  <img [src]="headerParamsValues[0] || (isNamedTemplate ? header_component?.example?.header_handle?.[0] : '')"
                     (error)="onHeaderImageError($event)" />
                 </span>
                 
