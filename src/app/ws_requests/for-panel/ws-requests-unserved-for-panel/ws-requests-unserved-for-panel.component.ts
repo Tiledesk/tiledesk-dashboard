@@ -365,13 +365,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     //  this.logger.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN waiting for service-worker to be ready - current state', this.webSocketJs)
     // this.join_polling = setInterval(() => {
     // if (this.webSocketJs.ws.readyState === 1) {
     //   if (this.webSocketJs.ws.readyState === 1) {
     //     clearInterval(this.join_polling);
     //   }
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ADD PARTCIPANT')
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
 

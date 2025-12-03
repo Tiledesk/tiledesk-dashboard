@@ -1053,10 +1053,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // -----------------------------------------------------------------------------------------------------
                 // NOTE_nk: comment this.webSocketJs.init
                 this.webSocketJs.init(
-                    WS_URL,
-                    undefined,
-                    undefined,
-                    undefined
+                    WS_URL
                 );
                 this.wsInitialized = true
                 // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - wsInitialized ', this.wsInitialized);

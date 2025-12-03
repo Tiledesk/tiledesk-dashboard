@@ -102,6 +102,9 @@ export class ConversationDetailIframeService {
     this.iframeElement.setAttribute('allowfullscreen', '');
     this.iframeElement.setAttribute('id', 'global-conversation-iframe');
     
+    this.iframeElement.setAttribute('allow', 'autoplay; fullscreeen; geolocation; *')
+    this.iframeElement.setAttribute('loading', 'eager');
+    this.iframeElement.setAttribute('importance', 'high');
     // Setup listener per contatore
     this.setupLoadListener();
     

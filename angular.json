@@ -43,6 +43,8 @@
               "src/dashboard-mqtt.json",
               "src/dashboard-pre-mqtt-engine-config.json",
               "src/environments/externalenv.json",
+              "src/environments/real_data/dashboard-config-ar.json",
+              "src/environments/real_data/dashboard-config-stage.json",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",
@@ -77,7 +79,8 @@
               "node_modules/bootstrap-notify/bootstrap-notify.js",
               "node_modules/chartist/dist/chartist.js",
               "node_modules/apexcharts/dist/apexcharts.min.js"
-            ]
+            ],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {    
@@ -184,7 +187,8 @@
                 "output": "./assets",
                 "ignore": ["**/*.scss"]
               }
-            ]
+            ],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           }
         },
         "lint": {
