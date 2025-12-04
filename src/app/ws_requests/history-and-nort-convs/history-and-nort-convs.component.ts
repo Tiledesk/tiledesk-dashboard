@@ -245,6 +245,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   statusInHistory = [
     { id: '1000', name: 'Closed' },
     { id: '100', name: 'Unserved' },
+    { id: '150', name: 'Abandoned' },
     { id: '200', name: 'Served' }
   ];
 
@@ -618,7 +619,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                   this.operator = '='
                   this.requests_status_selected_from_advanced_option = '200'
                   this.requests_status = '200'
+                } else if (requetStatusValue === '150') {
+                  this.operator = '='
+                  this.requests_status_selected_from_advanced_option = '150'
+                  this.requests_status = '150'
                 }
+
                 // else if (requetStatusValue === '1000') {
                 //   this.operator = '='
                 //   this.requests_status_selected_from_advanced_option = '1000'
@@ -1290,11 +1296,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses 2', this.requests_statuses);
       // this.requests_statuses = ['1000', '100', '200', '50']
       // this.requests_status = "1000,100,200,50"
-      this.requests_status = "1000,100,200"
+      // this.requests_status = "1000,100,200"
+      this.requests_status = [1000,100,200,150]
       this.getRequests()
+      return;
     }
-    this.requests_status = requests_statuses.join()
-    this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_status', this.requests_status);
+
+    if (requests_statuses && Array.isArray(requests_statuses) && requests_statuses.length > 0) {
+       this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses USE CASE requests_statuses.length > 0', this.requests_statuses);
+      this.requests_status = requests_statuses.join()
+    }
+    // this.requests_status = requests_statuses.join()
+    // this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_status', this.requests_status);
   }
 
   getAllRequests() {

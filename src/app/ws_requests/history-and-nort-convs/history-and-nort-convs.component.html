@@ -672,6 +672,9 @@
         <div *ngIf="status === '200'" class="applied-filter">
           {{'Served' | translate}}
         </div>
+         <div *ngIf="status === '150'" class="applied-filter">
+            {{'Abandoned' | translate}}
+        </div>
         <!-- <div *ngIf="status === '50'" class="applied-filter">
           Temporary
         </div> -->
@@ -1304,7 +1307,7 @@
                     </span>
                   </span>
 
-                  <span *ngIf="request?.status === 150">
+                  <span *ngIf="request?.status === 150" style="position: relative;">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                       <img style="width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
