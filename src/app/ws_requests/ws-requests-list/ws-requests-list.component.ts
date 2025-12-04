@@ -1804,9 +1804,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (this.ws_requests) {
   
           this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+          // status 100 unassigned - status 150 abbandoned
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
-              if (r['status'] === 100) {
+              if (r['status'] === 100 || r['status'] === 150) {
 
                 return true
               } else {
@@ -1824,7 +1825,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
           this.wsRequestsServed = this.ws_requests
             .filter(r => {
-              if (r['status'] !== 100) {
+              if (r['status'] === 200) {
 
                 return true
               } else {
