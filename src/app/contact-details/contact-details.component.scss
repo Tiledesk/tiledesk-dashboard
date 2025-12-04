@@ -701,3 +701,80 @@ label {
   position: relative;
   top: 4px;
 }
+
+// WhatsApp Sent Messages Styles
+.custom-button {
+  background-color: white;
+  color: var(--blue-20);
+  border: solid 1px var(--blue-20);
+  border-radius: 20px;
+  height: 32px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  cursor: pointer;
+
+  .button-icon {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+
+  &:hover:not(:disabled) {
+    color: white;
+    background-color: var(--blue-20);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.logs-list {
+  max-height: 570px;
+  overflow: scroll;
+
+  &:hover {
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+  }
+}
+
+.status-chip {
+  background-color: aliceblue;
+  border: dashed 1px #abc6dd;
+  border-radius: 8px;
+  padding: 0px 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+
+  .warning-icon {
+    font-size: 18px;
+    margin-right: 4px;
+    color: #bd1515;
+  }
+}
+
+.error-box {
+  background-color: rgba(255, 0, 0, 0.21);
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 3px 0 red;
+  margin: 8px 2px;
+
+  .error-label {
+    margin-bottom: 2px;
+    font-weight: 400;
+    font-size: 15px;
+    color: red;
+  }
+}
+
+.broadcast-logs-accordion ::ng-deep .mat-expansion-panel-content .mat-expansion-panel-body {
+  padding: 16px 24px;
+}

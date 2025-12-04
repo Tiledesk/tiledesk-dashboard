@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { AutomationsService } from '../services/automations.service';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -37,6 +38,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   
   // Tab management
   selectedTab: 'requests' | 'sent-messages' = 'requests';
+  waSentMessages: any[] = [];
+  loadingWaMessages: boolean = false;
   CONTACT_IS_VERIFIED = false;
   contact_fullname_initial: string;
   fillColour: string;
@@ -106,7 +109,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private appConfigService: AppConfigService,
     private usersService: UsersService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private automationsService: AutomationsService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -137,6 +141,12 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getBrowserVersion();
     this.getOSCODE();
     this.getProjectUserRole();
+    
+    // Check if there's a tab query parameter to select automatically
+    const tabParam = this.route.snapshot.queryParams['tab'];
+    if (tabParam === 'sent-messages') {
+      this.selectedTab = 'sent-messages';
+    }
   }
 
   getProjectUserRole() {
@@ -596,6 +606,12 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
             lead.email = null; // Or 'N/A', depending on what you want to display
           }
           this.contact_details = lead;
+          
+          // If sent-messages tab was requested via query param, load messages now that contact is available
+          const tabParam = this.route.snapshot.queryParams['tab'];
+          if (tabParam === 'sent-messages' && this.selectedTab === 'sent-messages') {
+            this.getWaSentMessages();
+          }
 
 
           if (this.contact_details && this.contact_details.lead_id) {
@@ -1146,5 +1162,71 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onTabChange(tab: 'requests' | 'sent-messages') {
+
+    this.selectedTab = tab;
+    if (tab === 'sent-messages') {
+      this.getWaSentMessages();
+    }
+  }
+
+  getWaSentMessages() {
+    if (!this.contact_details) {
+      this.logger.warn('[CONTACTS-DTLS] - Cannot get WA messages: contact_details not available');
+      return;
+    }
+
+    // Extract phone number from contact_details.phone or from lead_id if it starts with "wab-"
+    let phoneNumber: string = null;
+    
+    if (this.contact_details.phone) {
+      phoneNumber = this.contact_details.phone;
+    } else if (this.contact_details.lead_id && this.contact_details.lead_id.startsWith('wab-')) {
+      phoneNumber = this.contact_details.lead_id.slice(4); // Remove "wab-" prefix
+    }
+
+    if (!phoneNumber) {
+      this.logger.warn('[CONTACTS-DTLS] - Cannot get WA messages: phone number not available');
+      this.waSentMessages = [];
+      return;
+    }
+
+    // Remove any spaces or formatting from phone number
+    phoneNumber = phoneNumber.replace(/\s+/g, '');
+
+    this.loadingWaMessages = true;
+    this.waSentMessages = [];
+
+    this.automationsService.getWAMessagesByPhoneNum(phoneNumber)
+      .subscribe(
+        (response: any) => {
+          this.logger.log('[CONTACTS-DTLS] - GET WA MESSAGES BY PHONE NUM - SUCCESS', response);
+          let messages = [];
+          if (response && Array.isArray(response)) {
+            messages = response;
+          } else if (response && response.data && Array.isArray(response.data)) {
+            messages = response.data;
+          }
+          
+          // Ordina i messaggi per data di invio (più recenti in cima)
+          this.waSentMessages = messages.sort((a, b) => {
+            const dateA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+            const dateB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+            return dateB - dateA; // Ordine decrescente (più recenti prima)
+          });
+          
+          this.loadingWaMessages = false;
+        },
+        (error) => {
+          this.logger.error('[CONTACTS-DTLS] - GET WA MESSAGES BY PHONE NUM - ERROR', error);
+          this.waSentMessages = [];
+          this.loadingWaMessages = false;
+        },
+        () => {
+          this.logger.log('[CONTACTS-DTLS] - GET WA MESSAGES BY PHONE NUM - COMPLETE');
+          this.loadingWaMessages = false;
+        }
+      );
+  }
 
 }

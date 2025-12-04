@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 // import { ContactInfoComponent } from 'app/components/shared/contact-info/contact-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -28,6 +29,7 @@ const routes: Routes = [
     SharedModule,
     MomentModule,
     MatTooltipModule,
+    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,

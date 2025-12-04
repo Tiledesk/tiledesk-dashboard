@@ -33,7 +33,7 @@
                   <div 
                     class="contact-details-tab" 
                     [ngClass]="{'active': selectedTab === 'sent-messages'}"
-                    (click)="selectedTab = 'sent-messages'"
+                    (click)="onTabChange('sent-messages')"
                     style="padding: 12px 24px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.3s;"
                     [style.border-bottom-color]="selectedTab === 'sent-messages' ? 'var(--primary-color, #2196F3)' : 'transparent'"
                     [style.color]="selectedTab === 'sent-messages' ? 'var(--primary-color, #2196F3)' : '#666'"
@@ -332,11 +332,72 @@
               </tbody>
             </table>
 
-            <!-- Tab "Messaggi Inviati" - placeholder per ora -->
-            <div *ngIf="selectedTab === 'sent-messages'" style="padding: 40px 20px; text-align: center;">
-              <p style="font-size: 1em; color: #7695a5; font-weight: 400;">
-                {{ 'SentMessagesContentComingSoon' | translate }}
-              </p>
+            <!-- Tab "Messaggi Inviati" -->
+            <div *ngIf="selectedTab === 'sent-messages'">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h4 style="font-weight: 400; font-family: var(--header-font-family);">
+                  {{ waSentMessages.length }} {{'RequestMsgsPage.Messages' | translate }}
+                </h4>
+                <button class="custom-button" (click)="getWaSentMessages()" [disabled]="loadingWaMessages">
+                  <span class="material-icons-round button-icon">sync</span>
+                  {{'Reload' | translate}}
+                </button>
+              </div>
+
+              <loading-spinner *ngIf="loadingWaMessages"></loading-spinner>
+
+              <div *ngIf="!loadingWaMessages && waSentMessages.length === 0" style="padding: 40px 20px; text-align: center;">
+                <p style="font-size: 1em; color: #7695a5; font-weight: 400;">
+                  {{ 'NoSentMessages' | translate }}
+                </p>
+              </div>
+
+              <div *ngIf="!loadingWaMessages && waSentMessages.length > 0" class="logs-list">
+                <mat-expansion-panel *ngFor="let log of waSentMessages" style="border-radius: 0px;" class="broadcast-logs-accordion">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <label style="margin-bottom: 0px; margin-right: 3px; white-space: nowrap;">
+                        {{'SentTo' | translate}}:
+                      </label> 
+                      {{contact_details?.fullname || 'N/A'}}
+                      <span style="margin-left: 8px; color: #7695a5; white-space: nowrap;">
+                        {{log.timestamp | amTimeAgo}}
+                      </span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      <div class="status-chip">
+                        <span *ngIf="log.error" class="material-icons-round warning-icon">error_outline</span>
+                        {{ log.status | translate}}
+                      </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="message--info-container" style="margin-left: 23px;margin-bottom: 12px;">
+                    <div class="message--info" style="margin-bottom: 6px;">
+                      <label style="margin-bottom: 0px;">
+                        {{'TemplateName' | translate}}:
+                      </label> 
+                      <span>
+                        {{log.json_message?.template?.name || 'N/A'}}
+                      </span>
+                    </div>
+                    <div class="message--info">
+                      <label style="margin-bottom: 0px;">
+                        {{'SentDate' | translate}}:
+                      </label> 
+                      <span style="text-transform: capitalize;">
+                        {{log.timestamp | amDateFormat: 'dddd D MMMM YYYY, HH:mm:ss'}}
+                      </span>
+                    </div>
+                
+                    <div class="error-box" *ngIf="log.error">
+                      <p class="error-label">
+                        {{'Error' | translate}}
+                      </p>
+                      {{ log.error }}
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
             </div>
           </div> <!-- ./ card-content table-responsive -->
 
