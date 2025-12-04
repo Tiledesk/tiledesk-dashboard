@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.142
+- Adds the ability to see who left an "abandoned chat" in the non-real-time conversations page and in the history page
+
 ### 2.7.141
 - Adds the Messages Sent section to the contact details page
 - Removes notification display on 5xx error
