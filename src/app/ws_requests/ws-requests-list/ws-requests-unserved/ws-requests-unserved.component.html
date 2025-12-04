@@ -485,6 +485,9 @@
                 <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject">
                   {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
                 </span>
+                 <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 150">
+                  {{ 'RequestMsgsPage.RequestAbandoned' | translate }}
+                </span>
 
 
                 <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>

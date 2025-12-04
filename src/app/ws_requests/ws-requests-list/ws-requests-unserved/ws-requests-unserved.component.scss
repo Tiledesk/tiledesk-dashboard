@@ -642,12 +642,12 @@ span .switch-agent-admin-requests-btn {
   left: -5px;
 }
 .abandoned_chat-badge-wpr > span > .material-icons {
-  font-size: 14px !important;
-  background: #ffffff;
+ font-size: 14px !important;
+  background: rgb(229, 45, 42);// #ffffff;
   // border-radius: 50%;
   padding: 1px;
-  color: rgb(229, 45, 42);
-  // border: 1px solid;
+  color:  #ffffff; // rgb(229, 45, 42);
+  border-radius: 2px;
 }
 
 .pu-user-name-wpr:hover {
