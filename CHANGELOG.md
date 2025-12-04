@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.157-stage 
+- Manages abandoned chats on the monitor page
+
 ### 2.7.156-stage 
 - Adds the LLM models: Gpt-5.1, Claude-4.5 Sonnet, Claude 4.5 Haiku, Claude Opus 4.5, Claude Opus 4.1
 
