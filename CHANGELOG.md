@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.141
+- Adds the Messages Sent section to the contact details page
+- Removes notification display on 5xx error
+- Manages abandoned chats on the monitor page
+- Adds the ability to filter for abandoned conversations to the history page
+
 ### 2.7.140
 - Improves and fixes bugs for WhatsApp message sending to a contact feature
 
