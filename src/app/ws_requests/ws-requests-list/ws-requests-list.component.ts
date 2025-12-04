@@ -2010,7 +2010,7 @@ getProjectUserRole() {
           // this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
-              if (r['status'] === 100) {
+              if (r['status'] === 100 || r['status'] === 150) {
 
                 return true
               } else {
@@ -2028,7 +2028,7 @@ getProjectUserRole() {
 
           this.wsRequestsServed = this.ws_requests
             .filter(r => {
-              if (r['status'] !== 100) {
+              if (r['status'] === 200) {
 
                 return true
               } else {
