@@ -118,6 +118,19 @@ textarea[type="text"] {
     color: var(--text-color)
 }
 
+.phone-input-wrapper {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.phone-icon-error {
+  fill: #f44336 !important;
+  
+  path:not([fill="none"]) {
+    fill: #f44336 !important;
+  }
+}
+
 // .ul-wpr li .inputChat {
 //     flex: 1 0 0px !important;
 // }

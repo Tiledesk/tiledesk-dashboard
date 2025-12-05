@@ -13,7 +13,7 @@
             <mat-icon>refresh</mat-icon>
         </button>
     </div>
-    <div class="contents-count"> Total questions: <span class="contents-count-num">{{ unansweredQuestions.length }}</span>
+    <div class="contents-count"> {{'KbPage.TotalQuestions' | translate }}: <span class="contents-count-num">{{ unansweredQuestions.length }}</span>
     </div>
   </div>
 
@@ -22,16 +22,21 @@
 
     <div class="uq-list">
       <div class="uq-list-header">
-        <span class="uq-list-header-question">Question</span>
-        <span class="uq-list-header-actions">Actions</span>
+        <span class="uq-list-header-question">{{'FaqPage.Question' | translate}}</span>
+        <span class="uq-list-header-actions">{{'Actions' | translate}}</span>
       </div>
       <div *ngFor="let q of unansweredQuestions" class="uq-list-item">
         <span class="uq-question-text">{{ q.question }}</span>
         <span class="uq-actions">
-          <button class="uq-btn uq-btn-icon" mat-icon-button matTooltipClass="kb-custom-mat-tooltip" matTooltip="Add question to KB" (click)="onOpenAddKnowledgeBaseModal(q)">
+          <button class="uq-btn uq-btn-icon" mat-icon-button 
+            matTooltipClass="kb-custom-mat-tooltip" 
+            [matTooltip]="'AddQuestionToKB' | translate" (click)="onOpenAddKnowledgeBaseModal(q)">
             <mat-icon class="add-icon">add_circle_outline</mat-icon>
           </button>
-          <button class="uq-btn uq-btn-icon" mat-icon-button matTooltipClass="kb-custom-mat-tooltip" matTooltip="Discard question" (click)="onDiscardQuestion(q)">
+          <button class="uq-btn uq-btn-icon" mat-icon-button 
+            matTooltipClass="kb-custom-mat-tooltip" 
+            [matTooltip]="'DiscardQuestion' | translate" 
+            (click)="onDiscardQuestion(q)">
             <mat-icon class="delete-icon">delete_outline</mat-icon>
           </button>
         </span>
@@ -41,10 +46,10 @@
   <ng-template #noQuestions>
     <!-- <div class="uq-no-questions">There are no unanswered questions</div> -->
     <div class="add-header-container">
-      <div class="upgrade-title">Unanswered questions</div>
+      <div class="upgrade-title">{{'KbPage.UnansweredQuestions' | translate }}</div>
       <span class="span-6"></span>
       <!-- <div class="upgrade-subtitle">These are the questions that users asked but your knowledge base could not answer. You can add them to your KB or discard them.</div> -->
-      <div class="upgrade-subtitle">These are the questions that users asked but your knowledge base could not answer. You can add them to your KB or discard them.</div>
+      <div class="upgrade-subtitle">{{'KbPage.UnansweredQuestionsDesc' | translate }}</div>
       <span class="span-32"></span>
     </div>
   </ng-template>

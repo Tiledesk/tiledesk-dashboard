@@ -1020,6 +1020,14 @@ my-app .main-panel .main-content .card {
   min-height: 20px;
 }
 
+.span-18 {
+  display: block;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
+}
+
 .span-12 {
   display: block;
   width: 12px;
@@ -2152,6 +2160,14 @@ footer ul {
   display: -webkit-box !important;
   display: -ms-flexbox !important;
   border: unset !important;
+}
+
+.ng-select.select-wa-template.custom-panel-height .ng-dropdown-panel {
+  max-height: 200px !important;
+}
+
+.ng-select.select-wa-template.custom-panel-height .ng-dropdown-panel .scroll-host {
+  max-height: 200px !important;
 }
 
 // FOREGROUND NOTIFICATION

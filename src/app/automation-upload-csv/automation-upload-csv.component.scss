@@ -1,0 +1,78 @@
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    padding: 12px 15px;
+    border-radius: 4px;
+    background-color: #d7ebfa6e;
+
+    .info-icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    p {
+        margin-bottom: 0px;
+    }
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.mat-dialog-ok-btn {
+    background-color: var(--blue-light);
+    color: #fff;
+}
+
+
+.mat-dialog-close-btn {
+    background-color: #647491;
+    color: #fff;
+}
+
+.download--example-csv-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.download--example-csv {
+    border: unset;
+    background-color: transparent;
+    color: var(--only-text-btn-color);
+    padding: 0px 3px;
+    border-radius: 4px;
+}
+
+.download--example-csv:hover {
+    background-color: var(--only-text-btn-hover-background);
+}
+
+.after-upload-msg-container {
+    text-align: center;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.after-upload-msg-container>div {
+    &.success {
+        color: #73AF55;
+    }
+
+    &.error {
+        color: #D06079;
+    }
+}

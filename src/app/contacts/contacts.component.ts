@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
+import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal/contacts-wa-broadcast-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -129,7 +131,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -167,6 +170,23 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+   presentDialogWABroadcast(contact) {
+      this.logger.log('[CONTACTS-COMP] openDialog presentDialogWABroadcast chatbot ', contact)
+      const dialogRef = this.dialog.open(ContactsWaBroadcastModalComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '800px',
+        data: {
+          contact: contact,
+          projectId: this.projectId
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(res => {
+        
+        
+      });
+    }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -774,18 +794,15 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         contact.avatar_fill_colour = newFillColour;
         contact.name_initial = newInitials
-        contact.contact_is_verified = this.CONTACT_IS_VERIFIED
-
+        // Set contact_is_verified to false by default
+        // NOTE: The call to getProjectUserById() has been commented out because it made 40 separate HTTP calls
+        // per page (one for each contact) just to get isAuthenticated.
+        // TODO: When a batch call is available to retrieve isAuthenticated for all contacts
+        // in a single HTTP request, uncomment the following lines:
+        // contact.contact_is_verified = this.CONTACT_IS_VERIFIED
         this.getProjectUserById(contact, leadid)
-        // for (const c of contacts_list) {
-
-        //   if (c._id === id_contact) {
-        //     // this.logger.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
-        //     c.avatar_fill_colour = newFillColour;
-        //     c.name_initial = newInitials
-        //     c.contact_is_verified = this.CONTACT_IS_VERIFIED
-        //   }
-        // }
+        contact.contact_is_verified = false;
+        
       }
     });
   }
@@ -817,15 +834,25 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     moreTagsBtn.style.display = "inline-block";
   }
 
+  /**
+   * COMMENTED: This method made 40 separate HTTP calls per page (one for each contact)
+   * just to get isAuthenticated. Too expensive in terms of performance.
+   * 
+   * TODO: When a batch solution or lazy loading is available:
+   * 1. Uncomment the code below
+   * 2. In the generateAvatarFromNameAndGetIfContactIsAuthenticated method:
+   *    - Uncomment `contact.contact_is_verified = this.CONTACT_IS_VERIFIED`
+   *    - Uncomment `this.getProjectUserById(contact, leadid)`
+   *    - Remove the default value `contact.contact_is_verified = false`
+   * 
+   * @param contact 
+   * @param leadid 
+   */
   getProjectUserById(contact, leadid) {
+    // COMMENTED: Too many HTTP calls just to get isAuthenticated
+    // Uncomment when a batch solution or lazy loading is available
     this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
-
-
       this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID RES  ', projectUser);
-      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0]  ', projectUser[0]);
-      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID projectUser[0] isAuthenticated ', projectUser[0]['isAuthenticated']);
-      // this.CONTACT_IS_VERIFIED = projectUser[0]['isAuthenticated']
-      // this.logger.log('[CONTACTS-COMP] - GET PROJECT USER BY LEAD ID CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED);
       contact.contact_is_verified = projectUser[0]['isAuthenticated']
     },
       (error) => {

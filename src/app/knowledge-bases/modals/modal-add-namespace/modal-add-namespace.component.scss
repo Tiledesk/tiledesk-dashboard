@@ -82,7 +82,8 @@
   border-radius: 12px;
   // border: 1px solid rgb(226, 232, 239);
   box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
-  border: 1px solid rgb(226, 232, 239);
+  // border: 1px solid rgb(226, 232, 239);
+  border: 2px solid transparent;
   outline: none;
   cursor: pointer;
   min-height: 162px;
@@ -91,6 +92,10 @@
 
 .add--content-card-wpr:hover {
     box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
+}
+
+.add--content-card-wpr.disabled-option:hover { 
+  box-shadow: unset !important;
 }
 
 .add-content-card-content {
@@ -164,4 +169,25 @@
     font-weight: 500;
     cursor: pointer;
   }
+}
+
+.learn-more-container {
+    margin-top: 6px;
+}
+
+.learn-more-container > .material-icons-outlined {
+    color: var(--blue-light);
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.learn-more-container > .learn-more-link {
+    color: var(--blue-light);
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.learn-more-container:hover > .learn-more-link { 
+  text-decoration: underline;
 }

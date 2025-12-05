@@ -13,7 +13,7 @@
         </div>
         <!-- , .txt -->
         <label class="upload-button">
-            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx"
+            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx, .txt"
                 name="uploadprivatekey" type="file">
 
             <div role="button" class="browse--btn">{{ 'Browse' | translate }}</div>
@@ -24,8 +24,8 @@
     <div [class.is-hidden]="hideDropZone === true" class="supported-file-text"> 
         <span *ngIf="!fileSizeExceeds && fileSupported">
             
-            <!-- {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}} -->
-            {{'SupportedFileTypesPdfDocx' | translate: tparams}}
+           {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}}
+           <!-- {{'SupportedFileTypesPdfDocx' | translate: tparams}} -->
             
         </span>
         <span class="file-size-exceeds" *ngIf="fileSizeExceeds">

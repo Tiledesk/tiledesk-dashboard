@@ -643,10 +643,11 @@ span .switch-agent-admin-requests-btn {
 }
 .abandoned_chat-badge-wpr > span > .material-icons {
   font-size: 14px !important;
-  background: #ffffff;
+  background: rgb(229, 45, 42);// #ffffff;
   // border-radius: 50%;
   padding: 1px;
-  color: rgb(229, 45, 42);
+  color:  #ffffff; // rgb(229, 45, 42);
+  border-radius: 2px;
   // border: 1px solid;
 }
 
@@ -666,7 +667,7 @@ span .switch-agent-admin-requests-btn {
   // border-bottom: 1px dotted black;
 }
 
-.white___tooltip .white___tooltiptext {
+.white___tooltip > .white___tooltiptext {
   visibility: hidden;
   // width: 120px;
   width: fit-content;
@@ -689,7 +690,7 @@ span .switch-agent-admin-requests-btn {
   line-height: 12px;
 }
 
-.white___tooltip:hover .white___tooltiptext {
+.white___tooltip:hover > .white___tooltiptext {
   visibility: visible;
 }
 // TOOLTIP END

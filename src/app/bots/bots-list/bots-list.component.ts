@@ -510,18 +510,22 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       },
     });
 
-    dialogRef.afterClosed().subscribe(selectedProjectId => {
-      this.logger.log(`Dialog afterClosed result (selectedProjectId): ${selectedProjectId}`);
-      if (selectedProjectId) {
-        this.forkTemplate(bot_id, selectedProjectId)
+    dialogRef.afterClosed().subscribe(res => {
+      this.logger.log(`Dialog afterClosed result (selectedProjectId) res:`, res);
+      
+      if (res) {
+        this.logger.log(`Dialog afterClosed result (selectedProjectId) res selectedProjectId:`, res.selectedProjectId);
+        this.forkTemplateinAnotherProject(bot_id, res.storedCurrentrojectId, res.selectedProjectId)
       }
     });
   }
 
+  forkTemplateinAnotherProject(bot_id, storedCurrentrojectId, selectedProjectId) {
+    this.logger.log('forkTemplateinAnotherProject this.currentProjectId ', this.currentProjectId) 
+    this.logger.log('forkTemplateinAnotherProject storedCurrentrojectId ', storedCurrentrojectId) 
+    this.logger.log('forkTemplateinAnotherProject selectedProjectId ', selectedProjectId) 
 
-
-  forkTemplate(bot_id, selectedProjectId) {
-    this.faqKbService.installTemplate(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
+    this.faqKbService.duplicateChatbot(bot_id, storedCurrentrojectId, false, selectedProjectId).subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
       // this.botid = res.bot_id
       this.getFaqKbById(res.bot_id, selectedProjectId);
@@ -530,8 +534,28 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     }, () => {
       this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+  
+      
     });
   }
+
+  forkTemplate(bot_id,  selectedProjectId) {
+    this.logger.log('forkTemplate this.currentProjectId ', this.currentProjectId) 
+    this.logger.log('forkTemplate selectedProjectId ', selectedProjectId) 
+    this.faqKbService.duplicateChatbot(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
+      // this.botid = res.bot_id
+      this.getFaqKbById(res.bot_id, selectedProjectId);
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] FORK TEMPLATE - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+      // this.router.navigate(['project/' + selectedProjectId + '/bots/my-chatbots/all']);
+      
+    });
+  }
+
 
   getFaqKbById(botid, selectedProjectId) {
     this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
@@ -570,7 +594,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.project = project
       if (this.project) {
         this.currentProjectId = this.project._id
-        // this.logger.log('[BOTS-LIST] 00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
+         this.logger.log('[BOTS-LIST] 00 -> project from AUTH service subs  ', this.project)
         this.getProjectById(this.currentProjectId)
       }
     });
@@ -591,6 +615,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.getIfAutomationCopilotIsEnabled(projectProfileData)
       this.managePlanAutomationCopilotAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
 
+      localStorage.setItem('last_project', JSON.stringify(project))
     }, error => {
       this.logger.error('[BOTS-LIST] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
@@ -1009,21 +1034,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           }
 
 
-          const messageRequests = this.faqkbList.map(bot =>
-            this.faqKbService.getNumberOfMessages(bot._id, bot.type)
-          );
+          // const messageRequests = this.faqkbList.map(bot =>
+          //   this.faqKbService.getNumberOfMessages(bot._id, bot.type)
+          // );
 
-          forkJoin(messageRequests)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((results: any[]) => {
-            results.forEach((res, i) => {
-              if (res.length === 0) {
-                this.faqkbList[i].message_count = 0;
-              } else {
-                this.faqkbList[i].message_count = res[0].totalCount;
-              }
-            });
-          });
+          // forkJoin(messageRequests)
+          // .pipe(takeUntil(this.unsubscribe$))
+          // .subscribe((results: any[]) => {
+          //   results.forEach((res, i) => {
+          //     if (res.length === 0) {
+          //       this.faqkbList[i].message_count = 0;
+          //     } else {
+          //       this.faqkbList[i].message_count = res[0].totalCount;
+          //     }
+          //   });
+          // });
         }
       }
 

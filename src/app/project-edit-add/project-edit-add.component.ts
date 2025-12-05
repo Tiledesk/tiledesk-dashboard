@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 
 
 // USED FOR go back last page
@@ -27,8 +27,10 @@ import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATi
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
-import { CacheService } from 'app/services/cache.service';
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { RoleService } from 'app/services/role.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -42,6 +44,7 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./project-edit-add.component.scss']
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
+  private routerSubscription: Subscription;
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -163,6 +166,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
 
+  isAllowedSendEmoji: boolean;
+  isEnabledAllowedURLs: boolean;
+  urlWhitelist: string[] = [];
+  currentWhitelist: string[] = [];
+
+
+  selectedOption: string; //= 'all';
+  newExtension: string = '';
+  extensions: string[] = [];
+  allowed_upload_extentions: string;
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
+
+
   // unavailable_status_on: boolean;
 
 
@@ -231,6 +247,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   public hideHelpLink: boolean;
   public displayExtremeMeasures: boolean;
 
+
+
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -282,8 +300,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private _fb: FormBuilder,
     private contactsService: ContactsService,
-    private cacheService: CacheService,
-    private roleService: RoleService
+    private cacheService: AllProjectsCacheService,
+    private roleService: RoleService,
+    public dialog: MatDialog,
     // private formGroup: FormGroup
 
   ) {
@@ -323,6 +342,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.buildCreditCardForm()
   }
+
 
 
 
@@ -2636,6 +2656,52 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.areHideChatbotAttributesInConvDtls = false;
           }
 
+          if (project.settings.allow_send_emoji !== undefined) {
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
+            this.isAllowedSendEmoji = project.settings.allow_send_emoji
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
+          } else {
+            this.isAllowedSendEmoji = true;
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
+          }
+
+          if (project.settings.allowed_urls !== undefined) {
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls  project.settings.allowed_urls', project.settings.allowed_urls) 
+            this.isEnabledAllowedURLs = project.settings.allowed_urls
+             this.logger.log('[PRJCT-EDIT-ADD] allowed_urls this.isEnabledAllowedURLs ', this.isEnabledAllowedURLs) 
+          } else {
+            this.isEnabledAllowedURLs = false;
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls this.isEnabledAllowedURLs (else) ', this.isEnabledAllowedURLs) 
+          }
+
+           if (project.settings.allowed_urls_list !== undefined) {
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
+            this.currentWhitelist = project.settings.allowed_urls_list
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist ', this.currentWhitelist) 
+          } else {
+            this.currentWhitelist = [];
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist (else) ', this.currentWhitelist) 
+          }
+
+          if (project.settings.allowed_upload_extentions !== undefined) {
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            
+            if (project.settings.allowed_upload_extentions === '*/*') {
+              this.selectedOption = 'all';
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+            } else {
+              this.selectedOption = 'custom'
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.extensions = project.settings.allowed_upload_extentions.split(',').map(v => v.trim());
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
+            }
+          } else {
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.selectedOption = 'custom'
+            this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
+          }
 
 
           // Automatic unavailable status
@@ -2661,6 +2727,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.automatic_unavailable_status_on = false;
           this.agents_can_see_only_own_convs = false;
           this.areHideChatbotAttributesInConvDtls = false;
+          this.isAllowedSendEmoji = true;
+          this.isEnabledAllowedURLs = false;
+          this.currentWhitelist = [];
+          this.selectedOption = 'custom'
+          this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+          this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
+          this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
       }
 
@@ -2734,12 +2809,141 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.switchChatbotAttributesVisibility(this.areHideChatbotAttributesInConvDtls).then((result) => {
       this.logger.log("[PRJCT-EDIT-ADD] - toggleVisibilityOfChatbotAttributes RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
-      this.cacheService.clearCache()
+      this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
+
+  // -------
+  toggleAllowSendEmoji(event) {
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.isAllowedSendEmoji = event.target.checked;
+    this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+
+      this.cacheService.clearAllProjectsCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  toggleAllowedURLs(event){
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.isEnabledAllowedURLs = event.target.checked;
+    this.projectService.switchAllowedURLS(this.isEnabledAllowedURLs).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs RESULT: ", result)
+     
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearAllProjectsCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+
+  }
+
+  onOpenUrlsWhitelist() {
+    const dialogRef = this.dialog.open(UrlsWhitelistComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '500px',
+      disableClose: true,
+      data: this.currentWhitelist
+      
+    });
+
+      // Auto-close dialog on route change
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        dialogRef.close();
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string[]) => {
+      if (result) {
+        this.urlWhitelist = result;
+        // Save to backend or localStorage as needed
+        this.logger.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
+
+        this.saveUrlWhitelist(this.urlWhitelist)
+      }
+
+      if (this.routerSubscription) {
+        this.routerSubscription.unsubscribe();
+      }
+    });
+  }
+
+  saveUrlWhitelist(urlWhitelist) {
+    this.projectService.saveURLsWhitelist(urlWhitelist).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT: ", result)
+
+      if (result['settings']['allowed_urls_list'] ) {
+        this.logger.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT > allowed_urls_list: ", result['settings']['allowed_urls_list'])
+        this.currentWhitelist = result['settings']['allowed_urls_list']
+      }
+     
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearAllProjectsCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - saveURLs Whitelist ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+
+  }
+
+  addExtension(): void {
+    const ext = this.newExtension.trim().toLowerCase();
+
+    if (ext && !this.extensions.includes(ext)) {
+      this.extensions.push(ext);
+      this.newExtension = '';
+    }
+     this.logger.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
+      // this.getExtensionsForBackend()
+  }
+
+  removeExtension(index: number): void {
+    this.extensions.splice(index, 1);
+    this.logger.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
+    // if(this.extensions.length === 0) {
+    //   this.selectedOption = 'all'
+    // }
+    // this.getExtensionsForBackend()
+  }
+
+  saveAllowedExtensions() {
+    this.logger.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
+    this.logger.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
+
+    if(this.selectedOption === 'all') { 
+      this.allowed_upload_extentions = '*/*'
+    } else {
+      this.allowed_upload_extentions = this.extensions.join(',')
+    }
+    this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
+
+    this.projectService.saveAgentsChatAllowedExtensions(this.allowed_upload_extentions).then((result) => {
+    this.logger.log("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS  RESULT: ", result)
+
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearAllProjectsCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  // -------
+
 
   toggleSupportWidgetVisibility($event) {
     // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);

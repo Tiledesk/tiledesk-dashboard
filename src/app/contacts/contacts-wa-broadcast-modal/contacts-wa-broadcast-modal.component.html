@@ -1,0 +1,479 @@
+<h1 mat-dialog-title> 
+
+  {{ 'WhatsAppMessage' | translate }}
+  
+</h1>
+
+<h2 mat-dialog-subtitle *ngIf="wa_is_installed === true && data?.contact?.fullname" style="margin-top: 0; margin-bottom: 0px; font-size: 14px; font-weight: 400; color: #666;">
+  {{ 'MessageWillBeSentTo' | translate: { contactFullname: data.contact.fullname } }}
+</h2>
+
+<!-- Loading state: show nothing or a loading indicator while checking -->
+<div *ngIf="wa_is_installed === null" mat-dialog-content>
+  <div class="wa-loading-container">
+    <div class="wa-loading-text">{{ 'Loading' | translate }}...</div>
+  </div>
+</div>
+
+<div *ngIf="wa_is_installed === false"  mat-dialog-content> 
+
+  <div class="wa-not-installed-title">
+    {{'WhatsAppNotConfigured' | translate}}
+  </div>
+
+  <div class="wa-not-installed-desc-wpr"> 
+
+      <div class="wa-not-installed-desc">
+          {{'UnableToCreateBroadcastWAIsNotInstalled'| translate}}
+      </div>
+    
+  </div>
+
+</div>
+
+<!-- Broadcast status messages -->
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'success'" mat-dialog-content>
+  <div class="broadcast-success-container">
+    <div class="broadcast-success-icon">
+      <i class="material-icons" style="color: #4caf50; font-size: 48px;">check_circle</i>
+    </div>
+    <div class="broadcast-success-message">
+      {{ 'WhatsAppBroadcastStarted' | translate }}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'error'" mat-dialog-content>
+  <div class="broadcast-error-container">
+    <div class="broadcast-error-icon">
+      <i class="material-icons" style="color: #f44336; font-size: 48px;">error</i>
+    </div>
+    <div class="broadcast-error-message">
+      {{ broadcastErrorMessage || ('ErrorSendingWhatsAppMessage' | translate) }}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'sending'" mat-dialog-content>
+  <div class="broadcast-sending-container">
+    <div class="broadcast-sending-spinner">
+      <i class="fa fa-spinner fa-spin" style="font-size: 48px; color: #2196f3;"></i>
+    </div>
+    <div class="broadcast-sending-message">
+      {{ 'Sending' | translate }}...
+    </div>
+  </div>
+</div>
+
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'idle'"  mat-dialog-content> 
+  <div class="contacts-wa-broadcast-modal-container">
+    
+    
+    <div class="b-flex-container">
+      
+      <div class="b-left-columns-container">
+
+        <div class="b-left--columns">
+          <div class="choose-wa-tmplt-label-and-select-wpr">
+
+          <div style="margin-bottom: 10px; font-size: 12px; color: #666;">
+            WhatsApp phone id: {{phone_number_id}}
+          </div>
+
+            <div class="template-select-label">{{ 'ChooseTemplate' | translate }}</div>
+            
+            <div class="select-and-btn-wpr">
+              <ng-select id="template-select" class="select-wa-template custom-panel-height"
+                appendTo="body"  
+                [clearable]="false" 
+                [searchable]="false"
+                [(ngModel)]="templateName" 
+                [items]="templates_list" 
+                bindLabel="name"
+                bindValue="name" 
+                placeholder="{{ 'ChooseTemplate' | translate }}" 
+                style="width: 250px;"
+                (change)="onSelectTemplate()">
+              </ng-select>
+            </div>
+            
+            <div *ngIf="isNamedTemplate" class="template-error-message" style="color: #f44336; margin-top: 8px; font-size: 12px;">
+              {{ 'TemplateTypeNotSupported' | translate }}
+            </div>
+          </div>
+
+          <!-- All Parameters in one section -->
+          <div class="template-params-input-wpr">
+            
+            <!-- Phone Number - Always visible -->
+            <div class="params-section-title" style="margin-top: 0px;">{{'PhoneNumber' | translate}}</div>
+            <div class="params-container">
+              <div class="param-input-wpr">
+                <div class="param-label-container">
+                  <!-- Icona save quando il numero è valido e modificato, altrimenti icona phone -->
+                  <i *ngIf="phoneNumberValid && isPhoneNumberModified() && !isSavingPhone"
+                     class="material-icons-outlined param-phone-icon param-save-icon"
+                     matTooltipClass="custom-mat-tooltip"
+                     [matTooltip]="'UpdateContact' | translate"
+                     #tooltipSave="matTooltip"
+                     matTooltipPosition='right'
+                     matTooltipHideDelay="100"
+                     (click)="updateContactPhone()"
+                     style="cursor: pointer;">
+                    save
+                  </i>
+                  <i *ngIf="!(phoneNumberValid && isPhoneNumberModified()) && !isSavingPhone"
+                     class="material-icons-outlined param-phone-icon">
+                    phone
+                  </i>
+                  <!-- Spinner durante il salvataggio -->
+                  <!-- <i *ngIf="isSavingPhone"
+                     class="material-icons-outlined param-phone-icon param-saving-icon"
+                     style="animation: spin 1s linear infinite;">
+                    hourglass_empty
+                  </i> -->
+                  <i *ngIf="isSavingPhone" class="fa fa-spinner fa-spin param-phone-icon param-saving-icon"></i>
+                </div>
+                <div class="param-input-container">
+                  <!-- Flag icon - a sinistra dell'input -->
+                  <div class="param-flag-container-left">
+                    <span *ngIf="phoneCountryName"
+                          matTooltipClass="custom-mat-tooltip" 
+                          matTooltip="{{ phoneCountryName }}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='above' 
+                          matTooltipHideDelay="100"
+                          style="display: inline-block; cursor: pointer;">
+                      <img [src]="getFlagImagePath()" 
+                           [alt]="phoneCountryCode || ('UnknownCountry' | translate)" 
+                           class="param-flag-icon"
+                           (error)="phoneCountryCode = null">
+                    </span>
+                    <img *ngIf="!phoneCountryName"
+                         [src]="getFlagImagePath()" 
+                         [alt]="phoneCountryCode || 'Unknown country'" 
+                         class="param-flag-icon"
+                         (error)="phoneCountryCode = null">
+                  </div>
+                  <!-- form-control input-md  -->
+                  <input 
+                    type="text" 
+                    class="param-input-phone"
+                    [ngClass]="{'param-input-error': phoneNumberError, 'param-input-valid': phoneNumberValid && isPhoneNumberModified()}"
+                    [ngModel]="phoneNumber"
+                    (ngModelChange)="onPhoneNumberChange($event)"
+                    placeholder="+1 555 123 456"
+                    style="width: 100%;">
+                </div>
+              </div>
+              <!-- Success message - mostrato solo se il numero è valido ma non modificato -->
+             
+              <!-- Error message -->
+              <div class="param-input-error-msg" *ngIf="phoneNumberError && !phoneNumberValid">
+                {{ phoneNumberError }}
+              </div>
+            </div>
+
+            <!-- Header Parameters - IMAGE -->
+            <div *ngIf="selected_template && headerParamsValues.length > 0 && header_component?.format === 'IMAGE'">
+              <div class="params-section-title">{{ 'HeaderParameters' | translate }}</div>
+              <div class="param-info-message">
+                {{ 'HeaderContainsImageThatCanBeCustomized' | translate }}
+              </div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <input 
+                      type="text" 
+                      class="input-md param-input"
+                      [ngModel]="headerParamsValues[i]" 
+                      (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
+                      [placeholder]="'InsertValidImageUrlOrUploadFile' | translate"
+                      style="width: 100%;">
+                  </div>
+                  <div class="param-action-button">
+                    <button type="button" 
+                            class="btn-param-action btn-param-clear" 
+                            *ngIf="headerParamsValues[i]"
+                            (click)="clearHeaderParam(i)"
+                            [title]="'Clear' | translate">
+                      <i class="material-icons-outlined">close</i>
+                    </button>
+                    <button type="button" 
+                            class="btn-param-action btn-param-upload" 
+                            *ngIf="!headerParamsValues[i]"
+                            (click)="triggerFileUpload(i, 'image')"
+                            [title]="'UploadImage' | translate">
+                      <i class="material-icons-outlined">cloud_upload</i>
+                    </button>
+                    <input 
+                      type="file" 
+                      [id]="'imageUploadInput_' + i"
+                      accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                      style="display: none;"
+                      (change)="onFileSelected($event, i, 'image')">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header Parameters - DOCUMENT -->
+            <div *ngIf="selected_template && headerParamsValues.length > 0 && header_component?.format === 'DOCUMENT'">
+              <div class="params-section-title">{{ 'HeaderParameters' | translate }}</div>
+              <div class="param-info-message">
+                {{ 'HeaderContainsDocumentThatCanBeCustomized' | translate }}
+              </div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <input 
+                      type="text" 
+                      class="input-md param-input"
+                      [ngModel]="headerParamsValues[i]" 
+                      (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
+                      [placeholder]="'InsertValidDocumentUrlOrUploadFile' | translate"
+                      style="width: 100%;">
+                  </div>
+                  <div class="param-action-button">
+                    <button type="button" 
+                            class="btn-param-action btn-param-clear" 
+                            *ngIf="headerParamsValues[i]"
+                            (click)="clearHeaderParam(i)"
+                            [title]="'Clear' | translate">
+                      <i class="material-icons-outlined">close</i>
+                    </button>
+                    <button type="button" 
+                            class="btn-param-action btn-param-upload" 
+                            *ngIf="!headerParamsValues[i]"
+                            (click)="triggerFileUpload(i, 'document')"
+                            [title]="'UploadDocument' | translate">
+                      <i class="material-icons-outlined">cloud_upload</i>
+                    </button>
+                    <input 
+                      type="file" 
+                      [id]="'documentUploadInput_' + i"
+                      accept=".pdf"
+                      style="display: none;"
+                      (change)="onFileSelected($event, i, 'document')">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header Parameters - TEXT -->
+            <div *ngIf="selected_template && headerParamsValues.length > 0 && header_component?.format === 'TEXT'">
+              <div class="params-section-title">{{ 'HeaderParameters' | translate }}</div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of headerParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <input 
+                      type="text" 
+                      class="input-md param-input"
+                      [ngModel]="headerParamsValues[i]" 
+                      (ngModelChange)="headerParamsValues[i] = $event; onHeaderParamChange()"
+                      [placeholder]="'{{' + (i + 1) + '}}'"
+                      style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Body Parameters -->
+            <div *ngIf="selected_template && bodyParamsValues.length > 0">
+              <div class="params-section-title">{{ 'BodyParameters' | translate }}</div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of bodyParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <!-- form-control -->
+                    <input 
+                      type="text" 
+                      class=" input-md param-input"
+                      [ngModel]="bodyParamsValues[i]" 
+                      (ngModelChange)="bodyParamsValues[i] = $event; onBodyParamChange()"
+                      [placeholder]="'{{' + (i + 1) + '}}'"
+                      style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Button Parameters -->
+            <div *ngIf="selected_template && buttonParamsValues.length > 0">
+              <div class="params-section-title">{{ 'ButtonsParameters' | translate }}</div>
+              <div *ngIf="hasUrlButtonWithParam" 
+                   class="param-info-message">
+                {{ 'ButtonContainsUrlThatCanBeCustomized' | translate }}
+              </div>
+              <div class="params-container">
+                <div class="param-input-wpr" *ngFor="let param of buttonParamsValues; let i = index; trackBy: trackByIndex">
+                  <div class="param-label-container">
+                    <span class="param-number-badge">{{ i + 1 }}</span>
+                  </div>
+                  <div class="param-input-container">
+                    <!-- form-control -->
+                    <input 
+                      type="text" 
+                      class=" input-md param-input"
+                      [ngModel]="buttonParamsValues[i]" 
+                      (ngModelChange)="buttonParamsValues[i] = $event; onButtonParamChange()"
+                      [placeholder]="'InsertValidUrl' | translate"
+                      style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- -------------------------------------------------- -->
+      <!-- Template Preview -->
+      <!-- -------------------------------------------------- -->
+      <div class="b-right-column">
+        <div class="preview-template-header">
+          {{ 'TemplatePreview' | translate }}
+        </div>
+        
+        <div class="no-template-selected-container" *ngIf="!selected_template">
+          <div class="no-template-selected">
+            {{ 'NoTemplateSelected' | translate }}
+          </div>
+        </div>
+        
+        <div id="preview-container" class="preview-container" *ngIf="selected_template">
+          <div class="inner-preview-container">
+            <div class="message-cloud">
+              
+              <!-- // Header -->
+              <div class="header-preview">
+                <span *ngIf="header_component?.format === 'TEXT'"
+                  [innerHTML]="header_component?.text | htmlEntitiesEncode | waToMarkdown | marked | formatParamBadges">
+                </span>
+                
+                <span *ngIf="header_component?.format === 'IMAGE' && (headerParamsValues[0] || (isNamedTemplate && header_component?.example?.header_handle?.[0]))">
+                  <img [src]="headerParamsValues[0] || (isNamedTemplate ? header_component?.example?.header_handle?.[0] : '')"
+                    (error)="onHeaderImageError($event)" />
+                </span>
+                
+                <span *ngIf="header_component?.format === 'DOCUMENT' && headerParamsValues[0]">
+                  <a [href]="headerParamsValues[0]" 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     class="pdf-preview-link"
+                     (click)="$event.stopPropagation()">
+                    <div class="pdf-preview">
+                      <p>{{ 'PDF' | translate }}</p>
+                    </div>
+                  </a>
+                </span>
+                
+                <span *ngIf="header_component?.format === 'LOCATION'">
+                  <div class="location-preview">
+                    {{ 'Location' | translate }}
+                  </div>
+                </span>
+              </div>
+              
+              <!-- Body -->
+              <div class="body-preview">
+                <span [innerHTML]="body_component?.text | waToMarkdown | marked | formatParamBadges"></span>
+              </div>
+              
+              <!-- // Footer -->
+              <div class="footer-preview">
+                <span [innerHTML]="footer_component?.text | htmlEntitiesEncode | waToMarkdown | marked"></span>
+              </div>
+              
+              <!-- // Call to action preview -->
+              <div *ngIf="buttons_component && (buttons_component.buttons[0].type === 'URL' || buttons_component.buttons[0].type === 'PHONE_NUMBER')"
+                class="call-to-action-preview">
+                
+                <button *ngFor="let btn of buttons_component.buttons"
+                  class="btn whatsapp-call-to-action">
+                  <span *ngIf="btn.type === 'URL'"
+                    class="material-icons-outlined call-to-action-icon">open_in_new</span>
+                  <span *ngIf="btn.type === 'PHONE_NUMBER'"
+                    class="material-icons-round call-to-action-icon">phone</span>
+                  <span [innerHTML]="btn.text | htmlEntitiesEncode | formatParamBadges"></span>
+                </button>
+              </div>
+              
+            </div>
+            
+            <div class="message-cloud-buttons-container"
+              *ngIf="buttons_component && buttons_component.buttons[0].type === 'QUICK_REPLY'">
+              <div class="message-cloud-buttons">
+                <button *ngFor="let btn of buttons_component.buttons" fill="clear"
+                  class="message-cloud-button">
+                  <span class="_2VWlB">{{btn.text}}</span>
+                </button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <!-- ./ preview -->
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'idle'" mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+
+    <button [disabled]="!selected_template || !phoneNumber || !phoneNumber.trim() || !phoneNumberValid || isNamedTemplate" class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPresssed()" cdkFocusInitial>
+        
+          {{'Send' | translate}}
+        
+    </button>
+</div>
+
+<!-- Actions for success/error states -->
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'error'" mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Close" | translate }}
+    </button>
+</div>
+<div *ngIf="wa_is_installed === true && broadcastStatus === 'success'" mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Close" | translate }}
+    </button>
+
+    <button class="mat-dialog-ok-btn" mat-button (click)="goToMessageList()">
+       {{ 'MessagesList' | translate }}
+    </button>
+</div>
+
+<div *ngIf="wa_is_installed === false" mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+
+    <button class="mat-dialog-ok-btn" mat-button
+        (click)="onConfigureWAPresssed()" cdkFocusInitial>
+        
+          {{'OnboardPage.Configure' | translate}}
+        
+    </button>
+</div>

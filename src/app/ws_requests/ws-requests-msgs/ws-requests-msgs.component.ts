@@ -45,8 +45,9 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
-import { CacheService } from 'app/services/cache.service';
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
+import { removeEmojis } from 'app/utils/utils-message';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -372,6 +373,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   CHANNELS_NAME = CHANNELS_NAME;
   HIDE_CHATBOT_ATTRIBUTES: boolean;
 
+  ALLOW_TO_SEND_EMOJI: boolean;
+  showEmojiWarning: boolean = false;
+
+  IS_ENABLED_URLS_WHITELIST: boolean
+  URLS_WITHELIST: string[] = [];
+  warningMessage: string | null = null;
+
   panelOpenState = false;
 
 
@@ -425,7 +433,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService: CacheService
+    private cacheService: AllProjectsCacheService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -1364,7 +1372,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
-    this.cacheService.clearCache()
+    this.cacheService.clearAllProjectsCache()
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -1372,7 +1380,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.settings) {
+      if (this.current_selected_prjct && 
+          this.current_selected_prjct.id_project &&
+          this.current_selected_prjct.id_project.settings) {
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
         if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
 
@@ -1383,9 +1393,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.HIDE_CHATBOT_ATTRIBUTES = false;
           this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
         }
+
+        // Allow to send emoji
+        const allowSendEmoji = this.current_selected_prjct.id_project.settings.allow_send_emoji;
+
+        if (allowSendEmoji !== undefined) {
+          this.ALLOW_TO_SEND_EMOJI = allowSendEmoji;
+          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+        } else {
+          this.ALLOW_TO_SEND_EMOJI = true;
+          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+        }
+
+        // Is Enabled URLs Whitelist
+        const isEnabledURLsWhitelist = this.current_selected_prjct.id_project.settings.allowed_urls;
+        if (isEnabledURLsWhitelist !== undefined) {
+          this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
+          if (this.IS_ENABLED_URLS_WHITELIST) {
+            const urlsWitheList = this.current_selected_prjct.id_project.settings.allowed_urls_list
+            if (urlsWitheList !== undefined) {
+              this.URLS_WITHELIST = urlsWitheList;
+              this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+            }
+            this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
+          }
+        } else {
+          this.IS_ENABLED_URLS_WHITELIST = false;
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
+        }
+
       } else {
         this.HIDE_CHATBOT_ATTRIBUTES = false;
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
+
+        this.ALLOW_TO_SEND_EMOJI = true
+        this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 3', this.ALLOW_TO_SEND_EMOJI)
       }
 
 
@@ -1946,40 +1989,78 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
           }
 
+        //  this.members_array.forEach(member => {
+        //    this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
+        //
+        //    // ----------------------------------------------------------------------------------------------
+        //    // disable notes and tags if the current user has agent role and is not among the participants
+        //    // ----------------------------------------------------------------------------------------------
+        //    
+        //    this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+        //    this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
+        //    
+        //    if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
+        //      this.DISABLE_ADD_NOTE_AND_TAGS = true;
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+        //      this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
+        //    } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
+        //      this.DISABLE_ADD_NOTE_AND_TAGS = false;
+        //      this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+        //      this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
+        //    }
+        //    
+        //    this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member ', member);
+        //    this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member is bot?', member.includes('bot_'));
+        //    
+        //    
+        //    if (member.includes('bot_')) {
+        //      this.bot_participant_id = member.substr(4);
+        //      this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
+        //      
+        //    } else {
+        //      this.bot_participant_id = ''
+        //    }
+        //  });
+
+          // ----------------------------------------------------------------------------------------------
+          // check bot participants
+          // ----------------------------------------------------------------------------------------------
           this.members_array.forEach(member => {
-            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
-
-            // ----------------------------------------------------------------------------------------------
-            // disable notes and tags if the current user has agent role and is not among the participants
-            // ----------------------------------------------------------------------------------------------
-
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
-
-            if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
-              this.DISABLE_ADD_NOTE_AND_TAGS = true;
-              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
-              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
-            } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
-              this.DISABLE_ADD_NOTE_AND_TAGS = false;
-              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
-              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
-            }
-
+            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member);
             this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member ', member);
             this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member is bot?', member.includes('bot_'));
-
 
             if (member.includes('bot_')) {
               this.bot_participant_id = member.substr(4);
               this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
-
             } else {
-              this.bot_participant_id = ''
+              this.bot_participant_id = '';
             }
           });
+
+          // ----------------------------------------------------------------------------------------------
+          // disable notes and tags if the current user has agent role and is not among the participants
+          // ----------------------------------------------------------------------------------------------
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+
+          if (this.CURRENT_USER_ROLE === 'agent') {
+            const isCurrentUserParticipant = this.members_array.includes(this.currentUserID);
+
+            if (isCurrentUserParticipant) {
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANTS AND IS AGENT');
+              this.DISABLE_ADD_NOTE_AND_TAGS = false;
+              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
+            } else {
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANTS AND IS AGENT');
+              this.DISABLE_ADD_NOTE_AND_TAGS = true;
+              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
+            }
+
+            this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+          }
 
           // ---------------------------------------------------------
           // @ Tags
@@ -4152,6 +4233,71 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+ resolveRequest(requestid) {
+    if (this.CHAT_PANEL_MODE) {
+      this.archiveRequestWithConfimationDialog(requestid)
+    } else {
+      this.archiveRequest(requestid)
+    }
+
+  }
+
+
+   archiveRequestWithConfimationDialog(requestid) {
+
+    Swal.fire({
+      title: this.translationMap.get('AreYouSure') + "?",
+      text: this.translate.instant('TheConversationWillBeResolved'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('VisitorsPage.Resolve'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    })
+      .then((result) => {
+        if (result.isDenied) {
+
+          this.wsRequestsService.closeSupportGroup(requestid).subscribe((data: any) => {
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+
+            this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
+
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+            //  NOTIFY ERROR 
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
+          }, () => {
+
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+            //  NOTIFY SUCCESS
+            this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
+
+            let convWokingStatus = ''
+            this.updateRequestWorkingStatus(convWokingStatus)
+          });
+
+        } else {
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
+        }
+      });
+
+  }
+
+
   archiveRequest(requestid) {
     this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
@@ -4877,7 +5023,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((result) => {
                 if (result.isConfirmed) {
-                  this.cacheService.clearCache()
+                  this.cacheService.clearAllProjectsCache()
                   this.findCurrentProjectAmongAll(this.id_project)
                 }
               });
@@ -5558,6 +5704,51 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  onMessageChange(msg: string) {
+    this.logger.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
+    // if (!this.ALLOW_TO_SEND_EMOJI) {
+    //   this.chat_message = removeEmojis(msg);
+    // }
+    this.checkEmojiContent(msg)
+  }
+
+  checkEmojiContent(message: string): void {
+    if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
+      const messageWithoutEmojis = removeEmojis(message).trim();
+      this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+       if ( this.showEmojiWarning === true) { 
+        this.triggerEmojiWarning();
+       }
+      
+    } else {
+      this.showEmojiWarning = false;
+    }
+  }
+
+  extractUrls(text: string): string[] {
+    const urlRegex = /https?:\/\/[^\s]+/g;
+    return text.match(urlRegex) || [];
+  }
+
+
+
+  triggerWarning(message: string) {
+    this.warningMessage = message;
+
+    setTimeout(() => {
+      this.warningMessage = null;
+    }, 3000);
+  }
+
+  triggerEmojiWarning() {
+     this.logger.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning ')
+    this.showEmojiWarning = true;
+    setTimeout(() => {
+      this.showEmojiWarning = false;
+    }, 3000); // 3000 =3 seconds
+     this.logger.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning - showEmojiWarning ', this.showEmojiWarning)
+  }
+
 
   sendChatMessage() {
     // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
@@ -5595,6 +5786,143 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
+        
+      if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
+        this.logger.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
+        this.chat_message = '';
+        return;
+      }
+
+      
+      if (!this.ALLOW_TO_SEND_EMOJI) {
+        if (_chat_message && _chat_message.trim().length > 0) { 
+          const messageWithoutEmojis = removeEmojis(_chat_message).trim();
+
+          // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
+          if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message.trim().length) {
+            this.triggerEmojiWarning();
+            return;
+          }
+
+          _chat_message = messageWithoutEmojis;
+        }
+      }
+
+      
+      // if (this.IS_ENABLED_URLS_WHITELIST) {
+      //     if (_chat_message && _chat_message.trim().length > 0) { 
+      //       const urlsInMessage = this.extractUrls(_chat_message);
+      //       this.logger.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+      //       this.logger.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+
+      //       // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
+      //       let internalWhitelist: string[] = [];
+      //       if (this.type === 'file' && this.metadata?.src) {
+      //         try {
+      //           const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
+      //           internalWhitelist = [fileDomain];
+      //           this.logger.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+      //         } catch (e) {
+      //           this.logger.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
+      //         }
+      //       }
+
+      //       const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+      //         try {
+      //           const domain = new URL(url).hostname.toLowerCase();
+
+      //           // unisci whitelist configurata e interna
+      //           const combinedWhitelist = [...this.URLS_WITHELIST, ...internalWhitelist];
+
+      //           // Check if domain matches any whitelist rule
+      //           const isWhitelisted = combinedWhitelist.some(whitelisted => {
+      //             whitelisted = whitelisted.toLowerCase().trim();
+
+      //             // Match exact domain
+      //             if (whitelisted === domain) return true;
+
+      //             // Match wildcard domain (*.example.com)
+      //             if (whitelisted.startsWith('*.')) {
+      //               const baseDomain = whitelisted.substring(2); // remove '*.'
+      //               return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+      //             }
+
+      //             return false;
+      //           });
+
+      //           return !isWhitelisted;
+      //         } catch (e) {
+      //           // Invalid URL - consider it not allowed
+      //           return true;
+      //         }
+      //       });
+
+      //       if (nonWhitelistedDomains.length > 0) {
+      //         this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+      //         this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+      //         return;
+      //       }
+      //     }
+      //   }
+
+      if (this.IS_ENABLED_URLS_WHITELIST) {
+          if (_chat_message && _chat_message.trim().length > 0) { 
+            const urlsInMessage = this.extractUrls(_chat_message);
+            this.logger.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+            this.logger.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+
+            // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
+            let internalWhitelist: string[] = [];
+            if (this.type === 'file' && this.metadata?.src) {
+              try {
+                const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
+                internalWhitelist = [fileDomain];
+                this.logger.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+              } catch (e) {
+                this.logger.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
+              }
+            }
+
+            const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+              try {
+                const domain = new URL(url).hostname.toLowerCase();
+
+                // unisci whitelist configurata e interna
+                const combinedWhitelist = [...this.URLS_WITHELIST, ...internalWhitelist];
+
+                // Check if domain matches any whitelist rule
+                const isWhitelisted = combinedWhitelist.some(whitelisted => {
+                  whitelisted = whitelisted.toLowerCase().trim();
+
+                  // Match exact domain
+                  if (whitelisted === domain) return true;
+
+                  // Match wildcard domain (*.example.com)
+                  if (whitelisted.startsWith('*.')) {
+                    const baseDomain = whitelisted.substring(2); // remove '*.'
+                    return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+                  }
+
+                  return false;
+                });
+
+                return !isWhitelisted;
+              } catch (e) {
+                // Invalid URL - consider it not allowed
+                return true;
+              }
+            });
+
+            if (nonWhitelistedDomains.length > 0) {
+              this.logger.log('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+              this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+              return;
+            }
+          }
+        }
+
       // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
       // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
       // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
@@ -5618,16 +5946,39 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           let convWokingStatus = ""
           if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'open'
+            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
           } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'pending'
+            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
           } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
             convWokingStatus = ''
+            if (this.CHAT_PANEL_MODE) {
+                this.archiveRequestWithConfimationDialog(this.id_request)
+              } else {
+                this.archiveRequest(this.id_request)
+              }
+
           }
 
-          this.updateRequestWorkingStatus(convWokingStatus)
+          //this.updateRequestWorkingStatus(convWokingStatus)
 
         });
     }
+  }
+
+   updateRequestWorkingStatusAndReopen(convWokingStatus) {
+    this.logger.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
+    this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
+      .subscribe((request) => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
+        this.reopenConversation(this.id_request)
+      })
   }
 
   updateRequestWorkingStatus(convWokingStatus) {
@@ -5692,8 +6043,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (calledby === 'updatedWorkingStatus') {
       let convWokingStatus = ''
       this.updateRequestWorkingStatus(convWokingStatus)
+
+       if (this.CHAT_PANEL_MODE) {
+        this.archiveRequestWithConfimationDialog(this.id_request)
+      } else {
+        this.archiveRequest(this.id_request)
+      }
+
     }
-    this.archiveRequest(this.id_request)
+   // this.archiveRequest(this.id_request)
 
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -5930,30 +6288,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
-      const file = result.file
-      const image = result.imagePreview
+      if (result) {
+        const file = result.file
+        const image = result.imagePreview
 
-      this.uploadedFiles = file
+        this.uploadedFiles = file
 
-      const uploadedFilesSize = this.uploadedFiles.size
+        const uploadedFilesSize = this.uploadedFiles.size
 
-      const formattedBytes = this.formatBytes(uploadedFilesSize)
-      this.uploadedFiles['formattedBytes'] = formattedBytes
-      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
-      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
-      this.type = 'image'
+        const formattedBytes = this.formatBytes(uploadedFilesSize)
+        this.uploadedFiles['formattedBytes'] = formattedBytes
+        this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
+        this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
+        this.type = 'image'
 
-      const uid = image.substring(image.length - 16)
-      this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
+        const uid = image.substring(image.length - 16)
+        this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
 
-      this.metadata = {
-        name: this.uploadedFiles.name,
-        type: this.uploadedFiles.type,
-        uid: uid
-      }
+        this.metadata = {
+          name: this.uploadedFiles.name,
+          type: this.uploadedFiles.type,
+          uid: uid
+        }
 
-      if (this.uploadedFiles) {
-        this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+        if (this.uploadedFiles) {
+          this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+        }
       }
     });
   }
@@ -6099,7 +6459,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.manageImageUploadOnPaste($event.target.files[0])
 
       }
-    } else if ($event.target.files[0].type.startsWith("application/")) {
+    } else if ($event.target.files[0].type.startsWith("application/") || ($event.target.files[0].type === 'text/plain')) {
 
 
       this.uploadedFiles = $event.target.files[0];

@@ -1306,6 +1306,10 @@ export class WsRequestsService implements OnDestroy {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
+    
+    if (Array.isArray(status)) {
+      status = status.join(',');
+    }
 
     if (status === 'all') {
       status = '100,150,200'
@@ -1318,7 +1322,7 @@ export class WsRequestsService implements OnDestroy {
 
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      if (status === '100' || status === '200' || status === '1000' || status === '150' || status === "1000,100,200" || status === "100,150,200" || statuses?.length > 0) {
+      if (status === '100' || status === '200' || status === '1000' || status === '150' || status === "1000,100,200" || status === "100,150,200" || status === "1000,100,200,150" || statuses?.length > 0) {
         _querystring = '&' + querystring
         this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {

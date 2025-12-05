@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -29,6 +31,8 @@ export class AutomationsComponent implements OnInit {
 
   channel: string;
   selected_automation_id: any;
+  selected_template_name: string;
+  selected_automation_created_at: string;
   transactions = [];
   logs = [];
 
@@ -39,12 +43,17 @@ export class AutomationsComponent implements OnInit {
   rejected_count: any;
   failed_count: any;
 
+   browserLang: string;
+   currentLang: string;
+
   constructor(
     private auth: AuthService,
     private logger: LoggerService,
     private automationsService: AutomationsService,
     private router: Router,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public translate: TranslateService,
+     public route: ActivatedRoute,
   ) { 
    
   }
@@ -58,7 +67,46 @@ export class AutomationsComponent implements OnInit {
     this.initializeFilters();
     this.getTransactions();
     this.getCurrentProject();
+    this.setMomentLocale();
+    // this.getQueryParams()
   }
+
+   getQueryParams() {
+    this.route.queryParamMap
+      .subscribe(params => {
+        this.logger.log('[AUTOMATION COMP.]  queryParams', params['params']);
+        
+        if (params['params']['id']) {
+          this.showAutomationsList = false;
+          this.showAutomationDetail = true;
+        } else {
+          this.showAutomationsList =  true;
+          this.showAutomationDetail = false;
+        }
+      })
+    }
+  
+
+
+  setMomentLocale() {
+      this.browserLang = this.translate.getBrowserLang();
+      // this.logger.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
+  
+      let stored_preferred_lang = undefined
+      if (this.auth.user_bs && this.auth.user_bs.value) {
+        stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+      }
+      // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+      let dshbrd_lang = ''
+      if (this.browserLang && !stored_preferred_lang) {
+        dshbrd_lang = this.browserLang
+      } else if (this.browserLang && stored_preferred_lang) {
+        dshbrd_lang = stored_preferred_lang
+      }
+      this.currentLang = dshbrd_lang
+      moment.locale(dshbrd_lang)
+
+    }
 
   initializeFilters() {
     this.filteredChannels = this.myControl.valueChanges.pipe(
@@ -109,7 +157,7 @@ export class AutomationsComponent implements OnInit {
 
   getTransactions() {
     this.automationsService.getTransactions('whatsapp').subscribe((transactions: []) => {
-      this.logger.debug("[AUTOMATION COMP.] Transactions: ", transactions);
+      this.logger.log("[AUTOMATION COMP.] Transactions: ", transactions);
       this.transactions = transactions;
       this.transactions.sort(function compare(a, b) {
         if (a.createdAt > b.createdAt) {
@@ -127,7 +175,10 @@ export class AutomationsComponent implements OnInit {
     })
   }
 
-  onAutomationSelect(automation_id: string) {
+  onAutomationSelect(automation_id: string, createdAt: string, template_name:any) {
+    this.selected_template_name = template_name;
+    this.selected_automation_created_at = createdAt;
+    this.logger.log("[AUTOMATION COMP.] onAutomationSelect createdAt: ", this.selected_automation_created_at, 'template_name ',  this.selected_template_name);
     this.selected_automation_id = automation_id;
     this.showSpinner = true;
     this.getLogs(this.selected_automation_id);
@@ -135,7 +186,7 @@ export class AutomationsComponent implements OnInit {
 
   getLogs(automation_id: string) {
     this.automationsService.getTransactionLogs(automation_id).subscribe((logs: []) => {
-      this.logger.debug("[AUTOMATION COMP.] Logs: ", logs);
+      this.logger.log("[AUTOMATION COMP.] Logs: ", logs);
       this.logs = logs;
       this.showAutomationsList = false;
       this.showAutomationDetail = true;
@@ -170,13 +221,57 @@ export class AutomationsComponent implements OnInit {
     this.showAutomationDetail = false;
   }
 
-  reload(target) {
+  _reload(target) {
     this.showSpinner = true;
     if (target === 'logs') {
       this.getLogs(this.selected_automation_id);
+      this.showAutomationsList = false;
+      this.showAutomationDetail = true;
     }
     if (target === 'automations') {
       this.getTransactions();
+      this.showAutomationsList = true;
+      this.showAutomationDetail = false;
     }
+  }
+
+  reload(target) {
+ 
+  this.showSpinner = true;
+
+  if (target === 'logs') {
+    this.getLogs(this.selected_automation_id);
+
+    // Mantieni i query params attuali (es. id)
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve'
+    });
+
+    this.showAutomationsList = false;
+    this.showAutomationDetail = true;
+  }
+
+  if (target === 'automations') {
+    this.getTransactions();
+
+    // In questo caso puoi rimuovere l'id
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {}
+    });
+
+    this.showAutomationsList = true;
+    this.showAutomationDetail = false;
+  }
+}
+
+
+  goToNewBroadcast() {
+     this.router.navigate(['project/' + this.project._id + '/new-broadcast']);
+  }
+
+  trackByTransactionId(_index: number, automation: any) { 
+    return automation._id; 
   }
 }

@@ -17,7 +17,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { Subscription, zip } from 'rxjs'
 import { DepartmentService } from '../../services/department.service';
 import { Subject } from 'rxjs';
-import { skip, takeUntil, throttleTime } from 'rxjs/operators'
+import { skip, takeUntil, debounceTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -29,7 +29,6 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
-import { debounceTime } from 'rxjs/operators';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -434,7 +433,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[WS-REQUESTS-LIST] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyAvailableWithEnterprisePlan = translation;
       });
 
@@ -976,7 +975,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (this.CURRENT_USER_ROLE === 'owner') {
       if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
 
-        // this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Smartassignment');
+        // this.logger.log('[WS-REQUESTS-LIST] - HAS CLICKED goToProjectSettings_Smartassignment');
         this.router.navigate(['project/' + this.projectId + '/project-settings/smartassignment']);
 
       } else if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === false) {
@@ -1805,9 +1804,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (this.ws_requests) {
   
           this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+          // status 100 unassigned - status 150 abbandoned
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
-              if (r['status'] === 100) {
+              if (r['status'] === 100 || r['status'] === 150) {
 
                 return true
               } else {
@@ -1825,7 +1825,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
           this.wsRequestsServed = this.ws_requests
             .filter(r => {
-              if (r['status'] !== 100) {
+              if (r['status'] === 200) {
 
                 return true
               } else {
@@ -1889,8 +1889,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(30000))
       .pipe(
+        skip(1), // Skip the initial value from BehaviorSubject to avoid duplicate call
+        debounceTime(500), // Wait 500ms after the last message before updating count (prevents too many HTTP calls)
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsConv) => {

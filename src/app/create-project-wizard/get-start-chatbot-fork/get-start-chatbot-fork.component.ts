@@ -17,7 +17,7 @@ import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { CacheService } from 'app/services/cache.service';
+import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -77,7 +77,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     public notify: NotifyService,
     public dialog: MatDialog,
     private translate: TranslateService,
-    private cacheService: CacheService
+    private cacheService: AllProjectsCacheService
   ) {
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
@@ -98,7 +98,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   clearCache() {
-    this.cacheService.clearCache()
+    this.cacheService.clearAllProjectsCache()
   }
 
   getLoggedUser() {

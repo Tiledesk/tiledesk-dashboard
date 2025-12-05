@@ -14,6 +14,7 @@ import { browserRefresh } from 'app/app.component';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { TagsService } from 'app/services/tags.service';
 import { UsersService } from 'app/services/users.service';
+import { parsePhoneNumberFromString, isValidPhoneNumber, AsYouType, CountryCode } from 'libphonenumber-js';
 @Component({
   selector: 'appdashboard-contact-info',
   templateUrl: './contact-info.component.html',
@@ -31,6 +32,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   public EMAIL_IS_VALID: boolean = true
   public contactCompany: string;
   public contactPhone: string;
+  public contactPhoneFormatted: string = ''; // Numero formattato per la visualizzazione
+  public contactPhoneError: string = null; // Messaggio di errore per il numero telefonico
+  public contactPhoneValid: boolean = false; // Indica se il numero è valido
+  private originalContactPhone: string = ''; // Numero originale senza formattazione
 
   contactTags: Array<any>
   contactTempTags: Array<any> = []
@@ -128,7 +133,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   ngOnChanges() {
-    this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
+    // console.log('[CONTACT-INFO] contact_details', this.contact_details)
     if (this.contact_details) {
 
       if (this.contact_details._id) {
@@ -159,12 +164,33 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       }
 
       if (this.contact_details.phone) {
-        this.contactPhone = this.contact_details.phone
-        this.logger.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
+        // Salva il numero originale senza formattazione
+        this.originalContactPhone = this.contact_details.phone.replace(/\s/g, '');
+        // Formatta il numero per la visualizzazione
+        this.formatPhoneNumber(this.originalContactPhone);
+        // console.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
       } else {
-        this.logger.log('[CONTACT-INFO] else contactPhone ', this.contactPhone)
+        // console.log('[CONTACT-INFO] else this.contact_details.phone ', this.contact_details.phone)
         if (this.whatsAppPhoneNumber) {
-          this.contactPhone = this.whatsAppPhoneNumber;
+          // Pulisci il numero rimuovendo spazi
+          let cleanedPhone = this.whatsAppPhoneNumber.replace(/\s/g, '');
+          // Aggiungi il + se manca
+          if (!cleanedPhone.startsWith('+')) {
+            cleanedPhone = '+' + cleanedPhone;
+          }
+          this.originalContactPhone = cleanedPhone;
+          // Formatta il numero per la visualizzazione
+          this.formatPhoneNumber(this.originalContactPhone);
+          // Aggiorna il contatto con il numero ricavato da whatsAppPhoneNumber
+          if (this.contact_details?._id) {
+            this.updateContactPhone(this.contact_details._id, cleanedPhone);
+          }
+        } else {
+          this.contactPhone = '';
+          this.originalContactPhone = '';
+          this.contactPhoneFormatted = '';
+          this.contactPhoneError = null;
+          this.contactPhoneValid = false;
         }
       }
 
@@ -356,25 +382,184 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
   // @ Lead Phone
   // -----------------------------------------------------
-  editContactPhoneOnBlur() {
-    if (this.contactPhone !== undefined && this.contactPhone.length > 0) {
-      this.logger.log('[CONTACT-INFO] editContactEmailOnBlur HERE UPDATES CONTACT PHONE')
-      this.updateContactPhone(this.contact_details._id, this.contactPhone)
+  
+  // Formatta il numero telefonico usando libphonenumber-js
+  formatPhoneNumber(phoneValue: string) {
+    if (!phoneValue || phoneValue.trim() === '') {
+      this.contactPhone = '';
+      this.contactPhoneFormatted = '';
+      this.contactPhoneError = null;
+      this.contactPhoneValid = false;
+      return;
+    }
+
+    // Rimuovi spazi e caratteri non validi (mantieni solo numeri e +)
+    const cleanedPhone = phoneValue.replace(/[^\d+]/g, '');
+
+    // Se il numero è troppo corto, mostra solo il valore pulito
+    if (cleanedPhone.length < 3) {
+      this.contactPhone = cleanedPhone;
+      this.contactPhoneFormatted = cleanedPhone;
+      this.contactPhoneError = null;
+      this.contactPhoneValid = false;
+      return;
+    }
+
+    // Usa AsYouType per formattare il numero mentre l'utente digita
+    try {
+      const formatter = new AsYouType();
+      formatter.input(cleanedPhone);
+      const formattedNumber = formatter.getNumber();
+      
+      if (formattedNumber && formattedNumber.isValid()) {
+        // Numero valido: formatta in formato internazionale
+        this.contactPhoneFormatted = formattedNumber.formatInternational();
+        this.contactPhone = this.contactPhoneFormatted; // Mostra il numero formattato
+        this.contactPhoneError = null;
+        this.contactPhoneValid = true;
+      } else {
+        // Numero non completo ma in formato valido: mostra la formattazione parziale
+        const partialFormat = formatter.getNumber();
+        if (partialFormat) {
+          this.contactPhoneFormatted = partialFormat.formatInternational();
+          this.contactPhone = this.contactPhoneFormatted;
+        } else {
+          this.contactPhone = cleanedPhone;
+          this.contactPhoneFormatted = cleanedPhone;
+        }
+        
+        // Valida il numero completo se ha il prefisso +
+        if (cleanedPhone.startsWith('+') && cleanedPhone.length >= 5) {
+          try {
+            const phoneNumber = parsePhoneNumberFromString(cleanedPhone);
+            if (phoneNumber && phoneNumber.isValid()) {
+              this.contactPhoneError = null;
+              this.contactPhoneValid = true;
+            } else {
+              // Verifica se manca il dial code (numero inizia con + ma non ha un dial code valido)
+              const formatter = new AsYouType();
+              formatter.input(cleanedPhone);
+              let country = formatter.getCountry();
+              
+              // Se AsYouType non rileva il paese, verifica se il numero inizia con un dial code valido
+              // controllando i primi caratteri dopo il +. Se corrisponde a un dial code noto,
+              // consideriamo che il dial code sia presente anche se il numero completo non è valido
+              if (!country && cleanedPhone.length >= 3) {
+                const firstTwoDigits = cleanedPhone.substring(1, 3);
+                const firstDigit = cleanedPhone.substring(1, 2);
+                
+                // Mappa dei dial code comuni per verificare se il numero inizia con un dial code valido
+                const dialCodeToCountry: { [key: string]: string } = {
+                  '39': 'IT', '44': 'GB', '33': 'FR', '49': 'DE', '34': 'ES',
+                  '31': 'NL', '32': 'BE', '41': 'CH', '43': 'AT', '45': 'DK',
+                  '46': 'SE', '48': 'PL', '36': 'HU', '30': 'GR',
+                  '1': 'US', '7': 'RU'
+                };
+                
+                // Prova prima con dial code a 2 cifre (più comune)
+                if (firstTwoDigits && dialCodeToCountry[firstTwoDigits]) {
+                  country = dialCodeToCountry[firstTwoDigits] as CountryCode;
+                }
+                // Se non trovato, prova con dial code a 1 cifra (solo +1 e +7)
+                else if (firstDigit && (firstDigit === '1' || firstDigit === '7') && dialCodeToCountry[firstDigit]) {
+                  country = dialCodeToCountry[firstDigit] as CountryCode;
+                }
+              }
+              
+              if (!country) {
+                // Dial code non rilevato - mostra errore specifico
+                this.contactPhoneError = this.translate.instant('PhoneNumberMissingDialCode');
+              } else {
+                // Dial code valido ma numero non valido - mostra errore generico
+                this.contactPhoneError = this.translate.instant('InvalidPhoneNumberFormat');
+              }
+              this.contactPhoneValid = false;
+            }
+          } catch (e) {
+            // Verifica se manca il dial code
+            const formatter = new AsYouType();
+            formatter.input(cleanedPhone);
+            let country = formatter.getCountry();
+            
+            // Se AsYouType non rileva il paese, prova a parsare il numero per vedere se ha un dial code valido
+            // anche se il numero non è valido (es. troppo lungo)
+            if (!country && cleanedPhone.length >= 3) {
+              try {
+                const phoneNumber = parsePhoneNumberFromString(cleanedPhone);
+                if (phoneNumber && phoneNumber.country) {
+                  country = phoneNumber.country;
+                }
+              } catch (e2) {
+                // Se il parsing fallisce, il dial code non è valido
+              }
+            }
+            
+            if (!country) {
+              // Dial code non rilevato - mostra errore specifico
+              this.contactPhoneError = this.translate.instant('PhoneNumberMissingDialCode');
+            } else {
+              // Dial code valido ma errore nel parsing - mostra errore generico
+              this.contactPhoneError = this.translate.instant('InvalidPhoneNumberFormat');
+            }
+            this.contactPhoneValid = false;
+          }
+        } else if (cleanedPhone.length >= 5 && !cleanedPhone.startsWith('+')) {
+          // Se il numero è abbastanza lungo ma non inizia con +, mostra errore
+          this.contactPhoneError = this.translate.instant('PhoneNumberMustStartWithPlusGeneric');
+          this.contactPhoneValid = false;
+        } else {
+          this.contactPhoneError = null;
+          this.contactPhoneValid = false;
+        }
+      }
+    } catch (error) {
+      // Se la formattazione fallisce, usa il numero originale
+      this.logger.error('[CONTACT-INFO] Error formatting phone number:', error);
+      this.contactPhone = cleanedPhone;
+      this.contactPhoneFormatted = cleanedPhone;
+      this.contactPhoneError = null;
+      this.contactPhoneValid = false;
     }
   }
 
+  // Gestisce il cambiamento del numero mentre l'utente digita
+  onContactPhoneChange(value: string) {
+    this.formatPhoneNumber(value);
+  }
 
+  editContactPhoneOnBlur() {
+    if (this.contactPhone !== undefined && this.contactPhone.length > 0) {
+      this.logger.log('[CONTACT-INFO] editContactPhoneOnBlur contactPhone ', this.contactPhone)
+      // Salva il numero senza formattazione (senza spazi)
+      const phoneNumberToSave = this.contactPhone.replace(/\s/g, '');
+      this.updateContactPhone(this.contact_details._id, phoneNumberToSave)
+    }
+  }
+  
   removePhoneAnUpdateContact() {
     this.contactPhone = ""
-    this.updateContactPhone(this.contact_details._id, this.contactPhone)
+    this.originalContactPhone = ""
+    this.contactPhoneFormatted = ""
+    this.contactPhoneError = null
+    this.contactPhoneValid = false
+    this.updateContactPhone(this.contact_details._id, "")
   }
 
   updateContactPhone(contactid, contactphone) {
+    // Salva sempre senza formattazione (senza spazi)
+    const phoneNumberToSave = contactphone ? contactphone.replace(/\s/g, '') : '';
+    
     this.contactsService.updateLeadPhone(
       contactid,
-      contactphone
+      phoneNumberToSave
     ).subscribe((contact) => {
       this.logger.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
+      // Aggiorna il numero originale dopo il salvataggio
+      this.originalContactPhone = phoneNumberToSave;
+      // Formatta di nuovo per la visualizzazione
+      if (phoneNumberToSave) {
+        this.formatPhoneNumber(phoneNumberToSave);
+      }
 
     }, (error) => {
 

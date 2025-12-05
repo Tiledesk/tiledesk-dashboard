@@ -432,15 +432,32 @@
                             </span>
                           </span>
                         </div>
-                        <!-- height:46px -->
-                        <!-- style="  margin-bottom: 8px;" -->
-                        <!-- (keydown.enter)="onKeydownEnter($event)" -->
-                        <!-- (ngModelChange)="onChangeTextInSendMsg($event)" -->
-                        <!-- (paste)="onPasteInSendMsg($event)" -->
+
+
+                        <div class="warning-message-cointainer" style="position: relative;"> 
+                          <!-- For emojis -->
+                          <!-- showEmojiWarning {{showEmojiWarning}} -->
+                          <div class="emoji-warning-container">
+                            <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
+                              {{'EmojisNotAllowed' | translate}}
+                            </div>
+                          </div>
+
+                          <!-- For not allowed URLs -->
+                          <div class="warning-container">
+                            <div class="warning-message" [class.visible]="warningMessage">
+                              {{ warningMessage }}
+                            </div>
+                          </div>
+                        </div>
+
                         <div class="col-xs-12 h-100 plr-0" 
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
-                            placeholder="Write your message" (input)="resizeTextArea()"
+                          <textarea #sendMessageTexarea class="send-message-texarea" 
+                            [(ngModel)]="chat_message"
+                            placeholder="Write your message" 
+                            (input)="resizeTextArea()"
+                            (ngModelChange)="onMessageChange($event)"
                             (paste)="onPasteInSendMsg($event)">  </textarea>
 
 
@@ -501,7 +518,9 @@
 
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow dropdown-toggle send-msg-dropdown-toggle" data-toggle="dropdown"
-                              (click)="isOpenDropdown(isOpen = !isOpen)">
+                              (click)="isOpenDropdown(isOpen = !isOpen)"
+                              [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)"
+                              [ngClass]="{'send-msg-dropdown-toggle-disabled': (!chat_message || chat_message?.length === 0) && (existAnAttacment === false)}" >
                               <span class="caret"
                                 [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
                               <span class="sr-only">Toggle Dropdown</span>
@@ -555,7 +574,12 @@
                             style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
+                            <button class="btn  pull-left upload-btn" (click)="fileUpload.click()"
+                              matTooltipClass="custom-mat-tooltip"
+                              [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100">
                               <span class="material-icons">
                                 attach_file
                               </span>
@@ -894,7 +918,7 @@
                             [ngClass]="{
                           'contact-location-chat-one-agent': CHAT_PANEL_MODE === true && agents_array?.length === 1, 
                           'contact-location-chat-two-agent': CHAT_PANEL_MODE === true && agents_array?.length === 2,
-                          'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length === 3}">
+                          'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length >= 3}">
                             <!-- (click)="openMapRightSideBar()" -->
                             <span *ngIf="locationCity || locationCountry" class="material-icons contact-location-pin-icon"
                               (click)="viewInGooleMaps()">
@@ -1021,10 +1045,10 @@
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                                   alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
                                   onerror="this.src='assets/img/no_image_user.png'" [satPopoverAnchor]="agentfbimg"
-                                  (click)="agentfbimg.toggle()" (click)="$event.stopPropagation()"
+                                  (click)="!CHAT_PANEL_MODE && agentfbimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentfbimg.close()" matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} {{'ClickToDisplayActions' | translate}}"
-                                  #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE" />
                                 <sat-popover #agentfbimg horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
@@ -1049,10 +1073,10 @@
                                 <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   class="served-by-avatar--img" [satPopoverAnchor]="agentntimg"
-                                  (click)="agentntimg.toggle()" (click)="$event.stopPropagation()"
+                                  (click)="!CHAT_PANEL_MODE && agentntimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentntimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  matTooltipPosition='left' matTooltipHideDelay="100"  [matTooltipDisabled]="CHAT_PANEL_MODE"/>
 
                                 <sat-popover #agentntimg horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1079,10 +1103,10 @@
                                 <div *ngIf="agent.isBot === false && !agent.hasImage" class="served-by-avatar--no-img"
                                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
                                   style="cursor:pointer" [satPopoverAnchor]="agentnoimg"
-                                  (click)="$event.stopPropagation()" (click)="agentnoimg.toggle()"
+                                  (click)="$event.stopPropagation()" (click)="!CHAT_PANEL_MODE && agentnoimg.toggle()"
                                   (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}}
                                    {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100">
+                                  matTooltipPosition='left' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
                                   {{ agent?.userFullname }}
                                 </div>
 
@@ -1111,11 +1135,11 @@
                                   class="served-by-avatar--img"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                                  [satPopoverAnchor]="botfbengine" (click)="botfbengine.toggle()"
+                                  [satPopoverAnchor]="botfbengine" (click)="!CHAT_PANEL_MODE && botfbengine.toggle()"
                                   (click)="$event.stopPropagation()" (document:click)="botfbengine.close()"
                                   matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  matTooltipPosition='left' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE"/>
 
                                 <sat-popover #botfbengine horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1181,7 +1205,7 @@
                                           <span style="margin-left: 8px; font-size: 12px; font-weight: 400;">
                                             {{agent?.firstname}} {{agent?.lastname}}
                                           </span>
-                                          <div class="dropdown-btn-wpr">
+                                          <div *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
                                               (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
@@ -1204,7 +1228,7 @@
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
                                             {{agent?.firstname}} {{agent?.lastname}}
                                           </span>
-                                          <div class="dropdown-btn-wpr">
+                                          <div *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
                                               (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
@@ -1232,7 +1256,7 @@
                                               {{agent?.firstname}} {{agent?.lastname}}
                                             </span>
                                           </div>
-                                          <div class="dropdown-btn-wpr">
+                                          <div *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
                                               (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
@@ -1255,7 +1279,7 @@
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
                                             {{agent?.firstname}} {{agent?.lastname}} (bot)
                                           </span>
-                                          <div class="dropdown-btn-wpr">
+                                          <div *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
                                               (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
@@ -1276,7 +1300,7 @@
                                             *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
                                             {{agent?.firstname}} {{agent?.lastname}} (bot)
                                           </span>
-                                          <div class="dropdown-btn-wpr">
+                                          <div *ngIf="!CHAT_PANEL_MODE" class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
                                               (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
@@ -1399,7 +1423,7 @@
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
-                            <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                            <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                               <i class="material-icons" style="vertical-align: middle; ">archive</i>
@@ -1412,7 +1436,7 @@
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
-                            <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                            <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                               <i class="material-icons" style="vertical-align: middle;">archive</i>

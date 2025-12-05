@@ -8,6 +8,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal/contacts-wa-broadcast-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   { path: "", component: ContactsComponent},
@@ -15,7 +19,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ContactsComponent
+    ContactsComponent,
+    ContactsWaBroadcastModalComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -27,6 +32,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     MomentModule,
     MatTooltipModule,
+    MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   exports: [
     RouterModule

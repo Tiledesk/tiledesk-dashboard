@@ -18,7 +18,9 @@ import { URL_canned_responses_doc } from 'app/utils/util';
 export class CannedResponsesListComponent implements OnInit {
 
   public canned_responses_docs_url = URL_canned_responses_doc
-  displayModal_AddEditResponse = 'none'
+  displayModal_AddEditResponse = 'none';
+  displayModalDeleteResponse = 'none';
+  cannedResponseIdToDelete: string;
   // displayEditResponseModal = 'none'
   responsesList: Array<any>;
   modalMode: string;
@@ -33,6 +35,9 @@ export class CannedResponsesListComponent implements OnInit {
   baseUrl: string;
   isChromeVerGreaterThan100: boolean
   public hideHelpLink: boolean;
+
+  currentUserId: string;
+
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -57,13 +62,24 @@ export class CannedResponsesListComponent implements OnInit {
     // this.getMainPanelAndSetOverflow();
     this.listenSidebarIsOpened();
     this.getImageStorage();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.getCurrentUser()
+  }
+
+   getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[CANNED-RES-LIST] - LoggedUser ', user);
+
+      if (user && user._id) {
+        this.currentUserId = user._id;
+      }
+    });
   }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -132,14 +148,14 @@ export class CannedResponsesListComponent implements OnInit {
   getResponses() {
     // this.contactsService.getLeads(this.queryString, this.pageNo).subscribe((leads_object: any) => {
     this.cannedResponsesService.getCannedResponses().subscribe((responses: any) => {
-      // console.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
+      // this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - RES ', responses);
       if (responses) {
         this.responsesList = responses;
 
         this.responsesList.forEach(cannedresponse => {
           const user = this.usersLocalDbService.getMemberFromStorage(cannedresponse.createdBy);
-          // console.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response user from local', user);
-          // console.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response ', cannedresponse);
+          // this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response user from local', user);
+          // this.logger.log('[CANNED-RES-LIST] - GET CANNED RESP - canned response ', cannedresponse);
           if (user !== null) {
             cannedresponse.createdBy_user = user;
           } else {
@@ -174,18 +190,35 @@ export class CannedResponsesListComponent implements OnInit {
       });
   }
 
-  deleteCannedResponse(cannedresponseid) {
-    this.cannedResponsesService.deleteCannedResponse(cannedresponseid).subscribe((responses: any) => {
+
+  openConfirmDialogDeleteResponse(cannedresponseid) {
+    this.displayModalDeleteResponse = 'block'
+    this.cannedResponseIdToDelete = cannedresponseid;
+  }
+
+  closeModalDeleteResponse() {
+     this.displayModalDeleteResponse = 'none'
+  }
+
+  deleteCannedResponse() {
+    this.cannedResponsesService.deleteCannedResponse(this.cannedResponseIdToDelete).subscribe((responses: any) => {
       this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP - RES ', responses);
 
     }, (error) => {
       this.logger.error('[CANNED-RES-LIST] - DELETE CANNED RESP - ERROR  ', error);
-
+      this.displayModalDeleteResponse = 'none'
       this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
     }, () => {
       this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
-      this.getResponses()
+      // this.getResponses()
+      this.displayModalDeleteResponse = 'none'
+      for (var i = 0; i < this.responsesList.length; i++) {
+        if (this.responsesList[i]._id === this.cannedResponseIdToDelete) {
+          this.responsesList.splice(i, 1);
+          i--;
+        }
+      }
 
     });
   }
@@ -198,7 +231,10 @@ export class CannedResponsesListComponent implements OnInit {
     this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
   }
 
-  presentResponseModal_inEditMode(cannedresponseid: string) {
+  presentResponseModal_inEditMode(cannedresponseid: string, createdby) {
+    if (createdby !== this.currentUserId) {
+      return
+    }
     this.getScrollPos();
     this.selectCannedResponseId = cannedresponseid;
     this.displayModal_AddEditResponse = 'block';

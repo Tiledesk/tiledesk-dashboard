@@ -406,7 +406,8 @@ import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
 import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
-
+import { HttpStatsService } from './services/http-stats.service';
+import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
 
 
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
@@ -725,6 +726,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpSelectTemplatesOrKbComponent,
     LogoutModalComponent,
     UnauthorizedToUpgradeComponent,
+    HttpStatsDashboardComponent,
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
@@ -855,6 +857,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SleekplanSsoService,
     SleekplanService,
     SleekplanApiService,
+    HttpStatsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

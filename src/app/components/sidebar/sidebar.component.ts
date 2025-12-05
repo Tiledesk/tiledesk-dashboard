@@ -207,6 +207,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
+  AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE: boolean;
+  NEW_BROADCAST_ROUTE_IS_ACTIVE: boolean;
+  AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
   BOTS_DEMO_ROUTE_IS_ACTIVE: boolean;
@@ -245,6 +248,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   isVisibleMON: boolean;
   isVisibleCNT: boolean;
   isVisibleINT: boolean;
+  isVisibleAUT: boolean;
   storageBucket: string;
   baseUrl: string;
   default_dept_id: string;
@@ -356,7 +360,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // const pathElement = this.svgPath.nativeElement;
-    // console.log('[SIDEBAR] pathElement ', pathElement)
+    // this.logger.log('[SIDEBAR] pathElement ', pathElement)
     // this.renderer.setStyle(this.element.nativeElement, '--brandColor', this.company_brand_color);
     if (this.company_brand_color) {
       // this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
@@ -366,9 +370,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // ngAfterContentInit(): void { 
   //   if (this.company_brand_color) { 
-  //     console.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
+  //     this.logger.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
   //      const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
-  //      console.log('[SIDEBAR] pathElement ', pathElement)
+  //      this.logger.log('[SIDEBAR] pathElement ', pathElement)
 
   //      this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
   //     this.renderer.setStyle(document.body, '--sidebar-active-icon', this.company_brand_color);
@@ -886,6 +890,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
       }
 
+      if (key.includes('AUT')) {
+        let aut = key.split(':')
+        if (aut[1] === 'F') {
+          this.isVisibleAUT = false;
+        } else {
+          this.isVisibleAUT = true;
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("INT")) {
@@ -912,6 +925,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     if (!this.public_Key.includes("CNT")) {
       this.isVisibleCNT = false;
+    }
+
+    if (!this.public_Key.includes('AUT')) {
+      this.isVisibleAUT = false
     }
   }
 
@@ -1388,6 +1405,31 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
+         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'automations-demo') {
+          this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+
+        if (event.url.indexOf('/automations?id') !== -1) {
+          this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE);
+        } else {
+          this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE);
+        }
+
+
+        if (event.url.indexOf('/new-broadcast') !== -1) {
+          this.NEW_BROADCAST_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - NEW_BROADCAST_ROUTE_IS_ACTIVE ', this.NEW_BROADCAST_ROUTE_IS_ACTIVE);
+        } else {
+          this.NEW_BROADCAST_ROUTE_IS_ACTIVE = false;
+         this.logger.log('[SIDEBAR] NavigationEnd - NEW_BROADCAST_ROUTE_IS_ACTIVE ', this.NEW_BROADCAST_ROUTE_IS_ACTIVE);
+        }
 
 
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
@@ -1695,7 +1737,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.getFaqKbByProjectId()
         // if(this.isVisibleKNB) {
         // const areEnabledKbn = this.getKnbValue()
-        // console.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
+        // this.logger.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
         // if (areEnabledKbn) {
         //   this.getKnowledgeBaseSettings()
         // }
@@ -1962,6 +2004,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/project/' + this.projectId + '/home']);
   }
 
+  goToAutomations() {
+    this.router.navigate(['/project/' + this.projectId + '/automations']);
+  }
+
   onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string }) {
     this.logger.log('[SIDEBAR] onMenuOptionFN', item)
     switch (item.key) {
@@ -2016,9 +2062,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       const navigationEnd = performance.now();
       const navigationDurationMs = navigationEnd - clickTime;
       const navigationDurationSec = navigationDurationMs / 1000;
-      // console.log(`[SIDEBAR] KB Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
+      // this.logger.log(`[SIDEBAR] KB Navigation complete in ${durationMs.toFixed(2)} ms (${durationSec.toFixed(2)} seconds)`);
       this.logger.log(`[SIDEBAR] Navigation complete (${navigationDurationSec.toFixed(2)} seconds) (indicate the time: to change route, to load the Knowledge Base Component, to execute the component constructor)`);
-      // console.log(`[SIDEBAR] (${durationSec.toFixed(2)} seconds) Does NOT include the component's ngOnInit time, data loading time, DOM rendering time`);
+      // this.logger.log(`[SIDEBAR] (${durationSec.toFixed(2)} seconds) Does NOT include the component's ngOnInit time, data loading time, DOM rendering time`);
     });
   }
 
