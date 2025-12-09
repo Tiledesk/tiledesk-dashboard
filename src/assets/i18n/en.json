@@ -2206,6 +2206,8 @@
         "GetContentsSourcesDesc1": "Use this option to get accurate sources of documents used to generate the reply.",
         "GetContentsSourcesDesc2": "Keep in mind that this consumes more tokens then regular KB retrieving.",
         "GetContentsSourcesDesc3": "Max-tokens quota will be automatically adjusted to get the citations if needed.",
+        "ChunksOnly": "Chunks only",
+        "ReRanking": "Re-ranking",
         "Hybrid": "Hybrid",
         "HybridSearch": "Hybrid Search",
         "FullText":"Full text",

@@ -2206,6 +2206,8 @@
         "GetContentsSourcesDesc1":"Utilisez cette option pour obtenir des sources précises des documents utilisés pour générer la réponse.",
         "GetContentsSourcesDesc2":"Gardez à l’esprit que cela consomme plus de jetons que la récupération normale de Ko.",
         "GetContentsSourcesDesc3":"Le quota de jetons maximum sera automatiquement ajusté pour obtenir les citations si nécessaire.",
+        "ChunksOnly": "Chunks uniquement",
+        "ReRanking": "Réordonnancement",
         "Hybrid": "Hybride",
         "HybridSearch": "Recherche hybride",
         "FullText":"Texte intégral",

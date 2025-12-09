@@ -27,6 +27,15 @@
     vertical-align: middle;
 }
 
+.disabled-label {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    .setting-label {
+        color: #999;
+    }
+}
+
 .row-container {
     margin-top: 25px
 }
