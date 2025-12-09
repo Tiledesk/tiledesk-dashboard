@@ -2179,6 +2179,8 @@
         "GetContentsSourcesDesc1":"Utilize esta opção para obter fontes precisas de documentos utilizados para gerar a resposta.",
         "GetContentsSourcesDesc2":"Tenha em mente que isto consome mais tokens do que a recuperação regular de KB.",
         "GetContentsSourcesDesc3":"A quota máxima de tokens será ajustada automaticamente para obter as citações, se necessário.",
+        "ChunksOnly": "Apenas chunks",
+        "ReRanking": "Reordenação",
         "Hybrid": "Híbrida",
         "HybridSearch": "Busca Híbrida",
         "FullText":"Texto completo",
