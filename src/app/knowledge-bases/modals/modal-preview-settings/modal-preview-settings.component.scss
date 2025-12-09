@@ -205,6 +205,8 @@
 
 
 ::ng-deep .cb-details-popover {
+    // position: fixed !important;          /* ⬅️ Aggiunto */
+    // z-index: 9999 !important;            /* ⬅️ Aggiunto */
     background-color: #2d323e !important;
     font-size: 12px !important;
     border-radius: 4px !important;

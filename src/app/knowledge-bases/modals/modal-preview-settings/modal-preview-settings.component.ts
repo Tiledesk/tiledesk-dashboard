@@ -768,6 +768,43 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   }
 
+  onCheckboxClick(event: MouseEvent) {
+    // Prevenire la propagazione per evitare che il click arrivi al label
+    event.stopPropagation();
+    
+    // Salvare le posizioni di scroll sia del dialog content che della window
+    const dialogContent = document.querySelector('.mat-dialog-content') as HTMLElement;
+    const windowScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const dialogScrollTop = dialogContent?.scrollTop || 0;
+    
+    this.logger.log('[MODAL PREVIEW SETTINGS] onCheckboxClick windowScrollY:', windowScrollY, 'dialogScrollTop:', dialogScrollTop);
+    
+    // Usare doppio requestAnimationFrame per assicurarsi che lo scroll sia completato
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Ripristinare lo scroll della window
+        if (windowScrollY !== 0) {
+          window.scrollTo(0, windowScrollY);
+        }
+        
+        // Ripristinare lo scroll del dialog content se esiste
+        if (dialogContent) {
+          dialogContent.scrollTop = dialogScrollTop;
+        }
+      });
+    });
+    
+    // Anche setTimeout come fallback
+    setTimeout(() => {
+      if (windowScrollY !== 0) {
+        window.scrollTo(0, windowScrollY);
+      }
+      if (dialogContent) {
+        dialogContent.scrollTop = dialogScrollTop;
+      }
+    }, 10);
+  }
+
   changeReranking(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking event ", event.target.checked)
     this.reRanking = event.target.checked
@@ -1126,6 +1163,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   contentsSourcesIsOpened() {
     this.logger.log('[MODAL PREVIEW SETTINGS] contentsSourcesIsOpened')
     this.logger.log("[MODAL PREVIEW SETTINGS] contentsSources sat popover", this.contentsSources)
+  }
+  chunkOnlyIsOpened() {
+    this.logger.log('[MODAL PREVIEW SETTINGS] chunkOnlyIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly sat popover", this.chunkonly)
   }
 
   goToAIModelDoc() {

@@ -23,7 +23,7 @@
 </div>
 
 <!-- (mousemove)="onMouseMove($event)" (mouseenter)="onMouseEnter($event)"-->
-<div mat-dialog-content (click)="handleClickInside($event)" >
+<div mat-dialog-content (click)="handleClickInside($event)" style="overscroll-behavior: contain;">
     <!-- ----------------------------------------------- -->
     <!-- AI Model -->
     <!-- ----------------------------------------------- -->
@@ -472,7 +472,7 @@
             [satPopoverAnchor]="chunkonly"
             (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close()"
             (click)="chunkonly.close()">
-                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)" (click)="$event.stopPropagation()">
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)" (click)="onCheckboxClick($event)"  >
                 <span class="setting-label">
                     {{'KbPage.ChunksOnly' | translate}}
                 </span> 
@@ -489,11 +489,11 @@
             #chunkonly 
             horizontalAlign="before"
             verticalAlign="center"
-            panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+            panelClass="cb-details-popover" (opened)="chunkOnlyIsOpened()" closeTransition="1ms ease-in">
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-arrow"></div>
                 <div class="sat-popover-content">
-                    Bypasses the AI synthesis. When enabled, the system will return only the raw text passages (chunks) retrieved from your contents, without generating an answer. Ideal for verifying source accuracy or debugging.
+                    {{'KbPage.ChunksOnlyDesc' | translate}}
                 </div>
             </div>
         </sat-popover>
@@ -506,7 +506,7 @@
              [satPopoverAnchor]="rerank"
              (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open()"
              (click)="rerank.close()">
-                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)" (click)="$event.stopPropagation()">
+                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)" (click)="onCheckboxClick($event)">
                 <span class="setting-label">
                      {{'KbPage.ReRanking' | translate}}
                 </span> 
@@ -527,7 +527,7 @@
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-arrow"></div>
                 <div class="sat-popover-content">
-                    Applies a second, more intelligent scoring to the initially retrieved results. This reorders them to push the most contextually relevant chunks to the top, improving answer quality.
+                    {{'KbPage.ReRankingDesc' | translate}}
                 </div>
             </div>
         </sat-popover>
