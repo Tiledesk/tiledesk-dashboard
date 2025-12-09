@@ -331,24 +331,24 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
         if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === true) {
           this.chunkOnly = editedAiSettings[0]['chunkOnly']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
         } else if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === false) {
           this.chunkOnly = editedAiSettings[0]['chunkOnly']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 2', this.chunkOnly)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 2', this.chunkOnly)
         } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
           this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
         }
 
         if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
           this.reRanking = editedAiSettings[0]['reRanking']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
         } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
           this.reRanking = editedAiSettings[0]['reRanking']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
         } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
           this.reRanking = this.selectedNamespace.preview_settings.reranking
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -418,7 +418,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   askAI(body, startTime) {
     this.openaiService.askGpt(body).subscribe((response: any) => {
-      console.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", body)
+      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", body)
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       response['ai_model'] = this.selectedModel
       this.prompt_token_size = response.prompt_token_size;
@@ -429,16 +429,16 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
      
-      console.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
-      console.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
-      console.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
+      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
+      this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
+      this.logger.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
       if (this.qa?.content_chunks) {
         this.contentChunks = this.qa?.content_chunks 
       } else if (this.qa?.chunks)  {
         this.contentChunks = this.qa?.chunks
       }
      
-      console.log("ask gpt preview contentChunks: ", this.contentChunks);
+      this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
         this.answer = response.answer;

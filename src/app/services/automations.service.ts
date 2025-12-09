@@ -155,7 +155,7 @@ export class AutomationsService {
     }
 
     const url = this.SERVER_BASE_PATH   + this.project_id + '/logs/whatsapp/user/' + phoneNum;
-    console.debug('[AUTOMATIONS.SERVICE] - get WA Messages url ' + url);
+    this.logger.debug('[AUTOMATIONS.SERVICE] - get WA Messages url ' + url);
 
     return this.httpClient.get(url, httpOptions);
   }

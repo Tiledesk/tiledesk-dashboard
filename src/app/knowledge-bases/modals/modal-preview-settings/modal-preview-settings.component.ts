@@ -26,7 +26,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   @ViewChild('chunkonly') chunkonly: SatPopover;
   @ViewChild('rerank') rerank: SatPopover;
   
-
+  private savedScrollData: { scrollTop: number, selector: string, activeElementId?: string } | null = null;
 
 
 
@@ -134,7 +134,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         this.diplaySearchTypeSlider = false;
       }
 
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
 
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
@@ -745,6 +745,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   changeChunkOnly(event) {
+    this.saveDialogScrollPosition();
     this.logger.log("[MODAL PREVIEW SETTINGS] changeChunkOnly event ", event.target.checked)
     this.chunkOnly = event.target.checked
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -765,47 +766,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.countOfOverrides = this.countOfOverrides - 1;
       this.hasAlreadyOverrideChunckOnly = false
     }
-
+     this.restoreDialogScrollPosition();
   }
+ 
 
-  onCheckboxClick(event: MouseEvent) {
-    // Prevenire la propagazione per evitare che il click arrivi al label
-    event.stopPropagation();
-    
-    // Salvare le posizioni di scroll sia del dialog content che della window
-    const dialogContent = document.querySelector('.mat-dialog-content') as HTMLElement;
-    const windowScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    const dialogScrollTop = dialogContent?.scrollTop || 0;
-    
-    this.logger.log('[MODAL PREVIEW SETTINGS] onCheckboxClick windowScrollY:', windowScrollY, 'dialogScrollTop:', dialogScrollTop);
-    
-    // Usare doppio requestAnimationFrame per assicurarsi che lo scroll sia completato
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // Ripristinare lo scroll della window
-        if (windowScrollY !== 0) {
-          window.scrollTo(0, windowScrollY);
-        }
-        
-        // Ripristinare lo scroll del dialog content se esiste
-        if (dialogContent) {
-          dialogContent.scrollTop = dialogScrollTop;
-        }
-      });
-    });
-    
-    // Anche setTimeout come fallback
-    setTimeout(() => {
-      if (windowScrollY !== 0) {
-        window.scrollTo(0, windowScrollY);
-      }
-      if (dialogContent) {
-        dialogContent.scrollTop = dialogScrollTop;
-      }
-    }, 10);
-  }
 
   changeReranking(event) {
+    this.saveDialogScrollPosition();
     this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking event ", event.target.checked)
     this.reRanking = event.target.checked
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -826,7 +793,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.countOfOverrides = this.countOfOverrides - 1;
       this.hasAlreadyOverrideReRanking = false
     }
-
+    this.restoreDialogScrollPosition();
   }
 
   changeAdvancePrompt(event) {
@@ -898,9 +865,100 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.logger.log('here y hasAlreadyOverrideCitations', this.hasAlreadyOverrideCitations)
       this.countOfOverrides = this.countOfOverrides - 1;
     }
+  }
 
+  /**
+ * Salva la posizione corrente dello scroll del dialog
+ */
+private saveDialogScrollPosition(): void {
+    // Prova vari selettori comuni per dialog di Angular Material
+    const dialogSelectors = [
+        '.mat-dialog-container',
+        '.cdk-global-overlay-wrapper',
+        '.mat-dialog-content',
+        '.cdk-overlay-pane'
+    ];
+    
+    for (const selector of dialogSelectors) {
+        const element = document.querySelector(selector) as HTMLElement;
+        if (element) {
+            // Salva sia scrollTop che l'elemento attivo
+            this.savedScrollData = {
+                scrollTop: element.scrollTop,
+                selector: selector,
+                activeElementId: document.activeElement?.id
+            };
+            this.logger.log('[DIALOG SCROLL] Saved position:', this.savedScrollData);
+            break;
+        }
+    }
+}
 
+/**
+ * Ripristina la posizione dello scroll del dialog
+ */
+private restoreDialogScrollPosition(): void {
+    if (!this.savedScrollData) return;
+    
+    // Usa setTimeout per assicurarti dopo il change detection
+    setTimeout(() => {
+        const element = document.querySelector(this.savedScrollData.selector) as HTMLElement;
+        if (element) {
+            // Ripristina lo scroll
+            element.scrollTop = this.savedScrollData.scrollTop;
+            
+            // Ripristina il focus se necessario
+            if (this.savedScrollData.activeElementId) {
+                const activeElement = document.getElementById(this.savedScrollData.activeElementId);
+                if (activeElement) {
+                    activeElement.focus({ preventScroll: true });
+                }
+            }
+            
+            this.logger.log('[DIALOG SCROLL] Restored position:', this.savedScrollData.scrollTop);
+        }
+        
+        // Pulisci i dati salvati
+        this.savedScrollData = null;
+    }, 10); // 10ms è sufficiente
+}
 
+  // !! Not used
+ onCheckboxClick(event: MouseEvent) {
+    // Prevenire la propagazione per evitare che il click arrivi al label
+    event.stopPropagation();
+    
+    // Salvare le posizioni di scroll sia del dialog content che della window
+    const dialogContent = document.querySelector('.mat-dialog-content') as HTMLElement;
+    const windowScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const dialogScrollTop = dialogContent?.scrollTop || 0;
+    
+    this.logger.log('[MODAL PREVIEW SETTINGS] onCheckboxClick windowScrollY:', windowScrollY, 'dialogScrollTop:', dialogScrollTop);
+    
+    // Usare doppio requestAnimationFrame per assicurarsi che lo scroll sia completato
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Ripristinare lo scroll della window
+        if (windowScrollY !== 0) {
+          window.scrollTo(0, windowScrollY);
+        }
+        
+        // Ripristinare lo scroll del dialog content se esiste
+        if (dialogContent) {
+          dialogContent.scrollTop = dialogScrollTop;
+        }
+      });
+    });
+    
+    // Anche setTimeout come fallback
+    setTimeout(() => {
+      if (windowScrollY !== 0) {
+        window.scrollTo(0, windowScrollY);
+      }
+      if (dialogContent) {
+        dialogContent.scrollTop = dialogScrollTop;
+      }
+    }, 10);
   }
 
   onSavePreviewSettings() {

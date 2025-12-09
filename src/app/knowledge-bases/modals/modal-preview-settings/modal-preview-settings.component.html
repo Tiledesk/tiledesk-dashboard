@@ -471,8 +471,9 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="chunkonly"
             (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close()"
-            (click)="chunkonly.close()">
-                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)" (click)="onCheckboxClick($event)"  >
+            (click)="chunkonly.close(); onCheckboxClick($event)">
+                <!-- (click)="onCheckboxClick($event)" -->
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)" >
                 <span class="setting-label">
                     {{'KbPage.ChunksOnly' | translate}}
                 </span> 
@@ -505,8 +506,9 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
              [satPopoverAnchor]="rerank"
              (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open()"
-             (click)="rerank.close()">
-                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)" (click)="onCheckboxClick($event)">
+             (click)="rerank.close(); onCheckboxClick($event)">
+                <!-- (click)="onCheckboxClick($event)" -->
+                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
                 <span class="setting-label">
                      {{'KbPage.ReRanking' | translate}}
                 </span> 
