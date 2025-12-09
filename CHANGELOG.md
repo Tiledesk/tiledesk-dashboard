@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.158-stage 
+- Adds the ability to see who left an "abandoned chat" in the non-real-time conversations page and in the history page
+- Adds "Chunks only" and "Re-ranking" options to AI Settings, enabling raw source output and intelligent result prioritization
+
 ### 2.7.157-stage 
 - Manages abandoned chats on the monitor page
 
