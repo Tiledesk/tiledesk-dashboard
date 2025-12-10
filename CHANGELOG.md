@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.143
+- Adds "Chunks only" and "Re-ranking" options to AI Settings, enabling raw source output and intelligent result prioritization
+- Adds the preview of the sent template to the Sent Messages list
+- Adds the ability to create a new contact from the contact list
+
 ### 2.7.142
 - Adds the ability to see who left an "abandoned chat" in the non-real-time conversations page and in the history page
 
