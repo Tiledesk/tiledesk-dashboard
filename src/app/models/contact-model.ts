@@ -10,5 +10,5 @@ export interface Contact {
     avatar_fill_colour?: string;
     name_initial?: string;
     tags?: any;
-    __v: any;
+    __v?: any;
 }

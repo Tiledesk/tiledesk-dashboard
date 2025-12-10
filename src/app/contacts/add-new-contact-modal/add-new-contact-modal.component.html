@@ -1,0 +1,45 @@
+<h1 mat-dialog-title> 
+    {{ 'AddContact' | translate }}
+</h1>
+<div mat-dialog-content>
+    <!-- Messaggio di successo -->
+    <div *ngIf="contactCreated" style="text-align: center; padding: 20px;">
+        <p style="color: #4caf50; font-size: 16px; margin: 0;">
+            {{ 'ContactCreatedSuccessfully' | translate }}
+        </p>
+    </div>
+
+    <!-- Form di creazione contatto -->
+    <div *ngIf="!contactCreated" class="row">
+        <label class="col-sm-12" style="text-align: left; color:#7695a5;">
+            {{'userFullname' | translate}} <span style="color:rgb(195,46,42)"> *</span>
+        </label>
+        <div class="col-sm-12">
+            <input [(ngModel)]="contactFullName" class="input" style="margin-bottom: 0px;max-width: 350px;" type="text"
+              placeholder="{{'userFullname' | translate}}">
+
+        </div>
+    </div>
+
+</div>
+<div mat-dialog-actions style="justify-content: center;margin-top: 16px;">
+    <!-- Azioni quando il contatto è stato creato -->
+    <ng-container *ngIf="contactCreated">
+        <button class="mat-dialog-ok-btn" mat-button
+            (click)="onOkAfterSuccess()" cdkFocusInitial>
+            {{ "Ok" | translate }}
+        </button>
+    </ng-container>
+
+    <!-- Azioni durante la creazione -->
+    <ng-container *ngIf="!contactCreated">
+        <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+            {{ "Cancel" | translate }}
+        </button>
+
+        <button class="mat-dialog-ok-btn" mat-button
+            (click)="onOkPresssed()" cdkFocusInitial [disabled]="contactFullName?.length < 2">
+            {{'Save' | translate}}
+        </button>
+    </ng-container>
+</div>

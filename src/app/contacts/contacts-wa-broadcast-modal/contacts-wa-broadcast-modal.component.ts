@@ -483,7 +483,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   onSelectTemplate() {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
-    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
+    console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
     if (this.selected_template) {
       // Check if template uses NAMED parameters
       this.isNamedTemplate = this.selected_template.parameter_format === 'NAMED';

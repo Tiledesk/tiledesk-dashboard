@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
 import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal/contacts-wa-broadcast-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddNewContactModalComponent } from './add-new-contact-modal/add-new-contact-modal.component';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -1171,6 +1172,53 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   }
 
+  presentDialogAddContact() {
+    const dialogRef = this.dialog.open(AddNewContactModalComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          projectId: this.projectId
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(res => {
+        if (res) {
+          // Il contatto è stato creato con successo, aggiungilo alla lista
+          this.logger.log('[CONTACTS-COMP] - ADD-NEW-CONTACT - CONTACT CREATED ', res);
+          
+          // Aggiungi il contatto all'inizio della lista
+          if (!this.contacts) {
+            this.contacts = [];
+          }
+          
+          // Formatta il contatto come gli altri nella lista
+          const newContact: Contact = {
+            _id: res._id,
+            lead_id: res.lead_id,
+            fullname: res.fullname,
+            email: res.email || null,
+            tags: res.tags || [],
+            __v: res.__v || 0
+          };
+          
+          // Verifica se l'email è valida
+          if (newContact.email && !isValidEmail(newContact.email)) {
+            newContact.email = null;
+          }
+          
+          // Aggiungi il contatto all'inizio della lista
+          this.contacts.unshift(newContact);
+          
+          // Genera l'avatar per il nuovo contatto
+          this.generateAvatarFromNameAndGetIfContactIsAuthenticated([newContact]);
+          
+          // Aggiorna il conteggio dei contatti attivi
+          this.getActiveContactsCount();
+        }
+      });
+
+  }
 
   exportContactsToCsv() {
     if (!this.overridePay) {

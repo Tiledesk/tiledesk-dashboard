@@ -12,6 +12,7 @@ import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AddNewContactModalComponent } from './add-new-contact-modal/add-new-contact-modal.component';
 
 const routes: Routes = [
   { path: "", component: ContactsComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ContactsComponent,
-    ContactsWaBroadcastModalComponent
+    ContactsWaBroadcastModalComponent,
+    AddNewContactModalComponent
   ],
   imports: [
     RouterModule.forChild(routes),

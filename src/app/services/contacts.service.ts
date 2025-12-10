@@ -194,6 +194,25 @@ export class ContactsService {
   }
 
   // ---------------------------------------------
+  // @ Create new lead 
+  // ---------------------------------------------
+  public createNewLeadWithoutEmail(leadid: string, fullname: string,leademail?: string): Observable<Contact[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/';
+    const body = { 'lead_id': leadid, 'fullname': fullname };
+    this.logger.log('[CONTACTS-SERV] - CREATE NEW LEAD ', body);
+
+    return this.httpClient
+      .post<Contact[]>(url, JSON.stringify(body), httpOptions)
+  }
+
+  // ---------------------------------------------
   // @ Export lead to CSV
   // ---------------------------------------------
   public exportLeadToCsv(querystring, pagenumber, hasclickedtrash) {
