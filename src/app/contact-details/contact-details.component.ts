@@ -41,6 +41,12 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   waSentMessages: any[] = [];
   loadingWaMessages: boolean = false;
   CONTACT_IS_VERIFIED = false;
+  
+  // Template Preview components (per log)
+  logPreviewComponents: { [key: string]: any } = {};
+  logPreviewLoading: { [key: string]: boolean } = {};
+  waTemplatesList: any[] = [];
+  waTemplatesLoading: boolean = false;
   contact_fullname_initial: string;
   fillColour: string;
 
@@ -1227,6 +1233,273 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           this.loadingWaMessages = false;
         }
       );
+  }
+
+  /**
+   * Carica i template WhatsApp se non sono già stati caricati
+   * Restituisce true se i template sono già disponibili, false se devono essere caricati
+   */
+  loadWATemplatesIfNeeded(): Promise<boolean> {
+    return new Promise((resolve) => {
+      if (this.waTemplatesList.length > 0) {
+        resolve(true);
+        return;
+      }
+
+      if (this.waTemplatesLoading) {
+        // I template sono già in caricamento, aspetta che finisca
+        const checkInterval = setInterval(() => {
+          if (!this.waTemplatesLoading && this.waTemplatesList.length > 0) {
+            clearInterval(checkInterval);
+            resolve(true);
+          }
+        }, 100);
+        return;
+      }
+
+      this.waTemplatesLoading = true;
+      this.automationsService.getWATemplates().subscribe((templates: any) => {
+        this.logger.log('[CONTACT-DETAILS] GET WA TEMPLATES templates ', templates);
+        this.waTemplatesList = templates || [];
+        this.waTemplatesLoading = false;
+        resolve(true);
+      }, (error) => {
+        this.logger.error('[CONTACT-DETAILS] - GET WA TEMPLATES - ERROR: ', error);
+        this.waTemplatesList = [];
+        this.waTemplatesLoading = false;
+        resolve(false);
+      });
+    });
+  }
+
+  /**
+   * Ricostruisce la preview del template per un log specifico
+   * Prende il template completo dalla lista, filtra per nome e sostituisce i parametri
+   */
+  async buildTemplatePreviewForLog(log: any) {
+    this.logger.log('[CONTACT-DETAILS] buildTemplatePreviewForLog - log:', log);
+    if (!log || !log.json_message || !log.json_message.template) {
+      return;
+    }
+
+    const templateName = log.json_message.template.name;
+    const logId = log._id || log.id || JSON.stringify(log);
+    
+    // Imposta lo stato di loading
+    this.logPreviewLoading[logId] = true;
+    
+    // Carica i template se necessario e aspetta che siano disponibili
+    await this.loadWATemplatesIfNeeded();
+    
+    // Trova il template completo dalla lista
+    const fullTemplate = this.waTemplatesList.find(t => t.name === templateName);
+    
+    if (!fullTemplate) {
+      this.logger.log('[CONTACT-DETAILS] Template not found:', templateName);
+      // Se non troviamo il template, usa quello del log (ma potrebbe non essere completo)
+      this.buildPreviewFromLogTemplate(log, logId);
+      this.logPreviewLoading[logId] = false;
+      return;
+    }
+
+    this.logger.log('[CONTACT-DETAILS] buildTemplatePreviewForLog - fullTemplate:', fullTemplate);
+    this.logger.log('[CONTACT-DETAILS] buildTemplatePreviewForLog - log.json_message.template:', log.json_message.template);
+
+    // Estrai i parametri dai componenti del log
+    // I parametri sono in json_message.template.components[].parameters
+    const logComponents = log.json_message.template.components || [];
+    
+    // Crea una mappa dei parametri per tipo di componente
+    // Nota: nel log i tipi sono minuscoli ('body', 'button'), nel template sono maiuscoli ('BODY', 'BUTTON')
+    const componentParams: { [key: string]: any[] } = {};
+    logComponents.forEach((comp: any) => {
+      if (comp.parameters && comp.parameters.length > 0) {
+        // Normalizza il tipo a maiuscolo per la mappatura
+        const normalizedType = comp.type.toUpperCase();
+        componentParams[normalizedType] = comp.parameters;
+      }
+    });
+
+    this.logger.log('[CONTACT-DETAILS] componentParams:', componentParams);
+
+    // Trova i componenti del template completo
+    const header_component = fullTemplate.components?.find((c: any) => c.type === 'HEADER');
+    const body_component = fullTemplate.components?.find((c: any) => c.type === 'BODY');
+    const footer_component = fullTemplate.components?.find((c: any) => c.type === 'FOOTER');
+    const buttons_component = fullTemplate.components?.find((c: any) => c.type === 'BUTTONS');
+
+    // Crea copie dei componenti per la preview
+    const preview = {
+      header_component: header_component ? JSON.parse(JSON.stringify(header_component)) : null,
+      body_component: body_component ? JSON.parse(JSON.stringify(body_component)) : null,
+      footer_component: footer_component ? JSON.parse(JSON.stringify(footer_component)) : null,
+      buttons_component: buttons_component ? JSON.parse(JSON.stringify(buttons_component)) : null,
+      headerParamsValues: [] as any[]
+    };
+
+    // Gestisci header
+    if (preview.header_component && componentParams['HEADER']) {
+      const headerParams = componentParams['HEADER'];
+      if (preview.header_component.format === 'TEXT') {
+        // Sostituisci i parametri {{1}}, {{2}}, ecc. con i valori effettivi
+        let headerText = preview.header_component.text || '';
+        const placeholders = headerText.match(/\{\{\d+\}\}/g) || [];
+        
+        placeholders.forEach((placeholder: string) => {
+          const paramIndex = parseInt(placeholder.replace(/\{\{|\}\}/g, '')) - 1;
+          if (headerParams[paramIndex] && headerParams[paramIndex].type === 'text') {
+            headerText = headerText.replace(placeholder, headerParams[paramIndex].text || '');
+            preview.headerParamsValues.push(headerParams[paramIndex].text || '');
+          }
+        });
+        preview.header_component.text = headerText;
+      } else if (preview.header_component.format === 'IMAGE' && headerParams[0]) {
+        if (headerParams[0].type === 'image' && headerParams[0].image?.link) {
+          preview.headerParamsValues.push(headerParams[0].image.link);
+        }
+      } else if (preview.header_component.format === 'DOCUMENT' && headerParams[0]) {
+        if (headerParams[0].type === 'document' && headerParams[0].document?.link) {
+          preview.headerParamsValues.push(headerParams[0].document.link);
+        }
+      }
+    }
+
+    // Gestisci body - sostituisci i parametri con i valori effettivi
+    if (preview.body_component && componentParams['BODY']) {
+      const bodyParams = componentParams['BODY'];
+      let bodyText = preview.body_component.text || '';
+      const placeholders = bodyText.match(/\{\{\d+\}\}/g) || [];
+      
+      placeholders.forEach((placeholder: string) => {
+        const paramIndex = parseInt(placeholder.replace(/\{\{|\}\}/g, '')) - 1;
+        if (bodyParams[paramIndex] && bodyParams[paramIndex].type === 'text') {
+          bodyText = bodyText.replace(placeholder, bodyParams[paramIndex].text || '');
+        }
+      });
+      preview.body_component.text = bodyText;
+    }
+
+    // Gestisci buttons - sostituisci i parametri negli URL
+    // Nel log il tipo è 'button' (singolare), nel template è 'BUTTONS' (plurale)
+    // I button nel log hanno un campo 'index' che indica quale button del template è
+    if (preview.buttons_component) {
+      // Crea una mappa dei parametri per button index
+      const buttonParamsByIndex: { [key: number]: any[] } = {};
+      logComponents.forEach((comp: any) => {
+        if (comp.type === 'button' && comp.parameters && comp.parameters.length > 0) {
+          const buttonIndex = comp.index !== undefined ? parseInt(comp.index) : 0;
+          buttonParamsByIndex[buttonIndex] = comp.parameters;
+        }
+      });
+
+      preview.buttons_component.buttons?.forEach((button: any, buttonIndex: number) => {
+        if (button.type === 'URL' && button.url) {
+          const buttonParams = buttonParamsByIndex[buttonIndex];
+          if (buttonParams && buttonParams.length > 0) {
+            const buttonParam = buttonParams[0]; // Prendi il primo parametro
+            if (buttonParam.type === 'payload' && buttonParam.payload) {
+              // Per URL button, il payload contiene l'URL completo
+              button.url = buttonParam.payload;
+            } else if (buttonParam.type === 'text' && button.url.includes('{{1}}')) {
+              button.url = button.url.replace('{{1}}', buttonParam.text || '');
+            }
+          }
+        }
+      });
+    }
+
+    // Salva la preview per questo log
+    this.logPreviewComponents[logId] = preview;
+  }
+
+  /**
+   * Fallback: costruisce la preview dal template del log se non troviamo quello completo
+   */
+  buildPreviewFromLogTemplate(log: any, logId: string) {
+    const template = log.json_message.template;
+    const preview = {
+      header_component: null,
+      body_component: null,
+      footer_component: null,
+      buttons_component: null,
+      headerParamsValues: [] as any[]
+    };
+
+    // Usa i componenti del template del log (potrebbero non essere completi)
+    const components = template.components || [];
+    components.forEach((comp: any) => {
+      if (comp.type === 'HEADER') {
+        preview.header_component = JSON.parse(JSON.stringify(comp));
+      } else if (comp.type === 'BODY') {
+        preview.body_component = JSON.parse(JSON.stringify(comp));
+        // Sostituisci i parametri nel body
+        if (comp.parameters && comp.parameters.length > 0) {
+          let bodyText = comp.text || '';
+          comp.parameters.forEach((param: any, index: number) => {
+            if (param.type === 'text') {
+              const placeholder = `{{${index + 1}}}`;
+              bodyText = bodyText.replace(placeholder, param.text || '');
+            }
+          });
+          preview.body_component.text = bodyText;
+        }
+      } else if (comp.type === 'FOOTER') {
+        preview.footer_component = JSON.parse(JSON.stringify(comp));
+      } else if (comp.type === 'BUTTON') {
+        if (!preview.buttons_component) {
+          preview.buttons_component = { buttons: [] };
+        }
+        // Ricostruisci il button dal log
+        const button = {
+          type: comp.sub_type === 'url' ? 'URL' : comp.sub_type?.toUpperCase(),
+          text: '', // Non disponibile nel log
+          url: ''
+        };
+        if (comp.parameters && comp.parameters[0]) {
+          if (comp.parameters[0].type === 'payload') {
+            button.url = comp.parameters[0].payload || '';
+          }
+        }
+        preview.buttons_component.buttons.push(button);
+      }
+    });
+
+    this.logPreviewComponents[logId] = preview;
+    // Rimuovi lo stato di loading
+    this.logPreviewLoading[logId] = false;
+  }
+
+  /**
+   * Ottiene i componenti della preview per un log specifico
+   */
+  getPreviewComponents(log: any) {
+    const logId = log._id || log.id || JSON.stringify(log);
+    return this.logPreviewComponents[logId] || null;
+  }
+
+  /**
+   * Verifica se la preview è in caricamento per un log specifico
+   */
+  isPreviewLoading(log: any): boolean {
+    const logId = log._id || log.id || JSON.stringify(log);
+    // Se la preview esiste già, non è in loading
+    if (this.logPreviewComponents[logId]) {
+      return false;
+    }
+    return this.logPreviewLoading[logId] === true;
+  }
+
+  /**
+   * Gestisce l'apertura del mat-expansion-panel
+   */
+  onPanelOpened(log: any) {
+    const logId = log._id || log.id || JSON.stringify(log);
+    // Se la preview esiste già, non ricostruirla
+    if (this.logPreviewComponents[logId]) {
+      return;
+    }
+    // Costruisci la preview solo se non esiste
+    this.buildTemplatePreviewForLog(log);
   }
 
 }

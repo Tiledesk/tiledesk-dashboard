@@ -19,7 +19,7 @@
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <!-- Tab Navigation -->
-                <div class="contact-details-tabs" style="display: flex; border-bottom: 2px solid #e0e0e0; margin-bottom: 20px;">
+                <div class="contact-details-tabs" style="display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px;">
                   <div 
                     class="contact-details-tab" 
                     [ngClass]="{'active': selectedTab === 'requests'}"
@@ -331,8 +331,9 @@
                 </tr>
               </tbody>
             </table>
-
-            <!-- Tab "Messaggi Inviati" -->
+            <!-- ------------------------------ -->
+            <!-- Tab Sent messages" -->
+            <!-- ------------------------------ -->
             <div *ngIf="selectedTab === 'sent-messages'">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h4 style="font-weight: 400; font-family: var(--header-font-family);">
@@ -353,9 +354,9 @@
               </div>
 
               <div *ngIf="!loadingWaMessages && waSentMessages.length > 0" class="logs-list">
-                <mat-expansion-panel *ngFor="let log of waSentMessages" style="border-radius: 0px;" class="broadcast-logs-accordion">
+                <mat-expansion-panel *ngFor="let log of waSentMessages" style="border-radius: 0px;" class="broadcast-logs-accordion" (opened)="onPanelOpened(log)">
                   <mat-expansion-panel-header>
-                    <mat-panel-title>
+                    <mat-panel-title style="min-width: 300px;">
                       <label style="margin-bottom: 0px; margin-right: 3px; white-space: nowrap;">
                         {{'SentTo' | translate}}:
                       </label> 
@@ -394,6 +395,93 @@
                         {{'Error' | translate}}
                       </p>
                       {{ log.error }}
+                    </div>
+                  </div>
+                  
+                  <!-- Template Preview -->
+                  <div class="template-preview-container">
+                    <div class="preview-template-header">
+                      {{ 'TemplatePreview' | translate }}
+                    </div>
+                    
+                    <!-- Loading state -->
+                    <div *ngIf="isPreviewLoading(log)" class="preview-loading-container" style="padding: 20px; text-align: center; color: #666;">
+                      <span>{{ 'Loading' | translate }}...</span>
+                    </div>
+                    
+                    <!-- Preview content -->
+                    <div *ngIf="!isPreviewLoading(log) && getPreviewComponents(log)" class="preview-container">
+                      <div class="inner-preview-container">
+                        <div class="message-cloud">
+                          
+                          <!-- Header -->
+                          <div class="header-preview" *ngIf="getPreviewComponents(log)?.header_component">
+                            <span *ngIf="getPreviewComponents(log).header_component.format === 'TEXT'"
+                              [innerHTML]="getPreviewComponents(log).header_component.text | htmlEntitiesEncode | waToMarkdown | marked">
+                            </span>
+                            
+                            <span *ngIf="getPreviewComponents(log).header_component.format === 'IMAGE' && getPreviewComponents(log).headerParamsValues[0]">
+                              <img [src]="getPreviewComponents(log).headerParamsValues[0]" 
+                                (error)="$event.target.style.display='none'" />
+                            </span>
+                            
+                            <span *ngIf="getPreviewComponents(log).header_component.format === 'DOCUMENT' && getPreviewComponents(log).headerParamsValues[0]">
+                              <a [href]="getPreviewComponents(log).headerParamsValues[0]" 
+                                 target="_blank" 
+                                 rel="noopener noreferrer"
+                                 class="pdf-preview-link"
+                                 (click)="$event.stopPropagation()">
+                                <div class="pdf-preview">
+                                  <p>{{ 'PDF' | translate }}</p>
+                                </div>
+                              </a>
+                            </span>
+                            
+                            <span *ngIf="getPreviewComponents(log).header_component.format === 'LOCATION'">
+                              <div class="location-preview">
+                                {{ 'Location' | translate }}
+                              </div>
+                            </span>
+                          </div>
+                          
+                          <!-- Body -->
+                          <div class="body-preview" *ngIf="getPreviewComponents(log)?.body_component">
+                            <span [innerHTML]="getPreviewComponents(log).body_component.text | waToMarkdown | marked"></span>
+                          </div>
+                          
+                          <!-- Footer -->
+                          <div class="footer-preview" *ngIf="getPreviewComponents(log)?.footer_component">
+                            <span [innerHTML]="getPreviewComponents(log).footer_component.text | htmlEntitiesEncode | waToMarkdown | marked"></span>
+                          </div>
+                          
+                          <!-- Call to action preview -->
+                          <div *ngIf="getPreviewComponents(log)?.buttons_component && (getPreviewComponents(log).buttons_component.buttons[0].type === 'URL' || getPreviewComponents(log).buttons_component.buttons[0].type === 'PHONE_NUMBER')"
+                            class="call-to-action-preview">
+                            
+                            <button *ngFor="let btn of getPreviewComponents(log).buttons_component.buttons"
+                              class="btn whatsapp-call-to-action">
+                              <span *ngIf="btn.type === 'URL'"
+                                class="material-icons-outlined call-to-action-icon">open_in_new</span>
+                              <span *ngIf="btn.type === 'PHONE_NUMBER'"
+                                class="material-icons-round call-to-action-icon">phone</span>
+                              <span [innerHTML]="btn.text | htmlEntitiesEncode"></span>
+                            </button>
+                          </div>
+                          
+                        </div>
+                        
+                        <div class="message-cloud-buttons-container"
+                          *ngIf="getPreviewComponents(log)?.buttons_component && getPreviewComponents(log).buttons_component.buttons[0].type === 'QUICK_REPLY'">
+                          <div class="message-cloud-buttons">
+                            <button *ngFor="let btn of getPreviewComponents(log).buttons_component.buttons" 
+                              fill="clear"
+                              class="message-cloud-button">
+                              <span class="_2VWlB">{{btn.text}}</span>
+                            </button>
+                          </div>
+                        </div>
+                        
+                      </div>
                     </div>
                   </div>
                 </mat-expansion-panel>
@@ -448,7 +536,7 @@
           <div *ngIf="!showSpinner" class="card-content"
             style="padding-top: 0px;    padding-left: 1px;padding-right: 1px;">
 
-            <div class="row" style="border-bottom: 1px solid #ddd;">
+            <div class="row" style="border-bottom: 1px solid #ddd; margin-top: -4px;">
               <div class="col-xs-12">
                 <h3 class="card_title__underlined">
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
