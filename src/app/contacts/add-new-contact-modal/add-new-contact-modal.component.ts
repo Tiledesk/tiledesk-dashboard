@@ -31,12 +31,12 @@ export class AddNewContactModalComponent implements OnInit {
 
  createProjectUserAndThenNewLead() {
    
-    console.log('[ADD-NEW-CONTACT] - NAME  ', this.contactFullName);
+    this.logger.log('[ADD-NEW-CONTACT] - NAME  ', this.contactFullName);
     // this.logger.log('[ADD-NEW-CONTACT] - CREATE-NEW-USER email ', this.new_user_email);
 
 
     this.contactsService.createNewProjectUserToGetNewLeadID().subscribe(res => {
-      console.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-PROJECT-USER ', res);
+      this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-PROJECT-USER ', res);
       this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-PROJECT-USER UUID ', res['uuid_user']);
       if (res) {
         if (res['uuid_user']) {
@@ -55,17 +55,16 @@ export class AddNewContactModalComponent implements OnInit {
 
   createNewContact(lead_id: string, lead_name: string, lead_email?: string) {
     this.contactsService.createNewLeadWithoutEmail(lead_id, lead_name).subscribe(lead => {
-      console.log('[ADD-NEW-CONTACT] - CREATE-NEW-LEAD -  RES ', lead);
       this.logger.log('[ADD-NEW-CONTACT] - CREATE-NEW-LEAD -  RES ', lead);
       
-      // Salva il contatto creato e imposta lo stato di successo
       this.createdContact = lead;
-      this.contactCreated = true;
+     
     
     }, error => {
       this.logger.error('[ADD-NEW-CONTACT] - CREATE-NEW-LEAD - ERROR: ', error);
     }, () => {
       this.logger.log('[ADD-NEW-CONTACT] - CREATE-NEW-LEAD * COMPLETE *');
+       this.contactCreated = true;
     });
   }
 
