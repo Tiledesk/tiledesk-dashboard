@@ -847,6 +847,8 @@
     "UploadDocument": "Ladda upp dokument",
     "UnknownCountry": "Okänt land",
     "PDF": "PDF",
+    "AddContact": "Lägg till kontakt",
+    "ContactCreatedSuccessfully": "Kontakt skapad framgångsrikt",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

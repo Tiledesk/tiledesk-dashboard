@@ -845,6 +845,8 @@
     "UploadDocument": "Құжатты жүктеу",
     "UnknownCountry": "Белгісіз ел",
     "PDF": "PDF",
+    "AddContact": "Контакт қосу",
+    "ContactCreatedSuccessfully": "Контакт сәтті жасалды",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

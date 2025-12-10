@@ -846,6 +846,8 @@
     "UploadDocument": "Отпреми документ",
     "UnknownCountry": "Непозната земља",
     "PDF": "PDF",
+    "AddContact": "Додај контакт",
+    "ContactCreatedSuccessfully": "Контакт је успешно креиран",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

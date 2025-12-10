@@ -847,6 +847,8 @@
     "UploadDocument": "Belge yükle",
     "UnknownCountry": "Bilinmeyen ülke",
     "PDF": "PDF",
+    "AddContact": "Kişi ekle",
+    "ContactCreatedSuccessfully": "Kişi başarıyla oluşturuldu",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

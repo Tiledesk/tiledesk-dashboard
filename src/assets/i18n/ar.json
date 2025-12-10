@@ -845,6 +845,8 @@
     "UploadDocument": "رفع مستند",
     "UnknownCountry": "بلد غير معروف",
     "PDF": "PDF",
+    "AddContact": "إضافة جهة اتصال",
+    "ContactCreatedSuccessfully": "تم إنشاء جهة الاتصال بنجاح",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
