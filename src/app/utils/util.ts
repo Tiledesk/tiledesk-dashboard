@@ -831,7 +831,7 @@ export const ANTHROPIC_MODEL: Array<{ name: string, value: string, description:s
   { name: "Claude Sonnet 4",                  value: "claude-sonnet-4-20250514",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Claude Opus 4",                    value: "claude-opus-4-20250514",            description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Claude-4.5 Sonnet",                value: "claude-sonnet-4-5",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Claude-3.5 Sonnet",                value: "claude-3-5-sonnet-20240620",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Claude-3.5 Sonnet",                value: "claude-3-5-sonnet-20240620",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Claude 3.5 Haiku",                 value: "claude-3-5-haiku-latest",           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude 4.5 Haiku",                 value: "claude-haiku-4-5",                  description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude 3.7 Sonnet",                value: "claude-3-7-sonnet-latest",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
