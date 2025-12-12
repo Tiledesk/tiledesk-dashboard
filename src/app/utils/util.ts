@@ -872,6 +872,7 @@ export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:st
 ]
 
 export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string}> = [
+  { name: "Gpt-5.2",              value: "gpt-5.2",               description: "TYPE_GPT_MODEL.deepseek-chat.description",       status: "active"    },  
   { name: "Gpt-5.1",              value: "gpt-5.1",               description: "TYPE_GPT_MODEL.deepseek-chat.description",       status: "active"    },
   { name: "Gpt-5",                value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
   { name: "Gpt-5-mini",           value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
