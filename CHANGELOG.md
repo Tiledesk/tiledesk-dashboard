@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.159-stage
+- Adds the OpenAI Gpt-5.2 model
+
 ### 2.7.158-stage 
 - Adds the ability to see who left an "abandoned chat" in the non-real-time conversations page and in the history page
 - Adds "Chunks only" and "Re-ranking" options to AI Settings, enabling raw source output and intelligent result prioritization
