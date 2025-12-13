@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.144
+- Adds the OpenAI Gpt-5.2 model
+- Adds a link to documentation on how to send a WhatsApp message to contacts in the contact list
+
 ### 2.7.143
 - Adds "Chunks only" and "Re-ranking" options to AI Settings, enabling raw source output and intelligent result prioritization
 - Adds the preview of the sent template to the Sent Messages list
