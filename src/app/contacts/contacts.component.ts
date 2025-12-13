@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME, URL_WA_Send_Message } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -16,6 +16,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal/contacts-wa-broadcast-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewContactModalComponent } from './add-new-contact-modal/add-new-contact-modal.component';
+import { BrandService } from 'app/services/brand.service';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -123,6 +124,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   emailArray = [];
   HAS_SEARCHED: boolean = false
   fullTextIsAValidEmail: boolean = false;
+  public hideHelpLink: boolean;
+
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -134,7 +137,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
-  ) { }
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit() {
     this.getTranslation();
@@ -162,6 +169,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       "hide.bs.dropdown": function () { return this.closable; }
     });
     this.getBrowserVersion();
+    
   }
 
   getBrowserVersion() {
@@ -1410,6 +1418,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToVisitors() {
     this.router.navigate(['project/' + this.projectId + '/visitors']);
+  }
+
+
+  goToSendWAMessageDoc() {
+    const url = URL_WA_Send_Message;
+    window.open(url, '_blank');
   }
 
 
