@@ -814,6 +814,7 @@
     "VoiceRecorder": "Enregistreur vocal",
     "TheConversationWillBeResolved": "La conversation sera résolue",
     "LearnHowToCreateWhatsAppBroadcasts": "Apprenez à créer des diffusions WhatsApp",
+    "LearnHowToSendAWhatsAppMessage": "Apprenez à envoyer un message WhatsApp",
     "InvalidPhoneNumberForCountry": "Numéro de téléphone invalide pour {{country}}",
     "InvalidPhoneNumberFormatForCountry": "Format de numéro de téléphone invalide pour {{country}}",
     "PhoneNumberMustStartWithPlus": "Le numéro de téléphone doit commencer par + (format international requis pour WhatsApp)",

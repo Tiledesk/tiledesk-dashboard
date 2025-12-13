@@ -816,6 +816,7 @@
     "VoiceRecorder": "Röstinspelare",
     "TheConversationWillBeResolved": "Konversationen kommer att lösas",
     "LearnHowToCreateWhatsAppBroadcasts": "Lär dig hur du skapar WhatsApp-utsändningar",
+    "LearnHowToSendAWhatsAppMessage": "Lär dig hur du skickar ett WhatsApp-meddelande",
     "InvalidPhoneNumberForCountry": "Ogiltigt telefonnummer för {{country}}",
     "InvalidPhoneNumberFormatForCountry": "Ogiltigt telefonnummerformat för {{country}}",
     "PhoneNumberMustStartWithPlus": "Telefonnumret måste börja med + (internationellt format krävs för WhatsApp)",

@@ -814,6 +814,7 @@
     "VoiceRecorder": "مسجل الصوت",
     "TheConversationWillBeResolved": "سيتم حل المحادثة",
     "LearnHowToCreateWhatsAppBroadcasts": "تعلم كيفية إنشاء بثوات واتساب",
+    "LearnHowToSendAWhatsAppMessage": "تعلم كيفية إرسال رسالة واتساب",
     "InvalidPhoneNumberForCountry": "رقم هاتف غير صالح لـ {{country}}",
     "InvalidPhoneNumberFormatForCountry": "تنسيق رقم الهاتف غير صالح لـ {{country}}",
     "PhoneNumberMustStartWithPlus": "يجب أن يبدأ رقم الهاتف بـ + (التنسيق الدولي مطلوب لواتساب)",

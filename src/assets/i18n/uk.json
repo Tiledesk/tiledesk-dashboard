@@ -814,6 +814,7 @@
     "VoiceRecorder": "Диктофон",
     "TheConversationWillBeResolved": "Розмова буде вирішена",
     "LearnHowToCreateWhatsAppBroadcasts": "Дізнайтеся, як створювати розсилки в WhatsApp",
+    "LearnHowToSendAWhatsAppMessage": "Дізнайтеся, як надіслати повідомлення в WhatsApp",
     "InvalidPhoneNumberForCountry": "Невірний номер телефону для {{country}}",
     "InvalidPhoneNumberFormatForCountry": "Невірний формат номера телефону для {{country}}",
     "PhoneNumberMustStartWithPlus": "Номер телефону повинен починатися з + (міжнародний формат потрібен для WhatsApp)",

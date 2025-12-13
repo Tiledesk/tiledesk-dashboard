@@ -816,6 +816,7 @@
     "VoiceRecorder": "Ses kaydedici",
     "TheConversationWillBeResolved": "Görüşme çözülecek",
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Yayınları nasıl oluşturulur öğrenin",
+    "LearnHowToSendAWhatsAppMessage": "WhatsApp mesajı nasıl gönderilir öğrenin",
     "InvalidPhoneNumberForCountry": "{{country}} için geçersiz telefon numarası",
     "InvalidPhoneNumberFormatForCountry": "{{country}} için geçersiz telefon numarası formatı",
     "PhoneNumberMustStartWithPlus": "Telefon numarası + ile başlamalıdır (WhatsApp için uluslararası format gerekir)",

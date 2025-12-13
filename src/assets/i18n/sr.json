@@ -815,6 +815,7 @@
     "VoiceRecorder": "Снимач гласа",
     "TheConversationWillBeResolved": "Разговор ће бити разрешен",
     "LearnHowToCreateWhatsAppBroadcasts": "Научите како да креирате WhatsApp емисије",
+    "LearnHowToSendAWhatsAppMessage": "Научите како да пошаљете WhatsApp поруку",
     "InvalidPhoneNumberForCountry": "Неважећи број телефона за {{country}}",
     "InvalidPhoneNumberFormatForCountry": "Неважећи формат броја телефона за {{country}}",
     "PhoneNumberMustStartWithPlus": "Број телефона мора почињати са + (међународни формат је потребан за WhatsApp)",

@@ -813,6 +813,7 @@
     "VoiceRecorder": "Sprachrecorder",
 	"TheConversationWillBeResolved": "Die Konversation wird abgeschlossen",
 	"LearnHowToCreateWhatsAppBroadcasts": "Erfahren Sie, wie Sie WhatsApp-Broadcasts erstellen",
+	"LearnHowToSendAWhatsAppMessage": "Erfahren Sie, wie Sie eine WhatsApp-Nachricht senden",
 	"InvalidPhoneNumberForCountry": "Ungültige Telefonnummer für {{country}}",
 	"InvalidPhoneNumberFormatForCountry": "Ungültiges Telefonnummernformat für {{country}}",
 	"PhoneNumberMustStartWithPlus": "Die Telefonnummer muss mit + beginnen (internationales Format für WhatsApp erforderlich)",

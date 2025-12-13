@@ -814,6 +814,7 @@
     "VoiceRecorder": "Ovoz yozish qurilmasi",
     "TheConversationWillBeResolved": "Suhbat hal qilinadi",
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Broadcastlarini qanday yaratishni o'rganing",
+    "LearnHowToSendAWhatsAppMessage": "WhatsApp xabarini qanday yuborishni o'rganing",
     "InvalidPhoneNumberForCountry": "{{country}} uchun noto'g'ri telefon raqami",
     "InvalidPhoneNumberFormatForCountry": "{{country}} uchun noto'g'ri telefon raqami formati",
     "PhoneNumberMustStartWithPlus": "Telefon raqami + bilan boshlanishi kerak (WhatsApp uchun xalqaro format talab qilinadi)",

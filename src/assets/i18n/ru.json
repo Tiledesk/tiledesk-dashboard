@@ -815,6 +815,7 @@
     "VoiceRecorder": "Диктофон",
     "TheConversationWillBeResolved": "Разговор будет разрешен",
     "LearnHowToCreateWhatsAppBroadcasts": "Узнайте, как создавать рассылки в WhatsApp",
+    "LearnHowToSendAWhatsAppMessage": "Узнайте, как отправить сообщение в WhatsApp",
     "InvalidPhoneNumberForCountry": "Неверный номер телефона для {{country}}",
     "InvalidPhoneNumberFormatForCountry": "Неверный формат номера телефона для {{country}}",
     "PhoneNumberMustStartWithPlus": "Номер телефона должен начинаться с + (международный формат требуется для WhatsApp)",

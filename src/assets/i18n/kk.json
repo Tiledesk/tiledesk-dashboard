@@ -814,6 +814,7 @@
     "VoiceRecorder": "Дыбыс жазушы",
     "TheConversationWillBeResolved": "Өтініш шешіледі",
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp таратуларды қалай жасауды үйреніңіз",
+    "LearnHowToSendAWhatsAppMessage": "WhatsApp хабарламасын жіберуді үйреніңіз",
     "InvalidPhoneNumberForCountry": "{{country}} үшін жарамсыз телефон нөмірі",
     "InvalidPhoneNumberFormatForCountry": "{{country}} үшін жарамсыз телефон нөмірі форматы",
     "PhoneNumberMustStartWithPlus": "Телефон нөмірі + белгісінен басталуы керек (WhatsApp үшін халықаралық формат қажет)",
