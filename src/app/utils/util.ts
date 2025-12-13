@@ -1185,4 +1185,5 @@ export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/a
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
+export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-to-send-whatsapp-messages-to-contacts';
 
