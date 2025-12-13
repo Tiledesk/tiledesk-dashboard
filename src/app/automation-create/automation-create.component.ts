@@ -492,7 +492,7 @@ export class AutomationCreateComponent implements OnInit {
   }
 
   goToWABroadcastsDoc() {
-     const url = URL_WA_BroadcastsDocs;
+    const url = URL_WA_BroadcastsDocs;
     window.open(url, '_blank');
   }
 
