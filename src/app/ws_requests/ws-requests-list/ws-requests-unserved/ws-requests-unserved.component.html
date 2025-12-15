@@ -2,21 +2,21 @@
   <div class="card-header card-header-custom">
 
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h4 class="title customh4" style="margin-bottom:2px;">
           <!-- + countRequestsServedByBotRr -->
-          {{ 'VisitorsPage.UnservedRequests' | translate }} <span
-            *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr )>= 100"> - </span> <span
-            *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr) >= 100" class="span-link-style"
-            (click)="goToUnservedNTR()"> {{'MoreInQueque' | translate}} </span>
+          {{ 'VisitorsPage.UnservedRequests' | translate }} 
+          <span *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr )>= 100"> - </span> 
+            <span *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr) >= 100" class="span-link-style"
+            (click)="goToUnservedNTR()"> 
+              {{'MoreInQueque' | translate}} 
+            </span>
         </h4>
       </div>
     </div>
   </div>
 
-  <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-  <!-- *ngIf="!showSpinner" overflow:visible; -->
-  <div class="card-content table-responsive" style="padding-top: 0px;padding-bottom: 30px;">
+  <div class="card-content table-responsive" style="padding-top: 0px;padding-bottom: 0px;">
     <table class="table table-hover unserved_requests_table">
       <thead class="text">
         <tr>
@@ -24,14 +24,10 @@
           <!-- ----------------------------------------------- -->
           <!-- Checkbox -->
           <!-- ----------------------------------------------- -->
-          <th style="width: 46px;
-          text-align: right;
-          padding-right: 3px;
-          padding-bottom: 4px !important;">
-
+          <th style="width: 46px; text-align: right;  padding-right: 3px;">
             <label for="allCheckbox">
               <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true || !PERMISSION_TO_ARCHIVE_REQUEST" [checked]="allChecked === true"
-                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px; margin-top: 0px;"
                 (click)="selectAll($event)">
             </label>
           </th>
@@ -39,8 +35,10 @@
           <!-- Requests Icons th (in this th put the button to archive 
            matTooltip="{{'VisitorsPage.Resolve' | translate}}"-->
           <!-- ---------------------------------------------------------- -->
-          <th style="padding-top: 6px;padding-bottom: 6px !important;">
-            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" type="button"
+          <th class="th-requests-icons" style="text-align: center;">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" 
+              type="button"
+              style="padding: 0px; margin: 0px;"
               (click)="archiveSelected()" 
               matTooltipClass="mat-white-tooltip"
               [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? ('YouDoNotHavePermissions' | translate) : ('VisitorsPage.Resolve' | translate)"
@@ -49,7 +47,7 @@
               [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }"
               [disabled]="!PERMISSION_TO_ARCHIVE_REQUEST">
               
-              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;"
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey; font-size: 20px;"
               [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
                 archive
               </span>
@@ -65,8 +63,9 @@
             </span>
           </th>
 
-
-          <!-- ------ ====== CHANNNEL ====== ------ -->
+          <!-- ------------------- -->
+          <!-- CHANNNEL -->
+          <!-- ------------------- -->
           <th></th>
 
           <!-- ------------------- -->
@@ -78,7 +77,6 @@
             </span>
           </th>
 
-
           <!-- ----------------------------------------- -->
           <!-- USER AGENT BROWSER & OPERATING SYSTEM -->
           <!-- ----------------------------------------- -->
@@ -89,27 +87,24 @@
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- {{ 'VisitorsPage.Department' | translate }} -->
               {{ 'Department' | translate }}
             </span>
           </th>
 
           <!-- ------------------- -->
-          <!-- CREATED ON -->
+          <!-- CREATED  -->
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- {{ 'VisitorsPage.Published' | translate }} -->
               {{ 'Created' | translate }}
             </span>
           </th>
 
           <!-- ------------------- -->
-          <!-- ARCHIVE ACTION -->
+          <!-- ACTIONS -->
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- {{ 'VisitorsPage.Actions' | translate }} -->
               {{ 'Actions' | translate }}
             </span>
           </th>
@@ -121,14 +116,12 @@
         <!-- IF THERE ISN'T REQUESTS -->
         <!-- ------------------------ -->
         <tr *ngIf="wsRequestsUnserved?.length === 0">
-          <!-- <tr *ngIf="displayNoRequestString"> -->
           <td colspan="9" style="text-align: center; padding-top: 16px;">
-            <p style="font-size:1em; color:#737376; font-weight: 100">
+            <p style="font-size:14px; color:#737376; font-weight: 100">
               {{ 'NoRequests' | translate }}
             </p>
           </td>
         </tr>
-
 
         <!-- ------------------------- -->
         <!-- UNSERVED FOR -->
@@ -153,7 +146,8 @@
           <!-- -------------------------------------------------------------------------------- -->
           <!-- VISIBILITY ICON -->
           <!-- -------------------------------------------------------------------------------- -->
-          <td style="text-align:center; white-space: nowrap; width: 1%;">
+           <!-- width: 1%; -->
+          <td class="td-request-icons" style="text-align:center; white-space: nowrap; width: fit-content ">
 
             <!-- ------------------------------------------------------------------------------------------------- -->
             <!--  IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST)   ;else internal_unserved_request -->
@@ -362,7 +356,6 @@
             </div>
           </td>
 
-
           <!-- --------------------------------------- -->
           <!-- MESSAGE -->
           <!-- --------------------------------------- -->
@@ -514,7 +507,6 @@
                </div> -->
             </section>
           </td>
-
 
           <!-- ---------------------------------------- -->
           <!-- @ Priority & Message Channel  -->
@@ -697,66 +689,9 @@
             </div>
           </td>
 
-          <!-- ---------------------------------------------- -->
-          <!--  REQUESTER (in UNSERVED) !!! Deprecated ------ -->
-          <!-- ---------------------------------------------- -->
-          <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;"
-            rel="tooltip" title="requester id:{{ request?.lead?.fullname }}">
-            <span class="requester-avatar-wrapper">
-              <span class="requester-avatar"
-                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
-                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname,  requester_avatar_not_has_email: !request?.lead?.email }">
-                <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
-              </span>
-
-              <span class="tooltipx" *ngIf="request?.requester_is_verified === true">
-                <svg class="unserved-request--requester-verified-icon" [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
-                  id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-                  y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
-                   xml:space="preserve">
-                  <style type="text/css">
-                    .st0_UserVerified {
-                      fill: none;
-                    }
-
-                    .st1_UserVerified {
-                      fill: #FFFFFF;
-                    }
-
-                    .st2_UserVerified {
-                      fill: #18BDF7;
-                    }
-                  </style>
-                  <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
-                  <path class="st1_UserVerified"
-                    d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                  <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                        l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                </svg>
-                <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-              </span>
-            </span>
-           
-            <span class="column-td" style="white-space: nowrap;">
-              <span class="lead_data">
-                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}">
-                  {{ request?.lead?.fullname }}
-                </span>
-                <span *ngIf="!request?.lead?.fullname"
-                  [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                  N/A
-                </span>
-                <span class="requester-email">
-                  {{ request?.lead?.email }}
-                </span>
-              </span>
-            </span>
-          </td> -->
-
           <!-- ----------------------------------------------------------- -->
           <!--  REQUESTER (in UNSERVED) -->
           <!-- ----------------------------------------------------------- -->
-
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;">
 
             <div class="requester-avatar-and-lead-data-wpr">
@@ -853,7 +788,9 @@
             </div>
           </td>
 
-          <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+          <!-- ----------------------------------------------------------- -->
+          <!-- USER AGENT BROWSER & OPERATING SYSTEM (in UNSERVED) -->
+          <!-- ----------------------------------------------------------- -->
           <td>
             <span *ngIf="request?.userAgent" class="tooltipx">
               <!-- 
@@ -989,26 +926,21 @@
             </span>
           </td>
 
-          <!-- ------ ============== DEPARTMENT =============== ------ -->
-
-          <!-- // DEPTS_LAZY: edit the existing one as this -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;
-          font-weight: 400;">
-
-            <!-- // DEPTS_LAZY: edit the existing one as this -->
+          <!-- ----------------------------------------------------------- -->
+          <!-- DEPARTMENT -->
+          <!-- ----------------------------------------------------------- -->
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;font-weight: 400;">
             <p *ngIf="request?.dept?.name" class="column-td">
               {{ request?.dept?.name }}
             </p>
             <p *ngIf="!request?.dept?.name" class="column-td">
               N/A
             </p>
-
-            <!-- <p *ngIf="request?.department" class="column-td" 
-              [innerHTML]="dept_replace( request?.department )"></p> -->
-
           </td>
 
-          <!-- ------ ====== CREATED ON ====== ------ -->
+          <!-- ----------------------------------------------------------- -->
+          <!-- CREATED ON -->
+          <!-- ----------------------------------------------------------- -->
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
             <p class="column-td">
               <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
@@ -1021,56 +953,51 @@
 
             </p>
           </td>
-          <!-- ------------------------------------------------------ -->
-          <!-- @ ACTIONS -->
-          <!-- ------------------------------------------------------ -->
-          <td class="td-actions text-right" style="padding-top: 9px !important;">
 
+          <!-- ------------------------------------------------------ -->
+          <!-- @ ACTIONS  padding-top: 9px !important; -->
+          <!-- ------------------------------------------------------ -->
+          <td class="td-actions text-right" style="">
 
-            <!-- ------------------------------------------------------ -->
             <!--  Join ACTION -->
-            <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='joinRequest(request?.request_id)'
-              matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}"
-              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
+              class="btn btn-tdblu btn-simple btn-xs" 
+              (click)='joinRequest(request?.request_id)'
+              matTooltipClass="mat-white-tooltip" 
+              matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}"
+              #tooltip="matTooltip" 
+              matTooltipPosition='above' 
+              matTooltipHideDelay="100"
               [disabled]="!PERMISSION_TO_JOIN_REQUEST">
+              <i class="material-icons">person_add</i>
+              
+            
 
-              <!-- ---------------------------------- -->
               <!-- SVG font-awesome link icon -->
-              <!-- ---------------------------------- -->
-              <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+              <!-- <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512">
                 <path fill="currentColor"
                   d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                 </path>
-              </svg>
-              <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
-                class="top">
-                <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
-                <i style="left: 54%;"></i>
-              </span> -->
-
+              </svg> -->
             </button>
 
-            <!-- ------------------------------------------------------ -->
             <!--  Archive ACTION -->
-            <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='archiveRequest(request?.request_id, request)'
+              class="btn btn-tdblu btn-simple btn-xs" 
+              (click)='archiveRequest(request?.request_id, request)'
               [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST" 
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
-              #tooltip="matTooltip" matTooltipPosition='above'
+              #tooltip="matTooltip" 
+              matTooltipPosition='above'
               matTooltipHideDelay="100">
-             <!-- ++ USER_ROLE {{USER_ROLE}} ++ PERMISSION_TO_ARCHIVE_REQUEST {{PERMISSION_TO_ARCHIVE_REQUEST}} -->
               <i class="material-icons">archive</i>
-            
             </button>
           </td>
-        </tr>
-        <!-- /. END UNSERVED REQUESTS -->
+
+        </tr> <!-- /. END UNSERVED REQUESTS -->
 
       </tbody>
     </table>

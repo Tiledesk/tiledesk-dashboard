@@ -185,6 +185,7 @@
     color: #00d4ff;
     font-weight: 400;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .text-accent-link-on-black .m-i-arrow-on-black {
@@ -236,6 +237,7 @@
     color: #fff;
     font-weight: 400;
     border: unset;
+    font-size: 14px;
 }
 
 .period-switch-btn:hover {
@@ -354,7 +356,7 @@
     &:before,
     &:after {
       // background: #fff;
-      background: #0f62ff;
+      background: var(--blue-20);
       content: "";
       display: block;
       width: $size;

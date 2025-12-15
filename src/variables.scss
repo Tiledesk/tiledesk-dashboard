@@ -9,6 +9,12 @@
  // https://www.rgbtohex.net/rgb/91-114-167  intessant link for the new color 5b72a7
  // https://color.adobe.com/color-palette-free-download-color-theme-14037012/ intessant linkfor the new color  5b72a7
  
+ // Set base font-size to 10px for easier rem calculations (1rem = 10px instead of 16px)
+ // This ensures compatibility with existing rem values after Angular 5 upgrade
+ html {
+   font-size: 10px !important; /* 1rem = 10px */
+ }
+
  body {
      --sidebar-bckgrnd-bottom-section-drk: #2d323e;
      --sidebar-bckgrnd-item-hover: rgba(248, 248, 248, 0.251);

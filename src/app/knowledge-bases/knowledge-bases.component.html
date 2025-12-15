@@ -1,15 +1,8 @@
-
-
-<!-- <p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
-  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  {{ 'KnowledgeBases' | translate }}
-</p> -->
-
-<p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+<!-- <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
    [class.chrome-gt-100]="isChromeVerGreaterThan100"
    [class.chrome-lt-100]="!isChromeVerGreaterThan100">
   {{ 'KnowledgeBases' | translate }}
-</p>
+</p> -->
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
@@ -30,7 +23,7 @@
 
       <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
         <!-- Sidebar sinistra -->
-        <div class="kb-sidebar" style="width: 260px; min-width: 200px; max-width: 320px; border-right: 1px solid #e0e0e0; padding: 20px 0; height: 100vh; position: sticky; top: 0; overflow-y: auto;">
+        <div class="kb-sidebar">
           <div class="sidebar-title" >
          
             {{ 'KbPage.YourKnowledgeBases' | translate }}
@@ -43,8 +36,7 @@
 
 
           <!-- SKELETON LOADER -->
-          <ul *ngIf="isLoadingNamespaces" class="kb-list" style="list-style: none; padding: 0; margin: 0;">
-            <!-- style="padding: 9px 0px 9px 9px;" -->
+          <ul *ngIf="isLoadingNamespaces" class="kb-list">
             <li *ngFor="let skeleton of [1]" >
               <div class="skeleton-item" style="display: flex; align-items: center; gap: 3px;">
                 <div class="skeleton-text" style="flex: 1; height: 42px; background: #eee;"></div>
@@ -52,11 +44,10 @@
             </li>
           </ul>
 
-          <ul class="kb-list" style="list-style: none; padding: 0; margin: 0;" *ngIf="!isLoadingNamespaces && namespaces?.length > 0">
+          <ul class="kb-list" *ngIf="!isLoadingNamespaces && namespaces?.length > 0">
             <li *ngFor="let ns of namespaces"
                 (click)="onSelectNamespace(ns)"
                 [ngClass]="{'active': ns === selectedNamespace}"
-                style="cursor: pointer; padding: 9px 0px 9px 9px; border-left: 4px solid transparent; transition: background 0.2s, border-color 0.2s;"
                 [style.background]="ns === selectedNamespace ? '#e3e9f6' : 'transparent'"
                 [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'"
                 [style.fontWeight]="ns === selectedNamespace ? '400' : '300'">
@@ -115,10 +106,6 @@
             
           </ul>
 
-          <!-- <button class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px);" (click)="presentModalAddNewNamespace()">
-            <mat-icon style="vertical-align: middle;">add</mat-icon>
-            <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
-          </button> -->
 
           <div  *ngIf="!isLoadingNamespaces" class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
             {{'KbPage.TotalContents' | translate }}: {{totalCount}}/{{quotas?.kbs}}
@@ -260,7 +247,7 @@
                  
                     <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
                        id="kb-chatbot" class="served-by-cb-wpr" style="margin-left: 8px;">
-                      <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; margin-bottom: 4px; flex-wrap: wrap;">
+                      <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; flex-wrap: wrap;">
                         <ng-container *ngFor="let chatbot of chatbotsUsingNamespace; let i = index">
                           <div class="served-by-cb-b" [ngClass]="{'first-served-by': i === 0, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
                             <div class="served-by-cb-c"
@@ -314,7 +301,7 @@
                     <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
     
-                      <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="margin-left: 4px; font-size: 12px;"
+                      <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="font-size: 12px;"
                         (click)="createChatbotfromKbOfficialResponderTemplate()">
       
                         <span *ngIf="!esportingKBChatBotTemplate">

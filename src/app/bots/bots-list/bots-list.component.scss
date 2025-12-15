@@ -619,11 +619,20 @@ input[type="checkbox"]:disabled {
   border-radius: 9999px !important;
   background-color: var(--blue-20) !important;
   text-transform: none !important;
+  margin-bottom: 0 !important; // Remove bottom margin to prevent spacing
+  padding-bottom: 0 !important; // Remove bottom padding
   font-size: 14px !important;
   font-family: var(--header-font-family) !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
   margin-right: 25px;
+  color: #fff !important; // Keep text white
+}
+
+.select-flow-btn:hover,
+.select-flow-btn:focus,
+.select-flow-btn:active {
+  color: #fff !important; // Keep text white on hover, focus and active
 }
 
 
@@ -985,17 +994,156 @@ input[type="checkbox"]:disabled {
 //   font-size: var(--order-by-selectet-value-font-size)
 //  }
 
-//  .dropdown-caret {
-//   color: var(--text-color)!important;
-//  }
 
-//  .caret-rotate-0 {
-//   transform: rotate(0deg);
-//  }
+// Bootstrap 5 dropdown compatibility - Override template styles that hide dropdowns
+// Template has: visibility: hidden, opacity: 0, margin-top: -20px on >= 992px
+.dropdown {
+  position: relative;
+}
 
-//  .caret-rotate-180 {
-//   transform: rotate(180deg);
-// }
+// Remove any padding/margin from dropdown parent that might cause spacing issues
+.dropdown.pull-right {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  z-index: 1000 !important;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 0 !important; // Remove margin to position directly below button
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  list-style: none;
+}
+
+// Default state: hidden (Bootstrap 5 default)
+.dropdown>.dropdown-menu {
+  display: none;
+  visibility: visible !important; // Override template visibility: hidden
+  opacity: 1 !important; // Override template opacity: 0
+  margin-top: 0 !important; // Position directly below button
+  margin-bottom: 0 !important;
+  transition: none !important; // Disable template transitions
+}
+
+// Bootstrap 5 adds .show to the toggle button, not the parent
+.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+// Also support Bootstrap 3/4 compatibility (.open on parent)
+.dropdown.open>.dropdown-menu {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 0 !important; // Position directly below button
+  margin-bottom: 0 !important;
+}
+
+// Override template media query that hides dropdowns on >= 992px
+@media (min-width: 992px) {
+  .dropdown>.dropdown-menu {
+    display: none; // Bootstrap 5 default - hidden until toggle has .show class
+    visibility: visible !important; // Override template visibility: hidden
+    opacity: 1 !important; // Override template opacity: 0
+    margin-top: 0 !important; // Position directly below button
+    margin-bottom: 0 !important;
+    transition: none !important; // Disable template transitions
+  }
+
+  // Bootstrap 5 adds .show to the toggle button, not the parent
+  .dropdown>a.dropdown-toggle.show~.dropdown-menu,
+  // Also support Bootstrap 3/4 compatibility (.open on parent)
+  .dropdown.open>.dropdown-menu {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 0 !important; // Position directly below button
+    margin-bottom: 0 !important;
+  }
+}
+
+// Specific positioning for select-flow-btn dropdown - override top: 100% to fix spacing
+.dropdown.pull-right .dropdown-menu,
+.dropdown .dropdown-menu.dropdown-menu-custom {
+  right: 0 !important;
+  left: auto !important;
+  top: 100% !important; // Keep 100% but ensure no extra spacing
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  transform: none !important; // Remove any transform that might offset
+}
+
+// More specific override to ensure dropdown is positioned correctly
+// Position directly after the button with no gap
+.dropdown.pull-right > a.select-flow-btn ~ .dropdown-menu,
+.dropdown > a.select-flow-btn ~ .dropdown-menu.dropdown-menu-custom {
+  top: 100% !important;
+  margin-top: 5px !important;
+  transform: none !important;
+  margin-right: 25px !important;
+}
+
+// Hide Bootstrap's automatic caret for orderByDropdown
+#orderByDropdown.dropdown-toggle::after {
+  display: none !important;
+  content: none !important;
+}
+
+// Hide Bootstrap's automatic caret for selectFlowDropdown
+#selectFlowDropdown.dropdown-toggle::after {
+  display: none !important;
+  content: none !important;
+}
+
+// Position orderByDropdown menu to prevent overflow
+#orderByDropdown ~ .dropdown-menu,
+.dropdown > #orderByDropdown ~ .dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+  min-width: max-content;
+}
+
+// Fix dropdown-item padding and margin to prevent overflow
+.dropdown-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li>a,
+.dropdown-menu .dropdown-item {
+  margin: 0 !important;
+  padding: 8px 16px;
+  display: block;
+  width: 100%;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.dropdown-menu li a:hover,
+.dropdown-menu li a:focus,
+.dropdown-menu li a:active,
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item:active {
+  background-color: var(--dropdown-menu-hover-color, #f8f9fa) !important;
+  color: var(--blue-20, #3ea9f5);
+  box-shadow: unset;
+}
 
 
 // .cl-card {

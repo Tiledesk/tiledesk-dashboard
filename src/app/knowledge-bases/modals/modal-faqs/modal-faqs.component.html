@@ -1,5 +1,5 @@
 <div class="m-header">
-  <h1 mat-dialog-title>
+  <h1 mat-dialog-title style="margin-bottom: 0px;">
     {{ 'FaqPage.AddFaqs' | translate }}
 
   </h1>
@@ -9,6 +9,7 @@
     </span>
   </div>
 </div>
+<!-- <h2 mat-dialog-subtitle> {{ 'KbPage.AddManually' | translate }} </h2> -->
 
 <!-- displayUploadFromCSVSection > {{ displayUploadFromCSVSection }} displayAddManuallySection >
 {{displayAddManuallySection}} -->
@@ -93,9 +94,9 @@
       </div>
     </div>
 
-    <div class="sutitle-in-upload-from-csv-section ">
+    <!-- <div class="sutitle-in-upload-from-csv-section ">
       {{ 'KbPage.AddManually' | translate }}
-    </div>
+    </div> -->
 
     <div class="second-section-subheader-right-column"> </div>
   </div>
@@ -212,10 +213,7 @@
 
           <div class="csv-file-delimiter-value">
 
-            <input style="width:55px; border-radius: 5px;
-          border: 1px solid #d9d9d9 !important;
-          font-weight: 600;
-          padding-left: 10px;" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
+            <input  [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
           </div>
         </div>
 

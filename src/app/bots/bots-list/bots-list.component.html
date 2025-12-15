@@ -1,21 +1,11 @@
+
 <!-- <span class="navbar-brand navbar-brand-sidebar-settings"
-  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
-  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-  <i class="material-icons">settings</i>
-  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Chatbots </span>
-</span> -->
-<span class="navbar-brand navbar-brand-sidebar-settings"
   [class.chrome-gt-100]="isChromeVerGreaterThan100"
   [class.chrome-lt-100]="!isChromeVerGreaterThan100"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <div class="chatbot-svg-icon">
 
-
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" height="29px" viewBox="0 -960 960 960" width="29px" fill="#3C4858">
-      <path
-        d="M151.33-370.67q-46.66 0-79-32.47Q40-435.61 40-482t32.47-78.86q32.47-32.47 78.86-32.47V-702q0-27 19.84-46.83Q191-768.67 218-768.67h150.67q0-46.66 32.47-79Q433.61-880 480-880t78.86 32.47q32.47 32.47 32.47 78.86H742q27 0 46.83 19.84Q808.67-729 808.67-702v108.67q46.66 0 79 32.47Q920-528.39 920-482t-32.47 78.86q-32.47 32.47-78.86 32.47v184q0 27-19.84 46.84Q769-120 742-120H218q-27 0-46.83-19.83-19.84-19.84-19.84-46.84v-184ZM348.82-464q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.65-33.01-13.66-13.5-33.17-13.5t-33.01 13.65Q302-530.02 302-510.51t13.66 33.01q13.65 13.5 33.16 13.5Zm262.67 0q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.66-33.01-13.65-13.5-33.16-13.5-19.51 0-33.01 13.65-13.5 13.66-13.5 33.17t13.65 33.01q13.66 13.5 33.17 13.5ZM314.67-283.33h330.66V-350H314.67v66.67ZM218-186.67h524V-702H218v515.33Zm262-258Z" />
-    </svg> -->
 
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
       x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve" height="29px"
@@ -40,7 +30,7 @@
     {{'Flows' | translate}}
   </span>
 
-</span>
+</span> -->
 
 
 
@@ -99,23 +89,25 @@
       
 
             <div class="dropdown pull-right" *ngIf="isChatbotRoute === 'all'">
-              <a  class="btn dropdown-toggle select-flow-btn" data-toggle="dropdown" 
+              <a  class="btn dropdown-toggle select-flow-btn" 
+                id="selectFlowDropdown" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false"
                 [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
-                (click)="PERMISSION_TO_ADD_FLOWS && isOpenSelecFlowTypeDropdown(isOpen = !isOpen)">
+                [attr.aria-disabled]="!PERMISSION_TO_ADD_FLOWS">
                 {{'NewFlow' | translate}}
-                  <b class="caret"  
-                    [ngClass]="{'caret-rotate-0': is0penSelectFlowDropDown === false, 'caret-rotate-180': is0penSelectFlowDropDown === true }"
-                    style="position: relative; left: 8px;">
+                  <b class="caret" style="position: relative; left: 8px;">
                   </b>
               </a>
               <ul *ngIf="PERMISSION_TO_ADD_FLOWS" class="dropdown-menu dropdown-menu-custom">
-                <li (click)="presentDialogCreateFlows(true)">
-                  <a>
+                <li>
+                  <a class="dropdown-item" (click)="presentDialogCreateFlows(true)">
                     {{'AIAgents' | translate}}
                   </a>
                 </li>
-                <li (click)="presentDialogCreateFlows(false)">
-                  <a>
+                <li>
+                  <a class="dropdown-item" (click)="presentDialogCreateFlows(false)">
                     {{'Automations' | translate}}
                   </a>
                 </li>
@@ -151,29 +143,33 @@
                   <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
                     <span class="order-by-label">{{'OrderBy' | translate}} </span>
 
-                    <div class="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <div class="dropdown">
+                      <a href="#" 
+                        class="dropdown-toggle" 
+                        id="orderByDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false"
+                        style="text-decoration: none;">
                         <span class="order-by-selected-value" *ngIf="orderBylastUpdated">{{'LastUpdated' | translate }}
                         </span>
                         <span class="order-by-selected-value" *ngIf="orderByCreationDate">{{'CreationDate' | translate}}
                         </span>
                         <span class="order-by-selected-value" *ngIf="orderByChatbotName">{{'Name' | translate}} </span>
-                        <span class="caret dropdown-caret"
-                          [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
                       </a>
-                      <ul class="dropdown-menu" style="left: -53px;">
+                      <ul class="dropdown-menu">
                         <li>
-                          <a (click)="orderBy('lastUpdates')">
+                          <a class="dropdown-item" (click)="orderBy('lastUpdates')" style="cursor: pointer;">
                             {{'LastUpdated' | translate }}
                           </a>
                         </li>
                         <li>
-                          <a (click)="orderBy('creationDate')">
+                          <a class="dropdown-item" (click)="orderBy('creationDate')" style="cursor: pointer;">
                             {{'CreationDate' | translate}}
                           </a>
                         </li>
                         <li>
-                          <a (click)="orderBy('botname')">
+                          <a class="dropdown-item" (click)="orderBy('botname')" style="cursor: pointer;">
                             {{'Name' | translate}}
                           </a>
                         </li>

@@ -1,5 +1,5 @@
-<!-- Navbar brand for Chrome, Firefox ... -->
-<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
+
+<!-- <div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
   style="z-index: 1050;position: relative; padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -7,13 +7,13 @@
   {{ "RequestMsgsPage.RequestDetails" | translate }}
 </div>
 
-<!-- Navbar brand for Safari -->
+
 <div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && isSafari" class="navbar-brand"
   style="z-index: 1050;position: absolute; padding-left:30px; top:6px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "RequestMsgsPage.RequestDetails" | translate }}
-</div>
+</div> -->
 
 <div id="conversation-detail-main-content" class="main-content" style="padding-top:0px"
   [ngClass]="{'main-content-chat-panel-mode' : CHAT_PANEL_MODE === true, 'main-content-normal-mode': CHAT_PANEL_MODE === false}">
@@ -48,7 +48,7 @@
                       <div class="chat-header-wpr-btn">
                         <!-- btn-primary chat-header-btn -->
                         <button #openChatBtn (click)="openChatAtSelectedConversation()"
-                          class="btn  btn-outlined plr-8 ptb-8 pull-right" role="button"
+                          class="btn  btn-outlined plr-8 ptb-8 float-end" role="button"
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='below' matTooltipHideDelay="100">
@@ -66,7 +66,7 @@
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                       <div class="chat-header-wpr-btn">
                         <!-- [matTooltip]="request?.status !== 1000 ? ( 'ThisConversationIsNotAssignedToYou' | translate ) : ( 'This conversation is closed, reopen it to Join' )"  -->
-                        <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                        <button class="btn btn-outlined plr-8 ptb-8 float-end" (click)="onJoinHandled()"
                           [disabled]="request?.status == 1000 || !PERMISSION_TO_JOIN_REQUEST" role="button"
                           matTooltipClass="custom-mat-tooltip" [matTooltip]="getJoinTooltipMessage()"
                           #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -85,7 +85,7 @@
                     && JOIN_TO_GROUP_HAS_ERROR === false">
                       <div class="chat-header-wpr-btn">
                         <!-- btn-primary chat-header-btn -->
-                        <button class="btn btn-outlined plr-8 ptb-8 pull-right">
+                        <button class="btn btn-outlined plr-8 ptb-8 float-end">
                           <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                           {{ 'RequestMsgsPage.Loading' | translate }}
                         </button>
@@ -100,7 +100,7 @@
 
                       <div class="chat-header-wpr-btn">
                         <!-- btn-danger chat-header-btn -->
-                        <button class="btn btn-red plr-8 ptb-8 pull-right" disabled>
+                        <button class="btn btn-red plr-8 ptb-8 float-end" disabled>
                           {{ 'Error' | translate }}
                         </button>
                       </div>
@@ -381,9 +381,9 @@
 
                 <!-- nk new -->
                 <div class="row chat-btns-and-text-row h-100 w-100">
-                  <div class="col-xs-12 plr-0">
+                  <div class="col-12 plr-0">
                     <div class="row w-100">
-                      <div class="col-xs-12 h-100 plr-0">
+                      <div class="col-12 h-100 plr-0">
                         <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
                           [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
                           (change)="onChangeReplyType(selectedResponseTypeID)">
@@ -405,7 +405,7 @@
                     <!-- ------------------------------------------------ -->
                     <!-- texarea send message  -->
                     <!-- ------------------------------------------------ -->
-                    <!-- <div class="col-xs-12  w-100 plr-0"> -->
+                    <!-- <div class="col-12  w-100 plr-0"> -->
                     <!-- row -->
                     <!-- <div class=" w-100"> -->
                     <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
@@ -459,7 +459,7 @@
 
 
 
-                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
+                    <div class="col-12 h-100 plr-0" style="position: relative;"
                       [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
 
                       <!-- For emojis -->
@@ -483,10 +483,10 @@
                     </div>
 
 
-                    <div class="col-xs-12  w-100 plr-0 chat-footer-actions">
+                    <div class="col-12  w-100 plr-0 chat-footer-actions">
                       <div class="row w-100">
-                        <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
-                          <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
+                        <div class="col-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
+                          <div class="btn-group dropup float-end" style="margin: 5px 1px;">
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
                               (click)="sendChatMessage()"
@@ -573,7 +573,7 @@
                             style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
-                            <button class="btn  pull-left upload-btn"
+                            <button class="btn  float-start upload-btn"
                               (click)="PERMISSION_TO_SEND_REQUEST && fileUpload.click()"
                               matTooltipClass="custom-mat-tooltip"
                               [matTooltip]="translate.instant('MaxAllowedSize', { file_size_limit: 10 })"
@@ -609,7 +609,7 @@
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
                   <button #openChatBtn (click)="openChatAtSelectedConversation()"
-                    class="btn btn-outlined plr-8 ptb-8 pull-right" role="button" matTooltipClass="custom-mat-tooltip"
+                    class="btn btn-outlined plr-8 ptb-8 float-end" role="button" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
@@ -625,7 +625,7 @@
                 *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
-                  <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                  <button class="btn btn-outlined plr-8 ptb-8 float-end" (click)="onJoinHandled()"
                     [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
                     [matTooltipDisabled]="request?.status == 1000" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -646,7 +646,7 @@
               && JOIN_TO_GROUP_HAS_ERROR === false">
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
-                  <button class="btn btn-outlined plr-8 ptb-8 pull-right">
+                  <button class="btn btn-outlined plr-8 ptb-8 float-end">
                     <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                     {{ 'RequestMsgsPage.Loading' | translate }}
                   </button>
@@ -661,7 +661,7 @@
 
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-danger chat-header-btn -->
-                  <button class="btn btn-red plr-8 ptb-8 pull-right" disabled>
+                  <button class="btn btn-red plr-8 ptb-8 float-end" disabled>
                     {{ 'Error' | translate }}
                   </button>
                 </div>
@@ -692,8 +692,8 @@
                     [ngClass]="{'conv-info-sidebar-header-wpr-chat': CHAT_PANEL_MODE === true}">
 
                     <div class="right-sidebar-actions">
-                      <div class="dropdown pull-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <div class="dropdown float-end" id="request-detail-actions-dropdown">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                           <span class="material-icons">
                             more_vert
                           </span>
@@ -703,7 +703,7 @@
 
                           <li *ngIf="CHAT_PANEL_MODE === true">
 
-                            <a (click)='openContactDetailsInNewWindow()'
+                            <a class="dropdown-item" (click)='openContactDetailsInNewWindow()'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
@@ -716,7 +716,7 @@
                           <li
                             [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REASSIGN_REQUEST || request?.status === 1000}">
                             <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_REASSIGN_REQUEST}"> -->
-                            <a (click)='openSelectUsersModal(action = "reassign")'
+                            <a class="dropdown-item" (click)='openSelectUsersModal(action = "reassign")'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
@@ -729,7 +729,7 @@
                           <li
                             [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST || request?.status === 1000}">
                             <!-- <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || !PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST}"> -->
-                            <a (click)='openSelectUsersModal(action = "invite")'
+                            <a class="dropdown-item" (click)='openSelectUsersModal(action = "invite")'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">person_add</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
@@ -743,7 +743,7 @@
                           <li
                             [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST) || request?.status === 1000}">
 
-                            <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
+                            <a class="dropdown-item" (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
                                 <!-- {{ 'VisitorsPage.LeaveChat' | translate }} -->
@@ -754,7 +754,7 @@
 
                           <li class="divider"></li>
                           <li [ngClass]="{'disable-dropdown-menu-btn' : !PERMISSION_TO_SEND_TRANSCRIPT}">
-                            <a (click)='displayModalDownloadTranscript()'
+                            <a class="dropdown-item" (click)='displayModalDownloadTranscript()'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">speaker_notes</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
@@ -764,7 +764,7 @@
                           </li>
                           <li class="divider"></li>
                           <li [ngClass]="{'disable-dropdown-menu-btn' : !PERMISSION_TO_BAN_VISITOR}">
-                            <a (click)='displayModalBanVisitor(request?.lead?.lead_id, request?.lead?.attributes?.ipAddress)'
+                            <a class="dropdown-item" (click)='displayModalBanVisitor(request?.lead?.lead_id, request?.lead?.attributes?.ipAddress)'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">not_interested</i>
                               <span style="position: relative; top: 1px; cursor:pointer">
@@ -1193,7 +1193,7 @@
                               <li *ngIf="agents_array?.length > 2">
                                 <div class="other-agents-dropdown-wpr"
                                   style="position: absolute; top: 40px; right: 26px;">
-                                  <div class="dropdown pull-right">
+                                  <div class="dropdown float-end">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                       <div role="button" class="served-by-avatar--others-agents"
                                         style="position: absolute;z-index: 2;top: 0px;left:-6px">
@@ -1445,7 +1445,7 @@
                             matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="(request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true) || !PERMISSION_TO_ARCHIVE_REQUEST">
                               <i class="material-icons" style="vertical-align: middle; ">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
@@ -1458,7 +1458,7 @@
                             matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="resolveRequest(request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="((request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true) || !PERMISSION_TO_ARCHIVE_REQUEST)">
                               <i class="material-icons" style="vertical-align: middle;">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
@@ -1474,7 +1474,7 @@
                             matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REOPEN">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
@@ -1488,7 +1488,7 @@
                             matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                              class="btn sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn float-end" role="button"
                               [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true || !PERMISSION_TO_REOPEN">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
@@ -1971,7 +1971,7 @@
                         <!-- Priority -->
                         <!-- ----------------------------------------------------------------------------- -->
                         <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
-                          <div class="col-sm--12">
+                          <div class="col-sm-12">
                             <div class="conv-priority">
                               <div class="ticket--panel-row-header">
 
@@ -2018,7 +2018,7 @@
                         <!-- Followers -->
                         <!-- ----------------------------------------------------------------------------- -->
                         <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
-                          <div class="col-sm--12">
+                          <div class="col-sm-12">
                             <div class="conv-followers">
                               <div class="ticket--panel-row-header">
                                 <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
@@ -2087,7 +2087,7 @@
                         <!-- Convert offline / online -->
                         <!-- ----------------------------------------------------------------------------- -->
                         <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
-                          <div class="col-sm--12">
+                          <div class="col-sm-12">
                             <div class="followers-container"
                               [ngClass]="{'followers-container-chat':CHAT_PANEL_MODE === true}">
 
@@ -2700,7 +2700,7 @@
                               </span>
 
                             </div>
-                            <button class="btn btn-get--feature-no-boxshadow pull-right" (click)="goToPricingFromChat()"
+                            <button class="btn btn-get--feature-no-boxshadow float-end" (click)="goToPricingFromChat()"
                               matTooltipClass="custom-mat-tooltip"
                               matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
                               matTooltipPosition='below' matTooltipHideDelay="100">
@@ -2783,7 +2783,7 @@
                           <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                             <div class="row">
-                              <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                                 <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                                   {{attribute?.attributeName }}:
                                 </div>
@@ -2793,7 +2793,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-xs-2 copy-icon-wpr"
+                              <div class="col-2 copy-icon-wpr"
                                 (click)="copyToClipboardPreChatFormValue(attribute?.attributeValue, attribute?.attributeName +'_tooltip')">
                                 <div [id]="attribute?.attributeName +'_tooltip'" class="has-copied-tooltip">
                                   {{ 'Copied' | translate }}
@@ -2851,7 +2851,7 @@
                             <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                               <div class="row">
-                                <div class="col-xs-12" style="padding-right: 1px;padding-bottom: 5px;">
+                                <div class="col-12" style="padding-right: 1px;padding-bottom: 5px;">
                                   <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                                     {{attribute?.attributeName }}:
                                   </div>
@@ -3326,7 +3326,7 @@
                             No data available
                           </div>
 
-                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                             style="text-align: right;">
                             <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                               style="cursor: pointer; color: #039be5; font-size:18px;"
@@ -3370,7 +3370,7 @@
                         <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                           <div class="row">
-                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                            <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                               <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                                 {{attribute?.attributeName }}:
                               </div>
@@ -3382,7 +3382,7 @@
 
                             </div>
 
-                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                               style="text-align: right;">
                               <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                                 style="cursor: pointer; color: #039be5; font-size:18px;"
@@ -3435,7 +3435,7 @@
                         <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                           <div class="row">
-                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                            <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                               <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
                                 class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> Attributes </div>
@@ -3453,7 +3453,7 @@
                             <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                             <!-- [ngClass]="{'down' : attributeFullText === true}" -->
                             <!-- white-space: nowrap;width: 1%; -->
-                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                               style="text-align: right;">
                               <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                                 style="cursor: pointer; color: #039be5; font-size:18px;"
@@ -3557,7 +3557,7 @@
   [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
   style="background-color: rgba(90,90,90,0.5);">
 
-  <div class="modal-dialog modal-lg users-list-modal"
+  <div class="modal-dialog  modal-fullscreen users-list-modal"
     [ngClass]="{'users-list-modal-dashboard-mode' : CHAT_PANEL_MODE === false, 'users-list-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
     role="document" style="width: 100%; height: 100vh; margin:0; padding: 0;">
     <div class="modal-content assign-reassign-modal-content"
@@ -3633,12 +3633,7 @@
                             <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
                             <!-- --------------------------------------------------------------------------------------------------- -->
                             <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
-                              <!-- <span *ngIf="actionInModal === 'reassign'">
-                                <h4 style="font-weight:400"
-                                  [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-                                  {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
-                                </h4>
-                              </span> -->
+                          
 
                               <span *ngIf="actionInModal === 'invite'">
                                 <h4 style="font-weight:400"

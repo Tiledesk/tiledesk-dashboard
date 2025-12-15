@@ -173,6 +173,7 @@
         line-height: inherit;
         white-space: pre;
         resize: block;
+        font-size: 12px;
 
         &.invalid {
             border: 2px solid red !important;
@@ -219,6 +220,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
+    font-size: 14px;
 
     .info-icon {
         margin-right: 8px;
@@ -446,4 +448,5 @@ mat-expansion-panel ::ng-deep {
     border-radius: 4px;
     position: relative;
     top: 4px;
+    padding: 0 8px;
 }

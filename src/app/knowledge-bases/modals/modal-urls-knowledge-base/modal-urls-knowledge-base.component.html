@@ -144,7 +144,7 @@
     <div class="form-container">
         <!-- <form [formGroup]="kbForm"> -->
         <div class="input-container">
-            <span class="textarea-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
+            <span class="textarea-label" style="font-size: 14px;">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
             <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
                 rows="4"></textarea>
@@ -171,7 +171,7 @@
                 {{'KbPage.RefreshRate' | translate}}
             </span>
 
-            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px; font-size: 14px;"
                 appendTo="body" 
                 [items]="refresh_rate | selectOptionsTranslate" 
                 bindLabel="name" bindValue="value" 
@@ -182,7 +182,7 @@
                 [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
             </ng-select>
 
-            <span class="input-label input-label-on-bottom">
+            <span class="input-label input-label-on-bottom" style="font-size: 12px;">
                 {{'KbPage.URLsSyncFrequency' | translate}}
             </span>
         </div>

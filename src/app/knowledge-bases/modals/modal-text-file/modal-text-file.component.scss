@@ -136,6 +136,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -149,6 +150,7 @@
         // line-height: 35px;
         // font-weight: 400;
         margin-bottom: 10px;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {
@@ -164,6 +166,7 @@
         border: 1px solid #c6cdd4;
         padding: 10px 15px;
         color: #22272d;
+        font-size: 14px;
 
         // line-height: 35px;
         // font-weight: 400;
@@ -212,7 +215,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
-
+    font-size: 14px;
     .info-icon {
         margin-right: 8px;
         font-size: 20px;

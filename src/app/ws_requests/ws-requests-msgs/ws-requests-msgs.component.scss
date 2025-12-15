@@ -700,6 +700,10 @@ button.close {
   position: relative;
   min-width: 36.38px;
   text-align: center;
+  height: 40px;
+  width: 40px;
+  line-height: 1.8;
+  font-size: 14px;
 }
 
 .dept---name-in-chat-panel-mode {
@@ -3574,6 +3578,92 @@ span .conv-svg-icon {
   right: 10px !important;
 }
 
+// Specific styles for request-detail-actions-dropdown to prevent style conflicts
+#request-detail-actions-dropdown {
+  position: relative;
+  
+  .dropdown-toggle {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 0;
+    
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      box-shadow: none;
+    }
+    
+    // Hide Bootstrap's default caret icon
+    &::after {
+      display: none !important;
+      content: none !important;
+    }
+  }
+  
+  .dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    z-index: 1050 !important;
+    min-width: 200px;
+    margin-top: 5px !important;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    list-style: none;
+    display: none;
+    
+    &.show {
+      display: block !important;
+    }
+  }
+  
+  // Bootstrap 5 compatibility - show dropdown when toggle has .show class
+  .dropdown-toggle.show ~ .dropdown-menu,
+  // Bootstrap 3/4 compatibility - show dropdown when parent has .open class
+  &.open .dropdown-menu {
+    display: block !important;
+  }
+  
+  // Ensure dropdown menu items are properly styled
+  .dropdown-menu li {
+    list-style: none;
+    
+    a {
+      display: block;
+      padding: 8px 15px;
+      color: #333;
+      text-decoration: none;
+      
+      &:hover,
+      &:focus {
+        background-color: #f5f5f5;
+        color: #333;
+      }
+    }
+    
+    &.divider {
+      height: 1px;
+      margin: 9px 0;
+      overflow: hidden;
+      background-color: #e5e5e5;
+    }
+    
+    &.disable-dropdown-menu-btn {
+      opacity: 0.5;
+      pointer-events: none;
+      
+      a {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
 
 .conv-info-sidebar-header-contact-info-wpr {
   cursor: pointer;
@@ -5927,7 +6017,7 @@ label {
   height: 36px;
   width: 36px;
   background-color: transparent;
-
+  line-height: 1.1;
 }
 
 // .close---round-btn:hover>span {
@@ -6048,3 +6138,4 @@ label {
   opacity: 1;
   visibility: visible;
 }
+

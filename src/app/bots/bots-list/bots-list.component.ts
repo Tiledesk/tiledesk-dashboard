@@ -298,6 +298,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.listenToProjectUser()
   }
 
+
   // getQueryParams() {
   //   this.activatedroute.queryParams.subscribe(params => {
   //     this.logger.log('[BOTS-LIST] GET QUERY PARAMS params ', params )

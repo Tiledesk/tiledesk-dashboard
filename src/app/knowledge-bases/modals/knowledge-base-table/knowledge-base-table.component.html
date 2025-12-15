@@ -301,7 +301,7 @@
                     <!-- <label for="search">{{ 'KbPage.TextSearch' | translate }}</label> -->
                     <!-- <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}"> -->
                     <input (keyup)="onLoadByFilter($event.target.value, 'name')"
-                        placeholder="{{ 'KbPage.SearchByName' | translate }}">
+                        placeholder="{{ 'KbPage.SearchByName' | translate }}" style="font-size: 14px;">
                     <span class="material-icons-outlined">search</span>
                 </div>
             </div>
@@ -317,7 +317,10 @@
                             <mat-icon>refresh</mat-icon>
                         </button>
                     </div>
-                    <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: <span class="contents-count-num">{{ kbsListCount }}</span>
+                    <div class="contents-count" style="font-size: 14px;"> {{ 'KbPage.TotalContents' | translate }}: 
+                        <span class="contents-count-num">
+                            {{ kbsListCount }}
+                        </span>
                     </div>
                 </div>
 

@@ -49,6 +49,7 @@ import { SleekplanService } from 'app/services/sleekplan.service';
 import { browserRefresh } from 'app/app.component';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
+import { NavigationService } from 'app/services/navigation.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -225,6 +226,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
   PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS:boolean;
 
+   currentTitle: string ;
+   currentIcon: string | null = null;
+
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -249,7 +254,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private navSvc: NavigationService
   ) {
 
     super(prjctPlanService, notifyService);
@@ -331,7 +337,110 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.listenToHomeRequestQuotes();
     this.listenToProjectUser()
+    this.getPageTitle()
   }
+
+
+  getPageTitle() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateTitle(event.url);
+      }
+    });
+    // Imposta il titolo iniziale
+    this.updateTitle(this.router.url);
+  }
+
+  private updateTitle(url: string) {
+    const cleanUrl = url.split('?')[0];
+    console.log('[NAVBAR] Clean URL:', cleanUrl);
+
+    // Controlla i percorsi specifici in ordine di priorità
+    if (cleanUrl.indexOf('/home') !== -1) {
+      this.currentTitle = 'Home';
+    } 
+    else if (cleanUrl.indexOf('/knowledge-bases') !== -1) {
+      this.currentTitle = 'KnowledgeBases';
+    }
+    else if (cleanUrl.indexOf('bots/my-chatbots/all') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = 'family_history';
+    } 
+    else if (cleanUrl.indexOf('flows/flow-aiagent') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = 'family_history';
+    } 
+    else if (cleanUrl.indexOf('flows/flow-automations') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = 'family_history';
+    } 
+    else if (cleanUrl.indexOf('flows/flow-webhooks') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = 'family_history';
+    }
+    else if (cleanUrl.indexOf('flows/flow-webhooks-logs') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = 'family_history';
+    }
+    else if (cleanUrl.indexOf('wsrequests') !== -1 || cleanUrl.indexOf('/wsrequests/') !== -1) {
+      this.currentTitle = 'Requests';
+      this.currentIcon =''
+    }
+    else if (cleanUrl.indexOf('wsrequest') !== -1 && this.router.url.includes('support-group-')) {
+      this.currentTitle = 'RequestMsgsPage.RequestDetails';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+
+  
+
+    
+  
+    
+    // } else if (cleanUrl.indexOf('/tasks') !== -1) {
+    //   this.currentTitle = 'Tasks';
+    // } else if (cleanUrl.indexOf('/team') !== -1) {
+    //   this.currentTitle = 'Team';
+    // } else if (cleanUrl.indexOf('/home') !== -1) {
+    //   this.currentTitle = 'Home';
+    // } else if (cleanUrl === '/dashboard' || cleanUrl === '/') {
+    //   this.currentTitle = 'Dashboard';
+    // } else if (cleanUrl.indexOf('/projects') !== -1) {
+    //   this.currentTitle = 'Progetti';
+    // } 
+    else {
+      // Fallback per URL non riconosciuti
+      // this.currentTitle = this.getFallbackTitle(cleanUrl);
+      this.currentIcon = null;
+    }
+
+    console.log('[NAVBAR] Title set to:', this.currentTitle);
+  }
+
+
+  onBackClick() {
+    // emit the "back" event
+    this.navSvc.emitBack();
+  }
+
+  private getFallbackTitle(url: string): string {
+    const segments = url.split('/').filter(segment => segment);
+    
+    if (segments.length === 0) return 'Dashboard';
+    
+    // Prendi l'ultimo segmento e formattalo
+    const lastSegment = segments[segments.length - 1];
+    return this.formatTitle(lastSegment);
+  }
+
+  private formatTitle(segment: string): string {
+    return segment
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+ 
+
 
 
   ngOnDestroy() {
@@ -1017,7 +1126,40 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   ngAfterViewInit() {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
-    this.logger.log('[NAVBAR] toggleButton ', this.toggleButton)
+    console.log('[NAVBAR] toggleButton ', this.toggleButton)
+    
+    // Check if Bootstrap 5 is loaded and let it handle dropdowns automatically
+    setTimeout(() => {
+      if (typeof (window as any).bootstrap !== 'undefined') {
+        const bootstrap = (window as any).bootstrap;
+        this.logger.log('[NAVBAR] Bootstrap 5 is loaded:', bootstrap);
+        
+        // Let Bootstrap 5 handle dropdowns automatically via data-bs-toggle
+        // But add event listeners to debug
+        const dropdownElements = navbar.querySelectorAll('[data-bs-toggle="dropdown"]');
+        console.log('[NAVBAR] Found dropdown elements:', dropdownElements.length);
+        
+        dropdownElements.forEach((element) => {
+          // Listen for click events to debug
+          element.addEventListener('click', (e) => {
+            console.log('[NAVBAR] Dropdown clicked:', element.id || element.className, e);
+          });
+          
+          // Listen for Bootstrap dropdown events
+          element.addEventListener('show.bs.dropdown', () => {
+            console.log('[NAVBAR] Dropdown show event:', element.id || element.className);
+          });
+          
+          element.addEventListener('shown.bs.dropdown', () => {
+            console.log('[NAVBAR] Dropdown shown event:', element.id || element.className);
+            const parent = element.closest('.dropdown');
+            console.log('[NAVBAR] Parent classes:', parent?.className);
+          });
+        });
+      } else {
+        this.logger.error('[NAVBAR] Bootstrap 5 is NOT loaded!');
+      }
+    }, 1000);
   }
 
   // bs_hasClickedChat IS PUBLISHED WHEN THE USER CLICK THE CHAT BTN FROM SIDEBAR OR HOME
@@ -2223,6 +2365,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
+    console.log('[NAVBAR] sidebarToggle titlee ', titlee)
     if (titlee.charAt(0) === '#') {
       titlee = titlee.slice(2);
     }

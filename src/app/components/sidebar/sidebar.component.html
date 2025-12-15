@@ -128,20 +128,7 @@
           #tooltip="matTooltip"
           matTooltipPosition='right' 
           matTooltipHideDelay="100" 
-          routerLinkActive="item-active" 
-          [class.item-active]="MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
-          MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ||
-          EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ||
-          FLOW_AUTOMATION_ROUTE_IS_ACTIVE ||
-          FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ||
-          MY_BOTS_IS_ROUTE_IS_ACTIVE || 
-          BOTS_DEMO_ROUTE_IS_ACTIVE || 
-          MY_BOTS_CS_ROUTE_IS_ACTIVE ||
-          TMPLT_ALL_ROUTE_IS_ACTIVE || 
-          TMPLT_CMNT_ROUTE_IS_ACTIVE ||
-          TMPLT_IS_ROUTE_IS_ACTIVE ||
-          TMPLT_CS_ROUTE_IS_ACTIVE ||
-          CREATE_BOT_ROUTE_IS_ACTIVE">
+          [class.item-active]="isBotRouteActive">
           <a id="bot-anchor" #botbtn (click)="goToAllMyChatbot()">
             <span>
               <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  >

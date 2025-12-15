@@ -115,7 +115,8 @@
     cursor: text;
     overflow: hidden;
     transition: max-height 0.5s ease-out;
-
+    font-size: 14px;
+    
     .answer-title {
         margin-bottom: 0px;
         font-size: 12px;
@@ -136,6 +137,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -149,7 +151,7 @@
         // line-height: 35px;
         // font-weight: 400;
         margin-bottom: 10px;
-
+        font-size: 14px;
         // letter-spacing: 0.5px;
         &.invalid {
             border: 2px solid red !important;
@@ -266,6 +268,7 @@
     flex-direction: row;
     justify-content: space-between;
     font-weight: 400;
+    font-size: 14px;
 }
 
 .chunk {

@@ -51,6 +51,7 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
 import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
+import { NavigationService } from 'app/services/navigation.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -423,6 +424,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_VIEW_TICKET_ID: boolean;
   PERMISSION_TO_VIEW_ALL_TAGS: boolean;
 
+  private backSub?: Subscription;
   /**
    * Constructor
    * @param router 
@@ -473,7 +475,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private faqService: FaqService,
     public rolesService: RolesService,
     private roleService: RoleService,
-    private cacheService: AllProjectsCacheService
+    private cacheService: AllProjectsCacheService,
+    private navSvc: NavigationService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -613,7 +616,9 @@ updateTagContainerHeight() {
 
     this.fileUploadAccept = this.appConfigService.getConfig().fileUploadAccept
     // this.getClickOutEditContactFullname()
+    this.listenToGoBack()
   }
+  
 
    ngAfterViewInit() {
     // -----------------------------------
@@ -649,6 +654,14 @@ updateTagContainerHeight() {
     if (this.observer) {
       this.observer.disconnect();
     }
+
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   listenToProjectUser() {
@@ -1239,31 +1252,6 @@ updateTagContainerHeight() {
       } else if (this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
       }
-      // && this.hasSearchedBy
-
-      // Called by history with advanced search options opened 
-      // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
-
-      //   // Called by history with advanced search options closed 
-      // } else if (this.previousUrl === 'history' && !this.isOpenedAdvancedSearch) {
-
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-      //   // && this.hasSearchedBy
-
-      // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch && this.selectedDept) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
-
-      // Called by all-conversations with advanced search options opened 
-      // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
-
-      // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch && this.selectedDept) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
-
-      //   // Called by all-conversations with advanced search options closed
-      // } else if (this.previousUrl === 'all-conversations' && !this.isOpenedAdvancedSearch) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
     }
 
     if (this.previousUrl === 'all-conversations' && this.queryParams) {
@@ -1277,14 +1265,6 @@ updateTagContainerHeight() {
     if (this.previousUrl === undefined) {
       this._location.back();
     }
-
-
-    // } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // }
-
 
   }
 

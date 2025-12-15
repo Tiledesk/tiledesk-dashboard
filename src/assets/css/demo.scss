@@ -1,6 +1,10 @@
 @import "./src/assets/sass/md/_variables.scss";
 @import "./src/assets/sass/cds/_variables.scss";
 
+.navbar .navbar-brand {
+  font-size: 18px;
+}
+
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -488,6 +492,14 @@ my-app .main-panel .main-content .card {
 /* tooltip top using attribute */
 
 /* table style overwrite */
+thead,tbody,tfoot,tr,td,th {
+  // border-style: unset;
+}
+
+.table .td-actions .btn  {
+  padding: 8px 5px;
+}
+
 .table>thead>tr>th,
 .table>tbody>tr>th,
 .table>tfoot>tr>th,
@@ -699,6 +711,10 @@ my-app .main-panel .main-content .card {
   color: var(--primary-btn-color) !important;
   // border: unset;
   height: 40px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-tdblu-no-boxshadow.h45 {
@@ -1485,7 +1501,7 @@ my-app .main-panel .main-content .card {
   text-overflow: ellipsis;
   font-weight: 500;
   margin-left: 2px;
-  margin-top: 2px;
+  // margin-top: 2px;
   margin-right: 8px;
 }
 
@@ -2185,6 +2201,21 @@ span.navbar-brand-title {
 
 footer ul {
   line-height: 0px;
+}
+
+/* Imposta font-size a 14px dentro il menu di ng-select */
+.ng-dropdown-panel {
+  font-size: 14px !important;
+}
+
+/* Testo delle opzioni */
+.ng-dropdown-panel .ng-option {
+  font-size: 14px !important;
+}
+
+/* Contenitore scrollabile */
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  font-size: 14px !important;
 }
 
 // select reply type (send message i conversation detail)
@@ -3518,6 +3549,7 @@ appdashboard-bots-sidebar {
   line-height: 14px;
   text-transform: var(--settings-sidebar-group-name-text-transform);
   cursor: default;
+  text-decoration: none;
   // letter-spacing: -0.01em;
   // font-weight: bold;
   // display: flex;
@@ -3561,6 +3593,7 @@ appdashboard-bots-sidebar {
   background-color: transparent;
   color: inherit;
   padding: 9px 12px;
+  text-decoration: none;
 
   // font-weight: var(--settings-sidebar-font-weight);
   // display: flex;
@@ -4341,6 +4374,9 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav li a:hover {
@@ -4412,6 +4448,15 @@ div:where(.swal2-container) .swal2-select {
   }
 }
 
+/* Fix Angular Material tabs inside Bootstrap 5 modal */
+#assign-reassign-modal .mat-tab-header,
+#assign-reassign-modal .mat-tab-label-container {
+  overflow: visible !important;
+}
+
+#assign-reassign-modal .mat-tab-header-pagination {
+  z-index: 1060; /* > modal (1055) */
+}
 
 
 /* analytics > metrics */

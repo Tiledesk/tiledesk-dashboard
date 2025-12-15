@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px;">
+  <div class="col-md-11 offset-md-1 col-sm-11 offset-sm-1 col-9 offset-3" style="right:25px;">
     <nav class="navbar navbar-transparent navbar-absolute">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -246,7 +246,7 @@
   </div>
 
   <!-- // added for new style start -->
-  <div class="container">
+  <div class="container" style="position: relative; z-index: 2;">
     <!-- style="margin-bottom:90px " -->
     <div class="row text-center">
       <div class="col-md-12 text-center align-self-center my-5">
@@ -267,7 +267,7 @@
 
     <div *ngIf="!showSpinner" class="projects-cards">
       <div class="row">
-        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer"
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-12" style="cursor:pointer"
         (click)='goToCreateProject()'>
 
           <!-- CARD ADD PROJECT -->
@@ -293,7 +293,7 @@
 
 
         <div *ngIf="projects?.length === 0 && MT === false">
-          <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
+          <div class="col-4 offset-4" style="cursor:pointer">
 
             <div class="card prjct-card">
               <div class="card-content" style="height:203px">
@@ -309,7 +309,7 @@
           </div>
         </div>
 
-        <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 col-md-offset-4' : projects?.length === 1 && 'MT' === false}" -->
+        <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 offset-md-4' : projects?.length === 1 && 'MT' === false}" -->
         <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
