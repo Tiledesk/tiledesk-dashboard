@@ -33,8 +33,9 @@
 
     <div class="input-field">
         <label>URL</label>
+        <!-- (input)="handleInput($event)" -->
         <input id="ollama-url" class="custom-input" type="url" name="ollama-url"
-            placeholder="URL of the external Ollama server" (input)="handleInput($event)"
+            placeholder="URL of the external Ollama server" 
             [(ngModel)]="integration.value.url" autocomplete="off">
     </div>
 
@@ -50,7 +51,7 @@
      <div class="input-field">
         <label>Api Key ({{'Optional' | translate}})</label>
 
-        <!-- <div class="password-input">
+        <div class="password-input">
             <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
                 [(ngModel)]="integration.value.apikey">
             <div class="show-hide-button">
@@ -59,9 +60,9 @@
                 <span *ngIf="keyVisibile === true" class="material-icons-outlined"
                     (click)="showHideKey()">visibility_off</span>
             </div>
-        </div> -->
+        </div>
 
-        <div class="password-input">
+        <!-- <div class="password-input">
             <input id="api-key-input" type="text" 
             name="api-key-input" 
             placeholder="{{ 'Integration.YourApikey' | translate }}"
@@ -76,7 +77,7 @@
                     <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
                 </button>
             </div>
-        </div>
+        </div> -->
 
     </div>
 

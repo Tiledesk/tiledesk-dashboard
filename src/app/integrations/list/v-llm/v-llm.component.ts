@@ -16,7 +16,8 @@ export class VLLMComponent implements OnInit {
    translateparams: any;
    newModelName: string = '';
    isMasked: boolean = true; // State for masking
- 
+   keyVisibile: boolean = false;
+
    constructor(
      private integrationService: IntegrationService,
      private logger: LoggerService
@@ -84,10 +85,18 @@ export class VLLMComponent implements OnInit {
      this.newModelName = null
    }
  
-   // ---------------------------------------------------
-   // Mask Api key without use input of password type
-   // ---------------------------------------------------
-    // ---------------------------------------------------
+  showHideKey() {
+    let input = <HTMLInputElement>document.getElementById('api-key-input');
+    if (this.keyVisibile === false) {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
+    }
+    this.keyVisibile = !this.keyVisibile;
+  }
+   
+   
+  // ---------------------------------------------------
   // Mask Api key without use input of password type
   // ---------------------------------------------------
   handleInput(event: Event): void {

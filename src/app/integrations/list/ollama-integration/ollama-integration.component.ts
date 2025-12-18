@@ -16,6 +16,7 @@ export class OllamaIntegrationComponent implements OnInit {
   translateparams: any;
   newModelName: string = '';
   isMasked: boolean = true; // State for masking
+    keyVisibile: boolean = false;
 
   constructor(
     private integrationService: IntegrationService,
@@ -84,6 +85,15 @@ export class OllamaIntegrationComponent implements OnInit {
     this.newModelName = null
   }
 
+  showHideKey() {
+    let input = <HTMLInputElement>document.getElementById('api-key-input');
+    if (this.keyVisibile === false) {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
+    }
+    this.keyVisibile = !this.keyVisibile;
+  }
  
   // ---------------------------------------------------
   // Mask Api key without use input of password type
