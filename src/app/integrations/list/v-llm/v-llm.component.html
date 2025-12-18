@@ -29,13 +29,12 @@
 
 <div class="content">
 
-
-
     <div class="input-field">
         <label>URL</label>
-        <input id="vLLM-url" class="custom-input" type="url" name="vLLM-url"
+        <input id="vLLM-url" class="custom-input" type="text" name="vLLM-url"
             placeholder="URL of the external vLLM server" 
-            [(ngModel)]="integration.value.url" autocomplete="off">
+            [(ngModel)]="integration.value.url" autocomplete="off" 
+            autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
 
 
@@ -50,33 +49,32 @@
         <div class="input-field">
         <label>Api Key ({{'Optional' | translate}})</label>
 
-        <div class="password-input">
+        <!-- <div class="password-input">
             <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
-                [(ngModel)]="integration.value.apikey">
+                [(ngModel)]="integration.value.apikey" autocomplete="new-password">
             <div class="show-hide-button">
                 <span *ngIf="keyVisibile === false" class="material-icons-outlined"
                     (click)="showHideKey()">visibility</span>
                 <span *ngIf="keyVisibile === true" class="material-icons-outlined"
                     (click)="showHideKey()">visibility_off</span>
             </div>
-        </div>
+        </div> -->
 
-        <!-- <div class="password-input">
+        <div class="password-input">
             <input id="api-key-input" type="text" 
             name="api-key-input" 
             placeholder="{{ 'Integration.YourApikey' | translate }}"
-            id="maskedInput"
             [value]="getDisplayValue()"
             (input)="handleInput($event)"
             (keydown.backspace)="handleBackspace()"
-            autocomplete="off" >
+            autocomplete="off" #maskedInput>
             <div class="show-hide-button">
-                <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)" #maskedInput>
+                <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)">
                     <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
                     <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
                 </button>
             </div>
-        </div> -->
+        </div>
 
     </div>
 

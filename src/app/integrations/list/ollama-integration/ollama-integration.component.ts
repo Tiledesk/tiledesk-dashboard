@@ -117,7 +117,9 @@ export class OllamaIntegrationComponent implements OnInit {
   }
 
   handleBackspace(): void {
-    this.integration.value.apikey = this.integration.value.apikey.slice(0, -1);
+    if (this.integration.value.apikey) {
+      this.integration.value.apikey = this.integration.value.apikey.slice(0, -1);
+    }
   }
 
   toggleMask(inputElement: HTMLInputElement): void {
