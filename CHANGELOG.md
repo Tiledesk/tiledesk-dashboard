@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.145
+- Adds the ability to set the API Key for Ollama and vLLM models
+
 ### 2.7.144
 - Adds the OpenAI Gpt-5.2 model
 - Adds a link to documentation on how to send a WhatsApp message to contacts in the contact list
