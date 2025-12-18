@@ -315,7 +315,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
      ngAfterViewInit() {
         this.runOnRouteChange();
-        this.hideFooter();
+        // this.hideFooter();
     }
 
     private setRecaptchaVisibility(url: string) {

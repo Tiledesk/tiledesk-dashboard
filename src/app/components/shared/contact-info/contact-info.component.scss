@@ -233,11 +233,11 @@ textarea[type="text"] {
 .invalid--email {
     color: var(--error-color);
     position: relative;
-    top: -8px;
+    // top: -8px;
     font-size: 12px;
     font-weight: 400;
     margin-left: 34px;
-    margin-top: 5px;
+    // margin-top: 5px;
 }
 
 /* Lead tags
@@ -422,7 +422,7 @@ textarea[type="text"] {
     outline: none;
     background: transparent;
     border-radius: 0px 4px 4px 0px;
-    padding: 0px 4px 0px 3px;
+    padding: 0px 4px 3px 3px;
     cursor: pointer;
 }
 
@@ -537,6 +537,7 @@ textarea[type="text"] {
     font-weight: var(--contact-custom-property-font-weight);
     white-space: nowrap;
     font-family: var(--content-font-family);
+    font-size: 14px;
 }
 
 #address-arrow-down {
@@ -579,26 +580,56 @@ textarea[type="text"] {
 }
 
 
+#lead-email::placeholder {
+    color: #8796af;
+    opacity: 1;  /* Firefox */
+    font-weight: 300;
+    font-size: 14px;
+}
+
+#lead-email::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+    font-size: 14px;
+}
+
+#lead-phone::placeholder {
+    color: #8796af;
+    opacity: 1;  /* Firefox */
+    font-weight: 300;
+    font-size: 14px;
+}
+
+#lead-phone::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+    font-size: 14px;
+}
+
 #lead-address::placeholder {
     color: #8796af;
     opacity: 1;  /* Firefox */
     font-weight: 300;
+    font-size: 14px;
 }
 
 #lead-address::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+    font-size: 14px;
 }
 
 #lead-company::placeholder {
     color: #8796af;
     opacity: 1; /* Firefox */
     font-weight: 300;
+    font-size: 14px;
 }
 
 #lead-company::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+    font-size: 14px;
 }
 
 #lead-street::placeholder {
@@ -610,6 +641,7 @@ textarea[type="text"] {
 #lead-street::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+    font-size: 14px;
 }
 
 
@@ -617,11 +649,13 @@ textarea[type="text"] {
     color: #8796af;
     opacity: 1; /* Firefox */
     font-weight: 300;
+     font-size: 14px;
 }
 
 #lead-province::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+     font-size: 14px;
 }
 
 
@@ -629,12 +663,14 @@ textarea[type="text"] {
     color: #8796af;
     opacity: 1; /* Firefox */
     font-weight: 300;
+     font-size: 14px;
 }
 
 
 #lead-postalzip::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+     font-size: 14px;
 }
 
 
@@ -642,10 +678,13 @@ textarea[type="text"] {
     color: #8796af;
     opacity: 1; /* Firefox */
     font-weight: 300;
+     font-size: 14px;
 }
 
 #lead-country::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+     font-size: 14px;
 }
 
 
@@ -653,23 +692,27 @@ textarea[type="text"] {
     color: #8796af;
     opacity: 1; /* Firefox */
     font-weight: 300;
+     font-size: 14px;
 }
 
 #lead-city::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+     font-size: 14px;
 }
 
 .custom-property::placeholder {
     color: #8796af;
     opacity: 1; /* Firefox */
     font-weight: 300;
+    font-size: 14px;
 }
 
 
 .custom-property::-ms-input-placeholder {
     color: #8796af; /* Edge 12 -18 */
     font-weight: 300;
+    font-size: 14px;
 }
 
 

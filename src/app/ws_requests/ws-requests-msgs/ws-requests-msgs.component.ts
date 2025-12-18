@@ -335,6 +335,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   otherTabs: boolean = false
   mainTabs: boolean = true
 
+  // Assign/Reassign modal tabs
+  assignTab0: boolean = true; // HumanTeammates
+  assignTab1: boolean = false; // Chatbots
+  assignTab2: boolean = false; // Departments
+  @ViewChild('assignReassignTabsContainer', { static: false }) assignReassignTabsContainer: ElementRef;
+  assignTabsCanScrollLeft: boolean = false;
+  assignTabsCanScrollRight: boolean = false;
+  isManuallyScrollingTabs: boolean = false; // Flag to prevent auto-scroll during manual scroll
+
   tagContainerElementHeight: any;
   convTagContainerElementHeight: any
   requestInfoListElementHeight: any;
@@ -537,6 +546,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
 
     this.getTagContainerElementHeight()
+    
+    // Check assign/reassign tabs scroll on resize
+    this.checkAssignTabsScroll();
   }
 
   getTagContainerElementHeight() {
@@ -4160,7 +4172,15 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
     this.getProjectUsersAndBots();
     this.getDepartments();
     this.displayUsersListModal = 'block'
+    // Initialize assign/reassign tabs - select first tab (HumanTeammates)
+    this.assignTab0 = true;
+    this.assignTab1 = false;
+    this.assignTab2 = false;
     this.logger.log('[WS-REQUESTS-MSGS] - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
+    // Check scroll after modal opens
+    setTimeout(() => {
+      this.checkAssignTabsScroll();
+    }, 200);
     const actualHeight = window.innerHeight;
     this.logger.log('[WS-REQUESTS-MSGS] - ON OPEN USER LIST MODAL -> ACTUAL WINDOW HEIGHT  ', actualHeight);
     const actualWidth = window.innerWidth;
@@ -7635,6 +7655,232 @@ extractUrls(text: string): string[] {
     this.tab2 = false;
     this.tab3 = true;
     this.tab4 = false;
+  }
+
+  // Assign/Reassign modal tab methods
+  hasSelectedAssignTab0() {
+    this.assignTab0 = true;
+    this.assignTab1 = false;
+    this.assignTab2 = false;
+    this.logger.log('hasSelectedAssignTab0', this.assignTab0);
+    this.checkAssignTabsScroll(true); // Allow auto-scroll when tab is selected
+  }
+
+  hasSelectedAssignTab1() {
+    this.assignTab0 = false;
+    this.assignTab1 = true;
+    this.assignTab2 = false;
+    this.logger.log('hasSelectedAssignTab1', this.assignTab1);
+    this.checkAssignTabsScroll(true); // Allow auto-scroll when tab is selected
+  }
+
+  hasSelectedAssignTab2() {
+    this.assignTab0 = false;
+    this.assignTab1 = false;
+    this.assignTab2 = true;
+    this.logger.log('hasSelectedAssignTab2', this.assignTab2);
+    this.checkAssignTabsScroll(true); // Allow auto-scroll when tab is selected
+  }
+
+  // Check if tabs can scroll and update arrow visibility
+  checkAssignTabsScroll(shouldScrollToSelected: boolean = false) {
+    if (this.CHAT_PANEL_MODE === true && this.assignReassignTabsContainer) {
+      setTimeout(() => {
+        const container = this.assignReassignTabsContainer.nativeElement;
+        const tabsContainer = container.querySelector('.assign-reassign-tabs');
+        if (tabsContainer) {
+          let scrollLeft = tabsContainer.scrollLeft;
+          const scrollWidth = tabsContainer.scrollWidth;
+          const clientWidth = tabsContainer.clientWidth;
+          
+          // If we're very close to the start (within 5px), snap to exactly 0
+          // This ensures the first tab is completely visible
+          if (scrollLeft > 0 && scrollLeft < 5) {
+            tabsContainer.scrollLeft = 0;
+            scrollLeft = 0;
+            this.logger.log('[ASSIGN-TABS] Snapped scroll to 0 to show first tab completely');
+          }
+          
+          // Use a tolerance (5px) to account for rounding errors and sub-pixel rendering
+          const tolerance = 5;
+          const maxScrollLeft = scrollWidth - clientWidth;
+          
+          this.assignTabsCanScrollLeft = scrollLeft > tolerance;
+          // Check if we can still scroll right (if there's more content to the right)
+          this.assignTabsCanScrollRight = maxScrollLeft > tolerance && scrollLeft < (maxScrollLeft - tolerance);
+          
+          this.logger.log('[ASSIGN-TABS] scrollLeft:', scrollLeft, 'scrollWidth:', scrollWidth, 'clientWidth:', clientWidth, 'maxScrollLeft:', maxScrollLeft, 'canScrollRight:', this.assignTabsCanScrollRight);
+          
+          // Only scroll to selected tab if explicitly requested and not manually scrolling
+          if (shouldScrollToSelected && !this.isManuallyScrollingTabs) {
+            this.scrollToSelectedTab();
+          }
+        }
+      }, 100);
+    }
+  }
+
+  // Scroll to make selected tab visible
+  scrollToSelectedTab() {
+    if (this.CHAT_PANEL_MODE === true && this.assignReassignTabsContainer && !this.isManuallyScrollingTabs) {
+      setTimeout(() => {
+        const container = this.assignReassignTabsContainer.nativeElement;
+        const tabsContainer = container.querySelector('.assign-reassign-tabs');
+        const tabs = tabsContainer ? tabsContainer.querySelectorAll('.assign-reassign-tab') : [];
+        let selectedTabIndex = -1;
+        
+        if (this.assignTab0) selectedTabIndex = 0;
+        else if (this.assignTab1) selectedTabIndex = 1;
+        else if (this.assignTab2) selectedTabIndex = 2;
+        
+        if (selectedTabIndex >= 0 && tabs[selectedTabIndex] && tabsContainer) {
+          const selectedTab = tabs[selectedTabIndex] as HTMLElement;
+          
+          // Calculate position relative to the scrollable container
+          const containerScrollLeft = tabsContainer.scrollLeft;
+          const containerWidth = tabsContainer.clientWidth;
+          const tabOffsetLeft = selectedTab.offsetLeft;
+          const tabWidth = selectedTab.offsetWidth;
+          
+          // Account for arrow padding (matches CSS padding-left: 50px)
+          const paddingTolerance = 50;
+          // When scrollLeft = 0, the first tab starts at offsetLeft = 0, but visible content starts at padding (45px)
+          // So we need to account for this in our visibility calculation
+          const visibleLeft = containerScrollLeft + paddingTolerance;
+          const visibleRight = containerScrollLeft + containerWidth - paddingTolerance;
+          // tabOffsetLeft is relative to the scrollable container, so for first tab it's 0
+          const tabLeft = tabOffsetLeft;
+          const tabRight = tabOffsetLeft + tabWidth;
+          
+          // Check if tab is fully visible (considering padding)
+          // For first tab, when scrollLeft = 0, tabLeft = 0, but visibleLeft = 45, so it's not fully visible
+          const isTabFullyVisible = tabLeft >= visibleLeft && tabRight <= visibleRight;
+          
+          this.logger.log('[ASSIGN-TABS] scrollToSelectedTab - Tab index:', selectedTabIndex, 
+            'containerScrollLeft:', containerScrollLeft, 'tabOffsetLeft:', tabOffsetLeft,
+            'visibleLeft:', visibleLeft, 'visibleRight:', visibleRight,
+            'tabLeft:', tabLeft, 'tabRight:', tabRight, 'isTabFullyVisible:', isTabFullyVisible);
+          
+          // Only scroll if tab is not fully visible
+          if (!isTabFullyVisible) {
+            let targetScrollLeft: number;
+            
+            if (tabLeft < visibleLeft) {
+              // Tab is to the left, scroll to show it from the left edge (with padding)
+              // For the first tab (index 0), when scrollLeft = 0, tabLeft = 0 but visibleLeft = 45
+              // So we need to scroll to a negative value to show the first tab completely
+              // But we can't scroll to negative, so we need to ensure padding is sufficient
+              if (selectedTabIndex === 0) {
+                // For first tab, ensure it's fully visible by scrolling to 0
+                // The padding-left should make the tab visible, but if not, we need to adjust
+                targetScrollLeft = 0; // Scroll completely to the left for first tab
+              } else {
+                targetScrollLeft = tabOffsetLeft - paddingTolerance;
+              }
+            } else if (tabRight > visibleRight) {
+              // Tab is to the right, scroll to show it from the right edge (with padding)
+              targetScrollLeft = tabOffsetLeft + tabWidth - containerWidth + paddingTolerance;
+            } else {
+              // Tab is partially visible, ensure it's fully visible
+              if (tabLeft < visibleLeft) {
+                // For the first tab, scroll all the way to the left
+                if (selectedTabIndex === 0) {
+                  targetScrollLeft = 0;
+                } else {
+                  targetScrollLeft = tabOffsetLeft - paddingTolerance;
+                }
+              } else {
+                targetScrollLeft = tabOffsetLeft + tabWidth - containerWidth + paddingTolerance;
+              }
+            }
+            
+            // Ensure we don't scroll beyond bounds
+            const maxScrollLeft = tabsContainer.scrollWidth - containerWidth;
+            targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft));
+            
+            // Scroll to target position
+            const scrollAmount = targetScrollLeft - containerScrollLeft;
+            if (Math.abs(scrollAmount) > 1) { // Only scroll if there's a meaningful difference
+              tabsContainer.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+              this.logger.log('[ASSIGN-TABS] Scrolling to show tab - targetScrollLeft:', targetScrollLeft, 'scrollAmount:', scrollAmount);
+            }
+          } else {
+            // Even if tab is visible, if it's the first tab and we're not at the start, scroll to start
+            if (selectedTabIndex === 0 && containerScrollLeft > 0) {
+              tabsContainer.scrollTo({ left: 0, behavior: 'smooth' });
+              this.logger.log('[ASSIGN-TABS] First tab selected, scrolling to start');
+            } else {
+              this.logger.log('[ASSIGN-TABS] Tab is already fully visible, no scroll needed');
+            }
+          }
+        }
+      }, 50); // Small delay to ensure DOM is updated
+    }
+  }
+
+  // Scroll assign/reassign tabs left
+  scrollAssignTabsLeft() {
+    if (this.assignReassignTabsContainer && this.CHAT_PANEL_MODE === true) {
+      this.isManuallyScrollingTabs = true;
+      const container = this.assignReassignTabsContainer.nativeElement;
+      const tabsContainer = container.querySelector('.assign-reassign-tabs') as HTMLElement;
+      if (tabsContainer) {
+        const currentScrollLeft = tabsContainer.scrollLeft;
+        const scrollAmount = -100;
+        let newScrollLeft = Math.max(0, currentScrollLeft + scrollAmount);
+        
+        // If we're scrolling left and getting close to the start, scroll all the way to the start
+        // to ensure the first tab is completely visible
+        if (newScrollLeft < 50) {
+          newScrollLeft = 0; // Scroll completely to the left
+        }
+        
+        this.logger.log('[ASSIGN-TABS] scrollAssignTabsLeft - currentScrollLeft:', currentScrollLeft, 'scrollAmount:', scrollAmount, 'newScrollLeft:', newScrollLeft);
+        
+        tabsContainer.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+        setTimeout(() => {
+          // Ensure we're exactly at 0 if we're close
+          if (tabsContainer.scrollLeft < 5) {
+            tabsContainer.scrollLeft = 0;
+          }
+          this.checkAssignTabsScroll(false); // Don't auto-scroll to selected tab
+          // Reset flag after scroll animation completes
+          setTimeout(() => {
+            this.isManuallyScrollingTabs = false;
+          }, 400);
+        }, 300);
+      } else {
+        this.logger.error('[ASSIGN-TABS] scrollAssignTabsLeft - tabsContainer not found');
+      }
+    }
+  }
+
+  // Scroll assign/reassign tabs right
+  scrollAssignTabsRight() {
+    if (this.assignReassignTabsContainer && this.CHAT_PANEL_MODE === true) {
+      this.isManuallyScrollingTabs = true;
+      const container = this.assignReassignTabsContainer.nativeElement;
+      const tabsContainer = container.querySelector('.assign-reassign-tabs') as HTMLElement;
+      if (tabsContainer) {
+        const currentScrollLeft = tabsContainer.scrollLeft;
+        const scrollAmount = 100;
+        const maxScrollLeft = tabsContainer.scrollWidth - tabsContainer.clientWidth;
+        const newScrollLeft = Math.min(maxScrollLeft, currentScrollLeft + scrollAmount);
+        
+        this.logger.log('[ASSIGN-TABS] scrollAssignTabsRight - currentScrollLeft:', currentScrollLeft, 'scrollAmount:', scrollAmount, 'maxScrollLeft:', maxScrollLeft, 'newScrollLeft:', newScrollLeft);
+        
+        tabsContainer.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+        setTimeout(() => {
+          this.checkAssignTabsScroll(false); // Don't auto-scroll to selected tab
+          // Reset flag after scroll animation completes
+          setTimeout(() => {
+            this.isManuallyScrollingTabs = false;
+          }, 400);
+        }, 300);
+      } else {
+        this.logger.error('[ASSIGN-TABS] scrollAssignTabsRight - tabsContainer not found');
+      }
+    }
   }
 
   goToRequestMsgs(request_recipient: string) {

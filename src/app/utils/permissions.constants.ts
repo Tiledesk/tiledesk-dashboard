@@ -6,7 +6,7 @@ export const PERMISSIONS = {
  
   INBOX_READ: 'inbox_read',
   REQUEST_UNASSIGNED_NOTIFICATION_READ: 'request_unassigned_notification_read',
-  REQUEST_UPDATE: 'request_update',
+  // REQUEST_UPDATE: 'request_update',
   REQUEST_SEND: 'request_send',
   REQUEST_CREATE_TICKET: 'request_create_ticket',
   REQUEST_CLOSE: 'request_close',

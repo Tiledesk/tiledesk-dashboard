@@ -549,6 +549,55 @@ button.close {
 .assign-reassign-modal-header {
   border-bottom: var(--header-border-bottom) !important;
   background-color: var(--card-background-color);
+  display: flex !important;
+  justify-content: center !important; // Center the title
+  align-items: center !important;
+  position: relative !important;
+  min-height: 50px !important; // Ensure minimum height
+  padding: 6px 12px !important; // Restore original padding
+  padding-right: 50px !important; // Make space for close button
+  overflow: visible !important; // Ensure button is not clipped
+  
+  .modal-title {
+    order: 1 !important;
+    flex: 0 1 auto !important; // Don't grow, allow shrink
+    margin: 0 !important;
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 8px;
+    
+    .title-wpr {
+      margin: 0 auto !important;
+      max-width: 936px;
+    }
+  }
+
+  .title-wpr-panel-mode {
+    font-size: 14px;
+    padding-left: 12px;
+  }
+  
+  .close---round-btn {
+    order: 2 !important;
+    flex-shrink: 0 !important; // Never shrink the button
+    flex-grow: 0 !important; // Never grow the button
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    // position: absolute !important; // Use absolute positioning
+    right: 25px; // Position from right edge
+    // top: 50% !important; // Center vertically
+    // transform: translateY(-50%) !important; // Center vertically
+    z-index: 100 !important; // Ensure it's on top
+  }
+}
+
+.close---round-btnt-panel-mode {
+  right: 0px !important;
+}
+
+.close---round-btnt-panel-mode > span {
+  font-size: 26px !important;
 }
 
 
@@ -614,9 +663,11 @@ button.close {
 }
 
 .modal-header-chat-panel-mode {
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-  padding-right: 6px !important;
+  // padding-top: 12px !important;
+  // padding-bottom: 12px !important;
+  // padding-right: 6px !important;
+  justify-content: space-between !important;
+  padding: 0 6px !important;
 }
 
 .card-content-chat-panel-mode {
@@ -804,26 +855,9 @@ button.close {
 .modal-body-chat-panel-mode {
   padding-top: 0px !important;
   margin-top: -5px !important;
+  max-width: 313px !important;
 }
 
-// .assign-reassign-modal-table>tbody>td>p {
-//   font-size: 14px;
-//   font-weight: 500;
-//   margin-bottom: 0px;
-// }
-
-// .assign-reassign-modal-table>tbody>td>p>span {
-//   color: #7695a5;
-//   line-height: 18px;
-//   font-size: 12px;
-// }
-
-// .assign-reassign-modal-table>tbody>td>span {
-//   color: #7695a5;
-//   line-height: 18px;
-//   font-size: 12px;
-//   text-transform: lowercase;
-// }
 
 // start TOOLTIP
 /* Tooltip container */
@@ -3128,6 +3162,19 @@ span .conv-svg-icon {
   background-color: #f9f9f9; /* Set track color */
 }
 
+.send-message-texarea::placeholder {
+  color: #8796af;
+  opacity: 1;  /* Firefox */
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.send-message-texarea::-ms-input-placeholder {
+  color: #8796af; /* Edge 12 -18 */
+  font-weight: 300;
+  font-size: 14px;
+}
+
 
 
 .send-chat-msg-btn {
@@ -3930,6 +3977,7 @@ label {
   width: 204px;
   font-family: var(--header-font-family);
   font-weight: 400;
+  text-decoration: none;
 }
 
 .contact-location > .contact-location-pin-icon {
@@ -4134,6 +4182,7 @@ label {
   font-size: 12px;
   border-radius: var(--btn-border-radius);
   text-transform: capitalize;
+  color: white !important; // Always white text
 }
 
 .working-status-dropdown-btn-chat {
@@ -4142,6 +4191,107 @@ label {
 
 .dropdown-menu-working-status-chat {
   left: 10px !important;
+}
+
+
+#dropdown-working-status {
+  .dropdown-menu-working-status {
+    li > a {
+      margin: 0 !important; // Remove margins to prevent items from going outside container
+      padding-left: 15px;
+      padding-right: 15px;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    // Highlight the active item based on current working status
+    li.active > a {
+      background-color: rgba(0, 123, 255, 0.1) !important; // Light blue background for active item
+      color: var(--text-color) !important;
+      
+      // Remove ::after pseudo-element that interferes with active state
+      &::after {
+        content: none !important;
+        display: none !important;
+      }
+    }
+    
+    // Also remove ::after from li.active itself
+    li.active::after {
+      content: none !important;
+      display: none !important;
+    }
+    
+    // Remove Bootstrap's default active state on first item
+    li:first-child > a.active:not(.dropdown-item) {
+      background-color: transparent !important;
+    }
+    
+    // Hover state for items
+    li > a:hover:not(.active) {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    // Active item hover state
+    li.active > a:hover {
+      background-color: rgba(0, 123, 255, 0.15) !important;
+      box-shadow: unset !important;
+    }
+
+     li > a:hover {
+      background-color: rgba(0, 123, 255, 0.15) !important;
+      box-shadow: unset !important;
+    }
+  }
+}
+
+// Styles for send-message-working-status dropdown
+#send-message-working-sttaus-dropdown {
+  .dropdown-menu-custom {
+    li > a {
+      margin: 0 !important; // Remove margins to prevent items from going outside container
+      padding-left: 15px;
+      padding-right: 15px;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    // Highlight the active item based on current selection
+    li.active > a {
+      background-color: rgba(0, 123, 255, 0.1) !important; // Light blue background for active item
+      color: var(--text-color) !important;
+      
+      // Remove ::after pseudo-element that interferes with active state
+      &::after {
+        content: none !important;
+        display: none !important;
+      }
+    }
+    
+    // Also remove ::after from li.active itself
+    li.active::after {
+      content: none !important;
+      display: none !important;
+    }
+    
+    // Hover state for items
+    li > a:hover:not(.active) {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    // Active item hover state
+    li.active > a:hover {
+      background-color: rgba(0, 123, 255, 0.15) !important;
+      box-shadow: unset !important;
+    }
+    
+    li > a:hover {
+      background-color: rgba(0, 123, 255, 0.15) !important;
+      box-shadow: unset !important;
+    }
+  }
 }
 
 .working-status-dropdown-btn.open {
@@ -4189,6 +4339,7 @@ label {
   border-radius: var(--btn-border-radius);
   text-transform: capitalize;
   font-weight: 400;
+  line-height: 1;
 }
 
 .sideber-header-btn>i {
@@ -4293,6 +4444,160 @@ label {
   cursor: pointer;
   fill: var(--conv-details-sidebar-tab-arrow-active-color);
   opacity: 1;
+}
+
+// Assign/Reassign tabs - specific styles (separate from sidebar tabs)
+.assign-reassign-tabs {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-right: auto;
+  flex: 1 1 0%;
+}
+
+ .assign-reassign-tabs-dashboard-mode {
+    flex: unset;
+    justify-content:center;
+    width: 100%;
+    gap: 18px;
+ }
+
+.assign-reassign-tab {
+  padding: 8px 8px 12px;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  color: var(--tab-text-color);
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+.assign-reassign-select-tab {
+  color: var(--active-tab-text-color);
+  border-bottom: var(--conv-details-sidebar-active-tab-border-bottom);
+  transition: transform 0.2s ease-in-out 0s, width 0.05s ease-in-out 0.1s;
+}
+
+.assign-reassign-select-tab > span { 
+  position: relative;
+  top: 1px;
+  color: var(--blue-20);
+}
+
+.assign-reassign-tabs > * + * {
+  margin-left: 0px;
+}
+
+.assign-reassign-tab-arrow-left-wpr {
+  margin-bottom: -4px;
+}
+
+.assign-reassign-tab-arrow-right-wpr {
+  margin-bottom: -4px;
+}
+
+.assign-reassign-tab-arrow-left-wpr > svg,
+.assign-reassign-tab-arrow-right-wpr > svg {
+  fill: var(--conv-details-sidebar-tab-arrow-color);
+  opacity: 0;
+}
+
+.assign-reassign-active-arrow > svg {
+  cursor: pointer;
+  fill: var(--conv-details-sidebar-tab-arrow-active-color);
+  opacity: 1;
+}
+
+// Assign/Reassign tabs container
+.assign-reassign-tabs-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+// Assign/Reassign tabs scroll styles for CHAT_PANEL_MODE
+.assign-reassign-tabs-container-chat-panel {
+  width: 313px !important;
+  max-width: 313px !important;
+  min-width: 313px !important;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  
+  // Arrows always visible, positioned absolutely
+  .assign-reassign-tab-arrow-left-wpr {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 4px;
+    cursor: pointer;
+    
+    svg {
+      opacity: 1 !important; // Always visible in CHAT_PANEL_MODE
+      fill: var(--conv-details-sidebar-tab-arrow-color);
+    }
+    
+    &.assign-reassign-active-arrow svg {
+      fill: var(--conv-details-sidebar-tab-arrow-active-color);
+      cursor: pointer;
+    }
+  }
+  
+  .assign-reassign-tab-arrow-right-wpr {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 4px;
+    cursor: pointer;
+    
+    svg {
+      opacity: 1 !important; // Always visible in CHAT_PANEL_MODE
+      fill: var(--conv-details-sidebar-tab-arrow-color);
+    }
+    
+    &.assign-reassign-active-arrow svg {
+      fill: var(--conv-details-sidebar-tab-arrow-active-color);
+      cursor: pointer;
+    }
+  }
+  
+  // Tabs container scrolls under arrows
+  .assign-reassign-tabs {
+    flex: 1;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-left: 50px; // Space for left arrow (increased to ensure first tab is fully visible)
+    padding-right: 50px; // Space for right arrow
+    
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE and Edge
+    
+    &::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    }
+    
+    // Ensure tabs don't wrap
+    flex-wrap: nowrap !important;
+    
+    // Ensure tabs maintain their width
+    .assign-reassign-tab {
+      flex-shrink: 0;
+      min-width: fit-content;
+    }
+  }
 }
 
 .ul-wpr {
@@ -4762,7 +5067,7 @@ label {
 .attributes-pre-chat-form-accordion svg {
   fill: var(--icon-color);
   margin-right: 12px;
-  margin-top: 2px;
+  // margin-top: 2px;
   align-self: flex-start;
   transition: all 0.2s ease-in-out 0s;
 }
@@ -4798,7 +5103,7 @@ label {
 
 .pre-chat-accordion-title {
   position: relative;
-  top: -6px;
+  top: 2px;
   font-weight: 400;
   margin-left: -6px;
   color: var(--text-color);
@@ -4846,10 +5151,10 @@ label {
   // font-family: var(--header-font-family);
   color: var(--text-color);
   font-weight: 400;
-  margin-bottom: 0;
-  font-size: 13px;
+  // margin-bottom: 0;
+  font-size: 14px;
   margin-right: 6px;
-  margin-top: -1px;
+  // margin-top: -1px;
 }
 
 #copy_ticket_id:hover {
@@ -5135,7 +5440,8 @@ label {
 }
 
 .conversation-tag-panel-mode {
-  max-width: 250px !important;
+  // max-width: 250px !important;
+  width: 213px !important;
 }
 
 .no-conv-tags-wpr {
@@ -5189,9 +5495,8 @@ label {
     opacity: 1;
     font-size: 16px;
     position: relative;
-    // top: -3px;
-    // left: -2px;
-    top: 3px;
+    top: 2px;
+    left:-1px
   }
 }
 
@@ -5231,6 +5536,7 @@ label {
   margin-bottom: 8px;
   background: var(--texarea-background);
   color: var(--text-color);
+  font-size: 14px;
 }
 
 
@@ -5326,10 +5632,11 @@ label {
 
 .attribute-accordion-name {
   position: relative;
-  top: -3px;
+  top: 3px;
   font-weight: 400;
   color: var(--text-color);
   font-family: var(--header-font-family);
+  font-size: 14px;
 }
 
 .attributes-accordion-no-data-wpr {
@@ -5437,7 +5744,7 @@ label {
 .chatbot-conv-accordion svg {
   fill: var(--icon-color);
   margin-right: 12px;
-  margin-top: 2px;
+  // margin-top: 2px;
   align-self: flex-start;
   transition: all 0.2s ease-in-out 0s;
 }
@@ -5477,7 +5784,7 @@ label {
 
 .chatbot-attributes-accordion-title {
   position: relative;
-  top: -6px;
+  top: 3px;
   font-weight: 400;
   margin-left: -2px;
   color: var(--text-color);
@@ -5521,7 +5828,7 @@ label {
   }
 }
 
-.attributes-decoded-jwt-accordion-in-chat:after {
+.attributes-decoded-jwt-accordion-chat:after {
   margin-right: 0px !important;
 }
 
@@ -5586,7 +5893,7 @@ label {
 
 .decoded-jwt-accordion-title {
   position: relative;
-  top: -3px;
+  top: 3px;
   font-weight: 400;
   color: var(--text-color);
   font-family: var(--header-font-family);
@@ -6011,13 +6318,21 @@ label {
 
 .close---round-btn {
   border: none !important;
-  float: right !important;
+  float: none !important; // Remove float for Bootstrap 5
+  margin-left: auto !important; // Bootstrap 5: push to right with flexbox
   border-radius: 50%;
   // color: rgb(235, 234, 235);
-  height: 36px;
-  width: 36px;
+  height: 36px !important;
+  width: 36px !important;
   background-color: transparent;
   line-height: 1.1;
+  order: 2 !important; // Ensure button is on the right side
+  flex-shrink: 0 !important; // Prevent button from shrinking
+  z-index: 10 !important; // Ensure button is always visible
+  position: relative !important; // Ensure proper stacking context
+  display: block !important; // Force display
+  visibility: visible !important; // Force visibility
+  opacity: 1 !important; // Force opacity
 }
 
 // .close---round-btn:hover>span {
@@ -6030,6 +6345,7 @@ label {
 .close---round-btn>span {
   font-size: 31px;
   color: var(--btn-color) !important;
+  font-weight:300 !important;
 }
 
 
@@ -6137,5 +6453,18 @@ label {
 .warning-message.visible {
   opacity: 1;
   visibility: visible;
+}
+
+#conv-note::placeholder {
+  color: #8796af;
+  opacity: 1;  /* Firefox */
+  font-weight: 300;
+  font-size: 14px;
+}
+
+#conv-note::-ms-input-placeholder {
+  color: #8796af; /* Edge 12 -18 */
+  font-weight: 300;
+  font-size: 14px;
 }
 

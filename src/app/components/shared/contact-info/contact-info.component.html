@@ -29,11 +29,17 @@
         <div class="form-group" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
-          <input #inputleademail id="lead-email" type="email" name="email" data-id="email" class="form-control input-md"
-            [(ngModel)]="contactNewEmail" (ngModelChange)="emailChange($event)" (keydown.enter)='inputleademail.blur()'
-            (blur)="editContactEmailOnBlur()" (focus)="contactEmailOnFocus()" placeholder="Email..." maxlength="255"
-            autocomplete="doNotAutoComplete" style="padding-bottom: 2px;"
-            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+          <input #inputleademail id="lead-email" type="email" 
+            name="email" data-id="email" class="form-control input-md"
+            [(ngModel)]="contactNewEmail" 
+            (ngModelChange)="emailChange($event)" (keydown.enter)='inputleademail.blur()'
+            (blur)="editContactEmailOnBlur()" 
+            (focus)="contactEmailOnFocus()" 
+            placeholder="Email..." 
+            maxlength="255"
+            autocomplete="doNotAutoComplete" 
+            style="padding-bottom: 2px;"
+            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '180px' : '100%' }">
 
           <!-- Transparent blocker shown only if not permitted-->
           <div *ngIf="!PERMISSION_TO_UPDATE_LEAD" (click)="onBlockedInputClick($event)" style="
@@ -79,15 +85,6 @@
       <div class="contact-row input-row">
         <span>
 
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="conv-dtls-custom-mat-tooltip"
-            matTooltip="{{ 'PhoneNumber' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-            matTooltipHideDelay="100">
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path
-              d="M22 3H2C.9 3 0 3.9 0 5v14c0 1.1.9 2 2 2h20c1.1 0 1.99-.9 1.99-2L24 5c0-1.1-.9-2-2-2zm0 16H2V5h20v14zm-2.99-1.01L21 16l-1.51-2h-1.64c-.22-.63-.35-1.3-.35-2s.13-1.37.35-2h1.64L21 8l-1.99-1.99c-1.31.98-2.28 2.37-2.73 3.99-.18.64-.28 1.31-.28 2s.1 1.36.28 2c.45 1.61 1.42 3.01 2.73 3.99zM9 12c1.65 0 3-1.35 3-3s-1.35-3-3-3-3 1.35-3 3 1.35 3 3 3zm0-4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm6 8.59c0-2.5-3.97-3.58-6-3.58s-6 1.08-6 3.58V18h12v-1.41zM5.48 16c.74-.5 2.22-1 3.52-1s2.77.49 3.52 1H5.48z" />
-          </svg> -->
-
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="none"
             style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="conv-dtls-custom-mat-tooltip"
             matTooltip="{{ 'PhoneNumber' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -101,10 +98,19 @@
         <div class="form-group" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
-          <input #inputleadphone type="tel" name="phone" data-id="phone" class="form-control input-md"
-            [(ngModel)]="contactPhone" placeholder="{{'PhoneNumber' | translate }}..." maxlength="255"
-            (keydown.enter)='inputleadphone.blur()' (blur)="editContactPhoneOnBlur()" autocomplete="doNotAutoComplete"
-            style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+          <input #inputleadphone type="tel" 
+             id="lead-phone"
+            name="phone" 
+            data-id="phone" 
+            class="form-control input-md"
+            [(ngModel)]="contactPhone" 
+            placeholder="{{'PhoneNumber' | translate }}..." 
+            maxlength="255"
+            (keydown.enter)='inputleadphone.blur()' 
+            (blur)="editContactPhoneOnBlur()" 
+            autocomplete="doNotAutoComplete"
+            style="padding-bottom: 2px;" 
+            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '180px' : '100%' }">
 
           <!-- Transparent blocker shown only if not permitted-->
           <div *ngIf="!PERMISSION_TO_UPDATE_LEAD" (click)="onBlockedInputClick($event)" style="
@@ -158,11 +164,19 @@
         <div class="form-group" style="margin-top: 2px; position: relative;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
-          <input #inputcompany type="text" id="lead-company" name="company" data-id="company"
-            class="form-control input-md" [(ngModel)]="contactCompany" placeholder="{{ 'Company' | translate }}..."
-            maxlength="255" (keydown.enter)='inputcompany.blur()' (blur)="editContactCompany()"
-            autocomplete="doNotAutoComplete" style="padding-bottom: 2px;"
-            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+          <input #inputcompany type="text" 
+            id="lead-company" 
+            name="company" 
+            data-id="company"
+            class="form-control input-md" 
+            [(ngModel)]="contactCompany" 
+            placeholder="{{ 'Company' | translate }}..."
+            maxlength="255" 
+            (keydown.enter)='inputcompany.blur()' 
+            (blur)="editContactCompany()"
+            autocomplete="doNotAutoComplete" 
+            style="padding-bottom: 2px;"
+            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '180px' : '100%' }">
 
 
           <!-- Transparent blocker shown only if not permitted-->
@@ -205,16 +219,6 @@
     <li class="address">
       <div class="contact-row input-row">
         <span>
-
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" fill="none"
-            style="min-width: 22px; min-height: 22px;" matTooltipClass="conv-dtls-custom-mat-tooltip"
-            matTooltip="{{'Address' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
-            matTooltipHideDelay="100">
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path
-              d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM10 5.47l4 1.4v11.66l-4-1.4V5.47zm-5 .99l3-1.01v11.7l-3 1.16V6.46zm14 11.08l-3 1.01V6.86l3-1.16v11.84z" />
-          </svg> -->
-
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="none"
             style="min-width: 22px; min-height: 22px;" matTooltipClass="conv-dtls-custom-mat-tooltip"
             matTooltip="{{'Address' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -227,9 +231,16 @@
         <div class="form-group" style="margin-top: 2px;cursor: pointer;padding-bottom: 2px;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
-          <input id="lead-address" type="text" name="address" data-id="address" class="form-control input-md"
-            [(ngModel)]="contactAddress" placeholder="{{'Address' | translate}}" maxlength="255" autocomplete="off"
-            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" disabled>
+          <input id="lead-address" 
+            type="text" 
+            name="address" 
+            data-id="address" 
+            class="form-control input-md"
+            [(ngModel)]="contactAddress" 
+            placeholder="{{'Address' | translate}}" 
+            maxlength="255" 
+            autocomplete="off"
+            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '180px' : '100%' }" disabled>
 
           <div *ngIf="PERMISSION_TO_UPDATE_LEAD" (click)="$event.stopPropagation();toggleAddress()" style="
               position: absolute;
@@ -453,10 +464,17 @@
             </div>
 
             <div class="input-custom-properties">
-              <input #inputcustomproperties id="{{property.name}}" type="text" name="{{property.name}}"
-                data-id="{{property.name}}" class="form-control input-md custom-property"
-                placeholder="{{property.label}}..." maxlength="255" (keydown.enter)='inputcustomproperties.blur()'
-                (blur)="onKey(property.name, property.label ,$event)" autocomplete="off" style="padding-bottom: 5px;"
+              <input #inputcustomproperties 
+                id="{{property.name}}" 
+                type="text" 
+                name="{{property.name}}"
+                data-id="{{property.name}}" 
+                class="form-control input-md custom-property"
+                placeholder="{{property.label}}..." 
+                maxlength="255" 
+                (keydown.enter)='inputcustomproperties.blur()'
+                (blur)="onKey(property.name, property.label ,$event)" 
+                autocomplete="off" style="padding-bottom: 5px;"
                 style="width: 100%;flex: 1 0 0px">
 
               <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_LEAD" (click)="onBlockedInputClick($event)"
@@ -505,12 +523,12 @@
             </g>
           </svg>
         </span>
-        <div class="ng-select-lead-properties-wpr" style="width: 100%; position: relative;">
+        <div class="ng-select-lead-properties-wpr" style="width: 100%; position: relative; font-size:14px;">
 
           <!-- contactsCustomProperties -->
           <ng-select class="contact-property" 
             #contactPropertySelect
-            [ngStyle]="{ 'width': CHAT_PANEL_MODE === true ? '242px' : '100%' }"
+            [ngStyle]="{ 'width': CHAT_PANEL_MODE === true ? '227px' : '100%' }"
             id="add-contatct-custom-property" 
             [items]="contactPropertiesToSelect"
             style="top: 0px;padding-right: 3px; margin-left: 2px;" 
@@ -563,10 +581,11 @@
         <form>
           <div class="lead-tags--container-wpr">
 
-            <div class="ng-select-tags-wpr" style="position: relative;">
+            <div class="ng-select-tags-wpr" style="position: relative; font-size:14px;">
               <ng-select class="add-contact-tag" 
                 [ngClass]="{'add-contact-tag-chat-mode': CHAT_PANEL_MODE === true}"
-                style="padding-right: 12px;margin-left: -1px;margin-right: 0.5px;" id="select-lead-tag"
+                style="padding-right: 12px;margin-left: -1px;margin-right: 0.5px;" 
+                id="select-lead-tag"
                 [ngStyle]="{'top':contactTags?.length === 0 ? '-10px' : '-10px' }" 
                 #ngSelect 
                 (change)="addTag(tag)"
