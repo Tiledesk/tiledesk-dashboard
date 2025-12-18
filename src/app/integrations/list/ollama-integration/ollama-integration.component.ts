@@ -77,6 +77,7 @@ export class OllamaIntegrationComponent implements OnInit {
     this.integration.value = {
       url: null,
       token: null,
+      apikey: null,
       models: []
     }
 

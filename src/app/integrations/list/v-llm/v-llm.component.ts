@@ -77,6 +77,7 @@ export class VLLMComponent implements OnInit {
      this.integration.value = {
        url: null,
        token: null,
+       apikey: null,
        models: []
      }
  
