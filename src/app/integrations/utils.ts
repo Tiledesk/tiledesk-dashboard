@@ -218,6 +218,7 @@ export class OllamaIntegration extends Integration {
         this.value = {
             url: null,
             token: null,
+            apikey: null,
             models: []
         }
     }
@@ -240,6 +241,7 @@ export class vLLMIntegration extends Integration {
         this.value = {
             url: null,
             token: null,
+            apikey: null,
             models: []
         }
     }
