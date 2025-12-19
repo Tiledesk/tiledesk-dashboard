@@ -91,8 +91,20 @@
             </span>
           </th>
 
+
+          <!-- ----------------------------------------------- -->
+          <!-- SERVED BY -->
+          <!-- ----------------------------------------------- -->
+          <th>
+            <span class="column-th-span">
+              {{ 'ServedBy' | translate }}
+            </span>
+          </th>
+
+        
+
           <!-- ------------------- -->
-          <!-- CREATED  -->
+          <!-- CREATED ON -->
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
@@ -115,8 +127,8 @@
         <!-- ------------------------- -->
         <!-- IF THERE ISN'T REQUESTS -->
         <!-- ------------------------ -->
-        <tr *ngIf="wsRequestsUnserved?.length === 0">
-          <td colspan="9" style="text-align: center; padding-top: 16px;">
+        <tr *ngIf="wsRequestsUnserved?.length === 0" class="align-middle">
+          <td colspan="10" style="text-align: center; padding-top: 16px;" class="align-middle">
             <p style="font-size:14px; color:#737376; font-weight: 100">
               {{ 'NoRequests' | translate }}
             </p>
@@ -127,7 +139,7 @@
         <!-- UNSERVED FOR -->
         <!-- ------------------------- -->
         <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn; let i= index"
-          [ngClass]="{'active-row': request?.request_id === storedRequestId }">
+          [ngClass]="{'active-row': request?.request_id === storedRequestId }" class="align-middle">
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!-- Checkbox -->
@@ -357,10 +369,10 @@
           </td>
 
           <!-- --------------------------------------- -->
-          <!-- MESSAGE -->
+          <!-- MESSAGE width: 215px; -->
           <!-- --------------------------------------- -->
-          <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
-            style="cursor:pointer; width: 215px;">
+          <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
+            style="cursor:pointer;">
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
 
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
@@ -446,7 +458,7 @@
                       </path>
                     </svg>
 
-                    <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                    <span style="font-size: 11px; color: #7695a5; position: relative;right: 2px;margin-right: 2px;">
                       {{ tag.tag}}
                     </span>
                   </div>
@@ -459,10 +471,8 @@
               <!--  -------------------------------------------------------------------- -->
               <div [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;"
                 *ngIf="request?.tags?.length > 2">
-                <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
-               color: rgba(0, 0, 0, 0.54) !important;
-               position: relative;
-               top: -2px;">... {{request?.tags?.length - 2}} {{'more' | translate }}
+                <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;color: rgba(0, 0, 0, 0.54) !important;position: relative;top: 0px;left: -2px;">
+                  ... {{request?.tags?.length - 2}} {{'more' | translate }}
                 </a>
               </div>
 
@@ -485,7 +495,7 @@
                         </path>
                       </svg>
 
-                      <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                      <span style="font-size: 11px; color: #7695a5; position: relative; left: -2px;">
                         {{ tag.tag}}
                       </span>
 
@@ -511,7 +521,7 @@
           <!-- ---------------------------------------- -->
           <!-- @ Priority & Message Channel  -->
           <!-- ---------------------------------------- -->
-          <td style="width: 1%;padding-left: 4px!important;">
+          <td style="width: 30px;">
             <div class="priority_and_channel_wpr" style="display: flex;">
               <!-- ---------------------------------------- -->
               <!-- @ Priority WRAPPER -->
@@ -524,13 +534,6 @@
                   matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
                   matTooltipPosition='above' matTooltipHideDelay="100">
                   <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
-                  <!-- <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'Priority' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">{{ 'high' | translate }} </span>
-                    <i></i>
-                  </span> -->
                 </span>
                 <!-- ---------------------------------------- -->
                 <!-- Priority Urgent -->
@@ -938,6 +941,26 @@
             </p>
           </td>
 
+          <!-- -------------------------------------------- -->
+          <!-- SERVED BY -->
+          <!-- -------------------------------------------- -->
+          <td>
+            <span class="no-agent-icon-wpr">
+              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve" height="32px" width="32px">
+                <g>
+                  <path  d="M25.5,17.3c0.2-0.5,0.2-1.1,0.2-1.7c0-1.6-0.6-3-1.7-4.1C23,10.4,21.6,9.9,20,9.9c-0.6,0-1.2,0.1-1.7,0.2
+                    c-0.5,0.2-1,0.4-1.5,0.7l7.9,7.9C25.1,18.4,25.3,17.9,25.5,17.3z"/>
+                  <path d="M11.2,9.2c-0.4,0.4-0.7,0.7-1.1,1.1c-0.1,0.1-0.5,0.6-0.8,1l4.9,4.9c0.1,1.4,0.7,2.6,1.7,3.6
+                    c1,0.9,2.2,1.5,3.6,1.6l4.6,4.6c-0.6-0.2-1.2-0.3-1.9-0.4s-1.4-0.2-2.3-0.2c-2,0-3.9,0.3-5.6,1c-1.6,0.6-3.1,1.4-4.7,2.5
+                    c0.2,0.2,0.4,0.5,0.6,0.7c0.2,0.2,0.3,0.3,0.5,0.5c0.1,0.1,0.2,0.3,0.4,0.5c0.2,0.2,0.3,0.3,0.5,0.5c1.3-0.9,2.6-1.6,3.9-2
+                    c1.4-0.5,2.9-0.7,4.4-0.7s2.9,0.2,4.4,0.7c1.4,0.5,2.7,1.2,4,2.1c0.4-0.4,0.8-0.8,1.2-1.2c0.2-0.2,0.6-0.8,1.1-1.2L11.2,9.2z"/>
+                </g>
+              </svg>
+            </span>
+            
+          </td>
+
           <!-- ----------------------------------------------------------- -->
           <!-- CREATED ON -->
           <!-- ----------------------------------------------------------- -->
@@ -957,11 +980,11 @@
           <!-- ------------------------------------------------------ -->
           <!-- @ ACTIONS  padding-top: 9px !important; -->
           <!-- ------------------------------------------------------ -->
-          <td class="td-actions text-right" style="">
+          <td class="td--actions">
 
             <!--  Join ACTION -->
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" 
+              class="btn btn-tdblu" 
               (click)='joinRequest(request?.request_id)'
               matTooltipClass="mat-white-tooltip" 
               matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}"
@@ -970,22 +993,11 @@
               matTooltipHideDelay="100"
               [disabled]="!PERMISSION_TO_JOIN_REQUEST">
               <i class="material-icons">person_add</i>
-              
-            
-
-              <!-- SVG font-awesome link icon -->
-              <!-- <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
-                data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512">
-                <path fill="currentColor"
-                  d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
-                </path>
-              </svg> -->
             </button>
 
             <!--  Archive ACTION -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" 
+              class="btn btn-tdblu" 
               (click)='archiveRequest(request?.request_id, request)'
               [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST" 
               matTooltipClass="mat-white-tooltip"

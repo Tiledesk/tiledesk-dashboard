@@ -384,8 +384,12 @@
                   <div class="col-12 plr-0">
                     <div class="row w-100">
                       <div class="col-12 h-100 plr-0">
-                        <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
-                          [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
+                        <ng-select class="select-response-type" 
+                          [clearable]="false" 
+                          [searchable]="false"
+                          [items]="responseType" 
+                          bindLabel="name" bindValue="id" 
+                          [(ngModel)]="selectedResponseTypeID"
                           (change)="onChangeReplyType(selectedResponseTypeID)">
                           <ng-template ng-label-tmp let-item="item">
                             <img height="15" width="15" style="width: 15px; height: auto; margin-right:3px "
@@ -485,7 +489,7 @@
 
                     <div class="col-12  w-100 plr-0 chat-footer-actions">
                       <div class="row w-100">
-                        <div class="col-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
+                        <div class="col-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 0px;">
                           <div class="btn-group dropup float-end" style="margin: 5px 1px;" id="send-message-working-sttaus-dropdown">
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
@@ -2019,9 +2023,13 @@
                               </div>
 
                               <!-- <div class="col-sm-12" style="margin-bottom: 8px;"> -->
-                              <div class="ticket-priority-select-wpr">
-                                <ng-select class="ticket-priority" [items]="priority" bindLabel="name" bindValue="name"
-                                  [clearable]="false" [hideSelected]="true" [(ngModel)]="selectedPriority"
+                              <div class="ticket-priority-select-wpr" style="position: relative; font-size:14px">
+                                <ng-select class="ticket-priority" 
+                                  [items]="priority" 
+                                  bindLabel="name" bindValue="name"
+                                  [clearable]="false" 
+                                  [hideSelected]="true" 
+                                  [(ngModel)]="selectedPriority"
                                   [searchable]="false" (change)="onChangeSelectedPriority(selectedPriority)"
                                   [disabled]="!PERMISSION_TO_UPDATE_REQUEST_PRIORITY">
                                   <ng-template ng-label-tmp let-item="item">
@@ -2051,22 +2059,6 @@
                           <div class="col-sm-12">
                             <div class="conv-followers">
                               <div class="ticket--panel-row-header">
-                                <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-
-                                <!-- <span style="vertical-align: middle">
-                                  <span class="followers-label" [ngClass]="{'followers-label-chat':CHAT_PANEL_MODE === true}">
-                                    {{'Followers' | translate}}
-                                  </span>
-                                  <span matTooltipClass="custom-mat-tooltip"
-                                    matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='right' 
-                                    matTooltipHideDelay="100">
-                                    <i class="material-icons">
-                                      help_outline
-                                    </i>
-                                  </span>
-                                </span> -->
 
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                   width="24px" fill="none" matTooltipClass="custom-mat-tooltip"
@@ -2078,7 +2070,7 @@
                               </div>
 
 
-                              <div class="followers-select" style="position: relative; width: 100%;">
+                              <div class="followers-select" style="position: relative; width: 100%; font-size: 14px; ">
                                 <ng-select class="ticket-followers" 
                                   [items]="projectTeammates" bindLabel="label"
                                   [multiple]="true" 
@@ -4408,7 +4400,7 @@
                     <tr>
 
                       <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
-                        <span style="color: #566787"
+                        <span style="color: #566787; font-size: 14px;"
                           [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                           {{ "UsersPage.User" | translate }}
                         </span>
@@ -4435,7 +4427,7 @@
                       </th>
 
                       <th *ngIf="CHAT_PANEL_MODE === false">
-                        <span style="color: #566787">
+                        <span style="color: #566787;font-size: 14px;">
 
                           {{ "Assignee" | translate }}
 
@@ -4443,7 +4435,7 @@
                       </th>
 
                       <th *ngIf="CHAT_PANEL_MODE === false">
-                        <span style="color: #566787; white-space: nowrap;">
+                        <span style="color: #566787; white-space: nowrap;font-size: 14px;">
                           {{ "UserRole" | translate }}
                         </span>
                       </th>
@@ -4530,7 +4522,7 @@
 
                       <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
                         (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                        {{ projectUser?.role | translate}}
+                       <span style="font-size: 14px;"> {{ projectUser?.role | translate}} </span> 
                       </td>
 
 
@@ -5245,26 +5237,20 @@
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
 
-        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModalTranscript()"
-          style="position: absolute; right: 14px;top: 16px;">
-          <span aria-hidden="true">
-           
-            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
-              <path
-                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
-              </path>
-            </svg>
-          </span>
-        </button> -->
+        <h5 class="modal-title" style="font-size: 20px;">Transcript</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+          aria-label="Close" 
+          (click)="closeModalTranscript()" style="font-size: 16px;">
+        </button>
       
-        <button type="button" style="position: absolute; right: 12px;" class="btn-close" aria-label="Close"
+        <!-- <button type="button" style="position: absolute; right: 12px;" class="btn-close" aria-label="Close"
           (click)="closeModalTranscript()"></button>
 
         <h4 class="modal-title">
           <span style="vertical-align: middle;">
             Transcript
           </span>
-        </h4>
+        </h4> -->
 
       </div>
       <!-- <hr *ngIf="CHAT_PANEL_MODE === false" class="transcript-custom-hr"> -->

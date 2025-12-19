@@ -390,6 +390,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'RequestMsgsPage.RequestDetails';
       this.currentIcon = 'keyboard_arrow_left';
     }
+    else if (cleanUrl.indexOf('history') !== -1) {
+      this.currentTitle = 'History';
+      this.currentIcon = '';
+    }
+    else if (cleanUrl.indexOf('all-conversations') !== -1) {
+      this.currentTitle = 'ConversationsNotInRealTime';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+
+    
+
+    
 
   
 

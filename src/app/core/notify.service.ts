@@ -851,7 +851,7 @@ export class NotifyService {
       allow_dismiss: true,
       showProgressbar: false,
       // timer: 55000,
-      template: '<div data-notify="container" style="padding:8px 15px " class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+      template: '<div data-notify="container" style="padding:8px 15px;font-size:12px" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         '<span data-notify="icon"></span> ' +
         '<span data-notify="title">{1}</span> ' +
@@ -871,7 +871,7 @@ export class NotifyService {
     this.notifyArchivingRequest.update({
       'type': 'success', 'message':
         `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
-        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px;font-size:12px">' + msg_part1 + '</span>'
     })
   }
 
@@ -881,7 +881,7 @@ export class NotifyService {
     this.notifyArchivingRequest.update({
       'type': 'success', 'message':
         `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
-        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px; font-size:12px">' + msg_part1 + '</span>'
     })
   }
 

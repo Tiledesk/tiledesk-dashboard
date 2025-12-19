@@ -2203,39 +2203,6 @@ footer ul {
   line-height: 0px;
 }
 
-/* Imposta font-size a 14px dentro il menu di ng-select */
-.ng-dropdown-panel {
-  font-size: 14px !important;
-}
-
-/* Testo delle opzioni */
-.ng-dropdown-panel .ng-option {
-  font-size: 14px !important;
-}
-
-/* Contenitore scrollabile */
-.ng-dropdown-panel .ng-dropdown-panel-items {
-  font-size: 14px !important;
-}
-
-// select reply type (send message i conversation detail)
-.ng-select.select-response-type {
-  text-align: initial !important;
-  margin-left: 12px !important;
-  max-width: 250px;
-  font-size: 14px;
-}
-
-.ng-select.select-response-type:focus {
-  outline: none !important;
-}
-
-.ng-select.select-response-type .ng-select-container {
-  display: flex !important;
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
-  border: unset !important;
-}
 
 // FOREGROUND NOTIFICATION
 .alert-minimalist {
@@ -2459,94 +2426,6 @@ footer ul {
 
 .tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator {
   vertical-align: middle !important;
-}
-
-/* select teammate status in user detail drawer */
-.ng-select.teammate-status-in-drawer .ng-select-container {
-  background-color: #2d323e;
-  color: #fff;
-  border: 1px solid #2d323e;
-}
-
-.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
-  background-color: #2d323e;
-  border: 1px solid #2d323e;
-}
-
-.ng-dropdown-panel.teammate-status-in-drawer {
-  background-color: #2d323e;
-  border: 1px solid #2d323e;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel {
-  background-color: #2d323e;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel.ng-select-bottom {
-  border: 1px solid #2d323e !important;
-  margin-top: 11px !important;
-  border-top-right-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items {
-  border-top-right-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: #2d323e !important;
-  color: #fff !important;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgba(30, 33, 41, 0.8) !important;
-}
-
-// removes the blu google blue border
-.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-  background-color: #2d323e;
-  box-shadow: unset;
-}
-
-// ng-select add tags
-.ng-select.ng-select-tags {
-  border: 0px;
-  min-height: 0px;
-  border-radius: 0;
-  position: relative;
-  top: -6px;
-}
-
-.ng-select.ng-select-tags .ng-select-container {
-  border-radius: 0;
-  border: unset;
-  // width: 503px;
-}
-
-.ng-select.custom-input .ng-select-container {
-  border: none;
-}
-
-// Used in KB
-// .ng-select.custom--input .ng-select-container {
-//   box-shadow: 0 0 4px #c7c7c7 !important;
-//   border: unset !important;
-//   border-radius: 12px !important;
-// }
-
-.ng-select-container {
-  height: 36px !important;
-}
-
-
-.ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
-  margin-top: 0px !important;
-  margin-left: 0px !important;
-}
-
-.ng-select.ng-select-tags .ng-select-container:hover {
-  box-shadow: unset !important;
 }
 
 .mat-autocomplete-panel.mat-autocomplete-visible {
@@ -2864,10 +2743,6 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 /* -----------------------------------------
 /* New buttons > new primary button 
 /* ----------------------------------------- */
-// rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
-// 7c8eb9  (--opal-violet;)
-// --indigo -> #6883d0
-//--indigo-deep -> #5b5dbc
 
 .btn.btn-p {
   background-color: var(--blue-light);
@@ -3027,25 +2902,128 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 
 
-// https://github.com/ng-select/ng-select/issues/608
-// .ng-select.custom {
-//   .ng-select-container {
-//     height: 42px;
-//     background-color: $nav-active-gray;
-//     border: 1px solid $form-input-border;
-//     .ng-value-container {
-//       color: $select-font-color;
-
-//       .ng-placeholder {
-//         color: $select-font-color;
-//       }
-//     }
-//   }
-// }
-
 /*
 /* CUSTOMIZED NG-SELECT
 /* -------------------------------------------------- */
+
+/* Imposta font-size a 14px dentro il menu di ng-select */
+.ng-dropdown-panel {
+  font-size: 14px !important;
+}
+
+/* Testo delle opzioni */
+.ng-dropdown-panel .ng-option {
+  font-size: 14px !important;
+}
+
+/* Contenitore scrollabile */
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  font-size: 14px !important;
+}
+
+
+
+// select reply type (send message i conversation detail)
+.ng-select.select-response-type {
+  text-align: initial !important;
+  margin-left: 12px !important;
+  max-width: 250px;
+  font-size: 14px;
+}
+
+.ng-select.select-response-type:focus {
+  outline: none !important;
+}
+
+.ng-select.select-response-type .ng-select-container {
+  display: flex !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  border: unset !important;
+}
+
+/* select teammate status in user detail drawer */
+.ng-select.teammate-status-in-drawer .ng-select-container {
+  background-color: #2d323e;
+  color: #fff;
+  border: 1px solid #2d323e;
+}
+
+.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
+  background-color: #2d323e;
+  border: 1px solid #2d323e;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer {
+  background-color: #2d323e;
+  border: 1px solid #2d323e;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel {
+  background-color: #2d323e;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel.ng-select-bottom {
+  border: 1px solid #2d323e !important;
+  margin-top: 11px !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items {
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: #2d323e !important;
+  color: #fff !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: rgba(30, 33, 41, 0.8) !important;
+}
+
+// removes the blu google blue border
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  background-color: #2d323e;
+  box-shadow: unset;
+}
+
+// ng-select add tags
+.ng-select.ng-select-tags {
+  border: 0px;
+  min-height: 0px;
+  border-radius: 0;
+  position: relative;
+  top: -6px;
+}
+
+.ng-select.ng-select-tags .ng-select-container {
+  border-radius: 0;
+  border: unset;
+  // width: 503px;
+}
+
+.ng-select.custom-input .ng-select-container {
+  border: none;
+}
+
+
+.ng-select-container {
+  height: 36px !important;
+}
+
+
+.ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+}
+
+.ng-select.ng-select-tags .ng-select-container:hover {
+  box-shadow: unset !important;
+}
+
 
 // ------------------------------
 // ticket-priority select
@@ -3099,6 +3077,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .ng-select.ticket-followers .ng-select-container .ng-value-container .ng-placeholder {
+  top: 10px !important;
   color: var(--secondary-text-color);
 }
 
@@ -4457,6 +4436,19 @@ div:where(.swal2-container) .swal2-select {
 
 #assign-reassign-modal .mat-tab-header-pagination {
   z-index: 1060; /* > modal (1055) */
+}
+
+/*
+/* Bootstrap 5 fix
+/* ************************ */
+.td--actions .btn-tdblu  {
+  background-color: transparent;
+  color: var(--blue-20);
+  box-shadow: unset;
+}
+
+.td--actions .btn:hover {
+   box-shadow: unset;
 }
 
 

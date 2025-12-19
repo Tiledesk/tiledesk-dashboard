@@ -9,235 +9,147 @@
 
     <div style="height: 87px; position: relative;">
       <ul class="bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="top: 60px; position: absolute; width: 100%;">
-      <ng-container *ngIf="hasDefaultRole">
-        <li *ngIf="ROLE_IS_AGENT === false" (click)="seeIamAgentRequests(seeAll = !seeAll)"
-          class="btn-with-border-effect" [ngClass]="
-            { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
-              'border-from-center' : displayBtnLabelSeeYourRequets === true,
-              'li-active' : displayBtnLabelSeeYourRequets === false
-            }">
+        <ng-container *ngIf="hasDefaultRole">
+          <li *ngIf="ROLE_IS_AGENT === false" (click)="seeIamAgentRequests(seeAll = !seeAll)"
+            class="btn-with-border-effect" [ngClass]="
+              { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
+                'border-from-center' : displayBtnLabelSeeYourRequets === true,
+                'li-active' : displayBtnLabelSeeYourRequets === false
+              }">
 
-          <a href="javascript:;" role="button"> {{ "AllAgentsRequests" | translate }} </a>
+            <a href="javascript:;" role="button"> {{ "AllAgentsRequests" | translate }} </a>
+          </li>
+
+          <li (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect" [ngClass]="
+          { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
+            'border-from-center' : displayBtnLabelSeeYourRequets === false, 
+            'li-active' : displayBtnLabelSeeYourRequets === true
+          }">
+            <a href="javascript:;" role="button"> {{ "YourRequests" | translate }} </a>
+          </li>
+        </ng-container>
+      
+        <!-- CREATE TICKET -->
+        <!-- PERMISSION_TO_CREATE_TICKET -->
+        <li *ngIf="isVisibleCreateTicket" class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
+          <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+            (click)="presentCreateInternalRequestModal()" 
+            class="btn btn-tdblu-no-boxshadow"
+            style="font-size: 12px;  margin-left: 15px;height: 36px;"
+            [disabled]="!PERMISSION_TO_CREATE_TICKET"
+            matTooltipClass="conv-custom-mat-tooltip"
+            #tooltip="matTooltip"
+            matTooltipPosition='above'
+            matTooltipHideDelay="100"
+            [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
+            [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
+
+            <span aria-hidden="true" class="material-icons"
+              style="vertical-align: middle; margin-bottom: 0px; margin-top: 1px;">
+              add_circle
+            </span>
+            {{ 'CreateTicket' | translate }}
+            <!-- {{ 'Ticket' | translate }} -->
+          </button>
         </li>
 
-        <li (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect" [ngClass]="
-        { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
-          'border-from-center' : displayBtnLabelSeeYourRequets === false, 
-          'li-active' : displayBtnLabelSeeYourRequets === true
-        }">
-          <a href="javascript:;" role="button"> {{ "YourRequests" | translate }} </a>
+
+        <!-- NO REALTIME REQUESTS -->
+        <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
+          (click)='goToNoRealtimeConversations()'>
+          <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
+            class="tool_tip" style="cursor: pointer; display: unset;"
+            [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
+            matTooltipPosition='below' matTooltipHideDelay="100">
+            <span aria-hidden="true" class="material-icons">
+              manage_search
+            </span>
+          </a>
+
+          <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+            <span>
+              <!-- {{ served_unserved_sum }} -->
+              <!--  -->
+              {{countRequestsServedByHumanRr + countRequestsUnservedRr + countRequestsServedByBotRr}}
+            </span>
+          </span>
         </li>
-      </ng-container>
-      <!-- 
-      <li class="right-li right-li-simulate-visitor" style="float: right !important;padding-top: 10px!important">
-        <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success">
-          {{ 'VisitorsPage.SimulateVisitor' | translate }}
-        </button>
-      </li> -->
-      <!-- CREATE TICKET -->
-       <!-- PERMISSION_TO_CREATE_TICKET -->
-      <li *ngIf="isVisibleCreateTicket" class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
-        <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
-          (click)="presentCreateInternalRequestModal()" 
-          class="btn btn-tdblu-no-boxshadow"
-          style="font-size: 12px;  margin-left: 15px;height: 36px;"
-          [disabled]="!PERMISSION_TO_CREATE_TICKET"
-          matTooltipClass="conv-custom-mat-tooltip"
-          #tooltip="matTooltip"
-          matTooltipPosition='above'
-          matTooltipHideDelay="100"
-          [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
-          [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
 
-          <span aria-hidden="true" class="material-icons"
-            style="vertical-align: middle; margin-bottom: 0px; margin-top: 1px;">
-            add_circle
-          </span>
-          {{ 'CreateTicket' | translate }}
-          <!-- {{ 'Ticket' | translate }} -->
-        </button>
-      </li>
-
-      <!--OPERATING HOURS -->
-      <!-- <li class="operating-hours right-li" style="float: right;padding-left: 5px;">
-        <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
-          class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
-          (click)="goToOperatingHours()">
-          <i class="material-icons" style="color:#AAA; margin-top: 3px;">access_time</i>
-
-          <div class="bottom"
-            style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
-            {{ 'OperatingHoursAreDisabled' | translate }}
-            <i></i>
-          </div>
-        </a>
-        <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
-          style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-          <i aria-hidden="true" class="material-icons" style="color:#3ea9f5; margin-top: 3px;">access_time</i>
-
-          <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
-            {{ 'OperatingHoursAreEnabled' | translate }}
-
-            <i></i>
-          </div>
-        </a>
-      </li> -->
-
-      <!-- NO REALTIME REQUESTS -->
-      <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
-        (click)='goToNoRealtimeConversations()'>
-        <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
-          class="tool_tip" style="cursor: pointer; display: unset;"
-          [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
-          matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
-          matTooltipPosition='below' matTooltipHideDelay="100">
-          <span aria-hidden="true" class="material-icons">
-            manage_search
-          </span>
-          <!-- <div class="bottom"
-        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
-        {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
-        <i></i>
-      </div> -->
-        </a>
-
-        <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
-          <span>
-            <!-- {{ served_unserved_sum }} -->
-            <!--  -->
-            {{countRequestsServedByHumanRr + countRequestsUnservedRr + countRequestsServedByBotRr}}
-          </span>
-        </span>
-      </li>
-
-      <!-- SHOW SERVED REQUEST MAP -->
-      <li class="show-request-on-map right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
-        <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-          style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
-          matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
-          matTooltipHideDelay="100">
-          <span class="material-icons">
-            pin_drop
-          </span>
-          <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
-        white-space: nowrap;">
-        {{'ViewServedRequestsMap' | translate}}
-        <i></i>
-      </div> -->
-        </a>
-      </li>
-    </ul>
+        <!-- SHOW SERVED REQUEST MAP -->
+        <li class="show-request-on-map right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
+          <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
+            style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+            matTooltipHideDelay="100">
+            <span class="material-icons">
+              pin_drop
+            </span>
+          </a>
+        </li>
+      </ul>
 
      
-    <!-- --------------------------------------------------------- -->
-    <!-- @ FOR SMALL SCREEN  -->
-    <!-- --------------------------------------------------------- -->
-    <!-- CREATE TICKET * FOR SMALL SCREEN  -->
-    <ul class="bottom-bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="display: none;">
-      <li class="" style="padding-top: 3px!important; padding-left: 10px!important">
-        <!-- PERMISSION_TO_CREATE_TICKET  -->
-        <button *ngIf="isVisibleCreateTicket"  attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
-          (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;"
-           [disabled]="!PERMISSION_TO_CREATE_TICKET"
-          matTooltipClass="conv-custom-mat-tooltip"
-          #tooltip="matTooltip"
-          matTooltipPosition='above'
-          matTooltipHideDelay="100"
-          [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
-          [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
+      <!-- --------------------------------------------------------- -->
+      <!-- @ FOR SMALL SCREEN  -->
+      <!-- --------------------------------------------------------- -->
+      <!-- <ul class="bottom-bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="display: none;">
+        <li class="" style="padding-top: 3px!important; padding-left: 10px!important">
+          <button *ngIf="isVisibleCreateTicket"  attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+            (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;"
+            [disabled]="!PERMISSION_TO_CREATE_TICKET"
+            matTooltipClass="conv-custom-mat-tooltip"
+            #tooltip="matTooltip"
+            matTooltipPosition='above'
+            matTooltipHideDelay="100"
+            [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
+            [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
 
-          <span aria-hidden="true" class="material-icons"
-            style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
-            add_circle
+            <span aria-hidden="true" class="material-icons"
+              style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+              add_circle
+            </span>
+            {{ 'CreateTicket' | translate }}
+          </button>
+        </li>
+        <li style="padding-top: 3px!important;margin-left: 15px;">
+          <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn
+            (click)="testWidgetPage()" class="btn btn-success-no-boxshadow" style="font-size: 12px;">
+            <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+              play_circle_filled
+            </span>
+            {{ 'VisitorsPage.SimulateVisitor' | translate }}
+          </button>
+        </li>
+        <li class="see-no-realtime-request" style="float: right; padding-right: 5px;"
+          (click)='goToNoRealtimeConversations()'>
+          <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
+            class="tool_tip" style="cursor: pointer; display: unset; color:#3ea9f5;"
+            [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
+            matTooltipPosition='below' matTooltipHideDelay="100">
+            <span class="material-icons" style="font-size: 27px;position: relative;top: -2px;">
+              manage_search
+            </span>
+          </a>
+          <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+            <span>
+              {{ served_unserved_sum }}
+            </span>
           </span>
-          {{ 'CreateTicket' | translate }}
-        </button>
-      </li>
+        </li>
 
-      <!-- SIMULATE VISITOR * FOR SMALL SCREEN  -->
-      <li style="padding-top: 3px!important;margin-left: 15px;">
-        <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn
-          (click)="testWidgetPage()" class="btn btn-success-no-boxshadow" style="font-size: 12px;">
-          <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
-            play_circle_filled
-          </span>
-          {{ 'VisitorsPage.SimulateVisitor' | translate }}
-        </button>
-      </li>
-
-      <!-- NO REALTIME REQUESTS * FOR SMALL SCREEN -->
-      <li class="see-no-realtime-request" style="float: right; padding-right: 5px;"
-        (click)='goToNoRealtimeConversations()'>
-        <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
-          class="tool_tip" style="cursor: pointer; display: unset; color:#3ea9f5;"
-          [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
-          matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
-          matTooltipPosition='below' matTooltipHideDelay="100">
-          <span class="material-icons" style="font-size: 27px;
-      position: relative;
-      top: -2px;">
-            manage_search
-          </span>
-          <!-- <div class="bottom"
-        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
-        {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
-        <i></i>
-      </div> -->
-        </a>
-        <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
-          <span>
-            {{ served_unserved_sum }}
-          </span>
-        </span>
-      </li>
-
-      <!--OPERATING HOURS * FOR SMALL SCREEN -->
-      <!-- <li class="operating-hours" style="float: right;padding-left: 5px;">
-        <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
-          class="tool_tip" style="cursor: pointer; display: unset;color: #797979;" *ngIf="!OPERATING_HOURS_ACTIVE"
-          (click)="goToOperatingHours()">
-          <i class="material-icons">access_time</i>
-          <div class="bottom"
-            style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
-            {{ 'OperatingHoursAreDisabled' | translate }}
-            <i></i>
-          </div>
-        </a>
-        <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
-          style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-          <i class="material-icons" style="color:#3ea9f5; margin-top: 1px;">access_time</i>
-
-          <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
-            {{ 'OperatingHoursAreEnabled' | translate }}
-
-            <i></i>
-          </div>
-        </a>
-      </li> -->
-
-      <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
-      <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
-        <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-          style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
-          matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
-          matTooltipHideDelay="100">
-          <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
-            pin_drop
-          </span>
-          <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
-        white-space: nowrap;">
-        {{ 'ViewServedRequestsMap' | translate }}
-        <i></i>
-      </div> -->
-        </a>
-
-        <!-- <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
-      <span>
-        {{ served_unserved_sum }}
-      </span>
-    </span> -->
-      </li>
-    </ul>
+        <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
+          <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
+            style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+            matTooltipHideDelay="100">
+            <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
+              pin_drop
+            </span>
+          </a>
+        </li>
+      </ul> -->
     </div>
 
     <div class="main-content" style="padding-top: 25px; margin-top: 0px;padding-left: 0px;padding-right: 0px; min-height: calc(100% - 133px)">

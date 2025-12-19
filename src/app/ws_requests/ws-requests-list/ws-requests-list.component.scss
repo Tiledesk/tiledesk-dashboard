@@ -575,8 +575,8 @@ span .switch-agent-admin-requests-btn {
 
   .show-request-on-map {
     margin-top: 13px;
-    margin-left: 23px;
-    margin-right: 0px;
+    // margin-left: -23px;  
+    margin-right: -23px;
   }
 
   .served-unserved-sum {
@@ -587,11 +587,7 @@ span .switch-agent-admin-requests-btn {
 
 
 
-@media (max-width: 724px) {
-  .right-li {
-    display: none !important;
-  }
-}
+
 
 .show-request-on-map>a>span {
   margin-top: 3px;
@@ -612,20 +608,35 @@ span .switch-agent-admin-requests-btn {
   font-size: 10px;
 }
 
+.right-li {
+  float: right !important;
+  padding-top: 10px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
 
+@media (max-width: 724px) {
+  .right-li {
+  //   display: none !important;
+      padding-top: 0px !important;
+      
+  }
+
+}
+// @media (max-width: 653px) { 
+//   .show-request-on-map  {margin-top: -39px !important;}  
+// }
 
 
 
 @media (max-width: 991px) {
-  .bottom-nav {
-    top: -2px !important;
-  }
+  // .bottom-nav {
+  //   top: -2px !important;
+  // }
 
   .bottom-nav li {
     z-index: 1049;
   }
-
-
 }
 
 @media (max-width: 370px) {
@@ -637,7 +648,9 @@ span .switch-agent-admin-requests-btn {
     padding: 6px !important;
     height: 39px;
   }
+ 
 }
+
 
 .tab-active {
   color: $brand-primary;
@@ -929,12 +942,6 @@ span .switch-agent-admin-requests-btn {
 
 /* ./ teammates scroll div */
 
-.right-li {
-  float: right !important;
-  padding-top: 10px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-}
 
 .right-li-simulate-visitor {
   padding-right: 10px !important;
@@ -1427,6 +1434,7 @@ span .switch-agent-admin-requests-btn {
   font-size: 14px;
   padding: 0 16px 0 8px;
   border-radius: var(--btn-border-radius);
+  white-space: nowrap;
 }
 
 .btn-primary-active:hover {
@@ -1479,6 +1487,7 @@ span .switch-agent-admin-requests-btn {
 // canvas {
 //   background: radial-gradient(circle at center, rgba(0,0,0,0) 0, rgba(0,0,0,0) 55%, rgba(0,0,0,0.2) 56%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.2) 64%, rgba(0,0,0,0) 65%,rgba(0,0,0,0) 100%);
 // }
+
 
 @media (min-width: 767px) {
   .select-dept-wpr {

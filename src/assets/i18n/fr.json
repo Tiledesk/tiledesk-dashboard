@@ -23,6 +23,7 @@
     "Visitors": "Visiteurs",
     "Requests": "Conversations",
     "Request": "Conversation",
+    "ConversationsNotInRealTime": "Conversations (non en temps réel)",
     "Usage": "Usage",
     "ConverationRemoved": "Cette conversation a été supprimée",
     "History": "Histoire",

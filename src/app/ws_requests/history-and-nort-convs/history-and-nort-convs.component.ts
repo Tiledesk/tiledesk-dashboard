@@ -35,6 +35,7 @@ import { BrandService } from 'app/services/brand.service';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NavigationService } from 'app/services/navigation.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -327,6 +328,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   PERMISSION_TO_UPDATE_APP: boolean;
   PERMISSION_TO_FILTER_BY_AGENT: boolean;
 
+  private backSub?: Subscription;
   /**
    * 
    * @param router 
@@ -368,7 +370,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public route: ActivatedRoute,
     public brandService: BrandService,
     public rolesService: RolesService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private navSvc: NavigationService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -419,7 +422,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
-
+    this.listenToGoBack()
   }
 
   ngOnDestroy() {
@@ -428,6 +431,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     }
+    this.backSub?.unsubscribe();
+  }
+
+   listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBackToMonitorPage();
+    });
   }
 
   listenToProjectUser() {

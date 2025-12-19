@@ -831,3 +831,17 @@ span .switch-agent-admin-requests-btn {
 .span-link-style:hover {
   text-decoration: underline;
 }
+
+.no-agent-icon-wpr {
+  width: 30px;
+  cursor: pointer;
+  height: 30px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.no-agent-icon-wpr svg > g > path {
+    fill: var(--svg-icon-gray);
+}

@@ -2289,7 +2289,7 @@ span .conv-svg-icon {
 .priority_wpr {
   margin-left: 8px;
   position: relative;
-  top: 2px;
+  top: -1px;
 }
 
 .right-sidebar-header {
@@ -3221,7 +3221,7 @@ span .conv-svg-icon {
 
 .upload-btn>span {
   color:  var(--icon-btn);
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .upload-btn:hover {
@@ -4786,8 +4786,17 @@ label {
   text-overflow: ellipsis;
 }
 
+.viewed-pages-anchor {
+  text-decoration: none !important;
+}
+
 .viewed-pages-title {
   color: var(--accent-text-color);
+  font-size: 14px;
+}
+
+.viewed-pages-title:hover { 
+  text-decoration: underline;
 }
 
 .viewed-pages-url {
@@ -4798,6 +4807,10 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--accent-text-color);
+}
+
+.viewed-pages-url:hover { 
+  text-decoration: underline;
 }
 
 .viewed-pages-dot {
@@ -6015,7 +6028,7 @@ label {
 
 .transcript-option-text {
   color: var(--text-color);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
 }
 
@@ -6097,9 +6110,9 @@ label {
 }
 
 
-.dropdown-menu-working-status {
-  background-color: var(--conversation-detail-background) !important;
-}
+// .dropdown-menu-working-status {
+//   background-color: var(--conversation-detail-background) !important;
+// }
 
 .dropdown-menu-working-status>li>a {
   color: var(--text-color) !important;
@@ -6355,9 +6368,15 @@ label {
   border-bottom-right-radius: 0 !important;
 }
 
+.dropup .send-msg-dropdown-toggle:after {
+  margin-left: -8px;
+}
+
 .send-msg-dropdown-toggle {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+  max-width: 40px;
+
 }
 
 .send-msg-dropdown-toggle-disabled {
