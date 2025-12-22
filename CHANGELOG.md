@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.146
+- Improves performance
+
 ### 2.7.145
 - Adds the ability to set the API Key for Ollama and vLLM models
 
