@@ -850,6 +850,8 @@
     "PDF": "PDF",
     "AddContact": "Lägg till kontakt",
     "ContactCreatedSuccessfully": "Kontakt skapad framgångsrikt",
+    "None": "Ingen",
+    "StartASearchToSeeConversations": "Starta en sökning för att se konversationer",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

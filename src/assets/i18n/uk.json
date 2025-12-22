@@ -848,6 +848,8 @@
     "PDF": "PDF",
     "AddContact": "Додати контакт",
     "ContactCreatedSuccessfully": "Контакт успішно створено",
+    "None": "Нічого",
+    "StartASearchToSeeConversations": "Почніть пошук, щоб побачити розмови",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

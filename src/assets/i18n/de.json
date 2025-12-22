@@ -847,6 +847,8 @@
 	"PDF": "PDF",
 	"AddContact": "Kontakt hinzufügen",
 	"ContactCreatedSuccessfully": "Kontakt erfolgreich erstellt",
+	"None": "Keine", 
+	"StartASearchToSeeConversations": "Starten Sie eine Suche, um Konversationen zu sehen",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

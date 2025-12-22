@@ -848,6 +848,8 @@
     "PDF": "PDF",
     "AddContact": "Контакт қосу",
     "ContactCreatedSuccessfully": "Контакт сәтті жасалды",
+    "None": "Ешқайсысы",
+    "StartASearchToSeeConversations": "Өтініштерді көру үшін іздеуді бастаңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
