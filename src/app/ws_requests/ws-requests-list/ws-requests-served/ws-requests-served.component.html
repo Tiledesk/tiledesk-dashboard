@@ -193,7 +193,7 @@
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid request-icon"
                     matTooltipClass="mat-white-tooltip"
                     matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
@@ -204,7 +204,7 @@
                 <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
-                    class="img-fluid" matTooltipClass="mat-white-tooltip"
+                    class="img-fluid request-icon" matTooltipClass="mat-white-tooltip"
                     matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
 
