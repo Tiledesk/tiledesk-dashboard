@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.158-AR
+- Blocks working status changes for conversations archived more than 10 days with a warning message
+- Fixes the "Able to send messages and upload files" permission label to specify that it applies to admin chat
+- Hides the section that allows sending messages in the admin panel if the "Able to send message and upload file from Admin panel chat" permission is not enabled
+- Opens selected conversations in chat in a new tab only for teammates with predefined roles
+- Fixes the bug: in some cases the text color of reply messages in the chat in the conversation details is black instead of white
+- Improves performances
+
 ### 2.7.157-AR
 - Fixes the bug: Fixed REST call generating 504 error message in conversation details
 
