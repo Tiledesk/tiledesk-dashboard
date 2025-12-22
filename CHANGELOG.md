@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.159-AR
+- Improves full-text search on the history page and non-real-time conversations page
+
 ### 2.7.158-AR
 - Blocks working status changes for conversations archived more than 10 days with a warning message
 - Fixes the "Able to send messages and upload files" permission label to specify that it applies to admin chat
