@@ -4441,6 +4441,9 @@ div:where(.swal2-container) .swal2-select {
 /*
 /* Bootstrap 5 fix
 /* ************************ */
+.td--actions .btn {
+  padding: 2px 3px;
+}
 .td--actions .btn-tdblu  {
   background-color: transparent;
   color: var(--blue-20);
