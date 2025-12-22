@@ -149,9 +149,9 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getBrowserVersion()
     // this.setNotificationSound();
     // this.listenToProjectUser()
-    this.getQueryParams(); // is used to hide the logout in the quey params exist tiledesk_logOut
-    
-  //  this.checkLogoutVisibility();
+    // this.checkLogoutVisibility();
+    this.getQueryParams()
+
   }
 
   
