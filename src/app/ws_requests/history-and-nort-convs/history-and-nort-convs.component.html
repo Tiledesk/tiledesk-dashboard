@@ -614,8 +614,17 @@
       {{'AppliedFilters' | translate}}
     </div>
 
-    <div id="full-text" *ngIf="fullText_applied_filter" class="applied-filter">
+   <!-- <div id="full-text" *ngIf="fullText_applied_filter" class="applied-filter">
       {{fullText_applied_filter}}
+    </div> -->
+    <div id="email-filter" *ngIf="fullText_applied_filter && SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX" class="applied-filter">
+      Email: {{fullText_applied_filter}}
+    </div>
+    <div id="requester-email-filter" *ngIf="requester_email_applied_filter" class="applied-filter">
+      Email: {{requester_email_applied_filter}}
+    </div>
+    <div id="ticket-id-filter" *ngIf="fullText_applied_filter && SEARCH_FOR_TICKET_ID" class="applied-filter">
+      Ticket ID: {{fullText_applied_filter}}
     </div>
 
     <div id="date-range" *ngIf="startDateFormatted" class="applied-filter">
@@ -659,7 +668,13 @@
       {{selecteTagNameValue}}
     </div>
 
-    <div class="requests-statuses-wpr" style="display: flex;" *ngIf="requests_statuses?.length > 0">
+    <div class="requests-statuses-wpr" style="display: flex;" *ngIf="!has_searched">
+      <div class="applied-filter">
+        {{'None' | translate}}
+      </div>
+    </div>
+
+    <div class="requests-statuses-wpr" style="display: flex;" *ngIf=""has_searched && requests_statuses?.length > 0">
       <!-- {{requests_statuses}} -->
       <div class="requests-statuses" *ngFor="let status of requests_statuses">
         <!-- status {{status}} -->
@@ -757,7 +772,7 @@
       </span>
 
       <span
-        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type">
+        *ngIf="!IS_HERE_FOR_HISTORY && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type)">
         {{ 'ConversationsFound' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -779,7 +794,7 @@
       </span>
 
       <span
-        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type">
+       *ngIf="has_searched && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type)">
         {{ 'ConversationsFound' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -1112,15 +1127,23 @@
               <!-- ------------------------------ -->
               <!--  IF THERE ISN'T REQUEST -->
               <!--  ------------------------------ -->
-              <tr *ngIf="requestList && requestList?.length === 0">
+              <tr *ngIf="(IS_HERE_FOR_HISTORY && (!has_searched || (requestList && requestList?.length === 0))) || (!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0)">
                 <td colspan="10" style="text-align: center; padding-top: 16px; height: 150px;">
 
-                  <span class="material-icons no-request-icon" style="vertical-align: middle;">
+                  <span class="material-icons no-request-icon" style="vertical-align: middle;" *ngIf="IS_HERE_FOR_HISTORY && !has_searched">
+                    search
+                  </span>
+                  <span class="material-icons no-request-icon" style="vertical-align: middle;" *ngIf="(IS_HERE_FOR_HISTORY && has_searched && requestList && requestList?.length === 0) || (!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0)">
                     sms_failed
                   </span>
 
-                  <p class="no-request-text">
-
+                  <p class="no-request-text" *ngIf="IS_HERE_FOR_HISTORY && !has_searched">
+                    {{'StartASearchToSeeConversations' | translate}}
+                  </p>
+                  <p class="no-request-text" *ngIf="IS_HERE_FOR_HISTORY && has_searched && requestList && requestList?.length === 0">
+                    {{ 'HistoryPage.NoRequests' | translate }}
+                  </p>
+                  <p class="no-request-text" *ngIf="!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0">
                     {{ 'HistoryPage.NoRequests' | translate }}
                   </p>
                 </td>

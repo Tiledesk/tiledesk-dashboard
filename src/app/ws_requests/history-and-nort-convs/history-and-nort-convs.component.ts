@@ -126,6 +126,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   fullTextValue: string;
   selectedAgentValue: string;
   emailValue: string;
+  requester_email_applied_filter: string;
   preflight: boolean;
   _preflight: boolean;
   preflightValue: boolean;
@@ -188,6 +189,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   showIndeterminate = false;
   has_searched = false;
   has_searched_from_left_filter = false;
+  isClearingSearch = false;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
@@ -657,7 +659,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         }
         // || this.requests_status !== 'all'
-        if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status_selected_from_advanced_option) {
+       // if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status_selected_from_advanced_option) {
+        if (!this.isClearingSearch && (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status_selected_from_advanced_option)) {
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search fullText ', this.fullText)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selectedDeptId ', this.selectedDeptId)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search startDate ', this.startDate)
@@ -754,7 +757,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       if (currentUrl.indexOf('?') === -1) {
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
-        this.getRequests();
+       // this.getRequests();
 
       }
     }
@@ -2401,6 +2404,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('HERE IN SEARCH this.requests_status', this.requests_status)
     this.logger.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
 
+    // Reset status from 9999 (used in clearSearch) back to 1000 for history page
+    if (this.IS_HERE_FOR_HISTORY && this.requests_status === '9999') {
+      this.requests_status = '1000'
+      this.requests_statuses = ['1000']
+    }
 
     this.requests_status_temp = this.requests_status
 
@@ -2820,6 +2828,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   clearSearch() {
     this.logger.log('[HISTORY & NORT-CONVS] clearSearch this.conversation_type ', this.conversation_type);
     this.logger.log('[HISTORY & NORT-CONVS] clearSearch this.conversationTypeValue ', this.conversationTypeValue);
+    this.isClearingSearch = true;
     this.has_searched = false;
     const currentUrl = this.router.url;
     // this.logger.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
@@ -2837,7 +2846,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('[HISTORY & NORT-CONVS] clearSearch currentRoute ', currentRoute);
     }
 
-    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]);
+    //this.router.navigate(['project/' + this.projectId + '/' + currentRoute]);
 
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
@@ -2865,9 +2874,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.requests_status = 'all'
     }
 
+    //if (this.IS_HERE_FOR_HISTORY) {
+    //  this.requests_statuses = ['1000']
+    //  this.requests_status = '1000'
+    //}
+
+     // Keep status 1000 (Closed) visible in select when resetting filters for history
     if (this.IS_HERE_FOR_HISTORY) {
       this.requests_statuses = ['1000']
-      this.requests_status = '1000'
+      // Use a non-existent status for the query so it returns no results
+      this.requests_status = '9999'
     }
 
     // this.fullTextValue = '';
@@ -2884,31 +2900,43 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.startDateFormatted = null;
     this.endDateFormatted = null;
     this.fullText_applied_filter = null;
+     this.requester_email_applied_filter = null;
     this.selecteTagName = null
     this.selecteTagColor = null
     this.conversationTypeValue = 'all'
     this.conversation_type = 'all'
-    // tslint:disable-next-line:max-line-length
-    this.queryString =
-      'full_text=' + '&'
-      + 'dept_id=' + '&'
-      + 'start_date=' + '&'
-      + 'end_date=' + '&'
-      + 'participant=' + '&'
-      + 'requester_email=' + '&'
-      + 'tags=' + '&'
-      + 'channel=';
-    + 'rstatus=' + '&'
-      + 'duration_op=' + '&'
-      + 'duration=' + '&'
-      + 'called=' + '&'
-      + 'caller=' + '&'
-      + 'call_id='
+   
+    //  this.queryString =
+    //  'full_text=' + '&'
+     //   + 'dept_id=' + '&'
+     //   + 'start_date=' + '&'
+     //   + 'end_date=' + '&'
+     //   + 'participant=' + '&'
+     //   + 'requester_email=' + '&'
+     //   + 'tags=' + '&'
+     //   + 'channel=';
+     //  + 'rstatus=' + '&'
+     //   + 'duration_op=' + '&'
+     //   + 'duration=' + '&'
+     //   + 'called=' + '&'
+     //   + 'caller=' + '&'
+     //   + 'call_id='   
+    this.queryString = ''
     this.pageNo = 0;
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.fullTextValue)
     // this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.queryString)
 
-    this.getRequests();
+    // this.getRequests();
+
+    // Navigate first, then execute search that returns no results after navigation completes
+    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]).then(() => {
+      // Execute search that returns no results after navigation
+      this.getRequests();
+      // Reset flag after a short delay to allow navigation to complete
+      setTimeout(() => {
+        this.isClearingSearch = false;
+      }, 100);
+    });
 
   }
 
