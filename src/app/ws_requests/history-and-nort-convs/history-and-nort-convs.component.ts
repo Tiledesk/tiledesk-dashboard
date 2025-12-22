@@ -2552,10 +2552,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
+      this.requester_email_applied_filter = this.requester_email;
       this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
     } else {
       this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
       this.emailValue = ''
+      this.requester_email_applied_filter = null;
     }
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR preflight 1', this.preflight);
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
