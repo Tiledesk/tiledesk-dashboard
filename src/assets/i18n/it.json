@@ -857,6 +857,8 @@
     "AreYouSureYouWantToDeleteTheKB": "Sei sicuro di voler eliminare la Knowledge Base?",
     "ToDeleteTheKBaseTypeItsId": "Per eliminare la Knowledge Base, digita il suo ID",
     "NoDepartmentAssigned": "Nessun dipartimento assegnato",
+    "None": "Nessuno",
+    "StartASearchToSeeConversations": "Avvia una ricerca per vedere le conversazioni",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

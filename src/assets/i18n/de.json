@@ -856,6 +856,8 @@
     "AreYouSureYouWantToDeleteTheKB": "Sind Sie sicher, dass Sie die Wissensdatenbank löschen möchten?",
 	"ToDeleteTheKBaseTypeItsId": "Um die Wissensdatenbank zu löschen, geben Sie deren ID ein",
 	"NoDepartmentAssigned": "Keine Abteilung zugewiesen",
+	"None": "Keine", 
+	"StartASearchToSeeConversations": "Starten Sie eine Suche, um Konversationen zu sehen",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

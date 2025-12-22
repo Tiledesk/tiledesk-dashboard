@@ -857,6 +857,8 @@
     "AreYouSureYouWantToDeleteTheKB": "Bilimlar Bazasini o'chirishni istaysizmi?",
     "ToDeleteTheKBaseTypeItsId": "Bilimlar Bazasini o'chirish uchun uning ID sini yozing",
     "NoDepartmentAssigned": "Hech bir bo'lim tayinlanmagan",
+    "None": "Hech biri",
+    "StartASearchToSeeConversations": "Suhbatlarni ko'rish uchun qidiruvni boshlang",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

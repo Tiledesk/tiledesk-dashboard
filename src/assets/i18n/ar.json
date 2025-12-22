@@ -857,6 +857,8 @@
     "AreYouSureYouWantToDeleteTheKB": "هل أنت متأكد أنك تريد حذف قاعدة المعرفة؟",
     "ToDeleteTheKBaseTypeItsId": "لحذف قاعدة المعرفة، اكتب معرفها",
     "NoDepartmentAssigned": "لا يوجد قسم معين",
+    "None": "لا شيء",
+    "StartASearchToSeeConversations": "ابدأ بحثًا لرؤية المحادثات",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
