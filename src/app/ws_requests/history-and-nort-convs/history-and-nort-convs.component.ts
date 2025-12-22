@@ -2769,6 +2769,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   clearFullText() {
     this.has_searched = false;
+    // Set flag to prevent double REST calls when in history
+    if (this.IS_HERE_FOR_HISTORY) {
+      this.isClearingSearch = true;
+    }
     const currentUrl = this.router.url;
     this.logger.log('[HISTORY & NORT-CONVS] clearFullText current_url ', currentUrl);
     this.logger.log('[HISTORY & NORT-CONVS] clearFullText this.conversation_type ', this.conversation_type);
@@ -2785,15 +2789,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       currentRoute = 'history'
     }
 
-
-
     // this.logger.log('[HISTORY & NORT-CONVS] clearFullText current_route ', current_route);
-    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]);
-
-
+    
     // this.logger.log('clearFullText has_searched', this.has_searched)
     this.fullText = '';
     this.fullText_applied_filter = null;
+    this.requester_email_applied_filter = null;
 
     if (this.selectedDeptId) {
       this.deptIdValue = this.selectedDeptId;
@@ -2875,57 +2876,31 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
 
+    // Keep status 1000 (Closed) visible in select when resetting filters for history
     if (this.IS_HERE_FOR_HISTORY) {
       this.requests_statuses = ['1000']
-      this.requests_status = '1000'
+      // Use a non-existent status for the query so it returns no results
+      this.requests_status = '9999'
     }
-    // tslint:disable-next-line:max-line-length
 
     this.conversationTypeValue = 'all'
     this.conversation_type = 'all'
 
-    this.queryString =
-      // 'full_text='
-      // + '&' +
-      // 'dept_id=' + this.deptIdValue
-      // + '&' +
-      // 'start_date=' + this.startDateValue
-      // + '&' +
-      // 'end_date=' + this.endDateValue
-      // + '&' +
-      // 'participant=' + this.selectedAgentValue
-      // + '&' +
-      // 'requester_email=' + this.emailValue
-      // + '&' +
-      // 'tags=' + this.selecteTagNameValue
-      // + '&' +
-      // 'channel=' + this.conversationTypeValue, 
-      // + 'rstatus=' + '&' 
-      // + 'duration_op='  + '&'
-      // + 'duration='  + '&'
-      // + 'called='  + '&'
-      // + 'caller='  + '&'
-      // + 'call_id='
+    // tslint:disable-next-line:max-line-length
+    this.queryString = ''
+    this.pageNo = 0;
 
-      'full_text=' + '&'
-      + 'dept_id=' + '&'
-      + 'start_date=' + '&'
-      + 'end_date=' + '&'
-      + 'participant=' + '&'
-      + 'requester_email=' + '&'
-      + 'tags=' + '&'
-      + 'channel=' + '&'
-      + 'rstatus=' + '&'
-      + 'duration_op=' + '&'
-      + 'duration=' + '&'
-      + 'called=' + '&'
-      + 'caller=' + '&'
-      + 'call_id='
-
-
-    // this.logger.log('clearFullText queryString ' , this.queryString ) 
-    this.pageNo = 0
-    this.getRequests();
+    // Navigate first, then execute search that returns no results after navigation completes
+    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]).then(() => {
+      // Execute search that returns no results after navigation
+      this.getRequests();
+      // Reset flag after a short delay to allow navigation to complete
+      if (this.IS_HERE_FOR_HISTORY) {
+        setTimeout(() => {
+          this.isClearingSearch = false;
+        }, 100);
+      }
+    });
 
   }
 
