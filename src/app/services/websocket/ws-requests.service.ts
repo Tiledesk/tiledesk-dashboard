@@ -1323,24 +1323,11 @@ export class WsRequestsService implements OnDestroy {
 
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      // Keep full_text parameter but always remove the value
-      let processedQuerystring = querystring;
-      if (querystring.includes('full_text')) {
-        const params = querystring.split('&');
-        const processedParams = params.map(param => {
-          if (param.includes('full_text=')) {
-            return 'full_text='; // Keep parameter but remove value
-          }
-          return param;
-        });
-        processedQuerystring = processedParams.join('&');
-      }
-
       if (status === '100' || status === '200' || status === '1000' || status === '150' || status === "1000,100,200" || status === "100,150,200"  || status === "1000,100,200,150" || statuses?.length > 0) {
-        _querystring = '&' + processedQuerystring
+        _querystring = '&' + querystring
         console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {
-        _querystring = processedQuerystring + '&'
+        _querystring = querystring + '&'
 
         this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 2', _querystring);
       } else {
