@@ -45,6 +45,7 @@ import { SharedModule } from './shared/shared.module';
 
 
 import { ChatComponent } from './chat/chat.component';
+import { ConversationDetailIframeComponent } from './conversation-detail-iframe/conversation-detail-iframe.component';
 
 import { UsersService } from './services/users.service';
 import { ContactsService } from './services/contacts.service';
@@ -410,7 +411,6 @@ import { RolesService } from './services/roles.service';
 import { KeycloakService } from './services/keycloak.service';
 
 
-
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
 // import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
@@ -503,6 +503,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HomeComponent, // now lazy
     // ContactsComponent, // now lazy
     ChatComponent,
+    ConversationDetailIframeComponent,
     // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy
@@ -726,7 +727,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
     LogoutModalComponent,
-    UnauthorizedToUpgradeComponent,
+    UnauthorizedToUpgradeComponent
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
