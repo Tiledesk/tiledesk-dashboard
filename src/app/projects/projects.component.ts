@@ -88,6 +88,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   public logoutBtnVisible: boolean;
   public editProfileBtnVisible: boolean;
   PERMISSION_TO_LOGOUT:boolean;
+  isAvatarDropdownOpen: boolean = false;
 
   constructor(
     private projectService: ProjectService,
@@ -131,6 +132,15 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     // this.getUploadEgine();
     this.getProjectsAndSaveInStorage();
     this.getLoggedUserAndCheckProfilePhoto();
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const dropdown = document.querySelector('.projects-user-avatar-dropdown');
+      if (dropdown && !dropdown.contains(target) && this.isAvatarDropdownOpen) {
+        this.closeAvatarDropdown();
+      }
+    });
 
     // this.checkUserImageUploadIsComplete();
     // this.checkUserImageExist();
@@ -908,6 +918,31 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   _openLogoutModal() {
     this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+  }
+
+  toggleAvatarDropdown(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isAvatarDropdownOpen = !this.isAvatarDropdownOpen;
+    
+    // Toggle the open class on the parent li element
+    const target = event.currentTarget as HTMLElement;
+    const parentLi = target.closest('.projects-user-avatar-dropdown') as HTMLElement;
+    if (parentLi) {
+      if (this.isAvatarDropdownOpen) {
+        parentLi.classList.add('open');
+      } else {
+        parentLi.classList.remove('open');
+      }
+    }
+  }
+
+  closeAvatarDropdown() {
+    this.isAvatarDropdownOpen = false;
+    const dropdown = document.querySelector('.projects-user-avatar-dropdown') as HTMLElement;
+    if (dropdown) {
+      dropdown.classList.remove('open');
+    }
   }
 
   openLogoutModal() {

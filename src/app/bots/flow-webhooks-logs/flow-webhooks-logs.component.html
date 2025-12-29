@@ -28,7 +28,7 @@
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
     
-    <div class="page-title--sidebar-settings"
+    <!-- <div class="page-title--sidebar-settings"
         [ngStyle]="{'left':log_type == LogType.REQUEST ? '25px' : '253px'}"
         [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
         <div class="top-header-wpr" style="display: flex;">
@@ -42,6 +42,18 @@
                 <span *ngIf="log_type !== LogType.WEBHOOK">{{'Request' | translate }} logs</span>
             </div>
         </div>
+    </div> -->
+
+    <div class="page-title--sidebar-settings"  *ngIf="log_type === LogType.WEBHOOK"
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }"
+    style="left: 235px;top: 18px;">
+    <span (click)="goBack()" style="cursor: pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="var(--icon-color)">
+            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+        </svg>
+
+     </span>
+       Webhook logs
     </div>
 
     <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">

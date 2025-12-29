@@ -398,6 +398,21 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'ConversationsNotInRealTime';
       this.currentIcon = 'keyboard_arrow_left';
     }
+    else if (cleanUrl.indexOf('/logs/request/') !== -1) {
+      this.currentTitle = 'Logs della conversazione';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    // to do here: manage automations
+    else if (cleanUrl.indexOf('/contacts') !== -1) {
+      this.currentTitle = 'Contacts';
+      this.currentIcon = '';
+    }
+
+    
+
+
+
+    
 
     
 

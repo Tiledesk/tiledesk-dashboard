@@ -4,6 +4,16 @@
   --brandColor: #{var(--brand-color)};
 }
 
+// Ensure the row and col containing navbar don't clip content
+.row {
+  overflow: visible !important;
+}
+
+.row > div[class*="col-"] {
+  overflow: visible !important;
+  position: relative;
+}
+
 /* MODAL START */
 .modal {
   top: 0;
@@ -84,6 +94,62 @@ button.close {
 //     }
 // }
 
+// Navbar container styles
+.navbar {
+  overflow: visible !important;
+  position: relative;
+}
+
+.navbar .container-fluid {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  overflow: visible !important;
+  position: relative;
+}
+
+// Ensure navbar-collapse is always visible and horizontal
+.navbar-collapse {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  align-items: center;
+  overflow: visible !important;
+  max-width: none !important;
+}
+
+.navbar-nav {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin: 0;
+  list-style: none;
+  padding-left: 0;
+  overflow: visible !important;
+}
+
+// Bootstrap 5: navbar-right replaced with ms-auto in HTML
+// Keep this for backward compatibility if needed
+.navbar-nav.ms-auto {
+  margin-left: auto !important;
+}
+
+.navbar-nav > li {
+  display: flex;
+  align-items: center;
+  float: none;
+  list-style: none;
+  position: relative;
+  flex-shrink: 0;
+}
+
 @media (max-width: 991px) {
 
   .navbar-header .collapse,
@@ -147,8 +213,75 @@ input[type="text"] {
   background: #fff;
 }
 
+// Avatar dropdown menu specific styles
+.projects-user-avatar-dropdown {
+  position: relative;
+}
+
+.projects-user-avatar-dropdown > a.dropdown-toggle {
+  cursor: pointer;
+  
+  // Remove the caret (::after pseudo-element)
+  &::after {
+    display: none !important;
+    content: none !important;
+  }
+}
+
 .avatar-dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 1050 !important;
+  min-width: 200px;
   margin-right: 16px;
+  margin-top: 2px !important;
+  display: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  list-style: none;
+  padding: 0;
+  overflow: visible !important;
+}
+
+// Show dropdown when parent <li> has .open class (Bootstrap 3/4)
+.projects-user-avatar-dropdown.open .avatar-dropdown-menu,
+.projects-user-avatar-dropdown.open > .avatar-dropdown-menu {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+// Also support Bootstrap 5 where .show is on the toggle button
+.projects-user-avatar-dropdown > a.dropdown-toggle.show ~ .avatar-dropdown-menu,
+.projects-user-avatar-dropdown > a.show ~ .avatar-dropdown-menu {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+// Ensure dropdown is visible on all screen sizes
+@media (min-width: 992px) {
+  .avatar-dropdown-menu {
+    display: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 2px !important;
+  }
+
+  .projects-user-avatar-dropdown.open .avatar-dropdown-menu,
+  .projects-user-avatar-dropdown.open > .avatar-dropdown-menu,
+  .projects-user-avatar-dropdown > a.dropdown-toggle.show ~ .avatar-dropdown-menu,
+  .projects-user-avatar-dropdown > a.show ~ .avatar-dropdown-menu {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
 .card-profile {
@@ -281,11 +414,7 @@ input[type="text"] {
 }
 
 
-.project-card-footer {
-  border-bottom-left-radius: 12px !important;
-  border-bottom-right-radius: 12px !important;
 
-}
 
 
 
@@ -748,10 +877,17 @@ input[type="text"] {
 
 
 .project-card-footer {
-  margin: 0 19px 10px;
+  margin: 0 10px 10px;
   padding-top: 10px;
   border-top: 1px solid #eeeeee;
+  background: #fff;
+  font-weight: 400;
 }
+
+// .project-card-footer {
+//   border-bottom-left-radius: 12px !important;
+//   border-bottom-right-radius: 12px !important;
+// }
 
 // NOT USED
 .loading {

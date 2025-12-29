@@ -223,8 +223,8 @@ span .switch-agent-admin-requests-btn {
 
 .verified-user-icon-wpr {
   position: absolute;
-  top: -2px;
-  left: -6px;
+  top: -4px;
+  left: -8px;
 }
 
 .verified-user-icon-wpr>span {
@@ -716,10 +716,12 @@ span .switch-agent-admin-requests-btn {
 .email-wpr {
   background: #bb001b;
   border-radius: 50%;
+  display: block;
 }
 .form-wpr {
   background: #39988d;
   border-radius: 50%;
+  display: block;
 }
 
 .channel-img-in-conversations {

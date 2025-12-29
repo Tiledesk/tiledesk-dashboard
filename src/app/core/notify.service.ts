@@ -738,7 +738,7 @@ export class NotifyService {
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
         `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: ${icon_bckgrnd_color}; border-radius: 50%; font-size:16px " class="material-icons">` + icon + '</i> </span> ' +
-        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + message + '</span>' +
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px; font-size:14px">' + message + '</span>' +
         '</div>'
     });
   }

@@ -492,11 +492,16 @@ my-app .main-panel .main-content .card {
 /* tooltip top using attribute */
 
 /* table style overwrite */
-thead,tbody,tfoot,tr,td,th {
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
   // border-style: unset;
 }
 
-.table .td-actions .btn  {
+.table .td-actions .btn {
   padding: 8px 5px;
 }
 
@@ -886,6 +891,7 @@ thead,tbody,tfoot,tr,td,th {
 .btn-blu-gray-outline:focus {
   background: transparent !important
 }
+
 .btn-blu-gray-outline:active {
   background: transparent !important
 }
@@ -924,6 +930,7 @@ thead,tbody,tfoot,tr,td,th {
 .btn-blu-gray-outline:focus {
   background: transparent !important
 }
+
 .btn-blu-gray-outline:active {
   background: transparent !important
 }
@@ -2462,7 +2469,7 @@ footer ul {
 /* Angular radio button 
 /* ****************************** */
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-    border-color: var(--blue-20) !important;
+  border-color: var(--blue-20) !important;
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle {
@@ -2905,6 +2912,14 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 /*
 /* CUSTOMIZED NG-SELECT
 /* -------------------------------------------------- */
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  top: 10px !important;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
+  padding: 2px 5px !important;
+}
 
 /* Imposta font-size a 14px dentro il menu di ng-select */
 .ng-dropdown-panel {
@@ -4435,24 +4450,95 @@ div:where(.swal2-container) .swal2-select {
 }
 
 #assign-reassign-modal .mat-tab-header-pagination {
-  z-index: 1060; /* > modal (1055) */
+  z-index: 1060;
+  /* > modal (1055) */
 }
 
 /*
 /* Bootstrap 5 fix
 /* ************************ */
+.td--actions {
+  white-space: nowrap;
+
+}
+
 .td--actions .btn {
   padding: 2px 3px;
+  cursor: pointer;
 }
-.td--actions .btn-tdblu  {
+
+.td--actions .btn-tdblu {
   background-color: transparent;
   color: var(--blue-20);
   box-shadow: unset;
 }
 
-.td--actions .btn:hover {
-   box-shadow: unset;
+.td--actions .btn-danger {
+  box-shadow: unset;
+  background: transparent;
+  color: #f44336;
 }
+
+.td--actions .btn:hover {
+  box-shadow: unset;
+}
+
+.card--footer .input-group-wpr .contacts-paginantion { 
+  width: 120px;
+  margin: 0px auto 12px;
+}
+
+.card--footer .input-group-wpr div {
+  width: 120px;
+  margin: 0 auto;
+  margin-top: 10px
+}
+
+.card--footer .input-group-wpr div .input-group {
+  flex-wrap: nowrap;
+  background: #fff;
+  border: unset;
+
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.left-btn {
+  padding-left: 0px;
+  padding-right: 5px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.left-btn .btn {
+  padding: 6px 8px;
+  margin-bottom: 0px;
+  border-bottom-left-radius: 9999px;
+  border-top-left-radius: 9999px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.center-btn {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.center-btn .btn {
+  padding: 6px 8px;
+  white-space: nowrap;
+  margin-bottom: 0px;
+  pointer-events: none;
+  box-shadow: unset;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.right-btn {
+  padding-right: 0px;
+  padding-left: 5px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.right-btn .btn {
+  padding: 6px 8px;
+  margin-bottom: 0px;
+  border-bottom-right-radius: 9999px;
+  border-top-right-radius: 9999px;
+}
+
+
 
 
 /* analytics > metrics */

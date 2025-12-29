@@ -69,9 +69,23 @@ input[type="email"] {
   height: 36px;
 }
 
+
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555555;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 0px 4px 4px 0px;
+    border-left: unset;
+}
 .input-group-addon {
   width: 30%;
 }
+
 
 .suffix-text {
   position: relative;
@@ -213,14 +227,12 @@ input:-webkit-autofill:active {
   .refresh-icon-wpr {
     position: absolute;
     left: 73px;
-    // top: 28px;
     top: 7px;
   }
 
   .delete-selected-wpr {
     position: absolute;
     left: 107px;
-    // top: 28px;
     top: 8px;
   }
 }
@@ -237,13 +249,13 @@ input:-webkit-autofill:active {
 
 .refresh-icon-wpr {
   position: absolute;
-  left: 77px;
+  left: 68px;
   top: -3px;
 }
 
 .delete-selected-wpr {
   position: absolute;
-  left: 123px;
+  left: 105px;
   top: -2px;
 }
 
@@ -386,9 +398,20 @@ p.member:hover {
   width: 30px;
   height: 30px;
   line-height: 21px;
-  position: relative;
-  top: 4px;
+  // position: relative;
+  // top: 4px;
 }
+
+.lead_data-fullame {
+  font-weight: 400;
+  font-size: 12px;
+}
+.requester--email{
+  color: #7695a5;
+  font-weight: 400;
+  font-size: 11px;
+}
+
 
 .requester-avatar--in-history-phone-number {
   top: -4px !important;
@@ -435,7 +458,7 @@ p.member:hover {
   // padding: 1px;
   // background: #fff;
   position: relative;
-  top: -5px;
+  top: -2px;
   padding: 2px;
 
 }
@@ -538,7 +561,7 @@ p.member:hover {
 }
 
 .msg-alert {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 400;
 }
 
@@ -642,7 +665,7 @@ p.member:hover {
   cursor: pointer;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-  padding: 4px 4px;
+  padding: 6px 2px;
 }
 
 .fa-advanced-option-btn {
@@ -650,11 +673,11 @@ p.member:hover {
   cursor: pointer;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-  padding: 4px 7px;
+  padding: 6px 5px;
 }
 
 .fa-clear-search-btn {
-  margin-top: 5px;
+  // margin-top: 5px;
   cursor: pointer;
   -webkit-border-radius: 50%;
   border-radius: 50%;
@@ -686,6 +709,11 @@ p.member:hover {
   // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+// .request_filter {
+//   margin-top: -15px; 
+//   margin-right: 180px; 
+// }
+
 .filter-bar-advanced-options {
   // margin-left: -15px;
   // margin-right: -15px;
@@ -702,7 +730,7 @@ p.member:hover {
 }
 
 .customh4 {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-size: 16px;
   font-weight: 400;
   //    color: #394f5a !important;
@@ -726,7 +754,7 @@ p.member:hover {
 
 .filter-bar {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   flex-shrink: 0;
 }
 
@@ -837,26 +865,29 @@ p.member:hover {
   flex-shrink: 0;
   background-color: #e8f0fe;
   color: #1a73e8;
-  padding: 6px 12px;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  padding: 7px 12px 6px 12px;
+  font-family: var(--header-font-family);
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
   margin-right: 12px;
+  font-size: 14px;
+  line-height: 1.3;
 }
 
 .applied-filter-title {
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
-
   color: #353f45;
   padding: 6px 12px;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
   margin-right: 3px;
-  margin-left: -7px;
+  // margin-left: -7px;
+  font-size: 14px;
+  line-height: 1.3;
 }
 
 .conversations-count {
@@ -865,7 +896,7 @@ p.member:hover {
 
   color: #353f45;
   padding: 6px 12px;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -889,11 +920,13 @@ p.member:hover {
 .email-wpr {
   background: #bb001b;
   border-radius: 50%;
+  display: block;
 }
 
 .form-wpr {
   background: #39988D;
   border-radius: 50%;
+  display: block;
 }
 
 .channel-img-in-conversations {
@@ -1048,9 +1081,11 @@ p.member:hover {
 
 .search-btn>span {
   color: #fff;
-  padding-right: 3px;
+  // padding-right: 3px;
   position: relative;
-  top: 2px;
+  position: relative;
+  top: 0px;
+  font-size: 19px;
 }
 
 .no-agent>span {
@@ -1061,6 +1096,15 @@ p.member:hover {
   border-radius: 50%;
   display: flex;
   align-items: center;
+}
+
+
+.span-15 {
+  display: block;
+  width: 15px;
+  min-width: 15px;
+  height: 15px;
+  min-height: 15px;
 }
 
 /* No more used 

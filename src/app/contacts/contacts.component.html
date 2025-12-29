@@ -1,8 +1,8 @@
-<!-- margin-top:6px; -->
-<p style="z-index: 1050;position: relative;  padding-left:35px" class="navbar-brand"
+
+<!-- <p style="z-index: 1050;position: relative;  padding-left:35px" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ 'Contacts' | translate }}
-</p>
+</p> -->
 
 <div class="main-content" style="padding-top:0px;padding-left:0px; padding-right:0px">
   <!-- <ng-container *ngIf="permissionChecked">
@@ -61,122 +61,119 @@
                   <!-- test start -->
                   <div class="row">
                     <div class="col-sm-12">
-                      <div class="input-group full-text-input">
-
-                        <!-- // SEARCH FULL-TEXT BTN -->
-                        <span class="input-group-btn" style="padding-right: 2px;">
-                          <button class="custom-input-group---btn" type="submit">
-                            <i class="fa fa-search fa-search-btn" (click)="search()"
-                              style="color:grey; font-size: 18px;"></i>
-                          </button>
-                        </span>
-                        <!-- (ngModelChange)="onChangeFullText($event)" (keyup.enter)="search()"  (focus)="onFocusSearchField()" {{ 'SearchYourContacts' | translate }} placeholder=" {{fullTextSearchPlaholder}}" -->
-                        <div class="search_field_wrap">
-                          <input (keyup.enter)="search()" id="search_field" name="fullText"
-                            (focus)="onfocusFullTextSearchField($event)" [(ngModel)]="fullText" autocomplete="off"
-                            class="search-field"
-                            [placeholder]="hasClickedTrashed === false ? searchInYourContactsPlaceholder : searchInTrashPlaceholder">
+                      <div class="filter-bar" style="display: flex; align-items: stretch; justify-content: space-between;gap: 12px;">
+                        <!-- Filters - left section: 180px fissa - Vuota -->
+                        <div class="filters-on-left" style="display: flex; align-items: center; flex: 0 0 180px !important; padding-left: 13px; padding-right: 0;">
                         </div>
-                        <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-                        <!-- *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" -->
-                        <span
-                          *ngIf="fullText?.length > 0 || selectedContactEmail?.length > 0 || selectedContactTAG?.length > 0"
-                          class="input-group-btn" style="padding-right: 2px;">
-                          <button class="custom-input-group---btn" type="button">
-                            <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
-                              style="color:grey; font-size: 18px;"></i>
-                          </button>
-                        </span>
+                        <!-- Filters - central section: larghezza variabile - Search box -->
+                        <div class="filters-on-center" style="padding: 13px 0; display: flex; flex: 1; align-items: center; flex-wrap: wrap;max-width: 460px;">
+                          <div class="input-group full-text-input">
+                            <!-- // SEARCH FULL-TEXT BTN -->
+                            <span class="input-group-text" style="padding-right: 2px; border: none; background: transparent;">
+                              <button class="custom-input-group---btn" type="submit">
+                                <i class="fa fa-search fa-search-btn" (click)="search()"
+                                  style="color:grey; font-size: 18px;"></i>
+                              </button>
+                            </span>
+                            <!-- (ngModelChange)="onChangeFullText($event)" (keyup.enter)="search()"  (focus)="onFocusSearchField()" {{ 'SearchYourContacts' | translate }} placeholder=" {{fullTextSearchPlaholder}}" -->
+                            <div class="search_field_wrap">
+                              <input (keyup.enter)="search()" id="search_field" name="fullText"
+                                (focus)="onfocusFullTextSearchField($event)" [(ngModel)]="fullText" autocomplete="off"
+                                class="search-field"
+                                [placeholder]="hasClickedTrashed === false ? searchInYourContactsPlaceholder : searchInTrashPlaceholder">
+                            </div>
+                            <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                            <!-- *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" -->
+                            <span
+                              *ngIf="fullText?.length > 0 || selectedContactEmail?.length > 0 || selectedContactTAG?.length > 0"
+                              class="input-group-text" style="padding-right: 2px; border: none; background: transparent;">
+                              <button class="custom-input-group---btn" type="button">
+                                <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
+                                  style="color:grey; font-size: 18px;"></i>
+                              </button>
+                            </span>
 
-                        <!-- // OPEN ADVANCED OPTION BTN NOTE: the class "dropdown keep-open" Keep Dropdown Open -->
-                        <span id="dropdown_input_group_btn" class="input-group-btn dropdown keep-open"
-                          style="padding-left: 2px;position: static;">
-                          <button class="custom-input-group---btn dropdown-toggle" id="dropdown_btn" type="button"
-                            data-toggle="dropdown">
-                            <i class="fa fa-caret-down fa-advanced-option-btn" style="color:grey; font-size: 18px;"></i>
-                          </button>
+                            <!-- // OPEN ADVANCED OPTION BTN NOTE: the class "dropdown keep-open" Keep Dropdown Open -->
+                            <span id="dropdown_input_group_btn" class="input-group-text dropdown keep-open"
+                              style="padding-left: 2px;position: static; border: none; background: transparent;">
+                              <button class="custom-input-group---btn dropdown-toggle" id="dropdown_btn" type="button"
+                                data-bs-toggle="dropdown">
+                                <i class="fa fa-caret-down fa-advanced-option-btn" style="color:grey; font-size: 18px;"></i>
+                              </button>
 
+                              <div id="lead-advanced-search-dropdown-menu" class="dropdown-menu dropdown-menu-end"
+                                style="padding: 15px; margin-top: 3px;border-radius: 12px;font-size: 14px; width: 100%"
+                                (click)="$event.stopPropagation()">
+                                <div class="lead-advanced-search-container">
+                                  <div class="row">
+                                    <div class="col-sm-6">
+                                      <div class="form-group"
+                                        style="margin-right: 3px; padding-left: 12px; margin-top: 8px !important;">
+                                        <label class="label-7695a5" style="margin-top: 2px; display: block;">
+                                          {{ 'SearchByEmail' | translate }}
+                                        </label>
 
-                          <div class="dropdown-menu dropdown-menu-right"
-                            style="left: 0;padding: 15px; margin-top: 3px;border-radius: 12px;"
-                            (click)="$event.stopPropagation()">
-                            <div class="lead-advanced-search-container"></div>
-                            <!-- <div class="row"> -->
-                            <div class="col-sm-6">
-                              <div class="col-sm-12">
-                                <div class="form-group"
-                                  style="margin-top: 6px;padding-bottom: 0px !important;margin-right: 3px;;">
-                                  <!-- class="form-control" -->
-                                  <!-- <input id="lead--email" type="email" (keyup.enter)="search()"
-                                style="margin-top:2px;border-radius:5px!important" name="contactEmail"
-                                autocomplete="off" [(ngModel)]="selectedContactEmail"
-                                placeholder="{{ 'SearchByEmail' | translate }}"> -->
-                                  <label class="col-sm-12 label-7695a5" style="margin-top: 2px;">
-                                    {{ 'SearchByEmail' | translate }}
-                                  </label>
+                                        <ng-select [items]="emailArray" bindLabel="name" bindValue="name"
+                                          placeholder="{{'SelectAnEmail' | translate}}" [(ngModel)]="selectedContactEmail"
+                                          (change)="emailSelected()" [clearable]='false'>
+                                          <ng-template ng-label-tmp let-item="item">
+                                            <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                            <span>{{item.name}}</span>
+                                          </ng-template>
+                                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                            <span>{{item.name}}</span>
+                                          </ng-template>
+                                        </ng-select>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                      <div class="form-group" style="margin-left: 3px; padding-right: 12px;margin-top: 8px !important;">
+                                        <label class="label-7695a5" style="display: block;">
+                                          {{ 'Tags.SearchByTAG' | translate }}
+                                        </label>
+                                        <ng-select [items]="tagsArray" bindLabel="name" bindValue="name"
+                                          placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selectedContactTAG"
+                                          (change)="tagNameSelected()" [clearable]='false'>
+                                          <ng-template ng-label-tmp let-item="item">
+                                            <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                            <span>{{item.name}}</span>
+                                          </ng-template>
+                                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                                            <span>{{item.name}}</span>
+                                          </ng-template>
+                                        </ng-select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
 
-                                  <ng-select [items]="emailArray" bindLabel="name" bindValue="name"
-                                    placeholder="{{'SelectAnEmail' | translate}}" [(ngModel)]="selectedContactEmail"
-                                    (change)="emailSelected()" [clearable]='false'>
-                                    <ng-template ng-label-tmp let-item="item">
-
-                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                      <span>{{item.name}}</span>
-                                    </ng-template>
-                                    <ng-template ng-option-tmp let-item="item" let-index="index">
-
-                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                      <span>{{item.name}}</span>
-                                    </ng-template>
-                                  </ng-select>
+                                <div class="col-sm-12 lead-advanced-search-action" style="text-align: right;margin-top: 16px;">
+                                  <button id="cnct-search-btn" type="submit"
+                                    class="btn btn-tdblu-no-boxshadow searchbtn float-end" (click)="search()">
+                                    <span class="material-icons" style="">search</span>
+                                    {{'Search'|translate}}
+                                  </button>
+                                  <button id="clear-search-btn" type="submit"
+                                    class="btn btn-gray-no-boxshadow clearsearchbtn float-end" (click)="clearFullText()">
+                                    {{'ResetFilters'|translate}}
+                                  </button>
                                 </div>
                               </div>
-
-                            </div>
-                            <div class="col-sm-6">
-                              <div class="col-sm-12">
-                                <div class="form-group" style="margin-top: 8px;margin-left: 3px;">
-                                  <!-- <input (keyup.enter)="search()" style="margin-top:2px;border-radius:5px!important"
-                                class="form-control" name="contactTag" autocomplete="off"
-                                [(ngModel)]="selectedContactTAG" placeholder="Search by TAG"> -->
-
-                                  <label class="col-sm-12 label-7695a5">
-                                    {{ 'Tags.SearchByTAG' | translate }}
-                                  </label>
-                                  <ng-select [items]="tagsArray" bindLabel="name" bindValue="name"
-                                    placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selectedContactTAG"
-                                    (change)="tagNameSelected()" [clearable]='false'>
-                                    <ng-template ng-label-tmp let-item="item">
-
-                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                      <span>{{item.name}}</span>
-                                    </ng-template>
-                                    <ng-template ng-option-tmp let-item="item" let-index="index">
-
-                                      <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                                      <span>{{item.name}}</span>
-                                    </ng-template>
-                                  </ng-select>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- </div> -->
-
-                            <div class="col-sm-12" style="text-align: right;">
-                              <button id="cnct-search-btn" type="submit"
-                                class="btn btn-tdblu-no-boxshadow searchbtn pull-right" (click)="search()">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                {{'Search'|translate}}
-                              </button>
-                              <button id="clear-search-btn" type="submit"
-                                class="btn btn-gray-no-boxshadow clearsearchbtn pull-right" (click)="clearFullText()">
-
-                                {{'ResetFilters'|translate}}
-                              </button>
-                            </div>
-                          </div>
-                        </span>
-                      </div><!-- /input-group -->
+                            </span>
+                          </div><!-- /input-group -->
+                        </div>
+                        <!-- Filters - right section: 180px fissa - Pulsante Export to CSV -->
+                        <div class="filters-on-right" style="display: flex; flex-wrap: wrap; flex: 0 0 180px !important; justify-content: center; align-items: center;">
+                          <button *ngIf="hasClickedTrashed === false" class="btn btn-outlined export-to-csv-btn" [disabled]="PERMISSION_TO_EXPORT_LEADS === false" (click)="exportContactsToCsv()">
+                            {{ 'ExportToCSV' | translate }}
+                            <span class="material-icons" style="vertical-align: middle; margin-left: 4px;">
+                              save_alt
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
                   </div>
@@ -320,23 +317,14 @@
               <!-- ------------------------------------------------------- -->
               <div id="contacts-content">
                 <div class="row">
-                  <div class="col-xs-12">
+                  <div class="col-12">
                     <div class="card contact-list" style="margin-top:0px; border-radius: 12px;">
-                      <div class="card-header card-header-custom-bkgrnd"
+                      <div class="card-header card-header-custom-bkgrnd" style="border-bottom: unset;font-size: 14px;"
                         [ngClass]="{'gray-bckgnd': hasClickedTrashed === true}">
 
                         <div class="row">
-                          <!-- [ngClass]="{'col-xs-6' : hasClickedTrashed === false, 'col-xs-12': hasClickedTrashed === true}"  -->
-                          <div class="col-xs-6">
-                            <span *ngIf="hasClickedTrashed === false">
-                              <button class="btn btn-outlined export-to-csv-btn" [disabled]="PERMISSION_TO_EXPORT_LEADS === false" (click)="exportContactsToCsv()">
-                                {{ 'ExportToCSV' | translate }}
-                                <span class="material-icons">
-                                  save_alt
-                                </span>
-                              </button>
-                            </span>
-
+                          <!-- [ngClass]="{'col-6' : hasClickedTrashed === false, 'col-12': hasClickedTrashed === true}"  -->
+                          <div class="col-6">
                             <span *ngIf="hasClickedTrashed === true" style="font-weight: 400;margin-right: 16px;">
                               <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
                                 class="material-icons">delete</i>
@@ -347,8 +335,8 @@
 
                           </div>
 
-                          <div *ngIf="hasClickedTrashed === false" class="col-xs-6" style="text-align: right;">
-                            <div class="mobile-trash-contacs-btn">
+                          <div *ngIf="hasClickedTrashed === false" class="col-6" style="text-align: right;">
+                            <div class="mobile-trash-contacs-btn" style="font-size:14px">
                               <span style="cursor:pointer" (click)="openTrashedContact()">
                                 <span style="font-weight: 400;">
                                   {{'TrashContacts' | translate}}
@@ -362,9 +350,9 @@
                             </div>
                           </div>
 
-                          <div *ngIf="hasClickedTrashed === true" class="col-xs-6" style="text-align: right;">
+                          <div *ngIf="hasClickedTrashed === true" class="col-6" style="text-align: right;">
                             <div class="mobile-trash-contacs-btn" (click)="closeTrashContacts()">
-                              <i class="material-icons" style="vertical-align: middle;">
+                              <i class="material-icons" style="vertical-align: middle;cursor:pointer">
                                 clear
                               </i>
                               <span style="vertical-align: middle;">
@@ -431,16 +419,15 @@
                             <tr *ngIf="contacts && contacts?.length === 0">
                               <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
 
-                                <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                                <div style="font-size:1em; color:#7695a5; font-weight: 400; font-size: 14px;">
                                   {{ 'NoContact' | translate }}
-                                </p>
+                                </div>
                               </td>
                             </tr>
 
                             <tr *ngFor="let contact of contacts">
 
-                              <!-- ===== CONTACT NAME ===== -->
-                              <!-- [ngStyle]="{'background-color': contact?.avatar_fill_colour }" -->
+                              <!--  CONTACT NAME  -->
                               <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                                 <span class="avatar"
                                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + contact?.avatar_fill_colour + ')'}">
@@ -475,9 +462,8 @@
                                   </svg>
                                 </span>
 
-                                <span class="column-td" style="margin-left: 10px;"
+                                <span class="column-td" style="margin-left: 10px;font-size: 14px;"
                                   [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
-                                 <!-- {{ contact?.fullname }} -->
                                   {{ contact?.fullname?.length > 40 ? (contact?.fullname | slice:0:37) + '...' : contact?.fullname}}
                                 </span>
 
@@ -486,12 +472,11 @@
                                   n.a
                                 </span>
 
-                            <!-- --------------------------------------- -->
-                            <!--  Tag -->
-                            <!-- --------------------------------------- -->
-                            <section style="max-width: 210px;position: absolute;
-                        left: 60px;
-                        top: 35px;" *ngIf="contact?.tags?.length > 0">
+                                <!-- --------------------------------------- -->
+                                <!--  Tag -->
+                                <!-- --------------------------------------- -->
+                                <section style="max-width: 210px;position: absolute;
+                                left: 60px; top: 35px;" *ngIf="contact?.tags?.length > 0">
 
                                   <div style="display: inline-block;" *ngFor="let tag of contact?.tags;  let i=index">
                                     <div *ngIf="i<2">
@@ -560,42 +545,42 @@
 
                               <!-- ========== CHAT WITH ========== -->
                               <!-- <td style="width: 1%;">
-                            <span>
-                              <span class="White__Tooltip">
-                                <i class="material-icons chat-with-agent"
-                                  (click)="chatWithAgent(contact)">
-                                  chat
-                                </i>
-                                <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
-                                  {{"ChatWith" | translate }}:
-                                  <span *ngIf="contact.fullname" style="display:block">
-                                    {{contact?.fullname}}
-                                  </span>
-                                  <span *ngIf="!contact.fullname" style="display:block">
-                                    Guest
+                                <span>
+                                  <span class="White__Tooltip">
+                                    <i class="material-icons chat-with-agent"
+                                      (click)="chatWithAgent(contact)">
+                                      chat
+                                    </i>
+                                    <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
+                                      {{"ChatWith" | translate }}:
+                                      <span *ngIf="contact.fullname" style="display:block">
+                                        {{contact?.fullname}}
+                                      </span>
+                                      <span *ngIf="!contact.fullname" style="display:block">
+                                        Guest
+                                      </span>
+                                    </span>
                                   </span>
                                 </span>
-                              </span>
-                            </span>
-                          </td>  -->
+                              </td>  -->
 
                               <!-- ========== CONTACT EMAIL ========== -->
                               <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
 
-                                <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+                                <p class="column-td" style="margin-bottom: 5px; margin-top: 5px; font-size: 14px;">
                                   {{ contact?.email }}
                                 </p>
 
                                 <p class="column-td" *ngIf="!contact?.email"
-                                  style="margin-bottom: 5px; margin-top: 5px">
+                                  style="margin-bottom: 5px; margin-top: 5px; font-size: 14px;">
                                   N/A
                                 </p>
                               </td>
 
-                              <!-- ========== CREATED AT ========== -->
+                              <!--  CREATED AT  -->
                               <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
 
-                                <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+                                <p class="column-td" style="margin-bottom: 5px; margin-top: 5px; font-size: 14px;">
 
                                   {{ contact?.createdAt | amTimeAgo }}
                                   <!-- ({{ contact?.createdAt | date: 'd/M/y HH:mm' }})  -->
@@ -603,14 +588,13 @@
                                 </p>
                               </td>
 
-                              <!-- ========== ICONS EDIT CONTACT - VIEW CONTACT REQUESTS - REMOVE CONTACT ========== -->
-                              <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
-
-                              <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
-                                style="padding-left: 0px;padding-top: 17px!important;">
+                              
+                              <!--  Actions  -->
+                              <td *ngIf="hasClickedTrashed === false" class="td--actions"
+                                style="padding-left: 0px;">
 
                                 <!-- VIEW CONVERSATIONS {{ 'ViewContactRequests' | translate }}  -->
-                                <button type="button" class="btn btn-primary btn-simple btn-xs"
+                                <button type="button" class="btn btn-tdblu"
                                   (click)='goToContactDetails(contact?._id)' 
                                   matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{ 'ContactDetails' | translate }}" 
@@ -618,9 +602,6 @@
                                   matTooltipPosition='above' 
                                   matTooltipHideDelay="100">
                                   <i class="material-icons">contact_page</i>
-                                  <!-- <span class="tooltiptext-custom" style="text-transform:none">
-                                {{ 'ContactDetails' | translate }}
-                              </span> -->
                                 </button>
 
                                 <!-- EDIT CONTACT -->
@@ -633,7 +614,7 @@
                             </button> -->
 
                                 <!-- DELETE CONTACT {{ 'DeleteContact' | translate }} -->
-                                <button type="button" class="btn btn-danger btn-simple btn-xs"
+                                <button type="button" class="btn btn-danger"
                                   [disabled]="IS_CURRENT_USER_AGENT === true || PERMISSION_TO_TRASH_LEAD === false"
                                   (click)='moveContactToTrash(contact?._id, contact?.fullname)'
                                   matTooltipClass="custom-mat-tooltip" 
@@ -642,13 +623,10 @@
                                   matTooltipPosition='above' 
                                   matTooltipHideDelay="100">
                                   <i class="material-icons">delete</i>
-                                  <!-- <span class="tooltiptext-custom" style="text-transform:none">
-                                {{ 'MoveToTrash' | translate }}
-                              </span> -->
                                 </button>
                               </td>
 
-                              <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
+                              <td *ngIf="hasClickedTrashed === true" class="td-actions text-end"
                                 style="padding-left: 0px;padding-top: 17px !important;">
                                 <button type="button" class="btn btn-danger btn-simple btn-xs"
                                   [disabled]="USER_ROLE === 'admin' || USER_ROLE === 'agent' || PERMISSION_TO_DELETE_LEAD === false"
@@ -661,7 +639,7 @@
                                   <i class="material-icons">delete_forever</i>
                                 </button>
 
-                                <button type="button" class="btn btn-default btn-simple btn-xs"
+                                <button type="button" class="btn btn-secondary btn-simple btn-xs"
                                   [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_RESTORE_LEAD === false" 
                                   (click)='restore_contact(contact?._id)'
                                   matTooltipClass="custom-mat-tooltip" 
@@ -683,34 +661,38 @@
                         </table>
                       </div> <!-- ./ card-content table-responsive -->
 
-                      <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:center">
-                        <div class="stats">
+                      <div *ngIf="displaysFooterPagination === true" class="card--footer" style="text-align:center">
+                        <div class="input-group-wpr">
 
-                          <div class="contacts-paginantion" style="width: 120px; margin: 0 auto; margin-top: 10px ">
+                           <!-- style="width: 120px; margin: 0 auto; margin-top: 10px" -->
+                          <div class="contacts-paginantion">
                             <div class="input-group">
 
-                              <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                              <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                                <button [disabled]="pageNo + 1 === 1" class="btn btn-primary decrease-page-number-btn"
-                                  type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
-                                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                              <!--  BTN DECREASE PAGE -->
+                              <span class="input-group-btn left-btn">
+                                <!-- decrease-page-number-btn -->
+                                <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu"
+                                  type="button" (click)="decreasePageNumber()">
+                                  <!-- <i class="material-icons" style="vertical-align: middle; font-size: 18px;">chevron_left</i> -->
+                                  <span class="material-icons">keyboard_arrow_left</span>
                                 </button>
                               </span>
 
-                              <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                              <span class="input-group-btn" style="padding-right:0px;">
-                                <button #searchbtn class="btn btn-primary" type="button" style="padding: 6px 8px">
+                              <!-- DISPLAY No PAGE / No TOTAL PAGES -->
+                              <span class="input-group-btn center-btn">
+                                <button #searchbtn class="btn btn-tdblu" type="button">
                                   {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                                 </button>
                               </span>
 
-                              <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                              <span class="input-group-btn" style="padding-right:0px">
+                              <!-- BTN INCREASE PAGE -->
+                              <span class="input-group-btn right-btn">
                                 <button
                                   [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
                                   class="btn btn-primary increase-page-number-btn" type="button"
-                                  (click)="increasePageNumber()" style="padding: 6px 8px">
-                                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                  (click)="increasePageNumber()">
+                                  <!-- <i class="material-icons" style="vertical-align: middle; font-size: 18px;">chevron_right</i> -->
+                                  <span class="material-icons">keyboard_arrow_right</span>
                                 </button>
                               </span>
 

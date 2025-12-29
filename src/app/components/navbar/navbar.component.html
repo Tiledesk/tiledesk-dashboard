@@ -4,30 +4,29 @@
 <nav class="navbar navbar-absolute">
 
   <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)" style="font-weight: 400;">
-        <span *ngIf="currentIcon && currentIcon !== 'keyboard_arrow_left'" 
-          class="material-symbols-outlined" 
-          style="vertical-align: middle; margin-right: 8px;">
-          {{currentIcon}}
-        </span>
-        <span *ngIf="currentIcon && currentIcon === 'keyboard_arrow_left'" 
-          class="material-symbols-outlined" 
-          style="vertical-align: middle; margin-right: 8px; cursor:pointer;"
-          (click)="onBackClick()">
-          {{currentIcon}}
-        </span>
-        {{currentTitle | translate}}
-      </a>
-    </div>
+    <!-- Bootstrap 5: navbar-header removed, navbar-brand directly in container-fluid -->
+    <a class="navbar-brand" href="javascript:void(0)" style="font-weight: 400;">
+      <span *ngIf="currentIcon && currentIcon !== 'keyboard_arrow_left'" 
+        class="material-symbols-outlined" 
+        style="vertical-align: middle; margin-right: 8px;">
+        {{currentIcon}}
+      </span>
+      <span *ngIf="currentIcon && currentIcon === 'keyboard_arrow_left'" 
+        class="material-symbols-outlined" 
+        style="vertical-align: middle; margin-right: 8px; cursor:pointer;"
+        (click)="onBackClick()">
+        {{currentIcon}}
+      </span>
+      {{currentTitle | translate}}
+    </a>
     <div class="collapse navbar-collapse show">
 
 
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="navbar-nav ms-auto">
         <!-- <li>
                 <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="material-icons">dashboard</i>
-                    <p class="hidden-lg hidden-md">Dashboard</p>
+                    <p class="d-lg-none d-md-none">Dashboard</p>
                 </a>
             </li> -->
 
@@ -397,7 +396,7 @@
             <a class="tool_tip" style="cursor: pointer;" *ngIf="!OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
               <i class="material-icons" style="color:#AAA">access_time</i>
           
-              <p class="hidden-lg hidden-md">operatinghoursoff</p>
+              <p class="d-lg-none d-md-none">operatinghoursoff</p>
               <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
                 {{ 'OperatingHoursAreDisabled' | translate }}
                 <i></i>
@@ -405,7 +404,7 @@
             </a>
             <a class="tool_tip" style="cursor: pointer;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
               <i class="material-icons" style="color:#3ea9f5">access_time</i>
-              <p class="hidden-lg hidden-md">operatinghourson</p>
+              <p class="d-lg-none d-md-none">operatinghourson</p>
               <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
                 {{ 'OperatingHoursAreEnabled' | translate }}
 
@@ -449,7 +448,7 @@
           </a>
           <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
             <i class="material-icons">volume_off</i>
-            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
+            <!-- <p class="d-lg-none d-md-none">soundoff</p> -->
           </a>
         </li>
 

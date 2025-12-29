@@ -3280,30 +3280,29 @@
                     <div *ngIf="displaysFooterPagination === true" class="card--footer" style="text-align:center">
                       <div class="input-group-wpr">
 
-                        <div style="width: 120px; margin: 0 auto; margin-top: 10px ">
-                          <div class="input-group" style="flex-wrap: nowrap;">
+                        <div>
+                          <div class="input-group">
 
                             <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                            <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                            <span class="input-group-btn left-btn">
                               <button [disabled]="pageNo + 1 === 1" class="btn btn-primary" type="button"
-                                (click)="decreasePageNumber()" style="padding: 6px 8px; margin-bottom: 0px;">
+                                (click)="decreasePageNumber()">
                                 <!-- <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> -->
                                 <span class="material-icons">keyboard_arrow_left</span>
                               </button>
                             </span>
 
                             <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                            <span class="input-group-btn" style="padding-right:0px;">
-                              <button class="btn btn-primary" type="button" style="padding: 6px 8px; white-space: nowrap; margin-bottom: 0px;">
+                            <span class="input-group-btn center-btn">
+                              <button class="btn btn-primary" type="button">
                                 {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                               </button>
                             </span>
 
                             <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                            <span class="input-group-btn" style="padding-right:0px">
+                            <span class="input-group-btn right-btn">
                               <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
-                                class="btn btn-primary" type="button" (click)="increasePageNumber()"
-                                style="padding: 6px 8px; margin-bottom: 0px;">
+                                class="btn btn-primary" type="button" (click)="increasePageNumber()">
                                 <!-- <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> -->
                                 <span class="material-icons">keyboard_arrow_right</span>
                               </button>
