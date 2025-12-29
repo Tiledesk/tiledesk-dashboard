@@ -592,10 +592,10 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
 
-      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/00gaEMb4q7x06e428Z" // STARTER Montly - // "https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
-      this.PAYMENT_LINK_ANNUALLY_PLAN_D =  "https://buy.stripe.com/aEUeV23BY18C5a0fZQ" // STARTER Annually - // "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
-      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/3cs6ow0pMaJcauk7tl"; // Pro Montly - // "https://buy.stripe.com/00g6ow0pM5oSdGw8wQ"; // "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/6oE14cb4qbNgcCs00U"; // Pro Annually - "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/bJe14m9zedgN7Ma4JB77O1d" // new 2026 //"https://buy.stripe.com/00gaEMb4q7x06e428Z" // STARTER Montly - // "https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/14AdR8fXCfoV0jIdg777O1e" // new 2026 "https://buy.stripe.com/aEUeV23BY18C5a0fZQ" // STARTER Annually - // "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/28E28q7r63Gd1nM3Fx77O1f" //new 2026 //"https://buy.stripe.com/3cs6ow0pMaJcauk7tl"; // Pro Montly - // "https://buy.stripe.com/00g6ow0pM5oSdGw8wQ"; // "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/fZueVcbHmekR7Ma7VN77O1g" //new 2026 // "https://buy.stripe.com/6oE14cb4qbNgcCs00U"; // Pro Annually - "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
       this.PAYMENT_LINK_MONTLY_PLAN_EE =  "https://buy.stripe.com/eVaaEMfkG8B4eKAbJD"; // Business Montly - // 'https://buy.stripe.com/14kfZ6a0mcRk31S3cK';
       this.PAYMENT_LINK_ANNUALLY_PLAN_EE = "https://buy.stripe.com/aEU7sA5K6bNg1XO6pk" // Business Annually 'https://buy.stripe.com/9AQ28gfkG7x0eKA3cL'; 
     }
