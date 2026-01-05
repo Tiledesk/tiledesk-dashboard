@@ -1625,6 +1625,11 @@ th {
   cursor: pointer;
 }
 
+.analytics-section-title {
+  font-size: 18px;
+  font-family: var(--header-font-family);
+}
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -3507,6 +3512,10 @@ appdashboard-bots-sidebar {
   color: var(--settings-sidebar-hover-color);
 }
 
+.settings-sidebar>li> a{ 
+  text-decoration: none;
+}
+
 // ---------------------------------------
 // Only in Bot sidebar 
 // ---------------------------------------
@@ -3686,7 +3695,7 @@ li.active-item a i.settings-sidebar-icons {
 
 // Only Settings sidebar
 .settings-sidebar>li>.settings-sidebar-anchor {
-  padding-top: 3px;
+  padding-top: 5px;
 }
 
 .toggle-setting-sidebar-icon-wpr {
@@ -3705,7 +3714,7 @@ li.active-item a i.settings-sidebar-icons {
 }
 
 .toggle-setting-sidebar-icon-wpr.is_closed {
-  left: 40px;
+  left: 42px;
   // left: 50px; // increased fro the new sidebar width
 }
 
@@ -4153,7 +4162,7 @@ div:where(.swal2-container) .swal2-select {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  // margin-top: 21px;
+  margin-top: 2px;
 }
 
 
@@ -4233,7 +4242,8 @@ div:where(.swal2-container) .swal2-select {
   width: 100%;
   // z-index: 1028;
   position: relative;
-  top: -5px;
+  // top: -5px;
+  top: 58px;
   box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
   padding-bottom: 5px;
   float: left;
@@ -4538,7 +4548,19 @@ div:where(.swal2-container) .swal2-select {
   border-top-right-radius: 9999px;
 }
 
+/* Widget installation
+/* ***************************** */
+.install-widget-instructions {
+  font-size: 14px;
+}
 
+.install-widget-instructions .install-widget-steps {
+  line-height: 1.3;
+}
+
+.install-widget-steps {
+  padding-bottom: 3px;
+}
 
 
 /* analytics > metrics */

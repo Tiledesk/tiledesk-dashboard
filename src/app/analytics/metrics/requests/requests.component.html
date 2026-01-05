@@ -1,6 +1,6 @@
 <div class="row" style="text-align: center; margin-top:35px">
   <div class="col-md-12">
-    <h4 class="section-title">
+    <h4 class="analytics-section-title">
       {{ 'NumberOfRequests' | translate }}
     </h4>
   </div>
@@ -9,7 +9,7 @@
 <div class="row" style="text-align: center; margin-top: 6px;">
   <!-- left side card -->
   <div class="col-md-3">
-    <div class="card" style="border-radius: 10px; min-height: 468px;">
+    <div class="card conversations-analytics-left-card" style="border-radius: 10px; min-height: 455px;">
       <!-- <div
         style="padding-bottom: 28px; padding-top: 30px; font-size: 18px; font-family: 'Poppins', 'Roboto',  'Arial', sans-serif">
         {{ "Last30DaysConversations" | translate }}
@@ -146,10 +146,10 @@
 
 
   <div class="col-md-9">
-    <div class="card" style="border-radius: 10px;">
-      <div style="padding-top: 27px; padding-bottom: 10px">
+    <div class="card request-chart-card" style="border-radius: 10px;">
+      <div style="padding-top: 27px; padding-bottom: 25px">
         <span
-          style="padding-bottom: 12px; padding-top:30px; font-size: 18px; font-family: 'Poppins', 'Roboto',  'Arial', sans-serif">
+          style="padding-bottom: 12px; padding-top:30px; font-size: 18px; font-family: var(--header-font-family)">
           {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}}
           <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
           <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
@@ -169,7 +169,7 @@
                 {{ 'Analytics.FilterReport' | translate }}
               </label>
               <!-- margin-bottom: 20px; -->
-              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
+              <div class="col-sm-12" style="margin-bottom: 6px; text-align: left; font-size: 14px;">
                 <ng-select class="custom ng-select-days" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
                   (change)="daysSelect(selectedDaysId, $event)">
                   <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' |
@@ -207,7 +207,7 @@
 
         <!-- ------ department filter--------- -->
         <div class="col-sm-3">
-          <div class="section-select-dept">
+          <div class="section-select-dept" style="font-size: 14px;">
             <div class="row">
               <!-- color: rgba(0, 0, 0, 0.54); -->
               <label class="col-sm-12" style="text-align: left; color:black">
@@ -227,7 +227,7 @@
 
         <!-- ----- agent filter ------ -->
         <div class="col-sm-3">
-          <div class="section-select-dept">
+          <div class="section-select-dept" style="font-size: 14px;">
             <div class="row">
               <label class="col-sm-12" style="text-align: left; color:black;">
                 {{ "Agent" | translate }}
@@ -253,7 +253,7 @@
 
         <!-- ----- conversation type filter ------ -->
         <div class="col-sm-3">
-          <div class="section-select-dept">
+          <div class="section-select-dept" style="font-size: 14px;">
             <div class="row">
               <label class="col-sm-12" style="text-align: left; color:black;">
                 {{ "MessageChannel" | translate }}

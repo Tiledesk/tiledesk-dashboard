@@ -5,8 +5,9 @@
 
   <div class="container-fluid">
     <!-- Bootstrap 5: navbar-header removed, navbar-brand directly in container-fluid -->
-    <a class="navbar-brand" href="javascript:void(0)" style="font-weight: 400;">
-      <span *ngIf="currentIcon && currentIcon !== 'keyboard_arrow_left'" 
+    <a class="navbar-brand" href="javascript:void(0)" 
+       [ngStyle]="{'font-weight': '400', 'padding-left': (currentIcon === 'settings' && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null, 'padding-right': (currentIcon === 'settings' && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null}">
+      <span *ngIf="currentIcon && currentIcon !== 'keyboard_arrow_left' && currentIcon !== 'settings'" 
         class="material-symbols-outlined" 
         style="vertical-align: middle; margin-right: 8px;">
         {{currentIcon}}
@@ -17,7 +18,14 @@
         (click)="onBackClick()">
         {{currentIcon}}
       </span>
-      {{currentTitle | translate}}
+      <span *ngIf="currentIcon && currentIcon === 'settings'" 
+        class="material-symbols-outlined" 
+        style="vertical-align: middle; margin-right: 8px;">
+        {{currentIcon}}
+      </span>
+      <span *ngIf="!(currentTitle === 'Settings' && !IS_OPEN_SETTINGS_SIDEBAR)">
+        {{currentTitle | translate}}
+      </span>
     </a>
     <div class="collapse navbar-collapse show">
 

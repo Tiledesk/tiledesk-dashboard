@@ -3,9 +3,8 @@
 .bottom-nav-metrics {
     background-color: #fff;
     width: 100%;
-    // z-index: 1028;
     position: relative;
-    top: -5px;
+    top: -55px;
     // box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
     padding-bottom: 5px;
     float: left;
@@ -13,7 +12,7 @@
     padding-left: 0px;
     display: flex;
     flex-grow: 1;
-    margin-bottom:20px
+    margin-bottom: -18px;
 }
 
 .bottom-nav-metrics li {
@@ -30,6 +29,8 @@
     padding: 18px 15px;
     color: #797979;
     line-height: 20px;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .bottom-nav-metrics li a:hover{
@@ -41,9 +42,9 @@
 
 
  @media (max-width: 991px){
-    .bottom-nav-metrics { 
-        top: -2px !important;
-    }
+    // .bottom-nav-metrics { 
+    //     top: -2px !important;
+    // }
 
     .chart-wrapper {
         margin-top:60px !important;

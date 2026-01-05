@@ -11,10 +11,11 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NavigationService } from 'app/services/navigation.service';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -108,6 +109,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_CONVS: boolean;
   PERMISSION_TO_TRASH_LEAD: boolean;
 
+  private backSub?: Subscription;
+  
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -120,7 +123,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private usersService: UsersService,
     private logger: LoggerService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private navSvc: NavigationService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -156,12 +160,20 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getProjectUserRole();
     // this.checkPermissions()
     this.listenToProjectUser()
+    this.listenToGoBack()
   }
 
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   listenToProjectUser() {
@@ -1143,6 +1155,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   openAddContactNameForm($event) {
+    console.log('openAddContactNameForm') 
 
     if (this.PERMISSION_TO_UPDATE_LEAD === false)  {
       this.notify.presentDialogNoPermissionToPermomfAction()
@@ -1151,7 +1164,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     $event.stopPropagation();
     this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
-    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
+    console.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
     const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
     this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
     if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {

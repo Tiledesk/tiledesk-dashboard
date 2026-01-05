@@ -574,7 +574,7 @@ p.member:hover {
   color: #8796af;
   font-size: 25px;
   position: relative;
-  top: 2px;
+  // top: 2px;
   left: 2px;
 }
 
@@ -608,6 +608,7 @@ p.member:hover {
   box-shadow: 0 8px 24px 0 rgb(60 72 91 / 32%);
   margin-bottom: 10px;
   padding: 8px;
+  max-width: fit-content;
 }
 
 .contact-form {

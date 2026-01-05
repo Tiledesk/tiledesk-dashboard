@@ -574,6 +574,7 @@ input {
 .custom-input {
   max-width: 300px;
   margin-bottom: 6px;
+  color: #3c4858;;
 }
 
 input[type="text"]:disabled {
@@ -641,6 +642,33 @@ input[type="text"]:disabled {
 .aligned-row {
   display: flex;
   flex-flow: row wrap;
+  align-items: stretch; // Ensure all columns have the same height
+  
+  // Ensure all direct children (columns) stretch to same height
+  > [class*="col-"] {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+  }
+  
+  // Specific styles for pre-chat form columns
+  .pre-chat-form-field-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .pre-chat-form-buttons-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .pre-chat-form-remove-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
 
   &::before {
     display: block;
@@ -651,6 +679,7 @@ input[type="text"]:disabled {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: -8px;
 }
 
 .on-off-primary-color-lbl-wpr {
@@ -660,13 +689,13 @@ input[type="text"]:disabled {
   font-weight: 400;
   border-radius: 4px;
   position: relative;
-  top: -4px;
+  // top: -4px;
 }
 
 .display-logo-switch-and-logourl-wpr {
   display: flex;
   // width: 100%;
-  margin-left: 15px;
+  margin-left: -8px;
 }
 
 .display-logo-switch-wpr {
@@ -696,7 +725,7 @@ input[type="text"]:disabled {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 15px;
+  // margin-left: 15px;
   margin-top: 6px;
 }
 
@@ -707,7 +736,7 @@ input[type="text"]:disabled {
   font-weight: 400;
   border-radius: 4px;
   position: relative;
-  top: -4px;
+  // top: -4px;
 }
 
 .nw-attachment-button-onoffswitch-wrapper {
@@ -755,7 +784,7 @@ input[type="text"]:disabled {
   flex-direction: row;
   align-items: center;
   // margin-left: 15px;
-  margin-top: 6px;
+  // margin-top: 6px;
 }
 
 .on-off-display-widget-lbl-wpr {
@@ -775,12 +804,12 @@ input[type="text"]:disabled {
 }
 
 .display-widget-label {
-  margin-left: 15px;
+  // margin-left: 15px;
   font-size: 12px !important;
   color: #566787 !important;
   text-align: left;
-  padding-bottom: 3px;
-  font-weight: 600 !important;
+  // padding-bottom: 3px;
+  font-weight: 400 !important;
   letter-spacing: .2px;
   min-width: 145px;
   width: 145px;
@@ -788,6 +817,7 @@ input[type="text"]:disabled {
 
 .on-page-change-widget-option {
   width: 300px;
+  font-size: 14px;
 }
 
 
@@ -795,24 +825,39 @@ input[type="text"]:disabled {
 
 .pre-chat-form-field-div {
   padding: 8px;
-  margin-bottom: 5px;
+  margin-bottom: 0; // Remove margin to allow proper height matching
   background-color: #f7f8fc;
   border-radius: 4px;
   color: #3c4858;
   border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  flex: 1; // Take all available space in parent
+  width: 100%;
+  gap: 2px;
+}
+
+.pre-chat-form-field-div span { 
+  font-size: 14px;
 }
 
 .pre-chat-form-field-move-up-and-down-wpr {
-  height: 100%;
+  flex: 1; // Take all available space in parent column
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .move-up-field-btn {
   background-color: #f7f8fc;
-  height: 50%;
+  flex: 1 1 50%; // Each button takes exactly 50% of the height
   border-radius: 4px 4px 0px 0px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0; // Allow flex shrinking
 }
 
 .move-up-field-btn:hover {
@@ -820,19 +865,22 @@ input[type="text"]:disabled {
 }
 
 .move-up-material-icons {
-  position: relative;
-  bottom: -12px;
   color: #3c4858;
+  font-size: 20px;
 }
 
 .move-down-field-btn {
   background-color: #f7f8fc;
-  margin-top: 2px;
   width: 100%;
-  height: 50%;
+  flex: 1 1 50%; // Each button takes exactly 50% of the height
   border-radius: 0px 0px 4px 4px;
   cursor: pointer;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0; // Allow flex shrinking
+  border-top: 1px solid rgba(0, 0, 0, 0.1); // Visual separator instead of margin
 }
 
 .move-down-field-btn:hover {
@@ -841,9 +889,8 @@ input[type="text"]:disabled {
 }
 
 .move-down-material-icons {
-  position: relative;
-  bottom: -12px;
   color: #3c4858;
+  font-size: 20px;
 }
 
 .pre-chat-form-field-div>input {
@@ -871,14 +918,19 @@ input[type="text"]:disabled {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   color: #3c4858;
+  min-height: 36px;
   // resize: vertical;
 }
 
 .pre-chat-form-remove-field-btn--wpr {
-  height: 100%;
+  flex: 1; // Take all available space in parent column
+  width: 100%;
   background-color: #f7f8fc;
   cursor: pointer;
   border-radius: 4px 4px 4px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pre-chat-form-remove-field-btn--wpr:hover {
@@ -887,8 +939,11 @@ input[type="text"]:disabled {
 
 .remove-field-btn {
   text-align: center;
-  position: relative;
-  top: 39%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .remove-field-material-icons {
@@ -1632,6 +1687,33 @@ input[type="text"]:disabled {
 .aligned-row {
   display: flex;
   flex-flow: row wrap;
+  align-items: stretch; // Ensure all columns have the same height
+  
+  // Ensure all direct children (columns) stretch to same height
+  > [class*="col-"] {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+  }
+  
+  // Specific styles for pre-chat form columns
+  .pre-chat-form-field-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .pre-chat-form-buttons-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .pre-chat-form-remove-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
 
   &::before {
     display: block;
@@ -1682,8 +1764,8 @@ input[type="text"]:disabled {
   border-radius: 50px;
   background: #4caf50;
   color: #fff;
-  padding-left: 3px;
-  // padding-right: 3px;
+  padding-left: 5px;
+  padding-top: 3px;
   height: 20px;
   width: 20px;
 }
@@ -2069,6 +2151,11 @@ button.buttonRounded:hover {
   // box-shadow: 0 2px 6px 0 #e6e9ed;
   max-width: 1200px;
   border-radius: 12px;
+  
+  // Ensure row doesn't block sticky positioning
+  // .row {
+  //   align-items: start; // Required for sticky to work in Bootstrap 5 flexbox
+  // }
 }
 
 #widget-settings-manage {
@@ -2218,6 +2305,7 @@ button.buttonRounded:hover {
   font-weight: 600 !important;
   letter-spacing: 0.2px;
   padding-right: 4px;
+  padding-left: 0px;
 }
 
 .widget-settings-control-head-label {
@@ -2227,6 +2315,8 @@ button.buttonRounded:hover {
   padding-bottom: 12px;
   font-family: var(--header-font-family);
   font-weight: 500 !important;
+  padding-left: 0px;
+  padding-bottom: 5px;
 }
 
 .widget-settings-control-head-label-info {
@@ -2337,6 +2427,8 @@ button.buttonRounded:hover {
   padding-right: 0px;
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
+  align-self: start; // Required for sticky to work in Bootstrap 5 flexbox columns
+  height: fit-content; // Ensure it doesn't stretch to full height
 }
 
 .widget-preview-container {
@@ -2502,12 +2594,14 @@ button.buttonRounded:hover {
   color: #3ecf8e;
   font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
+  font-size: 14px;
 }
 
 .language-name {
   font-family: var(--header-font-family); //"Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
   flex: 1 1 0px;
+  font-size: 14px;
 }
 
 .selected-language-name {
@@ -3140,6 +3234,8 @@ pre {
   padding: 8px;
   font-weight: 400;
   resize: vertical;
+  color:#3c4858;
+  font-size: 14px;
 }
 
 .from-b-plan-badge {
@@ -3247,7 +3343,7 @@ pre {
   flex-direction: row;
   align-items: center;
   gap: 6px;
-
+  line-height: 32px;
 }
 
 
@@ -3386,6 +3482,7 @@ pre {
     font-weight: 400;
     margin-bottom: 6px;
     margin-top: 5px;
+    font-size: 14px;
 }
 .extensions-container {
   display: flex;
@@ -3560,155 +3657,162 @@ input[type="radio"]:disabled {
 
 /* Allowed extentions
 /* ************************* */
-.option-description {
-    font-weight: 400;
-    margin-bottom: 6px;
-    margin-top: 5px;
-}
-.extensions-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 300px;
-  margin-right: 6px;
-}
+// .option-description {
+//     font-weight: 400;
+//     margin-bottom: 6px;
+//     margin-top: 5px;
+// }
+// .extensions-container {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 12px;
+//   max-width: 300px;
+//   margin-right: 6px;
+// }
 
-.option-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+// .option-row {
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+// }
 
-.fixed-input {
-  width: 100px;
-  text-align: center;
-  background-color: #f3f3f3;
-}
+// .fixed-input {
+//   width: 100px;
+//   text-align: center;
+//   background-color: #f3f3f3;
+// }
 
-.extensions-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #fafafa;
-  max-width: 400px;
-  min-height: 49px;
-}
+// .extensions-box {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 8px;
+//   margin-bottom: 10px;
+//   padding: 8px;
+//   border: 1px solid #ddd;
+//   border-radius: 6px;
+//   background: #fafafa;
+//   max-width: 400px;
+//   min-height: 49px;
+// }
 
-.extensions-box.no-extentions  { 
-  border: 1px solid #ba1a1a;
-}
+// .extensions-box.no-extentions  { 
+//   border: 1px solid #ba1a1a;
+// }
 
-.extension-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 4px 4px 8px;
-  border-radius: 12px;
-  background: #e3e9f6;
-  font-size: 14px;
-  font-family: var(--header-font-family);
-}
+// .extension-chip {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 4px;
+//   padding: 4px 4px 4px 8px;
+//   border-radius: 12px;
+//   background: #e3e9f6;
+//   font-size: 14px;
+//   font-family: var(--header-font-family);
+// }
 
-.extension-chip button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #333;
-  padding-left: 3px;
-  padding-right: 3px;
-}
+// .extension-chip button {
+//   border: none;
+//   background: transparent;
+//   cursor: pointer;
+//   color: #333;
+//   padding-left: 3px;
+//   padding-right: 3px;
+// }
 
-.extension-chip button .material-icons { 
-    font-size: 16px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    font-weight: 500;
-}
+// .extension-chip button .material-icons { 
+//     font-size: 16px;
+//     vertical-align: middle;
+//     position: relative;
+//     top: -1px;
+//     font-weight: 500;
+// }
 
-.extension-chip button:hover .material-icons { 
-   color: var(--delete-icon-color);
-}
+// .extension-chip button:hover .material-icons { 
+//    color: var(--delete-icon-color);
+// }
 
-.add-extensions-input {
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-  border-right: unset !important;
-}
+// .add-extensions-input {
+//   border-top-right-radius: 0px !important;
+//   border-bottom-right-radius: 0px !important;
+//   border-right: unset !important;
+// }
 
-.option-row > .add-extensions-btn {
-  background: var(--blue-20) !important;
-  border: 1px solid var(--blue-20);
-  height: 36px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  margin-left: -8px;
-  cursor: pointer;
-}
+// .option-row > .add-extensions-btn {
+//   background: var(--blue-20) !important;
+//   border: 1px solid var(--blue-20);
+//   height: 36px;
+//   border-top-right-radius: 5px;
+//   border-bottom-right-radius: 5px;
+//   margin-left: -8px;
+//   cursor: pointer;
+// }
 
-.option-row > .add-extensions-btn.add-extensions-btn-disabled  { 
-  cursor: not-allowed;
-  opacity: .8;
-}
+// .option-row > .add-extensions-btn.add-extensions-btn-disabled  { 
+//   cursor: not-allowed;
+//   opacity: .8;
+// }
 
-.option-row > .add-extensions-btn:hover {
-  opacity: .8;
-}
+// .option-row > .add-extensions-btn:hover {
+//   opacity: .8;
+// }
 
-.option-row > .add-extensions-btn > .material-icons {
-  vertical-align: middle;
-  color: #fff;
-}
+// .option-row > .add-extensions-btn > .material-icons {
+//   vertical-align: middle;
+//   color: #fff;
+// }
 
-/* Nasconde il radio nativo */
-input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--blue-20);
-  border-radius: 50%;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  margin: 0 6px 0 0;
-  vertical-align: middle;
-  transition: all 0.2s ease-in-out;
-}
+// /* Nasconde il radio nativo */
+// input[type="radio"] {
+//   appearance: none;
+//   -webkit-appearance: none;
+//   -moz-appearance: none;
+//   width: 18px;
+//   height: 18px;
+//   border: 2px solid var(--blue-20);
+//   border-radius: 50%;
+//   display: inline-block;
+//   position: relative;
+//   cursor: pointer;
+//   outline: none;
+//   margin: 0 6px 0 0;
+//   vertical-align: middle;
+//   transition: all 0.2s ease-in-out;
+// }
 
-/* Cerchio riempito quando selezionato */
-input[type="radio"]:checked {
-  border-color: var(--blue-20);
-  background-color: var(--blue-20);
-}
+// /* Cerchio riempito quando selezionato */
+// input[type="radio"]:checked {
+//   border-color: var(--blue-20);
+//   background-color: var(--blue-20);
+// }
 
-/* Puntino bianco dentro */
-input[type="radio"]:checked::after {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 4px;
+// /* Puntino bianco dentro */
+// input[type="radio"]:checked::after {
+//   content: "";
+//   position: absolute;
+//   top: 4px;
+//   left: 4px;
+//   width: 8px;
+//   height: 8px;
+//   border-radius: 50%;
+//   background: white;
+// }
+
+// /* Hover effect */
+// input[type="radio"]:hover {
+//   border-color: var(--blue-20);
+// }
+
+// /* Disabilitato */
+// input[type="radio"]:disabled {
+//   border-color: #ccc;
+//   background: #f2f2f2;
+//   cursor: not-allowed;
+// }
+
+.span-8 {
+  display: block;
   width: 8px;
+  min-width: 8px;
   height: 8px;
-  border-radius: 50%;
-  background: white;
+  min-height: 8px;
 }
-
-/* Hover effect */
-input[type="radio"]:hover {
-  border-color: var(--blue-20);
-}
-
-/* Disabilitato */
-input[type="radio"]:disabled {
-  border-color: #ccc;
-  background: #f2f2f2;
-  cursor: not-allowed;
-}
-

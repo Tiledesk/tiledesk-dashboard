@@ -15,6 +15,8 @@ input[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff;
+  color: #000000de;
+  font-weight: 300;
 }
 
 input[type="tel"] {
@@ -32,6 +34,8 @@ input[type="tel"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff;
+  color: #000000de;
+  font-weight: 300;
 }
 
 .chat-limit input[type="number"] {
@@ -1487,6 +1491,7 @@ button.close {
     font-weight: 400;
     margin-bottom: 6px;
     margin-top: 5px;
+    font-size: 14px;
 }
 
 .extensions--container {

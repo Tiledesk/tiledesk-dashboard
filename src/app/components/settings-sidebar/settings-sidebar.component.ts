@@ -125,6 +125,13 @@ export class SettingsSidebarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Ripristina lo stato di USER_HAS_TOGGLE_SIDEBAR da localStorage
+    const savedState = localStorage.getItem('settings_sidebar_manually_closed');
+    if (savedState === 'true') {
+      this.USER_HAS_TOGGLE_SIDEBAR = true;
+      this.logger.log('[SETTINGS-SIDEBAR] Restored USER_HAS_TOGGLE_SIDEBAR from localStorage:', this.USER_HAS_TOGGLE_SIDEBAR);
+    }
+    
     this.getUserRole();
     this.getOSCODE();
     this.getChatUrl();
@@ -617,16 +624,41 @@ export class SettingsSidebarComponent implements OnInit {
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[SETTINGS-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.logger.log('[SETTINGS-SIDEBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened, 'USER_HAS_TOGGLE_SIDEBAR:', this.USER_HAS_TOGGLE_SIDEBAR)
+      // Se l'utente ha chiuso manualmente la sidebar, non riaprirla automaticamente dalla subscription
+      if (isopened && this.USER_HAS_TOGGLE_SIDEBAR) {
+        this.logger.log('[SETTINGS-SIDEBAR] BLOCKED: sidebar was manually closed by user, ignoring subscription value')
+        return // Non aggiornare IS_OPEN se è stata chiusa manualmente
+      }
       this.IS_OPEN = isopened
     })
   }
 
-  toggleSettingsSidebar(IS_OPEN) {
+  toggleSettingsSidebar(IS_OPEN, isManualAction: boolean = true) {
     this.logger.log('[SETTINGS-SIDEBAR] IS_OPEN >>>>>', IS_OPEN)
     // this.IS_OPEN = IS_OPENù
-    this.USER_HAS_TOGGLE_SIDEBAR = true
-    this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR >>>>>', this.USER_HAS_TOGGLE_SIDEBAR)
+    // Imposta USER_HAS_TOGGLE_SIDEBAR solo se è un'azione manuale dell'utente
+    if (isManualAction) {
+      if (IS_OPEN) {
+        // Se l'utente riapre manualmente la sidebar, resetta il flag
+        // così può essere riaperta automaticamente in futuro
+        this.USER_HAS_TOGGLE_SIDEBAR = false
+        localStorage.removeItem('settings_sidebar_manually_closed')
+        this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR RESET TO FALSE (user manually opened)')
+      } else {
+        // Se l'utente chiude manualmente la sidebar, imposta il flag
+        // così non verrà riaperta automaticamente
+        this.USER_HAS_TOGGLE_SIDEBAR = true
+        localStorage.setItem('settings_sidebar_manually_closed', 'true')
+        this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR SET TO TRUE (user manually closed)')
+      }
+    }
+    // Se l'utente ha chiuso manualmente la sidebar, non riaprirla automaticamente
+    if (IS_OPEN && this.USER_HAS_TOGGLE_SIDEBAR && !isManualAction) {
+      this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar BLOCKED: sidebar was manually closed by user')
+      return // Non riaprire se è stata chiusa manualmente
+    }
+    this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR >>>>>', this.USER_HAS_TOGGLE_SIDEBAR, 'isManualAction:', isManualAction)
     this.auth.toggleSettingsSidebar(IS_OPEN)
   }
 
@@ -636,12 +668,17 @@ export class SettingsSidebarComponent implements OnInit {
 
     // this.logger.log('SETTINGS-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
 
-    if (newInnerWidth < 1200) {
-      this.toggleSettingsSidebar(false)
+    // if (newInnerWidth < 1200) {
+    if (newInnerWidth < 992) {
+      // Chiusura automatica: non impostare USER_HAS_TOGGLE_SIDEBAR
+      this.toggleSettingsSidebar(false, false)
     }
-    if (newInnerWidth >= 1200) {
-      this.toggleSettingsSidebar(true)
-
+    // Se la larghezza è >= 1200, riapri la sidebar SOLO se non è stata chiusa manualmente dall'utente
+    // if (newInnerWidth >= 1200 && !this.USER_HAS_TOGGLE_SIDEBAR) {
+    // Se la larghezza è >= 992, riapri la sidebar SOLO se non è stata chiusa manualmente dall'utente
+    if (newInnerWidth >= 992 && !this.USER_HAS_TOGGLE_SIDEBAR) {
+      // Apertura automatica: non impostare USER_HAS_TOGGLE_SIDEBAR
+      this.toggleSettingsSidebar(true, false)
     }
   }
 
@@ -651,11 +688,17 @@ export class SettingsSidebarComponent implements OnInit {
     this.logger.log('SETTINGS-SIDEBAR] ON INIT WINDOW WIDTH >>>>>> ', onInitWindoeWidth);
     this.logger.log('SETTINGS-SIDEBAR] ON INIT USER_HAS_TOGGLE_SIDEBAR >>>>>> ', this.USER_HAS_TOGGLE_SIDEBAR);
     // if (this.USER_HAS_TOGGLE_SIDEBAR === false) {
-    if (onInitWindoeWidth < 1200) {
-      this.toggleSettingsSidebar(false)
+    // if (onInitWindoeWidth < 1200) {
+    if (onInitWindoeWidth < 992) {
+      // Chiusura automatica all'init: non impostare USER_HAS_TOGGLE_SIDEBAR
+      this.toggleSettingsSidebar(false, false)
     }
-    if (onInitWindoeWidth >= 1200) {
-      this.toggleSettingsSidebar(true)
+    // Se la larghezza è >= 1200, riapri la sidebar SOLO se non è stata chiusa manualmente dall'utente
+    // if (onInitWindoeWidth >= 1200 && !this.USER_HAS_TOGGLE_SIDEBAR) {
+    // Se la larghezza è >= 992, riapri la sidebar SOLO se non è stata chiusa manualmente dall'utente
+    if (onInitWindoeWidth >= 992 && !this.USER_HAS_TOGGLE_SIDEBAR) {
+      // Apertura automatica all'init: non impostare USER_HAS_TOGGLE_SIDEBAR
+      this.toggleSettingsSidebar(true, false)
     }
     // }
   }
@@ -1026,21 +1069,21 @@ export class SettingsSidebarComponent implements OnInit {
 
 
   goToProjectSettings() {
-   if(this.PERMISSION_TO_VIEW_PROJECTSETTINGS_GENERAL) {
-    this.goToProjectSettingsGeneral()
-   } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_DEVELOPER_READ) {
-    this.goToProjectSettingsDeveloper()
-   } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_SMARTASSIGNMENT_READ) {
-    this.goToProjectSettingsSmartAssign()
-   } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_NOTIFICATION_READ) {
-     this.goToProjectSettingsNotifications()    
-   } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_SECURITY_READ) {
-    this.goToProjectSettingsSecurity()
-   } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ) {
-    this.goToProjectSettingsBanned()
-   } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_ADVANCED_READ) {
-    this.goToProjectSettingsAdvanced()
-   }
+    if(this.PERMISSION_TO_VIEW_PROJECTSETTINGS_GENERAL) {
+     this.goToProjectSettingsGeneral()
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_DEVELOPER_READ) {
+     this.goToProjectSettingsDeveloper()
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_SMARTASSIGNMENT_READ) {
+     this.goToProjectSettingsSmartAssign()
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_NOTIFICATION_READ) {
+      this.goToProjectSettingsNotifications()    
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_SECURITY_READ) {
+     this.goToProjectSettingsSecurity()
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ) {
+     this.goToProjectSettingsBanned()
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_ADVANCED_READ) {
+     this.goToProjectSettingsAdvanced()
+    }
 
   }
 

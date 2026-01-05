@@ -802,7 +802,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = true
-    this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    console.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
@@ -814,7 +814,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
-    this.logger.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    console.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
   }
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
@@ -1307,6 +1307,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   // GO BACK TO DEPARTMENTS COMPONENT
   goBackToDeptsList() {
+    console.log('[DEPT-EDIT-ADD] goBackToDeptsList')
     this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 

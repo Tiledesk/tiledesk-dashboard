@@ -1,10 +1,9 @@
-<!-- margin-top:6px; -->
-<div class="navbar-brand" style=" padding-left:30px; z-index: 1050;position: relative;"
+<!-- <div class="navbar-brand" style=" padding-left:30px; z-index: 1050;position: relative;"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "ContactDetails" | translate }}
-</div>
+</div> -->
 
 <div class="main-content" style="padding-top: 0px">
 
@@ -19,7 +18,7 @@
             style="padding-bottom:5px; padding-left: 0px;">
 
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-12 col-sm-12 col-md-12">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "Requests" | translate }}
@@ -27,7 +26,7 @@
                 </h3>
               </div>
 
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-12 col-sm-12 col-md-12">
                 <div class="section-subtitle"> </div>
               </div>
             </div>
@@ -38,8 +37,8 @@
                 <tbody>
                   <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
                   <tr *ngIf="requests_list && requests_list?.length === 0">
-                    <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
-                      <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                    <td colspan="2" style="text-align: center; padding-top: 16px !important;padding-bottom: 16px !important;">
+                      <p style="font-size:14px; color:#7695a5; font-weight: 400">
                         {{ 'HistoryPage.NoRequests' | translate }}
                       </p>
                     </td>
@@ -334,29 +333,29 @@
                   <div class="input-group">
 
                     <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                    <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                    <span class="input-group-text" style="padding-right:0px;  padding-left: 0px; border: none; background: transparent;">
                       <button [disabled]="pageNo + 1 === 1" class="btn btn-primary" type="button"
                         (click)="decreasePageNumber()" 
                         style="padding: 6px 8px 6px 12px; background-color: var(--blue-20); box-shadow: unset;border-top-left-radius: 9999px;
                             border-bottom-left-radius: 9999px;">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="material-icons" aria-hidden="true" style="font-size: 18px; vertical-align: middle;">chevron_left</span>
                       </button>
                     </span>
 
                     <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                    <span class="input-group-btn" style="padding-right:0px; padding-left: 0px;">
+                    <span class="input-group-text" style="padding-right:0px; padding-left: 0px; border: none; background: transparent;">
                       <button class="btn btn-primary" type="button" style="padding: 6px 8px; background-color: var(--blue-20); box-shadow: unset; cursor: default; pointer-events: none;">
                         {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                       </button>
                     </span>
 
                     <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                    <span class="input-group-btn" style="padding-right:0px;padding-left: 0px;">
+                    <span class="input-group-text" style="padding-right:0px;padding-left: 0px; border: none; background: transparent;">
                       <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
                         class="btn btn-primary" type="button" (click)="increasePageNumber()" 
                         style="padding: 6px 12px 6px 8px; background-color: var(--blue-20); box-shadow: unset;border-top-right-radius: 9999px;
                           border-bottom-right-radius: 9999px;">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="material-icons" aria-hidden="true" style="font-size: 18px; vertical-align: middle;">chevron_right</span>
                       </button>
                     </span>
 
@@ -381,89 +380,100 @@
             style="padding-top: 0px;    padding-left: 1px;padding-right: 1px;">
 
             <div class="row" style="border-bottom: 1px solid #ddd;">
-              <div class="col-xs-12">
-                <!-- style="top: 22px;" -->
-                <h3 class="card_title__underlined" >
-                  <!-- <span class="card_title__underline" style="white-space: nowrap;">
-                    {{ "ContactDetails" | translate }}
-                  </span> -->
-                  <!-- [ngStyle]="{'background-color': fillColour }" -->
-                  <span class="contact-avatar-wrapper" style="position: relative;top: -6px;">
-                    <span class="contact-avatar"
-                      [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
-                      style="float: left; margin-right: 8px;">
-                      <span class="contact-avatar-fullname-initials">
-                        {{ contact_fullname_initial }}
+              <div class="col-12">
+                <div class="contact-avatar-row" style="display: flex;align-items: center;justify-content: space-between;"> 
+              
+                  <h3 class="card_title__underlined" style="width: 100%;" >
+             
+                    <span class="contact-avatar-wrapper" style="position: relative;top: -6px;">
+                      <span class="contact-avatar"
+                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
+                        style="float: left; margin-right: 8px;">
+                        <span class="contact-avatar-fullname-initials">
+                          {{ contact_fullname_initial }}
+                        </span>
+
+                      </span>
+                      <!-- class="tooltipx" -->
+                      <span *ngIf="CONTACT_IS_VERIFIED === true" 
+                        matTooltipClass="custom-mat-tooltip" 
+                        matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}"
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='above' 
+                        matTooltipHideDelay="100">
+                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="18"
+                          height="18" style="position: absolute;left: -58px;" xml:space="preserve">
+                          <style type="text/css">
+                            .st0 {
+                              fill: none;
+                            }
+
+                            .st1 {
+                              fill: #FFFFFF;
+                            }
+
+                            .st2 {
+                              fill: #18BDF7;
+                            }
+                          </style>
+                          <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                          <path class="st1"
+                            d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                          <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                        </svg>
+
+                        <!-- <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span> -->
+
+                      </span>
+                    </span>
+                    <span class="contact-details-fullname" (click)="openAddContactNameForm($event)"
+                      [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
+                      <span *ngIf="contact_details?.fullname">
+                        <!-- {{ contact_details?.fullname }} -->
+                        {{ contact_details?.fullname?.length > 40 ? (contact_details?.fullname | slice:0:27) + '...' : contact_details?.fullname}}
                       </span>
 
-                    </span>
-                    <!-- class="tooltipx" -->
-                    <span *ngIf="CONTACT_IS_VERIFIED === true" 
-                      matTooltipClass="custom-mat-tooltip" 
-                      matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}"
-                      #tooltip="matTooltip" 
-                      matTooltipPosition='above' 
-                      matTooltipHideDelay="100">
-                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="18"
-                        height="18" style="position: absolute;left: -58px;" xml:space="preserve">
-                        <style type="text/css">
-                          .st0 {
-                            fill: none;
-                          }
+                      <span *ngIf="!contact_details?.fullname">
+                        N/A
+                      </span>
 
-                          .st1 {
-                            fill: #FFFFFF;
-                          }
-
-                          .st2 {
-                            fill: #18BDF7;
-                          }
-                        </style>
-                        <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                        <path class="st1"
-                          d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                        <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                              l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                      <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" class="lead-edit--icon">
+                        <path
+                          d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                        </path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
                       </svg>
 
-                      <!-- <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span> -->
 
                     </span>
-                  </span>
-                  <span class="contact-details-fullname" (click)="openAddContactNameForm($event)"
-                    [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                    <span *ngIf="contact_details?.fullname">
-                      <!-- {{ contact_details?.fullname }} -->
-                      {{ contact_details?.fullname?.length > 40 ? (contact_details?.fullname | slice:0:27) + '...' : contact_details?.fullname}}
-                    </span>
 
-                    <span *ngIf="!contact_details?.fullname">
-                      N/A
-                    </span>
+                  </h3>
 
-                    <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg" width="24"
-                      height="24" viewBox="0 0 24 24" class="lead-edit--icon">
-                      <path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
-                      </path>
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg>
+                  <button class="btn btn-round-red" aria-label="Delete"
+                  (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'
+                  matTooltipClass="custom-mat-tooltip" 
+                  matTooltip="{{ 'MoveToTrash' | translate }}"
+                  #tooltip="matTooltip" 
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100"
+                  style="height: 32px !important;padding: 4px 7px 7px 7px !important;"
+                  [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_TRASH_LEAD === false">
 
-
+                  <span class="material-icons-round" style="vertical-align: middle; font-size: 18px;">
+                    delete
                   </span>
 
-                </h3>
+                  </button>
 
-
+                </div>
               </div>
-              <!-- <div class="col-xs-6 col-sm-6 col-md-6"> -->
+       
 
-              <div class="contact-action-wpr">
-             
-
+              <!-- <div class="contact-action-wpr">
                 <div class="contact-action" style="margin-left: 8px;">
-
                   <button class="btn btn-round-red" aria-label="Delete"
                     (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'
                     matTooltipClass="custom-mat-tooltip" 
@@ -477,18 +487,8 @@
                     <span class="material-icons-round" style="vertical-align: middle; font-size: 18px;">
                       delete
                     </span>
-
                   </button>
-
-                  <!-- <span class="material-icons" style="color:#f44336;; margin-left: 12px">
-                    delete
-                  </span> -->
-                  <!-- <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
-                  line-height: 16px;font-size: 12px; left: -100%;">
-                    {{ "MoveToTrash" | translate }}
-                    <i style="top: 88%;margin-left: 12px"></i>
-                  </span> -->
-                </div>
+                </div> -->
 
                 <div class="lead-dropdown__menu-form"
                   [ngStyle]="{'left':CHAT_PANEL_MODE === false ? '0px' : '-48px;' }">
@@ -520,7 +520,7 @@
 
 
 
-              </div>
+              <!-- </div> -->
 
               <!-- <div style="display: none;" class="dropdown pull-right">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -558,98 +558,100 @@
 
 
             <!-- -------------------------------------- -->
-            <!-- @ ATTRIBUTES -->
+            <!-- @ Contact ATTRIBUTES -->
             <!-- -------------------------------------- -->
+            <div class="contact-attributes"> 
+              <div id="attributes-row" *ngIf="contact_details?.attributes" class="row"
+                [ngStyle]="{ 'margin-top': tagContainerElementHeight }">
+                <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
 
-            <div id="attributes-row" *ngIf="contact_details?.attributes" class="row"
-              [ngStyle]="{ 'margin-top': tagContainerElementHeight }">
-              <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
-                <p class="row-header attributes-accordion" (click)="toggleAttributes()"
-                  style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
+                  <p class="row-header attributes-accordion" (click)="toggleAttributes()"
+                    style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
 
-                  <span>
-                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
-                      style="enable-background:new 0 0 18 18; width: 24px; height: 24px;margin-left: 6px;"
-                      xml:space="preserve" fill="none">
-                      <g>
-                        <path fill="none" d="M0,0h18v18H0V0z" />
-                      </g>
-                      <polygon points="31.3,2.1 29.7,2.1 29.7,0.5 34.2,-4 35.8,-2.4 " />
-                      <path
-                        d="M28.6-3.9l-0.8,0.8l-1.6-1.6L27-5.5c0.2-0.2,0.4-0.2,0.5,0l1.1,1.1C28.8-4.3,28.8-4.1,28.6-3.9z" />
-                      <g>
-                        <path class="st1_attributes_icon" d="M14.2,3H11C10.8,2.2,10,1.5,9,1.5S7.2,2.2,6.9,3H3.8C3,3,2.2,3.7,2.2,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
-                        c0.8,0,1.5-0.7,1.5-1.5V4.5C15.8,3.7,15,3,14.2,3z M9,2.8c0.3,0,0.6,0.3,0.6,0.6S9.2,4,9,4S8.4,3.7,8.4,3.3C8.4,3,8.7,2.8,9,2.8z
-                        M12,9.8c0,0.1,0,0.1,0,0.2l0.9,0.7l-1.2,2.1l-1.1-0.5c-0.1,0.1-0.2,0.1-0.3,0.2l-0.1,1.2H7.8l-0.1-1.2c-0.1-0.1-0.2-0.1-0.3-0.2
-                        l-1.1,0.5l-1.2-2.1L6,10C6,10,6,9.9,6,9.8c0-0.1,0-0.1,0-0.2L5.1,9l1.2-2.1l1.1,0.5c0.1-0.1,0.2-0.1,0.3-0.2L7.8,6h2.4l0.1,1.2
-                        c0.1,0.1,0.2,0.1,0.3,0.2l1.1-0.5L12.9,9L12,9.7C12,9.7,12,9.8,12,9.8z" />
-                        <circle class="st1_attributes_icon" cx="9" cy="9.8" r="1.6" />
-                      </g>
-                    </svg>
-                  </span>
+                    <span>
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
+                        style="enable-background:new 0 0 18 18; width: 24px; height: 24px;margin-left: 6px;"
+                        xml:space="preserve" fill="none">
+                        <g>
+                          <path fill="none" d="M0,0h18v18H0V0z" />
+                        </g>
+                        <polygon points="31.3,2.1 29.7,2.1 29.7,0.5 34.2,-4 35.8,-2.4 " />
+                        <path
+                          d="M28.6-3.9l-0.8,0.8l-1.6-1.6L27-5.5c0.2-0.2,0.4-0.2,0.5,0l1.1,1.1C28.8-4.3,28.8-4.1,28.6-3.9z" />
+                        <g>
+                          <path class="st1_attributes_icon" d="M14.2,3H11C10.8,2.2,10,1.5,9,1.5S7.2,2.2,6.9,3H3.8C3,3,2.2,3.7,2.2,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
+                          c0.8,0,1.5-0.7,1.5-1.5V4.5C15.8,3.7,15,3,14.2,3z M9,2.8c0.3,0,0.6,0.3,0.6,0.6S9.2,4,9,4S8.4,3.7,8.4,3.3C8.4,3,8.7,2.8,9,2.8z
+                          M12,9.8c0,0.1,0,0.1,0,0.2l0.9,0.7l-1.2,2.1l-1.1-0.5c-0.1,0.1-0.2,0.1-0.3,0.2l-0.1,1.2H7.8l-0.1-1.2c-0.1-0.1-0.2-0.1-0.3-0.2
+                          l-1.1,0.5l-1.2-2.1L6,10C6,10,6,9.9,6,9.8c0-0.1,0-0.1,0-0.2L5.1,9l1.2-2.1l1.1,0.5c0.1-0.1,0.2-0.1,0.3-0.2L7.8,6h2.4l0.1,1.2
+                          c0.1,0.1,0.2,0.1,0.3,0.2l1.1-0.5L12.9,9L12,9.7C12,9.7,12,9.8,12,9.8z" />
+                          <circle class="st1_attributes_icon" cx="9" cy="9.8" r="1.6" />
+                        </g>
+                      </svg>
+                    </span>
 
-                  <span style="position: relative;top: -7px;color: #555;margin-left: 8px;">
-                    {{ "Attributes" | translate }}
-                  </span>
+                    <span style="position: relative;top: 1px;color: #555;margin-left: 11px;">
+                      {{ "Attributes" | translate }}
+                    </span>
 
-                  <span style="float: right;" (click)="toggleAttributes()">
-                    <i id="lead-attributes_arrow_down" class="material-icons rotate" (click)="toggleAttributes()">
-                      keyboard_arrow_down
-                    </i>
-                  </span>
-                </p>
+                    <span style="float: right;" (click)="toggleAttributes()">
+                      <i id="lead-attributes_arrow_down" class="material-icons rotate" (click)="toggleAttributes()">
+                        keyboard_arrow_down
+                      </i>
+                    </span>
+                  </p>
 
 
 
-                <!-- --------------------------------------- -->
-                <!-- contatct attributes accordion panel" -->
-                <!-- --------------------------------------- -->
-                <div class="contatct-attributes-accordion-panel" style="padding-left: 3px;padding-right: 10px;"
-                  *ngIf="showAttributes">
-                  <div *ngFor="let attribute of attributesArray; let i = index">
-                    <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+                  <!-- --------------------------------------- -->
+                  <!-- contatct attributes accordion panel" -->
+                  <!-- --------------------------------------- -->
+                  <div class="contatct-attributes-accordion-panel" style="padding-left: 3px;padding-right: 10px;"
+                    *ngIf="showAttributes">
+                    <div *ngFor="let attribute of attributesArray; let i = index">
+                      <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
-                      <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;;padding-bottom: 5px;">
-                          <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
-                            {{attribute?.attributeName }}:
+                        <div class="row">
+                          <div class="col-10" style="padding-right: 1px;;padding-bottom: 5px;">
+                            <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                              {{attribute?.attributeName }}:
+                            </div>
+
+                            <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                              class="attribute attribute_cutted_text">
+                              {{attribute?.attributeValue }}
+                            </div>
+
                           </div>
+                          <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                          <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
+                            style="text-align: right; width:1%;">
+                            <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                              style="cursor: pointer; color: #394f5a; font-size:18px;"
+                              (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                              keyboard_arrow_down
+                            </i>
 
-                          <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                            class="attribute attribute_cutted_text">
-                            {{attribute?.attributeValue }}
                           </div>
-
                         </div>
-                        <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                        <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                          style="text-align: right; width:1%;">
-                          <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                            style="cursor: pointer; color: #394f5a; font-size:18px;"
-                            (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                            keyboard_arrow_down
-                          </i>
 
-                        </div>
+                        <!-- 
+                            <div class="debug_div">
+                              L : {{attribute?.attributeValueL}} <br>
+                              L + 180 : {{attribute?.attributeValueL + 180}} <br>
+                              SB WIDTH : {{rightSidebarWidth}} 
+                            </div> -->
+
                       </div>
-
-                      <!-- 
-                          <div class="debug_div">
-                            L : {{attribute?.attributeValueL}} <br>
-                            L + 180 : {{attribute?.attributeValueL + 180}} <br>
-                            SB WIDTH : {{rightSidebarWidth}} 
-                          </div> -->
-
                     </div>
-                  </div>
 
-                </div> <!-- ./ end contatct-attributes-accordion-panel -->
+                  </div> <!-- ./ end contatct-attributes-accordion-panel -->
 
-              </div> <!-- ./ col-sm-12 -->
+                </div> <!-- ./ col-sm-12 -->
 
-            </div>
+              </div>
+            </div> 
 
             <!-- ------------------------------------------------------ -->
             <!-- @ Attributes decoded JWT accordion -->
@@ -688,7 +690,7 @@
                     <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                       <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                        <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                           <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
                             class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> {{Attributes | translate}} </div>
@@ -706,7 +708,7 @@
                         <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                         <!-- [ngClass]="{'down' : attributeFullText === true}" -->
                         <!-- white-space: nowrap;width: 1%; -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                           style="text-align: right;">
                           <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                             style="cursor: pointer; color: #039be5; font-size:18px;"

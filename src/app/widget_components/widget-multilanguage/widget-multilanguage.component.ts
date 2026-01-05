@@ -270,7 +270,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       this.logger.error('Multilanguage ***** GET labels ***** - ERROR ', error)
     }, () => {
       this.logger.log('Multilanguage ***** GET labels ***** * COMPLETE *')
-      this.showSheleton = false;
+      this.showSheleton = false; 
 
       /* old */
       // if (this.translations) {
@@ -377,7 +377,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
         this.logger.log('Multilanguage ADD-NEW-LANG (clone-label) * COMPLETE *')
 
 
-        this.showSheleton = false;
+        this.showSheleton = false; 
         // this.notify.presentModalSuccessCheckModal('AddTranslation', 'Completed')
         this.presentModalAddTranslationSuccess()
       });

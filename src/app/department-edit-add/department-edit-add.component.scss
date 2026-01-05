@@ -11,29 +11,29 @@ input[type="text"] {
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
+  color: #000000de;
+  font-weight: 300;
 }
 
-.dept-name-input-wrap>input[type="text"] {
-  height: 36px;
-  font-size: 14px;
-  width: 100%;
-  margin-bottom: 10px;
-  -webkit-appearance: none;
-  appearance: none;
-  padding: 0 8px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  border-radius: 5px;
-  background-color: #fff;
-  border: solid 1px #ddd;
-}
+// .dept-name-input-wrap>input[type="text"] {
+//   height: 36px;
+//   font-size: 14px;
+//   width: 100%;
+//   margin-bottom: 10px;
+//   -webkit-appearance: none;
+//   appearance: none;
+//   padding: 0 8px;
+//   box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+//   border-radius: 5px;
+//   background-color: #fff;
+//   border: solid 1px #ddd;
+// }
 
 .dept-name-input-wrap>.input-dept-name-disbled {
   background-color: #eee !important;
@@ -59,6 +59,9 @@ textarea[type="text"] {
   border-radius: 5px;
   background-color: #fff !important;
   border: solid 1px #ddd;
+  color: #000000de;
+  font-weight: 300;
+  line-height:1.2
 }
 
 select {
@@ -230,13 +233,17 @@ input[type="radio"] {
 // END - CUSTOM NOTIFICATION
 
 .title-attribute {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   color: #394f5a;
   font-weight: 400;
+  font-size: 14px;
 }
 
 .attribute {
   color: #7695a5;
+  font-size: 14px;
+  line-height: 1.3;
+  margin-top: 3px;
 }
 
 .disabled-label {
@@ -277,17 +284,18 @@ input[type="radio"] {
 
 .custom-label {
   color: #7695a5;
-  height: 36px !important;
-  padding-top: 7px !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-  text-align: right !important;
+  padding-bottom: 2px;
+  // height: 36px !important;
+  // padding-top: 7px !important;
+  // padding-left: 16px !important;
+  // padding-right: 16px !important;
+  // text-align: right !important;
 }
 
 @media (max-width: 768px) {
-  .custom-label {
-    height: 0px !important;
-  }
+  // .custom-label {
+  //   height: 0px !important;
+  // }
 
   .card-padding {
     padding-top: 0px !important;
@@ -296,10 +304,10 @@ input[type="radio"] {
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-  .custom-label {
-    text-align: left !important;
-    padding-top: 18px !important;
-  }
+  // .custom-label {
+  //   text-align: left !important;
+  //   padding-top: 18px !important;
+  // }
 
   .card-padding {
     padding-top: 0px !important;
@@ -330,11 +338,12 @@ input[type="radio"] {
 }
 
 .row-header {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   color: #394f5a;
   font-weight: 500;
   margin-bottom: 5px;
   margin-top: 5px;
+  font-size: 14px;
 }
 
 .row-body {
@@ -382,8 +391,8 @@ input[type="radio"] {
   width: 16px;
   height: 16px;
   position: absolute;
-  top: 30px;
-  left: 11px;
+  top: -4px;
+  left: 20px;
   border-radius: 50%;
   border: 1px solid #eee;
   padding: 1px;
@@ -656,7 +665,7 @@ select[disabled] {
   vertical-align: middle;
   display: inline-flex;
   font-size: 13px;
-  color: #222222;
+  color: #333;
   font-weight: 400;
 }
 
@@ -769,6 +778,13 @@ select[disabled] {
   font-family: var(--blue-20);
   font-weight: 400;
   color: #647491;
+  font-size: 14px;
+}
+
+.routing-rule-sub-text {
+ font-size: 14px;
+ color: #333;
+ line-height: 1.3;
 }
 
 .routing-rule.rule-active>.routing-rule-content>.routing-rule-text {
@@ -805,11 +821,12 @@ select[disabled] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 12px 8px;
   border-radius: 6px;
   margin-bottom: 8px;
   background-color: #fff;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .custom-group-row:hover {
@@ -833,7 +850,7 @@ select[disabled] {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   color: #fff !important;
@@ -880,6 +897,7 @@ select[disabled] {
   font-weight: 400;
   cursor: pointer;
   margin-left: 8px;
+  text-decoration: none;
 }
 
 .custom-anchor-to-docs:hover {

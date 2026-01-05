@@ -209,6 +209,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   HISTORY_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
   CONVERSATION_DETAIL_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
+  CONTACTS_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
   CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
   CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
@@ -2053,12 +2054,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/contact/') !== -1) {
+        
+        // Controllo prima per /contact/ (più specifico) prima di /contacts (più generico)
+        // Verifica che l'URL contenga /contact/ ma non /contacts (per evitare falsi positivi)
+        if (event.url.indexOf('/contact/') !== -1 && event.url.indexOf('/contacts') === -1) {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = true;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE, 'URL:', event.url);
         } else {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE, 'URL:', event.url);
+        }
+
+        if (event.url.indexOf('/contacts') !== -1) {
+          this.CONTACTS_ROUTE_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - CONTACTS_ROUTE_IS_ACTIVE ', this.CONTACTS_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONTACTS_ROUTE_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - CONTACTS_ROUTE_IS_ACTIVE ', this.CONTACTS_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/contacts-demo') !== -1) {

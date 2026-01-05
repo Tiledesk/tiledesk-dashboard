@@ -238,10 +238,10 @@
      
     <ng-container *ngIf="PERMISSION_TO_VIEW_CONTACTS">
       <ng-container *ngIf="isVisibleCNT">
-        <div id="contacts" *ngIf="project" routerLinkActive="item-active" matTooltipClass="sb-mat-tooltip"
+        <div id="contacts" *ngIf="project" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100"
-          [class.item-active]="CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE || CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE">
+          [class.item-active]="CONTACTS_ROUTE_IS_ACTIVE || CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE || CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE">
           <!-- routerLink="project/{{ project._id }}/contacts" -->
           <a class="customAncor" 
           [routerLink]="PERMISSION_TO_VIEW_CONTACTS ? ['/project', project._id, 'contacts'] : null"

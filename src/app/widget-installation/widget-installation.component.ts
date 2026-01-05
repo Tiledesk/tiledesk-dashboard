@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
@@ -44,6 +45,7 @@ export class WidgetInstallationComponent implements OnInit {
      public appConfigService: AppConfigService,
      public brandService: BrandService,
      private roleService: RoleService,
+     private router: Router,
     ) { 
       const brand = brandService.getBrand();
       this.tparams = brand;
@@ -222,9 +224,11 @@ export class WidgetInstallationComponent implements OnInit {
     // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
   }
 
+  goToSupport() {
+    this.router.navigate(['project/' + this.id_project + '/support'])
+  }
 
 
- 
   openChatWidget(){
     if (window && window['tiledesk']) {
       window['tiledesk'].setParameter({ key: 'startFromHome', value: false });

@@ -226,9 +226,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
   PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS:boolean;
 
-   currentTitle: string ;
-   currentIcon: string | null = null;
+  currentTitle: string ;
+  currentIcon: string | null = null;
 
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -338,6 +339,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.listenToHomeRequestQuotes();
     this.listenToProjectUser()
     this.getPageTitle()
+     this.listenSidebarIsOpened()
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+     console.log('[NAVBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+    this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 
@@ -407,6 +416,30 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'Contacts';
       this.currentIcon = '';
     }
+    else if (cleanUrl.indexOf('/contact') !== -1) {
+      this.currentTitle = 'ContactDetails';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/analytics') !== -1) {
+      this.currentTitle = 'Analytics.AnalyticsTITLE';
+      this.currentIcon = '';
+    }
+    else if (cleanUrl.indexOf('/activities') !== -1) {
+      this.currentTitle = 'Activities';
+      this.currentIcon = '';
+    }
+    else if (this.isSettingsSidebarRoute(cleanUrl)) {
+      this.currentTitle = 'Settings';
+      this.currentIcon = 'settings';
+    }
+
+
+    
+
+
+
+    
+    
 
     
 
@@ -443,6 +476,42 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     console.log('[NAVBAR] Title set to:', this.currentTitle);
   }
 
+  /**
+   * Verifica se una route appartiene alla settings-sidebar
+   */
+  private isSettingsSidebarRoute(url: string): boolean {
+    const settingsRoutes = [
+      '/widget-set-up',
+      '/translations',
+      '/installation',
+      '/cannedresponses',
+      '/email',
+      '/labels',
+      '/departments',
+      'department/create',
+      'department/edit',
+      '/trigger',
+      '/users',
+      '/roles',
+      '/groups',
+      '/hours',
+      '/automations',
+      '/integrations',
+      '/app-store',
+      '/knowledge-bases-pre',
+      '/project-settings/',
+      '/widget/translations'
+    ];
+
+    // Controlla se la route contiene uno dei pattern delle settings-sidebar
+    for (const route of settingsRoutes) {
+      if (url.indexOf(route) !== -1) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   onBackClick() {
     // emit the "back" event

@@ -1,26 +1,26 @@
-<!-- margin-top:6px; -->
-<p style="z-index: 1050;position: relative; padding-left:40px" class="navbar-brand"
+
+<!-- <p style="z-index: 1050;position: relative; padding-left:40px" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ "Activities" | translate }}
-</p>
+</p> -->
 <div class="main-content" style="padding-top:0px; padding-left: 15px;">
   <div class="container-fluid">
 
     <div class="row">
       <div class="col-md-12">
-        <div class="card filter-card" style="margin-bottom: 0px; border-radius: 12px;">
+        <div class="card filter-card" style="margin-bottom: 8px; border-radius: 12px;">
           <!-- padding-top: 0px;padding-bottom: 0px; -->
-          <div class="card-content">
+          <div class="card-content" style="font-size: 14px;">
 
             <div class="row">
               <div class="col-sm-4" style="padding-left:0px;padding-right:0px;">
 
-                <label class="col-xs-12 col-sm-12" style="text-align: left; color:#7695a5;">
+                <label class="col-12 col-sm-12" style="text-align: left; color:#7695a5;">
                   {{ 'HistoryPage.DateRange' | translate }}
                 </label>
 
                 <div class="row">
-                  <div class="col-xs-12 col-sm-12">
+                  <div class="col-12 col-sm-12">
                     <!-- <div class="col-xs-6 col-sm-6" style="padding-right:2px;">
                       <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="startDate"  placeholder="{{ 'From' | translate }}">
                       </my-date-picker>
@@ -54,7 +54,7 @@
               </div>
 
               <div class="col-sm-4">
-                <label class="col-xs-12 col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                <label class="col-12 col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:2px">
                   {{ 'HistoryPage.Agent' | translate }}
                 </label>
 
@@ -67,7 +67,7 @@
               </div>
 
               <div class="col-sm-4">
-                <label class="col-xs-12 col-sm-12 activity-label"
+                <label class="col-12 col-sm-12 activity-label"
                   style="text-align: left; color: #7695a5 !important;padding-left:2px">
                   {{ 'Activity' | translate }}
                 </label>
@@ -96,7 +96,7 @@
                     </button>
 
                     <button #searchbtn type="submit" class="btn btn-tdblu-no-boxshadow search-btn" (click)="search()">
-                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      <span class="material-icons" aria-hidden="true" style="font-size: 18px; vertical-align: middle;">search</span>
                       {{'Search' | translate}}
                     </button>
                   </div>
@@ -119,7 +119,7 @@
       <div class="col-md-12">
         <div class="card" style="margin-top: 0px;border-radius: 12px;">
 
-          <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px">
+          <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px; font-size: 14px;">
             <span style="cursor: pointer" (click)="sortDirection(asc = !asc)">
               <span style="color:#7695a5; font-weight:400">
                 {{ 'SortByDate' | translate}}
@@ -551,31 +551,34 @@
             </table>
           </div>
 
-          <div class="card-footer" style="text-align:right">
-            <div class="pagination-wpr">
-              <div class="pagination">
+          <div class="card--footer" style="text-align:center;margin-bottom: 12px;">
+            <!-- pagination-wpr -->
+            <div class="input-group-wpr"> 
+              <div>
                 <div class="input-group">
 
-                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                    <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu-no-boxshadow" type="button"
-                      (click)="decreasePageNumber()" style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;">
-                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  <!-- BTN DECREASE PAGE -->
+                  <span class="input-group-btn left-btn">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu" type="button"
+                      (click)="decreasePageNumber()">
+                      <!-- <span class="material-icons" aria-hidden="true" style="font-size: 18px; vertical-align: middle;">chevron_left</span> -->
+                      <span class="material-icons">keyboard_arrow_left</span>
                     </button>
                   </span>
 
-                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                  <span class="input-group-btn" style="padding-right:2px; padding-left: 2px;">
-                    <button class="btn btn-tdblu-no-boxshadow" type="button" style="border-radius: 0px !important;pointer-events: none;">
+                  <!--  DISPLAY No PAGE / No TOTAL PAGES -->
+                  <span class="input-group-btn center-btn">
+                    <button class="btn btn-tdblu" type="button">
                       {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                     </button>
                   </span>
 
-                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                  <!--  BTN INCREASE PAGE -->
+                  <span class="input-group-btn right-btn">
                     <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
-                      class="btn btn-tdblu-no-boxshadow" type="button" (click)="increasePageNumber()" style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
-                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      class="btn btn-tdblu" type="button" (click)="increasePageNumber()">
+                      <!-- <span class="material-icons" aria-hidden="true" style="font-size: 18px; vertical-align: middle;">chevron_right</span> -->
+                      <span class="material-icons">keyboard_arrow_right</span>
                     </button>
                   </span>
 
