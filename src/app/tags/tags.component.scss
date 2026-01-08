@@ -48,7 +48,7 @@
   margin-top: 0px;
   margin-bottom: 0px;
   margin-right: -1px !important;
-  padding: 8px 15px;
+  padding: 8px 10px 8px 4px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   border-top-left-radius: 9999px;
@@ -98,20 +98,22 @@
 }
 
 .open-dropdown-icon {
-  background-color: #f5f5f5;
-  opacity: 0;
+  // background-color: #f5f5f5;
+  // opacity: 0;
   margin-top: -1px !important;
 }
 
 .table-hover>tbody>tr:hover {
   .open-dropdown-icon {
-    background-color: #f5f5f5;
-    opacity: 1;
+    background-color: #00000000;
+    // opacity: 1;
   }
 }
 
 .td-tag-table {
   font-weight: 400;
+  font-size: 14px;
+  color: #333;
 }
 
 ::placeholder {
@@ -132,7 +134,15 @@
 }
 
 @media (min-width: 992px) {
+  // Default state: hidden (Bootstrap 5 behavior)
   .dropdown-menu-inline {
+    display: none !important;
+  }
+  
+  // Show dropdown when toggle has .show class (Bootstrap 5)
+  .dropdown-toggle.show ~ .dropdown-menu-inline,
+  // Also support Bootstrap 3/4 compatibility (.open on parent)
+  .dropdown.open > .dropdown-menu-inline {
     display: inline-flex !important;
   }
 }
@@ -168,18 +178,18 @@
 
 .create-tag-btn {
   margin: 0px;
-  padding-top: 6px !important;
+  // padding-top: 6px !important;
   height: 36px;
   position: relative;
-  top: -1px;
+  // top: -1px;
 }
 
 .tag-error-message {
   color: #f6303a;
-  font-size: 14px;
+  font-size: 12px;
   position: relative;
-  // left: -197px;
-  top: 4px;
+  top: -6px;
+  text-align: end;
 }
 
 .add-tag-icon {
@@ -229,6 +239,7 @@
   font-weight: 400;
   cursor: pointer;
   margin-left: 8px;
+  text-decoration: none;
 }
 
 .custom-anchor-to-docs:hover {
@@ -241,4 +252,16 @@
 
 .quick-tips-right-bar {
   margin-top: -20px;
+}
+
+// Hide Bootstrap 5 default caret for dropdown-edit-tag-color
+#dropdown-edit-tag-color .dropdown-toggle::after {
+  display: none !important;
+  content: none !important;
+}
+
+// Hide Bootstrap 5 default caret for create-tag-dropdown-toggle
+#create-tag-dropdown-toggle::after {
+  display: none !important;
+  content: none !important;
 }

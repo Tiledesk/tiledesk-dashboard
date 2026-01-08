@@ -1,10 +1,10 @@
-<span class="navbar-brand navbar-brand-sidebar-settings"
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
     [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
     [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     <i class="material-icons">settings</i>
 
     <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
@@ -46,7 +46,7 @@
 
                                     <form [formGroup]="form">
                                         <!-- appearance="fill" -->
-                                        <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-form-field class="example-full-width" appearance="outline" style="font-size: 14px;">
                                             <mat-label>{{'Name' | translate}}</mat-label>
                                             <input matInput formControlName="roleName" placeholder="Enter role name">
                                         </mat-form-field>

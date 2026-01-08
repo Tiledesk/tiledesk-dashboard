@@ -4489,6 +4489,12 @@ div:where(.swal2-container) .swal2-select {
   color: #f44336;
 }
 
+.td--actions .btn-danger:focus {
+  box-shadow: unset;
+  background: transparent;
+  color: #f44336;
+}
+
 .td--actions .btn:hover {
   box-shadow: unset;
 }

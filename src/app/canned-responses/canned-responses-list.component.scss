@@ -87,8 +87,16 @@
   font-weight: 400;
   cursor: pointer;
   margin-left: 8px;
+  text-decoration: none;
 }
 
 .custom-anchor-to-docs:hover {
   text-decoration: underline;
+}
+
+.canned-avatar-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
 }

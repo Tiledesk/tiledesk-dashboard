@@ -1,14 +1,9 @@
-<!-- <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
-  {{ 'Settings' | translate }}
-</p> -->
-<span class="navbar-brand navbar-brand-sidebar-settings"
+
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
-<!-- <span class="navbar-brand navbar-brand-title">
-  {{ 'CannedResponses.CannedResponses' | translate }}
 </span> -->
 
 <div class="main-content canned-responses-list-maincontent"
@@ -58,7 +53,7 @@
                   <div class="title--header">
                     <!-- {{ pageName }} -->
                   </div>
-                    <button  class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()"
+                    <button  class="btn btn-tdblu-no-boxshadow float-end" (click)="presentResponseModal_inAddMode()"
                       [disabled]="!PERMISSION_TO_CREATE">
                 
                       {{ "CannedResponses.AddResponses" | translate }}
@@ -68,7 +63,7 @@
                 <div class="card left-card-custom-margin ">
                   <!-- <div class="card-header card-header-custom-bkgrnd">
                  
-                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()">
+                    <button class="btn btn-tdblu-no-boxshadow float-end" (click)="presentResponseModal_inAddMode()">
                    
                       {{ "CannedResponses.AddResponses" | translate }}
                     </button>
@@ -92,7 +87,7 @@
                             </span>
                           </th>
 
-                          <th>
+                          <th style="text-align: end;">
                             <span class="column-th-span">
                               {{ "Actions" | translate }}
                             </span>
@@ -116,10 +111,9 @@
                         </tr>
 
                         <tr *ngFor="let response of responsesList; let i = index">
-                          <!--  style="width: 1%; white-space: nowrap;" -->
                           <td>
 
-                            <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)">
+                            <span style="display: block;font-weight: 400;font-size: 14px;color: #333">
                               {{response?.title}}
                             </span>
                             <span style="display: block;color:#7695a5; font-size: 13px;">
@@ -131,40 +125,46 @@
                           <!-- Created By -->
                           <!-- ------------------------------------------------------- -->
                           <td>
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Firebase -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
-                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{response?.createdBy}}%2Fphoto.jpg?alt=media"
-                              onerror="this.src='assets/img/no_image_user.png'" />
 
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Native -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{response?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                              onerror="this.src='assets/img/no_image_user.png'" />
+                            <div class="canned-avatar-wpr">
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Firebase -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{response?.createdBy}}%2Fphoto.jpg?alt=media"
+                                onerror="this.src='assets/img/no_image_user.png'" />
 
-                            <span class="td-tag-table">
-                              <span *ngIf="response.createdBy_user" style="    white-space: nowrap;">
-                                {{ response?.createdBy_user?.firstname }} {{ response?.createdBy_user?.lastname }}
-                              </span>
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Native -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{response?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                onerror="this.src='assets/img/no_image_user.png'" />
 
-                              <span *ngIf="!response.createdBy_user">
-                                n.d
-                              </span>
-                            </span>
+                              <div class="td-tag-table" style="font-size: 14px;color: #333;">
+                                <span *ngIf="response.createdBy_user" style="white-space: nowrap;">
+                                  {{ response?.createdBy_user?.firstname }} {{ response?.createdBy_user?.lastname }}
+                                </span>
+
+                                <span *ngIf="!response.createdBy_user">
+                                  n.d
+                                </span>
+                              </div>
+                            </div>
+
                           </td>
 
 
-                          <td class="td-actions text-right">
-                            <button [disabled]="response?.createdBy_user?._id !== currentUserId" type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          <td class="td--actions text-end">
+                            <button [disabled]="response?.createdBy_user?._id !== currentUserId" type="button" rel="tooltip" title="" 
+                              class="btn btn-tdblu"
                               (click)='presentResponseModal_inEditMode(response?._id, response?.createdBy_user?._id)'>
                             
                               <i class="material-icons">edit</i>
                             </button>
 
-                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                            <button type="button" rel="tooltip" title="" 
+                              class="btn btn-danger"
                               (click)='openConfirmDialogDeleteResponse(response?._id)'>
                               <i class="material-icons">delete_forever</i>
                             </button>
@@ -184,7 +184,7 @@
               <!-- [ngClass]="{'isHidden': innerWidthLessThan992 === true, 'col-sm-5': innerWidthLessThan992 === false }" -->
               <div class="col-sm-4 right-col-custom-padding">
                 <div class="card right-card-custom-margin card--no-border">
-                  <div class="card-content">
+                  <div class="card-content" style="font-size: 14px;">
                     <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
                   {{ "QuickTips" | translate }}
@@ -203,35 +203,35 @@
                       </div>
                     </div>
 
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.1" | translate }}
 
                     </p>
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.1B" | translate }}
                     </p>
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.1C" | translate }}
                     </p>
                     <!-- <div>
-                  <img src="assets/img/canned_response_2.gif">
-                </div> -->
+                      <img src="assets/img/canned_response_2.gif">
+                    </div> -->
                     <!-- <p style="color:#7695a5;">
-              {{ "CannedResponses.QuickTips.2" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.3" | translate }}
-            </p> -->
-                    <p style="color:#7695a5;  margin-top: 10px;">
+                    {{ "CannedResponses.QuickTips.2" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.3" | translate }}
+                    </p> -->
+                    <p style="color:#7695a5;  margin-top: 10px;line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.4" | translate }}
                     </p>
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.5" | translate }}
                     </p>
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.6" | translate }}
                     </p>
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; line-height: 1.3;">
                       {{ "CannedResponses.QuickTips.7" | translate }}
                     </p>
                   </div>
@@ -272,7 +272,7 @@
       
       <div class="modal-header">
 
-        <button type="button" class="close" aria-label="Close" (click)="closeModalDeleteResponse()"
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModalDeleteResponse()"
           style="position: absolute; right: 14px;top: 16px;">
           <span aria-hidden="true">
             <svg class="tide-icon " width="18" height="18" viewBox="0 0 24 24">
@@ -281,9 +281,9 @@
               </path>
             </svg>
           </span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title warning">
+        <h4 class="modal-title warning" style="font-size: 14px;">
           <span class="modal-header-icon-wpr"> 
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
@@ -294,9 +294,10 @@
             {{ "CannedResponses.DeleteCannedResponse" | translate }}
           </span>
         </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModalDeleteResponse()"></button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
         <p class="modal-body--content">
           {{ "CannedResponses.DoYouReallyWantToDeleteTheResponse" | translate}}
         </p>
@@ -307,7 +308,7 @@
             {{ "Cancel" | translate }}
           </button>
 
-          <button class="btn btn-red" type="button" (click)="deleteCannedResponse()">
+          <button class="btn btn-red" type="button" (click)="deleteCannedResponse()" style="margin-bottom: 0px;margin-left: 12px;">
             {{ "CannedResponses.DeleteResponse" | translate }}
           </button>
       

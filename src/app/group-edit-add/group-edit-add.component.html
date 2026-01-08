@@ -1,25 +1,11 @@
-<!-- style="z-index: 1050;position: relative;padding-left:30px" -->
-<span class="navbar-brand navbar-brand-sidebar-settings"
+
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-
-  <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i> -->
-  <!-- (click)="goBackGroupList()" -->
-  <!-- <span *ngIf="CREATE_VIEW">
-    {{ "GroupsAddEditPage.AddGroup" | translate }}
-  </span>
-
-  <span *ngIf="EDIT_VIEW">
-    {{ "GroupsAddEditPage.EditGroup" | translate }}
-    <span style="color: #566787; font-weight:400">
-      {{ groupNameToUpdate }}
-    </span>
-  </span> -->
-</span>
+</span> -->
 
 <div class="main-content" style="padding-top:0px">
 
@@ -35,9 +21,9 @@
 
     <span *ngIf="EDIT_VIEW">
       {{ "GroupsAddEditPage.EditGroup" | translate }}
-      <span style="color: #566787; font-weight:400">
+      <!-- <span style="color: #566787; font-weight:400">
         {{ groupNameToUpdate }}
-      </span>
+      </span> -->
     </span>
 
   </div>
@@ -61,10 +47,10 @@
                       <!-- card--no-border -->
                       <div class="card">
                         <div class="card-content">
-                          <label class="col-sm-2 custom-label">
+                          <label class="col-sm-2 custom-label-edit-group">
                             {{ "GroupsAddEditPage.GroupName" | translate }}
                           </label>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                             <input [(ngModel)]="groupName" class="input" type="text"
                               placeholder='{{ "GroupsAddEditPage.GroupName" | translate }}'>
                           </div>
@@ -88,7 +74,7 @@
                     <!-- // RIGHT SIDEBAR CREATE VIEW -->
                     <div class="col-md-4">
                       <div class="card card--no-border" style="margin-top:5px">
-                        <div class="card-content">
+                        <div class="card-content" style="font-size: 14px;">
                           <!-- <h4 class="card-title"
                         style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
                         {{ "QuickTips" | translate }}
@@ -106,7 +92,7 @@
                             </div>
                           </div>
 
-                          <p style="color:#7695a5">
+                          <p style="color:#7695a5; line-height: 1.3;">
                             <!-- Use groups to organize support teams. -->
                             {{ "GroupsQuickTips1" | translate }}
                             <br>
@@ -128,7 +114,7 @@
 
                 <div class="row">
                   <div class="col-md-8 card-wpr">
-                    <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
+                    <div class="card custom_card" style="padding-top:0px; padding-bottom:0px; margin-bottom: 5px;">
 
                       <!-- style="margin-top: 16px" -->
                       <div class="card-content">
@@ -136,10 +122,10 @@
                         <!-- <div class="row"> -->
                         <!-- <div class="col-md-12"> -->
 
-                        <label class="col-sm-2 custom-label">
+                        <label class="col-sm-2 custom-label-edit-group">
                           {{ "GroupsAddEditPage.GroupName" | translate }}
                         </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                           <input [(ngModel)]="groupNameToUpdate" class="input" type="text">
                         </div>
 
@@ -147,7 +133,7 @@
                         <div class="col-sm-12 spacer_div" style="height:15px"></div>
 
                         <!-- <label class="col-sm-2"></label> -->
-                        <div class="col-sm-10 col-sm-offset-2">
+                        <div class="col-sm-10 offset-sm-2">
                           <button class="btn btn-tdblu-no-boxshadow" (click)="editGroupName()">
                             {{ "GroupsAddEditPage.UpdateGroupName" | translate }}
                           </button>
@@ -161,7 +147,7 @@
                       <div class="card" style="padding-top:0px; padding-bottom:0px; margin-top: 5px;">
 
                         <div class="card-header card-header-custom-bkgrnd card-header-flex">
-                          <h4 class="card-header-title">
+                          <h4 class="card-header-title" style="margin-bottom: 9px;">
 
                             {{ "GroupsAddEditPage.Members" | translate }}
                             <span style="font-weight: 500">
@@ -171,7 +157,7 @@
                         
                           </h4>
                         
-                          <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="open_users_list_modal()">
+                          <button class="btn btn-tdblu-no-boxshadow" (click)="open_users_list_modal()" style="margin-top: 0px;">
                             {{ 'GroupsAddEditPage.AddMembers' | translate }}
                           </button>
                         </div>
@@ -217,8 +203,7 @@
                               <tr *ngIf="group_members?.length === 0">
                                 <td colspan="5" style="text-align: center; padding-top: 16px;">
 
-                                  <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                                    <!-- Nessun Membro  -->
+                                  <p style="font-size:14px; color:#7695a5; font-weight: 400; padding-top: 6px;">
                                     {{ "GroupsAddEditPage.NoMembers" | translate }}
                                   </p>
                                 </td>
@@ -286,10 +271,10 @@
                                 </td>
 
                                 <!-- ACTIONS DELETE -->
-                                <td *ngIf="projectUser?.is_group_member" class="td-actions text-right">
+                                <td *ngIf="projectUser?.is_group_member" class="td--actions text-end">
                             
                                   <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
-                                    class="btn btn-danger btn-simple btn-xs"
+                                    class="btn btn-danger"
                                     (click)='openDeleteModal(projectUser?.id_user?._id, projectUser?.id_user?.email)'>
                                     <i class="material-icons" style="padding-top: 3px;">delete</i>
                                   </button>
@@ -310,7 +295,7 @@
                   <!--  -------------------------------------------- -->
                   <div class="col-md-4">
                     <div class="card card--no-border" style="margin-bottom: 5px; margin-top: 5px;">
-                      <div class="card-content">
+                      <div class="card-content" style="font-size: 14px;">
                   
 
                         <div class="row">
@@ -392,20 +377,19 @@
   </div>
 </div>
 
-<!-- ============ NEW MODAL ADD MEMBER TO A GROUP ============ -->
+<!-- NEW MODAL ADD MEMBER TO A GROUP -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display_users_list_modal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">
+        </button> -->
+        <h4 class="modal-title" style="font-size: 14px;">
           {{ "GroupsAddEditPage.AddMembersToTheGroup" | translate }}
-
-          <!-- <span style="font-weight: 500;"> {{ groupNameToUpdate }} </span> -->
         </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseModal()"></button>
       </div>
 
       <div class="modal-body" style="padding-bottom: 0px!important;">
@@ -456,7 +440,6 @@
                         </div>
                       </td>
 
-
                       <td *ngIf="project_user.status === 'active'" style="padding-left:10px;" rel="tooltip" title="{{ project_user?.id_user?._id }}">
                         <!-- --------------------------------------------------- -->
                         <!-- USECASE uploadEngine Firebase -->
@@ -495,13 +478,10 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
-          <!-- {{ "GroupsAddEditPage.Cancel" | translate }}  -->
           {{ "Cancel" | translate }}
         </button>
 
-        <!-- [disabled]="add_btn_disabled" -->
-        <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="addMembersToTheGroup()">
-          <!-- ADD -->
+        <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="addMembersToTheGroup()" style="margin-bottom: 0px;margin-left: 12px;">
           {{ "GroupsAddEditPage.Add" | translate }}
         </button>
       </div>
@@ -519,18 +499,17 @@
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <!-- onClosedisplayCreateGroupModal() -->
-        <button type="button" class="close" aria-label="Close" (click)="onCloseAddingMembersModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseAddingMembersModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title">
-          <!-- Update Group -->
+        <h4 class="modal-title" style="font-size: 14px;">
           {{ "GroupsAddEditPage.UpdateGroup" | translate }}
         </h4>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseAddingMembersModal()"></button>
       </div>
 
-      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px" style="font-size: 14px;">
         <span *ngIf="SHOW_CIRCULAR_SPINNER">
           <div class="loader" style="top:25%">
             <svg class="circular" viewBox="25 25 50 50">
@@ -552,7 +531,7 @@
                 {{ "GroupsAddEditPage.Completed" | translate }}
               </p>
 
-              <p style="margin-top: 0px; text-align: center; font-weight: 500;">
+              <p style="margin-top: 0px; text-align: center; font-weight: 400; color: #333;">
                 <span *ngIf="COUNT_OF_MEMBERS_ADDED == 1;else greater_than_one_content">
                   <!-- Member added to the group -->
                   {{ "GroupsAddEditPage.MemberAddedtoGroup" | translate }}
@@ -571,7 +550,7 @@
                 {{ "Error" | translate }}
               </p>
 
-              <p style="margin-top: 0px; text-align: center; font-weight: 500">
+              <p style="margin-top: 0px; text-align: center; font-weight: 500; color: #333;">
                 {{ "GroupsAddEditPage.AnErrorHasOccurred" | translate }}
               </p>
             </span>
@@ -595,22 +574,23 @@
 </div>
 
 
-<!-- ============ MODAL - INFO WINDOWS - CREATING GROUP ============ -->
+<!--  MODAL - INFO WINDOWS - CREATING GROUP  -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateGroupModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content custom-modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseCreateGroupModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseCreateGroupModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title">
+        <h4 class="modal-title" style="font-size: 14px;">
           {{ "GroupsAddEditPage.CreateGroup" | translate }}
         </h4>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseCreateGroupModal()"></button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
         <span class="modal-loader-wpr" *ngIf="SHOW_CIRCULAR_SPINNER">
           <div class="loader" style="top:25%">
             <svg class="circular" viewBox="25 25 50 50">
@@ -650,31 +630,6 @@
               <strong>{{ group_name }} </strong>
               {{ "GroupsAddEditPage.GroupCreated2" | translate }}
             </p>
-
-            <!-- <div class="row">
-              <div class="col-md-12" style="text-align: center;  padding-right: 26px;padding-left: 8px;"
-                [ngClass]="{'it_custom_add_members_now' : browser_lang == 'it'}">
-                <label class="form-check">
-
-                  <input class="form-check-input" type="radio" name="mode" [checked]="true"
-                    (change)="actionAfterGroupCreation(goToEditGroup = true)">
-                  <span style="margin-left: 8px; color:#7695a5; font-weight: 500;">
-                    {{ "GroupsAddEditPage.AddNow" | translate }}
-                  </span>
-                </label>
-              </div>
-            </div> -->
-            <!-- <div class="row">
-              <div class="col-md-12" style="text-align: center">
-                <label class="form-check">
-                  <input class="form-check-input" type="radio" name="mode" [value]="false"
-                    (change)="actionAfterGroupCreation(goToEditGroup = false)">
-                  <span style="margin-left: 8px; color:#7695a5; font-weight: 500">
-                    {{ "GroupsAddEditPage.AddLater" | translate }}
-                  </span>
-                </label>
-              </div>
-            </div> -->
           </span>
 
           <!--    ERROR     -->
@@ -706,10 +661,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title warning">
+        </button> -->
+        <h4 class="modal-title warning" style="font-size: 14px;">
           <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
           <span class="modal-header-icon-wpr"> 
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
@@ -721,9 +676,9 @@
             {{ "GroupsAddEditPage.RemoveMember" | translate }}
           </span>
         </h4>
-
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseDeleteModal()"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
         <p class="modal-body--content">
           {{ "GroupsAddEditPage.AreYouSureRemoveMember" | translate }}?
         </p>
@@ -732,7 +687,7 @@
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button class="btn btn-red" (click)="deleteMemberFromTheGroup()">
+        <button class="btn btn-red" (click)="deleteMemberFromTheGroup()" style="margin-bottom: 0px;margin-left: 12px;">
           {{ "GroupsAddEditPage.RemoveMember" | translate }}
         </button>
       </div>

@@ -34,13 +34,13 @@ select {
 
 // label 'GROUP NAME' custom height for small device
 @media (max-width: 768px) {
-    .custom-label {
+    .custom-label-edit-group {
         height: 0px !important;
     }
 }
 
 @media (max-width: 768px) {
-    .custom-label {
+    .custom-label-edit-group {
         height: 0px !important;
     }
 }
@@ -257,13 +257,13 @@ button.close {
     // font-weight: 500;
 }
 
-.custom-label {
+.custom-label-edit-group {
     color: rgb(118, 149, 165);
-    height: 36px;
-    padding-top: 7px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    text-align: right !important;
+    // height: 36px;
+    // padding-top: 7px !important;
+    // padding-left: 16px !important;
+    // padding-right: 16px !important;
+    // text-align: right !important;
 }
 
 .card-wpr>div {

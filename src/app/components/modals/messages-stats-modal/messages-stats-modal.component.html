@@ -20,7 +20,7 @@
             {{ 'Analytics.FilterReport' | translate }}
           </label>
           
-          <div class="ng-select-wpr" style="text-align: left">
+          <div class="ng-select-wpr" style="text-align: left; font-size: 14px;">
             <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" [searchable]="false"
               (change)="daysSelect(selectedDaysId, $event)">
               <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' |
@@ -73,12 +73,14 @@
         </div>
       </div>
 
-      <div *ngIf="USER_ROLE !== 'agent'" class="text--link" (click)="goToRequestsAnalytics()">
-        <span> {{'MoreFilterInAnalytics' | translate }} </span>
-        <span class="material-icons m-i-arrow-on-black">
-          keyboard_arrow_right
-        </span>
-      </div>
+      <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS"> 
+        <div *ngIf="USER_ROLE !== 'agent'" class="text--link" (click)="goToRequestsAnalytics()">
+          <span> {{'MoreFilterInAnalytics' | translate }} </span>
+          <span class="material-icons m-i-arrow-on-black">
+            keyboard_arrow_right
+          </span>
+        </div>
+      </ng-container>
 
       
       

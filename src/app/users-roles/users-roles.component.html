@@ -1,10 +1,10 @@
-<span class="navbar-brand navbar-brand-sidebar-settings"
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
     [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
     [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     <i class="material-icons">settings</i>
 
     <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
 
 <div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
     <div class="page-title--sidebar-settings"
@@ -67,7 +67,7 @@
                                         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
                                         <div *ngIf="!showSpinner" class="card-content table-responsive">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover" style="font-size: 14px;">
 
                                                 <thead class="text">
                                                     <tr>
@@ -86,9 +86,9 @@
                                                         <td style="font-family: var(--header-font-family);">
                                                             {{'owner' | translate }}
                                                         </td>
-                                                        <td style="width: 1%; white-space: nowrap;;">
+                                                        <td class="td--actions" style="text-align: right;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                class="btn btn-tdblu" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -98,7 +98,7 @@
                                                                     style="color: #acb8cb;">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                class="btn btn-danger" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -115,9 +115,9 @@
                                                         <td style="font-family: var(--header-font-family);">
                                                             {{'admin' | translate }}
                                                         </td>
-                                                        <td style="width: 1%; white-space: nowrap;">
+                                                        <td class="td--actions" style="text-align: right;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                class="btn btn-tdblu" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -127,7 +127,7 @@
                                                                     style="color: #acb8cb;">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                class="btn btn-danger" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -144,9 +144,9 @@
                                                             {{'agent' | translate }}
                                                         </td>
 
-                                                        <td style="width: 1%; white-space: nowrap;">
+                                                        <td class="td--actions" style="text-align: right;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs" disabled
+                                                                class="btn btn-tdblu" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -156,7 +156,7 @@
                                                                     style="color: #acb8cb;">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs" disabled
+                                                                class="btn btn-danger" disabled
                                                                 matTooltipClass="custom-mat-tooltip"
                                                                 matTooltip="{{'PredefinedRolesCannotBeModifiedOrDeleted' | translate}}"
                                                                 #tooltip="matTooltip" matTooltipPosition='below'
@@ -175,15 +175,15 @@
                                                                 {{role.name}}
                                                             </span>
                                                         </td>
-                                                        <td style="width: 1%; white-space: nowrap;">
+                                                        <td  class="td--actions" style="text-align: right;">
                                                             <button type="button"
-                                                                class="btn btn-primary btn-simple btn-xs"
+                                                                class="btn btn btn-tdblu"
                                                                 (click)="goToRoleDetail(role._id)"
                                                                 [disabled]="!PERMISSION_TO_UPDATE_ROLE">
                                                                 <i class="material-icons">edit</i>
                                                             </button>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-simple btn-xs"
+                                                                class="btn btn-danger"
                                                                 (click)="deleteRole(role._id, role.name)"
                                                                 [disabled]="!PERMISSION_TO_DELETE_ROLE">
                                                                 <i class="material-icons">delete</i>

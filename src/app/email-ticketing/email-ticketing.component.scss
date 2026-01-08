@@ -32,6 +32,7 @@
     font-weight: 400;
     cursor: pointer;
     margin-left: 8px;
+    text-decoration: none ;
 }
 
 .custom-anchor-to-docs:hover {
@@ -76,7 +77,9 @@ input[type=text]:disabled {
 
 .paragraph-custom-margin-and-weight {
     margin-bottom: 6px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 300;
+    color: #333;
 }
 
 .copy-btn {
@@ -92,10 +95,12 @@ input[type=text]:disabled {
 
 #ticketing-email {
     font-weight: 400;
+    margin-bottom: 4px;
 }
 
 #ticketing-email-dept {
     font-weight: 400;
+    margin-bottom: 4px;
 }
 
 ::ng-deep .custom-mat-tooltip {

@@ -194,10 +194,10 @@ button.close {
 
 /* MODAL END */
 
-.custom-label {
+.custom-label-pu {
   color: rgb(118, 149, 165);
   // height: 36px;
-  padding-top: 7px !important;
+  // padding-top: 7px !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
   text-align: right !important;
@@ -458,6 +458,14 @@ input:checked+.slider:before {
   display: flex;
 }
 
+#pu-tag-dropdown-menu > li > a {
+  margin:0px !important ;
+}
+
+#pu-tag-dropdown-btn::after {
+  display: none;
+}
+
 .pu-tag-input-wrapper .dropdown .btn {
   box-shadow: none !important;
   background: #fff;
@@ -465,11 +473,7 @@ input:checked+.slider:before {
   margin-top: 0px;
   margin-bottom: 0px;
   margin-right: -1px !important;
-  // padding: 8px 15px;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 8px 15px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
@@ -496,7 +500,7 @@ input:checked+.slider:before {
 .tag-color-dot {
   position: absolute;
   top: 10px;
-  left: 61px;
+  left: 6px;
   height: 16px;
   width: 16px;
   border-radius: 50%;
@@ -541,7 +545,7 @@ input:checked+.slider:before {
   color: #444950;
   margin-right: 8px;
   margin-top: 8px;
-  margin-left: 6px;
+  // margin-left: 6px;
 }
 
 .pu-tag:hover {
@@ -562,9 +566,11 @@ input:checked+.slider:before {
 .icon-container {
   display: inline-block;
   padding-left: 4px;
+  padding-bottom: 4px;
 }
 
 #tag_name {
+
   padding-left: 25px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -646,7 +652,7 @@ input:checked+.slider:before {
   font-weight: 400;
   cursor: pointer;
   margin-left: 8px;
-  // text-decoration: underline;
+  text-decoration: none;
 }
 
 .help-link:hover>a {
