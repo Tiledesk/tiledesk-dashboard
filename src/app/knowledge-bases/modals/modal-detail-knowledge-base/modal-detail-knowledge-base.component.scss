@@ -146,8 +146,8 @@
         height: 37px;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #333;
         // line-height: 35px;
         // font-weight: 400;
         margin-bottom: 10px;
@@ -164,9 +164,9 @@
         width: 100%;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 10px 15px;
-        color: #22272d;
-
+        padding: 10px 10px;
+        color: #333;
+        font-size: 14px;
         // line-height: 35px;
         // font-weight: 400;
         &.invalid {
@@ -238,6 +238,7 @@
         margin-top: 0px;
         display: inline-block;
         padding-top: 0px;
+        padding-bottom: 3px;
     }
 }
 

@@ -17,7 +17,6 @@ input[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
   color: #000000de;
   font-weight: 300;
 }
@@ -50,7 +49,7 @@ textarea[type="text"] {
 .app-create-label {
   color: #7695a5;
   padding-top: 18px !important;
-  padding-left: 16px !important;
+  // padding-left: 16px !important;
   padding-right: 16px !important;
 }
 
@@ -142,6 +141,8 @@ textarea[type="text"] {
   margin-left: 5px;
   font-weight: 400;
   color: var(--blue-light) !important;
+  font-size: 14px;
+  text-decoration: none;
 }
 
 .custom-anchor-to-docs:hover {

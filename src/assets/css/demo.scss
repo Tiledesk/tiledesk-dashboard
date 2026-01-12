@@ -1023,6 +1023,7 @@ th {
   box-shadow: none;
   padding: 10px;
   border-radius: var(--card-border-radius);
+  font-size: 14px;
 }
 
 .c-alert>i {
@@ -1668,8 +1669,11 @@ th {
 }
 
 /* 
- * CUSTOM STYLE FOT THE CHAT SECTION IN CONVERSATION DETAIL 
+ * CUSTOM STYLE FOR THE CHAT SECTION IN CONVERSATION DETAIL 
  * -------------------------------------------------------- */
+ div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt {
+   color: #fff;
+ }
 /* Removes the bottom margin from the paragraph created by the marked pipe */
 div.card-content>.chat-body>div>div>div>div>div>div.txt>p.message.ow>p {
   margin-bottom: 0px !important;
@@ -1729,7 +1733,15 @@ div.card-content>div>div>div>div>div>div>div.txt>div.message.ow>div>p>p {
 }
 
 /* USE CASE MESSSAGE SENT BY THE AGENT */
-div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
+// div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
+//   color: #fff;
+// }
+
+div.card-content div.txt p.message.ow.alt {
+  color: #fff;
+}
+
+div.card-content div.txt p.message.ow.alt * {
   color: #fff;
 }
 
@@ -4377,7 +4389,7 @@ div:where(.swal2-container) .swal2-select {
 
 .bottom-nav li a {
   padding: 18px 15px;
-  color: #797979;
+  color: #797979 !important;
   line-height: 20px;
   text-decoration: none;
   font-family: var(--header-font-family);
@@ -4395,7 +4407,7 @@ div:where(.swal2-container) .swal2-select {
   cursor: default !important;
 }
 
-.li-active a {
+li.li-active a {
   color: var(--blue-20) !important; //$brand-primary!important;
 }
 

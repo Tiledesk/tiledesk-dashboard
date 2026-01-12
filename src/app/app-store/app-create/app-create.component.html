@@ -1,11 +1,11 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+<!-- <div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-57px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
 
   <span *ngIf="CREATE_VIEW">{{'NewApp' | translate}} </span>
   <span *ngIf="EDIT_VIEW">{{'EditApp' | translate}} </span>
-</div>
+</div> -->
 
 <div class="main-content">
   <ng-container *ngIf="permissionChecked">
@@ -39,14 +39,14 @@
     <div class="row">
       <div class="col-md-8" id="create-new-app-inputs-wpr">
         <div class="row">
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <div [ngClass]="{'app-icon-wpr-palceholder': !app_icon_url, 'app-icon-wpr-icon': app_icon_url}">
               <div class="app-icon">
                 <img *ngIf="app_icon_url" [src]="app_icon_url" onerror="this.src='assets/img/insert_photo.svg'"
                   (error)="errorHandler($event)" />
 
                 <img *ngIf="!app_icon_url" src="assets/img/insert_photo.svg" />
-                <span style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url || app_icon_url?.length === 0 ">
+                <span style="color: rgb(157, 159, 162); font-size: 14px;" *ngIf="!app_icon_url || app_icon_url?.length === 0 ">
                   {{'NoAppLogo' | translate}}
                 </span>
                 <!-- <span style="color: rgb(157, 159, 162)" *ngIf="app_icon_url || ( app_icon_url?.length > 0 && IMAGE_NOT_FOUND === true) "> App icon not found</span> -->
@@ -54,7 +54,7 @@
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_icon_url" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="{{'EnterTheURLOfTheAppIcon' | translate }}">
             <span style="display: block;color: #f44336; font-weight: 400;font-size: 12px;"
@@ -71,7 +71,7 @@
             {{'AppName' | translate}}*
           </label>
 
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_name" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="{{'AppName' | translate}}">
           </div>
@@ -89,7 +89,7 @@
             </span>
           </label>
 
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_installation_url" (ngModelChange)="onChangeAppInstalaltionUrl($event)" class="input"
               style="margin-bottom: 0px;" type="text" placeholder="{{'ConfigurationURL_PH' | translate}}">
             <div style="color: #f44336; font-weight: 400;font-size: 12px;"
@@ -110,7 +110,7 @@
             </span>
           </label>
 
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <input (ngModelChange)="onChangeRunUrl($event)" [(ngModel)]="app_run_url" class="input"
               style="margin-bottom: 0px;" type="text" placeholder="{{'AppRenderURL' | translate }}">
             <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorRunUrlIsNoValid === true">
@@ -125,7 +125,7 @@
             {{ 'ShortDescription' | translate}}*
           </label>
 
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_description" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="{{ 'ShortDescription' | translate}}">
           </div>
@@ -136,7 +136,7 @@
             {{ 'LearnMoreURL' | translate}}*
           </label>
 
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_learn_more_url" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="{{ 'LearnMoreURL' | translate}}">
           </div>
@@ -146,7 +146,7 @@
           <label class="col-sm-12 app-create-label">
             {{ 'EnableYourAppFor' | translate}}
           </label>
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <!-- <ng-select [items]="where_items" bindLabel="name" bindValue="id" [clearable]="false"
               [(ngModel)]="selectedClient" (change)="onChangeWhere(selectedClient)">
             </ng-select> -->
@@ -187,7 +187,7 @@
         clients.widget ===  false  -->
 
         <div class="row">
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
             <div class="btn-wpr">
               <!-- !app_installation_url || app_installation_url?.length === 0 || -->
               <!-- ||  (clients.dashboard === false && clients.dashboard === false && clients.dashboard === false) -->

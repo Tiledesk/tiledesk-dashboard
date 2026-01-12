@@ -129,6 +129,9 @@ input[type="email"].invalid-email {
     border-bottom-right-radius: 5px;
     background-color: var(--blue-20)!important;
     box-shadow: unset;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    height: 36px;
 }
 
 #smtp-show-password-btn:hover {

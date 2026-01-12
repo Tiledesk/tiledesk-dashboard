@@ -1,7 +1,8 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration} from './utils'; // , DeepseekIntegration
+// McpIntegration, vLLMIntegration
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, } from './utils'; // , DeepseekIntegration
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -666,13 +667,13 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       return new OllamaIntegration();
     }
 
-    if (key === INTEGRATIONS_KEYS.MCP) {
-      return new McpIntegration();
-    }
+    // if (key === INTEGRATIONS_KEYS.MCP) {
+    //   return new McpIntegration();
+    // }
 
-    if (key === INTEGRATIONS_KEYS.VLLM) {
-      return new vLLMIntegration();
-    }
+    // if (key === INTEGRATIONS_KEYS.VLLM) {
+    //   return new vLLMIntegration();
+    // }
 
     
 

@@ -29,8 +29,8 @@ export enum INTEGRATIONS_KEYS {
     COHERE = 'cohere',
     DEEPSEEK = 'deepseek',
     OLLAMA = 'ollama',
-    MCP = 'mcp',
-    VLLM = 'vllm'
+    // MCP = 'mcp',
+    // VLLM = 'vllm'
 }
 
 //  OLLAMA = 'ollama',
@@ -62,7 +62,7 @@ export enum INTEGRATIONS_CATEGORIES {
 
 export const CATEGORIES_LIST = [
     { type: INTEGRATIONS_CATEGORIES.AI, name: "Artificial Intelligence" },
-    { type: INTEGRATIONS_CATEGORIES.MCP, name: "MCP" },
+    // { type: INTEGRATIONS_CATEGORIES.MCP, name: "MCP" },
     { type: INTEGRATIONS_CATEGORIES.CHANNEL, name: "Channels" },
     //{ type: INTEGRATIONS_CATEGORIES.AUTOMATION, name: "Automation" },
     //{ type: INTEGRATIONS_CATEGORIES.COMMUNICATION, name: "Communication" },
@@ -117,8 +117,8 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Groq",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GROQ,            src_icon: "assets/img/int/groq-icon.svg",                   src_logo: "assets/img/int/groq_logo.svg",               pro: true,  plan: 'Pro' },
     { name: "Cohere",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.COHERE,          src_icon: "assets/img/int/cohere_icon.svg",                 src_logo: "assets/img/int/cohere_logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Ollama",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,          src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",             pro: true,  plan: 'Pro' },
-    { name: "MCP Servers",           category: INTEGRATIONS_CATEGORIES.MCP,              key: INTEGRATIONS_KEYS.MCP,             src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
-    { name: "vLLM",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.VLLM,            src_icon: "assets/img/int/vllm-icon.png",                   src_logo: "assets/img/int/vllm-logo.png",               pro: true,  plan: 'Pro' },
+    // { name: "MCP Servers",           category: INTEGRATIONS_CATEGORIES.MCP,              key: INTEGRATIONS_KEYS.MCP,             src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
+    // { name: "vLLM",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.VLLM,            src_icon: "assets/img/int/vllm-icon.png",                   src_logo: "assets/img/int/vllm-logo.png",               pro: true,  plan: 'Pro' },
     { name: "Deepseek",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,        src_icon: "assets/img/int/deepseek-icon.svg",               src_logo: "assets/img/int/deepseek-logo.svg",           pro: true,  plan: 'Pro' },
     { name: "Qapla'",                category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Pro' },
     //{ name: "Active Campaign",     category: INTEGRATIONS_CATEGORIES.COMMUNICATION,    key: INTEGRATIONS_KEYS.ACTIVE_CAMPAIGN, src_icon: "assets/img/int/active-campaign-icon.jpeg",       src_logo: "assets/img/int/active-campaign-logo.png",    pro: true,  plan: 'Premium' },
@@ -223,27 +223,27 @@ export class OllamaIntegration extends Integration {
     }
 }
 
-export class McpIntegration extends Integration {
-    constructor() {
-        super();
-        this.name = INTEGRATIONS_KEYS.MCP;
-        this.value = {
-            servers: []
-        }
-    }
-}
+// export class McpIntegration extends Integration {
+//     constructor() {
+//         super();
+//         this.name = INTEGRATIONS_KEYS.MCP;
+//         this.value = {
+//             servers: []
+//         }
+//     }
+// }
 
-export class vLLMIntegration extends Integration {
-    constructor() {
-        super();
-        this.name = INTEGRATIONS_KEYS.VLLM;
-        this.value = {
-            url: null,
-            token: null,
-            models: []
-        }
-    }
-}
+// export class vLLMIntegration extends Integration {
+//     constructor() {
+//         super();
+//         this.name = INTEGRATIONS_KEYS.VLLM;
+//         this.value = {
+//             url: null,
+//             token: null,
+//             models: []
+//         }
+//     }
+// }
 
 export class DeepseekIntegration extends Integration {
     constructor() {

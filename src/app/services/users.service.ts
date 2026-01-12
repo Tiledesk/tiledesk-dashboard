@@ -278,7 +278,7 @@ export class UsersService {
   // Delete user account 
   // ---------------------------------------------------------
   public deleteUserAccount() {
-    const url = this.SERVER_BASE_PATH + 'users';
+    const url = this.SERVER_BASE_PATH + '--users';
     this.logger.log('[USER-SERV] - DELETE USER ACCOUNT - URL ', url);
 
     const httpOptions = {

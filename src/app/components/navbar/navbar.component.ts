@@ -364,6 +364,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     const cleanUrl = url.split('?')[0];
     console.log('[NAVBAR] Clean URL:', cleanUrl);
 
+    // Reset currentIcon all'inizio per evitare che rimanga impostato da route precedenti
+    this.currentIcon = null;
+
+    // Estrai i query parameters per controllare il dettaglio dell'automazione
+    const urlParts = url.split('?');
+    const queryParams = urlParts.length > 1 ? urlParts[1] : '';
+    const params = new URLSearchParams(queryParams);
+    const automationId = params.get('id');
+
     // Controlla i percorsi specifici in ordine di priorità
     if (cleanUrl.indexOf('/home') !== -1) {
       this.currentTitle = 'Home';
@@ -391,6 +400,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'Flows';
       this.currentIcon = 'family_history';
     }
+    else if (cleanUrl.indexOf('/wsrequests-demo') !== -1) {
+      // Controllo specifico per wsrequests-demo (deve essere prima del controllo generico)
+      this.currentTitle = 'Requests';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
     else if (cleanUrl.indexOf('wsrequests') !== -1 || cleanUrl.indexOf('/wsrequests/') !== -1) {
       this.currentTitle = 'Requests';
       this.currentIcon =''
@@ -411,7 +425,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'Logs della conversazione';
       this.currentIcon = 'keyboard_arrow_left';
     }
-    // to do here: manage automations
+    else if (cleanUrl.indexOf('/automations') !== -1 && automationId && automationId.startsWith('automation-request-')) {
+      // Dettaglio dell'automazione (con query parameter id)
+      this.currentTitle = 'BroadcastDetails';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/automations-demo') !== -1) {
+      this.currentTitle = 'WhatsAppBroadcasts';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/automations') !== -1) {
+      this.currentTitle = 'WhatsAppBroadcasts';
+      this.currentIcon = '';
+    }
+    else if (cleanUrl.indexOf('/contacts-demo') !== -1) {
+      this.currentTitle = 'Contacts';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
     else if (cleanUrl.indexOf('/contacts') !== -1) {
       this.currentTitle = 'Contacts';
       this.currentIcon = '';
@@ -420,14 +450,64 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'ContactDetails';
       this.currentIcon = 'keyboard_arrow_left';
     }
+    else if (cleanUrl.indexOf('/user-profile') !== -1) {
+      this.currentTitle = 'UserProfile.Profile';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/password/change') !== -1) {
+      this.currentTitle = 'ChangePsw.ChangePsw';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.includes('/user/') && cleanUrl.includes('/settings')) {
+      this.currentTitle = 'Settings';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.includes('/user/') && cleanUrl.includes('/notifications')) {
+      this.currentTitle = 'Notification';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/analytics-demo') !== -1) {
+      this.currentTitle = 'Analytics.AnalyticsTITLE';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
     else if (cleanUrl.indexOf('/analytics') !== -1) {
       this.currentTitle = 'Analytics.AnalyticsTITLE';
       this.currentIcon = '';
+    }
+    else if (cleanUrl.indexOf('/activities-demo') !== -1) {
+      this.currentTitle = 'Activities';
+      this.currentIcon = 'keyboard_arrow_left';
     }
     else if (cleanUrl.indexOf('/activities') !== -1) {
       this.currentTitle = 'Activities';
       this.currentIcon = '';
     }
+    // else if (
+    //   cleanUrl.indexOf('/bots/') !== -1 &&
+    //   cleanUrl.indexOf('/external') !== -1
+    // ) {
+    //   this.currentTitle = 'Edit';
+    //   this.currentIcon = 'keyboard_arrow_left';
+    // }
+    else if (
+      /\/bots\/[a-f0-9]{24}\/external$/.test(cleanUrl)
+    ) {
+      this.currentTitle = 'Edit';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/bots/create/external') !== -1) {
+      this.currentTitle = 'BotsAddEditPage.AddBot';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/app-create') !== -1) {
+      this.currentTitle = 'NewApp';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+    else if (cleanUrl.indexOf('/app-edit') !== -1) {
+      this.currentTitle = 'EditApp';
+      this.currentIcon = 'keyboard_arrow_left';
+    }
+
     else if (this.isSettingsSidebarRoute(cleanUrl)) {
       this.currentTitle = 'Settings';
       this.currentIcon = 'settings';
@@ -501,12 +581,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       '/group/create',
       '/email',
       '/hours',
-      '/automations',
       '/integrations',
       '/app-store',
       '/knowledge-bases-pre',
       '/project-settings/',
-      '/widget/translations'
+      '/widget/translations',
+      '/webhook',
+      'notification-email',
+      'smtp-settings'
     ];
 
     // Controlla se la route contiene uno dei pattern delle settings-sidebar

@@ -416,7 +416,7 @@
     <!-- ---------------------------------------- -->
     <div class="sb-last-item" [class.item-active]="SUPPORT_ROUTE_IS_ACTIVE" id="support"
       matTooltipClass="sb-mat-tooltip"
-      [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )" #tooltip="matTooltip"
+      [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : (companyName + ' - ver. ' + version)" #tooltip="matTooltip"
       matTooltipPosition='right' matTooltipHideDelay="100" routerLinkActive="active" (click)="stopScroll()">
 
       <a id="support-anchor" *ngIf="isVisibleSupportMenu" class="customAncor" [matMenuTriggerFor]="menuSupport"

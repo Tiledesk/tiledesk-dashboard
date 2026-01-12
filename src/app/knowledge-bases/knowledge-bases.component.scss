@@ -363,10 +363,11 @@
         height: 37px;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #333;
         line-height: 35px;
         font-weight: 400;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {
@@ -380,11 +381,12 @@
         width: 100%;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #333;
         line-height: 35px;
         font-weight: 400;
         resize: vertical;
+        font-size: 14px;
 
         &.invalid {
             border: 2px solid red !important;

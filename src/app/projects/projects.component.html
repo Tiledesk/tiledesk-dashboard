@@ -118,9 +118,9 @@
                       {{ user?.email }}
                     </h4>
 
-                    <li *ngIf="editProfileBtnVisible" class="divider"></li>
+                    <!-- <li *ngIf="editProfileBtnVisible" class="divider"></li> -->
 
-                    <div *ngIf="editProfileBtnVisible" class="user-profile-link" routerLink="/user-profile">
+                    <!-- <div *ngIf="editProfileBtnVisible" class="user-profile-link" routerLink="/user-profile">
 
                       <div class="user-profile-link-icon">
 
@@ -145,7 +145,7 @@
 
                       </div>
 
-                    </div>
+                    </div> -->
 
                    <!-- && PERMISSION_TO_LOGOUT -->
                     <li *ngIf="logoutBtnVisible" class="divider"></li>
@@ -273,7 +273,7 @@
 
           <!-- (click)='goToCreateProject()' -->
           <div id="create-prjct-card" class="card prjct-card" >
-            <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '207px' }">
+            <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '213px' }">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon"
                 [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">

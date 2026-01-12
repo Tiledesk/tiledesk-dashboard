@@ -205,7 +205,7 @@ export class WsRequestsService implements OnDestroy {
 
       if (project) {
         // this.logger.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 2', project._id)
-        this.logger.log('[WS-REQUESTS-SERV] - SUBSCRIBE (REF) WITH NEW PROJECT-ID', project._id)
+        console.log('[WS-REQUESTS-SERV] - SUBSCRIBE (REF) WITH NEW PROJECT-ID', project._id)
         this.logger.log('[WS-REQUESTS-SERV] - OLD PROJECT-ID', this.project_id)
 
         this.project_id = project._id;
@@ -219,7 +219,7 @@ export class WsRequestsService implements OnDestroy {
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
-              // console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA ", data);
+              console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA ", data);
               if (data.snapshot && data.snapshot.agents) {
 
                 data.agents = data['snapshot']["agents"]
@@ -304,7 +304,7 @@ export class WsRequestsService implements OnDestroy {
             // Update
           }, function (data, notification) {
 
-            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
 

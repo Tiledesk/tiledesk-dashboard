@@ -66,7 +66,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
 
-   private backSub?: Subscription;
+  private backSub?: Subscription;
 
   constructor(
     private auth: AuthService,

@@ -59,7 +59,778 @@ export class AutomationCreateComponent implements OnInit {
 
   public hideHelpLink: boolean;
 
-  fakeTmplt = [{ "name": "promo_mensile", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "IMAGE", "example": { "header_handle": ["https://scontent.whatsapp.net/v/t61.29466-34/343725253_729228922313210_6754026546673493433_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=uJnqYx8IR-AQ7kNvwHJEtFo&_nc_oc=Adk0wVT4Fg9gn4YCFxTKFPcWfw4VOCmdbcjTtMLwxdQGJnGyOyAMtG1zCMiqJ9NBFWM&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=JBHqlsUw1l4jymRX24x1TA&oh=01_Q5Aa2AGWof5sqqX3V_ZQ8hd2B5eMNTHObB04o-LSLdMc6rghRg&oe=68BADCB3"] } }, { "type": "BODY", "text": "Ciao *{{1}}*,\nIn offerta per i nostri clienti, solo per il mese di {{2}}\n\n*{{3}}*\na soli € _{{4}}_ invece di € ~{{5}}~", "example": { "body_text": [["Marco", "Maggio", "JALAPENOS CHEDDAR 5PZX1KG(CGM)", "24,99", "29,99"]] } }, { "type": "FOOTER", "text": "Scopri le altre offerte su www.eurofoodservice.it" }, { "type": "BUTTONS", "buttons": [{ "type": "URL", "text": "Acquista ora!", "url": "https://www.eurofoodservice.it/it/ultimi-arrivi/10628-jalapenos-cheddar-5pzx1kgcgm.html{{1}}", "example": ["https://www.eurofoodservice.it/it/ultimi-arrivi/10628-jalapenos-cheddar-5pzx1kgcgm.html?user=fake0b33d91d"] }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "729228918979877" }, { "name": "codice_sconto_2", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "TEXT", "text": "Codice promozionale" }, { "type": "BODY", "text": "Ciao {{1}}, solo per te un codice sconto del *{{2}}%* su tutto il nostro catalogo.\n\nUsa il codice {{3}} in fase di acquisto.\n\n*Codice utilizzabile per un solo acquisto", "example": { "body_text": [["Marco", "30%", "SUMMER2023"]] } }, { "type": "FOOTER", "text": "Non ti interessa? Tocca Interrompi promozioni" }, { "type": "BUTTONS", "buttons": [{ "type": "QUICK_REPLY", "text": "Grazie!" }, { "type": "QUICK_REPLY", "text": "Vai ai preferiti" }, { "type": "QUICK_REPLY", "text": "Interrompi promozioni" }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "266717792558792" }, { "name": "fine_supporto", "parameter_format": "POSITIONAL", "components": [{ "type": "BODY", "text": "Ciao da Assi.Cura,\nCome nostro cliente hai diritto ad uno sconto del 10% sulla tua prossima polizza.\nA cosa sei interessato?" }, { "type": "BUTTONS", "buttons": [{ "type": "QUICK_REPLY", "text": "Polizza Auto" }, { "type": "QUICK_REPLY", "text": "Polizza Vita" }, { "type": "QUICK_REPLY", "text": "Polizza Moto" }, { "type": "QUICK_REPLY", "text": "Polizza Famiglia" }, { "type": "QUICK_REPLY", "text": "Polizza Casa" }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "sub_category": "CUSTOM", "id": "509677821785781" }, { "name": "tiledesk_scheduler", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "IMAGE", "example": { "header_handle": ["https://scontent.whatsapp.net/v/t61.29466-34/394168429_23901956129448434_7220288921085766441_n.png?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=JhAJccIAtasQ7kNvwFPd1fn&_nc_oc=AdkObNiva_peHoapo7PL6v-NExbMgqym25OIMj3NVQPxIfASPejnb8j2Seu8ZxC8elA&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=JBHqlsUw1l4jymRX24x1TA&oh=01_Q5Aa2AEuBiNV1U__PELmQsuD34cQr-7jv4TcHF7PQMXrkY4Qsg&oe=68BAC07F"] } }, { "type": "BODY", "text": "*Operazione Scheduler*\n\nSe hai ricevuto questo messaggio vuol dire che da oggi è possibile utilizzare Whatsapp con Tiledesk per inviare campagne utilizzando lo schema Scheduler-Worker!\nPuoi darci un riscontro rispondendo a questo messaggio." }, { "type": "FOOTER", "text": "_Il team di Tiledesk_" }, { "type": "BUTTONS", "buttons": [{ "type": "QUICK_REPLY", "text": "Ho ricevuto il messaggio" }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "23901956106115103" }, { "name": "store_fisico", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "LOCATION" }, { "type": "BODY", "text": "Le offerte imperdibile proseguono nel nostro store fisico.\nVieni a trovarci a in \n📍_via Bruxelles, 30 - Z.I. Soleto, Lecce, Italia_" }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "810382583422764" }, { "name": "giacenza_ordine", "parameter_format": "POSITIONAL", "components": [{ "type": "BODY", "text": "Ciao {{1}},\nabbiamo provato a consegnarti un pacco, ma non ci siamo riusciti.\nIl pacco relativo all'ordine *{{2}}* è adesso in giacenza presso il nostro magazzino.\nSe vuoi riprogrammare la consegna clicca sul bottone qui sotto.", "example": { "body_text": [["John", "123456789"]] } }, { "type": "FOOTER", "text": "Il team di Tiledesk" }, { "type": "BUTTONS", "buttons": [{ "type": "QUICK_REPLY", "text": "Riprogramma ora" }] }], "language": "it", "status": "APPROVED", "category": "UTILITY", "id": "909025190948975" }, { "name": "codice_sconto", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "TEXT", "text": "Codice promozionale" }, { "type": "BODY", "text": "Ciao {{1}}, solo per te un codice sconto del *{{2}}%* su tutto il nostro catalogo.\n\nUsa il codice {{3}} in fase di acquisto.\n\n*Codice utilizzabile per un solo acquisto", "example": { "body_text": [["John", "30", "WINTER30"]] } }, { "type": "FOOTER", "text": "Non ti interessa? Tocca Interrompi promozioni" }, { "type": "BUTTONS", "buttons": [{ "type": "QUICK_REPLY", "text": "Non mi interessa" }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "241243738551710" }, { "name": "issue_resolution", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "TEXT", "text": "Hi {{1}}", "example": { "header_text": ["Marco"] } }, { "type": "BODY", "text": "were we able to solve your problem about {{1}}?", "example": { "body_text": [["the use of templates"]] } }, { "type": "FOOTER", "text": "The Tiledesk Team" }, { "type": "BUTTONS", "buttons": [{ "type": "QUICK_REPLY", "text": "Yes, thank you!" }, { "type": "QUICK_REPLY", "text": "No" }] }], "language": "en_US", "status": "REJECTED", "category": "UTILITY", "id": "188981247423476" }, { "name": "promo_mensile_2", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "IMAGE", "example": { "header_handle": ["https://scontent.whatsapp.net/v/t61.29466-34/347084442_622522489760178_4258564200183192902_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=cSqfcr2WBDgQ7kNvwGASVqI&_nc_oc=AdkElw6eOHJw6r3-mXIDSq0VNUfhUPPmJEA1IKvly3C-dGF2p8Z0CY6U3SOduEHN5NI&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=JBHqlsUw1l4jymRX24x1TA&oh=01_Q5Aa2AGC6vqLsHdCmgcV8SRTaCWHzwS2OvFv6jPktRJHnArJTQ&oe=68BACEA8"] } }, { "type": "BODY", "text": "Ciao *{{1}}*,\nIn offerta per i nostri clienti, solo per il mese di {{2}}\n\n*{{3}}*\na soli € _{{4}}_ invece di € ~{{5}}~", "example": { "body_text": [["Marco", "Maggio", "JALAPENOS CHEDDAR 5PZX1KG(CGM)", "24,99", "29,99"]] } }, { "type": "FOOTER", "text": "Scopri le altre offerte su www.eurofoodservice.it" }, { "type": "BUTTONS", "buttons": [{ "type": "URL", "text": "Acquista ora!", "url": "https://www.eurofoodservice.it/{{1}}", "example": ["https://www.eurofoodservice.it/it/ultimi-arrivi/10628-jalapenos-cheddar-5pzx1kgcgm.html?user=marco123456"] }, { "type": "PHONE_NUMBER", "text": "Ordina per telefono", "phone_number": "+390836521511" }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "622522486426845" }, { "name": "test_marketing", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "IMAGE", "example": { "header_handle": ["https://scontent.whatsapp.net/v/t61.29466-34/347247516_769112138286827_1046197383828542239_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=JLdTY7wWWakQ7kNvwGr0HrO&_nc_oc=AdnHJplQTgDzAyqsfb0jK3I1vqKPU6oowaSLmRJ06HEFpg8-8lQRh81Ds0RJkWn6Wm8&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=JBHqlsUw1l4jymRX24x1TA&oh=01_Q5Aa2AFq2q0aymJrt-NCEbvTJqLuNPvfbLciczJrEYbW4I7uag&oe=68BACC50"] } }, { "type": "BODY", "text": "In offerta solo per questa settimana {{1}} al prezzo di {{2}}!\nValida solo per i clienti Eurofood.", "example": { "body_text": [["Croissant Superfarcito al Cioccolato 3x1", "3€"]] } }, { "type": "FOOTER", "text": "www.eurofoodservice.it" }, { "type": "BUTTONS", "buttons": [{ "type": "URL", "text": "Acquista subito", "url": "https://www.eurofoodservice.it/it/ultimi-arrivi/11151-croissant-superfarcito-cioccolato-56pzx100grbu.html" }] }], "language": "it", "status": "APPROVED", "category": "MARKETING", "id": "769112134953494" }, { "name": "fattura_acquisto", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "DOCUMENT", "example": { "header_handle": ["https://scontent.whatsapp.net/v/t61.29466-34/346935368_567293045520623_7846722721882459788_n.pdf?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=DJQNRD0c5WMQ7kNvwG6AeO2&_nc_oc=Adke1lTi_2a3YehCIIkVMRRyWVzFE1HvjCYSe4DwgYKRsSeS-dMKBk7CrVcHJhemrA0&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=JBHqlsUw1l4jymRX24x1TA&oh=01_Q5Aa2AGL_1Gbn7cL8az8SWgmP9oMo39PoAhcrfHK01gWQ4-Xlg&oe=68BAC7A3"] } }, { "type": "BODY", "text": "Ciao *{{1}}*,\nè disponibile la fattura di vendita numero *{{2}}*\nriferita all'ordine numero *{{3}}* del _{{4}}_\n\nA presto!", "example": { "body_text": [["Marco", "23F0064772", "EVYCKBZZG", "17/05/2023"]] } }, { "type": "FOOTER", "text": "Il team di Eurofood" }, { "type": "BUTTONS", "buttons": [{ "type": "PHONE_NUMBER", "text": "Problemi con la fattura?", "phone_number": "+393484506627" }] }], "language": "it", "status": "APPROVED", "category": "UTILITY", "id": "566707308912530" }, { "name": "hello_world", "parameter_format": "POSITIONAL", "components": [{ "type": "HEADER", "format": "TEXT", "text": "Hello World" }, { "type": "BODY", "text": "Welcome and congratulations!! This message demonstrates your ability to send a WhatsApp message notification from the Cloud API, hosted by Meta. Thank you for taking the time to test with us." }, { "type": "FOOTER", "text": "WhatsApp Business Platform sample message" }], "language": "en_US", "status": "APPROVED", "category": "UTILITY", "id": "1283803345820684" }]
+  fakeTmplt = [ {
+        "name": "tracking_consegna",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "TEXT",
+                "text": "Il tuo articolo è stato spedito"
+            },
+            {
+                "type": "BODY",
+                "text": "Ciao {{1}}, la tua spedizione da Shop.com è partita e verrà consegnata in 24/48 ore.\nPuoi tracciare il pacco cliccando cliccando qui sotto.",
+                "example": {
+                    "body_text": [
+                        [
+                            "Giovanni"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "URL",
+                        "text": "Visit website",
+                        "url": "https://mytracking.com/{{1}}",
+                        "example": [
+                            "https://mytracking.com/?numer=123456"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "language": "en",
+        "status": "APPROVED",
+        "category": "UTILITY",
+        "sub_category": "CUSTOM",
+        "id": "1408747083529940"
+    },
+    {
+        "name": "programmazione_consegna",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Buongiorno\nGrazie per aver fatto un ordine con noi! Ti contattiamo per programmare uno slot a te conveniente per la consegna del prodotto.\nIndicami pure le tue disponibilità direttamente qui in chat.\nA presto"
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "735620482551669"
+    },
+    {
+        "name": "test_img",
+        "parameter_format": "NAMED",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/491885243_1774615546785586_6748268181529287354_n.png?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=p9gAXGHwKaYQ7kNvwGtl2ix&_nc_oc=Admj4oHltQinLzKR-weau79OEgOixe1AErBTva8GCa8_p_TK5bkmfTp7TP89Yddg57Q&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQF67fqL_1_UTB-9Mt1AceOsMlIGA20h7Uqs8LVfn0jmhqadp23E3IgU5-DjxjRJ6i1DoIncFyia&oh=01_Q5Aa3gH-8YyY1Yf0BcknzZDorDYdLbRxdIh8jcUjdTmNdkVMVw&oe=698C8A83"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Hello Davide\nquesto è un template con l'immagine"
+            },
+            {
+                "type": "FOOTER",
+                "text": "saluti"
+            }
+        ],
+        "language": "en",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "1774615543452253"
+    },
+    {
+        "name": "esprinet",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Ciao\nGrazie per aver chattato con l'Agente virtuale di Esprinet.\n\nAbbiamo raccolto le info su quello che stai cercando. Verrai ricontattato dal nostro team commerciale nelle prossime 24 ore lavorative.\n\nNel frattempo, se hai qualche domanda o dubbio, puoi continuare a chattare con il nostro Agente virtuale qui su WhatsApp!\n\nA presto"
+            },
+            {
+                "type": "FOOTER",
+                "text": "Team di Esprinet"
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "1084835630174840"
+    },
+    {
+        "name": "preventivo_tilby_rifiutato",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Salve,\nCi dispiace non siamo riusciti a trovare un accordo sul preventivo che ti abbiamo proposto. Ci sarebbe d'aiuto capire le tue motivazioni a riguardo.\nChattiamo qui?"
+            },
+            {
+                "type": "FOOTER",
+                "text": "Team Tilby"
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "1899456320799008"
+    },
+    {
+        "name": "preventivo_tilby",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Salve, \ncome da accordi la nostra proposta di preventivo ti è stata inviata via email. \nPer qualsiasi chiarimento o dubbio non esitare a farmi delle domande direttamente in questa chat."
+            },
+            {
+                "type": "FOOTER",
+                "text": "Team Tilby"
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "1232519955542332"
+    },
+    {
+        "name": "promo50off",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Hello\nThis is the last opportunity for you to claim our 50% discount on all of our plans!\nHurry up"
+            },
+            {
+                "type": "FOOTER",
+                "text": "Tiledesk Team"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "URL",
+                        "text": "Visit website",
+                        "url": "https://tiledesk.com/"
+                    }
+                ]
+            }
+        ],
+        "language": "en",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "1403283594379254"
+    },
+    {
+        "name": "studio_dentistico",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Buongiorno ! \nLe ricordiamo l'appuntamento per il giorno {{2}} alle ore {{3}} per {{1}}. \nLa invitiamo a confermare tramite i tasti sotto riportati. La preghiamo di informarci con almeno 24 ore di anticipo nel caso avesse qualche problema, in quanto il medico ha riservato per lei uno spazio di {{4}} minuti.\n\nLe auguriamo un’ottima giornata!",
+                "example": {
+                    "body_text": [
+                        [
+                            "Valentina Marras",
+                            "4/09/2024",
+                            "12:00",
+                            "20"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Studio Dentistico Piras Denotti Piazza Repubblica 22"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Confermo"
+                    },
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Non confermo"
+                    },
+                    {
+                        "type": "URL",
+                        "text": "Apri nella mappa",
+                        "url": "https://shorturl.at/Voa5j"
+                    }
+                ]
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "1054368693007292"
+    },
+    {
+        "name": "reminder_for_dinner_at_restauran",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/436752126_8690680000961402_6264950153954945392_n.png?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=k5g20XNaQYwQ7kNvwF8jZa-&_nc_oc=Admuwv9ixTx8eXDkDYQ-EvGl9vV8aTxC4zyJez2JktE0g8zxyz4kzeEF5b0Bv04MTSs&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQHTxpgymWKJviUhOifr_U6mDcnZCvq7HfGDwH7ITCvtn36xxfKCbYfZANSbdv5OyfT6iKnRaWhW&oh=01_Q5Aa3gH8CDqDvpxiyo91BakTIuulCVR9A6RmEnutF6RTrHy9Lg&oe=698C870F"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Gentile, {{1}}\nSiamo lieti di ricordarLe che la Sua prenotazione presso il ristorante Lötschberg di Berna è confermata per le ore 20:00, in data 13.08.2024.\n\nL'indirizzo del ristorante è:\nLötschberg\nZeughausgasse 16, \n3011 Berna\n\nNon vediamo l'ora di accoglierLa e di offrirLe una serata speciale!",
+                "example": {
+                    "body_text": [
+                        [
+                            "Marco"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Il team del ristorante Lötschberg"
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "8690679997628069"
+    },
+    {
+        "name": "new_kbs",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/444788677_490015320150645_5388482583650719226_n.png?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=p9PeTNCjF4gQ7kNvwHSfjFQ&_nc_oc=Adnp1TkQ4_b4DglqUihlmT2fDO-aTBooV2u86B5NjBvxGgy8We7f_cFCIGp_WXvYY18&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQH_lxx9MpZILiKspO1CK5hou2tp3ZdbjWcg-1W3UEKcPUvPmH6CsCL6gM2XZbXp3th3AA8sodAk&oh=01_Q5Aa3gHO_oqLVAdQMZDA5dPy0c1qmQNRi6u8Z2Ftbck7g2XeSw&oe=698C9A6D"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Hey {{1}}\nExciting news!\nYou can now add separate KBs, or Namespaces as we call them, in the Manage Your Contents section. \nHow?\nClick on the Default to get the option of adding a new KB and/or choose an existing KB.",
+                "example": {
+                    "body_text": [
+                        [
+                            "Matteo"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Your Tiledesk Team"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "URL",
+                        "text": "Try it out NOW!",
+                        "url": "https://panel.tiledesk.com/v3/dashboard/#/login"
+                    }
+                ]
+            }
+        ],
+        "language": "en",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "sub_category": "CUSTOM",
+        "id": "490015316817312"
+    },
+    {
+        "name": "prodotto_cucina_offerta",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/323952735_464081529644938_1319930073932790672_n.png?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=VM34Yz1I78AQ7kNvwGTcuA4&_nc_oc=Adlksvys7CoILihi29Jy_Pd5SP4nwyJw7QRe5JjJ_Tjtlk6T0D9Dnzs1KHKwiMrR1dM&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQHKCytrTg1-senmLVKCMPbsjBb2epcmQgmegF7oxiyj94K5_gFnwQiBSIYCxNqA30b2eialTW4B&oh=01_Q5Aa3gGfboSH_u__eQQw374KBNOjExnol-m0HYAM6VmK0mKYFw&oe=698C8206"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Ciao *{{1}}*,\nIn offerta per i nostri clienti, solo per il mese di {{2}}:\n\n*{{3}}*\na soli € _{{4}}_ invece di € ~{{5}}~\n\nScopri anche tu tutta la magia di un buon biscotto!",
+                "example": {
+                    "body_text": [
+                        [
+                            "Marisa",
+                            "Giugno",
+                            "Matterello Merlino con Stampini",
+                            "17,90",
+                            "29,90"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Il tuo Team di Fiducia"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "URL",
+                        "text": "Acquista ora!",
+                        "url": "https://www.tupperware.it/shop/it/matterello-merlino-con-stampini.html"
+                    }
+                ]
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "464081526311605"
+    },
+    {
+        "name": "summer_promo",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/442720920_2037177846740518_7715523337563257232_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=YvCvGx1hsEoQ7kNvwFLZUJd&_nc_oc=AdlrpE59JTM0fvya7_RxL2MaEz6BKzP8iF8_ymChc6pYAfYAUaVivECcmYLSeNBA26Q&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQFm_nsgUvq3HnNR0GfeFRfAmMacM_eVQ5gwXafcdQZdQnIokpJ0ep6pDkMsJRJAsktjBkmMPdnK&oh=01_Q5Aa3gF54ZjGZvOa3ULzDbEy0heuraAbtCFoE7j1pPKuad8VBw&oe=698C90DD"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Hey {{1}}, I've got a small token of appreciation for your trust! \nThis month only, *{{2}}%* of discount on all of our products.\n\nType in the code {{3}} at the checkout.\n\n*One-time promo code",
+                "example": {
+                    "body_text": [
+                        [
+                            "John",
+                            "20",
+                            "SummerHigh"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Not interested? Tap Stop promotions"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Stop promotions"
+                    }
+                ]
+            }
+        ],
+        "language": "en_GB",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "2037177843407185"
+    },
+    {
+        "name": "summer_promo",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/444788671_834284335237699_4028462709980494335_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=peq5WlmYYacQ7kNvwGbY2-I&_nc_oc=AdkDMUok2X5eYwHnZYA-sPDlwdSwuP3fw0p7TMWxawUOuTu5rNpQOBW_8VsnfS5HlmA&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQGgS2jfo0IZlg-CAx0shsSw7yJ6ZBAMmqQOiH4rhssUI4lO09WnDU3ERAgtDFobQHfoI7_5RMKX&oh=01_Q5Aa3gEYeowV1KMoaMmJLDvT3QB92q1BahX558w4tL1VJEo-qw&oe=698C71FB"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Ciao {{1}}, solo per te un codice sconto del *{{2}}%* su tutto il nostro catalogo.\n\nUsa il codice {{3}} in fase di acquisto.\n\n*Codice utilizzabile per un solo acquisto",
+                "example": {
+                    "body_text": [
+                        [
+                            "Jovana",
+                            "25",
+                            "ArrivaEstate"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Non ti interessa? Tocca Interrompi promozioni"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Interrompi promozioni"
+                    }
+                ]
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "834284331904366"
+    },
+    {
+        "name": "fattura",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "DOCUMENT",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/324037797_773198701594329_2391946491575082657_n.pdf?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=AQmuBhDJ_xkQ7kNvwHLDDQD&_nc_oc=AdlGcZXtB-FtsmGFYJ1W21wP4GjXWlIsSwqNSmuOLDcOPKK14uH_aOOVXgSRiAJ6akU&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQGBsT18bVNvoTKjq1BnvhWbbuxYrjMZy8QBtm6pKCfAIRpyxjwa3epxYFGZe9XRPoWTWzAmU_A6&oh=01_Q5Aa3gGwb8lFRe5T2gLwvk4kqXWbbH9fL9HELPwxmVWJn0bU8A&oe=698C92BA"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Ciao *{{1}}*,\nè disponibile la fattura di vendita numero *{{2}}*\nriferita all'ordine numero *{{3}}* del _{{4}}_\n\nA presto!",
+                "example": {
+                    "body_text": [
+                        [
+                            "Jovana",
+                            "1234",
+                            "ABCD",
+                            "25/05/24"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Il Team di Scelgo"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "PHONE_NUMBER",
+                        "text": "Problemi con la fattura?",
+                        "phone_number": "+393497744444"
+                    }
+                ]
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "UTILITY",
+        "id": "773198698260996"
+    },
+    {
+        "name": "prodotto_inscadenza_in_offerta",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/328798447_1174202220665470_5358947475254180022_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=l6xf6gBxmR8Q7kNvwGlI10P&_nc_oc=AdndDeTT2PLofp80oTftEfXGTqLGStlwowRJhTAnB77sPRVZFHlAf_dpYhYY8HYY7bY&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQGh6nM711T7CTpHq9iJ3ZmHriQvTJJ_cLhWpKz_qdbWGOo1dSY8lO9QAyFln6ohaNacgOXMUHRU&oh=01_Q5Aa3gFkMzAJ9UVyTcsktZSX_iSulPFkxxLP31djyZkWr4Ggcg&oe=698C7B80"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Ciao *{{1}}*,\nIn offerta per i nostri clienti, in quanto prossimo alla scadenza {{2}}\n\n*{{3}}*\na soli € _{{4}}_ invece di € ~{{5}}~",
+                "example": {
+                    "body_text": [
+                        [
+                            "Michele",
+                            "GOLDEN TURTLE YAKINORI GOLD 50 FOGLI",
+                            "50%",
+                            "5.50",
+                            "11"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "URL",
+                        "text": "Acquista ora!",
+                        "url": "https://scelgofullservice.com/e-store{{1}}",
+                        "example": [
+                            "https://scelgofullservice.com/e-store"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "1174202217332137"
+    },
+    {
+        "name": "avec_test",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "Ciao, grazie per averci contattato. Un operatore si metterà in contatto con te appena possibile per risolvere il tuo problema."
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "308811858779019"
+    },
+    {
+        "name": "documento_scaduto",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "TEXT",
+                "text": "Documento di identità scaduto"
+            },
+            {
+                "type": "BODY",
+                "text": "Gentile Cliente,\n\nCi rivolgiamo a Lei per informarla gentilmente che il documento d'identità attualmente registrato presso la nostra banca risulta scaduto. Per garantire la sicurezza e l'aggiornamento delle informazioni del suo profilo, La invitiamo cortesemente a caricare un documento d'identità in corso di validità.\n\nLe saremmo grati se potesse procedere con l'invio del nuovo documento direttamente tramite questa chat oppure attraverso il nostro sistema online dedicato o recandosi presso una delle nostre filiali.\n\nRestiamo a disposizione per qualsiasi ulteriore assistenza di cui possa aver bisogno.\n\nDistinti saluti"
+            },
+            {
+                "type": "FOOTER",
+                "text": "La Tua Banca di Fiducia"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Sostituisci il documento"
+                    }
+                ]
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "386162327381553"
+    },
+    {
+        "name": "ordine_in_giacenza",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE",
+                "example": {
+                    "header_handle": [
+                        "https://scontent.whatsapp.net/v/t61.29466-34/442733288_1651922365347415_3342935787758643458_n.jpg?ccb=1-7&_nc_sid=8b1bef&_nc_ohc=BwXGrfhSLLAQ7kNvwH9nXDj&_nc_oc=Adkngf325JeUg9TMQMJYJkswo0lWV7BpxL00QbA6Q7RUdFJTCx-N3lh6d_5yWvItONA&_nc_zt=3&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&_nc_gid=YGYSiiPoBI4ue25tN9eSmg&_nc_tpa=Q5bMBQEFM-VfNYtTqrIxSydHSj6C41b6Xi3aytqzRpGXgj05AozrbaGPhuN4cXODGx_eGfu0uZjQsz3x&oh=01_Q5Aa3gFsry2N-S58HQWwV-6aFYV-COx-gfiPFpIdobP1JEuCYQ&oe=698C93E0"
+                    ]
+                }
+            },
+            {
+                "type": "BODY",
+                "text": "Ciao {{1}}! 🌟\n\nSperiamo tu stia avendo una giornata fantastica! Volevamo darti un piccolo aggiornamento sul tuo ordine {{2}}. Al momento è in pausa nel nostro magazzino, ma non preoccuparti, siamo qui per sistemare tutto! 📦\n\nCi piacerebbe coordinare una nuova spedizione che si adatti perfettamente alla tua routine. Quando hai un attimo, rispondici qui con il momento migliore per te e se hai preferenze specifiche per la consegna.\n\nGrazie mille per la tua pazienza! 🙏 Non vediamo l'ora di assicurarci che il tuo ordine arrivi nelle tue mani al più presto possibile.\n\nA presto! 👋",
+                "example": {
+                    "body_text": [
+                        [
+                            "Mauro",
+                            "ABCD1234"
+                        ]
+                    ]
+                }
+            },
+            {
+                "type": "FOOTER",
+                "text": "Tiledesk S.r.l."
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "UTILITY",
+        "id": "1577136542825998"
+    },
+    {
+        "name": "store_fisico",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "LOCATION"
+            },
+            {
+                "type": "BODY",
+                "text": "Le offerte imperdibile proseguono nel nostro store fisico.\nVieni a trovarci a in \n📍_via Bruxelles, 30 - Z.I. Soleto, Lecce, Italia_"
+            }
+        ],
+        "language": "it",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "553774293614329"
+    },
+    {
+        "name": "hello_world",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "TEXT",
+                "text": "Hello World"
+            },
+            {
+                "type": "BODY",
+                "text": "Welcome and congratulations!! This message demonstrates your ability to send a message notification from WhatsApp Business Platform’s Cloud API. Thank you for taking the time to test with us."
+            },
+            {
+                "type": "FOOTER",
+                "text": "WhatsApp Business API Team"
+            }
+        ],
+        "language": "en_US",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "1233049530602952"
+    },
+    {
+        "name": "sample_happy_hour_announcement",
+        "previous_category": "APPOINTMENT_UPDATE",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "VIDEO"
+            },
+            {
+                "type": "BODY",
+                "text": "O happy hour chegou! 🍺😀🍸\nSeja feliz e aproveite o dia. 🎉\nLocal: {{1}}\nHorário: {{2}}"
+            },
+            {
+                "type": "FOOTER",
+                "text": "Esta mensagem é de uma empresa não verificada."
+            }
+        ],
+        "language": "pt_BR",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "5494905530555654"
+    },
+    {
+        "name": "sample_purchase_feedback",
+        "previous_category": "ISSUE_RESOLUTION",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "IMAGE"
+            },
+            {
+                "type": "BODY",
+                "text": "¡Gracias por comprar {{1}}! Valoramos tus comentarios y nos gustaría saber cómo fue tu experiencia."
+            },
+            {
+                "type": "FOOTER",
+                "text": "Este mensaje proviene de un negocio no verificado."
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "URL",
+                        "text": "Responder encuesta",
+                        "url": "https://www.example.com/"
+                    }
+                ]
+            }
+        ],
+        "language": "es",
+        "status": "APPROVED",
+        "category": "MARKETING",
+        "id": "5285989788148746"
+    },
+    {
+        "name": "sample_flight_confirmation",
+        "previous_category": "TICKET_UPDATE",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "DOCUMENT"
+            },
+            {
+                "type": "BODY",
+                "text": "Esta é a sua confirmação de voo para {{1}}-{{2}} em {{3}}."
+            },
+            {
+                "type": "FOOTER",
+                "text": "Esta mensagem é de uma empresa não verificada."
+            }
+        ],
+        "language": "pt_BR",
+        "status": "APPROVED",
+        "category": "UTILITY",
+        "id": "5210071325772143"
+    },
+    {
+        "name": "sample_shipping_confirmation",
+        "previous_category": "SHIPPING_UPDATE",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "ó tu paquete. La entrega se realizará en {{1}} dí."
+            },
+            {
+                "type": "FOOTER",
+                "text": "Este mensaje proviene de un negocio no verificado."
+            }
+        ],
+        "language": "es",
+        "status": "APPROVED",
+        "category": "UTILITY",
+        "id": "3303500303229221"
+    },
+    {
+        "name": "sample_flight_confirmation",
+        "previous_category": "TICKET_UPDATE",
+        "parameter_format": "POSITIONAL",
+        "components": [
+            {
+                "type": "HEADER",
+                "format": "DOCUMENT"
+            },
+            {
+                "type": "BODY",
+                "text": "Confirmamos tu vuelo a {{1}}-{{2}} para el {{3}}."
+            },
+            {
+                "type": "FOOTER",
+                "text": "Este mensaje proviene de un negocio no verificado."
+            }
+        ],
+        "language": "es",
+        "status": "APPROVED",
+        "category": "UTILITY",
+        "id": "3239265063027780"
+    }
+  ]
   
   constructor(
     private auth: AuthService,
@@ -142,20 +913,8 @@ export class AutomationCreateComponent implements OnInit {
     this.automationsService.getWATemplates().subscribe((templates: any) => {
       this.logger.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates ", templates);
       // this.logger.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates fake ", this.fakeTmplt);
-      this.templates_list = templates
-
-      // .map(t => {
-      //   if (t.category === 'MARKETING') {
-      //     t['icon'] = "campaign"
-      //   }
-      //   else {
-      //     t['icon'] = "notifications_active"
-      //   }
-      //   // t['description'] = t.components.find(c => c.type === 'BODY').text;
-      //   return t;
-      // })
-
-
+      this.templates_list = templates;
+      
     }, (error) => {
 
       this.logger.error("[AUTOMATION-CREATE] - GET WA TEMPLATES - ERROR: ", error)

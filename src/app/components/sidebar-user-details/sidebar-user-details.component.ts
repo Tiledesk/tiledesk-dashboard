@@ -26,6 +26,7 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { CachePuService } from 'app/services/cache-pu.service';
+import { environment } from 'environments/environment';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -34,6 +35,7 @@ import { CachePuService } from 'app/services/cache-pu.service';
 
 })
 export class SidebarUserDetailsComponent implements OnInit {
+  public version: string = environment.VERSION;
   PLAN_NAME = PLAN_NAME
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
   public HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;

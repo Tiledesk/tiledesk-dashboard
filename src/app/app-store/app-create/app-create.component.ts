@@ -7,10 +7,11 @@ import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
 import { RoleService } from 'app/services/role.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NavigationService } from 'app/services/navigation.service';
 @Component({
   selector: 'appdashboard-app-create',
   templateUrl: './app-create.component.html',
@@ -57,7 +58,7 @@ export class AppCreateComponent implements OnInit, OnDestroy {
   isAuthorized = false;
   permissionChecked = false;
   PERMISSION_TO_UPDATE: boolean;
-
+  private backSub?: Subscription;
   constructor(
     public auth: AuthService,
     public logger: LoggerService,
@@ -68,7 +69,8 @@ export class AppCreateComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public brandService: BrandService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private navSvc: NavigationService
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -92,11 +94,19 @@ export class AppCreateComponent implements OnInit, OnDestroy {
 
     this.checkPermissions()
     this.listenToProjectUser()
+    this.listenToGoBack()
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   listenToProjectUser() {

@@ -3,7 +3,7 @@
     <div class="user-details-dshbrd-lang" (click)="goToUserProfileLanguageSection()"
         [ngStyle]="{ 'cursor': editProfileBtnVisible ? 'pointer' : 'default'}">
 
-        <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
+        <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;font-size: 14px;">
             {{dsbrd_lang}}
         </span>
         <img [src]="flag_url" style="width: auto;height: 19px;">
@@ -125,8 +125,9 @@
         </span>
 
         <span>
-            <div> {{prjct_name}} </div>
-            <div  *ngIf="isVisiblePAY" style="display: inline-block; margin-left: 26px;"> {{ _prjct_profile_name }} </div>
+            <div style="position: relative; top: 3px;"> {{prjct_name}} </div>
+            <div  *ngIf="isVisiblePAY" style="margin-top: 8px; margin-left: 25px;"> {{ _prjct_profile_name }} </div>
+            <!-- <div  style="display: inline-block; margin-top: 8px;"> ver {{version}} </div> -->
 
             <!-- <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
                 style="color:#f44336; position:relative; top: -1px;display: inline-block;">

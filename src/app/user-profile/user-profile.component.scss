@@ -18,7 +18,7 @@ input[type="text"] {
   border-radius: 5px;
   background-color: #fff !important;
   border: solid 1px #ddd;
-   color: #000000de;
+  color: #000000de;
   font-weight: 300;
 }
 
@@ -270,8 +270,14 @@ button.close {
 
 
 .resend-verification-email {
-  cursor: pointer; 
-  color: var(--blue-light) // #03a5e8
+  cursor: pointer;
+  color: var(--blue-light);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.resend-verification-email:hover {
+  text-decoration: underline;
 }
 
 
@@ -279,6 +285,7 @@ button.close {
   margin-left: 35px;
   color: #85ae52;
   font-weight: 400;
+  font-size: 14px;
 }
 
 .browser-lang-disabled-wpr {
@@ -291,6 +298,12 @@ button.close {
   font-size: 12px;
   font-weight: 300;
   color: #f44336;
+}
+
+.preferred-lang-selection-wpr {
+  margin-left: 35px;
+  max-width: 365px;
+  font-size: 14px;
 }
 
 .refresh-page {

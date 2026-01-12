@@ -1,16 +1,13 @@
-<!-- <p class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px;"[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i>
-  Webhook
-</p> -->
 
-<span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
+
+<!-- <span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
+<span #navbarbrand></span>
 
 <div class="main-content main-content-no-padding">
 
@@ -50,8 +47,7 @@
             <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
               <div class="row link-to-docs">
                 <div class="col-md-12">
-                  <span>
-
+                  <span style="margin-left: 10px;">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                       fill="none">
                       <path
@@ -67,17 +63,18 @@
 
             <div class="row">
               <div class="col-sm-8 left-col-custom-padding">
-                <div class="card card-custom-margin">
-                  <div class="card-header card-header-custom-bkgrnd">
-                    <!-- btn-primary -->
-                    <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
+                <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
                       (click)="presentWebhookModal_inAddMode()">
-                      <!-- <span class="icon" style="padding-right: 8px;">
-                    <i class="material-icons">add_circle</i>
-                  </span> -->
                       {{ "Webhook.AddSubscription" | translate }}
                     </button>
-                  </div>
+                <div class="card card-custom-margin">
+                  <!-- <div class="card-header card-header-custom-bkgrnd">
+                
+                    <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
+                      (click)="presentWebhookModal_inAddMode()">
+                      {{ "Webhook.AddSubscription" | translate }}
+                    </button>
+                  </div> -->
 
                   <loading-spinner *ngIf="showSpinner"></loading-spinner>
                   <div *ngIf="!showSpinner" class="card-content table-responsive">
@@ -85,13 +82,12 @@
                       <thead>
                         <tr>
                           <th>
-                            <span class="column-th-span">
+                            <span class="column-th-span" style="font-size: 14px; font-weight: 500; color: #353f45">
                               {{ "Webhook.Subscriptions" | translate }}
                             </span>
                           </th>
-                          <th>
-                            <span class="column-th-span">
-                              <!-- {{ "Webhook.Actions" | translate }} -->
+                          <th class="text-end">
+                            <span class="column-th-span" style="font-size: 14px; font-weight: 500; color: #353f45">
                               {{ "Actions" | translate }}
                             </span>
                           </th>
@@ -104,7 +100,7 @@
                         <tr *ngIf="subscriptionsList && subscriptionsList?.length === 0">
                           <td colspan="2" style="text-align: center;">
                             <p
-                              style="font-size:1em; margin-bottom: 0px; margin-top: 10px; color:#7695a5; font-weight: 400">
+                              style="font-size:14px; margin-bottom: 0px; margin-top: 10px; color:#7695a5; font-weight: 400">
                               <i class="material-icons"
                                 style="vertical-align: middle; margin-bottom: 2px;color: #3ea9f5;">
                                 info
@@ -117,7 +113,7 @@
                         <tr *ngFor="let subscription of subscriptionsList; let id = index">
 
                           <td>
-                            <span style="display: block; font-weight: 500; font-size: 14px; color: rgba(0, 0,0, 0.87);">
+                            <span style="display: block; font-weight: 400; font-size: 14px; color: rgba(0, 0,0, 0.87);">
                               {{subscription?.target}}
                             </span>
                             <span style="display: block; color:#7695a5; font-size: 13px;">
@@ -125,13 +121,15 @@
                             </span>
                           </td>
 
-                          <td class="td-actions text-right" style="padding-top:20px">
-                            <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                          <td class="td--actions text-end">
+                            <button type="button" rel="tooltip" title="" 
+                              class="btn btn-tdblu"
                               (click)='presentWebhookModal_inEditMode(subscription?._id)'>
                               <i class="material-icons">edit</i>
                             </button>
 
-                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                            <button type="button" rel="tooltip" title="" 
+                              class="btn btn-danger"
                               (click)='showModal_ConfirmDeleteSubscription(subscription?._id)'>
                               <i class="material-icons">close</i>
                             </button>
@@ -156,7 +154,7 @@
 
                     <div class="row">
                       <div class="col-sm-12 col-md-12">
-                        <h3 class="card_title__underlined">
+                        <h3 class="card_title__underlined" style="margin-top: 6px;">
                           <span class="card_title__underline">
                             {{ "QuickTips" | translate }}
                           </span>
@@ -172,7 +170,7 @@
                     target="_blank">https://developer.tiledesk.com/apis/webhooks</a>
                     </p> -->
 
-                    <p style="color:#7695a5">
+                    <p style="color:#7695a5; font-size: 14px; line-height: 1.3;">
                       {{ "WebhooksQuickTipsIntroduction" | translate }}
                     </p>
                   </div>

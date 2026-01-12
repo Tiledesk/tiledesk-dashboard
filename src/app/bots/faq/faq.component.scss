@@ -17,7 +17,8 @@ input[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
+  color: #000000de;
+  font-weight: 300;
 }
 
 textarea[type="text"] {
@@ -40,7 +41,8 @@ textarea[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
+  color: #000000de;
+  font-weight: 300;
 }
 
 /* =Dropdown hide / show answer table column
@@ -500,7 +502,8 @@ input[type="text"]:disabled::placeholder {
 }
 
 .upload-image-btn {
-  margin-top: 22px;
+  // margin-top: 22px;
+  width: fit-content;
 }
 
 .btn-open-external-bot-url {
@@ -548,6 +551,8 @@ input[type="text"]:disabled::placeholder {
 
 .dept-avatar-wrapper {
   cursor: pointer;
+  font-size: 14px;
+  color: #333;
 }
 
 .dept-avatar-in-bot-dtl {
@@ -1083,8 +1088,9 @@ input[type="text"]:disabled::placeholder {
 }
 
 .delete-bot-image-btn {
-  margin-top: 20px;
+  // margin-top: 20px;
   margin-left: 12px;
+  width: 40px;
 }
 
 .delete-bot-image-btn>span>svg {

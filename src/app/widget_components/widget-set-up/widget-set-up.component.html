@@ -613,7 +613,18 @@
 																		class="col-sm-12 control-label widget-settings-control-label"
 																		for="primaryColor">
 																		{{ 'Primary' | translate}}
-																		<span class="widget_design__Tooltip">
+
+																		<i class="material-icons"
+																			style="position: relative;top: 2px; font-size:14px; color:#7695a5"
+																			matTooltipClass="custom-mat-tooltip-in-widget-setup"
+																			matTooltip="{{'PrimarySubtitle' | translate}}"
+																			#tooltip="matTooltip" 
+																			matTooltipPosition='above'
+																			matTooltipHideDelay="100">
+																			help_outline
+																		</i>
+
+																		<!-- <span class="widget_design__Tooltip">
 																			<span>
 																				<i class="material-icons"
 																					style="position: relative;top: 2px; font-size:14px; color:#7695a5">
@@ -624,7 +635,7 @@
 																				style="margin-left: -90px;min-width: 187px;">
 																				{{ 'PrimarySubtitle' | translate }}
 																			</span>
-																		</span>
+																		</span> -->
 																	</label>
 
 																	<div class="col-sm-12">
@@ -641,14 +652,6 @@
 																					(colorPickerClose)="onClosePrimaryColorDialog($event)"
 																					(colorPickerOpen)="onOpenPrimaryColorDialog($event)">
 																				</div>
-
-																				<!-- <mat-form-field>
-																			<input matInput [ngxMatColorPicker]="picker" [formControl]="colorCtr">
-																			<ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-																			<ngx-mat-color-picker #picker></ngx-mat-color-picker>
-																		  </mat-form-field> -->
-
-
 
 																			</div>
 
@@ -672,7 +675,17 @@
 																		class="col-sm-12 control-label widget-settings-control-label">
 																		{{ 'Secondary' | translate}}
 
-																		<span class="widget_design__Tooltip">
+																		<i class="material-icons"
+																			style="position: relative;top: 2px; font-size:14px; color:#7695a5"
+																			matTooltipClass="custom-mat-tooltip-in-widget-setup"
+																			matTooltip="{{'SecondarySubtitle' | translate}}"
+																			#tooltip="matTooltip" 
+																			matTooltipPosition='above'
+																			matTooltipHideDelay="100">
+																			help_outline
+																		</i>
+
+																		<!-- <span class="widget_design__Tooltip">
 																			<span>
 																				<i class="material-icons"
 																					style="position: relative;top: 2px; font-size:14px; color:#7695a5">
@@ -683,7 +696,7 @@
 																				style="margin-left: -108px;min-width: 225px;height:fit-content">
 																				{{ 'SecondarySubtitle' | translate }}
 																			</span>
-																		</span>
+																		</span> -->
 
 																	</label>
 																	<div class="col-sm-12">
@@ -740,13 +753,10 @@
 															{{'PrimaryColorGradient' | translate}}
 															<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
 																matTooltip="{{'EnableDisableprimaryColorGradient' | translate}}"
-																#tooltip="matTooltip" matTooltipPosition='above'
+																#tooltip="matTooltip" 
+																matTooltipPosition='above'
 																matTooltipHideDelay="100">
-																<i class="material-icons" style="
-															color: #566787;
-															cursor: pointer;
-															vertical-align: middle;
-															font-size: 14px;">
+																<i class="material-icons" style="color: #566787;cursor: pointer;vertical-align: middle;font-size: 14px;">
 																	help_outline
 																</i>
 															</span>

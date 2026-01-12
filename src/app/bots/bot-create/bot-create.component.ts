@@ -28,7 +28,7 @@ import {
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
@@ -39,6 +39,7 @@ import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NavigationService } from 'app/services/navigation.service';
 
 @Component({
   selector: 'bot-create',
@@ -156,7 +157,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
   isAuthorized = false;
   permissionChecked = false;
   PERMISSION_TO_UPDATE: boolean;
-  
+  private backSub?: Subscription;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -176,7 +177,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
     public usersService: UsersService,
     public dialog: MatDialog,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private navSvc: NavigationService
   ) {
     super(prjctPlanService, notify);;
 
@@ -204,11 +206,19 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
     this.getQueryParamsAndManageChatbotSubtype()
     this.checkPermissions();
     this.listenToProjectUser();
+    this.listenToGoBack()
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+   listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   async checkPermissions() {

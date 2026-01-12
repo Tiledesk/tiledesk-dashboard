@@ -44,7 +44,7 @@ export class BrandService {
       "display_templates_category": true,
       "display_change_pwd": true,
       "EXTREME_MEASURES": true,
-      "SUPPORT_MENU": true,
+      "SUPPORT_MENU": false,
       // "widget_logo_URL":"https://tiledesk.com/tiledesk-logo-white.png",
       // "widget_default_footer" :"<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>",
       // "widget_launcher_button_placeholder": "assets/img/logos/custom-launcher-button-placeholder_v2.svg",
