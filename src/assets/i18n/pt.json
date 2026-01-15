@@ -859,6 +859,8 @@
     "ToDeleteTheKBaseTypeItsId": "Para eliminar a Base de Conhecimento, digite o seu ID",
     "NoDepartmentAssigned": "Nenhum departamento atribuído",
     "LearnHowToCreateWhatsAppBroadcasts": "Aprenda a criar difusões do WhatsApp",
+    "None": "Nenhum",
+    "StartASearchToSeeConversations": "Inicie uma pesquisa para ver conversas",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

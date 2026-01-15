@@ -859,6 +859,8 @@
     "ToDeleteTheKBaseTypeItsId": "To delete the Knowledge Base, type its ID",
     "NoDepartmentAssigned": "No department assigned",
     "LearnHowToCreateWhatsAppBroadcasts": "Learn how to create WhatsApp Broadcasts",
+    "None": "None",
+    "StartASearchToSeeConversations": "Start a search to see conversations",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

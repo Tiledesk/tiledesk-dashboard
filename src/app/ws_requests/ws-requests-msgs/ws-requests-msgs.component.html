@@ -68,8 +68,11 @@
                         <!-- [matTooltip]="request?.status !== 1000 ? ( 'ThisConversationIsNotAssignedToYou' | translate ) : ( 'This conversation is closed, reopen it to Join' )"  -->
                         <button class="btn btn-outlined plr-8 ptb-8 float-end" (click)="onJoinHandled()"
                           [disabled]="request?.status == 1000 || !PERMISSION_TO_JOIN_REQUEST" role="button"
-                          matTooltipClass="custom-mat-tooltip" [matTooltip]="getJoinTooltipMessage()"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                          matTooltipClass="custom-mat-tooltip" 
+                          [matTooltip]="getJoinTooltipMessage()"
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='below'
+                           matTooltipHideDelay="100">
                           <i class="material-icons"
                             style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
                           <span style="vertical-align: middle"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
@@ -121,7 +124,7 @@
 
 
 
-            <div #scrollMe id="chat-wpr" class="card-content" (scroll)="onScrollMsgs($event)">
+            <div #scrollMe id="chat-wpr" [ngStyle]="{'border-bottom': PERMISSION_TO_SEND_REQUEST ? '1px solid #e5effe' : 'unset'}" class="card-content" (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
@@ -377,7 +380,7 @@
             </div>
 
             <div class="card---footer" *ngIf="CURRENT_USER_ROLE !== 'agent'">
-              <div class=" chat-btns-and-text-row-wpr" style="width: 100%; min-height: 69px;">
+              <div *ngIf="PERMISSION_TO_SEND_REQUEST" class=" chat-btns-and-text-row-wpr" style="width: 100%; min-height: 69px;">
 
                 <!-- nk new -->
                 <div class="row chat-btns-and-text-row h-100 w-100">
@@ -638,10 +641,14 @@
                 *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                 <div class="chat-header-footer-wpr-btn">
                   <!-- btn-primary chat-header-btn -->
-                  <button class="btn btn-outlined plr-8 ptb-8 float-end" (click)="onJoinHandled()"
-                    [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
-                    [matTooltipDisabled]="request?.status == 1000" matTooltipPosition='below' matTooltipHideDelay="100">
+                  <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                    [disabled]="request?.status == 1000" 
+                    role="button" 
+                    matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}"
+                    #tooltip="matTooltip"
+                    [matTooltipDisabled]="request?.status == 1000" 
+                    matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
                       style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
                     <span style="vertical-align: middle">
@@ -1348,12 +1355,13 @@
                       <!-- matTooltip="{{'ChangeTheConversationStatus' | translate }}"  -->
                       <div id="dropdown-working-status" class="dropdown" matTooltipClass="custom-mat-tooltip"
                         [matTooltip]="!isDropdownOpen ? ('ChangeTheConversationStatus' | translate) : ''"
-                        #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='above' matTooltipHideDelay="100"
+                        [matTooltipDisabled]="CHAT_PANEL_MODE === true">
 
                         <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;"
-                          [attr.data-bs-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
-                          [attr.aria-expanded]="false"
-                          (click)="handleDropdownClick($event)" [ngStyle]="{
+                          [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
+                          (click)="handleDropdownClick($event, request)" [ngStyle]="{
                             'opacity': PERMISSION_TO_UPDATE_REQUEST_STATUS ? '1' : '0.6',
                             'cursor': PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'pointer' : 'not-allowed'
                           }"
@@ -1382,34 +1390,36 @@
                           <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-working-status" style="cursor: pointer;"
-                          [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}">
-                          <li [ngClass]="{
-                            'disable-dropdown-menu-btn' : disableReopeRequest,
-                            'active' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000
-                          }"
+                          [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}"
+                          (click)="handleDropdownMenuClick($event, request)">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)"
-                            class="conversation-open-assigned" *ngIf="!request?.subject"
+                            class="conversation-open-assigned" 
+                            *ngIf="!request?.subject"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ConversationBeingProcessed' | translate }}" 
                             #tooltip="matTooltip"
                             matTooltipPosition='right' 
-                            matTooltipHideDelay="100">
-                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
+                            matTooltipHideDelay="100"
+                            [matTooltipDisabled]="CHAT_PANEL_MODE === true">
+                            <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'Open' | translate}}
                               </span>
                             </a>
                           </li>
-                          <li [ngClass]="{
-                            'disable-dropdown-menu-btn' : disableReopeRequest,
-                            'active' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000
-                          }"
-                            (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
-                            *ngIf="request?.subject" class="ticket-open-assigned" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
-                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                            (click)="hasSelectedOpen('updatedWorkingStatus', request)" 
+                            class="ticket-open-assigned"
+                            *ngIf="request?.subject" class="ticket-open-assigned" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'TicketBeingProcessed' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100"
+                            [matTooltipDisabled]="CHAT_PANEL_MODE === true">
+                            <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'Open' | translate}}
@@ -1417,15 +1427,16 @@
                             </a>
                           </li>
 
-                          <li [ngClass]="{
-                            'disable-dropdown-menu-btn' : disableReopeRequest,
-                            'active' : request?.workingStatus === 'pending' && request?.status !== 1000
-                          }"
-                            (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                            (click)="hasSelectedPending('updatedWorkingStatus', request)" 
+                            class="pending"
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
-                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
+                            matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100"
+                            [matTooltipDisabled]="CHAT_PANEL_MODE === true">
+                            <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'Pending' | translate}}
@@ -1433,15 +1444,17 @@
                             </a>
                           </li>
                           <li
-                            [ngClass]="{
-                              'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true,
-                              'active' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000) || (request?.workingStatus === 'pending' && request?.status === 1000)
-                            }"
-                            (click)="hasSelectedSolved('updatedWorkingStatus')" class="conversation-resolved"
-                            *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
-                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
+                            [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
+                            (click)="hasSelectedSolved('updatedWorkingStatus')" 
+                            class="conversation-resolved"
+                            *ngIf="!request?.subject" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100"
+                            [matTooltipDisabled]="CHAT_PANEL_MODE === true">
+                            <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; ">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'VisitorsPage.Resolve' | translate}} </span>
@@ -1453,10 +1466,14 @@
                               'active' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000) || (request?.workingStatus === 'pending' && request?.status === 1000)
                             }"
                             (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
-                            *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
-                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
+                            *ngIf="request?.subject" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ClosesTheCurrentTicket' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100"
+                            [matTooltipDisabled]="CHAT_PANEL_MODE === true">
+                            <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; color: #999">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'VisitorsPage.Resolve' | translate}}</span>

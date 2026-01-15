@@ -860,6 +860,8 @@
     "ToDeleteTheKBaseTypeItsId": "För att ta bort kunskapsbasen, skriv in dess ID",
     "NoDepartmentAssigned": "Ingen avdelning tilldelad",
     "LearnHowToCreateWhatsAppBroadcasts": "Lär dig hur du skapar WhatsApp-utsändningar",
+    "None": "Ingen",
+    "StartASearchToSeeConversations": "Starta en sökning för att se konversationer",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

@@ -859,6 +859,8 @@
     "ToDeleteTheKBaseTypeItsId": "Білім базасын жою үшін оның ID нөмірін енгізіңіз",
     "NoDepartmentAssigned": "Ешбір бөлім тағайындалмаған",
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp таратуларды қалай жасауды үйреніңіз",
+    "None": "Ешқайсысы",
+    "StartASearchToSeeConversations": "Өтініштерді көру үшін іздеуді бастаңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
