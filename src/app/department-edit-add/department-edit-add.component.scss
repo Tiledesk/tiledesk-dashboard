@@ -665,8 +665,9 @@ select[disabled] {
   vertical-align: middle;
   display: inline-flex;
   font-size: 13px;
-  color: #333;
-  font-weight: 400;
+  // color: #333;
+  color: var(--secondary-text-color);
+  font-weight: 300;
 }
 
 .aligned-row {

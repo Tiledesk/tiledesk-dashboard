@@ -6,13 +6,14 @@
     <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span> -->
 
-<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
-    <div class="page-title--sidebar-settings"
-        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-        {{ 'UsersAndGroups' | translate }}
-    </div>
-
-    <div class="container-fluid" style="padding-left: 0px;padding-right: 0px; margin-right: -5px;">
+<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: -5px;">
+    <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+       
+        <div class="page-title--sidebar-settings"
+            [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+            {{ 'UsersAndGroups' | translate }}
+        </div>
+        
         <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
         <div class="row"></div>
 

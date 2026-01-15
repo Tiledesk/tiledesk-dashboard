@@ -1,17 +1,11 @@
-<!-- <p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
-    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-    Chatbot
-</p> -->
 
-<span class="navbar-brand navbar-brand-sidebar-settings"
+
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
     [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
     [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
     <div class="chatbot-svg-icon">
-        <!-- <svg xmlns="http://www.w3.org/2000/svg" height="29px" viewBox="0 -960 960 960" width="29px" fill="#3C4858">
-            <path
-              d="M151.33-370.67q-46.66 0-79-32.47Q40-435.61 40-482t32.47-78.86q32.47-32.47 78.86-32.47V-702q0-27 19.84-46.83Q191-768.67 218-768.67h150.67q0-46.66 32.47-79Q433.61-880 480-880t78.86 32.47q32.47 32.47 32.47 78.86H742q27 0 46.83 19.84Q808.67-729 808.67-702v108.67q46.66 0 79 32.47Q920-528.39 920-482t-32.47 78.86q-32.47 32.47-78.86 32.47v184q0 27-19.84 46.84Q769-120 742-120H218q-27 0-46.83-19.83-19.84-19.84-19.84-46.84v-184ZM348.82-464q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.65-33.01-13.66-13.5-33.17-13.5t-33.01 13.65Q302-530.02 302-510.51t13.66 33.01q13.65 13.5 33.16 13.5Zm262.67 0q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.66-33.01-13.65-13.5-33.16-13.5-19.51 0-33.01 13.65-13.5 13.66-13.5 33.17t13.65 33.01q13.66 13.5 33.17 13.5ZM314.67-283.33h330.66V-350H314.67v66.67ZM218-186.67h524V-702H218v515.33Zm262-258Z" />
-        </svg> -->
+      
 
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve"
@@ -36,7 +30,7 @@
         {{'Flows' | translate}} 
     </span>
 
-</span>
+</span> -->
 
 <div class="main-content" style="padding-top:0px;padding-left:0px; padding-right:0px">
 
@@ -76,7 +70,7 @@
                 </ng-container>
 
                 <!-- <div class="row button-row">
-                    <div class="col-sm-12">
+                    <div class="col-12">
                         <div class="t--btn-wpr">
                             <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="createBlankTilebot()">
                                 <span>Create from scratch</span>
@@ -201,7 +195,7 @@
 
                 <div class="page-content--wpr">
                     <div class="template-page-title">
-                        <div *ngIf="COMMUNITY_TEMPLATE" style="text-align: center;">
+                        <div *ngIf="COMMUNITY_TEMPLATE" style="text-align: center; font-family: var(--header-font-family);">
                             {{'CommunityTemplates' | translate}}
                         </div>
                         <!-- <div class="t--btn-wpr" *ngIf="!COMMUNITY_TEMPLATE">
@@ -292,7 +286,7 @@
                                         {{template.name}}
                                     </h2>
                                     <span size="8" class="blank-span-h08"></span>
-                                    <p weight="normal" class="template-description">
+                                    <p weight="normal" class="template-description" style="font-size: 14px; color: #3c4858;line-height: 21px;">
                                         <!-- {{template.description}} -->
                                         {{template.shortDescription}}
                                         <!-- <span style="display: block; margin-top: 6px;"

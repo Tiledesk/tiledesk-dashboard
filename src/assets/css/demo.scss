@@ -1893,9 +1893,10 @@ span.navbar-brand-title {
 
 .page-title--sidebar-settings {
   position: absolute;
-  top: 21px;
+  top: 23px;
   z-index: 1050;
   font-size: 18px;
+  font-family: var(--header-font-family);
 }
 
 .page-title--sidebar-settings_opened {
@@ -3343,6 +3344,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 .close--round-btn>span {
   font-size: 31px;
   color: var(--btn-color) !important;
+  font-weight: 300;
+  line-height: 0.7;
 }
 
 ::ng-deep .conv-dtls-custom-mat-tooltip {
@@ -3712,7 +3715,7 @@ li.active-item a i.settings-sidebar-icons {
 
 .toggle-setting-sidebar-icon-wpr {
   position: absolute;
-  top: 22px;
+  top: 20px;
   z-index: 1050;
   width: 22px;
   height: 22px;
@@ -4280,6 +4283,9 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav-analytics li a:hover {
@@ -4318,6 +4324,9 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav-widget-translations li a:hover {
@@ -4353,6 +4362,9 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav-fixed li a:hover {

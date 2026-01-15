@@ -136,7 +136,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.roleService.checkRoleForCurrentProject('flows')
     this.getBrowserVersion();
     this.getTemplates()
-    this.getCommunityTemplates()
+    // this.getCommunityTemplates()
     this.getFlowWebhooks()
     this.getCurrentProject()
     // this.getAllNamespaces()
@@ -593,7 +593,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        this.certfifiedTemplates = res
+        // this.certfifiedTemplates = res;
+        // this.certfifiedTemplates = this.fake_tmplt
         console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)

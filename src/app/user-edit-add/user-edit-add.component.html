@@ -8,25 +8,26 @@
 </span> -->
 
 <span #navbarbrand></span>
+<!-- main_content_no_left_right_padding -->
+<div class="main-content" style="padding-top:0px; padding-right: 0px; margin-left: -5px;">
 
-<div class="main-content main_content_no_left_right_padding" style="padding-top: 0px">
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
 
-  <div class="page-title--sidebar-settings"
+    <div class="page-title--sidebar-settings" style="top:19px"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-      (click)="goBack()">keyboard_arrow_left</i>
+      <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+        (click)="goBack()">keyboard_arrow_left</i>
 
-    <span *ngIf="CREATE_VIEW">
-      {{ "UsersPage.Invites" | translate }}
-    </span>
+      <span *ngIf="CREATE_VIEW">
+        {{ "UsersPage.Invites" | translate }}
+      </span>
 
-    <span *ngIf="EDIT_VIEW">
-      {{ "UserEditAddPage.EditUserRole" | translate }}
-    </span>
+      <span *ngIf="EDIT_VIEW">
+        {{ "UserEditAddPage.EditUserRole" | translate }}
+      </span>
+    </div>
 
-  </div>
-  <div class="container-fluid" style="padding-left: 0px; margin-left: -5px;">
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
@@ -338,7 +339,7 @@
                       </div>
 
                       <!-- SPACER -->
-                      <div class="col-sm-12" style="height:15px"></div>
+                      <div class="col-sm-12" style="height:8px"></div>
 
 
                       <!-- new -->
@@ -413,14 +414,13 @@
                           </div>
 
 
-                          <div *ngIf="groupsList?.length === 0" style="margin-top: 7px">
+                          <div *ngIf="groupsList?.length === 0" style="margin-top: 3px; font-size: 14px;">
                             {{'NotAssignedToAnyGroups' | translate}}
                           </div>
                         </div>
-
-                      
-
                       </div>
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
                       <!-- ---------------------------------------------------- -->
                       <!-- start project user-tags -->
                       <!-- -------------------------------------------------------- -->

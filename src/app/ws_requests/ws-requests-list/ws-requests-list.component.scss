@@ -105,7 +105,7 @@ input[type="text"] {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  color: #000000de;
+  color: #000000de !important;
   font-weight: 300;
 }
 
@@ -124,7 +124,7 @@ input[type="email"] {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  color: #000000de;
+  color: #000000de !important;
   font-weight: 300;
 }
 
@@ -148,7 +148,7 @@ textarea[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  color: #000000de;
+  color: #000000de !important;
   font-weight: 300;
 }
 

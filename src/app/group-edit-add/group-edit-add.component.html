@@ -7,29 +7,28 @@
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span> -->
 
-<div class="main-content" style="padding-top:0px">
+<div class="main-content" style="padding-top:0px; padding-right: 0px; margin-left: -5px;">
 
-  <div class="page-title--sidebar-settings"
-    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+      
+    <div class="page-title--sidebar-settings" style="top:19px"
+        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-      (click)="goBack()">keyboard_arrow_left</i>
+        <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+          (click)="goBack()">keyboard_arrow_left</i>
 
-    <span *ngIf="CREATE_VIEW">
-      {{ "GroupsAddEditPage.AddGroup" | translate }}
-    </span>
+        <span *ngIf="CREATE_VIEW">
+          {{ "GroupsAddEditPage.AddGroup" | translate }}
+        </span>
 
-    <span *ngIf="EDIT_VIEW">
-      {{ "GroupsAddEditPage.EditGroup" | translate }}
-      <!-- <span style="color: #566787; font-weight:400">
-        {{ groupNameToUpdate }}
-      </span> -->
-    </span>
+        <span *ngIf="EDIT_VIEW">
+          {{ "GroupsAddEditPage.EditGroup" | translate }}
+          <!-- <span style="color: #566787; font-weight:400">
+            {{ groupNameToUpdate }}
+          </span> -->
+        </span>
 
-  </div>
-
-
-  <div class="container-fluid" style="padding-top: 0px; margin-left: -5px; padding-left: 0px;">
+      </div>
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">

@@ -6,24 +6,25 @@
   <div class="container-fluid">
     <!-- Bootstrap 5: navbar-header removed, navbar-brand directly in container-fluid -->
     <a class="navbar-brand" href="javascript:void(0)" 
-       [ngStyle]="{'font-weight': '400', 'padding-left': (currentIcon === 'settings' && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null, 'padding-right': (currentIcon === 'settings' && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null}">
-      <span *ngIf="currentIcon && currentIcon !== 'keyboard_arrow_left' && currentIcon !== 'settings'" 
-        class="material-symbols-outlined" 
-        style="vertical-align: middle; margin-right: 8px;">
-        {{currentIcon}}
+       [ngStyle]="{'font-weight': '400', 'padding-left': (isSettingsIcon() && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null, 'padding-right': (isSettingsIcon() && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null}">
+      <!-- Generic icon (e.g., family_history for Flows pages) -->
+      <span *ngIf="currentIcon && !isBackIcon() && !isSettingsIcon()" 
+        style="vertical-align: middle; margin-right: 3px; display: inline-block; position: relative; top: -2px;"
+        [innerHTML]="currentIcon">
       </span>
-      <span *ngIf="currentIcon && currentIcon === 'keyboard_arrow_left'" 
-        class="material-symbols-outlined" 
-        style="vertical-align: middle; margin-right: 8px; cursor:pointer;"
-        (click)="onBackClick()">
-        {{currentIcon}}
+      <!-- Back arrow icon (keyboard_arrow_left) - clickable, navigates back -->
+      <span *ngIf="currentIcon && isBackIcon()" 
+        style="vertical-align: middle; margin-right: 3px; cursor:pointer; display: inline-block;  position: relative; top: -2px;"
+        (click)="onBackClick()"
+        [innerHTML]="currentIcon">
       </span>
-      <span *ngIf="currentIcon && currentIcon === 'settings'" 
-        class="material-symbols-outlined" 
-        style="vertical-align: middle; margin-right: 8px;">
-        {{currentIcon}}
+      <!-- Settings icon (gear icon) - displayed for Settings pages -->
+      <span *ngIf="currentIcon && isSettingsIcon()" 
+        style="vertical-align: middle; margin-right: 3px; display: inline-block;  position: relative; top: -2px;"
+        [innerHTML]="currentIcon">
       </span>
-      <span *ngIf="!(currentTitle === 'Settings' && !IS_OPEN_SETTINGS_SIDEBAR)">
+      <!-- Page title -->
+      <span *ngIf="!(currentTitle === 'Settings' && !IS_OPEN_SETTINGS_SIDEBAR)" style="font-family: var(--header-font-family);">
         {{currentTitle | translate}}
       </span>
     </a>

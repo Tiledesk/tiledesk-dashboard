@@ -40,7 +40,7 @@ input[type="email"] {
   border-radius: 5px;
   background-color: #fff;
   background-image: none;
-  color: #000000de;
+  color: #000000de !important;
   font-weight: 300;
 }
 
@@ -251,19 +251,19 @@ input:-webkit-autofill:active {
 
 .refresh-icon-wpr {
   position: absolute;
-  left: 68px;
+  left: 78px;
   top: -3px;
 }
 
 .delete-selected-wpr {
   position: absolute;
-  left: 105px;
+  left: 126px;
   top: -2px;
 }
 
 .archive-selected-wpr {
   position: absolute;
-  left: 123px;
+  left: 126px;
   top: -2px;
 }
 
@@ -1033,7 +1033,7 @@ p.member:hover {
 
 .preflight-checkbox {
   margin-left: 15px;
-  margin-top: 20px;
+  margin-top: 25px;
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -60,12 +60,12 @@ input[type="email"] {
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
-  // border-radius: 2px;
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  // border: solid 1px #ddd;
+  color: #000000de !important;
+  font-weight: 300; 
 }
 
 .login-container input[type="text"]:hover,

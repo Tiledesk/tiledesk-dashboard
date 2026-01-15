@@ -7,28 +7,28 @@
 </span> -->
 
 
-<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
-    <div class="page-title--sidebar-settings"
-        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+<div class="main-content" style="padding-top:0px; padding-right: 0px; margin-left: -5px;">
+   
 
-        <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-          (click)="goBack()">keyboard_arrow_left</i> -->
-        <span (click)="goBack()" class="go--back" style="cursor: pointer;">
-            {{ "Roles" | translate }}
-        </span>
-        <i class="material-icons" style="vertical-align: middle !important; font-size: 20px;">
-            keyboard_arrow_right
-        </i>
-        <span class="active-breadcrumb" *ngIf="CREATE_VIEW">
-            <!-- New role  -->
-            {{ "NewRole" | translate }}
-        </span>
-        <span class="active-breadcrumb" *ngIf="EDIT_VIEW">
-           {{ "EditRole" | translate }}
-        </span>
-    </div>
+    <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+        <div class="page-title--sidebar-settings" style="top:19px"
+            [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
-    <div class="container-fluid" style="padding-left: 0px;padding-right: 0px; margin-right: -5px;">
+            <!-- <span (click)="goBack()" class="go--back" style="cursor: pointer;">
+                {{ "Roles" | translate }}
+            </span> -->
+            <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" 
+                (click)="goBack()">
+                keyboard_arrow_left
+            </i>
+            <span class="active-breadcrumb" *ngIf="CREATE_VIEW">
+                <!-- New role  -->
+                {{ "NewRole" | translate }}
+            </span>
+            <span class="active-breadcrumb" *ngIf="EDIT_VIEW">
+            {{ "EditRole" | translate }}
+            </span>
+        </div>
         <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
         <div class="row"></div>
 

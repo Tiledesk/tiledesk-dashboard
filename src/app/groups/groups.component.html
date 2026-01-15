@@ -9,12 +9,13 @@
 </span> -->
 
 
-<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
-  <div class="page-title--sidebar-settings"
-    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    {{ 'UsersAndGroups' | translate }}
-  </div>
-  <div class="container-fluid" style="padding-left: 0px;padding-right: 0px; margin-right: -5px;">
+<div class="main-content" style="padding-top:0px; padding-right: 0px; margin-left: -5px;">
+ 
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+    <div class="page-title--sidebar-settings"
+      [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+      {{ 'UsersAndGroups' | translate }}
+    </div>
     <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
     <div class="row"></div>
 
@@ -52,13 +53,13 @@
                     </div>
 
                     <div class="flex-center">
-                      <div class="search-bar" style="width: 100%;max-width: 300px;">
+                      <div class="search-bar" style="width: 100%;max-width: 350px;">
                         <input id="search-box" type="text"
                           [(ngModel)]="searchTerm" 
                           (ngModelChange)="filterGroups($event)"
                           placeholder="Search for a group..." 
                           class="search-input" style="height: 40px;
-                              padding: 5px 10px;
+                              padding: 5px 15px;
                               border: 1px solid lightgrey;
                               border-radius: 9999px;width: 100%;font-size: 14px;">
                       </div>
@@ -253,7 +254,7 @@
 
   
                 <ng-container  *ngIf="!showSpinner">
-                  <div *ngIf="filteredGroups?.length === 0" class="no-results">
+                  <div *ngIf="filteredGroups?.length === 0 && searchTerm && searchTerm.trim().length > 0" class="no-results">
                     No groups found matching your search criteria.
                   </div>
                 </ng-container>

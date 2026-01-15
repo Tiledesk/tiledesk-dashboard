@@ -5008,8 +5008,6 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
       this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
 
-
-
   }
 
   presentModalReopenConvIsNotPossible() {

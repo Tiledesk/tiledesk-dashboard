@@ -9,6 +9,8 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
   providedIn: 'root'
 })
 export class RoleService {
+  // Flag per prevenire il loop di reindirizzamento quando si è sulla pagina /no-auth
+  private isOnUnauthorizedPage: boolean = false;
 
   constructor(
     private router: Router,
@@ -17,7 +19,22 @@ export class RoleService {
     private usersService: UsersService
   ) { }
 
+  /**
+   * Imposta il flag per indicare che siamo sulla pagina /no-auth
+   * Questo previene il loop di reindirizzamento
+   */
+  setOnUnauthorizedPage(value: boolean): void {
+    this.isOnUnauthorizedPage = value;
+    this.logger.log('[ROLE-SERV] setOnUnauthorizedPage:', value);
+  }
+
   async checkRoleForCurrentProject(calledby) {
+    // Se siamo già sulla pagina /no-auth, non eseguire il controllo per evitare loop
+    if (this.isOnUnauthorizedPage) {
+      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject SKIPPED: already on /no-auth page');
+      return;
+    }
+
     console.log('[ROLE-SERV] checkRoleForCurrentProject is called by ', calledby)
     const storedUser = localStorage.getItem('user')
     this.logger.log('[ROLE-SERV] storedUser ', storedUser)

@@ -646,14 +646,14 @@ span .switch-agent-admin-requests-btn {
 .flex-child-project-name {
     // flex: 0 0 80%;
     flex: 1;
-    padding: 8px 0px;
+    padding: 11px 0px;
 
     // border: 2px solid yellow;
 }
 
 .flex-child-go-back {
     width: 45px;
-    padding: 8px 0px;
+    padding: 11px 0px;
 }
 
 .project-name-in-unserved-top-bar {
@@ -661,6 +661,7 @@ span .switch-agent-admin-requests-btn {
     font-family: var(--header-font-family);
     font-weight: 400;
     margin-left: 20px;
+    font-size: 14px;
 }
 
 // .go-back-icon {
@@ -867,6 +868,7 @@ span .switch-agent-admin-requests-btn {
     text-transform: lowercase;
     color: var(--text-color);
     text-align: center;
+    margin: 10px 0px;
 }
 
 .left-sidebar--btns-right-column:hover #arrow_3 .arrow span {

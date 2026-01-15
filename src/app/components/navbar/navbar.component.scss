@@ -2067,3 +2067,36 @@ button.close.custom-hover:hover {
 //   letter-spacing: -0.01em;
 //   text-align: right;
 // }
+
+// Prevent FOUC (Flash of Unstyled Content) for Material Symbols Outlined icons
+// Hide icon text until font is loaded
+.navbar-brand .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  
+  // Hide text content initially to prevent FOUC
+  // Show icon after a short delay to allow font to load
+  opacity: 0;
+  animation: fadeInIcon 0.3s ease-in 0.15s forwards;
+}
+
+@keyframes fadeInIcon {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
