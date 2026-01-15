@@ -196,13 +196,14 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     }
 
     this.getCurrentProject();
+    this.getLoggedUser();
     this.getAllUsersOfCurrentProject();
     this.getProjectPlan();
     this.getPendingInvitation();
     this.getBrowserLang();
     this.getProfileImageStorage();
     this.getTranslations();
-    this.getLoggedUser();
+    
     this.getUserRole();
     this.hasChangedAvailabilityStatusInSidebar();
     this.getOSCODE();
@@ -425,7 +426,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       if (user) {
         this.CURRENT_USER = user
         this.CURRENT_USER_ID = user._id;
-        this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
+        console.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
       }
     });
 
@@ -520,8 +521,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getAllUsersOfCurrentProject() {
+     console.log('[USER-EDIT-ADD] - [USER-EDIT-ADD] - GET ALL PROJECT USERS - CURRENT USER ID ', this.CURRENT_USER_ID)
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
+      console.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
 
       if (projectUsers) {
         this.projectUsersLength = projectUsers.length;
@@ -531,7 +533,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
           return obj.id_user._id === this.CURRENT_USER_ID;
         });
         this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser FOR CURRENT_USER_ID ', filteredProjectUser);
-        this.currentUser_projectUserID = filteredProjectUser[0]._id
+        this.currentUser_projectUserID = filteredProjectUser[0]?._id
+        console.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser currentUser_projectUserID ', this.currentUser_projectUserID);
 
       }
     }, error => {
@@ -693,8 +696,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         // Crea avatar con iniziali
         this.createUserAvatar(projectUser.id_user);
 
-        if (projectUser && projectUser.max_assigned_chat) {
+        if (projectUser && projectUser.max_assigned_chat !== null && projectUser.max_assigned_chat !== undefined) {
           this.max_assigned_chat = projectUser.max_assigned_chat;
+        } else {
+          this.max_assigned_chat = -1;
         }
 
         this.getGroupsByProjectId(projectUser.id_user._id)
@@ -875,16 +880,20 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.logger.log('[USER-EDIT-ADD] - UPDATE PROJECT USER BTN ', update_project_user_btn)
     update_project_user_btn.blur();
 
-    this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - this.max_assigned_chat', this.max_assigned_chat)
+    console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - this.max_assigned_chat', this.max_assigned_chat)
     this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - current user id', this.CURRENT_USER_ID)
     this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - project_user_id', this.project_user_id)
     this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - user_id  from project-user object', this.user_id)
 
 
     let maxassignedchat = -1
-    if (this.max_assigned_chat !== null && this.max_assigned_chat !== undefined) {
+    if (this.max_assigned_chat !== null && this.max_assigned_chat !== undefined && this.max_assigned_chat !== -1) {
       maxassignedchat = this.max_assigned_chat;
+    } else {
+      // Se è null, undefined o -1, usa -1
+      maxassignedchat = -1;
     }
+    console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - this.max_assigned_chat:', this.max_assigned_chat, 'maxassignedchat to send:', maxassignedchat);
 
     if (this.role === undefined) {
       this.role = this.user_role
@@ -902,7 +911,16 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
     this.usersService.updateProjectUserRoleAndMaxchat(projectuserid, this.role, maxassignedchat)
       .subscribe((projectUser: any) => {
-        this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
+       console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
+       console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - projectUser.max_assigned_chat from backend:', projectUser?.max_assigned_chat);
+       // Aggiorna max_assigned_chat con il valore salvato - usa sempre il valore che abbiamo inviato se il backend non lo restituisce
+       if (projectUser && projectUser.max_assigned_chat !== null && projectUser.max_assigned_chat !== undefined) {
+         this.max_assigned_chat = projectUser.max_assigned_chat;
+       } else {
+         // Se il backend non restituisce il valore, usa quello che abbiamo inviato
+         this.max_assigned_chat = maxassignedchat;
+       }
+       console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - max_assigned_chat after update:', this.max_assigned_chat);
 
       }, (error) => {
         this.logger.error('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED ERROR  ', error);
@@ -1181,5 +1199,89 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   onCloseModal() {
     this.display = 'none';
+  }
+
+  onKeyDownMaxAssignedChat(event: KeyboardEvent): void {
+    // Previeni l'inserimento del segno meno se non è all'inizio del campo vuoto
+    if (event.key === '-' || event.key === 'Minus') {
+      event.preventDefault();
+    }
+  }
+
+  onMaxAssignedChatBlur(event: FocusEvent): void {
+    // Quando l'utente esce dal campo, verifica e normalizza il valore
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    
+    if (value === '' || value === null || value === undefined) {
+      this.max_assigned_chat = -1;
+      input.value = '';
+      return;
+    }
+
+    const numValue = parseInt(value, 10);
+    
+    if (isNaN(numValue) || numValue < 0) {
+      this.max_assigned_chat = -1;
+      input.value = '';
+    } else {
+      this.max_assigned_chat = numValue;
+      input.value = String(numValue);
+    }
+    
+    console.log('[USER-EDIT-ADD] - onMaxAssignedChatBlur - value:', value, 'max_assigned_chat:', this.max_assigned_chat);
+  }
+
+  onMaxAssignedChatChange(value: string | number): void {
+    // Gestisci il caso di stringa vuota, null o undefined
+    if (value === '' || value === null || value === undefined) {
+      this.max_assigned_chat = -1;
+      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - empty value, set to -1');
+      return;
+    }
+
+    // Se è già un numero, usalo direttamente
+    if (typeof value === 'number') {
+      if (value < 0) {
+        this.max_assigned_chat = -1;
+        console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - negative number, set to -1');
+      } else {
+        this.max_assigned_chat = value;
+        console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - valid number:', value);
+      }
+      return;
+    }
+
+    // Se è una stringa, convertila
+    const stringValue = String(value).trim();
+    
+    // Se la stringa è vuota dopo il trim, imposta a -1
+    if (stringValue === '') {
+      this.max_assigned_chat = -1;
+      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - empty string after trim, set to -1');
+      return;
+    }
+
+    // Converti a numero usando parseInt per evitare problemi con decimali
+    const numValue = parseInt(stringValue, 10);
+    
+    // Se non è un numero valido, imposta a -1
+    if (isNaN(numValue)) {
+      this.max_assigned_chat = -1;
+      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - NaN after parseInt, set to -1');
+      return;
+    }
+
+    // Se il valore è negativo, imposta a -1 (illimitato)
+    if (numValue < 0) {
+      this.max_assigned_chat = -1;
+      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - negative value, set to -1');
+      return;
+    }
+
+    // Se il valore è >= 0 (incluso 0), lo assegna direttamente
+    // 0 è un valore valido che significa "limite massimo di 0 chat"
+    this.max_assigned_chat = numValue;
+    console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - valid value:', numValue, 'max_assigned_chat:', this.max_assigned_chat);
   }
 }

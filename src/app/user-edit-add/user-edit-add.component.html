@@ -397,7 +397,7 @@
                           {{'ChatLimit' | translate}}
                         </label>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                          <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number"
+                          <input style="margin-bottom: 1px;" [ngModel]="max_assigned_chat === -1 ? '' : max_assigned_chat" (ngModelChange)="onMaxAssignedChatChange($event)" (blur)="onMaxAssignedChatBlur($event)" (keydown)="onKeyDownMaxAssignedChat($event)" type="number"
                             [disabled]="CURRENT_USER_ROLE === 'agent'">
                           <span
                             style="display: block; font-size: 12px; font-weight: 400;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
