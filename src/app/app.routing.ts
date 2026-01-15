@@ -77,6 +77,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 
 // Andrea
 import { ChatComponent } from './chat/chat.component';
+import { ConversationDetailIframeComponent } from './conversation-detail-iframe/conversation-detail-iframe.component';
 
 // import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy 
 // import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
@@ -982,6 +983,13 @@ const routes: Routes = [
     loadChildren: () => import('app/automations/automations.module').then(m => m.AutomationsModule),
     canActivate: [AuthGuard, ProjectProfileGuard],
   },
+
+  // Automations create
+  {
+    path: 'project/:projectid/new-broadcast',
+    loadChildren: () => import('app/automation-create/automation-create.module').then(m => m.AutomationCreateModule),
+    canActivate: [AuthGuard],
+  },
   // { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
    {
@@ -1340,7 +1348,19 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+  {
+    path: 'project/:projectid/flows/flow-webhooks-logs/:type/:id',
+    loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
 
+  {
+    path: 'project/:projectid/wsrequests/logs/:type/:id',
+    loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
   {
     path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
@@ -1554,6 +1574,11 @@ const routes: Routes = [
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
 
 
+    
+  // Conversation detail iframe
+  { path: 'conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+
 
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
@@ -1638,9 +1663,6 @@ const routes: Routes = [
 
   // Rasa bot Not more used
   // { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
-
-
-
 
 ];
 

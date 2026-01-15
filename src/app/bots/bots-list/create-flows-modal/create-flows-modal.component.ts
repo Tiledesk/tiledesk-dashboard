@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { CreateChatbotModalComponent } from '../create-chatbot-modal/create-chatbot-modal.component';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-flows-chatbot-modal',
   templateUrl: './create-flows-modal.component.html',
@@ -12,12 +13,15 @@ export class CreateFlowsModalComponent implements OnInit {
   public isChatbotRoute: boolean;
   public diplayTwilioVoiceChabotCard: boolean;
   public diplayVXMLVoiceChabotCard: boolean;
+  public_Key: string;
+  isVisibleCOP: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CreateFlowsModalComponent>,
     private logger: LoggerService,
     private translate: TranslateService,
-      public dialog: MatDialog,
+    public dialog: MatDialog,
+    public appConfigService: AppConfigService,
   ) {
     this.logger.log('[CREATE FLOWS MODAL] data ', data)
     if (data ) {
@@ -31,6 +35,32 @@ export class CreateFlowsModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getOSCODE();
+  }
+
+    getOSCODE() {
+      this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+      let keys = this.public_Key.split("-");
+
+      keys.forEach(key => {
+        if (key.includes("COP")) {
+          let cop = key.split(":");
+          this.logger.log('PUBLIC-KEY [CREATE FLOWS MODAL] - cop key&value', cop);
+          if (cop[1] === "F") {
+            this.isVisibleCOP = false;
+            this.logger.log("[CREATE FLOWS MODAL]isVisibleCOP: ", this.isVisibleCOP)
+          } else {
+            this.isVisibleCOP = true;
+           this.logger.log("[CREATE FLOWS MODAL] isVisibleCOP: ", this.isVisibleCOP)
+          }
+        }
+      });
+
+    if (!this.public_Key.includes("COP")) {
+      this.isVisibleCOP = false;
+      this.logger.log("[CREATE FLOWS MODAL] isVisibleCOP: ", this.isVisibleCOP)
+    }
   }
 
   onFileSelected(event: Event) {
