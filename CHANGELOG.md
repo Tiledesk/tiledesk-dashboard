@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.160-AR
+- Fixes the bug: in teammate details, if role is updated, Chat Limit field is set to -1
+
 ### 2.7.159-AR
 - Improves full-text search on the history page and non-real-time conversations page
 
