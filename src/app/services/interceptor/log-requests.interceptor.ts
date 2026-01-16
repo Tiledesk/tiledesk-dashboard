@@ -70,37 +70,44 @@ export class LogRequestsInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
 
       
-          if (error.status === 429) {
-            // this.notify.showWidgetStyleUpdateNotification("429 Too many requests", 4, 'report_problem');
-            this.snackBar.open( `429 Too many requests`, '✕',
-              { duration: 1500, 
-                horizontalPosition: 'end',  // aligns to the right
-                verticalPosition: 'top',    // aligns to the top
-                panelClass: ['custom-error-snackbar'] // apply your own style 
-              }
-            );
-          }
-          if (error.status === 529) { 
-            // this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
-            this.snackBar.open( `529 Server overloaded`,'✕',
-              { duration: 1500, 
-                horizontalPosition: 'end',  // aligns to the right
-                verticalPosition: 'top',    // aligns to the top
-                panelClass: ['custom-error-snackbar'] // apply your own style 
-              }
-            );
-          }
+          // console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
+     
+          // Handle request error
+          // console.log('[HTTP-INTERCEPTOR] GET request error:', error);
+          // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
+          // console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
 
-          if ((error.status !== 529) && error.status >= 500 && error.status < 600) { 
-            const errorMessage = `${error.status} ${error.error?.msg || 'Server Error'}`;
-            this.snackBar.open( `${errorMessage} `, '✕',
-              { duration: 1500, 
-                horizontalPosition: 'end',  // aligns to the right
-                verticalPosition: 'top',    // aligns to the top
-                panelClass: ['custom-error-snackbar'] // apply your own style 
-              }
-            );
-          } 
+          // if (error.status === 429) {
+          //   this.snackBar.open( `429 Too many requests`, '✕',
+          //     { duration: 1500, 
+          //       horizontalPosition: 'end',  // aligns to the right
+          //       verticalPosition: 'top',    // aligns to the top
+          //       panelClass: ['custom-error-snackbar'] // apply your own style 
+          //     }
+          //   );
+          // }
+
+          // if (error.status === 529) { 
+          //   // this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
+          //   this.snackBar.open( `529 Server overloaded`,'✕',
+          //     { duration: 1500, 
+          //       horizontalPosition: 'end',  // aligns to the right
+          //       verticalPosition: 'top',    // aligns to the top
+          //       panelClass: ['custom-error-snackbar'] // apply your own style 
+          //     }
+          //   );
+          // }
+
+          // if ((error.status !== 529) && error.status >= 500 && error.status < 600) { 
+          //   const errorMessage = `${error.status} ${error.error?.msg || 'Server Error'}`;
+          //   this.snackBar.open( `${errorMessage} `, '✕',
+          //     { duration: 1500, 
+          //       horizontalPosition: 'end',  // aligns to the right
+          //       verticalPosition: 'top',    // aligns to the top
+          //       panelClass: ['custom-error-snackbar'] // apply your own style 
+          //     }
+          //   );
+          // } 
       
         return throwError(error);
       })

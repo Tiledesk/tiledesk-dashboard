@@ -862,6 +862,8 @@
     "LearnHowToCreateWhatsAppBroadcasts": "Lär dig hur du skapar WhatsApp-utsändningar",
     "NoGroupsFoundMatchingYourSearchCriteria": "Inga grupper hittades som matchar dina sökkriterier",
     "ConversationLogs": "Konversationsloggar",
+    "None": "Ingen",
+    "StartASearchToSeeConversations": "Starta en sökning för att se konversationer",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

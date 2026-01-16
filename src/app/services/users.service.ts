@@ -1169,7 +1169,7 @@ export class UsersService {
       })
     };
 
-    const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
+    const body: any = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT  BODY ', body);
 
     const update$ = this._httpClient

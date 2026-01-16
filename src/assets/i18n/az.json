@@ -862,6 +862,8 @@
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Yayımı yaratmağı öyrənin",
     "NoGroupsFoundMatchingYourSearchCriteria": "Axtarış kriteriyalarınıza uyğun qruplar tapılmadı",
     "ConversationLogs": "Söhbətin jurnalları",
+    "None": "Heç biri",
+    "StartASearchToSeeConversations": "Söhbətləri görmək üçün axtarışa başlayın",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

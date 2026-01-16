@@ -861,6 +861,8 @@
     "LearnHowToCreateWhatsAppBroadcasts": "Scopri come creare Broadcast WhatsApp",
      "NoGroupsFoundMatchingYourSearchCriteria": "Nessun gruppo corrisponde ai tuoi criteri di ricerca",
     "ConversationLogs": "Logs della conversazione",
+    "None": "Nessuno",
+    "StartASearchToSeeConversations": "Avvia una ricerca per vedere le conversazioni",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

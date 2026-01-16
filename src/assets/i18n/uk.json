@@ -862,6 +862,8 @@
     "LearnHowToCreateWhatsAppBroadcasts": "Дізнайтеся, як створювати розсилки в WhatsApp",
     "NoGroupsFoundMatchingYourSearchCriteria": "Групи, що відповідають вашим критеріям пошуку, не знайдено",
     "ConversationLogs": "Журнали розмови",
+    "None": "Нічого",
+    "StartASearchToSeeConversations": "Почніть пошук, щоб побачити розмови",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

@@ -861,6 +861,8 @@
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp таратуларды қалай жасауды үйреніңіз",
     "NoGroupsFoundMatchingYourSearchCriteria": "Сіздің іздеу критерилеріңізге сәйкес келетін топтар табылмады",
     "ConversationLogs": "Өтініш журналдары",
+    "None": "Ешқайсысы",
+    "StartASearchToSeeConversations": "Өтініштерді көру үшін іздеуді бастаңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
