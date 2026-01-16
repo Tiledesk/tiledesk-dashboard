@@ -945,7 +945,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
-      if (!hasRelevantQueryParams) {
+      if (!hasRelevantQueryParams && this.areDatesComplete) {
         this._preflight = false;
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
