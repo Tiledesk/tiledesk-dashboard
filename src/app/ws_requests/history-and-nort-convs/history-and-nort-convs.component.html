@@ -1317,7 +1317,10 @@
                     </span>
                   </span>
 
-                  <span *ngIf="request?.status === 150">
+                  <!-- ---------------------------------- -->
+                  <!-- Abandoned -->
+                  <!-- ---------------------------------- -->
+                   <span *ngIf="request?.status === 150" style="position: relative;">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                       <img style="width: 30px;min-width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
@@ -1325,8 +1328,97 @@
                         matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}" #tooltip="matTooltip"
                         matTooltipPosition='right' matTooltipHideDelay="100">
 
+                        <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
+                        *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
+                        <span class="tool_tip">
+                          <span class="material-icons">
+                             person_off 
+                          </span>
+      
+                          <!-- ------------------------------------------------------------------------------------------------- -->
+                          <!--  Tooltip with list of who has abandoned the chat -->
+                          <!-- ------------------------------------------------------------------------------------------------- -->
+                          <span id="{{'tooltip_' + i}}" class="right"
+                            style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
+                            [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
+                            <h4 style="font-weight:400" style="white-space: nowrap;">
+                              {{'ThisChatHasBeenAbandonedBy' | translate}}
+                            </h4>
+      
+      
+                            <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true" style="display: flex; align-items: center; gap: 6px;">
+                              <div class="pu-user-avatar-wpr"
+                                style="width: 24px !important;height: 24px !important;">
+                                <img
+                                  style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                                  src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
+                              </div>
+                              <span style="white-space: nowrap; font-size: 12px; font-weight: 400;">
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                                  <span style="font-style: italic; color: #94a3b8;">
+                                    ({{'theLastOneWhoLeft' | translate}})
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+      
+                            <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === false" style="display: flex; align-items: center; gap: 6px;">
+                              <div class="pu-user-avatar-wpr"
+                                style="width: 24px !important;height: 24px !important;">
+                                <div class="avatar-when-not-has-image"
+                                  [ngStyle]="{'background-color': request.attributes.last_abandoned_by_project_user_array[0].fillColour }">
+                                  {{request.attributes.last_abandoned_by_project_user_array[0].fullname_initial}}
+                                </div>
+                              </div>
+                              <span style="white-space: nowrap; font-size: 12px; font-weight: 400;">
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                                  <span style="font-style: italic; color: #94a3b8;">
+                                    ({{'theLastOneWhoLeft' | translate}})
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+      
+                            <div class="others-that-has-abandoned"
+                              *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0"
+                              style="margin-top: 6px;">
+                              <div class="served-by-desktop-a-in-tooltip">
+                                <div class="served-by-desktop-b-in-tooltip"
+                                  *ngFor="let agent of request?.attributes?.other_project_users_that_has_abandoned_array; let first = first;"
+                                  style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+      
+                                  <div class="served-by-desktop-d-in-tooltip">
+                                    <div class="served-by-desktop-e-in-tooltip">
+                                      <img *ngIf="agent.has_image" src={{agent.img_url}} alt=""
+                                        style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                                        onerror="this.src='assets/img/no_image_user.png'">
+      
+                                      <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
+                                        style="width: 24px !important;height: 24px !important;"
+                                        [ngStyle]="{'background-color': agent?.fillColour }">
+                                        {{ agent?.fullname_initial }}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <span style="white-space: nowrap; font-size: 12px; font-weight: 400; text-transform: capitalize;">
+                                    {{ agent?.firstname }}
+                                    <span *ngIf="agent?.lastname">
+                                      <span *ngIf="agent?.lastname !== ' '"> {{ agent?.lastname | slice:0:1 }}.</span>  
+                                    </span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <i></i>
+                          </span>
+                        </span>
+                      </div>
+
                     </span>
                   </span>
+
                 </td>
 
                 <!-- ===== REQUEST ID ===== -->

@@ -1,6 +1,21 @@
 # tiledesk-dashboard
 
-### 2.7.153-stage
+### 2.7.160-AR
+- Fixes the bug: in teammate details, if role is updated, Chat Limit field is set to -1
+
+### 2.7.159-AR
+- Improves full-text search on the history page and non-real-time conversations page
+
+### 2.7.158-AR
+- Blocks working status changes for conversations archived more than 10 days with a warning message
+- Fixes the "Able to send messages and upload files" permission label to specify that it applies to admin chat
+- Hides the section that allows sending messages in the admin panel if the "Able to send message and upload file from Admin panel chat" permission is not enabled
+- Opens selected conversations in chat in a new tab only for teammates with predefined roles
+- Fixes the bug: in some cases the text color of reply messages in the chat in the conversation details is black instead of white
+- Improves performances
+
+### 2.7.157-AR
+- Fixes the bug: Fixed REST call generating 504 error message in conversation details
 
 ### 2.7.156-AR
 - Implements caching strategy for project users to reduce redundant HTTP requests and improve performance
@@ -8,6 +23,7 @@
 - Fixes the bug: Group members are not updated correctly when switching between groups
 - Adds permission to show/hide unassigned chat notifications
 - Fixes the bug: project user permissions and role data are not refreshed when switching between projects, requiring a page refresh to display correct permissions
+
 
 ### 2.7.152-stage
 - Fixes the bug: Some sidebar items do not become active if a query parameter is present
