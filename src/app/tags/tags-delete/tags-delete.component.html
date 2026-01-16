@@ -9,7 +9,7 @@
       
       <div class="modal-header">
 
-        <button type="button" class="close" aria-label="Close" (click)="closeModalDeleteTag()"
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModalDeleteTag()"
           style="position: absolute; right: 14px;top: 16px;">
           <span aria-hidden="true">
             <svg class="tide-icon " width="18" height="18" viewBox="0 0 24 24">
@@ -18,9 +18,9 @@
               </path>
             </svg>
           </span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title warning">
+        <h4 class="modal-title warning" style="font-size: 14px;">
           <span class="modal-header-icon-wpr"> 
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
@@ -31,9 +31,10 @@
             {{ "Tags.DeleteLabel" | translate }}
           </span>
         </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModalDeleteTag()"></button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
         <p class="modal-body--content">
           {{ "Tags.DoYouReallyWantToCancelTheTag" | translate}} <b>{{ tag_name }}</b>?
         </p>
@@ -44,7 +45,7 @@
             {{ "Cancel" | translate }}
           </button>
 
-          <button class="btn btn-red" type="button" (click)="deleteTag()">
+          <button class="btn btn-red" type="button" (click)="deleteTag()" style="margin-bottom: 0px;margin-left: 12px;">
             {{ "Tags.DeleteLabel" | translate }}
           </button>
       

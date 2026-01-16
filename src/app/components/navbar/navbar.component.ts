@@ -575,6 +575,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'EditApp';
       this.currentIcon = this.getSanitizedKeyboardArrowLeft();
     }
+    else if (cleanUrl.indexOf('/conversation-detail') !== -1) {
+      this.currentTitle = 'Chat';
+      this.currentIcon = null;
+    }
+
 
     else if (this.isSettingsSidebarRoute(cleanUrl)) {
       this.currentTitle = 'Settings';

@@ -1360,7 +1360,8 @@
                         [matTooltipDisabled]="CHAT_PANEL_MODE === true">
 
                         <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;"
-                          [attr.data-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
+                          [attr.data-bs-toggle]="PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'dropdown' : null"
+                          [attr.aria-expanded]="false"
                           (click)="handleDropdownClick($event, request)" [ngStyle]="{
                             'opacity': PERMISSION_TO_UPDATE_REQUEST_STATUS ? '1' : '0.6',
                             'cursor': PERMISSION_TO_UPDATE_REQUEST_STATUS ? 'pointer' : 'not-allowed'
@@ -1402,7 +1403,7 @@
                             matTooltipPosition='right' 
                             matTooltipHideDelay="100"
                             [matTooltipDisabled]="CHAT_PANEL_MODE === true">
-                            <a style="padding-left: 15px; padding-right: 15px;">
+                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'Open' | translate}}
@@ -1419,7 +1420,7 @@
                             matTooltipPosition='right' 
                             matTooltipHideDelay="100"
                             [matTooltipDisabled]="CHAT_PANEL_MODE === true">
-                            <a style="padding-left: 15px; padding-right: 15px;">
+                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'Open' | translate}}
@@ -1436,7 +1437,7 @@
                             matTooltipPosition='right' 
                             matTooltipHideDelay="100"
                             [matTooltipDisabled]="CHAT_PANEL_MODE === true">
-                            <a style="padding-left: 15px; padding-right: 15px;">
+                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'Pending' | translate}}
@@ -1454,7 +1455,7 @@
                             matTooltipPosition='right' 
                             matTooltipHideDelay="100"
                             [matTooltipDisabled]="CHAT_PANEL_MODE === true">
-                            <a style="padding-left: 15px; padding-right: 15px;">
+                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; ">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'VisitorsPage.Resolve' | translate}} </span>
@@ -1473,7 +1474,7 @@
                             matTooltipPosition='right' 
                             matTooltipHideDelay="100"
                             [matTooltipDisabled]="CHAT_PANEL_MODE === true">
-                            <a style="padding-left: 15px; padding-right: 15px;">
+                            <a class="dropdown-item" style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; color: #999">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'VisitorsPage.Resolve' | translate}}</span>
