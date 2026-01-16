@@ -409,6 +409,8 @@ import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { RolesService } from './services/roles.service';
 import { KeycloakService } from './services/keycloak.service';
+import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+
 
 
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
@@ -727,7 +729,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
     LogoutModalComponent,
-    UnauthorizedToUpgradeComponent
+    UnauthorizedToUpgradeComponent,
+    MaintenancePageComponent
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
