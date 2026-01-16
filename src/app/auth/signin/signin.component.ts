@@ -516,7 +516,9 @@ export class SigninComponent implements OnInit {
   }
 
   goToSignup() {
-    this.router.navigate(['signup']);
+    // this.router.navigate(['signup']);
+    const url = 'https://meetings-eu1.hubspot.com/jovana-ugrinic'
+    window.open(url, '_blank'); 
   }
 
   goToCompanySite() {

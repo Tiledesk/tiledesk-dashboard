@@ -2,11 +2,12 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { TYPE_GPT_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
+import { LLM_MODEL, OPENAI_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { IntegrationService } from 'app/services/integration.service';
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
@@ -22,6 +23,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   @ViewChild('systemContext') systemContext: SatPopover;
   @ViewChild('advancedContext') advancedContext: SatPopover;
   @ViewChild('contentsSources') contentsSources: SatPopover;
+  @ViewChild('chunkonly') chunkonly: SatPopover;
+  @ViewChild('rerank') rerank: SatPopover;
 
 
 
@@ -45,17 +48,19 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public selectedModel: any // = this.models_list[0].value;
   public max_tokens: number;
   public max_tokens_min: number;
+  public max_tokens_max: number;
   public temperature: number; // 0.7
   public alpha: number; // 0.7
   public topK: number;
   public context: string
   public context_placeholder: string
   public chunkOnly: boolean
+  public reRanking: boolean
   public advancedPrompt: boolean // = false;
   public citations: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
-  private modelDefaultValue = "gpt-4o-mini";
+  private modelDefaultValue = "gpt-4o";
   private maxTokensDefaultValue = 256;
   private temperatureDefaultValue = 0.7
   private alphaDefaultValue = 0.5
@@ -64,6 +69,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private contextDefaultValue = null
   private advancedPromptDefaultValue = false
   private citationsDefaultValue = false
+  private chunksOnlyDefaultValue = false
+  private reRankigDefaultValue = false
 
   public countOfOverrides = 0
 
@@ -74,11 +81,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private hasAlreadyOverridedTopk: boolean;
   private hasAlreadyOverridedContex: boolean;
   private hasAlreadyOverrideAdvancedContex: boolean;
+  private hasAlreadyOverrideChunckOnly: boolean;
+  private hasAlreadyOverrideReRanking : boolean;
   private hasAlreadyOverrideCitations: boolean;
 
   public hideHelpLink: boolean;
 
-   temperature_slider_disabled: boolean;
+  temperature_slider_disabled: boolean;
+  modelGroups: any[] = [];
+  flattenedModels: any[] = [];
 
   aiSettingsObject = [{
     model: null,
@@ -88,6 +99,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     top_k: null,
     context: null,
     chunkOnly: null,
+    reRanking: null,
     advancedPrompt: null,
     citations: null,
   }]
@@ -99,7 +111,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     private kbService: KnowledgeBaseService,
     public brandService: BrandService,
     private logger: LoggerService,
-    private router: Router
+    private router: Router,
+    private integrationService: IntegrationService
   ) {
     // this.logger.log("[MODAL PREVIEW SETTINGS] data ", data)
     const brand = brandService.getBrand();
@@ -110,7 +123,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
       if (this.selectedNamespace && this.selectedNamespace.engine) {
-        if ( this.selectedNamespace.hybrid === true) {
+        if (this.selectedNamespace.hybrid === true) {
           this.diplaySearchTypeSlider = true;
         } else {
           this.diplaySearchTypeSlider = false;
@@ -124,7 +137,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
-      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
+      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
       this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject 1", this.aiSettingsObject)
 
       // new
@@ -135,6 +148,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
       this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
+
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5')) {
+
+        // this.temperature = 1
+        // this.aiSettingsObject[0].temperature = 1
+        // this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+        this.temperature_slider_disabled = true;
+        // this.max_tokens_max = 100000
+        this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
+      } else {
+        // this.temperature = this.selectedNamespace.preview_settings.temperature
+        this.temperature_slider_disabled = false;
+        // this.max_tokens_max = 9999
+        // if (this.max_tokens > 9999 ) {
+        //   this.max_tokens = this.maxTokensDefaultValue;
+        // }
+      }
 
 
       if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
@@ -167,6 +197,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       } else {
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly ", this.chunkOnly)
+      }
+
+      if (!this.selectedNamespace.preview_settings.reranking) {
+        this.reRanking = false
+        this.selectedNamespace.preview_settings.reranking = this.reRanking
+      } else {
+        this.reRanking = this.selectedNamespace.preview_settings.reranking
+        this.logger.log("[MODAL PREVIEW SETTINGS] reRanking ", this.reRanking)
       }
 
       this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.advancedPrompt)
@@ -207,7 +245,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     if (data && data.calledBy && data.calledBy === 'modal-preview-kb') {
       this.wasOpenedFromThePreviewKBModal = true;
       this.logger.log('[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal ', this.wasOpenedFromThePreviewKBModal)
-     
+
     } else {
       this.wasOpenedFromThePreviewKBModal = false;
       this.logger.log('[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal ', this.wasOpenedFromThePreviewKBModal)
@@ -216,52 +254,312 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.listenToCurrentURL()
   }
 
-    listenToCurrentURL() {
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) {
-          this.logger.log('[MODAL PREVIEW SETTINGS] - NavigationEnd event url ', event.url)
-          const currentUrl: string = event.url;
-              
-          if (currentUrl.includes('/knowledge-bases')) {
-            this.logger.log("✅ User is on the 'knowledge-bases' route.");
-          } else {
-            this.logger.log("❌ User is NOT on the 'knowledge-bases' route.");
-              this.dialogRef.close();
-              // if (this.dialogRefAiSettings) {
-              //   this.dialogRefAiSettings.close()
-              // }
-          }
+  listenToCurrentURL() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NavigationEnd event url ', event.url)
+        const currentUrl: string = event.url;
+
+        if (currentUrl.includes('/knowledge-bases')) {
+          this.logger.log("✅ User is on the 'knowledge-bases' route.");
+        } else {
+          this.logger.log("❌ User is NOT on the 'knowledge-bases' route.");
+          this.dialogRef.close();
+          // if (this.dialogRefAiSettings) {
+          //   this.dialogRefAiSettings.close()
+          // }
         }
-      })
-    }
+      }
+    })
+  }
 
   ngOnInit(): void {
-    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+
+
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
-    // this.model_list = Object.values(TYPE_GPT_MODEL).filter(el => el.status !== 'inactive').map((el) => {
+    // this.model_list = OPENAI_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
     //   if (ai_models[el.value])
     //     return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
     //   else
     //     return { ...el, multiplier: null }
     // })
 
-    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
-      if (ai_models[el.value])
-        return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
-      else
-        return { ...el, multiplier: null }
-    })
+    // const allModels = LLM_MODEL.flatMap(provider => provider.models);
+    // this.model_list = allModels
+    //   .map(model => ({
+    //     ...model,
+    //     multiplier: ai_models[model.value]
+    //       ? `${ai_models[model.value]} x tokens`
+    //       : null
+    //   }))
+    //   .sort((a, b) => a.name.localeCompare(b.name));
 
+    // // 🔹 imposta il modello selezionato (se già salvato)
+    // const selectedValue = this.selectedNamespace?.preview_settings?.model;
+    // this.selectedModel = this.model_list.find(m => m.value === selectedValue)?.value || null;
 
-    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+    // 🔹 Cloniamo e ordiniamo i provider, mettendo OpenAI per primo
+    // const orderedProviders = [...LLM_MODEL].sort((a, b) => {
+    //   if (a.name === 'OpenAI') return -1;
+    //   if (b.name === 'OpenAI') return 1;
+    //   return a.name.localeCompare(b.name);
+    // });
 
+    // // 🔹 Costruiamo la struttura con modelli raggruppati per provider
+    // this.modelGroups = orderedProviders.map(provider => ({
+    //   providerName: provider.name,
+    //   // providerIcon: provider.src,
+    //   models: (provider.models || [])  // 🔹 fallback
+    //     .filter(m => m.status === 'active') // mostriamo solo quelli attivi (opzionale)
+    //     .sort((a, b) => a.name.localeCompare(b.name))
+    //     .map(model => ({
+    //       ...model,
+    //       multiplier: ai_models[model.value]
+    //         ? `${ai_models[model.value]} x tokens`
+    //         : null
+    //     }))
+    // }));
 
+    // // 🔹 Flatten solo per determinare il selectedModel
+    // const allModels = this.modelGroups.flatMap(group => group.models);
+    // const selectedValue = this.selectedNamespace?.preview_settings?.model;
+    // this.selectedModel = allModels.find(m => m.value === selectedValue)?.value || null;
+
+    // this.listenToAiSettingsChanges()
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
-    // this.listenToAiSettingsChanges()
+
+    this.getVllmModels()
+    this.getOllamaModels()
+    this.loadModelGroups();
+
+    // const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+    // console.log('LLM_MODEL' , LLM_MODEL)
+    // const orderedProviders = [
+    //   ...LLM_MODEL.filter(p => p.value === 'openai'),
+    //   ...LLM_MODEL.filter(p => p.value !== 'openai')
+    // ];
+
+    // // crea l’array dei gruppi di modelli per la select
+    // this.modelGroups = orderedProviders.map(provider => ({
+    //   providerName: provider.name,
+    //   models: (provider.models || [])  // fallback se models è undefined
+    //     .filter(m => m.status === 'active')  // solo modelli attivi
+    //     .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
+    //     .map(model => ({
+    //       ...model,
+    //       multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
+    //     }))
+    // }));
+
+    // console.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
+
+    // this.flattenedModels = this.modelGroups.flatMap(group => {
+    //   // trova il provider corrispondente in LLM_MODEL
+    //   const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
+
+    //   return group.models.map(model => ({
+    //     ...model,
+    //     providerName: group.providerName,
+    //     llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
+    //     llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
+    //   }));
+    // });
+
+    // console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // // eventualmente seleziona il modello corrente
+    // const selectedProvider = this.modelGroups.find(g =>
+    //   g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
+    // );
+    // if (selectedProvider) {
+    //   const selectedModelObj = selectedProvider.models.find(m =>
+    //     m.value === this.selectedNamespace.preview_settings.model
+    //   );
+    //   this.selectedModel = selectedModelObj?.value;
+    // }
+
+    // console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    // console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+
+    // this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    // console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+
+    // const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
+    // console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    // this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
+
+
+
   }
+
+  getLlmProviderByModel(modelValue: string): string | null {
+    const found = this.flattenedModels.find(el => el.value === modelValue);
+    return found ? found.llmValue : null;
+  }
+
+  getVllmModels() {
+    const integrationName = 'vllm';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+
+        const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
+        if (vllmProvider && res?.value?.models?.length) {
+          vllmProvider.models = res.value.models.map((item: string) => ({
+            name: item,
+            value: item,
+            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
+          }));
+
+          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
+        } else {
+          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+      },
+      complete: () => {
+        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
+
+  getOllamaModels() {
+    const integrationName = 'ollama';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+
+        const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
+        if (ollamaProvider && res?.value?.models?.length) {
+          ollamaProvider.models = res.value.models.map((item: string) => ({
+            name: item,
+            value: item,
+            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
+          }));
+
+          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
+        } else {
+          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+      },
+      complete: () => {
+        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
+
+
+  loadModelGroups() {
+    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+    console.log('LLM_MODEL', LLM_MODEL)
+    const orderedProviders = [
+      ...LLM_MODEL.filter(p => p.value === 'openai'),
+      ...LLM_MODEL.filter(p => p.value !== 'openai')
+    ];
+
+    // crea l’array dei gruppi di modelli per la select
+    this.modelGroups = orderedProviders.map(provider => ({
+      providerName: provider.name,
+      models: (provider.models || [])  // fallback se models è undefined
+        .filter(m => m.status === 'active')  // solo modelli attivi
+        .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
+        .map(model => ({
+          ...model,
+          multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
+        }))
+    }));
+
+    console.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
+
+    this.flattenedModels = this.modelGroups.flatMap(group => {
+      // trova il provider corrispondente in LLM_MODEL
+      const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
+
+      return group.models.map(model => ({
+        ...model,
+        providerName: group.providerName,
+        llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
+        llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
+      }));
+    });
+
+    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // eventualmente seleziona il modello corrente
+    const selectedProvider = this.modelGroups.find(g =>
+      g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
+    );
+    if (selectedProvider) {
+      const selectedModelObj = selectedProvider.models.find(m =>
+        m.value === this.selectedNamespace.preview_settings.model
+      );
+      this.selectedModel = selectedModelObj?.value;
+    }
+
+    console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+
+
+
+    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+
+    const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
+    console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
+  }
+
+  async getIntegrationByName() {
+
+    const integrationName = 'ollama';
+
+    return new Promise((resolve, reject) => {
+
+      this.integrationService.getIntegrationByName(integrationName).subscribe((res: any) => {
+
+        resolve(res)
+      }, err => {
+        console.error(err);
+        reject([])
+      }, () => {
+        console.log('POST REQUEST * COMPLETE *');
+      });
+    })
+
+  }
+
+  async _getOllamaModels() {
+    LLM_MODEL.forEach(async (model) => {
+      if (model.value === "ollama") {
+        const NEW_MODELS = await this.getIntegrationByName();
+        console.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS);
+
+        if (NEW_MODELS['value']?.models) {
+          this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS['value'].models);
+          const models = NEW_MODELS['value']?.models.map(item => ({
+            name: item,
+            value: item
+          }));
+          model.models = models;
+        }
+      }
+    });
+  }
+
+
 
 
   // listenToAiSettingsChanges() {
@@ -284,23 +582,36 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
   onSelectModel(selectedModel) {
-    this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
 
-     if (selectedModel.startsWith('gpt-5'))  {
-        
+    const selected = this.flattenedModels.find(m => m.value === selectedModel);
+    if (selected) {
+      console.log('Modello selezionato:', selected.name);
+      console.log('LLM Provider:', selected.llmValue);
+      console.log('Icona provider:', selected.llmSrc);
+      this.selectedNamespace.preview_settings.llm = selected.llmValue
+    }
+
+    if (selectedModel.startsWith('gpt-5')) {
+
       this.temperature = 1;
       this.aiSettingsObject[0].temperature = 1;
       this.selectedNamespace.preview_settings.temperature = 1;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature_slider_disabled = true;
-      console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
+      // this.max_tokens_max = 100000
+      this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
     } else {
-      
+
       this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
       this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature = this.temperatureDefaultValue;
       this.temperature_slider_disabled = false;
+      // this.max_tokens_max = 9999
+      //  if (this.max_tokens > 9999 ) {
+      //   this.max_tokens = this.maxTokensDefaultValue;
+      // }
     }
 
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -323,8 +634,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   updateSliderValue(value, type) {
-   this.logger.log("[MODAL PREVIEW SETTINGS] value: ", value);
-   this.logger.log("[MODAL PREVIEW SETTINGS] type: ", type);
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
       if (!this.wasOpenedFromThePreviewKBModal) {
@@ -367,6 +676,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
+
 
     if (type === "alpha") {
       if (!this.wasOpenedFromThePreviewKBModal) {
@@ -451,6 +761,40 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].chunkOnly = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.chunkOnly !== this.selectedNamespace.preview_settings.chunks_only) {   
+      if (this.hasAlreadyOverrideChunckOnly !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideChunckOnly = true
+    } else if (this.chunkOnly === this.selectedNamespace.preview_settings.chunks_only) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideChunckOnly = false
+    }
+  }
+
+  changeReranking(event) {
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking event ", event.target.checked)
+    this.reRanking = event.target.checked
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.reranking = this.reRanking
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
+    this.aiSettingsObject[0].reRanking = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.reRanking !== this.selectedNamespace.preview_settings.reranking) {   
+      if (this.hasAlreadyOverrideReRanking !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideReRanking = true
+    } else if (this.reRanking === this.selectedNamespace.preview_settings.reranking) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideReRanking = false
+    }
+
   }
 
   changeAdvancePrompt(event) {
@@ -467,11 +811,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
     if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
-      // if (this.hasAlreadyOverrideAdvancedContex !== true) {
-      this.countOfOverrides = this.countOfOverrides + 1;
-      // }
+      if (this.hasAlreadyOverrideAdvancedContex !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
       this.hasAlreadyOverrideAdvancedContex = true
-    } else if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
+    } else if (this.advancedPrompt === this.selectedNamespace.preview_settings.advancedPrompt) {
       this.countOfOverrides = this.countOfOverrides - 1;
       this.hasAlreadyOverrideAdvancedContex = false
     }
@@ -553,24 +897,32 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hasAlreadyOverridedContex = false;
     this.hasAlreadyOverrideAdvancedContex = false;
     this.hasAlreadyOverrideCitations = false;
+    this.hasAlreadyOverrideChunckOnly = false;
+    this.hasAlreadyOverrideReRanking = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
+
 
     // this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens = this.selectedNamespaceClone.preview_settings.max_tokens;
     // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
-    if (this.selectedModel.startsWith('gpt-5'))  { 
+    if (this.selectedModel.startsWith('gpt-5')) {
       this.temperature = 1
       this.temperature_slider_disabled = true;
+      //  this.max_tokens_max = 100000
     } else {
       this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
       this.temperature_slider_disabled = false;
+      // this.max_tokens_max = 9999
+      // if (this.max_tokens > 9999 ) {
+      //   this.max_tokens = this.maxTokensDefaultValue;
+      // }
     }
-    
+
     // this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
-   
+
 
     this.topK = this.selectedNamespaceClone.preview_settings.top_k;
     // this.selectedNamespace.preview_settings.top_k = this.topkDefaultValue;
@@ -579,23 +931,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
     this.context = this.selectedNamespaceClone.preview_settings.context;
 
-    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt
+    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt;
 
-    this.citations = this.selectedNamespaceClone.preview_settings.citations
+    this.chunkOnly = this.selectedNamespaceClone.preview_settings.chunks_only;
+
+    this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
+
+    this.citations = this.selectedNamespaceClone.preview_settings.citations;
     this.logger.log('Reset this.citations ', this.citations)
     if (this.citations) {
       this.max_tokens_min = 1024;
     } else {
       this.max_tokens_min = 10;
     }
-    // this.selectedNamespace.preview_settings.context = this.contextDefaultValue;
-
-    // this.aiSettingsObject[0].model = this.modelDefaultValue;
-    // this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
-    // this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
-    // this.aiSettingsObject[0].top_k = this.topkDefaultValue;
-    // this.aiSettingsObject[0].advancedPrompt = this.advancedPromptDefaultValue;
-    // this.aiSettingsObject[0].citations = this.citationsDefaultValue;
+  
 
     this.aiSettingsObject[0].model = this.selectedModel;
     this.aiSettingsObject[0].maxTokens = this.max_tokens
@@ -604,12 +953,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiSettingsObject[0].context = this.context
     this.aiSettingsObject[0].advancedPrompt = this.advancedPrompt;
     this.aiSettingsObject[0].citations = this.citations;
+    this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
+    this.aiSettingsObject[0].reRanking = this.reRanking;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
 
   resetToDefault() {
-    this.selectedModel = this.model_list[3].value;
+    // this.selectedModel = this.model_list[3].value;
+    this.selectedModel = this.modelDefaultValue
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
@@ -636,11 +988,19 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.citations = this.citationsDefaultValue
     this.selectedNamespace.preview_settings.citations = this.citationsDefaultValue;
 
+    this.chunkOnly = this.chunksOnlyDefaultValue
+    this.selectedNamespace.preview_settings.chunks_only = this.chunksOnlyDefaultValue
+    
+    this.reRanking = this.reRankigDefaultValue
+    this.selectedNamespace.preview_settings.reranking = this.reRankigDefaultValue
+
     this.aiSettingsObject[0].model = this.modelDefaultValue;
     this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
     this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
     this.aiSettingsObject[0].top_k = this.topkDefaultValue;
     this.aiSettingsObject[0].context = this.contextDefaultValue;
+    this.aiSettingsObject[0].chunkOnly = this.chunksOnlyDefaultValue;
+    this.aiSettingsObject[0].reRanking = this.reRankigDefaultValue;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -660,7 +1020,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
           this.aiModel.close()
           this.maxTokens.close()
           this.aiModeltemperature.close()
-           this.aiSearchType.close();
+          this.aiSearchType.close();
           this.chunkLimit.close()
           this.systemContext.close()
           this.advancedContext.close()
@@ -698,7 +1058,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiModel.close()
     this.maxTokens.close()
     this.aiModeltemperature.close()
-     this.aiSearchType.close()
+    this.aiSearchType.close()
     this.chunkLimit.close()
     this.systemContext.close()
     this.advancedContext.close()
@@ -743,7 +1103,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   searchTypePopoverIsOpened() {
-     this.logger.log('[MODAL PREVIEW SETTINGS] searchTypePopoverIsOpened')
+    this.logger.log('[MODAL PREVIEW SETTINGS] searchTypePopoverIsOpened')
     this.logger.log("[MODAL PREVIEW SETTINGS] searchTypePopoverIsOpened sat popover", this.aiSearchType)
   }
 

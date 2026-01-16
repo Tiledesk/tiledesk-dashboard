@@ -2227,6 +2227,8 @@
         "GetContentsSourcesDesc1": "Använd det här alternativet för att få korrekta dokumentkällor som används för att generera svaret.",
         "GetContentsSourcesDesc2": "Tänk på att detta förbrukar fler tokens än vanlig KB-hämtning.",
         "GetContentsSourcesDesc3": "Max-tokens kvot kommer att justeras automatiskt för att få citat om det behövs.",
+        "ChunksOnly": "Endast chunks",
+        "ReRanking": "Omrankning",
         "Hybrid": "Hybrid",
         "HybridSearch": "Hybridsökning",
         "FullText":"Fulltext",
@@ -2547,7 +2549,13 @@
         "Failed": "Misslyckades!",
         "Save": "Spara",
         "Clear": "Klar",
-        "Delete": "Radera"
+        "Delete": "Radera",
+        "Transport": "Transport",
+        "AddMCPServer": "Lägg till MCP Server",
+        "EditMCPServer": "Redigera MCP Server",
+        "TotalMCPServers": "Totalt MCP Servrar",
+        "SearchByNameURLOrType": "Sök efter namn, URL eller typ",
+        "NoMCPServersFound": "Inga MCP-servrar hittades"
     },
     "ViewTeammates": "Se lagkamrater",
     "AddNewTeammate": "Lägg till ny lagkamrat",

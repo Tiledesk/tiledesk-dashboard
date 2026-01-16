@@ -2211,6 +2211,8 @@
          "GetContentsSourcesDesc1":"Cevabı oluşturmak için kullanılan belgelerin doğru kaynaklarını almak için bu seçeneği kullanın.",
          "GetContentsSourcesDesc2":"Bunun normal KB alımından daha fazla token tüketeceğini unutmayın.",
          "GetContentsSourcesDesc3":"Gerektiğinde alıntı alabilmek için maksimum token kotası otomatik olarak ayarlanacaktır.",
+         "ChunksOnly": "Sadece parçalar",
+         "ReRanking": "Yeniden sıralama",
          "Hybrid": "Hibrit",
          "HybridSearch": "Hibrit Arama",
          "FullText":"Tam metin",
@@ -2531,7 +2533,13 @@
         "Failed": "Arızalı!",
         "Save": "Kaydetmek",
         "Clear": "Temizlemek",
-        "Delete": "Silmek"
+        "Delete": "Silmek",
+        "Transport": "Taşıma",
+        "AddMCPServer": "MCP Sunucusu Ekle",
+        "EditMCPServer": "MCP Sunucusunu Düzenle",
+        "TotalMCPServers": "Toplam MCP Sunucuları",
+        "SearchByNameURLOrType": "Ad, URL veya türe göre ara",
+        "NoMCPServersFound": "MCP sunucusu bulunamadı"
     },
     "ViewTeammates": "Takım arkadaşlarını görüntüle",
     "AddNewTeammate": "Yeni takım arkadaşı ekle",

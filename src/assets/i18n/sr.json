@@ -2211,6 +2211,8 @@
         "GetContentsSourcesDesc1": "Користите ову опцију да бисте добили тачне изворе докумената који се користе за генерисање одговора.",
         "GetContentsSourcesDesc2":"Имајте на уму да ово троши више токена од редовног преузимања КБ-а.",
         "GetContentsSourcesDesc3":"Максимална квота токена ће се аутоматски прилагодити да би се добили цитати ако је потребно.",
+        "ChunksOnly": "Само делови",
+        "ReRanking": "Преуређивање",
         "Hybrid": "Хибрид",
         "HybridSearch": "Хибридна претрага",
         "FullText":"Пун текст",
@@ -2531,7 +2533,13 @@
         "Failed": "Није успео!",
         "Save": "сачувати",
         "Clear": "Јасно",
-        "Delete": "Избриши"
+        "Delete": "Избриши",
+        "Transport": "Транспорт",
+        "AddMCPServer": "Додај MCP Сервер",
+        "EditMCPServer": "Уреди MCP Сервер",
+        "TotalMCPServers": "Укупно MCP Сервера",
+        "SearchByNameURLOrType": "Претрага по имену, URL или типу",
+        "NoMCPServersFound": "MCP сервери нису пронађени"
     },
     "ViewTeammates": "Погледајте саиграче",
     "AddNewTeammate": "Додајте новог саиграча",
