@@ -860,6 +860,8 @@
     "ToDeleteTheKBaseTypeItsId": "Bilik Bazasını silmək üçün onun ID-ni yazın",
     "NoDepartmentAssigned": "Heç bir şöbə təyin edilməyib",
     "LearnHowToCreateWhatsAppBroadcasts": "WhatsApp Yayımı yaratmağı öyrənin",
+    "NoGroupsFoundMatchingYourSearchCriteria": "Axtarış kriteriyalarınıza uyğun qruplar tapılmadı",
+    "ConversationLogs": "Söhbətin jurnalları",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -860,6 +860,8 @@
     "ToDeleteTheKBaseTypeItsId": "Щоб видалити базу знань, введіть її ID",
      "NoDepartmentAssigned": "Відділ не призначено",
     "LearnHowToCreateWhatsAppBroadcasts": "Дізнайтеся, як створювати розсилки в WhatsApp",
+    "NoGroupsFoundMatchingYourSearchCriteria": "Групи, що відповідають вашим критеріям пошуку, не знайдено",
+    "ConversationLogs": "Журнали розмови",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

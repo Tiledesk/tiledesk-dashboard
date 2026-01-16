@@ -255,7 +255,7 @@
   
                 <ng-container  *ngIf="!showSpinner">
                   <div *ngIf="filteredGroups?.length === 0 && searchTerm && searchTerm.trim().length > 0" class="no-results">
-                    No groups found matching your search criteria.
+                    {{"NoGroupsFoundMatchingYourSearchCriteria" | translate}}.
                   </div>
                 </ng-container>
 

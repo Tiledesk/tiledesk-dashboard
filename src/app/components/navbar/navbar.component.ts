@@ -486,7 +486,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentIcon = this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.indexOf('/logs/request/') !== -1) {
-      this.currentTitle = 'Logs della conversazione';
+      this.currentTitle = 'ConversationLogs';
       this.currentIcon = this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.indexOf('/new-broadcast') !== -1 ) {

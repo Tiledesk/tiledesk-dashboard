@@ -16,6 +16,7 @@ input[type="text"] {
     border-radius: 5px !important;
     background-color: #fff !important;
     background-image: none !important;
+    color: #3c4858 !important;
     // border: solid 1px #ddd;
 }
 
@@ -36,7 +37,7 @@ input[type="email"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    color: #000000de !important;
+    color: #3c4858 !important;
     font-weight: 300; 
 }
 
@@ -210,16 +211,19 @@ input:-webkit-autofill:active {
     position: relative;
     margin-bottom: 16px;
     flex-direction: row;
-    justify-content: center;
+    // justify-content: center;
+    justify-content: flex-start;
 }
 
 .lead-applied-filter-title {
     color: #353f45;
     padding: 6px 12px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     border-radius: 10px;
     font-weight: 500;
     height: 32px;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .lead-applied-filter {
@@ -227,11 +231,12 @@ input:-webkit-autofill:active {
     background-color: #e8f0fe;
     color: #1a73e8;
     padding: 6px 12px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     border-radius: 10px;
     font-weight: 500;
     height: 32px;
     margin-right: 12px;
+    font-size: 14px;
 }
 
 .lead-filter-icon-and-text-wpr {
@@ -295,6 +300,8 @@ input:-webkit-autofill:active {
     background: transparent;
     height: 50px;
     padding: 5px 10px;
+    color: #3c4858;
+    font-weight: 300;
 }
 
 .fa-search {
@@ -355,7 +362,7 @@ input:-webkit-autofill:active {
 }
 
 .fa-clear-search-btn {
-    margin-top: 5px;
+    // margin-top: 5px;
     cursor: pointer;
     -webkit-border-radius: 50%;
     border-radius: 50%;

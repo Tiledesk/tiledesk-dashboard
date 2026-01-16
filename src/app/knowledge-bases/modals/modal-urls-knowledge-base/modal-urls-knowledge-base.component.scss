@@ -145,10 +145,12 @@
         border-radius: 6px;
         border: 1px solid #ccc;
         padding: 0px 10px;
-        color: #333;
+        color: #3c4858 !important;
         line-height: 35px;
-        font-weight: 400;
+        // font-weight: 300;
         margin-bottom: 10px;
+        color: #3c4858;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {
@@ -167,13 +169,13 @@
         border-radius: 6px;
         border: 1px solid #ccc;
         padding: 10px 10px;
-        color: #333;
+        color: #3c4858 !important;
         // line-height: 35px;
-        // font-weight: 400;
+        font-weight: 300;
         line-height: inherit;
         white-space: pre;
         resize: block;
-        font-size: 12px;
+        font-size: 14px;
 
         &.invalid {
             border: 2px solid red !important;

@@ -146,7 +146,7 @@
                 <tr *ngIf="usersActivities && usersActivities?.length === 0">
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
 
-                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                    <p style="font-size:14px; color:#7695a5; font-weight: 400">
                       {{ 'NoActivities' | translate }}
                     </p>
                   </td>
@@ -192,8 +192,8 @@
                     <!-- ---------------------------------------------------------------------------- -->
                     <span *ngIf="objectKeys(activity?.actionObj)[0] === 'attributes'; else attributes_is_not_first_key">
 
-                      <!-- == EN -->
-                      <p *ngIf="browser_lang === 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                      <!-- == EN --> <!-- {{ browser_lang }} -->
+                      <p  style="margin-bottom:0px; font-weight:500; font-size:13px ">
                         <span class="link-to-user-profile"
                           (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
                           [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
@@ -209,7 +209,7 @@
                       </p>
 
                       <!-- != EN -->
-                      <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                      <!-- <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
                         L'attributo
                         <span *ngFor="let key of objectKeys(activity?.actionObj?.attributes)">
                           <code>{{key}}</code>
@@ -225,12 +225,8 @@
                           è stato aggiornato con <var>valore:</var>
                           <code>{{activity?.actionObj?.attributes[key]}}</code>
                         </span>
-                      </p>
+                      </p> -->
 
-
-                      <!-- first key in actionObj: {{ objectKeys(activity?.actionObj)[0] }} <br>
-                      firstname: {{ activity.target.object.id_user.firstname }} <br>
-                      lastname: {{ activity?.target?.object?.id_user?.lastname }} -->
                     </span>
                     <!-- {{ __key[0]}} -->
                     <ng-template #attributes_is_not_first_key>
@@ -304,10 +300,13 @@
                           </span>
                           's
 
-                          <span *ngFor="let _key of objectKeys(activity?.actionObj)">
-                            <code>{{_key}}</code>
-                            has been updated with <var>value: {{ activity?.actionObj[_key]}}</var>
-                          </span>
+                          <ng-container *ngFor="let _key of objectKeys(activity?.actionObj); let isLast = last; let isFirst = first">
+                            <span *ngIf="!(activity?.actionObj[_key] === -1 && _key === 'max_assigned_chat')">
+                              <span *ngIf="!isFirst">, </span><code>{{_key}}</code>
+                              has been updated with <var>value: {{ activity?.actionObj[_key]}}</var>
+                            <!-- ->  {{ activity?.actionObj[_key]}} -->
+                            </span>
+                          </ng-container>
                         </p>
 
                         <!-- != EN -->

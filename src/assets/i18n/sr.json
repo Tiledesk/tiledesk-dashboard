@@ -860,6 +860,8 @@
     "ToDeleteTheKBaseTypeItsId": "Да бисте обрисали базу знања, упишите њен ID",
     "NoDepartmentAssigned": "Није додељен ниједан одељак",
     "LearnHowToCreateWhatsAppBroadcasts": "Научите како да креирате WhatsApp емисије",
+    "NoGroupsFoundMatchingYourSearchCriteria": "Није пронађена група која одговара вашим критеријумима претраге",
+    "ConversationLogs": "Дневници разговора",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

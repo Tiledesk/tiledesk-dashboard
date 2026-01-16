@@ -457,7 +457,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           if (res.activities) {
             this.usersActivities = res.activities;
             this.usersActivities.forEach((activity: any) => {
-              this.logger.log('[ActivitiesComponent] - getActivities RESPONSE - activity ', activity);
+              console.log('[ActivitiesComponent] - getActivities RESPONSE - activity ', activity);
 
               if (activity && activity.verb && activity.verb === 'PROJECT_USER_UPDATE') {
                 if (activity.actor &&
