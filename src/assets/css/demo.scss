@@ -3330,6 +3330,11 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   color: var(--text-color) !important;
 }
 
+// Select tag in adavanced search (history and NORT)
+.ng-select.advanced-search-select-tag .ng-select-container .ng-value-container .ng-input {
+  top: 10px !important;  
+}
+
 // ----------------------
 // Shared close button
 // ----------------------

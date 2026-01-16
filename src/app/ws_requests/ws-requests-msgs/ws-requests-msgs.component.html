@@ -2126,7 +2126,7 @@
                         <!-- ----------------------------------------------------------------------------- -->
                         <!-- Convert offline / online -->
                         <!-- ----------------------------------------------------------------------------- -->
-                        <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
+                        <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21" class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
                           <div class="col-sm-12">
                             <div class="followers-container"
                               [ngClass]="{'followers-container-chat':CHAT_PANEL_MODE === true}">

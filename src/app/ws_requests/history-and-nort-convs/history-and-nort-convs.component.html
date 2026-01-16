@@ -282,6 +282,7 @@
                     <!-- placeholder="{{'Tags.SelectTag' | translate}}"  -->
                     <div class="select-tag-wpr" style="font-size: 14px;"> 
                       <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
+                        class="advanced-search-select-tag"
                         placeholder="{{'SelectOrTypeTheTagToSearch' | translate }}"
                         [(ngModel)]="selecteTagName"
                         (change)="onSelectedTagName()" 
