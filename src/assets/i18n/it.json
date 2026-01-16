@@ -859,6 +859,8 @@
     "NoDepartmentAssigned": "Nessun dipartimento assegnato",
     "None": "Nessuno",
     "StartASearchToSeeConversations": "Avvia una ricerca per vedere le conversazioni",
+    "SelectTheDateRangeToSearch": "Seleziona un intervallo di date per procedere con la ricerca",
+    "PleaseSelectBothDates": "Seleziona entrambe le date",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

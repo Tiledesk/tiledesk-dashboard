@@ -860,6 +860,8 @@
     "NoDepartmentAssigned": "Hech bir bo'lim tayinlanmagan",
     "None": "Hech biri",
     "StartASearchToSeeConversations": "Suhbatlarni ko'rish uchun qidiruvni boshlang",
+    "SelectTheDateRangeToSearch": "Qidiruvni davom ettirish uchun sana oralig'ini tanlang",
+    "PleaseSelectBothDates": "Iltimos, ikkala sanani ham tanlang",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

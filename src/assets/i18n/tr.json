@@ -861,6 +861,8 @@
     "NoDepartmentAssigned": "Departman atanmamış",
     "None": "Hiçbiri",
     "StartASearchToSeeConversations": "Görüşmeleri görmek için arama başlatın",
+    "SelectTheDateRangeToSearch": "Aramaya devam etmek için bir tarih aralığı seçin",
+    "PleaseSelectBothDates": "Lütfen her iki tarihi de seçin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

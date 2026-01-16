@@ -24,9 +24,11 @@
         <div class="filter-bar">
 
           <!-- ---------------------------------------------------------------- -->
-          <!-- Filters - left section -->
+          <!-- Filters - left section (hidden but maintains layout spacing) -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-left" *ngIf="!showAdvancedSearchOption">
+          <div class="filters-on-left-spacer" style="flex: 0 0 180px;"></div>
+          
+          <div class="filters-on-left" *ngIf="false" style="display: none;">
 
             <span *ngIf="!IS_HERE_FOR_HISTORY" style="padding-right: 16px; font-weight: 400;">
               {{'FilterFor' | translate}}
@@ -109,19 +111,24 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-center" [ngClass]="{'filters-on-center-then-on-left' : showAdvancedSearchOption}">
-            <div class="input-group full-text-search"
-              [ngClass]="{'full-text-search-full-width' : showAdvancedSearchOption}">
+          <div class="filters-on-center">
+            <div class="input-group full-text-search">
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
-                <button class="custom-input-group---btn tool_tip" type="submit">
+                <button class="custom-input-group---btn" type="submit"
+                  [disabled]="!areDatesComplete"
+                  [matTooltip]="!areDatesComplete ? ('SelectTheDateRangeToSearch' | translate) : ''"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltipPosition="above">
                   <i class="fa fa-search fa-search-btn" 
                   (click)="search('fiter-central-section')" 
-                  style="color:grey; font-size: 18px;"></i>
-                  <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                  [style.color]="areDatesComplete ? 'grey' : '#ccc'"
+                  [style.cursor]="areDatesComplete ? 'pointer' : 'not-allowed'"
+                  style="font-size: 18px;"></i>
+                  <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'Search' | translate}}
                     <i></i>
-                  </span>
+                  </span> -->
                 </button>
               </span>
               <!-- {{ 'HistoryPage.ContainsTheWords' | translate }} -->
@@ -132,7 +139,7 @@
                 (keypress)="searchOnEnterPressed($event)">
 
               <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-              <span *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="input-group-btn"
+              <span *ngIf="fullText?.length > 0" class="input-group-btn"
                 style="padding-right: 2px;">
                 <button class="custom-input-group---btn tool_tip" type="button">
                   <i class="fa fa-times fa-clear-search-btn" (click)="clearFullText()"
@@ -145,17 +152,18 @@
                 </button>
               </span>
 
-              <!-- // OPEN ADVANCED OPTION BTN -->
+              <!-- // TOGGLE ADVANCED OPTION BTN -->
               <span class="input-group-btn" style="padding-left: 2px;">
                 <button class="custom-input-group---btn tool_tip" type="button">
-                  <i class="fa fa-caret-down fa-advanced-option-btn" (click)="toggle()"
-                    style="color:grey; font-size: 18px;"></i>
+                  <i class="fa" 
+                    [ngClass]="showAdvancedSearchOption ? 'fa-caret-up' : 'fa-caret-down'"
+                    (click)="toggle()"
+                    style="color:grey; font-size: 18px; vertical-align: middle;"></i>
 
                   <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'AdvancedSearch' | translate }}
                     <i></i>
                   </span>
-
                 </button>
               </span>
             </div><!-- /input-group -->
@@ -179,8 +187,9 @@
         </div>
 
 
-        <div class="request_filter" style="margin-top: -15px; margin-right: 180px;">
-          <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
+        <div class="request_filter">
+          <div class="filter-bar-advanced-options-wrapper" style="display: flex; justify-content: center;">
+            <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
             <div style="margin-top: 6px;">
               <div class="row">
 
@@ -246,7 +255,9 @@
                     
                     <p>Selected range: {{range?.value | json}}</p> -->
 
-                    <mat-form-field class="custom-date-range-picker" appearance="standard">
+                    <mat-form-field class="custom-date-range-picker" 
+                      [ngClass]="{'date-range-error': !areDatesComplete}"
+                      appearance="standard">
                       <!-- <mat-label>Enter a date range</mat-label> -->
                       <!-- (dateInput)="addEventStartDate('input', $event)" -->
                       <!-- (dateInput)="addEventEndDate('input', $event)" -->
@@ -265,6 +276,11 @@
 
                       <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
+                    <!-- Info message when dates are not complete -->
+                    <div *ngIf="!areDatesComplete" class="date-validation-message" style="margin-top: -8px; color: #f44336; font-size: 12px;font-weight: 400;">
+                      <i class="material-icons" style="vertical-align: middle; font-size: 16px;position: relative;top: -1px;">info</i>
+                      {{ 'PleaseSelectBothDates' | translate }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -483,7 +499,7 @@
                       [searchable]="false" 
                       bindValue="id" 
                       placeholder="Select status"
-                      [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV">
+                      [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV || !areDatesComplete">
                     </ng-select>
                   </div>
                 </div>
@@ -533,7 +549,12 @@
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
                   <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search('template')">
+                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" 
+                    [disabled]="!areDatesComplete"
+                    [matTooltip]="!areDatesComplete ? ('SelectTheDateRangeToSearch' | translate) : ''"
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltipPosition="above"
+                    (click)="search('template')">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     {{ 'Search' | translate}}
                   </button>
@@ -549,6 +570,17 @@
               </div>
             </div>
           </div>
+          </div>
+        </div>
+
+        <div class="msg-alert-for-search" *ngIf="!areDatesComplete">
+          <span>
+            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">info</i>
+          </span>
+          <span style="vertical-align: middle;">
+            {{'SelectTheDateRangeToSearch' | translate}}
+          </span>
+          
         </div>
       </div>
 

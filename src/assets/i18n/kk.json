@@ -859,6 +859,8 @@
     "NoDepartmentAssigned": "Ешбір бөлім тағайындалмаған",
     "None": "Ешқайсысы",
     "StartASearchToSeeConversations": "Өтініштерді көру үшін іздеуді бастаңыз",
+    "SelectTheDateRangeToSearch": "Іздеуді жалғастыру үшін күн аралығын таңдаңыз",
+    "PleaseSelectBothDates": "Екі күнді де таңдаңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

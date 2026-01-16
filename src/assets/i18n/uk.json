@@ -860,6 +860,8 @@
     "NoDepartmentAssigned": "Відділ не призначено",
     "None": "Нічого",
     "StartASearchToSeeConversations": "Почніть пошук, щоб побачити розмови",
+    "SelectTheDateRangeToSearch": "Виберіть діапазон дат для продовження пошуку",
+    "PleaseSelectBothDates": "Будь ласка, виберіть обидві дати",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

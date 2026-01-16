@@ -860,6 +860,8 @@
     "NoDepartmentAssigned": "Није додељен ниједан одељак",
     "None": "Ништа",
     "StartASearchToSeeConversations": "Започните претрагу да видите разговоре",
+    "SelectTheDateRangeToSearch": "Изаберите опсег датума да наставите са претрагом",
+    "PleaseSelectBothDates": "Молимо изаберите оба датума",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -860,6 +860,8 @@
     "NoDepartmentAssigned": "Отдел не назначен",
     "None": "Ничего",
     "StartASearchToSeeConversations": "Начните поиск, чтобы увидеть разговоры",
+    "SelectTheDateRangeToSearch": "Выберите диапазон дат для продолжения поиска",
+    "PleaseSelectBothDates": "Пожалуйста, выберите обе даты",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

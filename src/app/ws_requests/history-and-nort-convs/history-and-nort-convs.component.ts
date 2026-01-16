@@ -117,6 +117,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   endDateFormatted: string;
   endDateFormatted_temp: string;
 
+  // Check if both dates are filled for search validation
+  get areDatesComplete(): boolean {
+    return !!(this.startDateDefaultValue && this.endDateDefaultValue);
+  }
+
   deptName: string;
   fullText: string;
   fullText_applied_filter: string
@@ -936,7 +941,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
-      this.showAdvancedSearchOption = false;
+      this.showAdvancedSearchOption = true;
       this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
@@ -948,7 +953,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
-      this.showAdvancedSearchOption = false;
+      this.showAdvancedSearchOption = true;
       this.roleService.checkRoleForCurrentProject('history')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
@@ -2614,6 +2619,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search(calledby) {
     console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH calledby ', calledby)
+    
+    // Validate that both start and end dates are provided
+    if (!this.startDateDefaultValue || !this.endDateDefaultValue) {
+      this.notify.showWidgetStyleUpdateNotification( this.translate.instant('SelectTheDateRangeToSearch'),3, 'warning' );
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH BLOCKED: Missing start or end date');
+      return;
+    }
+    
     this.logger.log('HERE IN SEARCH duration operator ', this.duration_op)
     this.logger.log('HERE IN SEARCH duration ', this.duration)
     this.logger.log('HERE IN SEARCH duration called_phone ', this.called_phone)
