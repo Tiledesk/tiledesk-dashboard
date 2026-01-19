@@ -26,7 +26,7 @@
                       <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="endDate" placeholder="{{ 'To' | translate }}"  [disabled]="!startDate">
                       </my-date-picker>
                     </div> -->
-                    <mat-form-field class="activity-date-range-picker" appearance="standard" style="margin-left: 14px;">
+                    <mat-form-field class="activity-date-range-picker" appearance="standard">
                       <!-- <mat-label>Enter a date range</mat-label> -->
                       <mat-date-range-input [rangePicker]="picker">
                         <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"

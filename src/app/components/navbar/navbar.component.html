@@ -32,12 +32,7 @@
 
 
       <ul class="navbar-nav ms-auto">
-        <!-- <li>
-                <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="material-icons">dashboard</i>
-                    <p class="d-lg-none d-md-none">Dashboard</p>
-                </a>
-            </li> -->
+       
 
         <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
         <!-- <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">
@@ -566,106 +561,12 @@
             <i class="material-icons">close</i>
           </a>
         </li>
-
-
-
-        <!--  ------------------------------------------------ -->
-        <!--  NOTIFICATION -->
-        <!--  ------------------------------------------------ -->
-        <!-- <li *ngIf="project" class="dropdown" 
-          matTooltipClass="custom-mat-tooltip-navbar"
-          matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}"
-          #tooltip="matTooltip" matTooltipPosition='left' 
-          matTooltipHideDelay="100">
-          <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="material-icons">notifications</i>
-
-            <!- - SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 - ->
-            <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
-              <span class="notification">
-                {{ unservedRequestCount + currentUserRequestCount }}
-              </span>
-            </span>
-          </a>
-        </li> -->
-
-        <!--  ------------------------------------------------ -->
-        <!--  Dashboard language -->
-        <!--  ------------------------------------------------ -->
-        <!-- <li *ngIf="project">
-          <a routerLink="project/{{ project._id }}/user-profile" fragment="language" style="cursor: pointer;">
-            <span class="expired__Tooltip">
-            <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
-           
-            <span class="expired__Tooltiptext"  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-              
-              {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
-            </span>
-          </span>
-          </a>
-        </li> -->
-
-        <!--  ------------------------------------------------ -->
-        <!--  USER -->
-        <!--  ------------------------------------------------ -->
-        <!-- <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="material-icons">person</i>
-            <span class="tooltipx">
-              <span *ngIf="user?.emailverified == false" class="notification"
-                style="font-weight: 200; font-size:12px; right:-1px; top:-24px">
-                !
-                <span class="tooltiptext" style="min-height:44px; line-height: 1.5">
-                  {{"NavBar.PendingVerification" | translate }}
-                </span>
-              </span>
-            </span>
-          </a>
-
-          <ul *ngIf="user" class="dropdown-menu">
-            <div class="card card-profile">
-              <div class="card-avatar user-profile-avatar">
-                <a>
-
-                  <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-                    class="user-img-in-dropdown" [src]="getUserProfileImage()" />
-
-                  <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
-                    src="assets/img/no_image_user.png" />
-                </a>
-              </div>
-              <div class="content">
-                <h4 class="card-title user-profile-fullname">
-                  <strong> {{ user?.firstname }} {{ user?.lastname }} </strong>
-                </h4>
-                <h4 class="card-title user-profile-email">
-                  {{ user?.email }}
-                </h4>
-                <h6 class="card-title user-profile-role">
-                  {{ USER_ROLE | translate}}
-                </h6>
-
-
-                <button *ngIf="project" class="btn btn-primary view-user-profile-btn"
-                  routerLink="project/{{ project._id }}/user-profile">
-                  {{ 'NavBar.UserProfile' | translate }}
-                </button>
-              </div>
-
-              <li class="divider"></li>
-              <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                {{ 'NavBar.LogOut' | translate }}
-              </button>
-            </div>
-
-          </ul>
-        </li> -->
       </ul>
 
     </div>
   </div>
 </nav>
-<!-- </div> -->
+
 
 <!-- ------------============= PENDING EMAIL VERIFICATION ALERT =============------------ -->
 <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">

@@ -579,6 +579,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'Chat';
       this.currentIcon = null;
     }
+    else if (cleanUrl.indexOf('/maintenance') !== -1) {
+      this.currentTitle = null;
+      this.currentIcon = null;
+    }
 
 
     else if (this.isSettingsSidebarRoute(cleanUrl)) {
