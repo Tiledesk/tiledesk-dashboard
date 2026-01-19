@@ -414,8 +414,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     this.askAI(this.body, startTime)
-
-   
   }
 
   askAI(body, startTime) {
