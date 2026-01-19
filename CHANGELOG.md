@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.162-AR
+- Improves the Re-index feature
+
 ### 2.7.161-AR
 - Adds maintenance component
 
