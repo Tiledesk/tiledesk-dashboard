@@ -32,6 +32,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
+    chunkOnly: null,
+    reRanking: null,
   }]
   panelOpenState = false; 
   selectedNamespace: any;
@@ -69,7 +71,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   storedQuestionNoDoubleQuote: string;
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number;
-  public chunkOnly: boolean
+  public chunkOnly: boolean;
+  public reRanking: boolean;
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
@@ -100,7 +103,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.context = this.selectedNamespace.preview_settings.context;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
-      
       if (!this.selectedNamespace.preview_settings.chunks_only) {
         this.chunkOnly = false
         this.selectedNamespace.preview_settings.chunks_only = this.chunkOnly
@@ -108,6 +110,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
       }
+
+      if (!this.selectedNamespace.preview_settings.reranking) {
+        this.reRanking = false
+        this.selectedNamespace.preview_settings.reranking = this.reRanking
+      } else {
+        this.reRanking = this.selectedNamespace.preview_settings.reranking
+        this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
+      }
+      
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
         this.advancedPrompt = false
@@ -320,13 +331,24 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
         if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === true) {
           this.chunkOnly = editedAiSettings[0]['chunkOnly']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
         } else if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === false) {
           this.chunkOnly = editedAiSettings[0]['chunkOnly']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 2', this.chunkOnly)
         } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
-          this.chunkOnly = this.selectedNamespace.preview_settings.chunkOnly
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
+          this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
+        } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
+        } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
+          this.reRanking = this.selectedNamespace.preview_settings.reranking
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -376,6 +398,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
+      "reranking": this.reRanking,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
@@ -406,13 +429,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
-      this.contentChunks = this.qa?.content_chunks
-      // this.contentChunks =   [
-      // "This site uses cookies from Google to deliver its services and to analyze traffic. More details Ok, Got it Skip to main content Material Components CDK Guides 14.2.7 arrow_drop_down format_color_fill GitHub Components CDK Guides menu Expansion Panel Autocomplete Badge Bottom Sheet Button Button toggle Card Checkbox Chips Core Datepicker Dialog Divider Expansion Panel Form field Grid list Icon Input List Menu Paginator Progress bar Progress spinner Radio button Ripples Select Sidenav Slide toggle Slider Snackbar Sort header Stepper Table Tabs Toolbar Tooltip Tree overview (/components/expansion/overview) api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link",
-      // "> This is the expansion title </ mat-expansion-panel-header >  < ng-template  matExpansionPanelContent > Some deferred content </ ng-template >  </ mat-expansion-panel >    link Accessibility  MatExpansionPanel imitates the experience of the native <details> and <summary> elements. The expansion panel header applies role=\"button\" and the aria-controls attribute with the content element's ID.  Because expansion panel headers are buttons, avoid adding interactive controls as children of <mat-expansion-panel-header> , including buttons and anchors.  Overview Content Expansion-panel content (/components/expansion/overview#expansion-panel-content) Header (/components/expansion/overview#header) Action bar (/components/expansion/overview#action-bar) Disabling a panel (/components/expansion/overview#disabling-a-panel) Accordion (/components/expansion/overview#accordion) Lazy rendering (/components/expansion/overview#lazy-rendering) Accessibility (/components/expansion/overview#accessibility)",
-      // "api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link Expansion-panel content   link Header  The <mat-expansion-panel-header> shows a summary of the panel content and acts as the control for expanding and collapsing. This header may optionally contain an <mat-panel-title> and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  <",
-      // "and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  < p > This is the primary content of the panel. </ p >  </ mat-expansion-panel >  By default, the expansion-panel header includes a toggle icon at the end of the header to indicate the expansion state. This icon can be hidden via the hideToggle property.  content_copy < mat-expansion-panel  hideToggle >   link Action bar  Actions may optionally be included at the bottom of the panel, visible only when the expansion is in its expanded state.  content_copy < mat-action-row >  < button  mat-button  color = \"primary\" ( click )= \"nextStep()\" > Next </ button >  </ mat-action-row >   link Disabling a panel"
-      // ]
+      // this.contentChunks = this.qa?.content_chunks
+      if (this.qa?.content_chunks) {
+        this.contentChunks = this.qa?.content_chunks 
+      } else if (this.qa?.chunks)  {
+        this.contentChunks = this.qa?.chunks
+      }
+   
       this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {

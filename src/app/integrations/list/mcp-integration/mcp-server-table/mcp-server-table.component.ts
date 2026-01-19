@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 export interface McpServer {
@@ -13,7 +13,7 @@ export interface McpServer {
   templateUrl: './mcp-server-table.component.html',
   styleUrls: ['./mcp-server-table.component.scss']
 })
-export class McpServerTableComponent implements OnInit {
+export class McpServerTableComponent implements OnInit, OnChanges {
   @Input() mcpServers: McpServer[] = [];
   @Output() onSelectServer = new EventEmitter<McpServer>();
   @Output() onDeleteServer = new EventEmitter<McpServer>();

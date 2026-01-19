@@ -830,10 +830,13 @@ export const ANTHROPIC_MODEL: Array<{ name: string, value: string, description:s
   { name: "Claude-3.7 Sonnet",                value: "claude-3-7-sonnet-20250219",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Claude Sonnet 4",                  value: "claude-sonnet-4-20250514",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Claude Opus 4",                    value: "claude-opus-4-20250514",            description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  
+  { name: "Claude-4.5 Sonnet",                value: "claude-sonnet-4-5",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude-3.5 Sonnet",                value: "claude-3-5-sonnet-20240620",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude 3.5 Haiku",                 value: "claude-3-5-haiku-latest",           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Claude 4.5 Haiku",                 value: "claude-haiku-4-5",                  description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude 3.7 Sonnet",                value: "claude-3-7-sonnet-latest",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Claude Opus 4.5",                  value: "claude-opus-4-5",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Claude Opus 4.1",                  value: "claude-opus-4-1",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude Opus 4",                    value: "claude-opus-4-0",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude Sonnet 4",                  value: "claude-sonnet-4-0",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
 ]
@@ -872,6 +875,8 @@ export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:st
 ]
 
 export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string}> = [
+  { name: "Gpt-5.2",              value: "gpt-5.2",               description: "TYPE_GPT_MODEL.deepseek-chat.description",       status: "active"    },  
+  { name: "Gpt-5.1",              value: "gpt-5.1",               description: "TYPE_GPT_MODEL.deepseek-chat.description",       status: "active"    },
   { name: "Gpt-5",                value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
   { name: "Gpt-5-mini",           value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
   { name: "Gpt-5-nano",           value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },

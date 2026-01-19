@@ -21,10 +21,15 @@ export class VLLMComponent implements OnInit {
      private logger: LoggerService
    ) { }
  
-   ngOnInit(): void {
-     this.logger.log("[INT-vLLM] integration ", this.integration)
-     this.translateparams = { intname: 'vLLM' };
-   }
+  ngOnInit(): void {
+    this.logger.log("[INT-vLLM] integration ", this.integration)
+    this.translateparams = { intname: 'vLLM' };
+    
+    // Initialize models array if not set
+    if (!this.integration.value.models) {
+      this.integration.value.models = [];
+    }
+  }
  
    
    addModel(modelName: string): void {
