@@ -167,7 +167,7 @@
             <div *ngIf="request?.status === 150" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                <img style="width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
+                <img style="width: 30px; min-width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
                   matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}"
                   #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
@@ -268,7 +268,7 @@
            <div *ngIf="request?.status === 100 && !request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
+                <img style="width: 30px;min-width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
                   matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
                   #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 

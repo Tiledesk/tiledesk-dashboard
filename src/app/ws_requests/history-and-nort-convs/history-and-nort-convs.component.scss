@@ -1130,6 +1130,34 @@ p.member:hover {
   color: #f44336;
 }
 
+.abandoned_chat-badge-wpr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  transform: translate(50%, -50%);
+}
+
+.abandoned_chat-badge-wpr > span > .material-icons {
+ font-size: 14px !important;
+  background: rgb(229, 45, 42);// #ffffff;
+  // border-radius: 50%;
+  padding: 1px;
+  color:  #ffffff; // rgb(229, 45, 42);
+  border-radius: 2px;
+  // border: 1px solid;
+}
+
+.avatar-when-not-has-image {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  border-radius: 50%;
+  line-height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
 /* No more used 
 /* ********************************** */
 .no-agent>span>svg {
