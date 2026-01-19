@@ -3234,7 +3234,7 @@ _presentDialogImportContents() {
       "source": kb.source,
       "type": kb.type,
       "content": kb.content ? kb.content : '',
-      "namespace": this.id_project
+      "namespace": this.selectedNamespace.id
     }
 
     this.updateStatusOfKb(kb._id, 100);
