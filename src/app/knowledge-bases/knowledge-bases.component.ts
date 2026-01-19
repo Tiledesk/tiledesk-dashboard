@@ -3546,11 +3546,11 @@ _presentDialogImportContents() {
       "source": kb.source,
       "type": kb.type,
       "content": kb.content ? kb.content : '',
-      "namespace": this.id_project
+      "namespace": this.selectedNamespace.id
     }
 
     this.updateStatusOfKb(kb._id, 100);
-
+    console.log('onRunIndexing kb' ) 
     this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.error) {
