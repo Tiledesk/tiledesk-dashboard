@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.148
+- Improves the Re-index feature
+
 ### 2.7.147
 - Improves full-text search on the history page and non-real-time conversations page
 
