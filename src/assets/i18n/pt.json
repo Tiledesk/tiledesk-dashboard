@@ -863,6 +863,8 @@
     "ConversationLogs": "Registos de conversa",
     "None": "Nenhum",
     "StartASearchToSeeConversations": "Inicie uma pesquisa para ver conversas",
+    "SelectTheDateRangeToSearch": "Selecione um intervalo de datas para proceder com a pesquisa",
+    "PleaseSelectBothDates": "Por favor, selecione ambas as datas",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

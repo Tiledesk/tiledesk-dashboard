@@ -153,6 +153,7 @@ import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-te
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { RoleGuard } from './core/role.guard';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
+import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
 
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
@@ -325,6 +326,11 @@ const routes: Routes = [
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
 
+  // Maintenance page
+  {
+    path: 'project/:projectid/maintenance', component: MaintenancePageComponent,
+    canActivate: [AuthGuard]
+  },
 
   // Activities
   {

@@ -22,9 +22,11 @@
         <div class="filter-bar">
 
           <!-- ---------------------------------------------------------------- -->
-          <!-- Filters - left section -->
+          <!-- Filters - left section (hidden but maintains layout spacing) -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-left" *ngIf="!showAdvancedSearchOption">
+          <div class="filters-on-left-spacer" style="flex: 0 0 180px;"></div>
+          
+          <div class="filters-on-left" *ngIf="false" style="display: none;">
 
             <span *ngIf="!IS_HERE_FOR_HISTORY" style="padding-right: 16px; font-weight: 400;display: none;">
               {{'FilterFor' | translate}}
@@ -107,20 +109,20 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-center" [ngClass]="{'filters-on-center-then-on-left' : showAdvancedSearchOption}">
-            <div class="input-group full-text-search"
-              [ngClass]="{'full-text-search-full-width' : showAdvancedSearchOption}">
+          <div class="filters-on-center">
+            <div class="input-group full-text-search">
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
                 <button class="custom-input-group---btn" type="submit"
-                    matTooltipClass="mat-white-tooltip"
-                    matTooltip="{{'Search' | translate}}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='below' 
-                    matTooltipHideDelay="100">
+                  [disabled]="!areDatesComplete"
+                  [matTooltip]="!areDatesComplete ? ('SelectTheDateRangeToSearch' | translate) : ''"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltipPosition="above">
                   <i class="fa fa-search fa-search-btn" 
                   (click)="search('fiter-central-section')" 
-                  style="color:grey; font-size: 18px;"></i>
+                  [style.color]="areDatesComplete ? 'grey' : '#ccc'"
+                  [style.cursor]="areDatesComplete ? 'pointer' : 'not-allowed'"
+                  style="font-size: 18px;"></i>
                   <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'Search' | translate}}
                     <i></i>
@@ -135,7 +137,7 @@
                 (keypress)="searchOnEnterPressed($event)">
 
               <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-              <span *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="input-group-btn"
+              <span *ngIf="fullText?.length > 0" class="input-group-btn"
                 style="padding-right: 2px;">
                 <button class="custom-input-group---btn" type="button"
                   matTooltipClass="mat-white-tooltip"
@@ -153,25 +155,22 @@
                 </button>
               </span>
 
-              <!-- // OPEN ADVANCED OPTION BTN -->
+              <!-- // TOGGLE ADVANCED OPTION BTN -->
               <span class="input-group-btn" style="padding-left: 2px;">
-                <button class="custom-input-group---btn" type="button"
-                  matTooltipClass="mat-white-tooltip"
-                  matTooltip="{{'AdvancedSearch' | translate}}" 
-                  #tooltip="matTooltip"
-                  matTooltipPosition='below' 
-                  matTooltipHideDelay="100">
-                  <i class="fa fa-caret-down fa-advanced-option-btn" (click)="toggle()"
-                    style="color:grey; font-size: 18px;"></i>
+                <button class="custom-input-group---btn tool_tip" type="button">
+                  <i class="fa" 
+                    [ngClass]="showAdvancedSearchOption ? 'fa-caret-up' : 'fa-caret-down'"
+                    (click)="toggle()"
+                    style="color:grey; font-size: 18px; vertical-align: middle;"></i>
 
-                  <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                  <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'AdvancedSearch' | translate }}
                     <i></i>
-                  </span> -->
-
+                  </span>
                 </button>
               </span>
-            </div><!-- /input-group -->
+            </div>
+       
 
           </div>
 
@@ -193,7 +192,8 @@
 
 
         <div class="request_filter">
-          <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
+          <div class="filter-bar-advanced-options-wrapper" style="display: flex; justify-content: center;">
+            <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
             <div style="margin-top: 6px;">
               <div class="row">
 
@@ -227,11 +227,44 @@
                     {{ 'HistoryPage.DateRange' | translate }}
                   </label>
 
-                  <div class="col-sm-12 left-date-picker">
-              
-                    <mat-form-field class="custom-date-range-picker" appearance="standard">
+                  <div class="col-sm-12 left-date-picker" >
+                    <!-- <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
+                      (dateChanged)="startDateSelected($event)" [options]="myDatePickerOptions" [(ngModel)]="startDate"
+                      [disabled]="date_picker_is_disabled">
+                    </my-date-picker>
+                  </div>
+                  <div class="col-sm-6 right-date-picker">
+                    <my-date-picker placeholder="{{ 'To' | translate }}" name="mydate"
+                      (dateChanged)="endDateSelected($event)" [options]="endDatePickerOptions" [(ngModel)]="endDate"
+                      [disabled]="date_picker_is_disabled || start_date_is_null">
+                    </my-date-picker> -->
+
+                    <!-- ---------------------------------------- -->
+                    <!-- New date picker -->
+                    <!-- ---------------------------------------- -->
+                    <!-- <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label> 
+                      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date">
+                        <input matEndDate formControlName="end" placeholder="End date">
+                      </mat-date-range-input>
+                      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
                     
-                      <mat-date-range-input [rangePicker]="picker" style="font-family: var(--content-font-family);">
+                      <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                   </mat-form-field>
+                    
+                    <p>Selected range: {{range?.value | json}}</p> -->
+
+                    <mat-form-field class="custom-date-range-picker" 
+                      [ngClass]="{'date-range-error': !areDatesComplete}"
+                      appearance="standard">
+                      <!-- <mat-label>Enter a date range</mat-label> -->
+                      <!-- (dateInput)="addEventStartDate('input', $event)" -->
+                      <!-- (dateInput)="addEventEndDate('input', $event)" -->
+                      <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
                           placeholder="{{'StartDate' | translate}}">
@@ -246,6 +279,11 @@
 
                       <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
+                    <!-- Info message when dates are not complete -->
+                    <div *ngIf="!areDatesComplete" class="date-validation-message" style="margin-top: -8px; color: #f44336; font-size: 12px;font-weight: 400;">
+                      <i class="material-icons" style="vertical-align: middle; font-size: 16px;position: relative;top: -1px;">info</i>
+                      {{ 'PleaseSelectBothDates' | translate }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -463,20 +501,18 @@
                     {{ "Status" | translate }}
                   </label>
                   <div class="col-sm-12">
-                    <div class="request-statuses-select-wpr" style="font-size:14px"> 
-                      <ng-select class="request-statuses-select" name="requeststatuses" 
-                        [(ngModel)]="requests_statuses"
-                        (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
-                        [items]="statusInHistory | selectOptionsTranslate" 
-                        bindLabel="name" 
-                        [clearable]='false'
-                        [multiple]="true" 
-                        [searchable]="false" 
-                        bindValue="id" 
-                        placeholder="Select status"
-                        [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV">
-                      </ng-select>
-                    </div>
+                    <ng-select class="request-statuses-select" name="requeststatuses" 
+                      [(ngModel)]="requests_statuses"
+                      (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
+                      [items]="statusInHistory | selectOptionsTranslate" 
+                      bindLabel="name" 
+                      [clearable]='false'
+                      [multiple]="true" 
+                      [searchable]="false" 
+                      bindValue="id" 
+                      placeholder="Select status"
+                      [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV || !areDatesComplete">
+                    </ng-select>
                   </div>
                 </div>
 
@@ -525,11 +561,13 @@
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
                   <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search('template')">
-                    <!-- <span class="glyphicon glyphicon-search" aria-hidden="true"></span> -->
-                    <span class="material-icons">
-                      search
-                    </span>
+                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" 
+                    [disabled]="!areDatesComplete"
+                    [matTooltip]="!areDatesComplete ? ('SelectTheDateRangeToSearch' | translate) : ''"
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltipPosition="above"
+                    (click)="search('template')">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     {{ 'Search' | translate}}
                   </button>
 
@@ -544,6 +582,17 @@
               </div>
             </div>
           </div>
+          </div>
+        </div>
+
+        <div class="msg-alert-for-search" *ngIf="!areDatesComplete">
+          <span>
+            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">info</i>
+          </span>
+          <span style="vertical-align: middle;">
+            {{'SelectTheDateRangeToSearch' | translate}}
+          </span>
+          
         </div>
       </div>
 
@@ -1317,7 +1366,10 @@
                     </span>
                   </span>
 
-                  <span *ngIf="request?.status === 150">
+                  <!-- ---------------------------------- -->
+                  <!-- Abandoned -->
+                  <!-- ---------------------------------- -->
+                   <span *ngIf="request?.status === 150" style="position: relative;">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                       <img style="width: 30px;min-width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
@@ -1325,8 +1377,97 @@
                         matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}" #tooltip="matTooltip"
                         matTooltipPosition='right' matTooltipHideDelay="100">
 
+                        <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
+                        *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
+                        <span class="tool_tip">
+                          <span class="material-icons">
+                             person_off 
+                          </span>
+      
+                          <!-- ------------------------------------------------------------------------------------------------- -->
+                          <!--  Tooltip with list of who has abandoned the chat -->
+                          <!-- ------------------------------------------------------------------------------------------------- -->
+                          <span id="{{'tooltip_' + i}}" class="right"
+                            style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
+                            [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
+                            <h4 style="font-weight:400" style="white-space: nowrap;">
+                              {{'ThisChatHasBeenAbandonedBy' | translate}}
+                            </h4>
+      
+      
+                            <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true" style="display: flex; align-items: center; gap: 6px;">
+                              <div class="pu-user-avatar-wpr"
+                                style="width: 24px !important;height: 24px !important;">
+                                <img
+                                  style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                                  src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
+                              </div>
+                              <span style="white-space: nowrap; font-size: 12px; font-weight: 400;">
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                                  <span style="font-style: italic; color: #94a3b8;">
+                                    ({{'theLastOneWhoLeft' | translate}})
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+      
+                            <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === false" style="display: flex; align-items: center; gap: 6px;">
+                              <div class="pu-user-avatar-wpr"
+                                style="width: 24px !important;height: 24px !important;">
+                                <div class="avatar-when-not-has-image"
+                                  [ngStyle]="{'background-color': request.attributes.last_abandoned_by_project_user_array[0].fillColour }">
+                                  {{request.attributes.last_abandoned_by_project_user_array[0].fullname_initial}}
+                                </div>
+                              </div>
+                              <span style="white-space: nowrap; font-size: 12px; font-weight: 400;">
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                                <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                                  <span style="font-style: italic; color: #94a3b8;">
+                                    ({{'theLastOneWhoLeft' | translate}})
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+      
+                            <div class="others-that-has-abandoned"
+                              *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0"
+                              style="margin-top: 6px;">
+                              <div class="served-by-desktop-a-in-tooltip">
+                                <div class="served-by-desktop-b-in-tooltip"
+                                  *ngFor="let agent of request?.attributes?.other_project_users_that_has_abandoned_array; let first = first;"
+                                  style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+      
+                                  <div class="served-by-desktop-d-in-tooltip">
+                                    <div class="served-by-desktop-e-in-tooltip">
+                                      <img *ngIf="agent.has_image" src={{agent.img_url}} alt=""
+                                        style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                                        onerror="this.src='assets/img/no_image_user.png'">
+      
+                                      <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
+                                        style="width: 24px !important;height: 24px !important;"
+                                        [ngStyle]="{'background-color': agent?.fillColour }">
+                                        {{ agent?.fullname_initial }}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <span style="white-space: nowrap; font-size: 12px; font-weight: 400; text-transform: capitalize;">
+                                    {{ agent?.firstname }}
+                                    <span *ngIf="agent?.lastname">
+                                      <span *ngIf="agent?.lastname !== ' '"> {{ agent?.lastname | slice:0:1 }}.</span>  
+                                    </span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <i></i>
+                          </span>
+                        </span>
+                      </div>
+
                     </span>
                   </span>
+
                 </td>
 
                 <!-- ===== REQUEST ID ===== -->

@@ -118,6 +118,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   endDateFormatted: string;
   endDateFormatted_temp: string;
 
+  // Check if both dates are filled for search validation
+  get areDatesComplete(): boolean {
+    return !!(this.startDateDefaultValue && this.endDateDefaultValue);
+  }
+
   deptName: string;
   fullText: string;
   fullText_applied_filter: string
@@ -172,6 +177,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   date_picker_is_disabled: boolean;
   projectUsersArray: any;
+  other_project_users_that_has_abandoned_array: Array<any>;
   requestWillBePermanentlyDeleted: string;
   selectedRequestWillBePermanentDeleted: string;
   selectedRequestsWasSuccessfullyDeleted: string;
@@ -943,11 +949,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
-      this.showAdvancedSearchOption = false;
+      this.showAdvancedSearchOption = true;
       this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
-      if (!hasRelevantQueryParams) {
+      if (!hasRelevantQueryParams && this.areDatesComplete) {
         this._preflight = false;
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
@@ -955,7 +961,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
-      this.showAdvancedSearchOption = false;
+      this.showAdvancedSearchOption = true;
       this.roleService.checkRoleForCurrentProject('history')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
@@ -1815,6 +1821,123 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 request['requester_is_verified'] = false;
               }
 
+              // ------------------------------------------------------------------------------------------
+              // for the tooltip on the icon of unserved conversations showing last users who have left the chat
+              // ------------------------------------------------------------------------------------------
+              if (request.status === 150 && request.attributes && request.attributes.last_abandoned_by_project_user) {
+
+                this.logger.log('[HISTORY & NORT-CONVS] - for the tooltip - request.attributes', request.attributes)
+
+                const project_user_id = request.attributes.last_abandoned_by_project_user;
+                this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED project_user_id', project_user_id)
+
+                const users_found_in_storage_by_projectuserid = this.usersLocalDbService.getMemberFromStorage(project_user_id);
+                this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage', users_found_in_storage_by_projectuserid)
+
+                if (users_found_in_storage_by_projectuserid !== null) {
+                  this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED project_users_found_in_storage 1', users_found_in_storage_by_projectuserid)
+                  this.createArrayLast_abandoned_by_project_user(users_found_in_storage_by_projectuserid, request)
+                } else {
+
+                  this.usersService.getProjectUserByProjecUserId(project_user_id)
+                    .subscribe((projectuser) => {
+                      this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById RES', projectuser)
+
+                      let imgUrl = ''
+                      if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+                        imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
+                      } else {
+                        imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
+                      }
+                      this.checkImageExists(imgUrl, (existsImage) => {
+                        if (existsImage == true) {
+                          projectuser['id_user'].hasImage = true
+                        }
+                        else {
+                          projectuser['id_user'].hasImage = false
+
+                          this.createAgentAvatar(projectuser['id_user'])
+                        }
+
+                        this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user'], 'history-and-nort-convs');
+                        this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
+
+                        this.createArrayLast_abandoned_by_project_user(projectuser['id_user'], request);
+                      })
+                    }, error => {
+                      // this.showSpinner = false;
+                      this.logger.error('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById - ERROR', error);
+                    }, () => {
+                      this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED getProjectUserById - COMPLETE')
+                    });
+                }
+              }
+
+              // ------------------------------------------------------------------------------------------
+              // for the tooltip on the icon of unserved conversations showing users who have left the chat
+              // ------------------------------------------------------------------------------------------
+              if (request.status === 150 && request.attributes && request.attributes && request.attributes.abandoned_by_project_users) {
+                this.other_project_users_that_has_abandoned_array = []
+                for (const [key, value] of Object.entries(request.attributes.abandoned_by_project_users)) {
+                  this.logger.log('[HISTORY & NORT-CONVS] - OTHERS PROJECT-USER THAT HAVE ABANDONED key:value ', `${key}: ${value}`);
+
+                  if (key !== request.attributes.last_abandoned_by_project_user) {
+
+                    const other_project_users_found = this.usersLocalDbService.getMemberFromStorage(key);
+
+                    this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_found', other_project_users_found)
+                    if (other_project_users_found !== null) {
+                      this.logger.log('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED other_project_users_found 1', other_project_users_found)
+                      this.createArrayOther_project_users_that_has_abandoned(other_project_users_found)
+
+                    } else {
+
+                      this.usersService.getProjectUserByProjecUserId(key)
+                        .subscribe((projectuser) => {
+                          this.logger.log('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById RES', projectuser)
+
+                          let imgUrl = ''
+                          if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+                            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
+                          } else {
+                            imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            this.logger.log('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
+                          }
+                          this.checkImageExists(imgUrl, (existsImage) => {
+                            if (existsImage == true) {
+                              projectuser['id_user'].hasImage = true
+                            }
+                            else {
+                              projectuser['id_user'].hasImage = false
+
+                              this.createAgentAvatar(projectuser['id_user'])
+                            }
+
+                            this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user'], 'history-and-nort-convs');
+                            this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
+                          })
+
+                        }, error => {
+
+                          this.logger.error('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById - ERROR', error);
+                        }, () => {
+                          this.logger.log('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED getProjectUserById - COMPLETE')
+
+                          const _other_project_users_found = this.usersLocalDbService.getMemberFromStorage(key);
+                          this.logger.log('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED other_project_users_found 2', _other_project_users_found)
+
+                          if (_other_project_users_found) {
+                            this.createArrayOther_project_users_that_has_abandoned(_other_project_users_found)
+                          }
+                        });
+                    }
+                    this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED other_project_users_that_has_abandoned_array', this.other_project_users_that_has_abandoned_array)
+                    request['attributes']['other_project_users_that_has_abandoned_array'] = this.other_project_users_that_has_abandoned_array
+                  }
+                }
+              }
+
               if (request.department) {
                 const deptHasName = request.department.hasOwnProperty('name')
                 if (deptHasName) {
@@ -2504,6 +2627,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search(calledby) {
     console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH calledby ', calledby)
+    
+    // Validate that both start and end dates are provided
+    if (!this.startDateDefaultValue || !this.endDateDefaultValue) {
+      this.notify.showWidgetStyleUpdateNotification( this.translate.instant('SelectTheDateRangeToSearch'),3, 'warning' );
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH BLOCKED: Missing start or end date');
+      return;
+    }
+    
     this.logger.log('HERE IN SEARCH duration operator ', this.duration_op)
     this.logger.log('HERE IN SEARCH duration ', this.duration)
     this.logger.log('HERE IN SEARCH duration called_phone ', this.called_phone)
@@ -3722,7 +3853,52 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       }
     })
+  }
 
+  createArrayLast_abandoned_by_project_user(user, request) {
+    let imgUrl = ''
+    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+      imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
+    } else {
+      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+    }
+
+    const last_abandoned_by_project_user_array = []
+    last_abandoned_by_project_user_array.push(
+      {
+        _id: user['_id'],
+        firstname: user['firstname'],
+        lastname: user['lastname'],
+        has_image: user['hasImage'],
+        img_url: imgUrl,
+        fillColour: user['fillColour'],
+        fullname_initial: user['fullname_initial']
+      }
+    )
+    request['attributes']['last_abandoned_by_project_user_array'] = last_abandoned_by_project_user_array
+  }
+
+  createArrayOther_project_users_that_has_abandoned(other_project_users_found) {
+
+    this.logger.log('[HISTORY & NORT-CONVS] createArrayOther_project_users_that_has_abandoned other_project_users_found', other_project_users_found)
+    let imgUrl = ''
+    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+      imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
+    } else {
+      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + other_project_users_found['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+    }
+
+    this.other_project_users_that_has_abandoned_array.push(
+      {
+        _id: other_project_users_found['_id'],
+        firstname: other_project_users_found['firstname'],
+        lastname: other_project_users_found['lastname'],
+        has_image: other_project_users_found['hasImage'],
+        img_url: imgUrl,
+        fillColour: other_project_users_found['fillColour'],
+        fullname_initial: other_project_users_found['fullname_initial']
+      }
+    )
   }
 
 }

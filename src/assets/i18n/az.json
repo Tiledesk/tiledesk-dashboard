@@ -864,6 +864,8 @@
     "ConversationLogs": "Söhbətin jurnalları",
     "None": "Heç biri",
     "StartASearchToSeeConversations": "Söhbətləri görmək üçün axtarışa başlayın",
+    "SelectTheDateRangeToSearch": "Axtarışı davam etdirmək üçün tarix aralığını seçin",
+    "PleaseSelectBothDates": "Zəhmət olmasa hər iki tarixi seçin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

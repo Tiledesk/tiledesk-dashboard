@@ -411,6 +411,8 @@ import { RolesService } from './services/roles.service';
 import { KeycloakService } from './services/keycloak.service';
 import { HttpStatsService } from './services/http-stats.service';
 import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
+import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+
 
 
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
@@ -731,6 +733,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     LogoutModalComponent,
     UnauthorizedToUpgradeComponent,
     HttpStatsDashboardComponent,
+    MaintenancePageComponent
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
