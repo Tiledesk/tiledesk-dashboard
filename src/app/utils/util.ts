@@ -950,8 +950,8 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
 
 export var OLLAMA_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
-// export var VLLM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
-// ]
+export var VLLM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
+]
 
 
 export const LLM_MODEL: Array<{name: string, value: string, description: string, src: string, status: "active" | "inactive", models: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> }> = [
