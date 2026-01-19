@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.160-stage 
+- Allows searching in History and non-real time conversations only if a range is selected
+
 ### 2.7.161-AR
 - Adds maintenance component
 
@@ -16,6 +19,26 @@
 - Opens selected conversations in chat in a new tab only for teammates with predefined roles
 - Fixes the bug: in some cases the text color of reply messages in the chat in the conversation details is black instead of white
 - Improves performances
+
+### 2.7.159-stage
+- Adds the OpenAI Gpt-5.2 model
+
+### 2.7.158-stage 
+- Adds the ability to see who left an "abandoned chat" in the non-real-time conversations page and in the history page
+- Adds "Chunks only" and "Re-ranking" options to AI Settings, enabling raw source output and intelligent result prioritization
+
+### 2.7.157-stage 
+- Manages abandoned chats on the monitor page
+
+### 2.7.156-stage 
+- Adds the LLM models: Gpt-5.1, Claude-4.5 Sonnet, Claude 4.5 Haiku, Claude Opus 4.5, Claude Opus 4.1
+
+### 2.7.155-stage
+- Fixes the bug: wss is closed if tab is in background in Chrome 
+
+### 2.7.154-stage
+- Opens contacts conversations selected from the chat in dashboard (no longer in a new tab)
+- Fixes the bug: Fixed REST call generating 504 error message in conversation details
 
 ### 2.7.157-AR
 - Fixes the bug: Fixed REST call generating 504 error message in conversation details

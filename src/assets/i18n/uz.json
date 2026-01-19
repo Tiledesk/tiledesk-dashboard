@@ -2214,6 +2214,8 @@
         "GetContentsSourcesDesc1":"Javobni yaratishda foydalaniladigan hujjatlarning aniq manbalarini olish uchun ushbu parametrdan foydalaning.",
         "GetContentsSourcesDesc2": "Shuni yodda tutingki, bu odatiy KB olishdan ko'ra ko'proq tokenlarni iste'mol qiladi.",
         "GetContentsSourcesDesc3":"Agar kerak bo'lsa, iqtiboslarni olish uchun maksimal tokenlar kvotasi avtomatik ravishda o'rnatiladi.",
+        "ChunksOnly": "Faqat bo'laklar",
+        "ReRanking": "Qayta tartiblash",
         "Hybrid": "Gibrid",
         "HybridSearch": "Gibrid qidiruv",
         "FullText":"To'liq matn",

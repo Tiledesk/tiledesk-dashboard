@@ -2215,6 +2215,8 @@
          "GetContentsSourcesDesc1":"Cevabı oluşturmak için kullanılan belgelerin doğru kaynaklarını almak için bu seçeneği kullanın.",
          "GetContentsSourcesDesc2":"Bunun normal KB alımından daha fazla token tüketeceğini unutmayın.",
          "GetContentsSourcesDesc3":"Gerektiğinde alıntı alabilmek için maksimum token kotası otomatik olarak ayarlanacaktır.",
+         "ChunksOnly": "Sadece parçalar",
+         "ReRanking": "Yeniden sıralama",
          "Hybrid": "Hibrit",
          "HybridSearch": "Hibrit Arama",
          "FullText":"Tam metin",
