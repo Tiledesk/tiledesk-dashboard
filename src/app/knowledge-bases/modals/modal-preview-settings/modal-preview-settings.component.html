@@ -28,10 +28,9 @@
     <!-- AI Model -->
     <!-- ----------------------------------------------- -->
     <div class="row-container" style="margin-top: 0px;">
-        <!--  -->
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close(); rerank.close()"
             (click)="aiModel.close()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
@@ -91,7 +90,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
                     (click)="maxTokens.close()">
                    
                     {{ 'KbPage.MaxTokens'| translate}}
@@ -145,7 +144,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
                     (click)="aiModeltemperature.close()">
                    
                     {{ 'KbPage.Temperature'| translate}}
@@ -207,7 +206,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiSearchType"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
                     (click)="aiSearchType.close()">
                    
                     {{ 'KbPage.HybridSearch'| translate}}
@@ -274,7 +273,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close()"
+                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
                     (click)="chunkLimit.close()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
@@ -318,13 +317,15 @@
     </sat-popover>
 
 
-
+    <!-- ------------------------- -->
+    <!-- System Context -->
+    <!-- ------------------------- -->
     <div class="form-container">
         <div class="label-wpr">
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close()"
+                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close() "
                 (click)="systemContext.close()">
                
                 {{ 'KbPage.SystemContext'| translate}}
@@ -358,69 +359,39 @@
     </sat-popover>
 
     <div class="checkbox-container">
-        <!-- Chunk only -->
-        <div class="checkbox">
+        
+        <!-- ------------------- -->
+        <!-- Advanced Context -->
+        <!-- ------------------- -->
+        <div class="checkbox" id="advanced-context" [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal === false ? '0px' : '5px'}">
+          
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-            [satPopoverAnchor]="chunkonly"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close()"
-            (click)="chunkonly.close()">
-                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
-                <span class="setting-label">
-                    <!-- {{'KbPage.AdvancedContext' | translate}} -->
-                      Chunk only
-                </span> 
-            </label>
-
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
-                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
-                <span class="setting-label">
-                    <!-- {{'KbPage.AdvancedContext' | translate}} -->
-                     Chunk only
-                </span> 
-            </label>
-            <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToAdvancedContextDoc()">
-                {{'LearnMore' | translate}}
-            </div> -->
-        </div>
-        <sat-popover id="ai-settings-label" 
-            #chunkonly 
-            horizontalAlign="before"
-            verticalAlign="center"
-            panelClass="cb-details-popover" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
-        <div class="sat-popover-content-wpr">
-            <div class="sat-popover-arrow"></div>
-            <div class="sat-popover-content">
-               
-                <!-- {{'KbPage.AdvancedContextDesc1' | translate}} <br>
-                {{'KbPage.AdvancedContextDesc2' | translate}} -->
-                
-            </div>
-            <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToAdvancedContextDoc()">
-                {{'LearnMore' | translate}}
-            </div> -->
-        </div>
-        </sat-popover>
-
-        <div class="checkbox">
-            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+            [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContext"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close(); chunkonly.close(); rerank.close()"
             (click)="advancedContext.close()">
-                <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)">
+                <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.AdvancedContext' | translate}}
                 </span> 
             </label>
 
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
-                <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)">
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}">
+                <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.AdvancedContext' | translate}}
                 </span> 
+                 <span *ngIf="hideHelpLink" class="material-icons-outlined help-icon" (click)="goToAdvancedContextDoc(); $event.stopPropagation(); $event.preventDefault()"
+                    matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'LearnMore' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' matTooltipHideDelay="100">
+                 help_outline
+                </span>
             </label>
-            <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToAdvancedContextDoc()">
+            <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToAdvancedContextDoc()" [disabled]="chunkOnly">
                 {{'LearnMore' | translate}}
-            </div>
+            </div> -->
         </div>
 
         <sat-popover id="ai-settings-label" 
@@ -442,28 +413,41 @@
         </div>
         </sat-popover>
 
-        <div class="checkbox">
-            <!--  -->
+
+        <!-- --------------------- -->
+        <!-- Get Contents Sources -->
+        <!-- --------------------- -->
+        <div class="checkbox" id="contents-sources" [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal ? '5px' : '5px',  'margin-top': !wasOpenedFromThePreviewKBModal ? '0px' : '5px'}">
+             
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+            [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="contentsSources"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open() "
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open(); chunkonly.close(); rerank.close() "
             (click)="contentsSources.close()">
-                <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)">
+                <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     
                     {{'KbPage.GetContentsSources' | translate}}
                 </span>   
             </label>
 
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
-                <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)">
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}">
+                <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.GetContentsSources' | translate}}
                 </span>
+                <span *ngIf="hideHelpLink" class="material-icons-outlined help-icon" (click)="goToContentsSourcesDoc(); $event.stopPropagation(); $event.preventDefault()"
+                    matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'LearnMore' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' matTooltipHideDelay="100">
+                 help_outline
+                </span>
+
             </label>
-            <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
+           <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
                 {{'LearnMore' | translate}}
-            </div>
+            </div>  -->
         </div>
 
         <sat-popover id="ai-settings-label" 
@@ -482,6 +466,74 @@
 
                 <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToContentsSourcesDoc()">
                     {{'LearnMore' | translate}}
+                </div>
+            </div>
+        </sat-popover>
+
+        <!-- ----------------------------- -->
+        <!-- Chunk only -->
+        <!-- ----------------------------- -->
+        <div id="chunk-only" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal === false ? '0px' : '0px' }">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+            [satPopoverAnchor]="chunkonly"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close()"
+            (click)="chunkonly.close()">
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
+                <span class="setting-label">
+                    {{'KbPage.ChunksOnly' | translate}}
+                </span> 
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
+                <span class="setting-label">
+                    {{'KbPage.ChunksOnly' | translate}}
+                </span> 
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label" 
+            #chunkonly 
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    Bypasses the AI synthesis. When enabled, the system will return only the raw text passages (chunks) retrieved from your contents, without generating an answer. Ideal for verifying source accuracy or debugging.
+                </div>
+            </div>
+        </sat-popover>
+
+        <!-- ----------------------------- -->
+        <!-- Re ranking -->
+        <!-- ----------------------------- -->
+         <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+             [satPopoverAnchor]="rerank"
+             (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open()"
+             (click)="rerank.close()">
+                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
+                <span class="setting-label">
+                     {{'KbPage.ReRanking' | translate}}
+                </span> 
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
+                <span class="setting-label">
+                     {{'KbPage.ReRanking' | translate}}
+                </span> 
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label" 
+            #rerank 
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    Applies a second, more intelligent scoring to the initially retrieved results. This reorders them to push the most contextually relevant chunks to the top, improving answer quality.
                 </div>
             </div>
         </sat-popover>
