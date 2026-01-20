@@ -30,7 +30,7 @@
     <div class="row-container" style="margin-top: 0px;">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close(); rerank.close()"
+            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
             (click)="aiModel.close()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
@@ -88,7 +88,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
+                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="maxTokens.close()">
                    
                     {{ 'KbPage.MaxTokens'| translate}}
@@ -107,7 +107,7 @@
             <div class="action-wait-slider">
                 <div class="action-wait-range">{{max_tokens_min}}</div>
                 <mat-slider class="wait-slider" thumbLabel step="1" [min]="max_tokens_min" max="100000" [(ngModel)]="max_tokens"
-                    (change)="updateSliderValue($event.value, 'max_tokens')" aria-label="units">
+                   (input)="max_tokens = $event.value"  (change)="updateSliderValue($event.value, 'max_tokens')" [displayWith]="formatMaxTokens" aria-label="units">
                 </mat-slider>
                 <div class="action-wait-range">100000</div>
             </div>
@@ -142,7 +142,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="aiModeltemperature.close()">
                    
                     {{ 'KbPage.Temperature'| translate}}
@@ -204,7 +204,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiSearchType"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="aiSearchType.close()">
                    
                     {{ 'KbPage.HybridSearch'| translate}}
@@ -264,14 +264,14 @@
     <!-- ----------------------------------------------- -->
     <!-- Chunk Limit -->
     <!-- ----------------------------------------------- -->
-    <div class="form-container">
+    <div class="row-container">
 
         <div class="label-and-slider-value">
             <div class="label-wpr">
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close()"
+                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="chunkLimit.close()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
@@ -314,6 +314,101 @@
         </div>
     </sat-popover>
 
+    <!-- ----------------------------- -->
+    <!-- Re ranking -->
+    <!-- ----------------------------- -->
+    <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider">
+        <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+            [satPopoverAnchor]="rerank"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open(); rerankingMultiplier.close()"
+            (click)="rerank.close(); onCheckboxClick($event)">
+            <!-- (click)="onCheckboxClick($event)" -->
+            <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
+            <span class="setting-label">
+                    {{'KbPage.ReRanking' | translate}}
+            </span> 
+        </label>
+
+        <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+            <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
+            <span class="setting-label">
+                {{'KbPage.ReRanking' | translate}}
+            </span> 
+        </label>
+    </div>
+    <sat-popover id="ai-settings-label" 
+        #rerank 
+        horizontalAlign="before"
+        verticalAlign="center"
+        panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                {{'KbPage.ReRankingDesc' | translate}}
+            </div>
+        </div>
+        <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
+            {{'LearnMore' | translate}}
+        </div>
+    </sat-popover>
+
+    <!-- ----------------------------------------------- -->
+    <!-- Reranking multiplier -->
+    <!-- ----------------------------------------------- -->
+    <div class="row-container" *ngIf="reRanking && diplaySearchTypeSlider" style="margin-top: 15px;">
+
+        <div class="label-and-slider-value">
+            <div class="label-wpr">
+            
+                <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+                    [satPopoverAnchor]="rerankingMultiplier"
+                    (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.open()"
+                    (click)="rerankingMultiplier.close()">
+                    {{ 'KbPage.RerankingMultiplier'| translate}}
+                </label>
+                <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                    {{ 'KbPage.RerankingMultiplier'| translate}}
+                </label>
+            </div>
+            <div class="slider-value">
+                {{reRankingMultipler}}
+            </div>
+        </div>
+        <div class="field-box" style="margin-bottom: 6px !important;">
+            <div class="action-wait-slider">
+                <div class="action-wait-range">2</div>
+                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="22" [(ngModel)]="reRankingMultipler"
+                    (change)="updateSliderValue($event.value, 're_ranking_multipler')" aria-label="units">
+                </mat-slider>
+                <div class="action-wait-range">22</div>
+            </div>
+            <!-- <input type="text" class="slider-output" value="{{topK}}" disabled> -->
+        </div>
+         <div class="max-token-slider-description-wpr">
+            <div class="max-token-slider-description">
+                {{'KbPage.TotalRetrievedChunksForReRanking' | translate}}: {{ reRankingMultipler * topK }}
+            </div>
+            <!-- <div class="max-token-slider-description">
+                {{'KbPage.Random' | translate }}
+            </div> -->
+        </div>
+    </div>
+     <sat-popover id="ai-settings-label" 
+        #rerankingMultiplier 
+        horizontalAlign="before"
+        verticalAlign="center"
+        panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering.
+            </div>
+        </div>
+        <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
+            {{'LearnMore' | translate}}
+        </div> -->
+    </sat-popover>
+
 
     <!-- ------------------------- -->
     <!-- System Context -->
@@ -323,7 +418,7 @@
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close() "
+                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                 (click)="systemContext.close()">
                
                 {{ 'KbPage.SystemContext'| translate}}
@@ -366,7 +461,7 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContext"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close(); chunkonly.close(); rerank.close()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
             (click)="advancedContext.close()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
@@ -420,7 +515,7 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="contentsSources"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open(); chunkonly.close(); rerank.close() "
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
             (click)="contentsSources.close()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
@@ -474,7 +569,7 @@
         <div id="chunk-only" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal === false ? '0px' : '0px' }">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="chunkonly"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close(); rerankingMultiplier.close()"
             (click)="chunkonly.close()">
                 <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
                 <span class="setting-label">
@@ -497,44 +592,13 @@
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-arrow"></div>
                 <div class="sat-popover-content">
-                    Bypasses the AI synthesis. When enabled, the system will return only the raw text passages (chunks) retrieved from your contents, without generating an answer. Ideal for verifying source accuracy or debugging.
+                  <!-- Bypasses the AI synthesis. When enabled, the system will return only the raw text passages (chunks) retrieved from your contents, without generating an answer. Ideal for verifying source accuracy or debugging. --> 
+                     {{'KbPage.ChunksOnlyDesc' | translate}}
                 </div>
             </div>
         </sat-popover>
 
-        <!-- ----------------------------- -->
-        <!-- Re ranking -->
-        <!-- ----------------------------- -->
-         <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider">
-            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-             [satPopoverAnchor]="rerank"
-             (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open()"
-             (click)="rerank.close()">
-                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
-                <span class="setting-label">
-                     {{'KbPage.ReRanking' | translate}}
-                </span> 
-            </label>
-
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
-                <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
-                <span class="setting-label">
-                     {{'KbPage.ReRanking' | translate}}
-                </span> 
-            </label>
-        </div>
-        <sat-popover id="ai-settings-label" 
-            #rerank 
-            horizontalAlign="before"
-            verticalAlign="center"
-            panelClass="cb-details-popover"  closeTransition="1ms ease-in">
-            <div class="sat-popover-content-wpr">
-                <div class="sat-popover-arrow"></div>
-                <div class="sat-popover-content">
-                    Applies a second, more intelligent scoring to the initially retrieved results. This reorders them to push the most contextually relevant chunks to the top, improving answer quality.
-                </div>
-            </div>
-        </sat-popover>
+       
 
     </div>
 

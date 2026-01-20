@@ -1207,6 +1207,7 @@ export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-
 export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
 export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
 export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+export const URL_reranking_doc = "https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/re-ranking";
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
 export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
