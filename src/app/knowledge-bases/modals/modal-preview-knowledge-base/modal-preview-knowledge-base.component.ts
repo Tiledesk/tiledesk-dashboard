@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ElementRef, ViewChild } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -615,7 +615,5 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
 }
-function ViewChild(arg0: string, arg1: { static: boolean; }): (target: ModalPreviewKnowledgeBaseComponent, propertyKey: "questionTextarea") => void {
-  throw new Error('Function not implemented.');
-}
+
 
