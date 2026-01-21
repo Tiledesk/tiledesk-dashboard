@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.161-stage 
+- Adds the ability to set the Re-ranking multiplier in the AI settings dialog
+- Other improvements
+
 ### 2.7.160-stage 
 - Allows searching in History and non-real time conversations only if a range is selected
 
