@@ -235,6 +235,23 @@
     }
 }
 
+// Custom styles for question textarea
+.question-textarea {
+  width: 100%;
+  min-height: 37px;
+  max-height: 52px; /* 2 righe */
+  resize: none;
+  overflow-y: hidden;
+
+  line-height: 18px;
+  font-size: 14px;
+  padding: 8px 12px;
+    
+  border: solid 1px #ccc;
+  border-radius: 6px;
+}
+
+
 
 .kb-container {
     width: fit-content;

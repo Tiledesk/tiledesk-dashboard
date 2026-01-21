@@ -27,6 +27,15 @@
     vertical-align: middle;
 }
 
+.disabled-label {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    .setting-label {
+        color: #999;
+    }
+}
+
 .row-container {
     margin-top: 25px
 }
@@ -259,6 +268,11 @@
 
 .help--link:hover { 
     text-decoration: underline;
+}
+.help-icon {
+    vertical-align: middle;
+    font-size: 18px;
+    color: var(--blue-20);
 }
 
 .help-icon {

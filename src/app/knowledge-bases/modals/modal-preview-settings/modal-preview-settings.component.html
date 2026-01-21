@@ -30,7 +30,7 @@
     <div class="row-container" style="margin-top: 0px;">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close()"
+            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
             (click)="aiModel.close()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
@@ -38,66 +38,29 @@
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
 
-        <div class="ai-models-wpr" style="font-size: 14px;"> 
-            <ng-select
-                appendTo="body"
-                [items]="model_list"
-                bindLabel="name"
-                bindValue="value"
-                [searchable]="false"
-                placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
-                [(ngModel)]="selectedModel"
-                (change)="onSelectModel(selectedModel)"
-                [clearable]="false">
 
-                <ng-template ng-label-tmp let-item="item">
-                    <div style="display: flex; flex-direction: row; align-items: center;">
-                        <div class="model-icon">
-                            <svg width="18" height="18" fill="none" style="margin-right: 3px;"
-                                xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" class="h-6 w-6"
-                                viewBox="-0.17090198558635983 0.482230148717937 41.14235318283891 40.0339509076386"><text
-                                    x="-9999" y="-9999">ChatGPT</text>
-                                <path
-                                    d="M37.532 16.87a9.963 9.963 0 0 0-.856-8.184 10.078 10.078 0 0 0-10.855-4.835A9.964 9.964 0 0 0 18.306.5a10.079 10.079 0 0 0-9.614 6.977 9.967 9.967 0 0 0-6.664 4.834 10.08 10.08 0 0 0 1.24 11.817 9.965 9.965 0 0 0 .856 8.185 10.079 10.079 0 0 0 10.855 4.835 9.965 9.965 0 0 0 7.516 3.35 10.078 10.078 0 0 0 9.617-6.981 9.967 9.967 0 0 0 6.663-4.834 10.079 10.079 0 0 0-1.243-11.813zM22.498 37.886a7.474 7.474 0 0 1-4.799-1.735c.061-.033.168-.091.237-.134l7.964-4.6a1.294 1.294 0 0 0 .655-1.134V19.054l3.366 1.944a.12.12 0 0 1 .066.092v9.299a7.505 7.505 0 0 1-7.49 7.496zM6.392 31.006a7.471 7.471 0 0 1-.894-5.023c.06.036.162.099.237.141l7.964 4.6a1.297 1.297 0 0 0 1.308 0l9.724-5.614v3.888a.12.12 0 0 1-.048.103l-8.051 4.649a7.504 7.504 0 0 1-10.24-2.744zM4.297 13.62A7.469 7.469 0 0 1 8.2 10.333c0 .068-.004.19-.004.274v9.201a1.294 1.294 0 0 0 .654 1.132l9.723 5.614-3.366 1.944a.12.12 0 0 1-.114.01L7.04 23.856a7.504 7.504 0 0 1-2.743-10.237zm27.658 6.437l-9.724-5.615 3.367-1.943a.121.121 0 0 1 .113-.01l8.052 4.648a7.498 7.498 0 0 1-1.158 13.528v-9.476a1.293 1.293 0 0 0-.65-1.132zm3.35-5.043c-.059-.037-.162-.099-.236-.141l-7.965-4.6a1.298 1.298 0 0 0-1.308 0l-9.723 5.614v-3.888a.12.12 0 0 1 .048-.103l8.05-4.645a7.497 7.497 0 0 1 11.135 7.763zm-21.063 6.929l-3.367-1.944a.12.12 0 0 1-.065-.092v-9.299a7.497 7.497 0 0 1 12.293-5.756 6.94 6.94 0 0 0-.236.134l-7.965 4.6a1.294 1.294 0 0 0-.654 1.132l-.006 11.225zm1.829-3.943l4.33-2.501 4.332 2.5v5l-4.331 2.5-4.331-2.5V18z"
-                                    fill="currentColor" />
-                            </svg>
-                        </div>
-                        <div style="font-weight: 400;">
-                            {{item.name}}
-                        </div>
-                        <!-- <div *ngIf="item.multiplier" style="color: rgba(0, 0, 0, .6);font-weight: 400; position: absolute;right: 25px;"> 
-                            {{item.multiplier }} 
-                        </div> -->
-                    </div>
-                </ng-template>
-                <ng-template ng-option-tmp let-item="item" let-index="index">
-                    <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
-                        <div class="model-icon-and-name" style="display: flex;flex-direction: row; align-items: center;">
-                            <div class="model-icon">
-                                <svg width="18" height="18" fill="none"
-                                    style="margin-right: 3px;"
-                                    xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" class="h-6 w-6"
-                                    viewBox="-0.17090198558635983 0.482230148717937 41.14235318283891 40.0339509076386"><text
-                                        x="-9999" y="-9999">ChatGPT</text>
-                                    <path
-                                        d="M37.532 16.87a9.963 9.963 0 0 0-.856-8.184 10.078 10.078 0 0 0-10.855-4.835A9.964 9.964 0 0 0 18.306.5a10.079 10.079 0 0 0-9.614 6.977 9.967 9.967 0 0 0-6.664 4.834 10.08 10.08 0 0 0 1.24 11.817 9.965 9.965 0 0 0 .856 8.185 10.079 10.079 0 0 0 10.855 4.835 9.965 9.965 0 0 0 7.516 3.35 10.078 10.078 0 0 0 9.617-6.981 9.967 9.967 0 0 0 6.663-4.834 10.079 10.079 0 0 0-1.243-11.813zM22.498 37.886a7.474 7.474 0 0 1-4.799-1.735c.061-.033.168-.091.237-.134l7.964-4.6a1.294 1.294 0 0 0 .655-1.134V19.054l3.366 1.944a.12.12 0 0 1 .066.092v9.299a7.505 7.505 0 0 1-7.49 7.496zM6.392 31.006a7.471 7.471 0 0 1-.894-5.023c.06.036.162.099.237.141l7.964 4.6a1.297 1.297 0 0 0 1.308 0l9.724-5.614v3.888a.12.12 0 0 1-.048.103l-8.051 4.649a7.504 7.504 0 0 1-10.24-2.744zM4.297 13.62A7.469 7.469 0 0 1 8.2 10.333c0 .068-.004.19-.004.274v9.201a1.294 1.294 0 0 0 .654 1.132l9.723 5.614-3.366 1.944a.12.12 0 0 1-.114.01L7.04 23.856a7.504 7.504 0 0 1-2.743-10.237zm27.658 6.437l-9.724-5.615 3.367-1.943a.121.121 0 0 1 .113-.01l8.052 4.648a7.498 7.498 0 0 1-1.158 13.528v-9.476a1.293 1.293 0 0 0-.65-1.132zm3.35-5.043c-.059-.037-.162-.099-.236-.141l-7.965-4.6a1.298 1.298 0 0 0-1.308 0l-9.723 5.614v-3.888a.12.12 0 0 1 .048-.103l8.05-4.645a7.497 7.497 0 0 1 11.135 7.763zm-21.063 6.929l-3.367-1.944a.12.12 0 0 1-.065-.092v-9.299a7.497 7.497 0 0 1 12.293-5.756 6.94 6.94 0 0 0-.236.134l-7.965 4.6a1.294 1.294 0 0 0-.654 1.132l-.006 11.225zm1.829-3.943l4.33-2.501 4.332 2.5v5l-4.331 2.5-4.331-2.5V18z"
-                                        fill="currentColor" />
-                                </svg>
-                            </div>
+        <ng-select
+            appendTo="body"
+            [items]="flattenedModels"
+            bindLabel="name"
+            bindValue="value"
+            [groupBy]="'providerName'"
+            [virtualScroll]="true"
+            [searchable]="true"
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+            [(ngModel)]="selectedModel"
+            (change)="onSelectModel(selectedModel)"
+            [clearable]="false">
 
-                            <div lass="model-name" style="font-weight: 400;">
-                                {{item.name}}
-                            </div>
-
-                        </div>
-                        <!-- <div style="display: flex;flex-direction: row; justify-content: space-between;"> -->
-                        <div *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
-                            {{item.multiplier }}
-                        </div>
-                    </div>
-                </ng-template>
-            </ng-select>
-        </div>
+            <ng-template ng-option-tmp let-item="item">
+                <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
+                 {{ item.name }}
+                    <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
+                    {{ item.multiplier }}
+                    </span>
+                </div>
+            </ng-template>
+        </ng-select>
 
     </div>
 
@@ -125,7 +88,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close();"
+                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="maxTokens.close()">
                    
                     {{ 'KbPage.MaxTokens'| translate}}
@@ -179,7 +142,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close();"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="aiModeltemperature.close()">
                    
                     {{ 'KbPage.Temperature'| translate}}
@@ -241,7 +204,7 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiSearchType"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close();"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="aiSearchType.close()">
                    
                     {{ 'KbPage.HybridSearch'| translate}}
@@ -308,7 +271,7 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close()"
+                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                     (click)="chunkLimit.close()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
@@ -351,6 +314,99 @@
         </div>
     </sat-popover>
 
+    <!-- ----------------------------- -->
+    <!-- Re ranking -->
+    <!-- ----------------------------- -->
+    <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider">
+        <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+            [satPopoverAnchor]="rerank"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open(); rerankingMultiplier.close()"
+            (click)="rerank.close()">
+            <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
+            <span class="setting-label">
+                    {{'KbPage.ReRanking' | translate}}
+            </span> 
+        </label>
+
+        <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+            <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
+            <span class="setting-label">
+                {{'KbPage.ReRanking' | translate}}
+            </span> 
+        </label>
+    </div>
+    <sat-popover id="ai-settings-label" 
+        #rerank 
+        horizontalAlign="before"
+        verticalAlign="center"
+        panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                {{'KbPage.ReRankingDesc' | translate}}
+            </div>
+        </div>
+        <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
+            {{'LearnMore' | translate}}
+        </div>
+    </sat-popover>
+
+    <!-- ----------------------------------------------- -->
+    <!-- Reranking multiplier -->
+    <!-- ----------------------------------------------- -->
+    <div class="row-container" *ngIf="reRanking && diplaySearchTypeSlider" style="margin-top: 15px;">
+
+        <div class="label-and-slider-value">
+            <div class="label-wpr">
+            
+                <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
+                    [satPopoverAnchor]="rerankingMultiplier"
+                    (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.open()"
+                    (click)="rerankingMultiplier.close()">
+                    {{ 'KbPage.RerankingMultiplier'| translate}}
+                </label>
+                <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                    {{ 'KbPage.RerankingMultiplier'| translate}}
+                </label>
+            </div>
+            <div class="slider-value">
+                {{reRankingMultipler}}
+            </div>
+        </div>
+        <div class="field-box" style="margin-bottom: 6px !important;">
+            <div class="action-wait-slider">
+                <div class="action-wait-range">2</div>
+                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="22" [(ngModel)]="reRankingMultipler"
+                    (change)="updateSliderValue($event.value, 're_ranking_multipler')" aria-label="units">
+                </mat-slider>
+                <div class="action-wait-range">22</div>
+            </div>
+            <!-- <input type="text" class="slider-output" value="{{topK}}" disabled> -->
+        </div>
+         <div class="max-token-slider-description-wpr">
+            <div class="max-token-slider-description">
+                {{'KbPage.TotalRetrievedChunksForReRanking' | translate}}: {{ reRankingMultipler * topK }}
+            </div>
+            <!-- <div class="max-token-slider-description">
+                {{'KbPage.Random' | translate }}
+            </div> -->
+        </div>
+    </div>
+     <sat-popover id="ai-settings-label" 
+        #rerankingMultiplier 
+        horizontalAlign="before"
+        verticalAlign="center"
+        panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering.
+            </div>
+        </div>
+        <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
+            {{'LearnMore' | translate}}
+        </div> -->
+    </sat-popover>
 
 
     <!-- ------------------------- -->
@@ -361,7 +417,7 @@
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close()"
+                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
                 (click)="systemContext.close()">
                
                 {{ 'KbPage.SystemContext'| translate}}
@@ -404,7 +460,7 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContext"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close(); chunkonly.close()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
             (click)="advancedContext.close()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
@@ -458,7 +514,7 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="contentsSources"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open(); chunkonly.close()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
             (click)="contentsSources.close()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
@@ -512,7 +568,7 @@
         <div id="chunk-only" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal === false ? '0px' : '0px' }">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="chunkonly"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open()"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close(); rerankingMultiplier.close()"
             (click)="chunkonly.close()">
                 <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
                 <span class="setting-label">

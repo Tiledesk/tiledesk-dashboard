@@ -2064,6 +2064,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '360px',
+      autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
       },
