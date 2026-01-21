@@ -16,7 +16,8 @@ import { HomeInviteTeammateErrorModalComponent } from './home-invite-teammate-er
 import { TranslateService } from '@ngx-translate/core';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
-import { CachePuService } from 'app/services/cache-pu.service';
+import { CachePuService } from 'app/services/cache/cache-pu.service';
+
 
 @Component({
   selector: 'appdashboard-home-create-teammate',
@@ -411,7 +412,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
   doInviteUser(email, role) {
-    this.cachePuService.clearCache()
+    this.cachePuService.clearPuCache()
     this.usersService.inviteUser(email, role).subscribe((project_user: any) => {
       this.logger.log('[HOME-CREATE-TEAMMATE] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
       this.logger.log('[HOME-CREATE-TEAMMATE] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
