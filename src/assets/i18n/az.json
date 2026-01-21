@@ -2215,6 +2215,8 @@
         "GetContentsSourcesDesc1":"Cavab yaratmaq üçün istifadə olunan sənədlərin dəqiq mənbələrini əldə etmək üçün bu seçimdən istifadə edin.",
         "GetContentsSourcesDesc2":"Nəzərə alın ki, bu, adi KB axtarışından daha çox token sərf edir.",
         "GetContentsSourcesDesc3":"Lazım gələrsə, sitatları əldə etmək üçün maksimum nişan kvotaları avtomatik tənzimlənəcək.",
+        "ChunksOnly": "Yalnız parçalar",
+        "ChunksOnlyDesc": "AI sintezini atlayır. Aktivləşdirildikdə, sistem yalnız məzmunlarınızdan alınan xam mətn parçalarını (parçalar) qaytaracaq, cavab yaratmadan. Mənbə dəqiqliyini yoxlamaq və ya debug etmək üçün idealdır.",
         "Hybrid": "Hibrid",
         "HybridSearch": "Hibrid Axtarış",
         "FullText":"Tam mətn",

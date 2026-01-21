@@ -2231,6 +2231,8 @@
         "GetContentsSourcesDesc1": "Använd det här alternativet för att få korrekta dokumentkällor som används för att generera svaret.",
         "GetContentsSourcesDesc2": "Tänk på att detta förbrukar fler tokens än vanlig KB-hämtning.",
         "GetContentsSourcesDesc3": "Max-tokens kvot kommer att justeras automatiskt för att få citat om det behövs.",
+        "ChunksOnly": "Endast chunks",
+        "ChunksOnlyDesc": "Kringgår AI-syntesen. När aktiverad returnerar systemet endast de råa textpassagerna (chunks) som hämtats från ditt innehåll, utan att generera ett svar. Idealisk för att verifiera källans noggrannhet eller för felsökning.",
         "Hybrid": "Hybrid",
         "HybridSearch": "Hybridsökning",
         "FullText":"Fulltext",

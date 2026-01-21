@@ -2214,6 +2214,8 @@
         "GetContentsSourcesDesc1":"Utilizzare questa opzione per ottenere fonti accurate dei documenti utilizzati per generare la risposta.",
         "GetContentsSourcesDesc2":"Tieni presente che questa operazione consuma più token rispetto al normale uso delle KB.",
         "GetContentsSourcesDesc3":"La quota massima di token verrà regolata automaticamente per ottenere le citazioni, se necessario.",
+        "ChunksOnly": "Solo chunks",
+        "ChunksOnlyDesc": "Ignora la sintesi AI. Quando abilitato, il sistema restituirà solo i passaggi di testo grezzi (chunks) recuperati dai tuoi contenuti, senza generare una risposta. Ideale per verificare l'accuratezza delle fonti o per il debug.",
         "Hybrid": "Ibrida",
         "HybridSearch": "Ricerca ibrida",
         "FullText":"Testo completo",

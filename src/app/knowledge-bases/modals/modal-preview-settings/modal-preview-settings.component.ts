@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { LLM_MODEL, OPENAI_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
+import { TYPE_GPT_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -259,7 +259,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
-
+    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
     // this.model_list = OPENAI_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
@@ -269,283 +269,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //     return { ...el, multiplier: null }
     // })
 
-    // const allModels = LLM_MODEL.flatMap(provider => provider.models);
-    // this.model_list = allModels
-    //   .map(model => ({
-    //     ...model,
-    //     multiplier: ai_models[model.value]
-    //       ? `${ai_models[model.value]} x tokens`
-    //       : null
-    //   }))
-    //   .sort((a, b) => a.name.localeCompare(b.name));
+    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
+      if (ai_models[el.value])
+        return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
+      else
+        return { ...el, multiplier: null }
+    })
 
-    // // 🔹 imposta il modello selezionato (se già salvato)
-    // const selectedValue = this.selectedNamespace?.preview_settings?.model;
-    // this.selectedModel = this.model_list.find(m => m.value === selectedValue)?.value || null;
-
-    // 🔹 Cloniamo e ordiniamo i provider, mettendo OpenAI per primo
-    // const orderedProviders = [...LLM_MODEL].sort((a, b) => {
-    //   if (a.name === 'OpenAI') return -1;
-    //   if (b.name === 'OpenAI') return 1;
-    //   return a.name.localeCompare(b.name);
-    // });
-
-    // // 🔹 Costruiamo la struttura con modelli raggruppati per provider
-    // this.modelGroups = orderedProviders.map(provider => ({
-    //   providerName: provider.name,
-    //   // providerIcon: provider.src,
-    //   models: (provider.models || [])  // 🔹 fallback
-    //     .filter(m => m.status === 'active') // mostriamo solo quelli attivi (opzionale)
-    //     .sort((a, b) => a.name.localeCompare(b.name))
-    //     .map(model => ({
-    //       ...model,
-    //       multiplier: ai_models[model.value]
-    //         ? `${ai_models[model.value]} x tokens`
-    //         : null
-    //     }))
-    // }));
-
-    // // 🔹 Flatten solo per determinare il selectedModel
-    // const allModels = this.modelGroups.flatMap(group => group.models);
-    // const selectedValue = this.selectedNamespace?.preview_settings?.model;
-    // this.selectedModel = allModels.find(m => m.value === selectedValue)?.value || null;
+    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
     // this.listenToAiSettingsChanges()
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
 
-    this.getVllmModels()
-    this.getOllamaModels()
-    this.loadModelGroups();
-
-    // const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    // this.logger.log('LLM_MODEL' , LLM_MODEL)
-    // const orderedProviders = [
-    //   ...LLM_MODEL.filter(p => p.value === 'openai'),
-    //   ...LLM_MODEL.filter(p => p.value !== 'openai')
-    // ];
-
-    // // crea l’array dei gruppi di modelli per la select
-    // this.modelGroups = orderedProviders.map(provider => ({
-    //   providerName: provider.name,
-    //   models: (provider.models || [])  // fallback se models è undefined
-    //     .filter(m => m.status === 'active')  // solo modelli attivi
-    //     .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
-    //     .map(model => ({
-    //       ...model,
-    //       multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
-    //     }))
-    // }));
-
-    // this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
-
-    // this.flattenedModels = this.modelGroups.flatMap(group => {
-    //   // trova il provider corrispondente in LLM_MODEL
-    //   const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
-
-    //   return group.models.map(model => ({
-    //     ...model,
-    //     providerName: group.providerName,
-    //     llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
-    //     llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
-    //   }));
-    // });
-
-    // this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    // // eventualmente seleziona il modello corrente
-    // const selectedProvider = this.modelGroups.find(g =>
-    //   g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
-    // );
-    // if (selectedProvider) {
-    //   const selectedModelObj = selectedProvider.models.find(m =>
-    //     m.value === this.selectedNamespace.preview_settings.model
-    //   );
-    //   this.selectedModel = selectedModelObj?.value;
-    // }
-
-    // this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
-    // this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    // this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
-
-    // this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
-
-    // const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
-    // this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
-
-
-
   }
 
-  getLlmProviderByModel(modelValue: string): string | null {
-    const found = this.flattenedModels.find(el => el.value === modelValue);
-    return found ? found.llmValue : null;
-  }
-
-  getVllmModels() {
-    const integrationName = 'vllm';
-    this.integrationService.getIntegrationByName(integrationName).subscribe({
-      next: (res: any) => {
-        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
-
-        const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
-        if (vllmProvider && res?.value?.models?.length) {
-          vllmProvider.models = res.value.models.map((item: string) => ({
-            name: item,
-            value: item,
-            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
-          }));
-
-          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
-        } else {
-          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
-        }
-
-        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
-        this.loadModelGroups();
-      },
-      error: (err) => {
-         this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
-      },
-      complete: () => {
-         this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
-      }
-    });
-  }
-
-  getOllamaModels() {
-    const integrationName = 'ollama';
-    this.integrationService.getIntegrationByName(integrationName).subscribe({
-      next: (res: any) => {
-        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
-
-        const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
-        if (ollamaProvider && res?.value?.models?.length) {
-          ollamaProvider.models = res.value.models.map((item: string) => ({
-            name: item,
-            value: item,
-            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
-          }));
-
-          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
-        } else {
-          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
-        }
-
-        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
-        this.loadModelGroups();
-      },
-      error: (err) => {
-        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
-      },
-      complete: () => {
-        this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
-      }
-    });
-  }
-
-
-  loadModelGroups() {
-    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    this.logger.log('LLM_MODEL', LLM_MODEL)
-    const orderedProviders = [
-      ...LLM_MODEL.filter(p => p.value === 'openai'),
-      ...LLM_MODEL.filter(p => p.value !== 'openai')
-    ];
-
-    // crea l’array dei gruppi di modelli per la select
-    this.modelGroups = orderedProviders.map(provider => ({
-      providerName: provider.name,
-      models: (provider.models || [])  // fallback se models è undefined
-        .filter(m => m.status === 'active')  // solo modelli attivi
-        .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
-        .map(model => ({
-          ...model,
-          multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
-        }))
-    }));
-
-    this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
-
-    this.flattenedModels = this.modelGroups.flatMap(group => {
-      // trova il provider corrispondente in LLM_MODEL
-      const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
-
-      return group.models.map(model => ({
-        ...model,
-        providerName: group.providerName,
-        llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
-        llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
-      }));
-    });
-
-    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    // eventualmente seleziona il modello corrente
-    const selectedProvider = this.modelGroups.find(g =>
-      g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
-    );
-    if (selectedProvider) {
-      const selectedModelObj = selectedProvider.models.find(m =>
-        m.value === this.selectedNamespace.preview_settings.model
-      );
-      this.selectedModel = selectedModelObj?.value;
-    }
-
-    this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
-    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
-
-
-
-    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
-
-    const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
-    this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
-  }
-
-  async getIntegrationByName() {
-
-    const integrationName = 'ollama';
-
-    return new Promise((resolve, reject) => {
-
-      this.integrationService.getIntegrationByName(integrationName).subscribe((res: any) => {
-
-        resolve(res)
-      }, err => {
-        this.logger.error(err);
-        reject([])
-      }, () => {
-        this.logger.log('POST REQUEST * COMPLETE *');
-      });
-    })
-
-  }
-
-  async _getOllamaModels() {
-    LLM_MODEL.forEach(async (model) => {
-      if (model.value === "ollama") {
-        const NEW_MODELS = await this.getIntegrationByName();
-        this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS);
-
-        if (NEW_MODELS['value']?.models) {
-          this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS['value'].models);
-          const models = NEW_MODELS['value']?.models.map(item => ({
-            name: item,
-            value: item
-          }));
-          model.models = models;
-        }
-      }
-    });
-  }
-
-
-
-
+ 
   // listenToAiSettingsChanges() {
   //   this.logger.log('[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal 2', this.wasOpenedFromThePreviewKBModal)
   //   this.kbService.editedAiSettings$.subscribe((editedAiSettings: any) => {
@@ -1104,5 +844,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     window.open(url, '_blank');
   }
 
+  formatMaxTokens(value: number): string {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
+    return value.toString();
+  }
 
 }

@@ -84,7 +84,7 @@ button.user-details-btn-close {
     text-transform: uppercase;
     color: #647491;
     position: relative;
-    top: 1px;
+    top: 3px;
     cursor: pointer;
 }
 
@@ -208,6 +208,9 @@ button.user-details-btn-close {
     margin-top: 365px;
     border: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: -1;
+    position: relative;
+
 }
 
 .camera-on-hover {
