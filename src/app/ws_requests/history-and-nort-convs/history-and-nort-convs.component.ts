@@ -18,6 +18,7 @@ import { NotifyService } from '../../core/notify.service';
 import { AppConfigService } from '../../services/app-config.service';
 // import * as moment from 'moment';
 import moment from "moment";
+import 'moment-timezone';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
@@ -36,6 +37,7 @@ import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { NavigationService } from 'app/services/navigation.service';
+
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -325,6 +327,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
   isDefaultRole: boolean;
+  currentUTCName: string;
 
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
@@ -431,6 +434,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
     this.listenToGoBack()
+    this.getCurrentTimezone()
   }
 
   ngOnDestroy() {
@@ -440,6 +444,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.unsubscribe$.complete();
     }
     this.backSub?.unsubscribe();
+  }
+
+  getCurrentTimezone() {
+    this.currentUTCName = moment.tz.guess();
+    console.log("[HISTORY & NORT-CONVS] currentUTCName ", this.currentUTCName)
   }
 
    listenToGoBack() {
@@ -2628,6 +2637,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   search(calledby) {
     console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH calledby ', calledby)
     
+    // Get current timezone
+    this.currentUTCName = moment.tz.guess();
+    
     // Validate that both start and end dates are provided
     if (!this.startDateDefaultValue || !this.endDateDefaultValue) {
       this.notify.showWidgetStyleUpdateNotification( this.translate.instant('SelectTheDateRangeToSearch'),3, 'warning' );
@@ -2859,7 +2871,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'duration=' + this.duration + '&'
       + 'called=' + this.called_phone + '&'
       + 'caller=' + this.caller_phone + '&'
-      + 'call_id=' + this.call_id
+      + 'call_id=' + this.call_id + '&'
+      + 'timezone=' + this.currentUTCName
 
     // + 'called_phone=' + this.called_phone + '&'
     // + 'caller_phone=' + this.caller_phone
