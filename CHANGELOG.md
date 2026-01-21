@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.162-stage 
+- Fixes the bug: the re-rerank checkbox is not clickable
+
 ### 2.7.161-stage 
 - Adds the ability to set the Re-ranking multiplier in the AI settings dialog
 - Other improvements
