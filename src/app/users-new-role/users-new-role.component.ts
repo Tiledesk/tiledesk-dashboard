@@ -299,8 +299,8 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view' },
-        { key: PERMISSIONS.WIDGETSETUP_UPDATE, label: 'Able to update ' },
+        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view and update' },
+        // { key: PERMISSIONS.WIDGETSETUP_UPDATE, label: 'Able to update ' },
         // { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
         // { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },

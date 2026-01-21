@@ -914,22 +914,25 @@
             <thead class="text">
               <tr>
 
-                <th class="table-header-option"> </th>
+                <th class="table-header-option" *ngIf="IS_HERE_FOR_HISTORY"> </th>
 
                 <th class="table-header-option" style="text-align: center;"
-                  *ngIf="(USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY) || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_DELETE) ">
+                  *ngIf="(USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY) || (USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && PERMISSION_TO_DELETE && IS_HERE_FOR_HISTORY) ">
                   <!-- <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
                     refresh
                   </span> -->
                 </th>
 
-                <!-- *ngIf="(!IS_HERE_FOR_HISTORY && USER_ROLE !== 'agent')" -->
+                <!-- Checkbox column for NORT -->
                 <th class="table-header-option t-h-o" style="text-align: center;"
-                  *ngIf="(!IS_HERE_FOR_HISTORY && USER_ROLE === 'owner' || !IS_HERE_FOR_HISTORY && USER_ROLE === 'admin') || (!IS_HERE_FOR_HISTORY && USER_ROLE !== 'owner' && USER_ROLE !== 'admin' && USER_ROLE !== 'agent' && !PERMISSION_TO_ARCHIVE_REQUEST)">
+                  *ngIf="!IS_HERE_FOR_HISTORY && USER_ROLE !== 'agent'">
                   <!-- <span class="material-icons" style="vertical-align:middle; color: #1877f2; cursor: pointer;">
                     refresh
                   </span> -->
                 </th>
+
+                <!-- Icon column for NORT -->
+                <th class="table-header-option" *ngIf="!IS_HERE_FOR_HISTORY"> </th>
 
                 <!--  ----------------------------- -->
                 <!--  REQUEST ID  -->

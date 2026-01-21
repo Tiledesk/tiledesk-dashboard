@@ -6021,8 +6021,13 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
   }
 
   openContactDetailsInNewWindow() {
-    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
-    window.open(url, '_blank');
+    if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
+      window.open(url, '_blank');
+    } else {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
+       window.open(url, '_top');
+    }
   }
 
   goToMemberProfile(member, member_id: any) {
