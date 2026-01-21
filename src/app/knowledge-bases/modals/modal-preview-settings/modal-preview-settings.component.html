@@ -321,8 +321,7 @@
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="rerank"
             (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open(); rerankingMultiplier.close()"
-            (click)="rerank.close(); onCheckboxClick($event)">
-            <!-- (click)="onCheckboxClick($event)" -->
+            (click)="rerank.close()">
             <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
             <span class="setting-label">
                     {{'KbPage.ReRanking' | translate}}
