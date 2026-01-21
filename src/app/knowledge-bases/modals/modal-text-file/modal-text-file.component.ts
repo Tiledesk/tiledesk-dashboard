@@ -36,7 +36,8 @@ export class ModalTextFileComponent implements OnInit {
 
   createConditionGroup(): FormGroup {
     const contentPattern = /^[^&<>]{3,}$/;
-    const namePattern = /^[^&<>]{3,}$/;
+    // const namePattern = /^[^&<>]{3,}$/;
+    const namePattern = /^[^&<>]{1,}$/;
     return this.formBuilder.group({
       content: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.pattern(namePattern)]]
