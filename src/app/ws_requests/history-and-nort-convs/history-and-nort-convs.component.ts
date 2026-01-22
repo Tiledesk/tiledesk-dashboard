@@ -18,6 +18,7 @@ import { NotifyService } from '../../core/notify.service';
 import { AppConfigService } from '../../services/app-config.service';
 // import * as moment from 'moment';
 import moment from "moment";
+import 'moment-timezone';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
@@ -314,6 +315,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   requests_status_selected_from_advanced_option: string;
   youCannotJoinChat: string;
   joinChatTitle: string;
+  currentUTCName: string;
 
   upgradePlan: string;
   cancel: string;
@@ -2835,6 +2837,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.call_id = ""
     }
 
+    // Get timezone only if both start_date and end_date are selected
+    let timezoneParam = '';
+    if (this.startDateValue && this.endDateValue) {
+      this.currentUTCName = moment.tz.guess();
+      timezoneParam = '&timezone=' + (this.currentUTCName || 'UTC');
+    }
 
     this.queryString =
       variable_parameter
@@ -2852,7 +2860,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'called=' + this.called_phone + '&'
       + 'caller=' + this.caller_phone + '&'
       + 'call_id=' + this.call_id
-
+      + timezoneParam
     // + 'called_phone=' + this.called_phone + '&'
     // + 'caller_phone=' + this.caller_phone
     // + '&'

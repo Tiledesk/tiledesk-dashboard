@@ -19,6 +19,7 @@ import { RolesService } from 'app/services/roles.service';
 import { C } from '@angular/cdk/keycodes';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { browserRefresh } from 'app/app.component';
+import { AppConfigService } from 'app/services/app-config.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -75,6 +76,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   subscriptionIsActive: boolean;
   profileType: string;
   user: any;
+  salesEmail: string;
+  public_Key: string;
+  isVisiblePAY: boolean;
 
   isAuthorized = false;
   permissionChecked = false;
@@ -94,18 +98,21 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private projectPlanService: ProjectPlanService,
     private appService: AppStoreService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    public appConfigService: AppConfigService,
   ) {
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
+    this.salesEmail = _brand['CONTACT_SALES_EMAIL'];
     // this.INTEGRATIONS_CLONE = JSON.parse(JSON.stringify(INTEGRATION_LIST_ARRAY))
 
   }
 
   ngOnInit(): void {
     this.getCurrentProject();
-    this.getLoggedUser()
+    this.getLoggedUser();
+    this.getOSCODE();
     this.getProjectPlan();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
@@ -170,6 +177,53 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   // ------------------------------
   // UTILS FUNCTIONS - START
   // ------------------------------
+
+    getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[INTEGRATION-COMP] AppConfigService getAppConfig public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[INTEGRATION-COMP] PUBLIC-KEY - public_Key keys', keys)
+
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+          this.logger.log('[INTEGRATION-COMP] isVisiblePAY', this.isVisiblePAY)
+        } else {
+          this.isVisiblePAY = true;
+          this.logger.log('[INTEGRATION-COMP] isVisiblePAY', this.isVisiblePAY)
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+  }
+
+  getPayValue(): boolean {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    let keys = this.public_Key.split("-");
+
+    let payKey = keys.find((key) => key.startsWith('PAY'));
+    if (payKey) {
+      let payParts = payKey.split(':');
+      let payValue = payParts[1];
+      if (payValue === 'F') {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    // If PAY key doesn't exist, return false
+    return false;
+  }
 
   getLoggedUser() {
     this.auth.user_bs
@@ -447,7 +501,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
-    this.checkPlan(integration.plan).then(() => {
+    this.checkPlan(integration, integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
@@ -861,10 +915,26 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
   }
 
-  checkPlan(integration_plan) {
+  checkPlan(integration, integration_plan) {
     this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
+
+      // TWILIO_VOICE: Check only customization, not plan
+      // Reject if getPayValue() is false, or if customization doesn't exist, or if voice_twilio key doesn't exist, or if voice_twilio is false
+      // Resolve only if getPayValue() is true and voice_twilio exists and is true
+      if (integration && integration.key === this.INT_KEYS.TWILIO_VOICE) {
+        if (!this.getPayValue()) {
+          reject(false);
+        } else if (!this.customization) {
+          reject(false);
+        } else if (!this.customization.hasOwnProperty(this.INT_KEYS.TWILIO_VOICE) || this.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
+          reject(false);
+        } else {
+          resolve(true);
+        }
+        return;
+      }
 
       // FREE or SANDBOX PLAN
       // if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
@@ -948,6 +1018,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   manageAppVisibility(projectProfileData) {
+    const isVisiblePAY = this.getPayValue();
+    this.logger.log('[INTEGRATIONS] manageAppVisibility isVisiblePAY ', isVisiblePAY)
 
     if (projectProfileData && projectProfileData.customization) {
 
@@ -965,6 +1037,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
       if (projectProfileData.customization[this.INT_KEYS.TWILIO_SMS] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      // Remove TWILIO_VOICE if getPayValue() is false or if customization.voice_twilio is false
+      if (!isVisiblePAY || (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false)) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
@@ -996,24 +1073,24 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // TWILIO_VOICE
       // -----------------------------
       // Removes "Twilio voice" integration if in not activated in customization
-      if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
-        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
-      }
+      //if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
+      //  let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      //  if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      //}
 
       // Restores the "Twilio voice" integration (use case: it was removed from the Integration array in a project where it was not active)
-      if (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] && projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === true) {
-        this.logger.log('[INTEGRATIONS] manageAppVisibility TWILIO_VOICE ')
-        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-        if (index != -1) {
-          this.logger.log('TWILIO_VOICE index A', index)
-        } else if (index == -1) {
-          this.logger.log('TWILIO_VOICE index B', index)
-          const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-          this.logger.log('twilioVoiceObjct', twilioVoiceObjct)
-          this.INTEGRATIONS.push(twilioVoiceObjct)
-        }
-      }
+      //if (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] && projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === true) {
+      //  this.logger.log('[INTEGRATIONS] manageAppVisibility TWILIO_VOICE ')
+      //  let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      //  if (index != -1) {
+      //    this.logger.log('TWILIO_VOICE index A', index)
+      //  } else if (index == -1) {
+      //    this.logger.log('TWILIO_VOICE index B', index)
+      //    const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      //    this.logger.log('twilioVoiceObjct', twilioVoiceObjct)
+      //    this.INTEGRATIONS.push(twilioVoiceObjct)
+      //  }
+      //}
 
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
@@ -1028,12 +1105,19 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
       if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
 
-      let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-      if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+      // Remove TWILIO_VOICE if getPayValue() is false (even when customization is not present)
+      if (!isVisiblePAY) {
+        let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+      }
 
     }
 
     this.integrationListReady = true;
+  }
+
+  contactUs() {
+    window.open(`mailto:${this.salesEmail}?subject=Twilio Voice`);
   }
 
   trackSavedIntegration(integrationName, integrationisVerified) {

@@ -186,30 +186,49 @@
                                         <div class="int-lock-container">
                                             <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
 
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-title">
+                                                {{ 'ContactUs' | translate }}!</p>
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle">
+                                                Voice brings real-time, human interaction into your workflows. 
+                                                With Twilio Voice, you can handle calls, automate voice interactions, and seamlessly switch between chat and voice.</p>
+
                                             <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
                                                 class="upgrade-title">
                                                 {{ 'Integration.UpgradePlan' | translate }}</p>
+
                                             <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
                                                 class="upgrade-subtitle">
                                                 {{'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
+
                                             <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
                                                 class="upgrade-subtitle">
                                                 {{'Integration.OpenaiSubtitle2' | translate }}</p>
+
                                             <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
                                                 class="upgrade-subtitle"
                                                 [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
                                             </p>
 
-                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI"
+                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE"
                                                 class="upgrade-title">
                                                 {{'Integration.UpgradePlan' | translate }}</p>
-                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI"
+                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE"
                                                 class="upgrade-subtitle"
                                                 [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
                                             </p>
 
-                                            <button class="custom-upgrade-primary-button" (click)="goToPricing()">
-                                                {{'Integration.UpgradeNow' | translate }}</button>
+                                            <button *ngIf="integrationSelectedName !== INT_KEYS.TWILIO_VOICE" 
+                                                class="custom-upgrade-primary-button" 
+                                                (click)="goToPricing()">
+                                                {{'Integration.UpgradeNow' | translate }}
+                                            </button>
+
+                                             <button *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" 
+                                                class="custom-upgrade-primary-button" 
+                                                (click)="contactUs()">
+                                                {{'ContactUs' |  translate }}
+                                            </button>
                                         </div>
                                     </div>
 
