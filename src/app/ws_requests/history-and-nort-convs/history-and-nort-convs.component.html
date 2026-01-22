@@ -606,7 +606,7 @@
     <!-- Conversations found: sempre visibile all'inizio -->
     <div class="conversations-count" style="margin-right: 16px;">
       {{ 'ConversationsFound' | translate }}:
-      <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+      <span *ngIf="showSpinner" class="loading">{{'Processing' | translate}} </span>
       <span *ngIf="!showSpinner">
         {{requestsCount || 0}}
       </span>

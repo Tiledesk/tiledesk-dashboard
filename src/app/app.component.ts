@@ -279,7 +279,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // ------------------------------------------------------------------------------------------  
                         
                 const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
-                console.log('[APP-COMPONENT] SSO tiledeskLogOut ', tiledeskLogOut)
+                this.logger.log('[APP-COMPONENT] SSO tiledeskLogOut ', tiledeskLogOut)
 
                 if (!tiledeskLogOut) return;
 
@@ -586,7 +586,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     keycloakInit() {
         this.keycloakService.init().then(authenticated => {
             if (!authenticated) {
-                console.log('[APP-COMPONENT] 🔑 Login required');
+                this.logger.log('[APP-COMPONENT] 🔑 Login required');
             }
         });
     }

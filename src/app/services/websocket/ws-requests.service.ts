@@ -205,7 +205,7 @@ export class WsRequestsService implements OnDestroy {
 
       if (project) {
         // this.logger.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 2', project._id)
-        console.log('[WS-REQUESTS-SERV] - SUBSCRIBE (REF) WITH NEW PROJECT-ID', project._id)
+        // console.log('[WS-REQUESTS-SERV] - SUBSCRIBE (REF) WITH NEW PROJECT-ID', project._id)
         this.logger.log('[WS-REQUESTS-SERV] - OLD PROJECT-ID', this.project_id)
 
         this.project_id = project._id;
@@ -219,7 +219,7 @@ export class WsRequestsService implements OnDestroy {
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
-              console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA ", data);
+              // console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA ", data);
               if (data.snapshot && data.snapshot.agents) {
 
                 data.agents = data['snapshot']["agents"]
@@ -304,7 +304,7 @@ export class WsRequestsService implements OnDestroy {
             // Update
           }, function (data, notification) {
 
-            console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
 
@@ -1301,10 +1301,10 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
-    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
+    // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses  ', statuses);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses length ', statuses?.length);
-    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+    // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
@@ -1325,7 +1325,7 @@ export class WsRequestsService implements OnDestroy {
     if (querystring && querystring !== undefined) {
       if (status === '100' || status === '200' || status === '1000' || status === '150' || status === "1000,100,200" || status === "100,150,200"  || status === "1000,100,200,150" || statuses?.length > 0) {
         _querystring = '&' + querystring
-        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
+        // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {
         _querystring = querystring + '&'
 

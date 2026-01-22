@@ -150,8 +150,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[ActivitiesComponent] - Role:', status.role);
-          console.log('[ActivitiesComponent] - Permissions:', status.matchedPermissions);
+          this.logger.log('[ActivitiesComponent] - Role:', status.role);
+          this.logger.log('[ActivitiesComponent] - Permissions:', status.matchedPermissions);
   
           // ---------------------------------
           // PERMISSION_TO_VIEW_FLOWS
@@ -159,17 +159,17 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_EDIT_FLOWS = true;
-            console.log('[ActivitiesComponent] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+            this.logger.log('[ActivitiesComponent] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_EDIT_FLOWS = false;
-            console.log('[ActivitiesComponent] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+            this.logger.log('[ActivitiesComponent] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-            console.log('[ActivitiesComponent] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+            this.logger.log('[ActivitiesComponent] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
           }
   
           // PERMISSION_TO_READ_TEAMMATE_DETAILS
@@ -177,31 +177,31 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
             if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
   
               this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-              console.log('[ActivitiesComponent] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+              this.logger.log('[ActivitiesComponent] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
             } else {
               this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-              console.log('[ActivitiesComponent] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+              this.logger.log('[ActivitiesComponent] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
             }
           } else {
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-            console.log('[ActivitiesComponent] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[ActivitiesComponent] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           }
 
           // PERMISSION TO UPDATE APP
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_UPDATE_APP = true;
-            console.log('[APP-STORE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+            this.logger.log('[ActivitiesComponent] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_UPDATE_APP = false;
-            console.log('[APP-STORE] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+            this.logger.log('[ActivitiesComponent] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
-            console.log('[APP-STORE] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+            this.logger.log('[ActivitiesComponent] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
           }
   
   
@@ -457,7 +457,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           if (res.activities) {
             this.usersActivities = res.activities;
             this.usersActivities.forEach((activity: any) => {
-              console.log('[ActivitiesComponent] - getActivities RESPONSE - activity ', activity);
+              this.logger.log('[ActivitiesComponent] - getActivities RESPONSE - activity ', activity);
 
               if (activity && activity.verb && activity.verb === 'PROJECT_USER_UPDATE') {
                 if (activity.actor &&
@@ -490,7 +490,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     } else {
                       this.usersService.getProjectUserByUserId(activity.actor.id)
                         .subscribe((projectUser: any) => {
-                          console.log('[ActivitiesComponent] projectUser ', projectUser)
+                          this.logger.log('[ActivitiesComponent] projectUser ', projectUser)
 
                           if (projectUser && projectUser[0] && projectUser[0].id_user) {
                             this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'activities');

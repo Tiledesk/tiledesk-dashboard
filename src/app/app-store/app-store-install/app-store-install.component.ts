@@ -62,11 +62,11 @@ export class AppStoreInstallComponent implements OnInit {
 
    async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('app-store')
-    console.log('[APP-STORE-INSTALL] result ', result)
+    this.logger.log('[APP-STORE-INSTALL] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[APP-STORE-INSTALL] isAuthorized ', this.isAuthorized)
-    console.log('[APP-STORE-INSTALL] permissionChecked ', this.permissionChecked)
+    this.logger.log('[APP-STORE-INSTALL] isAuthorized ', this.isAuthorized)
+    this.logger.log('[APP-STORE-INSTALL] permissionChecked ', this.permissionChecked)
   }
 
 

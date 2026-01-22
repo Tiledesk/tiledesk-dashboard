@@ -81,15 +81,15 @@ export class AutologinComponent implements OnInit {
 
     getQueryParams() {
       this.route.queryParams.subscribe((queryParams) => {
-        console.log('[AUTOLOGIN] SSO queryParams:', queryParams);
+        this.logger.log('[AUTOLOGIN] SSO queryParams:', queryParams);
         const tiledeskLogOut = queryParams['tiledesk_logOut'];
-        console.log('[AUTOLOGIN] SSO tiledesk_logOut:', tiledeskLogOut);
+        this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut:', tiledeskLogOut);
 
         if (!tiledeskLogOut) {
           this.localDbService.removeFromStorage('tiledesk_logOut');
-          console.log('[AUTOLOGIN] SSO tiledesk_logOut rimosso dallo storage');
+          this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut rimosso dallo storage');
         } else {
-          console.log('[AUTOLOGIN] SSO tiledesk_logOut presente:', tiledeskLogOut);
+          this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut presente:', tiledeskLogOut);
         }
       
       });
@@ -107,14 +107,14 @@ export class AutologinComponent implements OnInit {
 
   getJWTAndRouteParamsAndLogin() {
     this.route.params.subscribe((params) => {
-      console.log('[AUTOLOGIN] SSO - autologin page params ', params)
+      this.logger.log('[AUTOLOGIN] SSO - autologin page params ', params)
 
       const route = params.route
       this.logger.log('[AUTOLOGIN] SSO - autologin page params route', route);
 
 
       const JWT = params.token
-      console.log('[AUTOLOGIN] SSO - autologin page params token ', JWT);
+      this.logger.log('[AUTOLOGIN] SSO - autologin page params token ', JWT);
 
        
 
@@ -140,7 +140,7 @@ export class AutologinComponent implements OnInit {
         }
       } else {
         if (JWT && route) {
-          console.log('[AUTOLOGIN] SSO - here about to call ssoLogin ');
+          this.logger.log('[AUTOLOGIN] SSO - here about to call ssoLogin ');
           this.ssoLogin(JWT, route, storedJWT)
         }
       }
@@ -167,8 +167,8 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route, storedJWT) {
-    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
-    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
     // console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
 

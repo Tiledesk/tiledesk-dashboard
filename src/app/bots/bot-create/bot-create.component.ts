@@ -236,23 +236,23 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[BOT-CREATE] - Role:', status.role);
-        console.log('[BOT-CREATE] - Permissions:', status.matchedPermissions);
+        this.logger.log('[BOT-CREATE] - Role:', status.role);
+        this.logger.log('[BOT-CREATE] - Permissions:', status.matchedPermissions);
 
         // PERMISSION TO UPDATE
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
           if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[BOT-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[BOT-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false
 
-            console.log('[BOT-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[BOT-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[BOT-CREATE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[BOT-CREATE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
         // You can also check status.role === 'owner' if needed

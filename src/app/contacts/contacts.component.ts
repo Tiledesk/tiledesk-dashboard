@@ -1308,7 +1308,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (isAvailable === false) {
           return
         }
-
+        console.log('[CONTACTS-COMP] here YES ')
         this.dwnldCSV()
 
         //  this.logger.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
@@ -1322,6 +1322,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (isAvailable === false) {
         return
       }
+      console.log('[CONTACTS-COMP] here YES 2')
       this.dwnldCSV()
     }
   }

@@ -115,23 +115,23 @@ export class AppCreateComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[APP-CREATE] - Role:', status.role);
-        console.log('[APP-CREATE] - Permissions:', status.matchedPermissions);
+        this.logger.log('[APP-CREATE] - Role:', status.role);
+        this.logger.log('[APP-CREATE] - Permissions:', status.matchedPermissions);
 
         // PERMISSION TO UPDATE
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
           if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[APP-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[APP-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false
 
-            console.log('[APP-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[APP-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[APP-CREATE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[APP-CREATE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
 
@@ -141,11 +141,11 @@ export class AppCreateComponent implements OnInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('app-store')
-    console.log('[APP-CREATE] result ', result)
+    this.logger.log('[APP-CREATE] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[APP-CREATE] isAuthorized ', this.isAuthorized)
-    console.log('[APP-CREATE] permissionChecked ', this.permissionChecked)
+    this.logger.log('[APP-CREATE] isAuthorized ', this.isAuthorized)
+    this.logger.log('[APP-CREATE] permissionChecked ', this.permissionChecked)
   }
 
   getRouteParamsAndPopulateField() {

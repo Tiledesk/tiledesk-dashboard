@@ -976,30 +976,29 @@ p.member:hover {
   color: #aaa
 }
 
-.loading:after {
-  overflow: hidden;
-  display: inline-block;
-  vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
-  animation: ellipsis steps(4, end) 900ms infinite;
-  content: "\2026";
-  /* ascii code for the ellipsis character */
-  width: 0px;
-  color: #ddd;
-  font-weight: 100 !important;
-}
+// .loading:after {
+//   overflow: hidden;
+//   display: inline-block;
+//   vertical-align: bottom;
+//   -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+//   animation: ellipsis steps(4, end) 900ms infinite;
+//   content: "\2026";
+//   width: 0px;
+//   color: #ddd;
+//   font-weight: 100 !important;
+// }
 
-@keyframes ellipsis {
-  to {
-    width: 20px;
-  }
-}
+// @keyframes ellipsis {
+//   to {
+//     width: 20px;
+//   }
+// }
 
-@-webkit-keyframes ellipsis {
-  to {
-    width: 20px;
-  }
-}
+// @-webkit-keyframes ellipsis {
+//   to {
+//     width: 20px;
+//   }
+// }
 
 
 .ticket-id-badge {

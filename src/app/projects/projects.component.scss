@@ -482,7 +482,8 @@ input[type="text"] {
 .availabily---wpr--prjct-for-panel>.select-pu-status.deleted-project {
   background: #eee;
   color: #999 !important;
-  opacity: .4;
+  // opacity: .4;
+  opacity: 0;
 }
 
 
@@ -624,6 +625,11 @@ input[type="text"] {
 .project-deleted-card {
   background-color: #eee;
 }
+
+.project-deleted-card > .project-card-footer {
+  background-color: #eee;
+}
+
 
 .project-deleted-card-text-color {
   color: #999 !important;
