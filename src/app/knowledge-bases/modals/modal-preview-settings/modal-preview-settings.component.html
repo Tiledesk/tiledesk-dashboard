@@ -376,10 +376,10 @@
         <div class="field-box" style="margin-bottom: 6px !important;">
             <div class="action-wait-slider">
                 <div class="action-wait-range">2</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="22" [(ngModel)]="reRankingMultipler"
+                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="50" [(ngModel)]="reRankingMultipler"
                     (change)="updateSliderValue($event.value, 're_ranking_multipler')" aria-label="units">
                 </mat-slider>
-                <div class="action-wait-range">22</div>
+                <div class="action-wait-range">50</div>
             </div>
             <!-- <input type="text" class="slider-output" value="{{topK}}" disabled> -->
         </div>
@@ -412,7 +412,7 @@
     <!-- ------------------------- -->
     <!-- System Context -->
     <!-- ------------------------- -->
-    <div class="form-container">
+    <div class="form-container" [ngStyle]="{'margin-top':!reRanking  ? '16px' : '0px' }">
         <div class="label-wpr">
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
