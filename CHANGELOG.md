@@ -1,13 +1,13 @@
 # tiledesk-dashboard
 
-### 2.7.163-stage 
-- Allows searching in History and non-real time conversations only if a range is selected
-
-### 2.7.162-AR
-- Improves the Re-index feature
+### 2.7.164-AR
+- Bootstrap 5
 
 ### 2.7.163-AR
 - Removes maintenance 
+
+### 2.7.162-AR
+- Improves the Re-index feature
 
 ### 2.7.161-AR
 - Adds maintenance component
