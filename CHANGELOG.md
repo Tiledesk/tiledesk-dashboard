@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+
+### 2.7.164-stage 
+- Added the Connect button to retrieve tools on each created MCP server
+- Added a modal for Viewing Tools
+- Added the tools to the MCP Server object and saved them
+- Displays the Twilio Voice integration in the integrations list for all plans
+- Manages the display of specific messages in the integrations list in case the subscription has expired
+
 ### 2.7.162-stage 
 - Fixes the bug: the re-rerank checkbox is not clickable
 
