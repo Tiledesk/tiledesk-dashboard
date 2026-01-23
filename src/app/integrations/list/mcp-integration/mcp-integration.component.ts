@@ -167,6 +167,24 @@ export class McpIntegrationComponent implements OnInit {
   }
 
   /**
+   * Normalize tools array to ensure each tool has only name and description
+   * @param tools Array of tools (may contain extra fields)
+   * @returns Normalized array with only name and description
+   */
+  private normalizeTools(tools: any[]): McpTool[] {
+    if (!Array.isArray(tools)) {
+      return [];
+    }
+
+    return tools
+      .filter(tool => tool && tool.name) // Filter out invalid tools (must have at least name)
+      .map(tool => ({
+        name: tool.name || '',
+        description: tool.description || undefined
+      }));
+  }
+
+  /**
    * Connect to MCP server and retrieve tools
    */
   connectToServer(): void {
@@ -187,20 +205,23 @@ export class McpIntegrationComponent implements OnInit {
         this.logger.log('[INT-MCP] Tools retrieved:', response);
         
         // Handle response - could be array of tools or object with tools property
-        let tools: McpTool[] = [];
+        let rawTools: any[] = [];
         if (Array.isArray(response)) {
-          tools = response;
+          rawTools = response;
         } else if (response && Array.isArray(response.tools)) {
-          tools = response.tools;
+          rawTools = response.tools;
         } else if (response && response.data && Array.isArray(response.data)) {
-          tools = response.data;
+          rawTools = response.data;
         }
+
+        // Normalize tools to ensure only name and description are present
+        const tools = this.normalizeTools(rawTools);
 
         if (tools && tools.length > 0) {
           this.currentTools = tools;
           this.toolsRetrieved = true;
           
-          // Store tools in current server
+          // Store normalized tools in current server
           this.currentServer.tools = tools;
           
           // Show tools modal
@@ -246,14 +267,17 @@ export class McpIntegrationComponent implements OnInit {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
         // Handle response
-        let tools: McpTool[] = [];
+        let rawTools: any[] = [];
         if (Array.isArray(response)) {
-          tools = response;
+          rawTools = response;
         } else if (response && Array.isArray(response.tools)) {
-          tools = response.tools;
+          rawTools = response.tools;
         } else if (response && response.data && Array.isArray(response.data)) {
-          tools = response.data;
+          rawTools = response.data;
         }
+
+        // Normalize tools to ensure only name and description are present
+        const tools = this.normalizeTools(rawTools);
 
         // Find server index and update
         const index = this.integration.value.servers.findIndex(s => 
@@ -261,7 +285,7 @@ export class McpIntegrationComponent implements OnInit {
         );
 
         if (index >= 0) {
-          // Update tools for this server
+          // Update normalized tools for this server
           this.integration.value.servers[index].tools = tools;
           
           // If this is the current server being edited, update it too
@@ -377,16 +401,19 @@ export class McpIntegrationComponent implements OnInit {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
         // Handle response
-        let tools: McpTool[] = [];
+        let rawTools: any[] = [];
         if (Array.isArray(response)) {
-          tools = response;
+          rawTools = response;
         } else if (response && Array.isArray(response.tools)) {
-          tools = response.tools;
+          rawTools = response.tools;
         } else if (response && response.data && Array.isArray(response.data)) {
-          tools = response.data;
+          rawTools = response.data;
         }
 
-        // Update tools for current server
+        // Normalize tools to ensure only name and description are present
+        const tools = this.normalizeTools(rawTools);
+
+        // Update normalized tools for current server
         this.currentServer.tools = tools;
         
         // Update in the servers array
