@@ -13,6 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { SharedModule } from 'app/shared/shared.module';
@@ -27,8 +28,10 @@ import { CohereIntegrationComponent } from './list/cohere-integration/cohere-int
 import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-integration.component';
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
 import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
+import { McpToolsModalComponent } from './list/mcp-integration/mcp-tools-modal/mcp-tools-modal.component';
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
 import { VLLMComponent } from './list/v-llm/v-llm.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -54,6 +57,7 @@ const routes: Routes = [
     OllamaIntegrationComponent,
     McpIntegrationComponent,
     McpServerTableComponent,
+    McpToolsModalComponent,
     DeepseekIntegrationComponent,
     VLLMComponent
   ],
@@ -64,6 +68,8 @@ const routes: Routes = [
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,

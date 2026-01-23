@@ -39,6 +39,9 @@
                             <span>{{ 'Type' | translate }}</span>
                             <span class="material-icons-outlined sort-icon">{{ getSortIcon('transport') }}</span>
                         </th>
+                        <th class="tools-column">
+                            <span>{{ 'Integration.Tools' | translate }}</span>
+                        </th>
                         <th class="actions-column"></th>
                     </tr>
                 </thead>
@@ -57,23 +60,25 @@
                                 <span>{{ getTransportDisplay(server.transport) }}</span>
                             </div>
                         </td>
+                        <td class="tools-column">
+                            <div class="tools-badge">
+                                <span class="badge-number">{{ getToolsCount(server) }}</span>
+                            </div>
+                        </td>
                         <td class="actions-column">
-                            <button mat-icon-button 
-                                    [matMenuTriggerFor]="menu" 
-                                    aria-label="Actions"
-                                    (click)="$event.stopPropagation()">
-                                <mat-icon>more_vert</mat-icon>
+                            <button 
+                                mat-icon-button 
+                                (click)="onDelete(server, $event)"
+                                [matTooltip]="'Delete' | translate"
+                                [matTooltipPosition]="'after'"
+                                aria-label="Delete"
+                                class="delete-button">
+                                <mat-icon>delete</mat-icon>
                             </button>
-                            <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                                <button mat-menu-item (click)="onDelete(server, $event)">
-                                    <mat-icon>delete</mat-icon>
-                                    <span>{{ 'Delete' | translate }}</span>
-                                </button>
-                            </mat-menu>
                         </td>
                     </tr>
                     <tr *ngIf="filteredServers.length === 0">
-                        <td colspan="4" class="no-data">
+                        <td colspan="5" class="no-data">
                             <div class="no-data-message">
                                 <span class="material-icons-outlined">inbox</span>
                                 <p>{{ 'Integration.NoMCPServersFound' | translate }}</p>

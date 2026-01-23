@@ -121,15 +121,15 @@
         text-align: center;
       }
 
-      // Specific column widths - Actions: 50px, Type: 150px, rest divided 40% Name, 60% URL
+      // Specific column widths - Actions: 60px, Tools: 100px, Type: 150px, rest divided 40% Name, 60% URL
       // With table-layout: fixed, width refers to total column width (content + padding)
       &:nth-child(1) { // Name column - 40% of remaining space
-        width: calc((100% - 200px) * 0.4); // 100% - 50px (Actions) - 150px (Type) = remaining space
+        width: calc((100% - 310px) * 0.4); // 100% - 60px (Actions) - 100px (Tools) - 150px (Type) = remaining space
         min-width: 100px;
       }
       
       &:nth-child(2) { // URL column - 60% of remaining space
-        width: calc((100% - 200px) * 0.6); // 100% - 50px (Actions) - 150px (Type) = remaining space
+        width: calc((100% - 310px) * 0.6); // 100% - 60px (Actions) - 100px (Tools) - 150px (Type) = remaining space
         min-width: 150px;
       }
       
@@ -139,10 +139,17 @@
         max-width: 150px;
       }
       
-      &:nth-child(4) { // Actions column - fixed 50px
-        width: 50px;
-        min-width: 50px;
-        max-width: 50px;
+      &:nth-child(4) { // Tools column - fixed 100px
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        text-align: center;
+      }
+      
+      &:nth-child(5) { // Actions column - fixed 60px
+        width: 60px;
+        min-width: 60px;
+        max-width: 60px;
       }
     }
   }
@@ -175,7 +182,7 @@
 
         &.name-column {
           font-weight: 500;
-          width: calc((100% - 200px) * 0.4);
+          width: calc((100% - 310px) * 0.4);
           min-width: 100px;
 
           .server-name {
@@ -187,7 +194,7 @@
         }
 
         &.url-column {
-          width: calc((100% - 200px) * 0.6);
+          width: calc((100% - 310px) * 0.6);
           min-width: 150px;
 
           .server-url {
@@ -217,22 +224,57 @@
           }
         }
 
+        &.tools-column {
+          width: 100px;
+          min-width: 100px;
+          max-width: 100px;
+          text-align: center;
+          
+          .tools-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            
+            .badge-number {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              min-width: 32px;
+              height: 24px;
+              padding: 0 8px;
+              border-radius: 12px;
+              background-color: #f0f0f0;
+              color: #333;
+              font-size: 12px;
+              font-weight: 600;
+              
+              &:empty {
+                display: none;
+              }
+            }
+          }
+        }
+
         &.actions-column {
-          width: 50px;
-          min-width: 50px;
-          max-width: 50px;
+          width: 60px;
+          min-width: 60px;
+          max-width: 60px;
           text-align: center;
           padding: 8px;
 
-          button {
+          .delete-button {
             opacity: 0;
             transition: opacity 0.2s;
+            
+            .mat-icon{
+              color: #ff6671;
+            }
           }
         }
       }
 
       &:hover {
-        td.actions-column button {
+        td.actions-column .delete-button {
           opacity: 1;
         }
       }
@@ -264,30 +306,6 @@
   }
 }
 
-// Material menu customization
-::ng-deep .custom-menu {
-  .mat-menu-content {
-    padding: 4px 0;
-  }
-
-  .mat-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    height: 40px;
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-  }
-}
 
 // Responsive adjustments
 @media (max-width: 768px) {
@@ -303,16 +321,16 @@
       padding: 10px 12px;
     }
 
-    // Responsive for tablet: Actions: 50px, Type: 150px, rest 40% Name, 60% URL
+    // Responsive for tablet: Actions: 60px, Tools: 100px, Type: 150px, rest 40% Name, 60% URL
     thead th:nth-child(1),
     tbody td.name-column {
-      width: calc((100% - 200px) * 0.4);
+      width: calc((100% - 310px) * 0.4);
       min-width: 80px;
     }
     
     thead th:nth-child(2),
     tbody td.url-column {
-      width: calc((100% - 200px) * 0.6);
+      width: calc((100% - 310px) * 0.6);
       min-width: 120px;
     }
     
@@ -324,10 +342,17 @@
     }
     
     thead th:nth-child(4),
+    tbody td.tools-column {
+      width: 100px;
+      min-width: 100px;
+      max-width: 100px;
+    }
+    
+    thead th:nth-child(5),
     tbody td.actions-column {
-      width: 50px;
-      min-width: 50px;
-      max-width: 50px;
+      width: 60px;
+      min-width: 60px;
+      max-width: 60px;
     }
   }
 }
@@ -345,16 +370,16 @@
       padding: 8px;
     }
 
-    // Responsive for mobile: Actions: 50px, Type: 150px, rest 40% Name, 60% URL
+    // Responsive for mobile: Actions: 60px, Tools: 100px, Type: 150px, rest 40% Name, 60% URL
     thead th:nth-child(1),
     tbody td.name-column {
-      width: calc((100% - 200px) * 0.4);
+      width: calc((100% - 310px) * 0.4);
       min-width: 60px;
     }
     
     thead th:nth-child(2),
     tbody td.url-column {
-      width: calc((100% - 200px) * 0.6);
+      width: calc((100% - 310px) * 0.6);
       min-width: 100px;
     }
     
@@ -366,10 +391,17 @@
     }
     
     thead th:nth-child(4),
+    tbody td.tools-column {
+      width: 100px;
+      min-width: 100px;
+      max-width: 100px;
+    }
+    
+    thead th:nth-child(5),
     tbody td.actions-column {
-      width: 50px;
-      min-width: 50px;
-      max-width: 50px;
+      width: 60px;
+      min-width: 60px;
+      max-width: 60px;
     }
   }
 }
