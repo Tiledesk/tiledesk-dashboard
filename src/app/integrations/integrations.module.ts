@@ -26,10 +26,12 @@ import { GroqIntegrationComponent } from './list/groq-integration/groq-integrati
 import { CohereIntegrationComponent } from './list/cohere-integration/cohere-integration.component';
 import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-integration.component';
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
-import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { VLLMComponent } from './list/v-llm/v-llm.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -65,6 +67,8 @@ const routes: Routes = [
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,

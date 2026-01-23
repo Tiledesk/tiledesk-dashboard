@@ -170,5 +170,28 @@ export class IntegrationService {
     return this.http.get(url,  httpOptions );
   }
 
+  /**
+   * Retrieve MCP tools from server
+   * @param serverUrl The URL of the MCP server
+   * @returns Observable with tools array
+   */
+  getMcpTools(serverUrl: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/mcp/tools";
+    this.logger.debug('[INTEGRATION.SERV] - get MCP tools URL: ', url);
+    this.logger.debug('[INTEGRATION.SERV] - server URL: ', serverUrl);
+
+    const body = {
+      url: serverUrl
+    };
+
+    return this.http.post(url, body, httpOptions);
+  }
 
 }
