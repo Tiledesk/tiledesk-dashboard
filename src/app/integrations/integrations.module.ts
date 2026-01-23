@@ -32,6 +32,7 @@ import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table
 import { VLLMComponent } from './list/v-llm/v-llm.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { McpToolsModalComponent } from './list/mcp-integration/mcp-tools-modal/mcp-tools-modal.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -57,6 +58,7 @@ const routes: Routes = [
     OllamaIntegrationComponent,
     McpIntegrationComponent,
     McpServerTableComponent,
+    McpToolsModalComponent,
     DeepseekIntegrationComponent,
     VLLMComponent
   ],
