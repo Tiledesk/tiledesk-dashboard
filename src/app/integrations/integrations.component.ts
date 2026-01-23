@@ -210,10 +210,13 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.profile_name = projectProfileData.profile_name;
           this.logger.log('[INTEGRATION-COMP] INTEGRATIONS profile_name ', this.profile_name)
 
-          this.trialExpired = projectProfileData.trial_expired
+         
           this.trialExpired = projectProfileData.trial_expired
           this.profileType = projectProfileData.profile_type
           this.subscriptionIsActive = projectProfileData.subscription_is_active
+          // console.log('subscriptionIsActive', this.subscriptionIsActive)
+          // console.log('profileType', this.profileType)
+          // console.log('trialExpired', this.trialExpired)
 
           this.customization = projectProfileData.customization;
 
@@ -843,12 +846,28 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log("INTEGRATIONS_KEYS checkPlan isVisiblePAY: " + this.getPayValue() + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
+      // A = 'Growth',
+      // B = 'Scale',
+      // C = 'Plus',
+      // D = 'Starter',
+      // E = 'Pro', 
+      // EE = 'Business',
+      // F = 'Custom'
 
-      // TWILIO_VOICE: Check only customization, not plan
-      // Reject if getPayValue() is false, or if customization doesn't exist, or if voice_twilio key doesn't exist, or if voice_twilio is false
-      // Resolve only if getPayValue() is true and voice_twilio exists and is true
+      // TWILIO_VOICE: Check trial/subscription status first, then customization
+      // Reject if: trial is expired (profileType === 'free' && trialExpired === true), 
+      //            or subscription is expired (profileType === 'payment' && subscriptionIsActive === false),
+      //            or getPayValue() is false, or customization doesn't exist, or voice_twilio key doesn't exist, or voice_twilio is false
+      // Resolve only if trial/subscription is active, getPayValue() is true, and voice_twilio exists and is true
       if (integration && integration.key === this.INT_KEYS.TWILIO_VOICE) {
-        if (!this.getPayValue()) {
+        // First check: if trial is expired (free profile with expired trial)
+        if (this.profileType === 'free' && this.trialExpired === true) {
+          reject(false);
+        }
+        // Second check: if subscription is expired (payment profile with inactive subscription)
+        else if (this.profileType === 'payment' && this.subscriptionIsActive === false) {
+          reject(false);
+        } else if (!this.getPayValue()) {
           reject(false);
         } else if (!this.customization) {
           reject(false);
@@ -1041,7 +1060,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   contactUs() {
-    window.open(`mailto:${this.salesEmail}?subject=Twilio Voice`);
+    window.open(`mailto:${this.salesEmail}?subject=Enable Twilio Voice for project id ${this.projectID}`);
+  }
+
+  contactUsToUpgradePlan(){
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan (subscription expired) for project id ${this.projectID}`);
   }
 
   trackSavedIntegration(integrationName, integrationisVerified) {
