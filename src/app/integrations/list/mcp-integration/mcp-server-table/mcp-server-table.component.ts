@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
+export interface McpTool {
+  name: string;
+  description?: string;
+}
+
 export interface McpServer {
   id?: string;
   name: string;
   url: string;
   transport: string;
+  tools?: McpTool[];
 }
 
 @Component({
@@ -111,6 +117,10 @@ export class McpServerTableComponent implements OnInit {
     //   return transportMap[transport] || transport;
     // Currently only one transport type is supported
     return transport === 'streamable_http' ? 'HTTP Streamable' : transport;
+  }
+
+  getToolsCount(server: McpServer): number {
+    return server.tools && Array.isArray(server.tools) ? server.tools.length : 0;
   }
 }
 

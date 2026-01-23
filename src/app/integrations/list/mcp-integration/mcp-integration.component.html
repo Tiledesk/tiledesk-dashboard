@@ -34,11 +34,69 @@
             </div>
         </div>
 
+        <!-- Tools Info Section (shown when editing a server with tools) -->
+        <div class="tools-info-section" *ngIf="isEditing && currentServerHasTools()">
+            <div class="tools-badge-info">
+                <span class="tools-label">{{ 'Integration.Tools' | translate }}:</span>
+                <span class="tools-count-badge" [disabled]="isLoadingTools" (click)="viewCurrentServerTools()" >{{ getCurrentServerToolsCount() }}</span>
+            </div>
+            <!-- <button 
+                class="btn btn-outlined btn-view-tools" 
+                (click)="viewCurrentServerTools()"
+                [disabled]="isLoadingTools">
+                {{ 'Integration.ViewTools' | translate }}
+            </button> -->
+        </div>
+
         <div class="form-actions">
-            <button class="btn btn-tdblu-no-boxshadow" (click)="addOrUpdateServer()">
-                <span *ngIf="!isEditing">{{ 'Add' | translate }}</span>
-                <span *ngIf="isEditing">{{ 'Update' | translate }}</span>
+            <!-- Connect button - shown when NOT editing OR when editing a server WITHOUT tools -->
+            <button 
+                *ngIf="!isEditing || (isEditing && !currentServerHasTools())"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="connectToServer()"
+                [disabled]="isLoadingTools || !currentServer.url">
+                <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
+                    {{ 'Integration.Connect' | translate }}
+                </span>
+                <span *ngIf="isLoadingTools && loadingServerUrl === currentServer.url" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.LoadingTools' | translate }}
+                </span>
             </button>
+
+            <!-- Refresh Tools button - shown when editing a server WITH tools -->
+            <button 
+                *ngIf="isEditing && currentServerHasTools()"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="refreshCurrentServerTools()"
+                [disabled]="isLoadingTools || !currentServer.url">
+                <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
+                    {{ 'Integration.RefreshTools' | translate }}
+                </span>
+                <span *ngIf="isLoadingTools && loadingServerUrl === currentServer.url" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.LoadingTools' | translate }}
+                </span>
+            </button>
+
+            <!-- Add button - shown only after tools are retrieved (new server) -->
+            <button 
+                *ngIf="hasToolsRetrieved() && !isEditing"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="addOrUpdateServer()"
+                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
+                {{ 'Add' | translate }}
+            </button>
+
+            <!-- Update button - shown when editing -->
+            <button 
+                *ngIf="isEditing"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="addOrUpdateServer()"
+                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
+                {{ 'Update' | translate }}
+            </button>
+
             <button *ngIf="isEditing" class="btn btn-outlined" (click)="resetForm()">
                 {{ 'Cancel' | translate }}
             </button>
