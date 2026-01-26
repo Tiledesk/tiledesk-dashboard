@@ -331,7 +331,7 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
   checkBotImageExistOnNative() {
     // const baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
     const baseUrl = this.appConfigService.getConfig().baseImageUrl;
-    const imageUrl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    const imageUrl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     const self = this;
     this.logger.log('[CDS-CHATBOT-DTLS] HERE YES')
     this.botProfileImageExist = false
@@ -406,7 +406,7 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
   }
 
   setImageProfileUrl_Native(storage) {
-    this.botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg' // + '&' + new Date().getTime();;
+    this.botProfileImageurl = storage + 'files?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg' // + '&' + new Date().getTime();;
     // this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
     this.timeStamp = new Date().getTime();
   }

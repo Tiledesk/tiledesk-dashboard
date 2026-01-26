@@ -181,7 +181,7 @@ export class UsersService {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + imageStorage + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     } else {
-      imageUrl = imageStorage + 'images?path=uploads%2Fusers%2F' + user_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+      imageUrl = imageStorage + 'files?path=uploads%2Fusers%2F' + user_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
     }
     const self = this;
 
@@ -783,7 +783,7 @@ export class UsersService {
               if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
                 imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectUser.id_user._id + "%2Fphoto.jpg?alt=media"
               } else {
-                imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectUser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + projectUser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
               }
 
               this.checkImageExists(imgUrl, (existsImage) => {

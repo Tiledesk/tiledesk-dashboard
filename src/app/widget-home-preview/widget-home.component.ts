@@ -147,7 +147,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
       this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageStorage + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
 
     } else {
-      this.userProfileImageurl = this.imageStorage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+      this.userProfileImageurl = this.imageStorage + 'files?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     }
 
     this.checkImageExists(this.userProfileImageurl, (existsImage) => {

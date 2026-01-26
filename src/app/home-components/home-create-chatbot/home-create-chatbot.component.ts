@@ -573,7 +573,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   //           // ------------------------------------------------------------------------------
   //           // Usecase uploadEngine Native 
   //           // ------------------------------------------------------------------------------
-  //           imgUrl = storage + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+  //           imgUrl = storage + "files?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
   //         }
   //         this.checkImageExists(imgUrl, (existsImage) => {
   //           if (existsImage == true) {

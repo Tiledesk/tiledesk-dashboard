@@ -64,9 +64,9 @@ export class UploadImageNativeService {
   // {"message":"Image uploded successfully","filename":"uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fphoto.jpg","thumbnail":"uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg"}*
 
   // in PROD
-  // https://api.tiledesk.com/v2/images?path=uploads%2Fusers%2F5ebf9b2892befe0019055217%2Fimages%2Fphoto.jpg
+  // https://api.tiledesk.com/v2/files?path=uploads%2Fusers%2F5ebf9b2892befe0019055217%2Fimages%2Fphoto.jpg
 
-  // https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg
+  // https://tiledesk-server-pre.herokuapp.com/files?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg
   // : Promise<any>
 
   uploadUserPhotoProfile_Native(file: File): Observable<any> {

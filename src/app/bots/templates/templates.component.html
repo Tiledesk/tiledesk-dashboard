@@ -279,7 +279,7 @@
                                                 src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"
                                                 onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
                                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
-                                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                                src="{{baseUrl}}files?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                                 onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
                                         </span>
                                         <span *ngIf="template?.bigImage">
@@ -488,7 +488,7 @@
                                                                             <!-- USECASE uploadEngine Native -->
                                                                             <!-- --------------------------------------------------- -->
                                                                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                                                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                                                                src="{{baseUrl}}files?path=uploads%2Fusers%2F{{template?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                                                                 onerror="this.src='assets/img/no_image_user.png'"
                                                                                 decoding="async" data-nimg="intrinsic"
                                                                                 style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
@@ -587,7 +587,7 @@
 
                                                                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                                                                         class="cmnty-chatbot-img"
-                                                                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                                                        src="{{baseUrl}}files?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                                                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
                                                                         style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;" />
                                                                 </span>

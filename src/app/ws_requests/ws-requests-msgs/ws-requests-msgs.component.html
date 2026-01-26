@@ -267,7 +267,7 @@
                                 <!-- Usecase  Native  -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-msg-list"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
 
@@ -290,7 +290,7 @@
                                 <!-- Usecase  Native (bot) -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-in-msg-list"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
                             </div>
@@ -1085,7 +1085,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- (mouseenter)="agentntimg.open()" -->
                                 <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   class="served-by-avatar--img" [satPopoverAnchor]="agentntimg"
                                   (click)="!CHAT_PANEL_MODE && agentntimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentntimg.close()" matTooltipClass="custom-mat-tooltip"
@@ -1176,7 +1176,7 @@
                                 <!-- satPopoverAnchor]="botntengine" (click)="botntengine.toggle()" (document:click)="botntengine.close()" {{'ClickToDisplayActions' | translate}}-->
                                 <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
                                   class="served-by-avatar--img"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
                                   (click)="goToMemberProfile(agent, agent?._id )" matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
@@ -1239,7 +1239,7 @@
                                         <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                             class="served-by-avatar--img"
                                             (click)="goToMemberProfile(agent, agent?._id )" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
@@ -1311,7 +1311,7 @@
                                         <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img class="served-by-avatar--img"
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;"
                                             *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
@@ -3724,7 +3724,7 @@
                             <!-- --------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -3896,7 +3896,7 @@
                             <!-- --------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}files?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                               onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
@@ -4469,7 +4469,7 @@
                         <!-- --------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                           [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -4649,7 +4649,7 @@
                           <!-- --------------------------------------- -->
                           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                             [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
