@@ -280,7 +280,7 @@
                                   <!-- USECASE uploadEngine Native -->
                                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                                     [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
-                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                     alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
                                 </div>
                                 <div class="served-by-cb-name">

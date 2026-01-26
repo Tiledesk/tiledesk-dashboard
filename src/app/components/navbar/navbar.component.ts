@@ -290,10 +290,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.hidePendingEmailNotification();
     this.detectRouteAndInitSleekPlan();
 
-    this.checkUserImageUploadIsComplete();
+    // this.checkUserImageUploadIsComplete();
 
     // used when the page is refreshed
-    this.checkUserImageExist();
+    // this.checkUserImageExist();
 
     this.getFromLocalStorageHasOpenedTheChat();
     this.getFromNotifyServiceHasOpenedChat();
@@ -1010,7 +1010,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   setImageProfileUrl_Native(storage) {
-    this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    this.userProfileImageurl = storage + 'files?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     // this.logger.log('[NAVBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }

@@ -557,7 +557,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
               if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
                 this.messagesList[i]['avatar_url'] = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + sender_id + '%2Fphoto.jpg?alt=media'
               } else {
-                this.messagesList[i]['avatar_url'] = this.baseUrl + 'images?path=uploads%2Fusers%2F' + sender_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+                this.messagesList[i]['avatar_url'] = this.baseUrl + 'files?path=uploads%2Fusers%2F' + sender_id + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
               }
             }
           }

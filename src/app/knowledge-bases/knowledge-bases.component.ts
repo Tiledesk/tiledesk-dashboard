@@ -948,7 +948,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             // ------------------------------------------------------------------------------
             // Usecase uploadEngine Native 
             // ------------------------------------------------------------------------------
-            imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+            imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {

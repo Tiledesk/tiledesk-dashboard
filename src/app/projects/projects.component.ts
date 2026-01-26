@@ -263,7 +263,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ckeckUserPhotoProfileOnNative(user) {
     this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-    const imgUrl = this.baseUrl + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    const imgUrl = this.baseUrl + 'files?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     this.logger.log('[PROJECTS] - check if exist imgUrl ', imgUrl, '(usecase native)');
 
     this.checkImageExists(imgUrl, (existsImage) => {
