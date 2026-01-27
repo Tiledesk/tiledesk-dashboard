@@ -2192,6 +2192,7 @@
         "ReRankingDesc": "İlk olaraq alınan nəticələrə ikinci, daha ağıllı qiymətləndirmə tətbiq edir. Bu, ən kontekstual olaraq uyğun parçaları yuxarıya itmək üçün onları yenidən sıralayır, cavab keyfiyyətini yaxşılaşdırır.",
         "RerankingMultiplier": "Yenidən sıralama çarpanı",
         "TotalRetrievedChunksForReRanking": "Yenidən sıralama üçün ümumi alınan chunks",
+        "ReRankingMultiplierDesc": "AI-nın axtarış nəticələrini nə qədər hərtərəfli yenidən təhlil etdiyini idarə edir. Daha dərin təhlil (daha yüksək dəyərlər) daha dəqiq cavablar verir, lakin daha yavaşdır.",
         "Hybrid": "Hibrid",
         "HybridSearch": "Hibrid Axtarış",
         "FullText":"Tam mətn",

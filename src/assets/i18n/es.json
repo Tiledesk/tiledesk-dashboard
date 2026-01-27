@@ -2191,6 +2191,7 @@
         "ReRankingDesc": "Aplica una segunda puntuación más inteligente a los resultados recuperados inicialmente. Esto los reordena para colocar los chunks más relevantes contextualmente en la parte superior, mejorando la calidad de la respuesta.",
         "RerankingMultiplier": "Multiplicador de reordenación",
         "TotalRetrievedChunksForReRanking": "Total de chunks recuperados para reordenación",
+        "ReRankingMultiplierDesc": "Controla la exhaustividad con la que la IA reanaliza los resultados de búsqueda. Un análisis más profundo (valores más altos) da respuestas más precisas pero es más lento.",
         "Hybrid": "Híbrida",
         "HybridSearch": "Búsqueda híbrida",
         "FullText":"Texto completo",

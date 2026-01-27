@@ -2193,6 +2193,7 @@
         "ReRankingDesc": "Tillämpar en andra, mer intelligent poängsättning på de initialt hämtade resultaten. Detta omordnar dem för att flytta de mest kontextuellt relevanta chunksen till toppen, vilket förbättrar svarskvaliteten.",
         "RerankingMultiplier": "Omrangeringsmultiplikator",
         "TotalRetrievedChunksForReRanking": "Totalt hämtade chunks för omrangering",
+        "ReRankingMultiplierDesc": "Styr hur noggrant AI:n omanalyserar sökresultat. Djupare analys (högre värden) ger mer exakta svar men är långsammare.",
         "Hybrid": "Hybrid",
         "HybridSearch": "Hybridsökning",
         "FullText":"Fulltext",

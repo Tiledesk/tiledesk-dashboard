@@ -2190,6 +2190,7 @@
          "ReRankingDesc": "Dastlab olingan natijalarga ikkinchi, aqlliroq baholash qo'llaydi. Bu ularni eng kontekstual muhim bo'laklarni yuqoriga surish uchun qayta tartiblaydi, javob sifatini yaxshilaydi.",
          "RerankingMultiplier": "Qayta tartiblash ko'paytirgichi",
          "TotalRetrievedChunksForReRanking": "Qayta tartiblash uchun jami olingan chunks",
+         "ReRankingMultiplierDesc": "Sun'iy intellekt qidiruv natijalarini qayta tahlil qilish chuqurligini boshqaradi. Chuqurroq tahlil (yuqori qiymatlar) aniqroq javoblar beradi, lekin sekinroq.",
          "Hybrid": "Gibrid",
          "HybridSearch": "Gibrid qidiruv",
          "FullText":"To'liq matn",

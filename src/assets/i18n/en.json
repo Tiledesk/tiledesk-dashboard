@@ -2193,6 +2193,7 @@
         "ReRankingDesc": "Applies a second, more intelligent scoring to the initially retrieved results. This reorders them to push the most contextually relevant chunks to the top, improving answer quality.",
         "RerankingMultiplier": "Re-ranking multiplier",
         "TotalRetrievedChunksForReRanking": "Total retrieved chunks for re-ranking",
+        "ReRankingMultiplierDesc": "Controls how thoroughly the AI re-analyzes search results. Deeper analysis (higher values) gives more accurate answers but is slower.",
         "Hybrid": "Hybrid",
         "HybridSearch": "Hybrid Search",
         "FullText":"Full text",

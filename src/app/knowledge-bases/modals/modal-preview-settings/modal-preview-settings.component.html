@@ -385,7 +385,7 @@
         </div>
          <div class="max-token-slider-description-wpr">
             <div class="max-token-slider-description">
-                {{'KbPage.TotalRetrievedChunksForReRanking' | translate}}: {{ reRankingMultipler * topK }}
+                {{'KbPage.TotalRetrievedChunksForReRanking' | translate}}: {{ reRankingMultipler * topK }}{{ (reRankingMultipler * topK) > 100 ? ' (max 100)' : '' }}
             </div>
             <!-- <div class="max-token-slider-description">
                 {{'KbPage.Random' | translate }}
@@ -400,7 +400,8 @@
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
-                Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering.
+                <!-- Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering. -->
+                 {{'KbPage.ReRankingMultiplierDesc' | translate}}
             </div>
         </div>
         <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">

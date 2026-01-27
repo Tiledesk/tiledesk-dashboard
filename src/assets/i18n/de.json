@@ -2190,6 +2190,7 @@
 		"ReRankingDesc": "Wendet eine zweite, intelligentere Bewertung auf die zunächst abgerufenen Ergebnisse an. Dies ordnet sie neu, um die kontextuell relevantesten Chunks nach oben zu schieben und die Antwortqualität zu verbessern.",
 		"RerankingMultiplier": "Neuordnung-Multiplikator",
 		"TotalRetrievedChunksForReRanking": "Gesamte abgerufene chunks zur Neuordnung",
+		"ReRankingMultiplierDesc": "Steuert, wie gründlich die KI Suchergebnisse neu analysiert. Tiefere Analyse (höhere Werte) liefert genauere Antworten, ist aber langsamer.",
 		"Hybrid": "Hybrid",
 		"HybridSearch": "Hybridsuche",
         "FullText":"Volltext",
