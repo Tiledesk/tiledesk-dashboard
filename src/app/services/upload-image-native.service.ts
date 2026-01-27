@@ -274,7 +274,7 @@ export class UploadImageNativeService {
       return new Promise((resolve, reject) => {
         that.uploadAttachment$.next(0);
         that._httpClient.post(url, formData, requestOptions).subscribe(data => {
-          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURI(data['filename']);
+          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURIComponent(data['filename']);
           resolve(downloadURL)
           that.uploadAttachment$.next(100);
           // that.BSStateUpload.next({upload: upload});
