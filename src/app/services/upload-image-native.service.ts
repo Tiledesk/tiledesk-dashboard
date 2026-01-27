@@ -290,7 +290,7 @@ export class UploadImageNativeService {
         that.uploadAttachment$.next(0);
         that._httpClient.post(url, formData, requestOptions).subscribe(data => {
           // const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURI(data['filename']);
-          const downloadURL = this.BASE_URL + 'files' + '?path=' + (data['filename']);
+          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURIComponent(data['filename']);
           resolve(downloadURL)
           that.uploadAttachment$.next(100);
           // that.BSStateUpload.next({upload: upload});
@@ -355,7 +355,7 @@ export class UploadImageNativeService {
   }
 
   deleteImageUploadAttachment_Native(path) {
-    this.logger.log('[NATIVE UPLOAD] - delete image path ',path)
+    this.logger.log('[NATIVE UPLOAD] - delete attachment path ',path)
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
       //'Content-Type': 'multipart/form-data',
