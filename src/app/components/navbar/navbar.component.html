@@ -12,21 +12,11 @@
   </div> -->
 
   <div class="container-fluid">
-    <div class="navbar-header">
-      <!-- <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
-        (click)="sidebarToggle()">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button> -->
-      <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
-      <!-- <a class="navbar-brand" href="#">Testina</a> -->
-    </div>
-    <div class="collapse navbar-collapse">
+    <!-- Bootstrap 5: navbar-header removed, navbar-brand directly in container-fluid if needed -->
+    <div class="collapse navbar-collapse show">
 
 
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="navbar-nav ms-auto">
         <!-- <li>
                 <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="material-icons">dashboard</i>
@@ -88,9 +78,9 @@
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
         <ng-container *ngIf="isVisiblePay">
-          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
+          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'" class="nav-item dropdown">
 
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding:0px;">
               <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
                 <span class="progress-left">
                   <span class="progress-bar"
@@ -567,10 +557,11 @@
         <!--  ------------------------------------------------ -->
         <!--  ------ PROJECTS  DROPDOWN ------ -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
-          <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
+        <li *ngIf="project" class="nav-item dropdown">
+          <a href="javascript:void(0)" class="nav-link dropdown-toggle project-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
             <span style="text-transform: none"> {{ project.name }} </span>
+            <!-- Bootstrap 5 automatically adds caret with dropdown-toggle class -->
             <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
             <!-- <b class="caret"></b> -->
             <!-- <p class="hidden-lg hidden-md">Projects</p> -->
@@ -593,8 +584,8 @@
             <!--  ------------------------------------------------ -->
             <!--  ALL PROJECTS -->
             <!--  ------------------------------------------------ -->
-            <li (click)="goToProjects()">
-              <a style="cursor: pointer">
+            <li>
+              <a class="dropdown-item" (click)="goToProjects()" style="cursor: pointer">
                 <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
                 {{ 'NavBar.ViewAllProjects' | translate }}
               </a>
@@ -604,20 +595,20 @@
             <!--  ------------------------------------------------ -->
             <!--  ADD PROJECT -->
             <!--  ------------------------------------------------ -->
-            <li id="navbar_create_prjct" *ngIf="MT === true" (click)="goToCreateProject()">
-              <a style="cursor: pointer">
+            <li id="navbar_create_prjct" *ngIf="MT === true">
+              <a class="dropdown-item" (click)="goToCreateProject()" style="cursor: pointer">
                 <i class="material-icons"
                   style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
                 {{ 'AddProject' | translate }}
               </a>
             </li>
-            <li class="divider"></li>
+            <li><hr class="dropdown-divider"></li>
 
             <!--  ------------------------------------------------ -->
             <!--  RECENT PROJECTS -->
             <!--  ------------------------------------------------ -->
             <li>
-              <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+              <span class="dropdown-item-text" style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
                 {{ 'RecentProjects' | translate }}
               </span>
             </li>
@@ -630,8 +621,8 @@
             -->
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
 
-            <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
+            <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index">
+              <a class="dropdown-item" (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)" style="cursor: pointer"
                 [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
                 <span> {{ prjct?.id_project?.name }} </span>
@@ -639,16 +630,16 @@
             </li>
 
             <ng-container *ngIf="projects?.length > 5">
-              <li class="divider"></li>
+              <li><hr class="dropdown-divider"></li>
               <li>
-                <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+                <span class="dropdown-item-text" style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
                   {{ 'OtherProjects' | translate}}
                 </span>
               </li>
 
               <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
-              <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
+              <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index">
+                <a class="dropdown-item" (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)" style="cursor: pointer">
                   {{ prjct?.id_project?.name }}
                 </a>
               </li>
@@ -786,7 +777,7 @@
                 </button>
               </div>
 
-              <li class="divider"></li>
+              <li><hr class="dropdown-divider"></li>
               <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
                 {{ 'NavBar.LogOut' | translate }}
               </button>

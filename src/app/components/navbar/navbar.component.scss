@@ -1,5 +1,167 @@
 @import "./src/assets/sass/md/_variables.scss";
 
+// Bootstrap 5 compatibility styles
+// Ensure navbar content is visible in Bootstrap 5
+.navbar {
+  min-height: 61px;
+  height: 61px;
+  max-height: 61px;
+}
+
+.navbar-absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1029;
+  background-color: #fff; // Ensure navbar has background
+}
+
+.navbar .container-fluid {
+  display: flex;
+  flex-wrap: nowrap; // Prevent wrapping when navbar-header is present
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.navbar-header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; // Prevent shrinking
+}
+
+.navbar-collapse {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-basis: auto;
+  flex-grow: 1; // Take remaining space
+  flex-shrink: 1; // Allow shrinking if needed
+  align-items: center;
+}
+
+.navbar-nav {
+  width: 100%;
+  display: flex;
+  flex-direction: row; // Ensure horizontal layout
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: nowrap; // Prevent wrapping
+  margin: 0;
+  list-style: none;
+  padding-left: 0; // Remove default padding
+}
+
+// Bootstrap 5 compatibility: navbar-right is deprecated, use flexbox instead
+.navbar-right {
+  margin-left: auto; // Push to the right
+}
+
+.navbar-nav>li {
+  display: flex;
+  align-items: center;
+  float: none; // Remove float for Bootstrap 5 compatibility
+  list-style: none;
+  position: relative; // Required for dropdown positioning
+}
+
+// NK
+.navbar-nav > li > a {
+  padding: 10px 15px;
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  font-size: 14px; // Explicit font-size to match Bootstrap 3 appearance
+  line-height: 1.42857143; // Explicit line-height to match Bootstrap 3
+  color: rgb(85, 85, 85);
+}
+
+.navbar-nav>li>a:not(.btn) .material-icons { 
+  color: rgb(85, 85, 85);
+}
+
+// Dropdown styles for Bootstrap 5 compatibility
+.navbar-nav>li.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  z-index: 1000 !important;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0 !important; // Override template margin-top: -20px
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  list-style: none;
+}
+
+// Override template styles that hide dropdowns (Bootstrap 3/4 uses .open, Bootstrap 5 uses .show)
+// Template has: visibility: hidden, opacity: 0, margin-top: -20px on >= 992px
+// IMPORTANT: These styles override _responsive.scss and _navbars.scss
+// Default state: hidden
+.navbar-nav>li.dropdown>.dropdown-menu,
+.nav-item.dropdown>.dropdown-menu,
+.navbar .navbar-nav>li>.dropdown-menu {
+  display: none; // Bootstrap 5 default - hidden until toggle has .show class
+  visibility: visible !important; // Override template visibility: hidden
+  opacity: 1 !important; // Override template opacity: 0
+  margin-top: 2px !important; // Override template margin-top: -20px
+  transition: none !important; // Disable template transitions that might interfere
+}
+
+// Bootstrap 5 adds .show to the toggle button, not the parent
+// Show dropdown when toggle button has 'show' class (Bootstrap 5)
+.navbar-nav>li.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+.nav-item.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+// Also support Bootstrap 3/4 compatibility (.open on parent)
+.navbar-nav>li.dropdown.open>.dropdown-menu,
+.nav-item.dropdown.open>.dropdown-menu,
+.dropdown.open>.dropdown-menu,
+.navbar .navbar-nav>li.open>.dropdown-menu {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 2px !important;
+}
+
+// Dropdown menu items
+.dropdown-menu li>a { 
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143; // Match Bootstrap 3 line-height
+  color: #333;
+  white-space: nowrap;
+}
+
+.dropdown-menu li a:hover,
+.dropdown-menu li a:focus,
+.dropdown-menu li a:active {
+  background-color: var(--dropdown-menu-hover-color) !important;
+}
+
+.dropdown-toggle:after {
+  display: inline-block;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
 .btn {
   display: inline-block;
   font-weight: 400;
