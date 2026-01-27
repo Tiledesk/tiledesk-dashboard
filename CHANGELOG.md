@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.150
+- Fixes the bug: is allowed the re-indexing of non-web contents
+
 ### 2.7.149
 - Displays the Twilio Voice integration in the integrations list for all plans
 - Adds the time zone to the search query string when searching by date
