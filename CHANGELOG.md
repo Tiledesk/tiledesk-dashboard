@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.149
+- Displays the Twilio Voice integration in the integrations list for all plans
+- Adds the time zone to the search query string when searching by date
+- Adds Re-ranking multiplier slider to the AI Settings dialog (controls how many initial search results are intelligently reordered to improve answer accuracy)
+
 ### 2.7.148
 - Improves the Re-index feature
 
