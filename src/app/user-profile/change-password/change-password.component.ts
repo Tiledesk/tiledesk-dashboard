@@ -9,6 +9,8 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidation } from 'app/reset-psw/password-validation';
+import { Subscription } from 'rxjs';
+import { NavigationService } from 'app/services/navigation.service';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
@@ -72,7 +74,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
       'required': 'Please accept Terms and Conditions and Privacy Policy',
     },
   };
-  
+  private backSub?: Subscription;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -82,6 +84,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private translate: TranslateService,
     private fb: FormBuilder,
+    private navSvc: NavigationService
   ) { }
 
   ngOnInit() {
@@ -90,6 +93,19 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     this.translateStrings();
     this.getBrowserVersion()
     this.buildPswForm();
+    this.listenToGoBack()
+  }
+
+  ngOnDestroy() {
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   buildPswForm() {

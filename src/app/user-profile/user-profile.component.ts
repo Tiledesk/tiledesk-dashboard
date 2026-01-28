@@ -10,7 +10,7 @@ import { UploadImageNativeService } from '../services/upload-image-native.servic
 import { NotifyService } from '../core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from '../services/app-config.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
@@ -21,6 +21,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { NavigationService } from 'app/services/navigation.service';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -161,6 +162,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   ];
   isChromeVerGreaterThan100: boolean;
   displayChangePwd: boolean;
+  private backSub?: Subscription;
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -176,7 +178,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     private usersLocalDbService: LocalDbService,
     public prjctPlanService: ProjectPlanService,
     private sanitizer: DomSanitizer,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private navSvc: NavigationService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand(); 
@@ -207,8 +210,20 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.trackPage();
 
     this.fileUploadAccept = 'image/jpg, image/jpeg, image/png'
+    this.listenToGoBack()
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
+  }
 
   trackPage() {
     if (!isDevMode()) {

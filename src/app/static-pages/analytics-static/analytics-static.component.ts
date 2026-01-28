@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
+import { NavigationService } from 'app/services/navigation.service';
 
 const swal = require('sweetalert');
 
@@ -71,7 +72,8 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
 
   public_Key: any;
   payIsVisible: boolean;
-
+  private backSub?: Subscription;
+  
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -82,7 +84,8 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public location: Location,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private navSvc: NavigationService
   ) {
     super(prjctPlanService, notify);
     // super(translate);
@@ -107,6 +110,12 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
     // this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
 

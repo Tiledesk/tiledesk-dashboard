@@ -7,7 +7,9 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { FaqService } from 'app/services/faq.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { NavigationService } from 'app/services/navigation.service';
 import { WebhookService } from 'app/services/webhook.service';
+import { Subscription } from 'rxjs';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-flow-webhooks',
@@ -43,7 +45,7 @@ export class FlowWebhooksComponent implements OnInit {
   SERVER_BASE_PATH: string;
 
   project: any;
-
+  private backSub?: Subscription; 
   constructor(
     private auth: AuthService,
     private translate: TranslateService,
@@ -53,6 +55,7 @@ export class FlowWebhooksComponent implements OnInit {
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     public notify: NotifyService,
+    private navSvc: NavigationService
   ) { }
 
 
@@ -63,6 +66,16 @@ export class FlowWebhooksComponent implements OnInit {
     this.getServerBaseURL()
     this.getCurrentProject()
   }
+
+   ngOnDestroy() {
+    // this.backSub?.unsubscribe();
+  }
+
+  // listenToGoBack() {
+  //   this.backSub = this.navSvc.onBack().subscribe(() => {
+  //     this.goBack();
+  //   });
+  // }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

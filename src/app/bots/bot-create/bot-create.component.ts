@@ -28,7 +28,7 @@ import {
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
@@ -36,6 +36,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { NavigationService } from 'app/services/navigation.service';
 
 @Component({
   selector: 'bot-create',
@@ -149,7 +150,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     { name: "Webhook", value: 'webhook' },
     { name: "Copilot", value: 'copilot' },
   ];
-
+  private backSub?: Subscription;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -167,7 +168,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     private projectService: ProjectService,
     public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private navSvc: NavigationService
   ) {
     super(prjctPlanService, notify);;
 
@@ -193,6 +195,19 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     this.getUserRole();
     this.logger.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
     this.getQueryParamsAndManageChatbotSubtype()
+    this.listenToGoBack()
+  }
+
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getQueryParamsAndManageChatbotSubtype() {
@@ -220,10 +235,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
 
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
 
 

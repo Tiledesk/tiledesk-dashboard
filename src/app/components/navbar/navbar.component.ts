@@ -47,6 +47,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service';
 import { SleekplanService } from 'app/services/sleekplan.service';
 import { browserRefresh } from 'app/app.component';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { NavigationService } from 'app/services/navigation.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -218,6 +220,20 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   newChangelogCount: boolean;
   // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
+  currentTitle: string ;
+  currentIcon: SafeHtml | null = null;
+
+  // SVG icons constants (raw strings)
+  private readonly SVG_KEYBOARD_ARROW_LEFT = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#555"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>';
+  private readonly SVG_FAMILY_HISTORY = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#555"><path d="M12,21.9c-1,0-1.8-0.3-2.5-1c-0.7-0.7-1-1.5-1-2.5c0-0.8,0.3-1.6,0.8-2.2c0.5-0.6,1.2-1,1.9-1.2v-2.3H5.5V9H3 V2.5h6.4V9H7v2.3h10V8.9c-0.8-0.2-1.4-0.6-1.9-1.2c-0.5-0.6-0.8-1.3-0.8-2.2c0-1,0.3-1.8,1-2.5c0.7-0.7,1.5-1,2.5-1 c1,0,1.8,0.3,2.5,1c0.7,0.7,1,1.5,1,2.5c0,0.8-0.3,1.6-0.8,2.2c-0.5,0.6-1.2,1-1.9,1.2v3.9h-5.7v2.3c0.8,0.2,1.4,0.6,1.9,1.2 c0.5,0.6,0.8,1.3,0.8,2.2c0,1-0.3,1.8-1,2.5C13.8,21.6,13,21.9,12,21.9z M17.8,7.5c0.5,0,1-0.2,1.4-0.6c0.4-0.4,0.6-0.8,0.6-1.4 c0-0.5-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6c-0.5,0-1,0.2-1.4,0.6C16,4.5,15.8,5,15.8,5.5c0,0.5,0.2,1,0.6,1.4S17.2,7.5,17.8,7.5 z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6 c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z"/></svg>';
+  private readonly SVG_SETTINGS = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#555"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.09-.16-.26-.25-.44-.25-.06 0-.12.01-.17.03l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.06-.02-.12-.03-.18-.03-.17 0-.34.09-.43.25l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.09.16.26.25.44.25.06 0 .12-.01.17-.03l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.06.02.12.03.18.03.17 0 .34-.09.43-.25l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-1.98-1.71c.04.31.05.52.05.73 0 .21-.02.43-.05.73l-.14 1.13.89.7 1.08.84-.7 1.21-1.27-.51-1.04-.42-.9.68c-.43.32-.84.56-1.25.73l-1.06.43-.16 1.13-.2 1.35h-1.4l-.19-1.35-.16-1.13-1.06-.43c-.43-.18-.83-.41-1.23-.71l-.91-.7-1.06.43-1.27.51-.7-1.21 1.08-.84.89-.7-.14-1.13c-.03-.31-.05-.54-.05-.74s.02-.43.05-.73l.14-1.13-.89-.7-1.08-.84.7-1.21 1.27.51 1.04.42.9-.68c.43-.32.84-.56 1.25-.73l1.06-.43.16-1.13.2-1.35h1.39l.19 1.35.16 1.13 1.06.43c.43.18.83.41 1.23.71l.91.7 1.06-.43 1.27-.51.7 1.21-1.07.85-.89.7.14 1.13zM12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>';
+
+  // Sanitized SVG references (initialized in constructor)
+  private sanitizedKeyboardArrowLeft: SafeHtml;
+  private sanitizedFamilyHistory: SafeHtml;
+  private sanitizedSettings: SafeHtml;
+  
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -243,10 +259,16 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService,
-
+    private navSvc: NavigationService,
+    private sanitizer: DomSanitizer
   ) {
 
     super(prjctPlanService, notifyService);
+
+    // Initialize sanitized SVG icons
+    this.sanitizedKeyboardArrowLeft = this.sanitizer.bypassSecurityTrustHtml(this.SVG_KEYBOARD_ARROW_LEFT);
+    this.sanitizedFamilyHistory = this.sanitizer.bypassSecurityTrustHtml(this.SVG_FAMILY_HISTORY);
+    this.sanitizedSettings = this.sanitizer.bypassSecurityTrustHtml(this.SVG_SETTINGS);
 
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -323,9 +345,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     // this.listenToWSRequestsDataCallBack()
 
-
-
-    this.listenToHomeRequestQuotes()
+    this.listenToHomeRequestQuotes();
+    this.getPageTitle()
+    this.listenSidebarIsOpened()
   }
 
 
@@ -334,6 +356,332 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+     console.log('[NAVBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+    this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
+
+
+
+   getPageTitle() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateTitle(event.url);
+      }
+    });
+    // Set initial title
+    this.updateTitle(this.router.url);
+  }
+
+  private updateTitle(url: string) {
+    const cleanUrl = url.split('?')[0];
+    console.log('[NAVBAR] Clean URL:', cleanUrl);
+
+    // Reset currentIcon all'inizio per evitare che rimanga impostato da route precedenti
+    this.currentIcon = null;
+
+    // Estrai i query parameters per controllare il dettaglio dell'automazione
+    const urlParts = url.split('?');
+    const queryParams = urlParts.length > 1 ? urlParts[1] : '';
+    const params = new URLSearchParams(queryParams);
+    const automationId = params.get('id');
+
+    // Controllo specifico per la route /no-auth (deve essere prima degli altri controlli)
+    if (cleanUrl.indexOf('/no-auth') !== -1) {
+      // La route è: project/:projectid/:callingpage/no-auth
+      // Estrai il callingpage dall'URL
+      const noAuthMatch = cleanUrl.match(/\/project\/[^\/]+\/([^\/]+)\/no-auth$/);
+      if (noAuthMatch && noAuthMatch[1]) {
+        const callingPage = noAuthMatch[1];
+        console.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
+        
+        // Imposta il titolo in base al callingPage
+        if (callingPage === 'wsrequests' || callingPage === 'all-conversations') {
+          this.currentTitle = 'Requests';
+        } else if (callingPage === 'wsrequest-detail' || callingPage === 'wsrequest-detail-history') {
+          this.currentTitle = 'RequestMsgsPage.RequestDetails';
+        } else if (callingPage === 'history') {
+          this.currentTitle = 'History';
+        } else if (callingPage === 'contacts' || callingPage === 'contact-details') {
+          this.currentTitle = 'Contacts';
+        } else if (callingPage === 'flows') {
+          this.currentTitle = 'Flows';
+        } else if (callingPage === 'kb') {
+          this.currentTitle = 'KnowledgeBases';
+        } else if (callingPage === 'flow-webhook') {
+          this.currentTitle = 'Webhooks';
+        } else if (callingPage === 'analytics') {
+          this.currentTitle = 'Analytics.AnalyticsTITLE';
+        } else if (callingPage === 'activities') {
+          this.currentTitle = 'Activities';
+        } else if (callingPage === 'automations') {
+          this.currentTitle = 'WhatsAppBroadcasts';
+        } else if (callingPage === 'new-broadcast') {
+          this.currentTitle = 'NewBroadcast';
+        } else {
+          // Fallback: usa il callingPage stesso
+          this.currentTitle = callingPage;
+        }
+        // Non mostrare l'icona keyboard_arrow_left per le pagine /no-auth
+        this.currentIcon = null;
+        console.log('[NAVBAR] Title set to:', this.currentTitle);
+        return; // Esci subito per evitare che altri controlli sovrascrivano il titolo
+      }
+    }
+
+    // Controlla i percorsi specifici in ordine di priorità
+    if (cleanUrl.indexOf('/home') !== -1) {
+      this.currentTitle = 'Home';
+    } 
+    else if (cleanUrl.indexOf('/knowledge-bases') !== -1) {
+      this.currentTitle = 'KnowledgeBases';
+    }
+    else if (cleanUrl.indexOf('bots/my-chatbots/all') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = this.getSanitizedFamilyHistory();
+    } 
+    else if (cleanUrl.indexOf('/bots/templates/') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = this.getSanitizedFamilyHistory();
+    } 
+    else if (cleanUrl.indexOf('flows/flow-aiagent') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = this.getSanitizedFamilyHistory();
+    } 
+    else if (cleanUrl.indexOf('flows/flow-automations') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = this.getSanitizedFamilyHistory();
+    } 
+    else if (cleanUrl.indexOf('flows/flow-webhooks') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = this.getSanitizedFamilyHistory();
+    }
+    else if (cleanUrl.indexOf('flows/flow-webhooks-logs') !== -1) {
+      this.currentTitle = 'Flows';
+      this.currentIcon = this.getSanitizedFamilyHistory();
+    }
+    else if (cleanUrl.indexOf('/wsrequests-demo') !== -1) {
+      // Controllo specifico per wsrequests-demo (deve essere prima del controllo generico)
+      this.currentTitle = 'Requests';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('wsrequests') !== -1 || cleanUrl.indexOf('/wsrequests/') !== -1) {
+      this.currentTitle = 'Requests';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('wsrequest') !== -1 && this.router.url.includes('support-group-')) {
+      this.currentTitle = 'RequestMsgsPage.RequestDetails';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('history') !== -1) {
+      this.currentTitle = 'History';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('all-conversations') !== -1) {
+      this.currentTitle = 'ConversationsNotInRealTime';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/logs/request/') !== -1) {
+      this.currentTitle = 'ConversationLogs';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/new-broadcast') !== -1 ) {
+      this.currentTitle = 'NewBroadcast';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/automations') !== -1 && automationId && automationId.startsWith('automation-request-')) {
+      // Dettaglio dell'automazione (con query parameter id)
+      this.currentTitle = 'BroadcastDetails';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/automations-demo') !== -1) {
+      this.currentTitle = 'WhatsAppBroadcasts';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/automations') !== -1) {
+      this.currentTitle = 'WhatsAppBroadcasts';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('/contacts-demo') !== -1) {
+      this.currentTitle = 'Contacts';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/contacts') !== -1) {
+      this.currentTitle = 'Contacts';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('/contact') !== -1) {
+      this.currentTitle = 'ContactDetails';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/user-profile') !== -1) {
+      this.currentTitle = 'UserProfile.Profile';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/password/change') !== -1) {
+      this.currentTitle = 'ChangePsw.ChangePsw';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.includes('/user/') && cleanUrl.includes('/settings')) {
+      this.currentTitle = 'Settings';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.includes('/user/') && cleanUrl.includes('/notifications')) {
+      this.currentTitle = 'Notification';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/analytics-demo') !== -1) {
+      this.currentTitle = 'Analytics.AnalyticsTITLE';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/analytics') !== -1) {
+      this.currentTitle = 'Analytics.AnalyticsTITLE';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('/activities-demo') !== -1) {
+      this.currentTitle = 'Activities';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/activities') !== -1) {
+      this.currentTitle = 'Activities';
+      this.currentIcon = null;
+    }
+    // else if (
+    //   cleanUrl.indexOf('/bots/') !== -1 &&
+    //   cleanUrl.indexOf('/external') !== -1
+    // ) {
+    //   this.currentTitle = 'Edit';
+    //   this.currentIcon = 'keyboard_arrow_left';
+    // }
+    else if (
+      /\/bots\/[a-f0-9]{24}\/external$/.test(cleanUrl)
+    ) {
+      this.currentTitle = 'Edit';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/bots/create/external') !== -1) {
+      this.currentTitle = 'BotsAddEditPage.AddBot';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/app-create') !== -1) {
+      this.currentTitle = 'NewApp';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/app-edit') !== -1) {
+      this.currentTitle = 'EditApp';
+      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+    }
+    else if (cleanUrl.indexOf('/conversation-detail') !== -1) {
+      this.currentTitle = 'Chat';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('/maintenance') !== -1) {
+      this.currentTitle = null;
+      this.currentIcon = null;
+    }
+
+
+    else if (this.isSettingsSidebarRoute(cleanUrl)) {
+      this.currentTitle = 'Settings';
+      this.currentIcon = this.getSanitizedSettings();
+    }
+
+
+    // } else if (cleanUrl.indexOf('/tasks') !== -1) {
+    //   this.currentTitle = 'Tasks';
+    // } else if (cleanUrl.indexOf('/team') !== -1) {
+    //   this.currentTitle = 'Team';
+    // } else if (cleanUrl.indexOf('/home') !== -1) {
+    //   this.currentTitle = 'Home';
+    // } else if (cleanUrl === '/dashboard' || cleanUrl === '/') {
+    //   this.currentTitle = 'Dashboard';
+    // } else if (cleanUrl.indexOf('/projects') !== -1) {
+    //   this.currentTitle = 'Progetti';
+    // } 
+    else {
+      // Fallback per URL non riconosciuti
+      // this.currentTitle = this.getFallbackTitle(cleanUrl);
+      this.currentIcon = null;
+    }
+
+    console.log('[NAVBAR] Title set to:', this.currentTitle);
+  }
+
+  /**
+   * Verifica se una route appartiene alla settings-sidebar
+   */
+  private isSettingsSidebarRoute(url: string): boolean {
+    const settingsRoutes = [
+      '/widget-set-up',
+      '/translations',
+      '/installation',
+      '/cannedresponses',
+      '/email',
+      '/labels',
+      '/departments',
+      'department/create',
+      'department/edit',
+      '/trigger',
+      '/users',
+      'user/edit',
+      'user/add',
+      '/roles',
+      '/create-new-role',
+      '/edit-role',
+      '/groups',
+      '/group/edit',
+      '/group/create',
+      '/email',
+      '/hours',
+      '/integrations',
+      '/app-store',
+      '/knowledge-bases-pre',
+      '/project-settings/',
+      '/widget/translations',
+      '/webhook',
+      'notification-email',
+      'smtp-settings'
+    ];
+
+    // Controlla se la route contiene uno dei pattern delle settings-sidebar
+    for (const route of settingsRoutes) {
+      if (url.indexOf(route) !== -1) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  onBackClick() {
+    // emit the "back" event
+    this.navSvc.emitBack();
+  }
+
+  isBackIcon(): boolean {
+    if (!this.currentIcon) return false;
+    return this.currentIcon === this.sanitizedKeyboardArrowLeft;
+  }
+
+  isSettingsIcon(): boolean {
+    if (!this.currentIcon) return false;
+    return this.currentIcon === this.sanitizedSettings;
+  }
+
+  private getSanitizedKeyboardArrowLeft(): SafeHtml {
+    return this.sanitizedKeyboardArrowLeft;
+  }
+
+  private getSanitizedFamilyHistory(): SafeHtml {
+    return this.sanitizedFamilyHistory;
+  }
+
+  private getSanitizedSettings(): SafeHtml {
+    return this.sanitizedSettings;
   }
 
   listenToHomeRequestQuotes() {

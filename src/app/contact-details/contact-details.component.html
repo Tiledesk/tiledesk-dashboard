@@ -1,10 +1,10 @@
-<!-- margin-top:6px; -->
-<div class="navbar-brand" style=" padding-left:30px; z-index: 1050;position: relative;"
+
+<!-- <div class="navbar-brand" style=" padding-left:30px; z-index: 1050;position: relative;"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "ContactDetails" | translate }}
-</div>
+</div> -->
 
 <div class="main-content" style="padding-top: 0px">
   <div class="container-fluid">
@@ -17,7 +17,7 @@
           <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px;     padding-left: 0px;">
 
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-12 col-sm-12 col-md-12">
                 <!-- Tab Navigation -->
                 <div class="contact-details-tabs" style="display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px;">
                   <div 
@@ -43,7 +43,7 @@
                 </div>
               </div>
 
-              <!-- <div class="col-xs-12 col-sm-12 col-md-12">
+              <!-- <div class="col-12 col-sm-12 col-md-12">
                 <div class="section-subtitle"> </div>
               </div> -->
             </div>
@@ -537,7 +537,7 @@
             style="padding-top: 0px;    padding-left: 1px;padding-right: 1px;">
 
             <div class="row" style="border-bottom: 1px solid #ddd; margin-top: -4px;">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <h3 class="card_title__underlined">
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "ContactDetails" | translate }}
@@ -606,7 +606,7 @@
 
 
               </div>
-              <!-- <div class="col-xs-6 col-sm-6 col-md-6"> -->
+              <!-- <div class="col-6 col-sm-6 col-md-6"> -->
 
               <div class="contact-action-wpr">
                 <!-- (click)='goToEditContact(contact_details?._id)' -->
@@ -709,7 +709,7 @@
                   </ul>
                 </div> -->
             </div>
-            <!-- <div class="col-xs-12 col-sm-12 col-md-12">
+            <!-- <div class="col-12 col-sm-12 col-md-12">
                 <div class="section-subtitle"> </div>
               </div> -->
           </div>
@@ -794,7 +794,7 @@
                 <p style="margin-bottom: 8px;margin-top: 6px;">
                   <span style="position: relative;top: 1px;">
                     <div class="row">
-                      <div class="col-xs-10" style="padding-right:10px">
+                      <div class="col-10" style="padding-right:10px">
 
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px"
                           fill="#8796af" matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Address' | translate }}"
@@ -883,7 +883,7 @@
                         </span>
                       </div>
 
-                      <div class="col-xs-2" style="text-align: right;">
+                      <div class="col-2" style="text-align: right;">
                         <i id="address_arrow_down" class="material-icons rotate" (click)="toggleAddress()">
                           keyboard_arrow_down
                         </i>
@@ -1127,7 +1127,7 @@
                     <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                       <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;;padding-bottom: 5px;">
+                        <div class="col-10" style="padding-right: 1px;;padding-bottom: 5px;">
                           <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
                             {{attribute?.attributeName }}:
                           </div>
@@ -1140,7 +1140,7 @@
                         </div>
                         <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                         <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                           style="text-align: right; width:1%;">
                           <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                             style="cursor: pointer; color: #394f5a; font-size:18px;"
@@ -1202,7 +1202,7 @@
                   <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
                     <div class="row">
-                      <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                      <div class="col-10" style="padding-right: 1px;padding-bottom: 5px;">
                         <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
                           class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> {{Attributes | translate}} </div>
@@ -1220,7 +1220,7 @@
                       <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                       <!-- [ngClass]="{'down' : attributeFullText === true}" -->
                       <!-- white-space: nowrap;width: 1%; -->
-                      <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                      <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-2"
                         style="text-align: right;">
                         <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                           style="cursor: pointer; color: #039be5; font-size:18px;"

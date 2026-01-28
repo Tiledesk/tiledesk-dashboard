@@ -48,6 +48,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { removeEmojis } from 'app/utils/utils-message';
+import { NavigationService } from 'app/services/navigation.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -385,6 +386,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
+  private backSub?: Subscription;
   /**
    * Constructor
    * @param router 
@@ -433,7 +435,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService: AllProjectsCacheService
+    private cacheService: AllProjectsCacheService,
+    private navSvc: NavigationService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -548,9 +551,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.fileUploadAccept = this.appConfigService.getConfig().fileUploadAccept
     // this.getClickOutEditContactFullname()
+    this.listenToGoBack()
   }
 
+  ngAfterViewInit() {
+    // -----------------------------------
+    // Right sidebar width after view init
+    // -----------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
+    if (rightSidebar) {
+      this.rightSidebarWidth = rightSidebar.offsetWidth;
+    }
 
+    if (this.request) {
+      this.getfromStorageIsOpenAppSidebar()
+    }
+
+    this.getAppsInstalledApps()
+
+  }
+
+  ngOnDestroy() {
+    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.unsuscribeRequesterPresence(this.requester_id);
+    if (this.id_request) {
+      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
+      this.unsuscribeRequestById(this.id_request);
+      this.unsuscribeMessages(this.id_request);
+    }
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
+  }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -1025,23 +1065,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
   }
 
-  ngAfterViewInit() {
-    // -----------------------------------
-    // Right sidebar width after view init
-    // -----------------------------------
-    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
-    if (rightSidebar) {
-      this.rightSidebarWidth = rightSidebar.offsetWidth;
-    }
 
-    if (this.request) {
-      this.getfromStorageIsOpenAppSidebar()
-    }
-
-    this.getAppsInstalledApps()
-
-  }
 
   getAppsInstalledApps() {
     let promise = new Promise((resolve, reject) => {
@@ -1129,18 +1153,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  ngOnDestroy() {
-    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-
-    this.unsuscribeRequesterPresence(this.requester_id);
-    if (this.id_request) {
-      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
-      this.unsuscribeRequestById(this.id_request);
-      this.unsuscribeMessages(this.id_request);
-    }
-  }
+  
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();

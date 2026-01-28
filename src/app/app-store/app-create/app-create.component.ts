@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
+import { NavigationService } from 'app/services/navigation.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'appdashboard-app-create',
   templateUrl: './app-create.component.html',
@@ -47,7 +49,7 @@ export class AppCreateComponent implements OnInit {
   // ]
 
   clients = { dashboard: false, webchat: false, widget: false, appsstore: false }
-
+  private backSub?: Subscription;
   constructor(
     public auth: AuthService,
     public logger: LoggerService,
@@ -57,6 +59,7 @@ export class AppCreateComponent implements OnInit {
     private router: Router,
     public route: ActivatedRoute,
     public brandService: BrandService,
+    private navSvc: NavigationService
   ) { 
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -77,8 +80,20 @@ export class AppCreateComponent implements OnInit {
       this.logger.log('[APP-CREATE] is EDIT_VIEW', this.EDIT_VIEW)
       this.getRouteParamsAndPopulateField();
     }
+    this.listenToGoBack()
   }
 
+  ngOnDestroy(): void {
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
+  }
 
   getRouteParamsAndPopulateField() {
     this.route.params.subscribe((params) => {

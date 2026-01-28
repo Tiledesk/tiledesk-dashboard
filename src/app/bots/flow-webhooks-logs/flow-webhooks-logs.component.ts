@@ -10,6 +10,8 @@ import { Location } from '@angular/common';
 import { NotifyService } from 'app/core/notify.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FlowWebhooksLogsService } from 'app/services/flow-webhooks-logs.service';
+import { Subscription } from 'rxjs';
+import { NavigationService } from 'app/services/navigation.service';
 const Swal = require('sweetalert2');
 
 export enum LogType {
@@ -63,7 +65,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
   allTemplatesCount: number;
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
-
+  private backSub?: Subscription;
   constructor(
     private auth: AuthService,
     private translate: TranslateService,
@@ -75,6 +77,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
     public notify: NotifyService,
     private flowWebhooksLogsService: FlowWebhooksLogsService,
     private faqKbService: FaqKbService,
+    private navSvc: NavigationService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -83,6 +86,17 @@ export class FlowWebhooksLogsComponent implements OnInit {
     this.getFlowWebhooks();
     await this.getServerBaseURL();
     await this.getRouteParams();
+    this.listenToGoBack()
+  }
+
+   ngOnDestroy() {
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
 

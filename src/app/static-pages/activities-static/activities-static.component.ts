@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
+import { NavigationService } from 'app/services/navigation.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -52,6 +53,9 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
   // };
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
+
+  private backSub?: Subscription;
+  
   constructor(
     public translate: TranslateService,
     public auth: AuthService,
@@ -62,7 +66,8 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
     public logger: LoggerService,
     public appConfigService: AppConfigService,
     public location: Location,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private navSvc: NavigationService
   ) {
     // super(translate,);
     super(prjctPlanService, notify);
@@ -80,7 +85,8 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
     this.getTranslationStrings();
     this.getOSCODE();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
+    this.presentModalsOnInit();
+    this.listenToGoBack()
     // this.tparams = {'plan_name': PLAN_NAME.C}
   }
 
@@ -88,6 +94,13 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
     // this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+  
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getBrowserVersion() {

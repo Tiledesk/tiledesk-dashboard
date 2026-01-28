@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
+import { NavigationService } from 'app/services/navigation.service';
 @Component({
   selector: 'appdashboard-wsrequests-static',
   templateUrl: './wsrequests-static.component.html',
@@ -56,7 +57,7 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
   learnMoreAboutDefaultRoles: string;
   isChromeVerGreaterThan100: boolean;
 
-
+  private backSub?: Subscription;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -66,7 +67,8 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private navSvc: NavigationService
   ) {
     super(prjctPlanService, notify);
   }
@@ -80,14 +82,21 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
     this.getTranslationStrings();
     this.getBrowserVersion();
     this.presentModalsOnInit()
+    this.listenToGoBack()
   }
 
   ngOnDestroy() {
     // this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
   }
 
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
+  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100

@@ -9,6 +9,8 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { LoggerService } from './../../services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
+import { Subscription } from 'rxjs';
+import { NavigationService } from 'app/services/navigation.service';
 @Component({
   selector: 'appdashboard-notification-settings',
   templateUrl: './notification-settings.component.html',
@@ -29,6 +31,7 @@ export class NotificationSettingsComponent implements OnInit {
   updateErrorMsg: string;
   isChromeVerGreaterThan100: boolean;
   displayChangePwd: boolean;
+  private backSub?: Subscription;
   constructor(
     private _location: Location,
     private auth: AuthService,
@@ -40,7 +43,8 @@ export class NotificationSettingsComponent implements OnInit {
     private translate: TranslateService,
     private notify: NotifyService,
     private logger: LoggerService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private navSvc: NavigationService
     ) 
     { 
       const brand = brandService.getBrand(); 
@@ -52,7 +56,20 @@ export class NotificationSettingsComponent implements OnInit {
     this.getCurrentProject();
     this.getProjects();
     this.translateNotificationMsgs();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.listenToGoBack()
+  }
+
+   ngOnDestroy() {
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getBrowserVersion() {

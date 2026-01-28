@@ -1,5 +1,5 @@
-<!-- Navbar brand for Chrome, Firefox ... -->
-<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
+
+<!-- <div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
   style="z-index: 1050;position: relative; padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -7,13 +7,13 @@
   {{ "RequestMsgsPage.RequestDetails" | translate }}
 </div>
 
-<!-- Navbar brand for Safari -->
+
 <div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && isSafari" class="navbar-brand"
   style="z-index: 1050;position: absolute; padding-left:30px; top:6px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "RequestMsgsPage.RequestDetails" | translate }}
-</div>
+</div> -->
 
 <div id="conversation-detail-main-content" class="main-content" style="padding-top:0px"
   [ngClass]="{'main-content-chat-panel-mode' : CHAT_PANEL_MODE === true, 'main-content-normal-mode': CHAT_PANEL_MODE === false}">

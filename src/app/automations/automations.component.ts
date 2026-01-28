@@ -5,9 +5,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { NavigationService } from 'app/services/navigation.service';
 import { RoleService } from 'app/services/role.service';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -43,8 +44,10 @@ export class AutomationsComponent implements OnInit {
   rejected_count: any;
   failed_count: any;
 
-   browserLang: string;
-   currentLang: string;
+   
+  browserLang: string;
+  currentLang: string;
+  private backSub?: Subscription;
 
   constructor(
     private auth: AuthService,
@@ -53,7 +56,8 @@ export class AutomationsComponent implements OnInit {
     private router: Router,
     private roleService: RoleService,
     public translate: TranslateService,
-     public route: ActivatedRoute,
+    public route: ActivatedRoute,
+    private navSvc: NavigationService
   ) { 
    
   }
@@ -68,7 +72,20 @@ export class AutomationsComponent implements OnInit {
     this.getTransactions();
     this.getCurrentProject();
     this.setMomentLocale();
+    this.listenToGoBack()
     // this.getQueryParams()
+  }
+
+  ngOnDestroy(): void {
+    // this.unsubscribe$.next();   
+    // this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.backToAutomations();
+    });
   }
 
    getQueryParams() {

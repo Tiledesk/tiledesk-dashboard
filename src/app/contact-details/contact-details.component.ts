@@ -11,6 +11,8 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AutomationsService } from '../services/automations.service';
+import { NavigationService } from 'app/services/navigation.service';
+import { Subscription } from 'rxjs';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -105,6 +107,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   contactNewFirstName: string;
   contactNewLastName: string;
   USER_ROLE: string;
+  private backSub?: Subscription;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -116,7 +119,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private appConfigService: AppConfigService,
     private usersService: UsersService,
     private logger: LoggerService,
-    private automationsService: AutomationsService
+    private automationsService: AutomationsService,
+    private navSvc: NavigationService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -153,6 +157,20 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     if (tabParam === 'sent-messages') {
       this.selectedTab = 'sent-messages';
     }
+
+    this.listenToGoBack()
+  }
+
+   ngOnDestroy() {
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getProjectUserRole() {

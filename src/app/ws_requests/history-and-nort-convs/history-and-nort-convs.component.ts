@@ -33,6 +33,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { NavigationService } from 'app/services/navigation.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -317,6 +318,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
+  private backSub?: Subscription;
   /**
    * 
    * @param router 
@@ -357,6 +359,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     private wsMsgsService: WsMsgsService,
     public route: ActivatedRoute,
     public brandService: BrandService,
+    private navSvc: NavigationService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -405,7 +408,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
+    this.listenToGoBack()
+  }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBackToMonitorPage();
+    });
   }
 
   getProjectUserRole() {
@@ -805,21 +823,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.router.navigate(['project/' + this.projectId + '/wsrequests'])
   }
 
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    // if (this.requestList.length > 0) {
-    //   this.requestList.forEach(request => {
-    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
