@@ -309,7 +309,7 @@
     </div>
 
     <div class="card contents-card">
-        <div class="card-header card-header-custom-bkgrnd">
+        <div class="card-header card-header-custom-bkgrnd" style="    padding-top: 10px !important;padding-left: 15px;padding-right: 15px;padding-bottom: 3px !important;">
             <div class="form-group preview-count-n">
                 <div class="preview-count-left">
                     <div>
@@ -461,7 +461,7 @@
                             <div class="ellipsis-text" style="width: 100%;
                                 display: inline-block;
                                 text-align: center;
-                                padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                                padding: 10px;font-size: 14px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
@@ -632,12 +632,13 @@
                                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
+                             <!-- type   {{kb.type}} -->
                                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                                    <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'"
+                                    <!-- *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'" -->
+                                    <button *ngIf="kb.type === 'url'"
                                         mat-menu-item (click)="onRunIndexing(kb)"
                                         [disabled]="!PERMISSION_TO_REINDEX_CONTENT">
                                         <mat-icon>play_arrow</mat-icon>
-                                        <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
                                     <button mat-menu-item (click)="onCheckStatus(kb)"
