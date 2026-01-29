@@ -1,7 +1,7 @@
 .convesations-analytics-report-wpr {
     // background: #fff;
     border-radius: 12px;
-    padding: 0px 12px 12px;
+    padding: 0px 12px 15px;
     // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
     //     0 4px 4px -2px rgb(91 94 105 / 15%);
     box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
@@ -66,11 +66,11 @@
 }
 
 .mt-10 {
-    margin-top: 2.5rem !important;
+    margin-top: 30px !important;
 }
 
 .mt-8 {
-    margin-top: 2rem !important;
+    margin-top: 16px !important;
 }
 
 .mt-5 {
@@ -110,7 +110,9 @@
 }
 
 .h-80 {
-    height: 20rem !important;
+    // height: 20rem !important;
+    height: 210px !important;
+
 }
 
 .tracking-tight {
@@ -158,6 +160,7 @@
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
     font-weight: 400;
+    font-size: 14px;
 }
 
 .home-percentage-symbol {
@@ -184,8 +187,8 @@
 }
 
 .gap-6 {
-    grid-gap: 1.5rem !important;
-    gap: 1.5rem !important;
+    // grid-gap: 1.5rem !important;
+    gap:6px !important;
 }
 
 .text-2xl {
@@ -208,6 +211,7 @@
     color: #00d4ff;
     font-weight: 400;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .text-accent-link-on-black .m-i-arrow-on-black {
@@ -258,6 +262,7 @@
     color: #fff;
     font-weight: 400;
     border: unset;
+    font-size: 14px;
 }
 
 .period-switch-btn:hover {

@@ -1,3 +1,36 @@
+// Bootstrap 5 compatibility styles for tables
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    vertical-align: top;
+    border-color: #dee2e6;
+}
+
+// Needed for responsive ellipsis inside table cells (otherwise the column can expand indefinitely)
+.table.table-hover {
+    table-layout: fixed;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.5rem 0.5rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.table-hover > tbody > tr:hover > * {
+    --bs-table-accent-bg: var(--bs-table-hover-bg);
+    color: var(--bs-table-hover-color);
+}
+
 select.select-status {
     height: 30px;
     background: #fff;
@@ -7,6 +40,7 @@ select.select-status {
     text-transform: capitalize;
 }
 
+// Custom form-group class (not Bootstrap's form-group)
 .form-group {
     width: max-content;
     margin-top: 0;
@@ -255,8 +289,14 @@ table {
     text-overflow: ellipsis;
     width: 100%;
     max-width: 100%;
-    display: table-column-group;
+    display: block;
     line-height: normal;
+    min-width: 0;
+}
+
+// Ensure the "Name" column can actually shrink, enabling ellipsis
+td.kb-name-cell {
+    overflow: hidden;
 }
 
 .loading-indicator {
@@ -569,6 +609,7 @@ td {
     align-items: center;
     padding: 12px;
     cursor: text;
+    font-size: 14px;
 
     &:focus {
         .fake-input {
@@ -662,6 +703,7 @@ td {
 .selector {
     width: 160px;
     margin-right: 8px;
+    font-size: 14px;
 }
 
 .add-content-btn-wpr {

@@ -54,7 +54,7 @@
 
     span {
         display: block;
-        line-height: 2.1rem;
+        line-height: 21px;
 
         &:before {
             counter-increment: line;
@@ -209,6 +209,9 @@
     align-items: center;
     font-weight: 400;
     font-family: var(--header-font-family);
+    font-size: 14px;
+    line-height: 21px;
+    color: #000000de !important;
     // text-align: center;
 }
 

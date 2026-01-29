@@ -1,18 +1,32 @@
-<!-- ROW AND CUSTOM COL RESOLVE THE ISSUE: THE NAVIGATION TO PREVIOUS PAGE IS IMPOSSIBLE BECAUSE THE NAVBAR IS OVER THE NAVBAR BRAND IN WHICH THERE IS THE BACK BUTTON -->
-<!-- <div class="row"> -->
-<!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
-<!-- navbar-transparent -->
+
 <nav class="navbar navbar-absolute">
-  <!-- <div *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false"> 
-    <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false">
 
-{{"NavBar.PendingVerification" | translate }}
-    </div>
-
-  </div> -->
 
   <div class="container-fluid">
     <!-- Bootstrap 5: navbar-header removed, navbar-brand directly in container-fluid if needed -->
+      <a class="navbar-brand" href="javascript:void(0)" 
+       [ngStyle]="{'font-weight': '400', 'padding-left': (isSettingsIcon() && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null, 'padding-right': (isSettingsIcon() && !IS_OPEN_SETTINGS_SIDEBAR) ? '0' : null}">
+      <!-- Generic icon (e.g., family_history for Flows pages) -->
+      <span *ngIf="currentIcon && !isBackIcon() && !isSettingsIcon()" 
+        style="vertical-align: middle; margin-right: 3px; display: inline-block; position: relative; top: -2px;"
+        [innerHTML]="currentIcon">
+      </span>
+      <!-- Back arrow icon (keyboard_arrow_left) - clickable, navigates back -->
+      <span *ngIf="currentIcon && isBackIcon()" 
+        style="vertical-align: middle; margin-right: 3px; cursor:pointer; display: inline-block;  position: relative; top: -2px;"
+        (click)="onBackClick()"
+        [innerHTML]="currentIcon">
+      </span>
+      <!-- Settings icon (gear icon) - displayed for Settings pages -->
+      <span *ngIf="currentIcon && isSettingsIcon()" 
+        style="vertical-align: middle; margin-right: 3px; display: inline-block;  position: relative; top: -2px;"
+        [innerHTML]="currentIcon">
+      </span>
+      <!-- Page title -->
+      <span *ngIf="!(currentTitle === 'Settings' && !IS_OPEN_SETTINGS_SIDEBAR)" style="font-family: var(--header-font-family);">
+        {{currentTitle | translate}}
+      </span>
+    </a>
     <div class="collapse navbar-collapse show">
 
 
@@ -561,10 +575,8 @@
           <a href="javascript:void(0)" class="nav-link dropdown-toggle project-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
             <span style="text-transform: none"> {{ project.name }} </span>
-            <!-- Bootstrap 5 automatically adds caret with dropdown-toggle class -->
-            <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
-            <!-- <b class="caret"></b> -->
-            <!-- <p class="hidden-lg hidden-md">Projects</p> -->
+
+         
           </a>
 
           <ul id="navbar_dropdown" class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">

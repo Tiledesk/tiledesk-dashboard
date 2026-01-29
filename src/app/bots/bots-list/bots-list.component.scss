@@ -624,9 +624,31 @@ input[type="checkbox"]:disabled {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
   margin-right: 25px;
+  color: #fff !important;
+}
+
+.select-flow-btn:hover,
+.select-flow-btn:focus,
+.select-flow-btn:active {
+  color: #fff !important; 
+}
+
+.dropdown-menu li>a { 
+  margin: 0 !important;
+}
+
+// Dropdown positioning - transitions are now disabled globally in _responsive.scss
+#orderByDropdown ~ .dropdown-menu,
+.dropdown > #orderByDropdown ~ .dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+  min-width: max-content;
 }
 
 
+#orderByDropdown.dropdown-toggle::after {
+  color: #1e293b !important;
+}
 
 .card--footer-action-wpr {
   position: absolute;

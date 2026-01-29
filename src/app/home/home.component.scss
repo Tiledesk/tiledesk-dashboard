@@ -2504,9 +2504,12 @@ print {
 
 .bg-card {
   opacity: 1;
-  background-color: #fff;
-  margin-top: -5px;
-  border-bottom: 1px solid rgb(226, 232, 240);
+    background-color: #fff;
+    margin-top: 52px;
+    border-bottom: 1px solid rgb(226, 232, 240);
+    height: 80px;
+    display: flex;
+    align-items: center;
 }
 
 .padding-l-r {
@@ -2585,11 +2588,11 @@ print {
 }
 
 .w-16 {
-  width: 4rem !important;
+  width: 3rem !important;
 }
 
 .h-16 {
-  height: 4rem !important;
+  height: 3rem !important;
 }
 
 .object-cover {

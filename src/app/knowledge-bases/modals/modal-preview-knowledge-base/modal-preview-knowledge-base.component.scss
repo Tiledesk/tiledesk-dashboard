@@ -154,6 +154,7 @@
     
   border: solid 1px #ccc;
   border-radius: 6px;
+  color: #22272d;
 }
 
 // Adjust fake-input when it contains question-textarea
@@ -212,6 +213,8 @@
     // overflow: hidden;
     overflow: scroll; // nk
     transition: max-height 0.5s ease-out;
+    font-size: 14px;
+    line-height: 21px;
 }
 
 .answer-title {
@@ -240,6 +243,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -248,12 +252,12 @@
         height: 37px;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #22272d !important;
         line-height: 35px;
-        font-weight: 400;
+        // font-weight: 400;
         margin-bottom: 10px;
-
+        font-size: 14px;
         // letter-spacing: 0.5px;
         &.invalid {
             border: 2px solid red !important;
@@ -266,11 +270,11 @@
         width: 100%;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
+        padding: 0px 10px;
         color: #22272d;
         line-height: 35px;
         font-weight: 400;
-
+        font-size: 14px;
         &.invalid {
             border: 2px solid red !important;
             outline: 0px solid red !important;
@@ -316,7 +320,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
-
+    font-size: 14px;
     .info-icon {
         margin-right: 8px;
         font-size: 20px;
@@ -386,6 +390,7 @@
     font-family: monospace;
     font-size: 11px;
     margin-bottom: 3px;
+    line-height: 18px;
 }
 
 .custom-expansion-panel {

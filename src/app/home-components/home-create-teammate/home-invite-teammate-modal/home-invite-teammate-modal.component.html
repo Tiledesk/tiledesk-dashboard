@@ -3,7 +3,7 @@
 </h1>
 <div mat-dialog-content>
     <form class="invite-teammate-form">
-        <mat-form-field appearance="fill" class="mat--form-field">
+        <mat-form-field appearance="fill" class="mat--form-field" style="font-size: 14px;">
             <mat-label>Email</mat-label>
             <input type="email" matInput [formControl]="emailFormControl" [(ngModel)]="teammateEmail">
             <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
@@ -14,7 +14,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mat--form-field">
+        <mat-form-field appearance="fill" class="mat--form-field" style="font-size: 14px;">
             <mat-label>Role</mat-label>
             <select matNativeControl required #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" [formControl]="selectFormControl">
                 <option label="Select a role"></option>

@@ -1,5 +1,9 @@
 @import "../../assets/sass/md/_variables.scss";
 
+
+
+
+
 .card-content {
     font-family: 'Poppins';
     padding-top: 10px;
@@ -84,6 +88,8 @@
     position: relative;
     top: 1px;
     width: fit-content;
+    display: flex;
+    align-items: center;
 }
 
 .hybrid-search-icon {
@@ -104,6 +110,9 @@
     position: relative;
     top: 1px;
     border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    height: 20px;
 }
 
 .standard-search-icon {
@@ -118,12 +127,15 @@
     font-weight: 400;
     font-size: 10px;
     color: #FFF;
-    padding: 0 8px;
+    padding: 3px 8px;
     background-color: #747eaa;
     margin-right: 8px;
     position: relative;
     top: 1px;
+    height: 20px;
     border-radius: 9999px;
+    display: flex;
+    align-items: center;
 }
 
 .kb-default-badge-in-menu-wpr  {
@@ -181,7 +193,7 @@
 .custom-button.xs>span {
     text-transform: none;
     position: relative;
-    top: -1px;
+    top: 1px;
 }
 
 .custom-button.add-content {
@@ -275,6 +287,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
+    font-size: 14px;
 
     .info-icon {
         margin-right: 8px;
@@ -321,6 +334,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -329,10 +343,11 @@
         height: 37px;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
+        padding: 0px 10px;
         color: #22272d;
         line-height: 35px;
         font-weight: 400;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {
@@ -346,11 +361,12 @@
         width: 100%;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
+        padding: 0px 10px;
         color: #22272d;
         line-height: 35px;
         font-weight: 400;
         resize: vertical;
+        font-size: 14px;
 
         &.invalid {
             border: 2px solid red !important;

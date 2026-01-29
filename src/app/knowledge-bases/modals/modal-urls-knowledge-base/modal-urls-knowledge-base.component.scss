@@ -138,18 +138,21 @@
         margin-bottom: 14px;
     }
 
-
+    .textarea-label {
+        font-size: 14px;
+        font-weight: 400;
+    }
     .custom-input {
         width: 100%;
         height: 37px;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #22272d !important;
         line-height: 35px;
-        font-weight: 400;
+        // font-weight: 400;
         margin-bottom: 10px;
-
+        font-size: 14px;
         // letter-spacing: 0.5px;
         &.invalid {
             border: 1px solid red !important;
@@ -165,14 +168,16 @@
         min-height: 150px;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 10px 15px;
+        padding: 5px 10px;
         color: #22272d;
         // line-height: 35px;
-        // font-weight: 400;
+        font-weight: 300;
         line-height: inherit;
         white-space: pre;
         resize: block;
-
+        font-size: 14px;
+        line-height: 21px;
+       
         &.invalid {
             border: 2px solid red !important;
             outline: 0px solid red !important;
@@ -218,7 +223,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
-
+    font-size: 14px;
     .info-icon {
         margin-right: 8px;
         font-size: 20px;
@@ -241,6 +246,7 @@
     font-weight: 400;
     font-size: 13px;
     padding-bottom: 0;
+    font-size: 14px;
 }
 
 .input-label-on-bottom {

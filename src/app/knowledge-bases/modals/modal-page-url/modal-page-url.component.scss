@@ -125,6 +125,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -133,11 +134,12 @@
         height: 37px;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #22272d !important;
         // line-height: 35px;
         // font-weight: 400;
         margin-bottom: 10px;
+        font-size: 14px;
         // letter-spacing: 0.5px;
         &.invalid {
             border: 2px solid red !important;
@@ -149,8 +151,9 @@
         width: 100%;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
-        padding: 0px 15px;
+        padding: 0px 10px;
         color: #22272d;
+        font-size: 14px;
         // line-height: 35px;
         // font-weight: 400;
         &.invalid {
@@ -198,6 +201,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
+    font-size: 14px;
     .info-icon {
         margin-right: 8px;
         font-size: 20px;

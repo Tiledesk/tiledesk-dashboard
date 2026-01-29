@@ -1,9 +1,9 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-// Bootstrap 5 compatibility styles
 // Ensure navbar content is visible in Bootstrap 5
 .navbar {
   min-height: 61px;
+  // height: auto;
   height: 61px;
   max-height: 61px;
 }
@@ -40,7 +40,15 @@
   flex-grow: 1; // Take remaining space
   flex-shrink: 1; // Allow shrinking if needed
   align-items: center;
+  // height: 60px; // Fixed height to prevent content overflow
+  // min-height: 60px;
+  // max-height: 60px;
 }
+
+// Always horizontal layout - no responsive breakpoints
+// .navbar-collapse {
+//   display: flex !important;
+// }
 
 .navbar-nav {
   width: 100%;
@@ -53,6 +61,7 @@
   list-style: none;
   padding-left: 0; // Remove default padding
 }
+
 
 // Bootstrap 5 compatibility: navbar-right is deprecated, use flexbox instead
 .navbar-right {
@@ -72,14 +81,19 @@
   padding: 10px 15px;
   font-family: var(--header-font-family);
   font-weight: 400;
-  font-size: 14px; // Explicit font-size to match Bootstrap 3 appearance
-  line-height: 1.42857143; // Explicit line-height to match Bootstrap 3
+  font-size: 14px;
   color: rgb(85, 85, 85);
 }
 
 .navbar-nav>li>a:not(.btn) .material-icons { 
   color: rgb(85, 85, 85);
 }
+
+// .navbar-nav > li {
+//   display: flex !important;
+//   align-items: center;
+// }
+
 
 // Dropdown styles for Bootstrap 5 compatibility
 .navbar-nav>li.dropdown {
@@ -134,33 +148,103 @@
   margin-top: 2px !important;
 }
 
-// Dropdown menu items
-.dropdown-menu li>a { 
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.42857143; // Match Bootstrap 3 line-height
-  color: #333;
-  white-space: nowrap;
+// Position dropdown menu - right align for navbar-right items
+.navbar-nav.navbar-right>li>.dropdown-menu,
+.navbar-nav>li.dropdown>.dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
 }
 
-.dropdown-menu li a:hover,
-.dropdown-menu li a:focus,
-.dropdown-menu li a:active {
+// Override template media query that hides dropdowns on >= 992px
+// Template has: @media (min-width: 992px) with visibility: hidden, opacity: 0
+// This is the most specific override to ensure it takes precedence
+@media (min-width: 992px) {
+
+  .navbar-nav>li.dropdown>.dropdown-menu,
+  .nav-item.dropdown>.dropdown-menu,
+  .navbar .navbar-nav>li>.dropdown-menu {
+    display: none; // Bootstrap 5 default - hidden until toggle has .show class
+    visibility: visible !important; // Override template visibility: hidden
+    opacity: 1 !important; // Override template opacity: 0
+    margin-top: 2px !important; // Override template margin-top: -20px
+    transition: none !important; // Disable template transitions
+  }
+
+  // Bootstrap 5 adds .show to the toggle button, not the parent
+  .navbar-nav>li.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+  .nav-item.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+  .dropdown>a.dropdown-toggle.show~.dropdown-menu,
+  // Also support Bootstrap 3/4 compatibility (.open on parent)
+  .navbar-nav>li.dropdown.open>.dropdown-menu,
+  .nav-item.dropdown.open>.dropdown-menu,
+  .dropdown.open>.dropdown-menu,
+  .navbar .navbar-nav>li.open>.dropdown-menu {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 2px !important;
+  }
+}
+
+// Limit navbar width on very large screens to prevent covering content
+@media (min-width: 2000px) {
+  .navbar-absolute {
+    max-width: 100vw;
+  }
+
+  .container-fluid {
+    max-width: 1920px; // Limit container width on very large screens
+    margin: 0 auto;
+  }
+}
+
+
+
+
+
+
+// Ensure dropdowns work correctly with Bootstrap 5
+// Additional override for template styles
+.navbar-nav>li.dropdown>.dropdown-menu {
+  position: absolute !important;
+  display: none; // Bootstrap 5 default - will show when toggle has .show class
+  visibility: visible !important; // Override template
+  opacity: 1 !important; // Override template
+  margin-top: 2px !important; // Override template margin-top: -20px
+}
+
+// Bootstrap 5 adds .show to the toggle button, not the parent
+.navbar-nav>li.dropdown>a.dropdown-toggle.show~.dropdown-menu,
+.navbar-nav>li.dropdown.open>.dropdown-menu {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 2px !important;
+}
+
+
+// NK ---- 
+.dropdown-menu li>a { 
+  margin: 0px
+}
+
+.dropdown-menu li a:hover,.dropdown-menu li a:focus,.dropdown-menu li a:active {
   background-color: var(--dropdown-menu-hover-color) !important;
+    color: var(--blue-20);
+    box-shadow: unset;
 }
 
 .dropdown-toggle:after {
-  display: inline-block;
-  margin-left: 0.255em;
-  vertical-align: 0.255em;
-  content: "";
-  border-top: 0.3em solid;
-  border-right: 0.3em solid transparent;
-  border-bottom: 0;
-  border-left: 0.3em solid transparent;
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: middle;
+    content: "";
+    border-top: 5px solid;
+    border-right: 5px solid transparent;
+    border-bottom: 0;
+    border-left: 5px solid transparent;
 }
+
 
 .btn {
   display: inline-block;
@@ -490,14 +574,19 @@ button.close.custom-hover:hover {
 
 #trial-days-indicator {
   position: relative;
-  left: 5px;
-  margin-top: 10px;
+  // left: 5px;
+  // margin: 0 !important; // Remove all margins
+  // margin-left: 5px !important; // Keep only left margin if needed
+  margin-top: 3px;
 }
 
-#trial-days-indicator:hover>.dropdown-menu {
-  visibility: visible !important;
-  opacity: 1 !important;
+// Hide caret for trial-days-indicator dropdown
+#trial-days-indicator .dropdown-toggle:after {
+  display: none !important;
 }
+
+// Bootstrap 5 handles dropdown visibility via .show class, not :hover
+// Removed hover styles to let Bootstrap 5 handle dropdowns
 
 // .trial-days-indicator > .dropdown-menu {
 //   margin-top: 11px  !important;
@@ -583,16 +672,31 @@ button.close.custom-hover:hover {
 }
 
 .progress .progress-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   /* font-size: 36px; */
   font-size: 16px;
   text-align: center;
   line-height: 20px;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
   height: 100%;
   font-weight: 300;
+  z-index: 10;
+}
+
+.progress .progress-value > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
 // .progress .progress-value div {
@@ -961,7 +1065,7 @@ button.close.custom-hover:hover {
 }
 
 .project-plan-nav {
-  font-family:var(--header-font-family) ;
+  font-family: var(--header-font-family);
   cursor: pointer;
   background-color: $brand-primary;
   color: #fff;
@@ -1139,15 +1243,10 @@ button.close.custom-hover:hover {
 
 .quote-modal-btn {
   background-color: #fff;
-  // color: #fff;
   box-shadow: unset;
-  margin-top: 7px;
-  margin-right: 8px;
+  // margin-top: 7px;
+  // margin-right: 8px;
   border-radius: 9999px;
-
-  // &:hover {
-    // background-color: rgb(220, 233, 255);
-  // }
 }
 
 .quote-modal-btn.quote-modal-btn-active {
@@ -1210,7 +1309,7 @@ button.close.custom-hover:hover {
 
 .pie-red-stroke::ng-deep circle {
   // stroke: #ff0000 !important;
-  stroke: linear-gradient(90deg, rgba(0,128,0,1) 0%, rgba(255,255,0,1) 26%, rgba(255,165,0,1) 51%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%) !important;
+  stroke: linear-gradient(90deg, rgba(0, 128, 0, 1) 0%, rgba(255, 255, 0, 1) 26%, rgba(255, 165, 0, 1) 51%, rgba(255, 165, 0, 1) 75%, rgba(255, 0, 0, 1) 100%) !important;
 }
 
 // ::ng-deep .requests-circular-spinner circle {
@@ -1297,6 +1396,7 @@ button.close.custom-hover:hover {
   align-items: center;
   font-weight: 600;
   color: #2196f2;
+  font-size: 14px;
 }
 
 // .quote-count {
@@ -1407,7 +1507,7 @@ button.close.custom-hover:hover {
   padding-top: 16px;
 }
 
-.quota-section-main.last { 
+.quota-section-main.last {
   border-bottom: 1px solid rgb(255, 255, 255);
 }
 
@@ -1446,7 +1546,7 @@ button.close.custom-hover:hover {
   align-items: center;
 }
 
-.quota-title{
+.quota-title {
   margin-top: 0px;
   margin-bottom: 0px;
   font-weight: 500;
@@ -1633,6 +1733,7 @@ button.close.custom-hover:hover {
   text-align: center;
   font-weight: 500;
   display: flex;
+  font-size: 14px;
 }
 
 
@@ -1692,14 +1793,14 @@ button.close.custom-hover:hover {
   color: rgb(100, 116, 145);
 }
 
-.quota-right-title.link { 
+.quota-right-title.link {
   color: var(--blue-20) !important;
   cursor: pointer !important;
 }
 
-.quota-right-title.link:hover { 
+.quota-right-title.link:hover {
   text-decoration: underline;
-} 
+}
 
 .quota-limit-wpr {
   display: flex;
@@ -1729,25 +1830,25 @@ button.close.custom-hover:hover {
 
 .changelog-count {
   position: absolute;
-    right: 31px;
-    background: red;
-    font-size: 11px;
-    color: #fff;
-    width: 18px;
-    height: 18px;
-    text-align: center;
-    border-radius: 9999px;
-    top: 12px;
-    border: 1px solid #fff;
-    font-weight: bold;
-    font-family: arial;
-    line-height: 18px;
-    letter-spacing: 0;
-    opacity: 1;
+  right: 31px;
+  background: red;
+  font-size: 11px;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  border-radius: 9999px;
+  top: 12px;
+  border: 1px solid #fff;
+  font-weight: bold;
+  font-family: arial;
+  line-height: 18px;
+  letter-spacing: 0;
+  opacity: 1;
 }
 
-#upgrade-plan-btn-wpr > a {
-  padding-top: 8px;
+#upgrade-plan-btn-wpr>a {
+  padding-top: 0px;
   padding-bottom: 0px;
 }
 
@@ -1760,10 +1861,10 @@ button.close.custom-hover:hover {
   border: unset;
 }
 
-#usage-stats >  ::ng-deep button > span  >  span {
-  font-family: var(  --header-font-family);
+#usage-stats> ::ng-deep button>span>span {
+  font-family: var(--header-font-family);
   font-weight: 400;
-  padding-left: 3px; 
+  padding-left: 3px;
 }
 
 // .quota-resets {
@@ -1966,3 +2067,36 @@ button.close.custom-hover:hover {
 //   letter-spacing: -0.01em;
 //   text-align: right;
 // }
+
+// Prevent FOUC (Flash of Unstyled Content) for Material Symbols Outlined icons
+// Hide icon text until font is loaded
+.navbar-brand .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  
+  // Hide text content initially to prevent FOUC
+  // Show icon after a short delay to allow font to load
+  opacity: 0;
+  animation: fadeInIcon 0.3s ease-in 0.15s forwards;
+}
+
+@keyframes fadeInIcon {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

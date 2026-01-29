@@ -1,6 +1,10 @@
 @import "./src/assets/sass/md/_variables.scss";
 @import "./src/assets/sass/cds/_variables.scss";
 
+.navbar .navbar-brand {
+  font-size: 18px;
+}
+
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -488,6 +492,20 @@ my-app .main-panel .main-content .card {
 /* tooltip top using attribute */
 
 /* table style overwrite */
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+  // border-style: unset;
+}
+
+.table .td-actions .btn {
+  padding: 8px 5px;
+}
+
 .table>thead>tr>th,
 .table>tbody>tr>th,
 .table>tfoot>tr>th,
@@ -3374,6 +3392,8 @@ appdashboard-bots-sidebar {
   // padding-right: 6px;
 }
 
+
+
 .settings-sidebar>li:hover {
   background-color: var(--settings-sidebar-hover-background-color);
   color: var(--settings-sidebar-hover-color);
@@ -3492,6 +3512,7 @@ li.active-item a .sidebar-item-s {
   display: flex;
   flex-direction: row;
   align-items: center;
+  text-decoration: none !important;
 }
 
 .settings-sidebar-icons {
@@ -3737,7 +3758,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
  * Sweet Alert 2 
 /* ********************************** */
 .swal2-popup {
-  font-size: 1.6rem !important;
+  font-size: 1rem !important;
   border-radius: var(--dialog-border-radius) !important;
 }
 

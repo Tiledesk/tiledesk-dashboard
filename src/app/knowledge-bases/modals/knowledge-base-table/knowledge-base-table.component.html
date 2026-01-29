@@ -242,9 +242,9 @@
                             <ng-option value="pdf">
                                 PDF
                             </ng-option>
-                            <!-- <ng-option value="txt">
-                        TXT
-                    </ng-option> -->
+                             <ng-option value="txt">
+                                TXT
+                            </ng-option> 
                             <ng-option value="docx">
                                 DOCX
                             </ng-option>
@@ -392,7 +392,7 @@
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
-                        <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
+                        <th class="column-th-span" style="width:auto; max-width: 100%;" (click)="onOrderBy('name')">
                             <div>
                                 <span style="margin: 0px;">{{'Name' | translate }}</span>
                                 <span *ngIf="directionDesc === 1" id="expand_more"
@@ -412,7 +412,7 @@
                             <div class="ellipsis-text" style="width: 100%;
                                 display: inline-block;
                                 text-align: center;
-                                padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                                padding: 10px; font-size: 14px; color: #000000de;">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
@@ -422,37 +422,37 @@
                             (click)="onOpenBaseModalDetail(kb)">
 
                             <div *ngIf="kb.type == 'docx'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #346ca2; color: white; padding: 2px 6px; border-radius: 10px;">
+                                style="display: flex; align-items: center; justify-content: center; background-color: #346ca2; color: white; padding: 2px 6px; border-radius: 9999px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white">description</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">DOCX</span>
                             </div>
                             <div *ngIf="kb.type == 'txt'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 10px;">
+                                style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 9999px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white">description</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">TXT</span>
                             </div>
                             <div *ngIf="kb.type == 'pdf'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #e55254; color: white; padding: 2px 6px; border-radius: 10px;">
+                                style="display: flex; align-items: center; justify-content: center; background-color: #e55254; color: white; padding: 2px 6px; border-radius: 9999px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white">description</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">PDF</span>
                             </div>
                             <div *ngIf="kb.type == 'text'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
+                                style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 9999px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white">description</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Text</span>
                             </div>
                             <div *ngIf="kb.type == 'url'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #333652; color: white; padding: 2px 6px; border-radius: 10px;">
+                                style="display: flex; align-items: center; justify-content: center; background-color: #333652; color: white; padding: 2px 6px; border-radius: 9999px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white;">link</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
                             </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
+                                style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 9999px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white;">quiz</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">FAQ</span>
@@ -554,22 +554,24 @@
                         </td>
 
 
-                        <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                            <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
-                                {{ kb.name }}
-                            </div>
+                        <td class="kb-name-cell" style="max-width: 100%; vertical-align: top;" (click)="onOpenBaseModalDetail(kb)">
+                            <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+                                <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
+                                    class="ellipsis-text" style="max-width: 100%; min-width: 0; font-size: 14px; font-weight: 400;color: #000000de;">
+                                    {{ kb.name }}
+                                </div>
 
-                            <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
-                                style="max-width: 100%;">
+                                <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
+                                    style="max-width: 100%; min-width: 0;">
 
-                                {{kb.content | slice:0:500 }}
+                                    {{kb.content | slice:0:500 }}
 
-                            </div>
-                            <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                                </div>
+                                <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%; min-width: 0;">
 
-                                {{kb.source }}
+                                    {{kb.source }}
 
+                                </div>
                             </div>
                         </td>
 

@@ -1,15 +1,9 @@
 
-
-<!-- <p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
-  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  {{ 'KnowledgeBases' | translate }}
-</p> -->
-
-<p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+<!-- <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
    [class.chrome-gt-100]="isChromeVerGreaterThan100"
    [class.chrome-lt-100]="!isChromeVerGreaterThan100">
   {{ 'KnowledgeBases' | translate }}
-</p>
+</p> -->
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
@@ -101,8 +95,8 @@
                 </div>
                 
 
-                <div *ngIf="ns.count" class="counter-badge">{{ns.count}}</div>
-                <div *ngIf="!ns.count" class="counter-badge">0</div>
+                <div *ngIf="ns.count" class="counter-badge" style="font-size: 14px;">{{ns.count}}</div>
+                <div *ngIf="!ns.count" class="counter-badge" style="font-size: 14px;">0</div>
 
                 <div style="flex: 0 0 32px; display: flex; align-items: center; justify-content: center; margin-left: 12px;">
                   <mat-icon *ngIf="ns === selectedNamespace" style="color: #0f62ff;">chevron_right</mat-icon>

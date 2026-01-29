@@ -47,6 +47,7 @@
     "angular-shepherd": "^14.0.0",
     "apexcharts": "^4.1.0",
     "arrive": "2.4.1",
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "bootstrap-material-design": "0.5.10",
     "bootstrap-notify": "3.1.3",

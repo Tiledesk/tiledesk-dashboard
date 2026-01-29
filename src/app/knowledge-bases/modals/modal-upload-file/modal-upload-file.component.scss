@@ -53,6 +53,7 @@
 .drag-text {
     color: var(--text-color);
     font-weight: 400;
+    font-size: 14px;
 }
 
 .browse--btn {
@@ -81,13 +82,16 @@
     color: #787f86;
     text-align: center;
     margin-bottom: 12px;
+    font-size: 12px;
 }
 
 .file-size-exceeds {
     color: var(--red-color) !important;
+     font-size: 14px;
 }
 .file-type-not-supported {
     color: var(--red-color) !important;
+    font-size: 14px;
 }
 
 .file-preview {
@@ -124,6 +128,7 @@
     text-align: center;
     font-family: var(--header-font-family);
     font-weight: 400;
+    font-size: 14px;
 }
 
 .file-preview-uploading {
@@ -137,6 +142,7 @@
 
 .successfully-uploaded {
     color: #3ecf8e;
+    font-size: 14px;
 }
 
 .uploading {
@@ -144,6 +150,7 @@
     margin-top: -7px;
     margin-bottom: 18px;
     height: 21px;
+    font-size: 14px;
 }
 
 .uploading span {

@@ -149,6 +149,14 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   is0penDropDown: boolean = false
   is0penSelectFlowDropDown: boolean = false
   isOpen: boolean;
+  
+  // Bootstrap 5 dropdown event listeners
+  private orderByDropdownElement: HTMLElement | null = null;
+  private selectFlowDropdownElement: HTMLElement | null = null;
+  private orderByDropdownShowHandler: (() => void) | null = null;
+  private orderByDropdownHideHandler: (() => void) | null = null;
+  private selectFlowDropdownShowHandler: (() => void) | null = null;
+  private selectFlowDropdownHideHandler: (() => void) | null = null;
 
   orderBylastUpdated: boolean = true;
   orderByCreationDate: boolean = false;
@@ -265,7 +273,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.getProjectPlan();
       this.getUserRole();
       this.getDefaultDeptId();
-      this.getLoggedUser()
+      this.getLoggedUser();
+      
+      // Setup Bootstrap 5 dropdown event listeners
+      this.setupDropdownEventListeners();
    
   }
 
@@ -283,6 +294,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.faqkbList = [];
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    
+    // Remove Bootstrap 5 dropdown event listeners
+    this.removeDropdownEventListeners();
   }
 
   checkChromeVersion(): boolean {
@@ -834,7 +848,57 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   isOpenSelecFlowTypeDropdown(_is0penSelectFlowDropDown) {
+  
     this.is0penSelectFlowDropDown = _is0penSelectFlowDropDown
+      console.log('is0penSelectFlowDropDown ', this.is0penSelectFlowDropDown)
+  }
+
+  // Setup Bootstrap 5 dropdown event listeners
+  setupDropdownEventListeners() {
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(() => {
+      // Order By dropdown
+      this.orderByDropdownElement = document.getElementById('orderByDropdown');
+      if (this.orderByDropdownElement) {
+        this.orderByDropdownShowHandler = () => {
+          this.is0penDropDown = true;
+          this.logger.log('[BOTS-LIST] Order By dropdown opened');
+        };
+        this.orderByDropdownHideHandler = () => {
+          this.is0penDropDown = false;
+          this.logger.log('[BOTS-LIST] Order By dropdown closed');
+        };
+        this.orderByDropdownElement.addEventListener('show.bs.dropdown', this.orderByDropdownShowHandler);
+        this.orderByDropdownElement.addEventListener('hide.bs.dropdown', this.orderByDropdownHideHandler);
+      }
+
+      // Select Flow dropdown
+      this.selectFlowDropdownElement = document.getElementById('selectFlowDropdown');
+      if (this.selectFlowDropdownElement) {
+        this.selectFlowDropdownShowHandler = () => {
+          this.is0penSelectFlowDropDown = true;
+          console.log('Select Flow dropdown opened');
+        };
+        this.selectFlowDropdownHideHandler = () => {
+          this.is0penSelectFlowDropDown = false;
+          console.log('Select Flow dropdown closed');
+        };
+        this.selectFlowDropdownElement.addEventListener('show.bs.dropdown', this.selectFlowDropdownShowHandler);
+        this.selectFlowDropdownElement.addEventListener('hide.bs.dropdown', this.selectFlowDropdownHideHandler);
+      }
+    }, 0);
+  }
+
+  // Remove Bootstrap 5 dropdown event listeners
+  removeDropdownEventListeners() {
+    if (this.orderByDropdownElement && this.orderByDropdownShowHandler && this.orderByDropdownHideHandler) {
+      this.orderByDropdownElement.removeEventListener('show.bs.dropdown', this.orderByDropdownShowHandler);
+      this.orderByDropdownElement.removeEventListener('hide.bs.dropdown', this.orderByDropdownHideHandler);
+    }
+    if (this.selectFlowDropdownElement && this.selectFlowDropdownShowHandler && this.selectFlowDropdownHideHandler) {
+      this.selectFlowDropdownElement.removeEventListener('show.bs.dropdown', this.selectFlowDropdownShowHandler);
+      this.selectFlowDropdownElement.removeEventListener('hide.bs.dropdown', this.selectFlowDropdownHideHandler);
+    }
   }
 
   orderBy(sortfor) {

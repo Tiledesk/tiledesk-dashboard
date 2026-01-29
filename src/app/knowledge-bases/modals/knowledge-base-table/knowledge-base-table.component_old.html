@@ -486,24 +486,11 @@
                         {{ kb.createdAt | amTimeAgo }}
                     </td>
 
-                    <!-- <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                        <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}" class="ellipsis-text" style="max-width: 100%; font-size: 16px;">{{ kb.name }}</div>
-                        
-                        <div *ngIf="kb.type === 'text'" class="subtitle ellipsis-text" style="max-width: 100%;">
-                           
-                            {{kb.content | slice:0:500 }}
-
-                        </div>
-                        <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
-          
-                            {{kb.source }}
-
-                        </div>
-                    </td> -->
+                 
 
                     <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
                         <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                            class="ellipsis-text" style="max-width: 100%; font-size: 16px;">
+                            class="ellipsis-text" style="max-width: 100%; font-size: 16px; color: #000000de;">
                             {{ kb.name }}
                         </div>
 

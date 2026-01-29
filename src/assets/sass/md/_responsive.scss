@@ -8,19 +8,32 @@
     .navbar-nav > li > .dropdown-menu,
     .dropdown .dropdown-menu,
     .dropdown-menu.bootstrap-datetimepicker-widget{
-        @include transition($fast-transition-time, $transition-linear);
+        // Disabled transition for Bootstrap 5 compatibility - prevents animation issues
+        transition: none !important;
         margin-top: -20px;
         visibility: hidden;
         display: block;
         @include opacity(0);
     }
+    // Bootstrap 3/4 compatibility: show dropdown when parent has .open class
     .navbar-nav > li.open > .dropdown-menu,
     .dropdown.open .dropdown-menu,
     .dropdown-menu.bootstrap-datetimepicker-widget.open{
+        transition: none !important; // Disable transition for instant show
         @include opacity(1);
         visibility: visible;
         margin-top: 0px;
-
+    }
+    // Bootstrap 5 compatibility: show dropdown when .show class is present
+    .navbar-nav > li > .dropdown-menu.show,
+    .dropdown .dropdown-menu.show,
+    .dropdown-menu.bootstrap-datetimepicker-widget.show,
+    .nav-item.dropdown .dropdown-menu.show {
+        transition: none !important; // Disable transition for instant show
+        @include opacity(1);
+        visibility: visible;
+        margin-top: 0px;
+        display: block !important;
     }
 
     /*.navbar-nav > li > .dropdown-menu:before{

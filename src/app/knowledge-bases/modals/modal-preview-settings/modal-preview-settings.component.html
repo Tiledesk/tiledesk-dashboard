@@ -38,29 +38,30 @@
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
      
+        <div class="select-ai-models-wpr" style="font-size: 14px;"> 
+            <ng-select
+                appendTo="body"
+                [items]="flattenedModels"
+                bindLabel="name"
+                bindValue="value"
+                [groupBy]="'providerName'"
+                [virtualScroll]="true"
+                [searchable]="true"
+                placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+                [(ngModel)]="selectedModel"
+                (change)="onSelectModel(selectedModel)"
+                [clearable]="false">
 
-        <ng-select
-            appendTo="body"
-            [items]="flattenedModels"
-            bindLabel="name"
-            bindValue="value"
-            [groupBy]="'providerName'"
-            [virtualScroll]="true"
-            [searchable]="true"
-            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
-            [(ngModel)]="selectedModel"
-            (change)="onSelectModel(selectedModel)"
-            [clearable]="false">
-
-            <ng-template ng-option-tmp let-item="item">
-                <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
-                 {{ item.name }}
-                    <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
-                    {{ item.multiplier }}
-                    </span>
-                </div>
-            </ng-template>
-        </ng-select>
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;font-size: 14px;">
+                    {{ item.name }}
+                        <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
+                        {{ item.multiplier }}
+                        </span>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
 
     </div>
 
@@ -429,7 +430,7 @@
         </div>
 
         <textarea class="context-texarea" [(ngModel)]="context" rows="2" placeholder="You are an awesome assistant"
-            (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+            (ngModelChange)="onChangeTextInContex($event)" style="font-size: 14px;font-weight: 300;">  </textarea>
     </div>
 
 

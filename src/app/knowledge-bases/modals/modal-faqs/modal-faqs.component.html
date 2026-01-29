@@ -104,8 +104,7 @@
     <i class="material-icons-outlined info-icon">help_outline</i>
     <div class="info-text">
       <p>{{ 'KbPage.AddKbInfoTextContent' | translate }}</p>
-      <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
-      <p [innerHTML]="'KbPage.AddKbInfoTextContentMsg1' | translate" style="margin-top: 8px;"></p>
+      <p [innerHTML]="'KbPage.AddKbInfoTextContentMsg1' | translate" style="line-height: 21px;"></p>
     </div>
   </div>
 
@@ -161,9 +160,9 @@
       <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
-          <p>{{ 'KbPage.TheFileMustContainTheQAColumns' | translate }}</p>
+          <p style="line-height: 21px;">{{ 'KbPage.TheFileMustContainTheQAColumns' | translate }}</p>
      
-          <p>{{ 'KbPage.TheColumnsMustBeSeparatedByTheDelimiter' | translate }}</p>
+          <p style="line-height: 21px;">{{ 'KbPage.TheColumnsMustBeSeparatedByTheDelimiter' | translate }}</p>
           <div class="download--example-csv-wpr"> 
             <p>{{ 'KbPage.AsStartingPointYouCanDownloadTheExampleFile' | translate }} </p> 
             <button class="download--example-csv"  (click)="downloadExampleCsv()"> {{ 'examplecsv' | translate }} </button>

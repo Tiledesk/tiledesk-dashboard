@@ -6,7 +6,7 @@
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
             <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
-            <p [innerHTML]="'KbPage.helpUrls' | translate"></p>
+            <p style="line-height: 21px;" [innerHTML]="'KbPage.helpUrls' | translate"></p>
         </div>
     </div>
 
@@ -23,16 +23,18 @@
                         <span class="input-label">
                             {{'KbPage.IndexingType' | translate}}
                         </span>
+                        <div class="scrape-types-select-wpr" style="font-size: 14px;"> 
+                            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px;"
+                                appendTo="body" [items]="scrape_types | selectOptionsTranslate" bindLabel="name"
+                                bindValue="value" placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+                                [clearable]="false" [searchable]="false" [(ngModel)]="selectedScrapeType"
+                                (change)="onSelectScrapeType(selectedScrapeType)">
+                                
 
-                        <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px;"
-                            appendTo="body" [items]="scrape_types | selectOptionsTranslate" bindLabel="name"
-                            bindValue="value" placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
-                            [clearable]="false" [searchable]="false" [(ngModel)]="selectedScrapeType"
-                            (change)="onSelectScrapeType(selectedScrapeType)">
+                                <!-- <ng-option *ngFor="let type of scrape_types" [value]="type.value">{{type.name}}</ng-option> -->
 
-                            <!-- <ng-option *ngFor="let type of scrape_types" [value]="type.value">{{type.name}}</ng-option> -->
-
-                        </ng-select>
+                            </ng-select>
+                        </div> 
                     </div>
                 </div>
                 <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; margin-left: 12px;">
@@ -142,16 +144,18 @@
                 {{'KbPage.RefreshRate' | translate}}
             </span>
 
-            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
-                appendTo="body" 
-                [items]="refresh_rate | selectOptionsTranslate" 
-                bindLabel="name" bindValue="value" 
-                placeholder="Refresh rate"
-                [clearable]="false" [searchable]="false" 
-                [(ngModel)]="selectedRefreshRate"
-                (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
-            </ng-select>
+            <div class="scrape-types-select-wpr" style="font-size: 14px;"> 
+                <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+                    appendTo="body" 
+                    [items]="refresh_rate | selectOptionsTranslate" 
+                    bindLabel="name" bindValue="value" 
+                    placeholder="Refresh rate"
+                    [clearable]="false" [searchable]="false" 
+                    [(ngModel)]="selectedRefreshRate"
+                    (change)="onSelectRefreshRate(selectedRefreshRate)" 
+                    [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
+                </ng-select>
+            </div>
 
             <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}

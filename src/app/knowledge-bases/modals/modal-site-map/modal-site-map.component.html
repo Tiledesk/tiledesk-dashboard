@@ -174,16 +174,18 @@
                 {{'KbPage.RefreshRate' | translate}}
             </span>
 
-            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
-                appendTo="body" 
-                [items]="refresh_rate | selectOptionsTranslate" 
-                bindLabel="name" bindValue="value" 
-                placeholder="Refresh rate"
-                [clearable]="false" [searchable]="false" 
-                [(ngModel)]="selectedRefreshRate"
-                (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
-            </ng-select>
+            <div class="scrape-types-select-wpr" style="font-size: 14px;"> 
+                <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+                    appendTo="body" 
+                    [items]="refresh_rate | selectOptionsTranslate" 
+                    bindLabel="name" bindValue="value" 
+                    placeholder="Refresh rate"
+                    [clearable]="false" [searchable]="false" 
+                    [(ngModel)]="selectedRefreshRate"
+                    (change)="onSelectRefreshRate(selectedRefreshRate)" 
+                    [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
+                </ng-select>
+            </div>
 
             <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
