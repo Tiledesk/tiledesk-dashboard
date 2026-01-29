@@ -2157,12 +2157,15 @@ _presentDialogImportContents() {
     dialogRef.afterClosed().subscribe(kb => {
       this.logger.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
       this.logger.log('[Modal KB DETAILS] Dialog kb : ', kb);
-      if (typeof kb !== 'object') {
+      if (kb) {
         this.onUpdateKb(kb)
-      } else {
-         
-        this.onOpenBaseModalDelete(kb.kb)
       }
+     // if (typeof kb !== 'object') {
+     //   this.onUpdateKb(kb)
+     // } else {
+         
+     //   this.onOpenBaseModalDelete(kb.kb)
+     // }
     });
   }
 
