@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.165-stage
+- Fixes the bug: is not possible to update a knowledge base
 
 ### 2.7.164-stage 
 - Added the Connect button to retrieve tools on each created MCP server
