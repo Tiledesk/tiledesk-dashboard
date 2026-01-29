@@ -931,7 +931,8 @@
                           border-bottom-left-radius: 9999px !important;
                           box-shadow: unset; background-color: var(--blue-20);"
                         [disabled]="currentPage === 1">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <!-- <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> -->
+                        <span class="material-icons">keyboard_arrow_left</span>
                       </button>
                     <!-- </span> -->
 
@@ -949,7 +950,8 @@
                             background-color: var(--blue-20);
                             border-top-right-radius: 9999px !important;"
                         [disabled]="currentPage * pageSize >= faqkbList.length">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                       <!-- <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> -->
+                        <span class="material-icons">keyboard_arrow_right</span>
                       </button>
                     <!-- </span> -->
                   <!-- </div> -->
