@@ -584,45 +584,47 @@
                         </td>
 
 
-                        <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                            <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                [matTooltip]="'URLAutomaticallySynchronized' | translate" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100"
-                                [matTooltipDisabled]="!kb.sitemap_origin">
-                                {{ kb.name }}
-                            </div>
+                        <td class="kb-name-cell" style="max-width: 100%; vertical-align: top;" (click)="onOpenBaseModalDetail(kb)">
+                            <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0; width: 100%;">
+                                <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
+                                    class="ellipsis-text" style="min-width: 0; width: 100%; display: block; font-size: 14px; font-weight: 400;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    [matTooltip]="'URLAutomaticallySynchronized' | translate" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="!kb.sitemap_origin">
+                                    {{ kb.name }}
+                                </div>
 
-                            <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
-                                style="max-width: 100%;">
+                                <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
+                                    style="min-width: 0; width: 100%; display: block;">
 
-                                {{kb.content | slice:0:500 }}
+                                    {{kb.content | slice:0:500 }}
 
-                            </div>
-                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                                </div>
+                                <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="min-width: 0; width: 100%; display: block;">
 
-                              <span *ngIf="!kb.sitemap_origin"> 
-                               {{kb.source }}
-                             </span>  
-                             <!-- || kb.type === 'sitemap' -->
-                             <span *ngIf="kb.sitemap_origin"> 
-                               <span style="background: #ff6154;
-                                    color: #fff;
-                                    border-radius: 9999px;
-                                    padding: 0 5px;
-                                    font-size: 9px;
-                                    font-weight: 400;
-                                    margin-right: 3px;"> 
-                                    {{'KbPage.AddKbSitemap'| translate}}
-                                </span> 
-                                {{kb.sitemap_origin }}
-                                <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
-                                <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
-                             </span>
+                                  <span *ngIf="!kb.sitemap_origin"> 
+                                   {{kb.source }}
+                                 </span>  
+                                 <!-- || kb.type === 'sitemap' -->
+                                 <span *ngIf="kb.sitemap_origin"> 
+                                   <span style="background: #ff6154;
+                                        color: #fff;
+                                        border-radius: 9999px;
+                                        padding: 0 5px;
+                                        font-size: 9px;
+                                        font-weight: 400;
+                                        margin-right: 3px;"> 
+                                        {{'KbPage.AddKbSitemap'| translate}}
+                                    </span> 
+                                    {{kb.sitemap_origin }}
+                                    <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
+                                    <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
+                                 </span>
 
+                                </div>
                             </div>
                         </td>
 

@@ -234,6 +234,10 @@ table {
     width: 100%;
 }
 
+.table.table-hover {
+    table-layout: fixed;
+}
+
 .table-body {
     padding: 20px 0px;
     padding: 5px 20px;
@@ -251,6 +255,16 @@ table {
     display: table-column-group;
     line-height: normal;
     line-height: 1.6;
+}
+
+// Fix ellipsis-text when inside flex container (kb-name-cell)
+td.kb-name-cell {
+    overflow: hidden;
+}
+
+td.kb-name-cell .ellipsis-text {
+    display: block;
+    min-width: 0;
 }
 
 .loading-indicator {

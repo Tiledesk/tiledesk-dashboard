@@ -2154,14 +2154,17 @@ _presentDialogImportContents() {
       },
     });
     dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
-      this.logger.log('[Modal KB DETAILS] Dialog kb : ', kb);
-      if (typeof kb !== 'object') {
+     console.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
+     console.log('[Modal KB DETAILS] Dialog kb : ', kb);
+      if (kb) {
         this.onUpdateKb(kb)
-      } else {
-         
-        this.onOpenBaseModalDelete(kb.kb)
       }
+      // if (typeof kb !== 'object') {
+      //   this.onUpdateKb(kb)
+      // } else {
+         
+      //   this.onOpenBaseModalDelete(kb.kb)
+      // }
     });
   }
 
@@ -3308,7 +3311,7 @@ _presentDialogImportContents() {
 
   /** */
   onUpdateKb(kb) {
-    //  this.logger.log('onUpdateKb: ', kb);
+    console.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {

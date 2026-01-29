@@ -703,9 +703,9 @@ export class ProjectService {
 
     let url = this.PROJECTS_URL + this.projectID + '/'
     // this.logger.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
-    let body = {}
-    body["settings.email.from"] = undefined;
-    body["settings.email.config"] = undefined;
+    let body = {"settings.email.from": null,"settings.email.config": null}
+    // body["settings.email.from"] = null;
+    // body["settings.email.config"] = null;
     // let body = {
     //   'settings.email.from': "",
     //   'settings.email.config.host': "",
