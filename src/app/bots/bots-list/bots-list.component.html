@@ -986,11 +986,11 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteBotModal()">
+       <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteBotModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title warning">
-          <!-- <i class="material-icons" style="vertical-align: middle"> report_problem </i> -->
+        </button> -->
+        <h4 class="modal-title warning" style="font-size: 14px;">
+          
           <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
@@ -1005,23 +1005,12 @@
             <span *ngIf="botSubType === 'copilot' || botSubType === 'webhook'">
               {{ "DeleteAutomation" | translate }}
             </span>
-            <!-- {{ "BotsPage.DeleteBot" | translate }} - botSubType {{botSubType}} -->
+        
           </span>
         </h4>
-        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-          {{ "BotsPage.TheBotWithID" | translate }}
-          <code>{{ id_toDelete }}</code>
-          {{ "BotsPage.WillBeDeleted" | translate }}
-        </h4> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseDeleteBotModal()"></button>
       </div>
-      <div class="modal-body">
-        <!-- <p style="font-weight: 400; color: rgba(0,0,0,0.87)">
-          {{ "BotsPage.IfYouDeletedTheBot" | translate }}
-
-          <strong> “{{ bot_name_to_delete}}”</strong>,
-
-          {{ "BotsPage.YouAlsoDeleteItsFaqs" | translate }}
-        </p> -->
+      <div class="modal-body" style="font-size: 14px;">
 
         <label class="col-sm-10 modal-body--content">
           <span
@@ -1043,7 +1032,7 @@
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteBotModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button style="margin-top:0px" class="btn btn-red" [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID"
+        <button style="margin-bottom: 0px;margin-left: 12px;" class="btn btn-red" [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID"
           (click)="trashTheBot()">
           {{ "Delete" | translate }}
         </button>
