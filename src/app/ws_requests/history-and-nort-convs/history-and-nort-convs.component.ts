@@ -1,5 +1,5 @@
 import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -378,7 +378,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public route: ActivatedRoute,
     public brandService: BrandService,
     public rolesService: RolesService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private cdr: ChangeDetectorRef
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -2718,6 +2719,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // Only reset pageNo if not called from get-query-params (which preserves pagination when returning from detail)
     if (calledby !== 'get-query-params') {
       this.pageNo = 0
+       if (this.IS_HERE_FOR_HISTORY) {
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          pageNo: this.pageNo.toString()
+        });
+        this.router.navigate([], { 
+          relativeTo: this.route,
+          queryParams: queryParams,
+          queryParamsHandling: 'merge'
+        });
+      }
+      // Force change detection immediately after resetting pageNo
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      }, 0);
     }
 
 
@@ -2932,9 +2947,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
-    // Update URL with _preflight query parameter when in history mode
+    // Update URL with _preflight and pageNo query parameters when in history mode
     if (this.IS_HERE_FOR_HISTORY) {
-      const queryParams = this.getQueryParamsWithTiledeskLogOut({ _preflight: this._preflight.toString() });
+      const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+        _preflight: this._preflight.toString(),
+        pageNo: this.pageNo.toString()
+      });
       this.router.navigate([], { 
         relativeTo: this.route,
         queryParams: queryParams,
