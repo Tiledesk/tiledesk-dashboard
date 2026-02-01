@@ -13,6 +13,7 @@
 
 .table td p {
   margin-bottom: 0px;
+  line-height: 17px;
 }
 
 button {
@@ -717,10 +718,12 @@ span .switch-agent-admin-requests-btn {
 .email-wpr {
   background: #bb001b;
   border-radius: 50%;
+  display: block;
 }
 .form-wpr {
   background: #39988d;
   border-radius: 50%;
+  display: block;
 }
 
 .channel-img-in-conversations {
@@ -746,6 +749,12 @@ span .switch-agent-admin-requests-btn {
   border-radius: 4px;
   margin-right: 3px;
   padding: 0px 2px;
+  height: 15px;
+}
+
+.ticket-id-badge span{ 
+  position: relative;
+  top: -3px;
 }
 
 ::ng-deep .convs-custom-mat-tooltip {

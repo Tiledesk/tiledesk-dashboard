@@ -168,7 +168,7 @@
         <!-- ------------------------------------------------------------ -->
         <tr *ngIf="wsRequestsServed?.length === 0">
           <td colspan="10" style="text-align: center; padding-top: 16px;">
-            <p style="font-size:1em; color:#737376; font-weight: 100">
+            <p style="font-size:1em; color:#737376; font-weight: 100; font-size: 14px;">
 
               {{ 'NoRequests' | translate }}
             </p>
@@ -183,9 +183,9 @@
           [ngClass]="{'active-row': request?.request_id === storedRequestId }">
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <!-- Checkbox -->
+          <!-- Checkbox  white-space: nowrap; width: 1%; -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <td style="text-align:center; white-space: nowrap; width: 1%;">
+          <td style="text-align:center;" style="width: auto !important;">
             <div class="checkbox">
               <label>
                 <!-- allChecked === true -->
@@ -197,9 +197,9 @@
           </td>
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <!-- ICONS -->
+          <!-- ICONS white-space: nowrap; width: 1%; -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <td style="text-align:center; white-space: nowrap; width: 1%;">
+          <td style="text-align:center; width: 30px; min-width: 30px;">
             <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
 
             <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
@@ -209,7 +209,7 @@
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"
+                  <img style="width: 30px;  min-width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"
                     matTooltipClass="mat-white-tooltip"
                     matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
@@ -219,7 +219,7 @@
                 <!-- If is internal request -->
                 <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
+                  <img style="width: 30px; min-width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
                     class="img-fluid" matTooltipClass="mat-white-tooltip"
                     matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
@@ -237,7 +237,7 @@
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid"
+                  <img style="width: 30px; min-width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid"
                     matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}"
                     #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
@@ -249,7 +249,7 @@
                 <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
 
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
+                  <img style="width: 30px;min-width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
                     class="img-fluid" matTooltipClass="mat-white-tooltip"
                     matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
@@ -262,14 +262,13 @@
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!-- Message has-details width: 215px; -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <!--  -->
           <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
             (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; "
             (contextmenu)="onContextMenu($event, request)">
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
               matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
               matTooltipPosition='right' matTooltipHideDelay="100">
-              #{{request?.ticket_id }}
+              <span>  #{{request?.ticket_id }} </span> 
             </span>
             <!-- *ngIf="request?.channel?.name !== 'email'" -->
             <p class="column-td request-first-text"
@@ -358,7 +357,7 @@
             <!-- --------------------------------------- -->
             <!-- Request Tag -->
             <!-- --------------------------------------- -->
-            <section style="max-width: 210px;" *ngIf="request?.tags?.length > 0">
+            <section class="request-tags-section" style="max-width: 210px; line-height: 1.1;" *ngIf="request?.tags?.length > 0">
 
               <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
                 <div *ngIf="i<2">
@@ -1158,7 +1157,7 @@
           <!-- @ Actions -->
           <!-- ------------------------------------------------------ -->
           <!-- (click)='openDeleteRequestModal(request?.request_id)' // <- open the modal "confirm archive request"  -->
-          <td class="td-actions text-right" style="padding-top: 9px !important;">
+          <td class="td-actions" style="display: table-cell; vertical-align: middle;  white-space: nowrap;">
 
 
             <!-- -------------------------- -->
@@ -1173,21 +1172,18 @@
               #tooltip="matTooltip" 
               matTooltipPosition='above'
               matTooltipHideDelay="100">
+              <i class="material-icons">person_add</i>
               <!-- --------------------------------- -->
               <!-- SVG font-awesome link icon -->
               <!-- --------------------------------- -->
-              <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+              <!-- <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512">
                 <path fill="currentColor"
                   d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
                 </path>
-              </svg>
-              <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
-                class="top">
-                <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
-                <i style="left: 54%;"></i>
-              </span> -->
+              </svg> -->
+             
             </button>
 
             <!-- ------------------------------------- -->
@@ -1202,21 +1198,18 @@
               #tooltip="matTooltip" 
               matTooltipPosition='above'
               matTooltipHideDelay="100">
+              <i class="material-icons">forum</i> 
               <!-- --------------------------------- -->
               <!-- SVG font-awesome chat icon icon -->
               <!-- --------------------------------- -->
-              <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+              <!-- <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="comments" class="svg-inline--fa fa-comments fa-w-18" role="img"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                 <path fill="currentColor"
                   d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z">
                 </path>
-              </svg>
-              <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
-                class="top">
-                <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.OpenTheChat' | translate }} </span>
-                <i style="left: 54%;"></i>
-              </span> -->
+              </svg> -->
+    
             </button>
 
             <!-- -------------------------- -->
@@ -1250,9 +1243,10 @@
               #tooltip="matTooltip"
               matTooltipPosition='above'
               matTooltipHideDelay="100">
-              <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px; width: 15px;" viewBox="0 -960 960 960" fill="currentColor">
+              <i class="material-icons">subject</i>
+              <!-- <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px; width: 15px;" viewBox="0 -960 960 960" fill="currentColor">
                 <path fill="currentColor" d="M180-215.39V-280h360v60l-360 4.61Zm0-155.76v-60h600v60H180Zm0-157.7v-60h600v60H180ZM180-680v-64.61h600V-680H180Z"/>
-              </svg>
+              </svg> -->
             </button>
 
           </td>

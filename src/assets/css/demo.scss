@@ -1038,6 +1038,14 @@ th {
   min-height: 20px;
 }
 
+.span-24 {
+  display: block;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+}
+
 .span-18 {
   display: block;
   width: 18px;
@@ -1828,7 +1836,7 @@ span.navbar-brand-title {
 
 .page-title--sidebar-settings {
   position: absolute;
-  top: 21px;
+  top: 19px;
   z-index: 1050;
   font-size: 18px;
 }
@@ -2479,12 +2487,6 @@ footer ul {
   border: none;
 }
 
-// Used in KB
-// .ng-select.custom--input .ng-select-container {
-//   box-shadow: 0 0 4px #c7c7c7 !important;
-//   border: unset !important;
-//   border-radius: 12px !important;
-// }
 
 .ng-select-container {
   height: 36px !important;
@@ -2499,6 +2501,18 @@ footer ul {
 .ng-select.ng-select-tags .ng-select-container:hover {
   box-shadow: unset !important;
 }
+
+.select-project-to-clone-cb .ng-select-container {
+  font-size: 14px !important;
+}
+
+.ng-dropdown-panel.select-project-to-clone-cb
+.ng-option {
+  font-size: 14px !important;
+}
+
+
+
 
 .mat-autocomplete-panel.mat-autocomplete-visible {
   // width: calc(100% - 49px);
@@ -4225,6 +4239,9 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav li a:hover {

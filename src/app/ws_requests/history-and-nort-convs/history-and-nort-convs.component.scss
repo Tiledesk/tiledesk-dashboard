@@ -69,8 +69,22 @@ input[type="email"] {
   height: 36px;
 }
 
+#request-duration {
+  width: 145px
+}
+
 .input-group-addon {
   width: 30%;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: #555555;
+  text-align: center;
+  background-color: #eeeeee;
+  border: 1px solid #ccc;
+  border-radius: 0px 4px 4px 0px;
+  border-left: unset;
 }
 
 .suffix-text {
@@ -575,6 +589,8 @@ p.member:hover {
   transition: all 0.5s ease;
   border-radius: 5px;
   border: 0.1px solid lightgrey;
+  flex-wrap: unset;
+  align-items: center;
 }
 
 .search-field {
@@ -685,23 +701,29 @@ p.member:hover {
   // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+// .filter-bar-advanced-options {
+//   padding: 5px 15px 5px 0px;
+//   max-width: 722px;
+//   box-shadow: 0 2px 6px 0 #e6e9ed;
+//   border-radius: 12px;
+// }
+
 .filter-bar-advanced-options {
-  // margin-left: -15px;
-  // margin-right: -15px;
-  // margin: auto;
-  padding: 5px 15px 5px 0px;
-  max-width: 722px;
+  padding:12px;
+  // max-width: 722px;
+  min-width: 900px;
   box-shadow: 0 2px 6px 0 #e6e9ed;
   border-radius: 12px;
-  // position: absolute;
-  // background: #fff;
-  // top: 66px;
-  // z-index: 1051;
-  // margin-right: 195px;
+
+  @media (max-width: 767.98px) {
+    min-width: auto;
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 .customh4 {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-size: 16px;
   font-weight: 400;
   //    color: #394f5a !important;
@@ -725,8 +747,9 @@ p.member:hover {
 
 .filter-bar {
   display: flex;
-  align-items: stretch;
-  flex-shrink: 0;
+  align-items: center;
+  
+  // flex-shrink: 0;
 }
 
 .filters-on-left {
@@ -766,6 +789,10 @@ p.member:hover {
   padding-right: 0px;
 }
 
+.left-date-picker { 
+  margin-top: -5px;
+}
+
 @media screen and (min-width: 768px) {
   .left-date-picker {
     padding-right: 0px;
@@ -799,9 +826,9 @@ p.member:hover {
   max-width: 722px;
 }
 
-.filters-on-center-then-on-left {
-  justify-content: unset;
-}
+// .filters-on-center-then-on-left {
+//   justify-content: unset;
+// }
 
 .parent-x {
   display: flex;
@@ -864,9 +891,8 @@ p.member:hover {
   font-weight: 500;
   height: 32px;
   margin-left: 9px;
-  // background: #e4e6eb;
-  // margin-bottom: 16px;
-  margin-top: 8px;
+  // margin-top: 8px;
+  font-size: 14px;
 }
 
 // applied in the div of the ng-select 'Tag'
@@ -910,34 +936,42 @@ p.member:hover {
  * Animate ellipsis 
  * -------------------------------------------------- */
 
+.loading-wpr {
+font-family: var(--header-font-family);
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 12px;
+}
+
 .loading {
   color: #aaa
 }
 
-.loading:after {
-  overflow: hidden;
-  display: inline-block;
-  vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
-  animation: ellipsis steps(4, end) 900ms infinite;
-  content: "\2026";
-  /* ascii code for the ellipsis character */
-  width: 0px;
-  color: #ddd;
-  font-weight: 100 !important;
-}
+// .loading:after {
+//   overflow: hidden;
+//   display: inline-block;
+//   vertical-align: bottom;
+//   -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+//   animation: ellipsis steps(4, end) 900ms infinite;
+//   content: "\2026";
+//   /* ascii code for the ellipsis character */
+//   width: 0px;
+//   color: #ddd;
+//   font-weight: 100 !important;
+// }
 
-@keyframes ellipsis {
-  to {
-    width: 20px;
-  }
-}
+// @keyframes ellipsis {
+//   to {
+//     width: 20px;
+//   }
+// }
 
-@-webkit-keyframes ellipsis {
-  to {
-    width: 20px;
-  }
-}
+// @-webkit-keyframes ellipsis {
+//   to {
+//     width: 20px;
+//   }
+// }
 
 
 .ticket-id-badge {
@@ -991,7 +1025,7 @@ p.member:hover {
 }
 
 .preflight-checkbox {
-  margin-left: 15px;
+  // margin-left: 15px;
   margin-top: 20px;
   display: flex;
   flex-direction: row;
@@ -1037,7 +1071,7 @@ p.member:hover {
 
 .search-btn {
   padding: 9px 30px;
-  margin-right: 15px;
+ margin-left: 15px;
 }
 
 .search-btn>span {

@@ -62,9 +62,9 @@
         </ng-container>
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <!-- createBlankTilebot() -->
-            <button *ngIf="isChatbotRoute !== 'all'" class="btn btn-tdblu-no-boxshadow pull-right"
+            <button *ngIf="isChatbotRoute !== 'all'" class="btn btn-tdblu-no-boxshadow float-end"
               (click)="presentDialogCreateFlows(isChatbotRoute)" style="margin-right: 25px">
               <!-- Create from scratch -->
               <!-- {{'isChatbotRoute' | translate}} -->
@@ -81,7 +81,7 @@
 
             
 
-            <div class="dropdown pull-right" *ngIf="isChatbotRoute === 'all'">
+            <div class="dropdown float-end" *ngIf="isChatbotRoute === 'all'">
               <a  class="btn dropdown-toggle select-flow-btn" 
                 id="selectFlowDropdown" 
                 role="button" 
@@ -106,7 +106,7 @@
             </div>
 
 
-            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
+            <button class="btn btn-outlined float-end" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               <!-- Add from template -->
               {{'AddFromTemplate' | translate}}
 
@@ -116,7 +116,7 @@
 
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
 
             <div class="card card--no-border" style="margin-top: 5px;">
            
@@ -866,9 +866,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteBotModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        
         <h4 class="modal-title warning">
           <!-- <i class="material-icons" style="vertical-align: middle"> report_problem </i> -->
           <span class="modal-header-icon-wpr">
@@ -893,6 +891,8 @@
           <code>{{ id_toDelete }}</code>
           {{ "BotsPage.WillBeDeleted" | translate }}
         </h4> -->
+        <button type="button" class="btn-close" aria-label="Close" (click)="onCloseDeleteBotModal()">
+        </button>
       </div>
       <div class="modal-body">
         <!-- <p style="font-weight: 400; color: rgba(0,0,0,0.87)">
@@ -903,7 +903,7 @@
           {{ "BotsPage.YouAlsoDeleteItsFaqs" | translate }}
         </p> -->
 
-        <label class="col-sm-10 modal-body--content">
+        <label class="col-10 modal-body--content">
           <span
             *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice_twilio' ">
             {{ "ToDeleteAIAgentTypeID" | translate }}:
@@ -915,7 +915,7 @@
           <strong> {{id_toDelete}}</strong>
 
         </label>
-        <div class="col-sm-10">
+        <div class="col-10">
           <input [(ngModel)]="bot_id_typed" (input)="checkIdBotTyped()" class="" type="text" placeholder="ID">
         </div>
       </div>
@@ -923,7 +923,7 @@
         <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteBotModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button style="margin-top:0px" class="btn btn-red" [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID"
+        <button style="margin-bottom: 0px;margin-left: 12px;" class="btn btn-red" [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID"
           (click)="trashTheBot()">
           {{ "Delete" | translate }}
         </button>

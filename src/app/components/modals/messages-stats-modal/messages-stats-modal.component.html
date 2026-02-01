@@ -20,7 +20,7 @@
             {{ 'Analytics.FilterReport' | translate }}
           </label>
           
-          <div class="ng-select-wpr" style="text-align: left">
+          <div class="ng-select-wpr" style="text-align: left; font-size: 14px;">
             <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" [searchable]="false"
               (change)="daysSelect(selectedDaysId, $event)">
               <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' |

@@ -5,14 +5,14 @@
 }
 
 .chart-header-subtitle {
-    font-size: 18px;
-    font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+    font-size: 14px;
+    font-family: var(--header-font-family);
 }
 
 .range-selected {
     margin: 8px !important;
     color: rgba(0, 0, 0, 0.5);
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     font-size: 16px;
     display: block;
 }
@@ -72,6 +72,7 @@
     margin-left: 33px;
     margin-top: 6px;
     width: fit-content;
+    font-size: 14px;
 }
 
 .text--link .m-i-arrow-on-black {
