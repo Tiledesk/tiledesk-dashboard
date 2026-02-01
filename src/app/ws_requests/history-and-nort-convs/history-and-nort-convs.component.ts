@@ -672,6 +672,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           }
         }
 
+
+        // Read _preflight from direct query param (not in qs string)
+        if (this.queryParams && this.queryParams._preflight !== undefined) {
+          const preflightValue = this.queryParams._preflight;
+          this._preflight = preflightValue === 'true' || preflightValue === true;
+          this.preflight = this._preflight;
+          this.logger.log('[HISTORY & NORT-CONVS]  queryParams _preflight:', this._preflight);
+        }
+
+        // Read pageNo from query params to restore pagination
+        let restoredPageNo: number | null = null;
+        if (this.queryParams && this.queryParams.pageNo !== undefined) {
+          const pageNoValue = parseInt(this.queryParams.pageNo, 10);
+          if (!isNaN(pageNoValue) && pageNoValue >= 0) {
+            restoredPageNo = pageNoValue;
+            this.pageNo = pageNoValue;
+            this.logger.log('[HISTORY & NORT-CONVS]  queryParams pageNo restored:', this.pageNo);
+          }
+        }
+
         if (this.queryParams && this.queryParams.qs) {
           const qsString = JSON.parse(this.queryParams.qs)
           this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
@@ -870,7 +890,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
+           
+          // Save pageNo before search() resets it, then restore it after
+          const savedPageNo = restoredPageNo !== null ? restoredPageNo : this.pageNo;
           this.search('get-query-params');
+          // Restore pageNo after search() if it was restored from query params
+          if (restoredPageNo !== null) {
+            this.pageNo = savedPageNo;
+            this.logger.log('[HISTORY & NORT-CONVS] queryParams pageNo restored after search:', this.pageNo);
+          }
         }
 
       });
@@ -962,10 +990,28 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.requests_status_temp = '1000'
       this.requests_status = '1000'
       this.requests_statuses = ['1000']
-      // this.requests_status_temp === '1000'
-      this._preflight = true;
-      // this.preflight = true;
-      // this.queryString = 'preflight=' + true
+      // this._preflight = true;
+
+      // Read _preflight from query params, default to false if not present
+      const preflightParam = queryParams.get('_preflight');
+      if (preflightParam !== null) {
+        this._preflight = preflightParam === 'true';
+        this.preflight = this._preflight;
+      } else {
+        this._preflight = false; // Default value for history page
+        this.preflight = false;
+      }
+      
+      // Read pageNo from query params to restore pagination
+      const pageNoParam = queryParams.get('pageNo');
+      if (pageNoParam !== null) {
+        const pageNoValue = parseInt(pageNoParam, 10);
+        if (!isNaN(pageNoValue) && pageNoValue >= 0) {
+          this.pageNo = pageNoValue;
+          this.logger.log('[HISTORY & NORT-CONVS] getCurrentUrlLoadRequests - pageNo restored:', this.pageNo);
+        }
+      }
+    
 
       if (!hasRelevantQueryParams) {
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
@@ -1002,10 +1048,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
       if (this.has_searched === true) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut({ qs: JSON.stringify(this.queryString) });
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          qs: JSON.stringify(this.queryString),
+          _preflight: this._preflight.toString(),
+          pageNo: this.pageNo.toString() 
+        });
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams })
       } else if (this.has_searched === false) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut();
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          _preflight: this._preflight.toString(),
+          pageNo: this.pageNo.toString()
+        });
         const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], navigationExtras)
       }
@@ -1014,10 +1067,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
 
       if (this.has_searched === true) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut({ qs: JSON.stringify(this.queryString) });
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          qs: JSON.stringify(this.queryString),
+          pageNo: this.pageNo.toString()
+        });
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams })
       } else if (this.has_searched === false) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut();
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ pageNo: this.pageNo.toString() });
         const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], navigationExtras)
       }
@@ -1026,7 +1082,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('goToRequestMsgs requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option)
       if (this.requests_status_selected_from_left_filter && !this.requests_status_selected_from_advanced_option) {
         if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
-          const queryParams = this.getQueryParamsWithTiledeskLogOut({ leftfilter: this.requests_status_selected_from_left_filter });
+          const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+            leftfilter: this.requests_status_selected_from_left_filter,
+            pageNo: this.pageNo.toString()
+           });
           this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams })
         }
       }
