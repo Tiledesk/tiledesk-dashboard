@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.166-stage
+- Fixes the bug: user's choice of preflight and current page is not retained when going back in History from conversation detail (ITDELSDAM-5119)
+- Sets the default value of the Preflight query parameter to false (ITDELSDAM-5091)
+
 ### 2.7.165-stage
 - Fixes the bug: is not possible to update a knowledge base
 
