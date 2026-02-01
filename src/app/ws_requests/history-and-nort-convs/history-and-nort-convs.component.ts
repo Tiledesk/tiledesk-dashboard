@@ -2714,7 +2714,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
-    this.pageNo = 0
+    // this.pageNo = 0
+    // Only reset pageNo if not called from get-query-params (which preserves pagination when returning from detail)
+    if (calledby !== 'get-query-params') {
+      this.pageNo = 0
+    }
 
 
 
@@ -2861,7 +2865,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
     if (this.preflight === undefined) {
       if (this.IS_HERE_FOR_HISTORY) {
-        this._preflight = true;
+        this._preflight = false;
       } else {
         this._preflight = false;
       }
@@ -2927,6 +2931,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+
+    // Update URL with _preflight query parameter when in history mode
+    if (this.IS_HERE_FOR_HISTORY) {
+      const queryParams = this.getQueryParamsWithTiledeskLogOut({ _preflight: this._preflight.toString() });
+      this.router.navigate([], { 
+        relativeTo: this.route,
+        queryParams: queryParams,
+        queryParamsHandling: 'merge'
+      });
+    }
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
