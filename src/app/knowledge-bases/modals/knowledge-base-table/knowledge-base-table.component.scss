@@ -234,9 +234,9 @@ table {
     width: 100%;
 }
 
-.table.table-hover {
-    table-layout: fixed;
-}
+// .table.table-hover {
+//     table-layout: fixed; width: 100%; 
+// }
 
 .table-body {
     padding: 20px 0px;
@@ -259,12 +259,17 @@ table {
 
 // Fix ellipsis-text when inside flex container (kb-name-cell)
 td.kb-name-cell {
-    overflow: hidden;
+    
+    max-width: 100%;
+  vertical-align: top;
+  overflow: hidden;
 }
 
 td.kb-name-cell .ellipsis-text {
-    display: block;
-    min-width: 0;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .loading-indicator {
@@ -760,7 +765,9 @@ td {
 
 
 .imported-file {
-    margin-top: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: 40px;
 }
 
 .kb-welcome-msg {
