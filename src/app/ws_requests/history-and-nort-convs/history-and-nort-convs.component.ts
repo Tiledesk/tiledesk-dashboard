@@ -336,6 +336,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
   PERMISSION_TO_FILTER_BY_AGENT: boolean;
+  PERMISSION_TO_EXPORT_REQUESTS: boolean;
 
   /**
    * 
@@ -516,6 +517,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         } else {
           this.PERMISSION_TO_FILTER_BY_AGENT = true
           console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_FILTER_BY_AGENT ', this.PERMISSION_TO_FILTER_BY_AGENT);
+        }
+
+        // PERMISSION_TO_EXPORT_REQUESTS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUESTS_EXPORT)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_EXPORT_REQUESTS', PERMISSIONS.REQUESTS_EXPORT)
+
+            this.PERMISSION_TO_EXPORT_REQUESTS = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 1 ', this.PERMISSION_TO_EXPORT_REQUESTS);
+          } else {
+            this.PERMISSION_TO_EXPORT_REQUESTS = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 2', this.PERMISSION_TO_EXPORT_REQUESTS);
+          }
+        } else {
+          this.PERMISSION_TO_EXPORT_REQUESTS = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_EXPORT_REQUESTS ', this.PERMISSION_TO_EXPORT_REQUESTS);
         }
 
         
