@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.168-stage
+- Adds "Able to export conversations" permission (ITDELSDAM-5092)
+
 ### 2.7.167-stage
 - Fixes bug: page number is incorrect when doing a new search
 
