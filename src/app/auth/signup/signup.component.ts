@@ -157,7 +157,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
     this.display_dpa = brand['display_dpa_link'];
     this.dpa_url =  brand['dpa_url'];
-    this.hideGoogleAuthBtn = null;//brand['display_google_auth_btn'];
+    // this.hideGoogleAuthBtn = null;//brand['display_google_auth_btn'];
+     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
   ngOnInit() {
