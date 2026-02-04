@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.151
+- Enables the ability to do the sign in with Google
+
 ### 2.7.150
 - Fixes the bug: is allowed the re-indexing of non-web contents
 
