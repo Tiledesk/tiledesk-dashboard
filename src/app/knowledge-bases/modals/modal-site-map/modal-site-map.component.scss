@@ -296,6 +296,37 @@ mat-expansion-panel ::ng-deep {
 
 }
 
+.scrape-options-header {
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 6px;
+}
+
+.scrape-options-title {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+}
+
+.scrape-options-title>span {
+    vertical-align: middle;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.mat-icon-wpr>mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.mat-icon-wpr:hover>mat-icon {
+    color: var(--blue-20);
+}
+
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: .25em 0;

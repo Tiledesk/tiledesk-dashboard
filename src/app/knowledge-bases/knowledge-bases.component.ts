@@ -2154,18 +2154,23 @@ _presentDialogImportContents() {
         kb: kb
       },
     });
-    dialogRef.afterClosed().subscribe(kb => {
+    dialogRef.afterClosed().subscribe(res => {
       this.logger.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
       this.logger.log('[Modal KB DETAILS] Dialog kb : ', kb);
-      if (kb) {
-        this.onUpdateKb(kb)
+      if (res) {
+        if(res.method === 'update') {
+          //  let kb = res.kb.kb
+          console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
+          console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+          this.onUpdateKb(res.kb)
+        } else if (res.method === 'delete') {
+          
+          console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
+          console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+          this.onOpenBaseModalDelete(res.kb)
+        }
       }
-     // if (typeof kb !== 'object') {
-     //   this.onUpdateKb(kb)
-     // } else {
-         
-     //   this.onOpenBaseModalDelete(kb.kb)
-     // }
+    
     });
   }
 
@@ -3089,9 +3094,8 @@ _presentDialogImportContents() {
 
     }, () => {
 
-      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*: "
-        
-      );
+      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*");
+      this.getAllNamespaces()
     })
   }
 
@@ -3177,6 +3181,7 @@ _presentDialogImportContents() {
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
       this.trackUserActioOnKB('Added Knowledge Base')
+      this.getAllNamespaces()
     })
   }
 
@@ -3299,6 +3304,7 @@ _presentDialogImportContents() {
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
 
           this.getListOfKb(paramsDefault, 'deleteNamespace');
+          this.getAllNamespaces()
         }
       })
 

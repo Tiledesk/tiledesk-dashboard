@@ -230,7 +230,7 @@
 
     vertical-align: middle;
     display: inline-flex;
-
+    text-decoration: none;
     span {
         font-size: 14px;
         margin-top: 0px;
@@ -269,7 +269,7 @@
 }
 
 .chunk {
-    border: 1px solid #ccc;;
+    border: 1px solid #ccc;
     cursor: not-allowed;
     color: #787f86;
     padding: 8px 15px 6px;
@@ -294,6 +294,52 @@
     vertical-align: middle;
 }
 
+.scrape-options-wpr {
+    margin-bottom: 12px;
+    margin-top: -6px;
+}
+
+.scrape-options-header {
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 6px;
+}
+
+.scrape-options-title {
+    font-size: 14px !important;
+    font-size: var(--header-font-family);
+    font-weight: 400;
+    line-height: 17px;
+}
+
+.mat-icon-wpr>mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.mat-icon-wpr:hover>mat-icon {
+    color: var(--blue-20);
+}
+
+.copy-scrape-options-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    box-shadow: unset;
+    background-color: var(--blue-20);
+    color: #fff;
+    border-radius: 9999px;
+}
+
 .sitemap-refresh-wpr {
     display: flex;
     flex-direction: row;
@@ -309,3 +355,48 @@
     background: var(--red-btn-background-color) !important;
     box-shadow: unset !important;
 }   
+
+// Scrape option chips styling
+::ng-deep .scrape-option-chip {
+    background-color: white !important;
+    border-radius: 10px !important;
+    border: solid 1px #b9b9b9 !important;
+    font-size: 12px !important;
+    padding: 3px 8px !important;
+    min-height: 25px !important;
+}
+
+.copied-message {
+    position: absolute;
+    // top: -30px;
+    // right: 0;
+    top: -3px;
+    right: -70px;
+    background-color: #2b3239;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+}
