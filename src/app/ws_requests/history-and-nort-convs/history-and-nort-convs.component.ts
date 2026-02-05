@@ -1,5 +1,5 @@
 import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -338,6 +338,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
   PERMISSION_TO_FILTER_BY_AGENT: boolean;
+  PERMISSION_TO_EXPORT_REQUESTS: boolean;
 
   private backSub?: Subscription;
   /**
@@ -382,7 +383,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public brandService: BrandService,
     public rolesService: RolesService,
     private roleService: RoleService,
-    private navSvc: NavigationService
+    private navSvc: NavigationService,
+    private cdr: ChangeDetectorRef
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -532,6 +534,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         } else {
           this.PERMISSION_TO_FILTER_BY_AGENT = true
           console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_FILTER_BY_AGENT ', this.PERMISSION_TO_FILTER_BY_AGENT);
+        }
+
+        // PERMISSION_TO_EXPORT_REQUESTS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUESTS_EXPORT)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_EXPORT_REQUESTS', PERMISSIONS.REQUESTS_EXPORT)
+
+            this.PERMISSION_TO_EXPORT_REQUESTS = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 1 ', this.PERMISSION_TO_EXPORT_REQUESTS);
+          } else {
+            this.PERMISSION_TO_EXPORT_REQUESTS = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 2', this.PERMISSION_TO_EXPORT_REQUESTS);
+          }
+        } else {
+          this.PERMISSION_TO_EXPORT_REQUESTS = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_EXPORT_REQUESTS ', this.PERMISSION_TO_EXPORT_REQUESTS);
         }
 
         
@@ -689,6 +707,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           }
         }
 
+        // Read _preflight from direct query param (not in qs string)
+        if (this.queryParams && this.queryParams._preflight !== undefined) {
+          const preflightValue = this.queryParams._preflight;
+          this._preflight = preflightValue === 'true' || preflightValue === true;
+          this.preflight = this._preflight;
+          this.logger.log('[HISTORY & NORT-CONVS]  queryParams _preflight:', this._preflight);
+        }
+
+        // Read pageNo from query params to restore pagination
+        let restoredPageNo: number | null = null;
+        if (this.queryParams && this.queryParams.pageNo !== undefined) {
+          const pageNoValue = parseInt(this.queryParams.pageNo, 10);
+          if (!isNaN(pageNoValue) && pageNoValue >= 0) {
+            restoredPageNo = pageNoValue;
+            this.pageNo = pageNoValue;
+            this.logger.log('[HISTORY & NORT-CONVS]  queryParams pageNo restored:', this.pageNo);
+          }
+        }
+
         if (this.queryParams && this.queryParams.qs) {
           const qsString = JSON.parse(this.queryParams.qs)
           this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
@@ -823,6 +860,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               this.call_id = paramArray[1]
             }
 
+            if (paramArray[0] === 'timezone' && paramArray[1] !== '') {
+              // timezone is handled in search() method, no need to set it here
+            }
 
             if (paramArray[0] === 'rstatus' && paramArray[1] !== '') {
               const requetStatusValue = paramArray[1]
@@ -887,7 +927,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
           // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
+          // Save pageNo before search() resets it, then restore it after
+          const savedPageNo = restoredPageNo !== null ? restoredPageNo : this.pageNo;
           this.search('get-query-params');
+          // Restore pageNo after search() if it was restored from query params
+          if (restoredPageNo !== null) {
+            this.pageNo = savedPageNo;
+            this.logger.log('[HISTORY & NORT-CONVS] queryParams pageNo restored after search:', this.pageNo);
+          }
         }
 
       });
@@ -978,7 +1025,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.requests_status = '1000'
       this.requests_statuses = ['1000']
       // this.requests_status_temp === '1000'
-      this._preflight = true;
+      
+      // Read _preflight from query params, default to false if not present
+      const preflightParam = queryParams.get('_preflight');
+      if (preflightParam !== null) {
+        this._preflight = preflightParam === 'true';
+        this.preflight = this._preflight;
+      } else {
+        this._preflight = false; // Default value for history page
+        this.preflight = false;
+      }
+      
+      // Read pageNo from query params to restore pagination
+      const pageNoParam = queryParams.get('pageNo');
+      if (pageNoParam !== null) {
+        const pageNoValue = parseInt(pageNoParam, 10);
+        if (!isNaN(pageNoValue) && pageNoValue >= 0) {
+          this.pageNo = pageNoValue;
+          this.logger.log('[HISTORY & NORT-CONVS] getCurrentUrlLoadRequests - pageNo restored:', this.pageNo);
+        }
+      }
       // this.preflight = true;
       // this.queryString = 'preflight=' + true
 
@@ -1017,10 +1083,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
       if (this.has_searched === true) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut({ qs: JSON.stringify(this.queryString) });
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          qs: JSON.stringify(this.queryString),
+          _preflight: this._preflight.toString(),
+          pageNo: this.pageNo.toString()
+        });
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams })
       } else if (this.has_searched === false) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut();
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          _preflight: this._preflight.toString(),
+          pageNo: this.pageNo.toString()
+        });
         const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], navigationExtras)
       }
@@ -1029,10 +1102,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
 
       if (this.has_searched === true) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut({ qs: JSON.stringify(this.queryString) });
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          qs: JSON.stringify(this.queryString),
+          pageNo: this.pageNo.toString()
+        });
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams })
       } else if (this.has_searched === false) {
-        const queryParams = this.getQueryParamsWithTiledeskLogOut();
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ pageNo: this.pageNo.toString() });
         const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], navigationExtras)
       }
@@ -1041,7 +1117,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('goToRequestMsgs requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option)
       if (this.requests_status_selected_from_left_filter && !this.requests_status_selected_from_advanced_option) {
         if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
-          const queryParams = this.getQueryParamsWithTiledeskLogOut({ leftfilter: this.requests_status_selected_from_left_filter });
+          const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+            leftfilter: this.requests_status_selected_from_left_filter,
+            pageNo: this.pageNo.toString()
+          });
           this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams })
         }
       }
@@ -1506,6 +1585,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this._preflight = false
       // this.logger.log('[HISTORY & NORT-CONVS] - onChangePreflight - this._preflight', this._preflight);
     }
+    // URL will be updated in search() method when user clicks Search button
   }
 
   requestsStatusSelectFromAdvancedOption(request_status) {
@@ -2673,7 +2753,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
-    this.pageNo = 0
+    // Only reset pageNo if not called from get-query-params (which preserves pagination when returning from detail)
+    if (calledby !== 'get-query-params') {
+      this.pageNo = 0
+      // Update URL immediately when resetting pageNo
+      if (this.IS_HERE_FOR_HISTORY) {
+        const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+          pageNo: this.pageNo.toString()
+        });
+        this.router.navigate([], { 
+          relativeTo: this.route,
+          queryParams: queryParams,
+          queryParamsHandling: 'merge'
+        });
+      }
+      // Force change detection immediately after resetting pageNo
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      }, 0);
+    }
 
 
 
@@ -2820,7 +2918,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
     if (this.preflight === undefined) {
       if (this.IS_HERE_FOR_HISTORY) {
-        this._preflight = true;
+        this._preflight = false;
       } else {
         this._preflight = false;
       }
@@ -2881,6 +2979,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+
+    // Update URL with _preflight and pageNo query parameters when in history mode
+    if (this.IS_HERE_FOR_HISTORY) {
+      const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
+        _preflight: this._preflight.toString(),
+        pageNo: this.pageNo.toString()
+      });
+      this.router.navigate([], { 
+        relativeTo: this.route,
+        queryParams: queryParams,
+        queryParamsHandling: 'merge'
+      });
+    }
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
