@@ -10,9 +10,11 @@ import { Subject, Subscription, zip } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { CHANNELS, CHANNELS_NAME } from 'app/utils/util';
-import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { ProjectService } from 'app/services/project.service';
+import { takeUntil } from 'rxjs/operators';
+
+
 
 @Component({
   selector: 'appdashboard-messages',
@@ -43,8 +45,9 @@ export class MessagesComponent implements OnInit {
     { id: '', name: 'All' },
     ... CHANNELS
   ];
-
+    
   CHANNELS_NAME = CHANNELS_NAME;
+
 
   constructor(
     private translate: TranslateService,
@@ -75,10 +78,10 @@ export class MessagesComponent implements OnInit {
     this.logger.log("[ANALYTICS - MSGS] INIT", this.initDay, "END", this.endDay);
 
     this.getMessagesByLastNDays(this.selectedDaysId, this.selectedAgentId, this.selectedChannelId);
-     this.getCurrentProject();
+    this.getCurrentProject()
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.logger.log('[ANALYTICS - MSGS] - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -87,7 +90,7 @@ export class MessagesComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
-   getCurrentProject() {
+  getCurrentProject() {
     this.auth.project_bs
     .pipe(
       takeUntil(this.unsubscribe$)
@@ -116,19 +119,19 @@ export class MessagesComponent implements OnInit {
             const customization = projectProfile.customization;
             this.logger.log('[ANALYTICS - MSGS] - customization', customization);
 
-       
+            // Filtra i canali in base alle customizzazioni
             this.conversationType = this.conversationType.filter(channel => {
               if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
-                return false; 
+                return false; // escludi TWILIO
               }
               if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
-                return false; 
+                return false; // escludi VXML
               }
-              return true; 
+              return true; // mantieni gli altri
             });
 
           } else {
-          
+            // Se non c’è alcuna customizzazione, rimuovi entrambi
             this.conversationType = this.conversationType.filter(channel =>
               channel.id !== CHANNELS_NAME.VOICE_TWILIO && channel.id !== CHANNELS_NAME.VOICE_VXML
             );
@@ -216,7 +219,7 @@ export class MessagesComponent implements OnInit {
       });
   }
 
- 
+  
 
   daysSelect(value, $event) {
     this.logger.log("[ANALYTICS - MSGS] daysSelect EVENT: ", $event)

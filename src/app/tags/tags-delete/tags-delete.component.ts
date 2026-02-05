@@ -63,7 +63,7 @@ export class TagsDeleteComponent implements OnInit {
     }, () => {
      this.logger.log('[TAGS][TAGS-DELETE] - DELETE TAG * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
-      this.hasDeletedTag.emit();
+      this.hasDeletedTag.emit(this.tagid);
       this.closeModal.emit();
 
     });

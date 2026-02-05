@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VLLMComponent } from './v-llm.component';
+import { UsersRolesComponent } from './users-roles.component';
 
-describe('VLLMComponent', () => {
-  let component: VLLMComponent;
-  let fixture: ComponentFixture<VLLMComponent>;
+describe('UsersRolesComponent', () => {
+  let component: UsersRolesComponent;
+  let fixture: ComponentFixture<UsersRolesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VLLMComponent ]
+      declarations: [ UsersRolesComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VLLMComponent);
+    fixture = TestBed.createComponent(UsersRolesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

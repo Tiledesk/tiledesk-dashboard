@@ -2505,8 +2505,12 @@ print {
 .bg-card {
   opacity: 1;
   background-color: #fff;
-  margin-top: -5px;
+  margin-top: 52px;
   border-bottom: 1px solid rgb(226, 232, 240);
+  height: 80px;
+    // background: beige;
+    display: flex;
+    align-items: center;
 }
 
 .padding-l-r {
@@ -3435,6 +3439,7 @@ img {
   font-weight: 600;
   // color: #2196f2;
   color: var(--text-color);
+  font-size: 14px;
 }
 
 // .mat-progress-spinner-conversations-runned-out {

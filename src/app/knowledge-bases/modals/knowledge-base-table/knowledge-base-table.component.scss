@@ -31,18 +31,15 @@ select.select-status {
     justify-content: space-between;
     align-items: center;
     padding: 8px 20px;
-    // border-radius: 8px;
-    // margin: 16px 0px 32px;
     border-radius: 0px;
     margin: 20px 0 0px;
-    //box-shadow: 0px 0px 4px #c7c7c7;
     background-color: #f9f9f9;
-    // height: 70px;
     height: 50px;
 
     .preview-count-left {
         display: flex;
         align-items: baseline;
+        font-size: 14px;
     }
 }
 
@@ -51,15 +48,11 @@ select.select-status {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    // padding: 8px 20px;
-    // border-radius: 0px;
-    // margin: 20px 0 0px;
-    // background-color: #f9f9f9;
-    // height: 50px;
 
     .preview-count-left {
         display: flex;
         align-items: baseline;
+        font-size: 14px;
     }
 }
 
@@ -72,7 +65,7 @@ select.select-status {
 .contents-count {
     color: var(--text-color);
     margin-left: 8px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .contents-count>.contents-count-num {
@@ -241,6 +234,10 @@ table {
     width: 100%;
 }
 
+// .table.table-hover {
+//     table-layout: fixed; width: 100%; 
+// }
+
 .table-body {
     padding: 20px 0px;
     padding: 5px 20px;
@@ -257,6 +254,22 @@ table {
     max-width: 100%;
     display: table-column-group;
     line-height: normal;
+    line-height: 1.6;
+}
+
+// Fix ellipsis-text when inside flex container (kb-name-cell)
+td.kb-name-cell {
+    
+    max-width: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+td.kb-name-cell .ellipsis-text {
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .loading-indicator {
@@ -284,7 +297,7 @@ table {
 
 .btn-more {
     text-align: center;
-    margin: 20px auto 10px;
+    margin: 10px auto 10px;
     display: block;
     width: fit-content;
     font-weight: normal;
@@ -294,6 +307,7 @@ table {
     border-radius: 4px;
     padding: 2px 12px;
     min-width: auto;
+    border-radius: 9999px;
 }
 
 
@@ -555,6 +569,7 @@ td {
 .search-filters-card-header {
     display: flex;
     justify-content: space-between;
+    font-size: 14px;
 }
 
 
@@ -569,6 +584,7 @@ td {
     align-items: center;
     padding: 12px;
     cursor: text;
+    font-size: 14px;
 
     &:focus {
         .fake-input {
@@ -749,7 +765,9 @@ td {
 
 
 .imported-file {
-    margin-top: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: 40px;
 }
 
 .kb-welcome-msg {
@@ -930,3 +948,25 @@ td {
     background: rgba(82, 89, 99, .8)
 }
 
+.add-content-card-wpr.add-content-card-wpr-disabled {
+    cursor: not-allowed;
+}
+
+.add-content-card-wpr.add-content-card-wpr-disabled:hover {
+    box-shadow: none !important;
+    background-color: inherit; // prevent color changes if any
+}
+
+.sitemap-badge {
+    background: #ff6154;
+    color: #fff;
+    border-radius: 9999px;
+    padding: 0 5px;
+    font-size: 9px;
+    font-weight: 400;
+    margin-right: 3px;
+}
+
+.sitemap-badge:hover {
+    opacity: .6;
+}

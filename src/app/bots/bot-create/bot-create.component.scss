@@ -17,7 +17,8 @@ input[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
+  color: #000000de;
+  font-weight: 300;
 }
 
 textarea[type="text"] {
@@ -40,6 +41,8 @@ textarea[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
+  color: #000000de;
+  font-weight: 300;
   // border: solid 1px #ddd;
 }
 
@@ -2235,4 +2238,24 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
   min-width: 32px;
   height: 32px;
   min-height: 32px;
+}
+
+
+.unauthorized-message-container-in-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // height: 100%;
+    height: calc(100vh - 190px);
+}
+
+.unauthorized-page-title {
+    font-family: var(--header-font-family);
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+.unauthorized-page-subtitle {
+    color: var(--secondary-text-color);
 }

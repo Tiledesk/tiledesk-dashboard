@@ -1,622 +1,437 @@
 <!-- margin-top:6px; -->
-<p style=" padding-left:40px;position: relative;z-index: 1050;" class="navbar-brand"
+<!-- <p style=" padding-left:40px;position: relative;z-index: 1050;" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-19px' : '6px' }">
   {{ 'Requests' | translate }}
-</p>
+</p> -->
 
+<!-- <ng-container *ngIf="permissionChecked">
+  <ng-container *ngIf="isAuthorized; else unauthorizedTplAuth"> -->
 
-<ul class="bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false">
-  <li *ngIf="ROLE_IS_AGENT === false" (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect"
-    [ngClass]="
-          { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
-            'border-from-center' : displayBtnLabelSeeYourRequets === true,
-            'li-active' : displayBtnLabelSeeYourRequets === false
+    <div style="height: 87px; position: relative;">
+      <ul class="bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="top: 60px; position: absolute; width: 100%;">
+        <ng-container *ngIf="hasDefaultRole">
+          <li *ngIf="ROLE_IS_AGENT === false" (click)="seeIamAgentRequests(seeAll = !seeAll)"
+            class="btn-with-border-effect" [ngClass]="
+              { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
+                'border-from-center' : displayBtnLabelSeeYourRequets === true,
+                'li-active' : displayBtnLabelSeeYourRequets === false
+              }">
+
+            <a href="javascript:;" role="button"> {{ "AllAgentsRequests" | translate }} </a>
+          </li>
+
+          <li (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect" [ngClass]="
+          { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
+            'border-from-center' : displayBtnLabelSeeYourRequets === false, 
+            'li-active' : displayBtnLabelSeeYourRequets === true
           }">
+            <a href="javascript:;" role="button"> {{ "YourRequests" | translate }} </a>
+          </li>
+        </ng-container>
+      
+        <!-- CREATE TICKET -->
+        <!-- PERMISSION_TO_CREATE_TICKET -->
+        <li *ngIf="isVisibleCreateTicket" class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
+          <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+            (click)="presentCreateInternalRequestModal()" 
+            class="btn btn-tdblu-no-boxshadow"
+            style="font-size: 12px;  margin-left: 15px;height: 36px;"
+            [disabled]="!PERMISSION_TO_CREATE_TICKET"
+            matTooltipClass="conv-custom-mat-tooltip"
+            #tooltip="matTooltip"
+            matTooltipPosition='above'
+            matTooltipHideDelay="100"
+            [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
+            [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
 
-    <a href="javascript:;" role="button"> {{ "AllAgentsRequests" | translate }} </a>
-  </li>
-
-  <li (click)="seeIamAgentRequests(seeAll = !seeAll)" class="btn-with-border-effect" [ngClass]="
-      { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
-        'border-from-center' : displayBtnLabelSeeYourRequets === false, 
-        'li-active' : displayBtnLabelSeeYourRequets === true
-      }">
-    <a href="javascript:;" role="button"> {{ "YourRequests" | translate }} </a>
-  </li>
-  <!-- 
-  <li class="right-li right-li-simulate-visitor" style="float: right !important;padding-top: 10px!important">
-    <button #testwidgetbtn (click)="testWidgetPage()" class="btn btn-success navbar-btn">
-      {{ 'VisitorsPage.SimulateVisitor' | translate }}
-    </button>
-  </li> -->
-  <!-- CREATE TICKET -->
-  <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
-    <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
-      (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow"
-      style="font-size: 12px;  margin-left: 15px;height: 36px;">
-
-      <span aria-hidden="true" class="material-icons"
-        style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
-        add_circle
-      </span>
-      {{ 'CreateTicket' | translate }}
-      <!-- {{ 'Ticket' | translate }} -->
-    </button>
-  </li>
-
-  <!--OPERATING HOURS -->
-  <!-- <li class="operating-hours right-li" style="float: right;padding-left: 5px;">
-    <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
-      class="tool_tip" style="cursor: pointer; display: unset;" *ngIf="!OPERATING_HOURS_ACTIVE"
-      (click)="goToOperatingHours()">
-      <i class="material-icons" style="color:#AAA; margin-top: 3px;">access_time</i>
-
-      <div class="bottom"
-        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
-        {{ 'OperatingHoursAreDisabled' | translate }}
-        <i></i>
-      </div>
-    </a>
-    <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-      <i aria-hidden="true" class="material-icons" style="color:#3ea9f5; margin-top: 3px;">access_time</i>
-
-      <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
-        {{ 'OperatingHoursAreEnabled' | translate }}
-
-        <i></i>
-      </div>
-    </a>
-  </li> -->
-
-  <!-- NO REALTIME REQUESTS -->
-  <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
-    (click)='goToNoRealtimeConversations()'>
-    <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }"
-      matTooltipClass="mat-white-tooltip" 
-      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}"
-      #tooltip="matTooltip" 
-      matTooltipPosition='below'
-      matTooltipHideDelay="100">
-      <span aria-hidden="true" class="material-icons">
-        manage_search
-      </span>
-      <!-- <div class="bottom"
-        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
-        {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
-        <i></i>
-      </div> -->
-    </a>
-
-    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
-      <span>
-        <!-- {{ served_unserved_sum }} -->
-        <!--  -->
-          {{countRequestsServedByHumanRr  + countRequestsUnservedRr + countRequestsServedByBotRr}}
-      </span>
-    </span>
-  </li>
-
-  <!-- SHOW SERVED REQUEST MAP -->
-  <li class="show-request-on-map right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
-    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-      style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
-      matTooltipHideDelay="100">
-      <span class="material-icons">
-        pin_drop
-      </span>
-      <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
-        white-space: nowrap;">
-        {{'ViewServedRequestsMap' | translate}}
-        <i></i>
-      </div> -->
-    </a>
-  </li>
-</ul>
-
-<!-- 
-// ---------------------------------------------------------
-// @ FOR SMALL SCREEN 
-// --------------------------------------------------------- -->
-<!-- CREATE TICKET * FOR SMALL SCREEN  -->
-<ul class="bottom-bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="display: none;">
-  <li class="" style="padding-top: 3px!important; padding-left: 10px!important">
-    <!-- btn-primary navbar-btn  -->
-    <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
-      (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;">
-
-      <span aria-hidden="true" class="material-icons"
-        style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
-        add_circle
-      </span>
-      {{ 'CreateTicket' | translate }}
-    </button>
-  </li>
-
-  <!-- SIMULATE VISITOR * FOR SMALL SCREEN  -->
-  <li style="padding-top: 3px!important;margin-left: 15px;">
-    <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn (click)="testWidgetPage()"
-      class="btn btn-success-no-boxshadow" style="font-size: 12px;">
-      <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
-        play_circle_filled
-      </span>
-      {{ 'VisitorsPage.SimulateVisitor' | translate }}
-    </button>
-  </li>
-
-  <!-- NO REALTIME REQUESTS * FOR SMALL SCREEN -->
-  <li class="see-no-realtime-request" style="float: right; padding-right: 5px;" (click)='goToNoRealtimeConversations()'>
-    <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer; display: unset; color:#3ea9f5;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
-      matTooltipHideDelay="100">
-      <span class="material-icons" style="font-size: 27px;
-      position: relative;
-      top: -2px;">
-        manage_search
-      </span>
-      <!-- <div class="bottom"
-        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
-        {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
-        <i></i>
-      </div> -->
-    </a>
-    <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
-      <span>
-        {{ served_unserved_sum }}
-      </span>
-    </span>
-  </li>
-
-  <!--OPERATING HOURS * FOR SMALL SCREEN -->
-  <!-- <li class="operating-hours" style="float: right;padding-left: 5px;">
-    <a attr.aria-label="{{ 'OperatingHoursAreDisabled' | translate }}" href="javascript:;" role="button"
-      class="tool_tip" style="cursor: pointer; display: unset;color: #797979;" *ngIf="!OPERATING_HOURS_ACTIVE"
-      (click)="goToOperatingHours()">
-      <i class="material-icons">access_time</i>
-       <div class="bottom"
-        style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
-        {{ 'OperatingHoursAreDisabled' | translate }}
-        <i></i>
-      </div>
-    </a>
-    <a attr.aria-label="{{ 'OperatingHoursAreEnabled' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer;display: unset;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-      <i class="material-icons" style="color:#3ea9f5; margin-top: 1px;">access_time</i>
-
-      <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
-        {{ 'OperatingHoursAreEnabled' | translate }}
-
-        <i></i>
-      </div>
-    </a>
-  </li> -->
-
-  <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
-  <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
-    <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-      style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
-      matTooltipHideDelay="100">
-      <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
-        pin_drop
-      </span>
-      <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
-        white-space: nowrap;">
-        {{ 'ViewServedRequestsMap' | translate }}
-        <i></i>
-      </div> -->
-    </a>
-
-    <!-- <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
-      <span>
-        {{ served_unserved_sum }}
-      </span>
-    </span> -->
-  </li>
-</ul>
-
-<div class="main-content" style="padding-top:0px; margin-top: 25px;padding-left: 0px;padding-right: 0px;">
-  <div class="container-fluid">
-
-    <!-- <div class="row"> -->
-    <div class="row">
-
-      <div class="col-sm-12">
-        <div class="open-chat-tool-wpr">
-          <div class="open-chat-tool-text">
-            {{'ThisIsTheRealTimeConversationsMonitoringPanel' | translate }}
-            <span class="chat-tool-link" (click)="openChat()">
-              <!-- <span class="material-icons" style="vertical-align:middle; font-size: 16px;">
-                open_in_new
-              </span> -->
-              {{'chatTool' | translate}}
+            <span aria-hidden="true" class="material-icons"
+              style="vertical-align: middle; margin-bottom: 0px; margin-top: 1px;">
+              add_circle
             </span>
-            <!-- (click)="openChat()" -->
-            <span class="open-chat-tool-chat-logo-wpr" style="margin-left: 4px;">
-              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 175.7 175.7"
-                style="enable-background:new 0 0 175.7 175.7;" xml:space="preserve" style="width: 19px;
-              height: auto;
-              vertical-align: middle;">
-                <style type="text/css">
-                  .st0 {
-                    fill: #F17467;
-                  }
+            {{ 'CreateTicket' | translate }}
+            <!-- {{ 'Ticket' | translate }} -->
+          </button>
+        </li>
 
-                  .st1 {
-                    fill: #F6746C;
-                  }
-                </style>
-                <path class="st0" d="M146.8,28.3C131,12.3,109.9,3.6,87.5,3.6C41.2,3.6,3.6,41.4,3.6,87.9c0,14.8,3.9,29.3,11.2,42.1l-5.9,35.7
-             l38.5-3.7c12.2,6.7,26,10.3,40.1,10.3h0c46.2,0,84.7-37.8,84.7-84.3C172.2,65.4,162.6,44.2,146.8,28.3z M87.5,158
-             c-12.5,0-24.8-3.4-35.5-9.8l-2.5-1.5L27,148.6l3-20.9l-1.7-2.7c-7-11.2-10.7-24-10.7-37.3c0-38.6,31.3-70,69.8-70
-             c18.6,0,36.1,7.3,49.3,20.5S158,69.2,158,87.9C158,126.5,125.9,158,87.5,158z" />
-                <path class="st1" d="M124,106.1c-5.6,9.6-19.4,16.3-35.6,16.3c-16,0-29.7-6.6-35.4-16.1c-4.9,2.5-9.6,5.2-14.6,7.3
-             c9,15,27.8,25.3,49.5,25.3c21.6,0,40.4-10.2,49.4-25.1C132.9,111.3,128.4,108.8,124,106.1z" />
-              </svg>
+
+        <!-- NO REALTIME REQUESTS -->
+        <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
+          (click)='goToNoRealtimeConversations()'>
+          <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
+            class="tool_tip" style="cursor: pointer; display: unset;"
+            [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
+            matTooltipPosition='below' matTooltipHideDelay="100">
+            <span aria-hidden="true" class="material-icons">
+              manage_search
             </span>
-          </div>
-        </div>
-      </div>
+          </a>
+
+          <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+            <span>
+              <!-- {{ served_unserved_sum }} -->
+              <!--  -->
+              {{countRequestsServedByHumanRr + countRequestsUnservedRr + countRequestsServedByBotRr}}
+            </span>
+          </span>
+        </li>
+
+        <!-- SHOW SERVED REQUEST MAP -->
+        <li class="show-request-on-map right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
+          <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
+            style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+            matTooltipHideDelay="100">
+            <span class="material-icons">
+              pin_drop
+            </span>
+          </a>
+        </li>
+      </ul>
+
+     
+      <!-- --------------------------------------------------------- -->
+      <!-- @ FOR SMALL SCREEN  -->
+      <!-- --------------------------------------------------------- -->
+      <!-- <ul class="bottom-bottom-nav" *ngIf="OPEN_RIGHT_SIDEBAR === false" style="display: none;">
+        <li class="" style="padding-top: 3px!important; padding-left: 10px!important">
+          <button *ngIf="isVisibleCreateTicket"  attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
+            (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow" style="font-size: 12px;"
+            [disabled]="!PERMISSION_TO_CREATE_TICKET"
+            matTooltipClass="conv-custom-mat-tooltip"
+            #tooltip="matTooltip"
+            matTooltipPosition='above'
+            matTooltipHideDelay="100"
+            [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
+            [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
+
+            <span aria-hidden="true" class="material-icons"
+              style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+              add_circle
+            </span>
+            {{ 'CreateTicket' | translate }}
+          </button>
+        </li>
+        <li style="padding-top: 3px!important;margin-left: 15px;">
+          <button attr.aria-label="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #testwidgetbtn
+            (click)="testWidgetPage()" class="btn btn-success-no-boxshadow" style="font-size: 12px;">
+            <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+              play_circle_filled
+            </span>
+            {{ 'VisitorsPage.SimulateVisitor' | translate }}
+          </button>
+        </li>
+        <li class="see-no-realtime-request" style="float: right; padding-right: 5px;"
+          (click)='goToNoRealtimeConversations()'>
+          <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
+            class="tool_tip" style="cursor: pointer; display: unset; color:#3ea9f5;"
+            [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
+            matTooltipPosition='below' matTooltipHideDelay="100">
+            <span class="material-icons" style="font-size: 27px;position: relative;top: -2px;">
+              manage_search
+            </span>
+          </a>
+          <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+            <span>
+              {{ served_unserved_sum }}
+            </span>
+          </span>
+        </li>
+
+        <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
+          <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
+            style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+            matTooltipHideDelay="100">
+            <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
+              pin_drop
+            </span>
+          </a>
+        </li>
+      </ul> -->
     </div>
-    <!-- style="padding-left: 10px !important;" -->
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
-        <!-- style="display: none;" -->
-        <!-- ---------------------------------------------------------- -->
-        <!-- LEGEND OF COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED -->
-        <!-- ---------------------------------------------------------- -->
+
+    <div class="main-content" style="padding-top: 25px; margin-top: 0px;padding-left: 0px;padding-right: 0px; min-height: calc(100% - 133px)">
+      <div class="container-fluid">
+
+        <!-- <div class="row">
+          <div class="col-sm-12">
+            <div class="open-chat-tool-wpr">
+              <div class="open-chat-tool-text">
+                {{'ThisIsTheRealTimeConversationsMonitoringPanel' | translate }}
+                <span class="chat-tool-link" (click)="openChat()">
+             
+                  {{'chatTool' | translate}}
+                </span>
+                <span class="open-chat-tool-chat-logo-wpr" style="margin-left: 4px;">
+                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 175.7 175.7"
+                    style="enable-background:new 0 0 175.7 175.7;" xml:space="preserve" style="width: 19px;height: auto;vertical-align: middle;">
+                    <style type="text/css">
+                      .st0 {
+                        fill: #F17467;
+                      }
+
+                      .st1 {
+                        fill: #F6746C;
+                      }
+                    </style>
+                    <path class="st0" d="M146.8,28.3C131,12.3,109.9,3.6,87.5,3.6C41.2,3.6,3.6,41.4,3.6,87.9c0,14.8,3.9,29.3,11.2,42.1l-5.9,35.7
+                      l38.5-3.7c12.2,6.7,26,10.3,40.1,10.3h0c46.2,0,84.7-37.8,84.7-84.3C172.2,65.4,162.6,44.2,146.8,28.3z M87.5,158
+                      c-12.5,0-24.8-3.4-35.5-9.8l-2.5-1.5L27,148.6l3-20.9l-1.7-2.7c-7-11.2-10.7-24-10.7-37.3c0-38.6,31.3-70,69.8-70
+                      c18.6,0,36.1,7.3,49.3,20.5S158,69.2,158,87.9C158,126.5,125.9,158,87.5,158z" />
+                    <path class="st1" d="M124,106.1c-5.6,9.6-19.4,16.3-35.6,16.3c-16,0-29.7-6.6-35.4-16.1c-4.9,2.5-9.6,5.2-14.6,7.3
+                      c9,15,27.8,25.3,49.5,25.3c21.6,0,40.4-10.2,49.4-25.1C132.9,111.3,128.4,108.8,124,106.1z" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- style="padding-left: 10px !important;" -->
         <div class="row">
-          <div class="col-xs-5">
-            <div class="graph-legend" style="padding-left: 10px;">
-              <div class="advanced-pie-legend-wrapper" style="height: 107px;">
-              
-                <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
-                  <div class="total-value"
-                    style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 8px;">
+          <div class="col-12">
+            <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
+            <!-- style="display: none;" -->
+            <!-- ---------------------------------------------------------- -->
+            <!-- LEGEND OF COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED -->
+            <!-- ---------------------------------------------------------- -->
+            <div class="row">
+              <div class="col-5">
+                <div class="graph-legend">
+                  <div class="advanced-pie-legend-wrapper">
+                    <div class="advanced-legend">
+                      <div class="total-value">
+                        <span class="total-value-number-of-conversation" style="">
+                          <!-- {{ wsRequestsServed?.length + wsRequestsUnserved?.length }} -->
+                          {{countRequestsServedByHumanRr + countRequestsServedByBotRr + countRequestsUnservedRr }}
+                        </span>
 
-                    <span class="total-value-number-of-conversation" style="position: relative;top: 2px;">
-                      <!-- {{ wsRequestsServed?.length + wsRequestsUnserved?.length }} -->
-                      <!--  -->
-                      {{countRequestsServedByHumanRr + countRequestsServedByBotRr  +  countRequestsUnservedRr }}
-                    </span>
-
-                    <span class="total-label" style="font-family: 'Poppins';
-                          font-size: 18px;
-                          font-weight: 400;
-                          color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 10px; margin-top: 14px">
-                      {{'TotalConversations' | translate}}
-                      <!-- conversations  -->
-                    </span>
-                  </div>
-
-                  <div class="legend-items-container" style="width: 100%;">
-                    <div class="legend-items" style="display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 33px;">
-                      <div class="legend-item" style="border-left: 4px solid #05BDD4;padding-left: 6px;">
-                        <!-- <div class="item-color"
-                          style="border-left: 4px solid #05BDD4; width: 4px; height: 42px;">
-                        </div> -->
-                        <div class="item-value"
-                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                          <!-- {{ wsRequestsServed?.length }} -->
-                          <!-- + countRequestsServedByBotRr -->
-                          {{countRequestsServedByHumanRr }}
-                        </div>
-                        <div class="item-label">
-                                <!-- {{'Served' | translate}} -->
-                                {{'AssignedToHumans' | translate}}
-                                
-                              </div>
-                       
+                        <span class="total-label">
+                          {{'TotalConversations' | translate}}
+                        </span>
                       </div>
-                      <div class="legend-item" style="border-left: 4px solid #05BDD4;padding-left: 6px;">
-                        <!-- <div class="item-color"
-                          style="border-left: 4px solid #05BDD4; width: 4px; height: 42px;">
-                        </div> -->
-                        <div class="item-value"
-                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                          <!-- {{ wsRequestsServed?.length }} -->
-                          <!-- + countRequestsServedByBotRr -->
-                          {{countRequestsServedByBotRr }}
-                        </div>
-                        <div class="item-label">
-                          {{'AssignedToBots' | translate}}
-                        </div>
-                       
-                      </div>
-                      <div class="legend-item" style="border-left: 4px solid #ED4537;padding-left: 6px;">
-                        <!-- <div class="item-color"
-                          style="border-left: 4px solid #ED4537; width: 4px;height: 42px;float: left; margin-right: 7px;">
-                        </div> -->
-                        <div class="item-value"
-                          style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                          <!-- {{ wsRequestsUnserved?.length }} -->
-                          {{ countRequestsUnservedRr }}
-                        </div>
-                        <div class="item-label">{{'Unserved' | translate}}</div>
 
+                      <div class="legend-items-container">
+                        <div class="legend-items">
+                          <div class="legend-item assigned">
+                          
+                            <div class="item-value">
+                        
+                              {{countRequestsServedByHumanRr }}
+                            </div>
+                            <div class="item-label">
+                            
+                              {{'AssignedToHumans' | translate}}
+
+                            </div>
+
+                          </div>
+                          <div class="legend-item assigned">
+                      
+                            <div class="item-value">
+                              <!-- {{ wsRequestsServed?.length }} -->
+                              <!-- + countRequestsServedByBotRr -->
+                              {{countRequestsServedByBotRr }}
+                            </div>
+                            <div class="item-label">
+                              {{'AssignedToBots' | translate}}
+                            </div>
+
+                          </div>
+                          <div class="legend-item unassigned">
+                     
+                            <div class="item-value">
+                              <!-- {{ wsRequestsUnserved?.length }} -->
+                              {{ countRequestsUnservedRr }}
+                            </div>
+                            <div class="item-label">{{'Unserved' | translate}}</div>
+
+                          </div>
+                        </div>
                       </div>
+
                     </div>
                   </div>
-
                 </div>
-              </div>
-            </div>
-          </div> <!-- ./ col-xs-4 -->
+              </div> <!-- ./ col-4 -->
 
-          <div class="col-xs-7" style="margin-top: 8px;">
+              <div class="col-7">
 
-            <div class="row" style="margin-bottom: 16px;">
-              <div class="col-sm-12 filter-convs-title-wpr">
-                <div class="filter-convs-title">
+                <div class="row">
+                  <div class="col-sm-12 filter-convs-title-wpr">
+                    <div class="filter-convs-title">
 
-                  {{ 'FilterConversations' | translate }}
-                </div>
-              </div>
-              <!-- -------------------------------------------------------- -->
-              <!-- @ Department filter -->
-              <!-- -------------------------------------------------------- -->
-              <div class="col-sm-4 select-dept-wpr">
+                      {{ 'FilterConversations' | translate }}
+                    </div>
+                  </div>
+                  <!-- -------------------------------------------------------- -->
+                  <!-- @ Department filter -->
+                  <!-- -------------------------------------------------------- -->
+                  <div class="col-sm-4 select-dept-wpr" style="position: relative;font-size:14px">
 
-                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}" class="custom"
-                  name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()" (clear)="clearDeptFilter()"
-                  placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-                  <ng-option *ngFor="let dept of departments" [value]="dept?._id">
-                    {{dept?.name}}
-                  </ng-option>
-                </ng-select>
-              </div>
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}"
+                      class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
+                      (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
+                      <ng-option *ngFor="let dept of departments" [value]="dept?._id">
+                        {{dept?.name}}
+                      </ng-option>
+                    </ng-select>
+
+                  </div>
 
 
-              <!-- -------------------------------------------------------- -->
-              <!-- @ Angent filter -->
-              <!-- -------------------------------------------------------- -->
-              <!-- AGENTS_CAN_SEE_ONLY_OWN_CONVS > {{AGENTS_CAN_SEE_ONLY_OWN_CONVS}} ONLY_MY_REQUESTS > {{ ONLY_MY_REQUESTS }}
+                  <!-- -------------------------------------------------------- -->
+                  <!-- @ Angent filter -->
+                  <!-- -------------------------------------------------------- -->
+                  <!-- AGENTS_CAN_SEE_ONLY_OWN_CONVS > {{AGENTS_CAN_SEE_ONLY_OWN_CONVS}} ONLY_MY_REQUESTS > {{ ONLY_MY_REQUESTS }}
               displayAgentsSelect >  {{displayAgentsSelect}} -->
-              
-                <div *ngIf="displayAgentsSelect" class="col-sm-4 select-agent-wpr">
 
-                  <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
-                    name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
-                    (clear)="clearAgentFilter()" (change)="onChangeAgent()">
+                  <div *ngIf="displayAgentsSelect" class="col-sm-4 select-agent-wpr" style="position: relative;font-size:14px">
 
-                    <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
-                    <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
-                    <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
-                      {{ agent.firstname }} {{ agent.lastname }}
-                    </ng-option>
-                  </ng-select>
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
+                      name="agent" [(ngModel)]="selectedAgentId" 
+                      placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                      (clear)="clearAgentFilter()" 
+                      (change)="onChangeAgent()">
+
+                      <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
+                      <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
+                      <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
+                        {{ agent.firstname }} {{ agent.lastname }}
+                      </ng-option>
+                    </ng-select>
+
+                  </div>
+
+
+                  <!-- -------------------------------------------------------- -->
+                  <!-- @ Conversation type filter -->
+                  <!-- -------------------------------------------------------- -->
+                  <div class="col-sm-4 select-convtype-wpr" style="position: relative; font-size: 14px;">
+
+                    <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'ConversationType' | translate }}"
+                      name="conversationtype" [(ngModel)]="selectedConversationTypeId"
+                      placeholder="{{ 'ConversationType' | translate }}" (clear)="clearConversationTypeFilter()"
+                      (change)="onChangeConversationType()">
+
+                      <ng-option *ngFor="let conversationType of conversationTypeInRequests"
+                        [value]="conversationType?.id">
+                        {{ conversationType?.name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
                 </div>
-            
-
-              <!-- -------------------------------------------------------- -->
-              <!-- @ Conversation type filter -->
-              <!-- -------------------------------------------------------- -->
-              <div class="col-sm-4 select-convtype-wpr">
-
-                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'ConversationType' | translate }}"
-                  name="conversationtype" [(ngModel)]="selectedConversationTypeId"
-                  placeholder="{{ 'ConversationType' | translate }}" (clear)="clearConversationTypeFilter()"
-                  (change)="onChangeConversationType()">
-
-                  <ng-option *ngFor="let conversationType of conversationTypeInRequests" [value]="conversationType?.id">
-                    {{ conversationType?.name }}
-                  </ng-option>
-                </ng-select>
               </div>
 
+            </div> <!-- ./ row -->
 
-            </div>
-          </div>
+            <div class="row">
 
-        </div> <!-- ./ row -->
+              <!--  -------------------------------------------------------------------------------------- -->
+              <!--  @ New TEAMMATES SCROLL DIV -->
+              <!-- (ROLE_IS_AGENT === false) || (ROLE_IS_AGENT === true && DISPLAY_ALL_TEAMMATES_TO_AGENT) -->
+              <!-- the last: ngIf="ROLE_IS_AGENT === false" -->
+              <!--  -------------------------------------------------------------------------------------- -->
+              <!-- <div class="col-12 teammates-carousel">
+                <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
+                  <div class="card-content"
+                    style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                    <div style="float: left" class="scroll-div-side-btn">
 
-        <div class="row">
+                      <i class="material-icons" (click)="scrollLeftTeammates()">keyboard_arrow_left</i>
+                    </div>
 
-          <!--  -------------------------------------------------------------------------------------- -->
-          <!--  @ New TEAMMATES SCROLL DIV -->
-          <!-- (ROLE_IS_AGENT === false) || (ROLE_IS_AGENT === true && DISPLAY_ALL_TEAMMATES_TO_AGENT) -->
-          <!-- the last: ngIf="ROLE_IS_AGENT === false" -->
-          <!--  -------------------------------------------------------------------------------------- -->
-           <div class="col-xs-12 teammates-carousel">
-            <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
-              <div class="card-content"
-                style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
-                <div style="float: left" class="scroll-div-side-btn">
-                 
-                  <i class="material-icons" (click)="scrollLeftTeammates()">keyboard_arrow_left</i>
-                </div>
+                    <div #widgetsContent class="middle-nw">
+                      <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
+                        <ng-container class="all-teammates">
+                          <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
+                            <div class="served-by-conv-c" matTooltipClass="conv-custom-mat-tooltip"
+                              matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
+                              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
+                              (click)='goToEditUser(agent?._id)'>
+                              <div class="served-by-conv-d">
 
-                <div #widgetsContent class="middle-nw">
-                  <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
-                    <!-- *ngIf="ONLY_MY_REQUESTS === false" -->
-                    <ng-container class="all-teammates" >
-                      <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
 
-                        <div class="served-by-conv-c"
-                          matTooltipClass="conv-custom-mat-tooltip" 
-                          matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='above'
-                          matTooltipHideDelay="100" (click)='goToEditUser(agent?._id)'>
-                          <div class="served-by-conv-d">
+                                <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
 
-                        
-                            <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
+                                
+                                  <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
+                                    alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-                              <!-- ---------------------------------------- -->
-                              <!-- Usecase Firebase -->
-                              <!-- ---------------------------------------- -->
-                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                                alt="" onerror="this.src='assets/img/no_image_user.png'">
+                           
+                                  <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-                              <!-- ---------------------------------------- -->
-                              <!-- Usecase Native -->
-                              <!-- ---------------------------------------- -->
-                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                alt="" onerror="this.src='assets/img/no_image_user.png'">
-
-                              <div class="teammates-with-picture-status-icon"
-                                [ngClass]="{
+                                  <div class="teammates-with-picture-status-icon"
+                                    [ngClass]="{
                                   'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                   'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                   'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
-                              </div>
-                            </div>
+                                  </div>
+                                </div>
 
-                            <!-- ---------------------------------------- -->
-                            <!-- Usecase No profile image -->
-                            <!-- ---------------------------------------- -->
-                            <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
-                              <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
-                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
+                            
+                                <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
+                                  <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
+                                    [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
 
-                                <span class="altenative-conv-avatar" style="line-height: 40px;">
-                                  {{ agent?.id_user?.fullname_initial }}
-                                </span>
-
-                          
-                                <div class="teammates-no-picture-status-icon"
-                                  [ngClass]="{
+                                    <span class="altenative-conv-avatar" style="line-height: 40px;">
+                                      {{ agent?.id_user?.fullname_initial }}
+                                    </span>
+                               
+                                    <div class="teammates-no-picture-status-icon"
+                                       [ngClass]="{
                                         'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                         'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                         'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
-                                </div>
+                                    </div>
 
+                                  </div>
+                                </div>
                               </div>
+
                             </div>
                           </div>
-
-                          <!-- <span style="min-width: fit-content;
-                          white-space: nowrap;
-                          top: 34px;
-                          padding: 1px 4px;
-                          box-shadow: unset;
-                          border-radius: 4px;
-                          font-size: 11px;" class="bottom">
-                            <span> {{ agent?.id_user?.firstname }}
-                              <span *ngIf="agent?.id_user?.lastname && agent?.id_user?.lastname !== ' '">
-                                {{ agent?.id_user?.lastname | slice:0:1 }}.
-                              </span>
-
-                            </span>
-                           
-                          </span> -->
-
-                        </div>
+                        </ng-container>
                       </div>
-                    </ng-container>
-                    <!-- ------------------------------------------------------------------ -->
-                    <!-- teammates of the groups to which the current user belongs -->
-                    <!-- ------------------------------------------------------------------ -->
-                    <!-- <ng-container class="curren-user-teammates" *ngIf="ONLY_MY_REQUESTS === true">
-                      <div class="served-by-conv-b" *ngFor="let agent of filteredProjectUsersArray">
 
-                        <div class="served-by-conv-c tool_tip">
-                          <div class="served-by-conv-d">
+                  
+                      <!- - Skeleton - ->
+                      <div class="served-by-conv-a" *ngIf="showRealTeammates === false">
+                        <div class="served-by-conv-b" *ngFor="let fake of generateFake(project_user_length)">
 
-                           
-                            <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
-
-                              <!- - ---------------------------------------- - ->
-                              <!- - Usecase Firebase - ->
-                              <!- - ---------------------------------------- - ->
-                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                                alt="" onerror="this.src='assets/img/no_image_user.png'">
-
-                              <!- - ---------------------------------------- - ->
-                              <!- - Usecase Native - ->
-                              <!- - ---------------------------------------- - ->
-                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                alt="" onerror="this.src='assets/img/no_image_user.png'">
-
-                              <div class="teammates-with-picture-status-icon"
-                                [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                              </div>
-                            </div>
-
-                            <!- - ---------------------------------------- - ->
-                            <!- - Usecase No profile image - ->
-                            <!- - ---------------------------------------- - ->
-                            <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
-                              <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
-                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
-
-                                <span class="altenative-conv-avatar" style="line-height: 40px;">
-                                  {{ agent?.id_user?.fullname_initial }}
-                                </span>
-                                <div class="teammates-no-picture-status-icon"
-                                  [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                                </div>
+                          <div class="served-by-conv-c tool_tip">
+                            <div class="served-by-conv-d">
+                              <div size="42" class="served-by-conv-e">
+                                <div class="skeleton-img"> </div>
 
                               </div>
                             </div>
-                          </div>
-
-                          <span style="min-width: fit-content;
-                          white-space: nowrap;
-                          top: 34px;
-                          padding: 1px 4px;
-                          box-shadow: unset;
-                          border-radius: 4px;
-                          font-size: 11px;" class="bottom">
-                            <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
-                              <span *ngIf="agent?.id_user?.lastname">
-                                {{ agent?.id_user?.lastname | slice:0:1 }}.
-                              </span>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </ng-container> -->
-                  </div>
-
-                  <!-- ---------------------------------------------- -->
-                  <!-- Skeleton -->
-                  <!-- ---------------------------------------------- -->
-                  <div class="served-by-conv-a" *ngIf="showRealTeammates === false">
-                    <div class="served-by-conv-b" *ngFor="let fake of generateFake(project_user_length)">
-
-                      <div class="served-by-conv-c tool_tip">
-                        <div class="served-by-conv-d">
-                          <div size="42" class="served-by-conv-e">
-                            <div class="skeleton-img"> </div>
-
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div style="float: right; margin-right: 6px;" class="scroll-div-side-btn">
+                      <i class="material-icons" (click)="scrollRightTeammates()">keyboard_arrow_right</i>
+                    </div>
+
                   </div>
                 </div>
-                <div style="float: right; margin-right: 6px;" class="scroll-div-side-btn">
-                  <i class="material-icons" (click)="scrollRightTeammates()">keyboard_arrow_right</i>
-                </div>
+              </div> -->
+              <!-- .END HERE -->
 
-              </div>
             </div>
-          </div>  
-          <!-- .END HERE -->
-         
-        </div>
-      </div>
+          </div>
 
-      <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
-      <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
+          <!-- <div class="col-12 col-md-4">
         <div class="card" style="margin: 5px 0; border: unset !important;">
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-12">
               <h4 class="customh4" style="padding-left:22px; font-size:18px; margin-bottom: 0px; white-space: nowrap;">
                 {{ "RequestsForDept" | translate }}
               </h4>
@@ -627,7 +442,7 @@
             overflow: auto;
             height: 130px;">
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="col-12">
                 <table class="table table-hover">
                   <thead style="background-color: rgba(242, 246, 248, 1);">
                     <tr>
@@ -667,323 +482,331 @@
           </div>
         </div>
       </div> -->
-    </div>
-    <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND REQUESTS FOR DEPTS ======------ -->
-    <!-- *ngIf="ROLE_IS_AGENT === false" -->
-    <div class="row">
-      <div class="col-xs-12">
-        <!-- style="background: rgb(231,241,255);" -->
-        <div class="smart-assign-and-operatinghours-options">
+        </div>
+        <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND REQUESTS FOR DEPTS ======------ -->
+        <!-- *ngIf="ROLE_IS_AGENT === false" -->
+        <div class="row">
+          <div class="col-12">
+            <!-- style="background: rgb(231,241,255);" -->
+            <div class="smart-assign-and-operatinghours-options">
 
 
-          <!-- --------------------------------------------------- -->
-          <!-- Operating hours -->
-          <!-- --------------------------------------------------- -->
-          <button *ngIf="isVisibleOPH" class="btn btn-primary-active"
-            [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED }"
-            (click)="goToOperatingHours()">
-            <span class="material-icons conv-option-icon"
-              [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED}">
-              access_time_filled
-            </span>
+              <!-- --------------------------------------------------- -->
+              <!-- Operating hours -->
+              <!-- --------------------------------------------------- -->
+              <button *ngIf="isVisibleOPH" class="btn btn-primary-active"
+                [ngClass]="{'btn-primary-no-active': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED }"
+                (click)="goToOperatingHours()">
+                <span class="material-icons conv-option-icon"
+                  [ngClass]="{'conv-option-icon-active': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED}">
+                  access_time_filled
+                </span>
 
-            <span class="btn--text">
-              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
-                {{ 'OperatingHoursDisabled' | translate }}
-              </span>
+                <span class="btn--text">
+                  <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
+                    {{ 'OperatingHoursDisabled' | translate }}
+                  </span>
 
-              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
-                {{ 'OperatingHoursEnabled' | translate }}
-              </span>
-            </span>
-            <span class="btn--link">
-              <span>
-                {{'AdjustOperatingHours' | translate}}
-              </span>
-              <span class="material-icons" style="vertical-align: middle;">
-                keyboard_arrow_right
-              </span>
-            </span>
-          </button>
+                  <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
+                    {{ 'OperatingHoursEnabled' | translate }}
+                  </span>
+                </span>
+                <span class="btn--link">
+                  <span>
+                    {{'AdjustOperatingHours' | translate}}
+                  </span>
+                  <span class="material-icons" style="vertical-align: middle;">
+                    keyboard_arrow_right
+                  </span>
+                </span>
+              </button>
 
-          <!-- --------------------------------------------------- -->
-          <!-- Chat Limit -->
-          <!-- --------------------------------------------------- -->
-          <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
-            [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }" (click)="goToProjectSettings_Smartassignment()">
-            <span class="material-icons conv-option-icon tool_tip"
-              [ngClass]="{'conv-option-icon-active': CHAT_LIMIT_IS_ENABLED}">
-              sms_failed
-              <span class="top">
-                <h4 style="white-space: normal;
+              <!-- --------------------------------------------------- -->
+              <!-- Chat Limit -->
+              <!-- --------------------------------------------------- -->
+              <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
+                [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }"
+                (click)="goToProjectSettings_Smartassignment()">
+                <span class="material-icons conv-option-icon tool_tip"
+                  [ngClass]="{'conv-option-icon-active': CHAT_LIMIT_IS_ENABLED}">
+                  sms_failed
+                  <span class="top">
+                    <h4 style="white-space: normal;line-height: 14px;font-weight: 400;">
+                      {{ "ProjectEditPage.ItLimitChatsNumber" | translate }}.
+                    </h4>
+                    <h4 *ngIf="maximum_chats" style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}:
+                      {{maximum_chats}} </h4>
+                    <i></i>
+                  </span>
+                </span>
+
+                <span class="btn--text">
+                  <span *ngIf="!CHAT_LIMIT_IS_ENABLED">
+                    {{ 'ChatLimitDisabled' | translate }}
+                  </span>
+                  <span *ngIf="CHAT_LIMIT_IS_ENABLED">
+                    {{ 'ChatLimitEnabled' | translate }}
+                  </span>
+                </span>
+
+                <span class="btn--link">
+                  <span>
+                    {{'AdjustSmartAssignment' | translate}}
+                  </span>
+                  <span class="material-icons" style="vertical-align: middle;">
+                    keyboard_arrow_right
+                  </span>
+                </span>
+              </button>
+
+              <!-- --------------------------------------------------- -->
+              <!-- Chat reassignment -->
+              <!-- --------------------------------------------------- -->
+              <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
+                [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
+                (click)="goToProjectSettings_Smartassignment()">
+                <span class="material-icons conv-option-icon tool_tip"
+                  [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
+                  shuffle_on
+                  <span class="top">
+                    <h4 style="white-space: normal;line-height: 14px;font-weight: 400;">
+                      {{ "ProjectEditPage.ItReassignChatIf" | translate }}.
+                      {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
+                    <h4 *ngIf="reassignment_timeout" style="font-weight: 400;"> Timeout (in sec):
+                      {{reassignment_timeout}}
+                    </h4>
+                    <i></i>
+                  </span>
+                </span>
+
+                <span class="btn--text">
+                  <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
+                    {{ 'ReassignmentIsDisabled' | translate }}
+                  </span>
+                  <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
+                    {{ 'ReassignmentIsEnabled' | translate }}
+                  </span>
+                </span>
+
+                <span class="btn--link">
+                  <span>
+                    {{'AdjustSmartAssignment' | translate}}
+                  </span>
+                  <span class="material-icons" style="vertical-align: middle;">
+                    keyboard_arrow_right
+                  </span>
+                </span>
+              </button>
+
+
+
+
+              <!-- --------------------------------------------------- -->
+              <!-- Automatic unavailable status -->
+              <!-- --------------------------------------------------- -->
+              <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
+                [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
+                (click)="goToProjectSettings_Smartassignment()">
+                <span class="material-icons conv-option-icon tool_tip"
+                  [ngClass]="{'conv-option-icon-active': AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED}">
+                  person_off
+                  <span class="top">
+                    <h4 style="white-space: normal;
               line-height: 14px;
               font-weight: 400;">
-                  {{ "ProjectEditPage.ItLimitChatsNumber" | translate }}.
-                </h4>
-                <h4 *ngIf="maximum_chats" style="font-weight: 400;"> {{'ProjectEditPage.MaximumChats' | translate}}:
-                  {{maximum_chats}} </h4>
-                <i></i>
-              </span>
-            </span>
+                      {{ "ProjectEditPage.ItSetAnAgentStatusToUnavailable" | translate }}.
 
-            <span class="btn--text">
-              <span *ngIf="!CHAT_LIMIT_IS_ENABLED">
-                {{ 'ChatLimitDisabled' | translate }}
-              </span>
-              <span *ngIf="CHAT_LIMIT_IS_ENABLED">
-                {{ 'ChatLimitEnabled' | translate }}
-              </span>
-            </span>
+                    </h4>
+                    <h4 *ngIf="chats_reassigned" style="white-space: normal;  line-height: 14px; font-weight: 400;">
+                      {{'ProjectEditPage.NumberOfChatsReassignedBefore' | translate}}: {{chats_reassigned}} </h4>
+                    <i></i>
+                  </span>
+                </span>
 
-            <span class="btn--link">
-              <span>
-                {{'AdjustSmartAssignment' | translate}}
-              </span>
-              <span class="material-icons" style="vertical-align: middle;">
-                keyboard_arrow_right
-              </span>
-            </span>
-          </button>
+                <span class="btn--text">
+                  <span *ngIf="!AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED">
+                    {{ 'AutomaticUnavailableStatusDisabled' | translate }}
+                  </span>
+                  <span *ngIf="AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED">
+                    {{ 'AutomaticUnavailableeStatusEnabled' | translate }}
+                  </span>
+                </span>
 
-          <!-- --------------------------------------------------- -->
-          <!-- Chat reassignment -->
-          <!-- --------------------------------------------------- -->
-          <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
-            [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
-            (click)="goToProjectSettings_Smartassignment()">
-            <span class="material-icons conv-option-icon tool_tip"
-              [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
-              shuffle_on
-              <span class="top">
-                <h4 style="white-space: normal;line-height: 14px;font-weight: 400;">
-                  {{ "ProjectEditPage.ItReassignChatIf" | translate }}.
-                  {{'ProjectEditPage.TheChatWillBeBetweenTheUnassigned' | translate }}</h4>
-                <h4 *ngIf="reassignment_timeout" style="font-weight: 400;"> Timeout (in sec): {{reassignment_timeout}}
-                </h4>
-                <i></i>
-              </span>
-            </span>
+                <span class="btn--link">
+                  <span>
+                    {{'AdjustSmartAssignment' | translate}}
+                  </span>
+                  <span class="material-icons" style="vertical-align: middle;">
+                    keyboard_arrow_right
+                  </span>
+                </span>
+              </button>
 
-            <span class="btn--text">
-              <span *ngIf="!CHAT_REASSIGNMENT_IS_ENABLED">
-                {{ 'ReassignmentIsDisabled' | translate }}
-              </span>
-              <span *ngIf="CHAT_REASSIGNMENT_IS_ENABLED">
-                {{ 'ReassignmentIsEnabled' | translate }}
-              </span>
-            </span>
+            </div>
 
-            <span class="btn--link">
-              <span>
-                {{'AdjustSmartAssignment' | translate}}
-              </span>
-              <span class="material-icons" style="vertical-align: middle;">
-                keyboard_arrow_right
-              </span>
-            </span>
-          </button>
-
-
-
-
-          <!-- --------------------------------------------------- -->
-          <!-- Automatic unavailable status -->
-          <!-- --------------------------------------------------- -->
-          <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
-            [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
-            (click)="goToProjectSettings_Smartassignment()">
-            <span class="material-icons conv-option-icon tool_tip"
-              [ngClass]="{'conv-option-icon-active': AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED}">
-              person_off
-              <span class="top">
-                <h4 style="white-space: normal;
-              line-height: 14px;
-              font-weight: 400;">
-                  {{ "ProjectEditPage.ItSetAnAgentStatusToUnavailable" | translate }}.
-
-                </h4>
-                <h4 *ngIf="chats_reassigned" style="white-space: normal;  line-height: 14px; font-weight: 400;">
-                  {{'ProjectEditPage.NumberOfChatsReassignedBefore' | translate}}: {{chats_reassigned}} </h4>
-                <i></i>
-              </span>
-            </span>
-
-            <span class="btn--text">
-              <span *ngIf="!AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED">
-                {{ 'AutomaticUnavailableStatusDisabled' | translate }}
-              </span>
-              <span *ngIf="AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED">
-                {{ 'AutomaticUnavailableeStatusEnabled' | translate }}
-              </span>
-            </span>
-
-            <span class="btn--link">
-              <span>
-                {{'AdjustSmartAssignment' | translate}}
-              </span>
-              <span class="material-icons" style="vertical-align: middle;">
-                keyboard_arrow_right
-              </span>
-            </span>
-          </button>
+          </div>
 
         </div>
 
-      </div>
+        <!-- *ngIf="SHOW_SIMULATE_REQUEST_BTN === true && showSpinner === false" -->
+        <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === true && showSpinner === false">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card" style="margin-top:5px">
+                <div class="card-content">
 
-    </div>
+                  <div class="no_visitor__placeeholder">
 
-    <!-- *ngIf="SHOW_SIMULATE_REQUEST_BTN === true && showSpinner === false" -->
-    <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === true && showSpinner === false">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card" style="margin-top:5px">
-            <div class="card-content">
+                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40"
+                      style="width: 40px;height: 40px;" xml:space="preserve">
+                      <style type="text/css">
+                        .message_rocket {
+                          fill: #737376;
+                        }
+                      </style>
+                      <path class="message_rocket" d="M38.8,2.4c-0.2-0.3-0.6-0.4-1-0.3l-36,9c-0.5,0.1-0.9,0.7-0.7,1.2c0.1,0.2,0.2,0.5,0.4,0.6l13.7,8.8l5.9,15.7
+                    c0.1,0.4,0.5,0.7,0.9,0.7c0.4,0,0.7-0.2,0.9-0.6l16-34C39.1,3.1,39,2.7,38.8,2.4z M4.5,12.4L33.9,5l-18,14.7L4.5,12.4z M22.1,34.4
+                    l-4.9-13l18-14.8L22.1,34.4z" />
+                    </svg>
 
-              <div class="no_visitor__placeeholder">
-
-                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40"
-                  style="width: 40px;height: 40px;" xml:space="preserve">
-                  <style type="text/css">
-                    .message_rocket {
-                      fill: #737376;
-                    }
-                  </style>
-                  <path class="message_rocket" d="M38.8,2.4c-0.2-0.3-0.6-0.4-1-0.3l-36,9c-0.5,0.1-0.9,0.7-0.7,1.2c0.1,0.2,0.2,0.5,0.4,0.6l13.7,8.8l5.9,15.7
-c0.1,0.4,0.5,0.7,0.9,0.7c0.4,0,0.7-0.2,0.9-0.6l16-34C39.1,3.1,39,2.7,38.8,2.4z M4.5,12.4L33.9,5l-18,14.7L4.5,12.4z M22.1,34.4
-l-4.9-13l18-14.8L22.1,34.4z" />
-                </svg>
-
-                <!-- <span *ngIf="!showSpinner"> -->
-                <span style="display: block; line-height:20px;color:#737376; font-size: 16px;margin-top: 16px;">
-                  {{ 'VisitorsPage.NoVisitor' | translate }}
-                </span>
+                    <!-- <span *ngIf="!showSpinner"> -->
+                    <span style="display: block; line-height:20px;color:#737376; font-size: 16px;margin-top: 16px;">
+                      {{ 'VisitorsPage.NoVisitor' | translate }}
+                    </span>
 
 
-                <span
-                  style="display: block; line-height:20px;color:#737376; font-size: 14px;margin-bottom: 16px;text-decoration: underline;cursor: pointer;"
-                  (click)="testWidgetPage()">
-                  {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
-                </span>
-           
+                    <span
+                      style="display: block; line-height:20px;color:#737376; font-size: 14px;margin-bottom: 16px;text-decoration: underline;cursor: pointer;"
+                      (click)="testWidgetPage()">
+                      {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
+                    </span>
+
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
 
-    <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === false && showSpinner === false">
-      <div class="row">
-        <div class="col-md-12" style="padding-left:10px !important; padding-right:10px !important;">
+        <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === false && showSpinner === false">
+          <div class="row">
+            <div class="col-md-12" style="padding-left:10px !important; padding-right:10px !important;">
 
-          <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false"
-            [wsRequestsUnserved]="wsRequestsUnserved" [ws_requests_length]="ws_requests?.length"
-            [requestCountResp]="requestCountResp">
-          </appdashboard-ws-requests-unserved>
-          <!-- *ngIf="wsRequestsServed" -->
-          <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
-            [wsRequestsServed]="wsRequestsServed" [current_selected_prjct]="current_selected_prjct"
-            [ws_requests_length]="ws_requests?.length"
-            [requestCountResp]="requestCountResp">
-          </appdashboard-ws-requests-served>
-          <!-- Chiamare il componente qui -->
-        </div>
-      </div>
-    </section>
+              <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false"
+                [wsRequestsUnserved]="wsRequestsUnserved" 
+                [ws_requests_length]="ws_requests?.length"
+                [requestCountResp]="requestCountResp">
+              </appdashboard-ws-requests-unserved>
+           
+              <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
+                [wsRequestsServed]="wsRequestsServed" 
+                [current_selected_prjct]="current_selected_prjct"
+                [ws_requests_length]="ws_requests?.length" 
+                [requestCountResp]="requestCountResp">
+              </appdashboard-ws-requests-served>
+              
+            </div>
+          </div>
+        </section>
 
 
-    <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === false && showSpinner === true">
-      <div class="card skeleton">
-        <div class="card-header card-header-custom">
-          <h4 class="title customh4" style="margin-bottom:2px;">
-          </h4>
-        </div>
-        <div class="card-content table-responsive" style="padding-top: 0px;">
-          <table class="table table-hover">
-            <thead class="text">
-              <tr>
-                <th></th>
-                <!-- ------ ====== MESSAGE ====== ------ -->
-                <th>
-                  <span class="column-th-span">
-                    {{ 'VisitorsPage.Message' | translate }}
-                  </span>
-                </th>
-                <!-- ------ ====== REQUESTER ====== ------ -->
-                <th>
-                  <span class="column-th-span">
-                    {{ 'VisitorsPage.Requester' | translate }}
-                  </span>
-                </th>
-                <!-- ------ ====== DEPARTMENT ====== ------ -->
-                <th>
-                  <span class="column-th-span">
-                    <!-- {{ 'VisitorsPage.Department' | translate }} -->
-                    {{ 'Department' | translate }}
-                  </span>
-                </th>
-                <!-- ------ ====== CREATED ON ====== ------ -->
-                <th>
-                  <span class="column-th-span">
-                    <!-- {{ 'VisitorsPage.Published' | translate }} -->
-                    {{ 'Created' | translate }}
-                  </span>
-                </th>
-                <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
-                <th>
-                  <span class="column-th-span">
-                    <!-- {{ 'VisitorsPage.Actions' | translate }} -->
-                    {{ 'Actions' | translate }}
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let fake of generateFake(5)">
-                <!-- ------ ====== VISIBILITY ICON ====== ------ -->
-                <td style="width: 30px;">
-                  <p style="margin-bottom: 0px;
+        <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === false && showSpinner === true">
+          <div class="card skeleton">
+            <div class="card-header card-header-custom">
+              <h4 class="title customh4" style="margin-bottom:2px;">
+              </h4>
+            </div>
+            <div class="card-content table-responsive" style="padding-top: 0px;">
+              <table class="table table-hover">
+                <thead class="text">
+                  <tr>
+                    <th></th>
+                    <!-- ------ ====== MESSAGE ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Message' | translate }}
+                      </span>
+                    </th>
+                    <!-- ------ ====== REQUESTER ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Requester' | translate }}
+                      </span>
+                    </th>
+                    <!-- ------ ====== DEPARTMENT ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        <!-- {{ 'VisitorsPage.Department' | translate }} -->
+                        {{ 'Department' | translate }}
+                      </span>
+                    </th>
+                    <!-- ------ ====== CREATED ON ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        <!-- {{ 'VisitorsPage.Published' | translate }} -->
+                        {{ 'Created' | translate }}
+                      </span>
+                    </th>
+                    <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        <!-- {{ 'VisitorsPage.Actions' | translate }} -->
+                        {{ 'Actions' | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let fake of generateFake(5)">
+                    <!-- ------ ====== VISIBILITY ICON ====== ------ -->
+                    <td style="width: 30px;">
+                      <p style="margin-bottom: 0px;
                   max-width: 25px;
                   border-radius: 50%;
                   height: 25px;"> </p>
-                </td>
-                <!-- ------ ====== MESSAGE ====== ------ -->
-                <td>
-                  <p> </p>
-                </td>
-                <!-- ------ ====== REQUESTER ====== ------ -->
-                <td>
-                  <p> </p>
-                </td>
-                <!-- ------ ============== DEPARTMENT =============== ------ -->
-                <td>
-                  <p> </p>
-                </td>
-                <!-- ------ ====== CREATED ON ====== ------ -->
-                <td style="width: 95px;">
-                  <p style="max-width: 95px;"> </p>
-                </td>
-                <!-- ------ ====== ARCHIVE Action ====== ------ -->
-                <td>
-                  <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                    class="btn btn-danger btn-simple btn-xs">
-                    <i class="material-icons">clear</i>
-                  </button>
-                </td>
-              </tr>
-              <!-- /. END UNSERVED REQUESTS -->
-            </tbody>
-          </table>
-        </div> <!-- ./ card-content table-responsive -->
-      </div> <!-- ./ card -->
-    </section>
+                    </td>
+                    <!-- ------ ====== MESSAGE ====== ------ -->
+                    <td>
+                      <p> </p>
+                    </td>
+                    <!-- ------ ====== REQUESTER ====== ------ -->
+                    <td>
+                      <p> </p>
+                    </td>
+                    <!-- ------ ============== DEPARTMENT =============== ------ -->
+                    <td>
+                      <p> </p>
+                    </td>
+                    <!-- ------ ====== CREATED ON ====== ------ -->
+                    <td style="width: 95px;">
+                      <p style="max-width: 95px;"> </p>
+                    </td>
+                    <!-- ------ ====== ARCHIVE Action ====== ------ -->
+                    <td>
+                      <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                        class="btn btn-danger btn-simple btn-xs">
+                        <i class="material-icons">clear</i>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- /. END UNSERVED REQUESTS -->
+                </tbody>
+              </table>
+            </div> <!-- ./ card-content table-responsive -->
+          </div> <!-- ./ card -->
+        </section>
 
-  </div> <!-- ./ container-fluid -->
-</div> <!-- ./ main-content -->
+      </div> <!-- ./ container-fluid -->
 
+    </div> <!-- ./ main-content -->
+
+  <!-- </ng-container>
+  <ng-template #unauthorizedTplAuth>
+    <unauthorized-for-settings [customHeight]="customHeight"></unauthorized-for-settings>
+  </ng-template>
+</ng-container> -->
 
 
 
@@ -998,10 +821,6 @@ l-4.9-13l18-14.8L22.1,34.4z" />
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header" style="padding-bottom:15px">
-        <!-- <button type="button" class="close" aria-label="Close" (click)="closeInternalRequestModal()">
-          <span aria-hidden="true" style="">&times;</span>
-        </button> -->
-
         <button type="button" class="close" aria-label="Close" (click)="closeInternalRequestModal()"
           style="position: absolute; right: 14px;top:19px">
           <span aria-hidden="true">
@@ -1032,14 +851,14 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             {{ 'VisitorsPage.Requester' | translate }}
 
             <!-- // view requester details -->
-            <span class="view-requester-details-wpr"  (click)="openRequesterDetails()"
+            <span class="view-requester-details-wpr" (click)="openRequesterDetails()"
               [ngClass]="{'open-requester-details-disable': !selectedRequester}">
               <span class="view-requester-details" [ngClass]="{'open-requester-details-disable': !selectedRequester}">
                 {{'ViewRequesterDetails' | translate }}
               </span>
 
-              <span class="material-icons"
-                [ngClass]="{'open-requester-details-disable': !selectedRequester}"> open_in_new </span>
+              <span class="material-icons" [ngClass]="{'open-requester-details-disable': !selectedRequester}">
+                open_in_new </span>
 
             </span>
           </label>
@@ -1071,7 +890,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 
                 <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
                   style="border-radius:50%;object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
-                <span style="font-weight: 400; margin-left: 4px;">{{ item.name }}</span><span class="requester-role-or-type">
+                <span style="font-weight: 400; margin-left: 4px;">{{ item.name }}</span><span
+                  class="requester-role-or-type">
                   ({{item.role}}) </span>
 
               </ng-template>
@@ -1095,7 +915,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 
                 <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
                   style="border-radius:50%; object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
-                <span style="font-weight: 400;margin-left: 4px;">{{ item.name }}</span> <span class="requester-role-or-type">
+                <span style="font-weight: 400;margin-left: 4px;">{{ item.name }}</span> <span
+                  class="requester-role-or-type">
                   ({{item.role}}) </span> <br />
                 <small style="font-weight:400;font-size: 13px; margin-left: 28px; position: relative;top: -3px;">
                   {{ item.email }}</small>
@@ -1239,8 +1060,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
       </div>
 
       <div class="modal-footer" style="margin-top: 0px; text-align: center;">
-        <button *ngIf="hasClickedCreateNewInternalRequest === false" style="margin-top:0px" class="btn btn-tdblu-no-boxshadow"
-          (click)="createNewInternalRequest()"
+        <button *ngIf="hasClickedCreateNewInternalRequest === false" style="margin-top:0px"
+          class="btn btn-tdblu-no-boxshadow" (click)="createNewInternalRequest()"
           [disabled]="internalRequest_message === undefined || internalRequest_subject === undefined || internalRequest_message?.length === 0 || internalRequest_subject?.length === 0"
           style="padding:12px 16px;">
           {{ "CreateTicket" | translate }}
@@ -1252,12 +1073,12 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           {{ "Processing" | translate }}
         </button>
         <!-- (click)="openTheChaForInternalRequest()" -->
-        <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px" class="btn btn-gray-no-boxshadow"
-          style="padding:12px 16px;" (click)="closeInternalRequestModal()">
+        <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px"
+          class="btn btn-gray-no-boxshadow" style="padding:12px 16px;" (click)="closeInternalRequestModal()">
           <span style="vertical-align: middle"> {{ 'Cancel' | translate }} </span>
         </button>
-        <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px" class="btn btn-tdblu-no-boxshadow"
-          style="padding:12px 16px;" (click)="goToInternalRequestDetails()">
+        <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px"
+          class="btn btn-tdblu-no-boxshadow" style="padding:12px 16px;" (click)="goToInternalRequestDetails()">
           <span style="vertical-align: middle"> {{ 'ViewDetails' | translate }} </span>
         </button>
 
@@ -1356,7 +1177,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 </app-department-edit-add>  -->
 
 <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-  <appdashboard-map-request [ngStyle]="{'height': map_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
+  <appdashboard-map-request [ngStyle]="{'height': map_sidebar_height }" 
+  [wsRequestsServed]="wsRequestsServed"
     [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page"
     (closeMapsView)='handleCloseRightSidebar($event)'>
   </appdashboard-map-request>

@@ -84,7 +84,7 @@ button.user-details-btn-close {
     text-transform: uppercase;
     color: #647491;
     position: relative;
-    top: 1px;
+    top: 3px;
     cursor: pointer;
 }
 
@@ -166,18 +166,14 @@ button.user-details-btn-close {
 }
 
 .user-details-role > h3 {
-    //font-size: 11px;
     font-size: 14px;
     text-align: center;
-    // margin-top: 5px;
     margin-top: 0px;
     // text-transform: uppercase;
     color: #a9afbb;
-    // font-weight: 500;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    // margin-bottom: 2px !important;
     margin-bottom: 8px !important;
 }
 
@@ -194,10 +190,10 @@ button.user-details-btn-close {
 }
 
 .availability-section {
-    top: 320px;
+    top: 324px;
     text-align: center;
     background-color: #2d323e;
-    padding: 4px 0px;
+    // padding: 4px 0px;
     width: 192px;
     border-radius: 4px;
     -webkit-transform: translateX(-50%);
@@ -205,12 +201,16 @@ button.user-details-btn-close {
     left: 50%;
     margin: auto;
     position: absolute;
+    font-size: 14px;
 }
 
 .first-divider {
     margin-top: 365px;
     border: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: -1;
+    position: relative;
+
 }
 
 .camera-on-hover {
@@ -258,6 +258,7 @@ button.user-details-btn-close {
     color: #a9afbb;
     font-weight: 500;
     -webkit-font-smoothing: antialiased;
+    height: 100px;
 }
 
 .user-details-plan-icon {
@@ -301,10 +302,11 @@ button.user-details-btn-close {
     // cursor: pointer;
     padding-bottom: 15px;
     // padding-top: 186px;
-    padding-top: 100px;
+    padding-top: 49px;
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
     font-weight: 400;
+    // background-color: aliceblue;
     // bottom: 50px;
     // top:355px
 }
@@ -314,7 +316,7 @@ button.user-details-btn-close {
 
 
 .footer-margin-top-pricing-no-visible {
-    padding-top: 240px;
+    padding-top: 49px;
 }
 .user-details-logout-icon {
     color: #a9afbb;
@@ -410,3 +412,25 @@ button.user-details-btn-close {
     opacity: 0;
     transition: visibility 0s, opacity 0.1s linear;
   }
+
+
+  // select temmates status
+
+//   .availability-section ::ng-deep {
+//     .ng-select .ng-select-container {
+//         cursor: pointer;
+//         min-height: 44px;
+//     }
+    
+//     .ng-option {
+//         padding: 12px 15px !important;
+//         cursor: pointer !important;
+//         display: flex !important;
+//         align-items: center !important;
+//     }
+    
+//     .ng-option-marked {
+//         background-color: #f5f5f5 !important;
+//     }
+// }
+  

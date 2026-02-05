@@ -62,10 +62,7 @@
 
 
     <div class="integration-footer">
-        <!-- custom-primary-button -->
-        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
-            {{ 'Integration.Save' | translate }}
-        </button>
+       
         <!-- custom-danger-button -->
         <button *ngIf="integration._id" class="btn btn-red" (click)="deleteIntegration()">
             {{ 'Integration.Delete' | translate }}
@@ -73,6 +70,10 @@
         <!-- custom-danger-button -->
         <button *ngIf="!integration._id" class="btn btn-outlined" (click)="resetValues()">
             {{ 'Integration.Clear' | translate }}
+        </button>
+         <!-- custom-primary-button -->
+        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+            {{ 'Integration.Save' | translate }}
         </button>
     </div>
 

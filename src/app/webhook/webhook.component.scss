@@ -82,6 +82,8 @@ input[type="text"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff;
+    color: #000000de;
+    font-weight: 300;
 }
 
 // .webhook-link-to-doc {
@@ -142,6 +144,7 @@ input[type="text"] {
     font-weight: 400;
     cursor: pointer;
     margin-left: 8px;
+    text-decoration: none;
   }
   
   .custom-anchor-to-docs:hover {

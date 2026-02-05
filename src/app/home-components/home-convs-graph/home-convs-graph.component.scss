@@ -1,7 +1,7 @@
 .convesations-analytics-report-wpr {
     // background: #fff;
     border-radius: 12px;
-    padding: 0px 12px 12px;
+    padding: 12px 12px 12px; // Aggiunto padding-top per evitare che i contenuti vengano tagliati
     // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
     //     0 4px 4px -2px rgb(91 94 105 / 15%);
     box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
@@ -18,7 +18,7 @@
 
 .shadow {
     box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
-        0 4px 4px -2px rgb(91 94 105 / 15%);
+        0 4px 4px -2px rgb(91 94 105 / 15%) !important;
 }
 
 .flex {
@@ -55,6 +55,11 @@
 
 .overflow-hidden {
     overflow: hidden !important;
+}
+
+// Override overflow-hidden per i div dei numeri nel footer del grafico
+.graph-footer > div {
+    overflow: visible !important; // Permette ai numeri di essere visibili completamente
 }
 
 .ml-10 {
@@ -130,7 +135,7 @@
 }
 
 .graph-title {
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     // margin-bottom: 12px;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
@@ -145,19 +150,25 @@
 .graph-footer-num {
     font-size: 26px;
     margin-bottom: 3px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    margin-top: 0; // Assicura che non ci sia margin-top che taglia il numero
+    padding-top: 0; // Assicura che non ci sia padding-top
+    line-height: 1.2; // Aumenta line-height per evitare che i numeri vengano tagliati
+    font-family: var(--header-font-family);
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
     font-weight: 400;
+    display: block; // Assicura che sia un block element
+    overflow: visible; // Assicura che il contenuto non venga tagliato
 }
 
 .graph-footer-text {
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
     font-weight: 400;
+    font-size: 14px;
 }
 
 .home-percentage-symbol {
@@ -208,6 +219,7 @@
     color: #00d4ff;
     font-weight: 400;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .text-accent-link-on-black .m-i-arrow-on-black {
@@ -258,6 +270,7 @@
     color: #fff;
     font-weight: 400;
     border: unset;
+    font-size: 14px;
 }
 
 .period-switch-btn:hover {

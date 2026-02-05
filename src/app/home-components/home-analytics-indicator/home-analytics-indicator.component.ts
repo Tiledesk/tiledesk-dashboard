@@ -19,6 +19,7 @@ export class HomeAnalyticsIndicatorComponent implements OnInit {
   @Input() public projectId: string;
   @Input() public USER_ROLE: string;
   @Output() trackUserAction = new EventEmitter();
+  @Input() public PERMISSION_TO_VIEW_ANALYTICS: boolean;
   countOfActiveContacts: number;
   countOfVisitors: number;
   countOfLastMonthMsgs: number;

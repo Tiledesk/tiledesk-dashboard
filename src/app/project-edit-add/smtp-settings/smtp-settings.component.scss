@@ -7,6 +7,7 @@ input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     // border-top: 1px solid #c0c0c0;
@@ -16,7 +17,8 @@ input[type="text"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    // border: solid 1px #ddd;
+    color: #000000de;
+    font-weight: 300;
 }
 
 input[type="email"] {
@@ -26,6 +28,7 @@ input[type="email"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     // border-top: 1px solid #c0c0c0;
@@ -35,7 +38,8 @@ input[type="email"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    // border: solid 1px #ddd;
+    color: #000000de !important;
+    font-weight: 300;
 }
 
 input[type="password"] {
@@ -45,6 +49,7 @@ input[type="password"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     // border-top: 1px solid #c0c0c0;
@@ -54,7 +59,8 @@ input[type="password"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    // border: solid 1px #ddd;
+    color: #000000de;
+    font-weight: 300;
 }
 
 .custom-label {
@@ -122,10 +128,15 @@ input[type="email"].invalid-email {
     padding-bottom: 9px;
     margin-bottom: 9px;
     padding-top: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     background-color: var(--blue-20)!important;
     box-shadow: unset;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    height: 36px;
 }
 
 #smtp-show-password-btn:hover {

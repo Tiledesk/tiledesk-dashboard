@@ -2,21 +2,21 @@
   <div class="card-header card-header-custom">
 
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <h4 class="title customh4" style="margin-bottom:2px;">
           <!-- + countRequestsServedByBotRr -->
-          {{ 'VisitorsPage.UnservedRequests' | translate }} <span
-            *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr )>= 100"> - </span> <span
-            *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr) >= 100" class="span-link-style"
-            (click)="goToUnservedNTR()"> {{'MoreInQueque' | translate}} </span>
+          {{ 'VisitorsPage.UnservedRequests' | translate }} 
+          <span *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr )>= 100"> - </span> 
+            <span *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr) >= 100" class="span-link-style"
+            (click)="goToUnservedNTR()"> 
+              {{'MoreInQueque' | translate}} 
+            </span>
         </h4>
       </div>
     </div>
   </div>
 
-  <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-  <!-- *ngIf="!showSpinner" overflow:visible; -->
-  <div class="card-content table-responsive" style="padding-top: 0px;padding-bottom: 30px;">
+  <div class="card-content table-responsive" style="padding-top: 0px;padding-bottom: 0px;">
     <table class="table table-hover unserved_requests_table">
       <thead class="text">
         <tr>
@@ -24,26 +24,31 @@
           <!-- ----------------------------------------------- -->
           <!-- Checkbox -->
           <!-- ----------------------------------------------- -->
-          <th style="width: 46px;
-          text-align: right;
-          padding-right: 3px;
-          padding-bottom: 4px !important;">
-
+          <th style="width: 46px; text-align: right;  padding-right: 3px;">
             <label for="allCheckbox">
-              <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
-                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+              <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true || !PERMISSION_TO_ARCHIVE_REQUEST" [checked]="allChecked === true"
+                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px; margin-top: 0px;"
                 (click)="selectAll($event)">
             </label>
           </th>
           <!-- --------------------------------------------------------- -->
-          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- Requests Icons th (in this th put the button to archive 
+           matTooltip="{{'VisitorsPage.Resolve' | translate}}"-->
           <!-- ---------------------------------------------------------- -->
-          <th style="padding-top: 6px;padding-bottom: 6px !important;">
-            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" type="button"
-              (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
-              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
-              matTooltipHideDelay="100">
-              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
+          <th class="th-requests-icons" style="text-align: center;">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" 
+              type="button"
+              style="padding: 0px; margin: 0px;"
+              (click)="archiveSelected()" 
+              matTooltipClass="mat-white-tooltip"
+              [matTooltip]="!PERMISSION_TO_ARCHIVE_REQUEST ? ('YouDoNotHavePermissions' | translate) : ('VisitorsPage.Resolve' | translate)"
+              #tooltip="matTooltip" matTooltipPosition='above'
+              matTooltipHideDelay="100"
+              [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }"
+              [disabled]="!PERMISSION_TO_ARCHIVE_REQUEST">
+              
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey; font-size: 20px;"
+              [ngStyle]="{ 'cursor': !PERMISSION_TO_ARCHIVE_REQUEST ? 'not-allowed' : 'pointer' }">
                 archive
               </span>
             </button>
@@ -58,8 +63,9 @@
             </span>
           </th>
 
-
-          <!-- ------ ====== CHANNNEL ====== ------ -->
+          <!-- ------------------- -->
+          <!-- CHANNNEL -->
+          <!-- ------------------- -->
           <th></th>
 
           <!-- ------------------- -->
@@ -71,7 +77,6 @@
             </span>
           </th>
 
-
           <!-- ----------------------------------------- -->
           <!-- USER AGENT BROWSER & OPERATING SYSTEM -->
           <!-- ----------------------------------------- -->
@@ -82,27 +87,36 @@
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- {{ 'VisitorsPage.Department' | translate }} -->
               {{ 'Department' | translate }}
             </span>
           </th>
+
+
+          <!-- ----------------------------------------------- -->
+          <!-- SERVED BY -->
+          <!-- ----------------------------------------------- -->
+          <th>
+            <span class="column-th-span">
+              {{ 'ServedBy' | translate }}
+            </span>
+          </th>
+
+        
 
           <!-- ------------------- -->
           <!-- CREATED ON -->
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- {{ 'VisitorsPage.Published' | translate }} -->
               {{ 'Created' | translate }}
             </span>
           </th>
 
           <!-- ------------------- -->
-          <!-- ARCHIVE ACTION -->
+          <!-- ACTIONS -->
           <!-- ------------------- -->
           <th>
             <span class="column-th-span">
-              <!-- {{ 'VisitorsPage.Actions' | translate }} -->
               {{ 'Actions' | translate }}
             </span>
           </th>
@@ -113,21 +127,19 @@
         <!-- ------------------------- -->
         <!-- IF THERE ISN'T REQUESTS -->
         <!-- ------------------------ -->
-        <tr *ngIf="wsRequestsUnserved?.length === 0">
-          <!-- <tr *ngIf="displayNoRequestString"> -->
-          <td colspan="9" style="text-align: center; padding-top: 16px;">
-            <p style="font-size:1em; color:#737376; font-weight: 100">
+        <tr *ngIf="wsRequestsUnserved?.length === 0" class="align-middle">
+          <td colspan="10" style="text-align: center; padding-top: 16px;" class="align-middle">
+            <p style="font-size:14px; color:#737376; font-weight: 100">
               {{ 'NoRequests' | translate }}
             </p>
           </td>
         </tr>
 
-
         <!-- ------------------------- -->
         <!-- UNSERVED FOR -->
         <!-- ------------------------- -->
         <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn; let i= index"
-          [ngClass]="{'active-row': request?.request_id === storedRequestId }">
+          [ngClass]="{'active-row': request?.request_id === storedRequestId }" class="align-middle">
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!-- Checkbox -->
@@ -146,7 +158,8 @@
           <!-- -------------------------------------------------------------------------------- -->
           <!-- VISIBILITY ICON -->
           <!-- -------------------------------------------------------------------------------- -->
-          <td style="text-align:center; white-space: nowrap; width: 1%;">
+           <!-- width: 1%; -->
+          <td class="td-request-icons" style="text-align:center; white-space: nowrap; width: fit-content ">
 
 
             <!-- ------------------------------------------------------------------------------------------------- -->
@@ -251,12 +264,113 @@
             </div>
 
             <!-- ------------------------------------------------------------------------------------------------- -->
-            <!--  IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST)   ;else internal_unserved_request -->
+            <!--  IF THE REQUEST SUPPORT STATUS IS 150 (ABBANDONED REQUEST) -->
             <!-- ------------------------------------------------------------------------------------------------- -->
-            <div *ngIf="request?.status === 100 && !request?.subject" style="position: relative;">
+            <div *ngIf="request?.status === 150" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
+                <img style="width: 30px; min-width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}"
+                  #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+
+                <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
+                  *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
+                  <span class="tool_tip">
+                    <span class="material-icons">
+                       person_off 
+                    </span>
+
+                    <!-- ------------------------------------------------------------------------------------------------- -->
+                    <!--  Tooltip with list of who has abandoned the chat -->
+                    <!-- ------------------------------------------------------------------------------------------------- -->
+                    <span id="{{'tooltip_' + i}}" class="right"
+                      style="white-space: normal;padding: 6px 12px;;font-weight: 200; width: fit-content;max-width: unset!important"
+                      [ngStyle]="{'height':  (request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0) ? '100px' : '76px'}">
+                      <h4 style="font-weight:400" style="white-space: nowrap;">
+                        {{'ThisChatHasBeenAbandonedBy' | translate}}
+                      </h4>
+
+
+                      <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true" style="display: flex; align-items: center; gap: 6px;">
+                        <div class="pu-user-avatar-wpr"
+                          style="width: 24px !important;height: 24px !important;">
+                          <img
+                            style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                            src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
+                        </div>
+                        <span style="white-space: nowrap; font-size: 12px; font-weight: 400;">
+                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                            <span style="font-style: italic; color: #94a3b8;">
+                              ({{'theLastOneWhoLeft' | translate}})
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+
+                      <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === false" style="display: flex; align-items: center; gap: 6px;">
+                        <div class="pu-user-avatar-wpr"
+                          style="width: 24px !important;height: 24px !important;">
+                          <div class="avatar-when-not-has-image"
+                            [ngStyle]="{'background-color': request.attributes.last_abandoned_by_project_user_array[0].fillColour }">
+                            {{request.attributes.last_abandoned_by_project_user_array[0].fullname_initial}}
+                          </div>
+                        </div>
+                        <span style="white-space: nowrap; font-size: 12px; font-weight: 400;">
+                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].firstname}} </span>
+                          <span>{{request.attributes.last_abandoned_by_project_user_array[0].lastname | slice:0:1}}.
+                            <span style="font-style: italic; color: #94a3b8;">
+                              ({{'theLastOneWhoLeft' | translate}})
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+
+                      <div class="others-that-has-abandoned"
+                        *ngIf="request?.attributes?.other_project_users_that_has_abandoned_array?.length > 0"
+                        style="margin-top: 6px;">
+                        <div class="served-by-desktop-a-in-tooltip">
+                          <div class="served-by-desktop-b-in-tooltip"
+                            *ngFor="let agent of request?.attributes?.other_project_users_that_has_abandoned_array; let first = first;"
+                            style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+
+                            <div class="served-by-desktop-d-in-tooltip">
+                              <div class="served-by-desktop-e-in-tooltip">
+                                <img *ngIf="agent.has_image" src={{agent.img_url}} alt=""
+                                  style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                                  onerror="this.src='assets/img/no_image_user.png'">
+
+                                <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
+                                  style="width: 24px !important;height: 24px !important;"
+                                  [ngStyle]="{'background-color': agent?.fillColour }">
+                                  {{ agent?.fullname_initial }}
+                                </div>
+                              </div>
+                            </div>
+                            <span style="white-space: nowrap; font-size: 12px; font-weight: 400; text-transform: capitalize;">
+                              {{ agent?.firstname }}
+                              <span *ngIf="agent?.lastname">
+                                <span *ngIf="agent?.lastname !== ' '"> {{ agent?.lastname | slice:0:1 }}.</span>  
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <i></i>
+                    </span>
+                  </span>
+                </div>
+
+              </span>
+            </div>
+
+            <!-- ------------------------------------------------------------------------------------------------- -->
+            <!--  IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST)   ;else internal_unserved_request -->
+            <!-- ------------------------------------------------------------------------------------------------- -->
+           <div *ngIf="request?.status === 100 && !request?.subject" style="position: relative;">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+
+                <img style="width: 30px;min-width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
                   matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
                   #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
@@ -359,7 +473,7 @@
             <div *ngIf="request?.status === 100 && request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
+                <img style="width: 30px;min-width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
                   matTooltipClass="mat-white-tooltip"
                   matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
                   matTooltipPosition='right' matTooltipHideDelay="100">
@@ -449,14 +563,14 @@
                 </div>
               </span>
             </div>
+
           </td>
 
-
           <!-- --------------------------------------- -->
-          <!-- MESSAGE -->
+          <!-- MESSAGE width: 215px; -->
           <!-- --------------------------------------- -->
-          <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
-            style="cursor:pointer; width: 215px;">
+          <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
+            style="cursor:pointer;">
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
 
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
@@ -480,7 +594,7 @@
                   {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
                 </span>
                 <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 150">
-                      {{ 'RequestMsgsPage.RequestAbandoned' | translate }}
+                  {{ 'RequestMsgsPage.RequestAbandoned' | translate }}
                 </span>
 
 
@@ -511,10 +625,9 @@
                 <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
                 <hr class='ng2-tooltip-divider-line'>
                 <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
-                  <p class='ng2-comment-sender'>  
-                    <!-- {{ request?.msgsArray[0]?.senderFullname}}  -->
-                    {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
-
+                  <p class='ng2-comment-sender'> 
+                   <!-- {{ request?.msgsArray[0]?.senderFullname}} -->  
+                   {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
                   </p>
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
                 </div>
@@ -546,7 +659,7 @@
                       </path>
                     </svg>
 
-                    <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                    <span style="font-size: 11px; color: #7695a5; position: relative;right: 2px;margin-right: 2px;">
                       {{ tag.tag}}
                     </span>
                   </div>
@@ -559,10 +672,8 @@
               <!--  -------------------------------------------------------------------- -->
               <div [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;"
                 *ngIf="request?.tags?.length > 2">
-                <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
-               color: rgba(0, 0, 0, 0.54) !important;
-               position: relative;
-               top: -2px;">... {{request?.tags?.length - 2}} {{'more' | translate }}
+                <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;color: rgba(0, 0, 0, 0.54) !important;position: relative;top: 0px;left: -2px; text-decoration: none;">
+                  ...{{request?.tags?.length - 2}} {{'more' | translate }}
                 </a>
               </div>
 
@@ -585,7 +696,7 @@
                         </path>
                       </svg>
 
-                      <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                      <span style="font-size: 11px; color: #7695a5; position: relative; left: -2px;">
                         {{ tag.tag}}
                       </span>
 
@@ -608,248 +719,159 @@
             </section>
           </td>
 
-
           <!-- ---------------------------------------- -->
           <!-- @ Priority & Message Channel  -->
           <!-- ---------------------------------------- -->
-          <td style="width: 1%;padding-left: 4px!important;">
-            <div class="priority_and_channel_wpr" style="display: flex;">
+          <td style="width: 30px;">
+            <div class="priority_and_channel_wpr" style="display: flex; gap: 3px;flex-direction: row;align-items: center;">
               <!-- ---------------------------------------- -->
-              <!-- @ Priority WRAPPER -->
+              <!-- @ Priority WRAPPER *ngIf="request?.priority !== 'medium'" -->
               <!-- ---------------------------------------- -->
-              <div *ngIf="request?.priority !== 'medium'" class="priority_wpr" style="flex: 1;; text-align: right;">
-                <!-- ---------------------------------------- -->
+              <div  class="priority_wpr" style="flex: 1;">
+
+                <!-- Priority Medium -->
+                <span class="span-15" *ngIf="request?.priority === 'medium'"> </span>
+
                 <!-- Priority High -->
-                <!-- ---------------------------------------- -->
-                <span *ngIf="request?.priority === 'high'" matTooltipClass="mat-white-tooltip"
-                  matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
-                  matTooltipPosition='above' matTooltipHideDelay="100">
-                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
-                  <!-- <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'Priority' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">{{ 'high' | translate }} </span>
-                    <i></i>
-                  </span> -->
+                <span *ngIf="request?.priority === 'high'" 
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  <img style="width: 15px;height: 15px;min-width: 15px;" 
+                    src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
                 </span>
                 <!-- ---------------------------------------- -->
                 <!-- Priority Urgent -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.priority === 'urgent'" class="tool_tip" matTooltipClass="mat-white-tooltip"
-                  matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" #tooltip="matTooltip"
-                  matTooltipPosition='above' matTooltipHideDelay="100">
-                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/urgent_v2.svg"
-                    class="img-fluid">
-                  <!-- <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'Priority' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">{{ 'urgent' | translate }} </span>
-                    <i></i>
-                  </span> -->
+                <span *ngIf="request?.priority === 'urgent'"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  <img style="width: 15px;height: 15px;min-width: 15px;" 
+                  src="assets/img/priority_icons/urgent_v2.svg" class="img-fluid">
                 </span>
-                <!-- ---------------------------------------- -->
+
                 <!-- Priority Low -->
-                <!-- ---------------------------------------- -->
-                <span *ngIf="request?.priority === 'low'" class="tool_tip" matTooltipClass="mat-white-tooltip"
-                  matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" #tooltip="matTooltip"
-                  matTooltipPosition='above' matTooltipHideDelay="100">
-                  <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
-                  <!-- <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'Priority' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">{{ 'low' | translate }} </span>
-                    <i></i>
-                  </span> -->
+                <span *ngIf="request?.priority === 'low'"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  <img style="width: 15px;height: 15px;min-width: 15px;" 
+                  src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
                 </span>
               </div>
 
               <!-- ---------------------------------------- -->
-              <!-- Channel WRAPPER -->
+              <!-- Channel WRAPPER [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}"-->
+               <!-- -->
               <!-- ---------------------------------------- -->
-              <div *ngIf="request?.channel?.name !== CHANNELS_NAME.CHAT21" class="channel_wpr"
-                style="flex: 1; text-align: right;"
-                [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
-                <!-- ---------------------------------------- -->
-                <!-- Channel - Telegram -->
-                <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM" class="tool_tip">
-
-                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
-                    class="img-fluid">
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">Telegram </span>
-                    <i></i>
-                  </span>
+              <div class="channel_wpr" style="flex: 1;"  *ngIf="request?.channel?.name !== CHANNELS_NAME.CHAT21">
+                
+                <!-- Channel - Telegram   -->
+                <span class="channel-telegram" 
+                  *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'MessageChannel' | translate}}: Telegram" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  <img style="width: 24px;height: 24px;min-width: 24px;" 
+                  src="assets/img/channel_icons/Telegram-01.svg" class="img-fluid">
+                 
                 </span>
 
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Voice -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO" class="tool_tip">
-
-                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg" class="img-fluid">
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">Voice </span>
-                    <i></i>
-                  </span>
+                <span class="channel-voice" 
+                    *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO"
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{'MessageChannel' | translate}}: Voice" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100">
+                  <img style="width: 24px;height: 24px;min-width: 24px;" 
+                    src="assets/img/channel_icons/voice.svg" class="img-fluid">
                 </span>
 
-
-                <!-- ---------------------------------------- -->
                 <!-- Channel - SMS -->
-                <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO" class="tool_tip">
+                <span class="channel-sms"
+                  *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO"
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{'MessageChannel' | translate}}: SMS" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100">
 
-                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/sms.svg" class="img-fluid">
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">SMS </span>
-                    <i></i>
-                  </span>
+                  <img style="width: 24px;height: 24px;min-width: 24px;" 
+                    src="assets/img/channel_icons/sms.svg" class="img-fluid">
                 </span>
 
-                <!-- ---------------------------------------- -->
                 <!-- Channel - WhatsApp -->
-                <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP" class="tool_tip">
-
-                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
-                    class="img-fluid">
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">WhatsApp </span>
-                    <i></i>
-                  </span>
+                <span class="channel-whatsapp" 
+                  *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'MessageChannel' | translate}}: WhatsApp" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  <img style="width: 24px;height: 24px;min-width: 24px;" 
+                    src="assets/img/channel_icons/whatsapp-logo_green.svg" class="img-fluid">
                 </span>
 
-                <!-- ---------------------------------------- -->
                 <!-- Channel - Messenger -->
-                <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER" class="tool_tip">
+                <span class="channel-messenger" 
+                  *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'MessageChannel' | translate}}: Facebook Messenger" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
 
-                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
-                    class="img-fluid">
-
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-
-                    <span style="font-weight: 400;">Facebook Messenger </span>
-                    <i></i>
-                  </span>
+                  <img style="width: 24px;height: 24px;min-width: 24px;" 
+                    src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg" class="img-fluid">
                 </span>
 
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Email -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL" class="tool_tip email-wpr">
-
-                  <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
-                    class="img-fluid channel-img-in-conversations">
-
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">Email </span>
-
-                    <i></i>
-                  </span>
+                <span class="channel-email email-wpr" 
+                  *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'MessageChannel' | translate}}: Email" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  <img style="padding:5px !important" 
+                    src="assets/img/channel_icons/email-logo_white.svg" class="img-fluid channel-img-in-conversations">
                 </span>
 
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Form -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.FORM" class="tool_tip form-wpr">
-                  <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
-                    class="img-fluid channel-img-in-conversations">
-
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">Form </span>
-                    <i></i>
-                  </span>
+                <span class="channel-internarl-request form-wpr" 
+                  *ngIf="request?.channel?.name === CHANNELS_NAME.FORM"
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{'MessageChannel' | translate}}: Form" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100">
+                  <img style="padding:5px !important" 
+                    src="assets/img/channel_icons/form-logo_v2_white.svg" class="img-fluid channel-img-in-conversations">
                 </span>
               </div>
             </div>
           </td>
 
-          <!-- ---------------------------------------------- -->
-          <!--  REQUESTER (in UNSERVED) !!! Deprecated ------ -->
-          <!-- ---------------------------------------------- -->
-          <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;"
-            rel="tooltip" title="requester id:{{ request?.lead?.fullname }}">
-            <span class="requester-avatar-wrapper">
-              <span class="requester-avatar"
-                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
-                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname,  requester_avatar_not_has_email: !request?.lead?.email }">
-                <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
-              </span>
-
-              <span class="tooltipx" *ngIf="request?.requester_is_verified === true">
-                <svg class="unserved-request--requester-verified-icon" [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
-                  id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-                  y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
-                   xml:space="preserve">
-                  <style type="text/css">
-                    .st0_UserVerified {
-                      fill: none;
-                    }
-
-                    .st1_UserVerified {
-                      fill: #FFFFFF;
-                    }
-
-                    .st2_UserVerified {
-                      fill: #18BDF7;
-                    }
-                  </style>
-                  <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
-                  <path class="st1_UserVerified"
-                    d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                  <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                        l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                </svg>
-                <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-              </span>
-            </span>
-           
-            <span class="column-td" style="white-space: nowrap;">
-              <span class="lead_data">
-                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}">
-                  {{ request?.lead?.fullname }}
-                </span>
-                <span *ngIf="!request?.lead?.fullname"
-                  [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                  N/A
-                </span>
-                <span class="requester-email">
-                  {{ request?.lead?.email }}
-                </span>
-              </span>
-            </span>
-          </td> -->
-
           <!-- ----------------------------------------------------------- -->
           <!--  REQUESTER (in UNSERVED) -->
           <!-- ----------------------------------------------------------- -->
-
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;">
 
             <div class="requester-avatar-and-lead-data-wpr">
@@ -879,8 +901,8 @@
                     {{ request?.requester_fullname_initial }}
                   </span>
 
-                  <!--  -->
-                  <div class="verified-user-icon-wpr" *ngIf="request?.requester_is_verified === true">
+                  <!-- -->
+                  <div class="verified-user-icon-wpr"  *ngIf="request?.requester_is_verified === true">
                     <svg class="requester-verified--icon" version="1.1" id="Livello_1"
                       xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                       viewBox="0 0 26.6 26.6" width="17" height="17" xml:space="preserve">
@@ -916,8 +938,8 @@
                     'requester-not-has-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone,
                     'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.phone === request?.lead?.fullname)
                     }">
-                    <!-- {{ request?.lead?.fullname}} -->
-                    {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
+                      <!--  {{ request?.lead?.fullname}} --> 
+                      {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:37) + '...' : request?.lead?.fullname }}
                   </span>
 
                   <span *ngIf="!request?.lead?.fullname"
@@ -946,7 +968,9 @@
             </div>
           </td>
 
-          <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+          <!-- ----------------------------------------------------------- -->
+          <!-- USER AGENT BROWSER & OPERATING SYSTEM (in UNSERVED) -->
+          <!-- ----------------------------------------------------------- -->
           <td>
             <span *ngIf="request?.userAgent" class="tooltipx">
               <!-- 
@@ -1082,26 +1106,41 @@
             </span>
           </td>
 
-          <!-- ------ ============== DEPARTMENT =============== ------ -->
-
-          <!-- // DEPTS_LAZY: edit the existing one as this -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;
-          font-weight: 400;">
-
-            <!-- // DEPTS_LAZY: edit the existing one as this -->
+          <!-- ----------------------------------------------------------- -->
+          <!-- DEPARTMENT -->
+          <!-- ----------------------------------------------------------- -->
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;font-weight: 400;">
             <p *ngIf="request?.dept?.name" class="column-td">
               {{ request?.dept?.name }}
             </p>
             <p *ngIf="!request?.dept?.name" class="column-td">
               N/A
             </p>
-
-            <!-- <p *ngIf="request?.department" class="column-td" 
-              [innerHTML]="dept_replace( request?.department )"></p> -->
-
           </td>
 
-          <!-- ------ ====== CREATED ON ====== ------ -->
+          <!-- -------------------------------------------- -->
+          <!-- SERVED BY -->
+          <!-- -------------------------------------------- -->
+          <td>
+            <span class="no-agent-icon-wpr">
+              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve" height="32px" width="32px">
+                <g>
+                  <path  d="M25.5,17.3c0.2-0.5,0.2-1.1,0.2-1.7c0-1.6-0.6-3-1.7-4.1C23,10.4,21.6,9.9,20,9.9c-0.6,0-1.2,0.1-1.7,0.2
+                    c-0.5,0.2-1,0.4-1.5,0.7l7.9,7.9C25.1,18.4,25.3,17.9,25.5,17.3z"/>
+                  <path d="M11.2,9.2c-0.4,0.4-0.7,0.7-1.1,1.1c-0.1,0.1-0.5,0.6-0.8,1l4.9,4.9c0.1,1.4,0.7,2.6,1.7,3.6
+                    c1,0.9,2.2,1.5,3.6,1.6l4.6,4.6c-0.6-0.2-1.2-0.3-1.9-0.4s-1.4-0.2-2.3-0.2c-2,0-3.9,0.3-5.6,1c-1.6,0.6-3.1,1.4-4.7,2.5
+                    c0.2,0.2,0.4,0.5,0.6,0.7c0.2,0.2,0.3,0.3,0.5,0.5c0.1,0.1,0.2,0.3,0.4,0.5c0.2,0.2,0.3,0.3,0.5,0.5c1.3-0.9,2.6-1.6,3.9-2
+                    c1.4-0.5,2.9-0.7,4.4-0.7s2.9,0.2,4.4,0.7c1.4,0.5,2.7,1.2,4,2.1c0.4-0.4,0.8-0.8,1.2-1.2c0.2-0.2,0.6-0.8,1.1-1.2L11.2,9.2z"/>
+                </g>
+              </svg>
+            </span>
+            
+          </td>
+
+          <!-- ----------------------------------------------------------- -->
+          <!-- CREATED ON -->
+          <!-- ----------------------------------------------------------- -->
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
             <p class="column-td">
               <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
@@ -1114,60 +1153,40 @@
 
             </p>
           </td>
-          <!-- ------------------------------------------------------ -->
-          <!-- @ ACTIONS -->
-          <!-- ------------------------------------------------------ -->
-          <td class="td-actions text-right" style="padding-top: 9px !important;">
 
+          <!-- ------------------------------------------------------ -->
+          <!-- @ ACTIONS  padding-top: 9px !important; -->
+          <!-- ------------------------------------------------------ -->
+          <td class="td--actions">
 
-            <!-- ------------------------------------------------------ -->
             <!--  Join ACTION -->
-            <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='joinRequest(request?.request_id)'
-              matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}"
-              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-
-              <!-- ---------------------------------- -->
-              <!-- SVG font-awesome link icon -->
-              <!-- ---------------------------------- -->
-              <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
-                data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512">
-                <path fill="currentColor"
-                  d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
-                </path>
-              </svg>
-              <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; left: -16px;"
-                class="top">
-                <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
-                <i style="left: 54%;"></i>
-              </span> -->
-
+              class="btn btn-tdblu" 
+              (click)='joinRequest(request?.request_id)'
+              matTooltipClass="mat-white-tooltip" 
+              matTooltip="{{ 'RequestMsgsPage.Enter' | translate }}"
+              #tooltip="matTooltip" 
+              matTooltipPosition='above' 
+              matTooltipHideDelay="100"
+              [disabled]="!PERMISSION_TO_JOIN_REQUEST">
+              <i class="material-icons">person_add</i>
             </button>
 
-            <!-- ------------------------------------------------------ -->
             <!--  Archive ACTION -->
-            <!-- ------------------------------------------------------ -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-              class="btn btn-tdblu btn-simple btn-xs" (click)='archiveRequest(request?.request_id, request)'
-              [disabled]="USER_ROLE === 'agent'" 
+              class="btn btn-tdblu" 
+              (click)='archiveRequest(request?.request_id, request)'
+              [disabled]="USER_ROLE === 'agent' || !PERMISSION_TO_ARCHIVE_REQUEST" 
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
-              #tooltip="matTooltip" matTooltipPosition='above'
+              #tooltip="matTooltip" 
+              matTooltipPosition='above'
               matTooltipHideDelay="100">
               <i class="material-icons">archive</i>
-              <!-- <span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                  fill="none">
-                  <path
-                    d="m480-240 160-160-56-56-64 64v-168h-80v168l-64-64-56 56 160 160ZM200-640v440h560v-440H200Zm0 520q-33 0-56.5-23.5T120-200v-499q0-14 4.5-27t13.5-24l50-61q11-14 27.5-21.5T250-840h460q18 0 34.5 7.5T772-811l50 61q9 11 13.5 24t4.5 27v499q0 33-23.5 56.5T760-120H200Zm16-600h528l-34-40H250l-34 40Zm264 300Z" />
-                </svg>
-              </span> -->
             </button>
           </td>
-        </tr>
-        <!-- /. END UNSERVED REQUESTS -->
+
+        </tr> <!-- /. END UNSERVED REQUESTS -->
 
       </tbody>
     </table>

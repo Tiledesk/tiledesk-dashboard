@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AddNewContactModalComponent } from './add-new-contact-modal/add-new-contact-modal.component';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: ContactsComponent},
@@ -37,6 +38,7 @@ const routes: Routes = [
     MatDialogModule,
     MatIconModule,
     MatButtonModule,
+    UnauthorizedForSettingsModule
   ],
   exports: [
     RouterModule

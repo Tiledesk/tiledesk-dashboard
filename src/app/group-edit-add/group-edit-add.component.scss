@@ -17,7 +17,8 @@ input[type="text"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    border: solid 1px #ddd;
+    color: #000000de;
+    font-weight: 300;
 }
 
 select {
@@ -33,13 +34,13 @@ select {
 
 // label 'GROUP NAME' custom height for small device
 @media (max-width: 768px) {
-    .custom-label {
+    .custom-label-edit-group {
         height: 0px !important;
     }
 }
 
 @media (max-width: 768px) {
-    .custom-label {
+    .custom-label-edit-group {
         height: 0px !important;
     }
 }
@@ -256,13 +257,13 @@ button.close {
     // font-weight: 500;
 }
 
-.custom-label {
+.custom-label-edit-group {
     color: rgb(118, 149, 165);
-    height: 36px;
-    padding-top: 7px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    text-align: right !important;
+    // height: 36px;
+    // padding-top: 7px !important;
+    // padding-left: 16px !important;
+    // padding-right: 16px !important;
+    // text-align: right !important;
 }
 
 .card-wpr>div {
@@ -293,10 +294,61 @@ button.close {
     object-fit: cover;
 }
 
+.avatar-with-initials {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-right: 15px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.avatar-initials-text {
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
 
 .card-header-flex {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+
+.department-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.dep-of-group {
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background-color .2s;
+    box-shadow: var(--card-elevation);
+    cursor: pointer;
+}
+
+.dep-of-group:hover {
+    box-shadow: var(--card-light-elevation);
+}
+
+.no-department-associated {
+    font-family: var(--header-font-family);
+    color: #394f5a;
 }

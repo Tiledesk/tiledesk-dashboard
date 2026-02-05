@@ -6,6 +6,7 @@ import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 const swal = require('sweetalert');
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'appdashboard-smtp-settings',
@@ -94,7 +95,7 @@ export class SmtpSettingsComponent implements OnInit {
         this.areYouSureMsg = text;
       });
 
-    this.translate.get('ThisActionIsNotReversible')
+    this.translate.get('ActionNotReversible')
       .subscribe((text: string) => {
         this.thisActionIsNotReversibleMsg = text;
       });
@@ -140,7 +141,7 @@ export class SmtpSettingsComponent implements OnInit {
 
   getProjectById(project_id: string) {
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
-      this.logger.log('[SMTP-SETTINGS] - GET PROJECT BY ID - project ', project);
+      console.log('[SMTP-SETTINGS] - GET PROJECT BY ID - project ', project);
 
       if (project && project.settings && project.settings.email && project.settings.email.from) {
         this.sender_email_address = project.settings.email.from;
@@ -207,8 +208,8 @@ export class SmtpSettingsComponent implements OnInit {
   }
 
   sendSMTPTestEmail() {
-    const send_smtp_test_email = <HTMLElement>document.querySelector('.send-smtp-test-email');
-    send_smtp_test_email.blur();
+    // const send_smtp_test_email = <HTMLElement>document.querySelector('.send-smtp-test-email');
+    // send_smtp_test_email.blur();
 
     this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND TEST EMAIL')
 
@@ -216,26 +217,40 @@ export class SmtpSettingsComponent implements OnInit {
   }
 
   presentModalWithInputSendToAndTestEmailButton() {
-    swal(this.sendToMsg, {
-      content: "input",
-      buttons: [this.cancelMsg, this.sendMsg],
-    })
-      .then((recipientemail) => {
-        this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND RECIPIENT EMAIL', recipientemail)
-        this.sendTestEmail(recipientemail)
+    // swal(this.sendToMsg, {
+    //   content: "input",
+    //   buttons: [this.cancelMsg, this.sendMsg],
+    // })
+    //   .then((recipientemail) => {
+    //     this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND RECIPIENT EMAIL', recipientemail)
+    //     this.sendTestEmail(recipientemail)
+    //   });
+    Swal.fire({
+        title: this.sendToMsg,
+        text: this.translate.instant('TheSenderEmailAddressWillNotBeUsedInTheTestEmail'),
+        input: 'text',
+        showCancelButton: true,
+        cancelButtonText: this.cancelMsg,
+        confirmButtonText: this.sendMsg,
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('[SMTP-SETTINGS] - HAS CLICKED SEND RECIPIENT EMAIL', result.value);
+          this.sendTestEmail(result.value);
+        }
       });
   }
+
 
 
   sendTestEmail(recipientemail) {
     this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security
     // this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd,
-    // Handle case where recipientemail might be undefined or null
-    if (!recipientemail) {
-      this.logger.log('[SMTP-SETTINGS] - SEND TEST EMAIL - recipientemail is undefined or null');
-      return;
+    let recipient_email = null
+    if (recipientemail) {
+      recipient_email = recipientemail.toLowerCase()
     }
-    this.projectService.sendTestEmail(recipientemail.toLowerCase(), this.smtp_host_name, this.smtp_port, this.smtp_connetion_security, this.smtp_usermame, this.smtp_pswd)
+    this.projectService.sendTestEmail(recipient_email, this.sender_email_address, this.smtp_host_name,  this.smtp_port,this.smtp_connetion_security,  this.smtp_usermame, this.smtp_pswd)
       .subscribe((res: any) => {
         //  console.log('[SMTP-SETTINGS] sendTestEmail res ', res)
         if (res && res.error && res.error.code === "EAUTH") {
@@ -257,49 +272,84 @@ export class SmtpSettingsComponent implements OnInit {
 
 
 
-  resetToDefaultSMTPConfiguration() {
+    resetToDefaultSMTPConfiguration() {
     this.presentModalResetToDefault()
   }
 
 
   // ------------
   presentModalResetToDefault() {
-    swal({
+    // swal({
+    //   title: this.areYouSureMsg + '?',
+    //   text: this.thisActionIsNotReversibleMsg,
+    //   icon: "warning",
+    //   buttons: true,
+    //   dangerMode: true,
+    // })
+    //   .then((willResetToDefault) => {
+    //     if (willResetToDefault) {
+    //       this.logger.log('[SMTP-SETTINGS] swal willResetToDefault', willResetToDefault)
+
+    //       this.projectService.resetToDefaultSMPTSettings()
+    //         .subscribe((res: any) => {
+    //           console.log('[SMTP-SETTINGS] in swal willResetToDefault res ', res)
+
+    //         }, (error) => {
+    //           this.logger.error('[SMTP-SETTINGS] in swal willResetToDefault - ERROR ', error);
+
+    //         }, () => {
+    //           this.logger.log('[CONTACTS-DTLS] in swal willResetToDefault * COMPLETE *');
+    //           this.smtp_host_name = null;
+    //           this.smtp_port = null;
+    //           this.sender_email_address = null;
+    //           this.smtp_usermame = null;
+    //           this.smtp_pswd = null;
+    //           this.smtp_connetion_security = null
+
+    //         });
+    //     } else {
+    //       this.logger.log('[CONTACTS-DTLS] swal willDelete', willResetToDefault)
+
+    //     }
+    //   });
+    Swal.fire({
       title: this.areYouSureMsg + '?',
       text: this.thisActionIsNotReversibleMsg,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-      .then((willResetToDefault) => {
-        if (willResetToDefault) {
-          this.logger.log('[SMTP-SETTINGS] swal willResetToDefault', willResetToDefault)
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('RemoveSmtpSettings'), 
+      cancelButtonText: this.cancelMsg,
+      reverseButtons: true,  
+    }).then((result) => {  // ← INIZIO .then()
+      this.logger.log('[SMTP-SETTINGS] swal result', result);
+      
+      if (result.isConfirmed) {
+        this.logger.log('[SMTP-SETTINGS] User confirmed reset');
+        
+        this.projectService.resetToDefaultSMPTSettings()
+          .subscribe({
+            next: (res: any) => {
+              console.log('[SMTP-SETTINGS] Reset successful', res);
+            },
+            error: (error) => {
+              this.logger.error('[SMTP-SETTINGS] Reset error', error);
+            },
+            complete: () => {
+              this.logger.log('[SMTP-SETTINGS] Reset complete');
+              // Reset dei campi del form
+              this.smtp_host_name = null;
+              this.smtp_port = null;
+              this.sender_email_address = null;
+              this.smtp_usermame = null;
+              this.smtp_pswd = null;
+              this.smtp_connetion_security = null;
+            }
+          }); 
+        
+      } 
+    }); 
 
-          this.projectService.resetToDefaultSMPTSettings()
-            .subscribe((res: any) => {
-              this.logger.log('[SMTP-SETTINGS] in swal willResetToDefault res ', res)
-
-            }, (error) => {
-              this.logger.error('[SMTP-SETTINGS] in swal willResetToDefault - ERROR ', error);
-
-            }, () => {
-              this.logger.log('[CONTACTS-DTLS] in swal willResetToDefault * COMPLETE *');
-              // this.smtp_host_name = undefined;
-              // this.smtp_port = undefined;
-              // this.sender_email_address = undefined;
-              // this.smtp_usermame = undefined;
-              // this.smtp_pswd = undefined;
-              // this.smtp_connetion_security = undefined
-
-            });
-        } else {
-          this.logger.log('[CONTACTS-DTLS] swal willDelete', willResetToDefault)
-
-        }
-      });
-  }
-
-
+  } 
 
 
   // ----------
@@ -314,10 +364,12 @@ export class SmtpSettingsComponent implements OnInit {
     // console.log('[SMTP-SETTINGS] - smtp_usermame', this.smtp_usermame)
     // console.log('[SMTP-SETTINGS] - smtp_pswd', this.smtp_pswd)
     // console.log('[SMTP-SETTINGS] - smtp_connetion_security', this.smtp_connetion_security)
+    let senderEmailAddress = null
+    if (this.sender_email_address) {
+      senderEmailAddress =  this.sender_email_address.toLowerCase()
+    }
 
-    // Handle case where sender_email_address might be undefined or null
-    const senderEmail = this.sender_email_address ? this.sender_email_address.toLowerCase() : '';
-    this.projectService.updateSMPTSettings(this.smtp_host_name, this.smtp_port, senderEmail, this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security)
+    this.projectService.updateSMPTSettings(this.smtp_host_name, this.smtp_port, senderEmailAddress, this.smtp_usermame, this.smtp_pswd, this.smtp_connetion_security)
       .subscribe((res: any) => {
         this.logger.log('[[SMTP-SETTINGS] - SAVE SMTP SETTINGS res ', res)
         if (res) {

@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'modal-delete-namespace',
@@ -22,13 +26,17 @@ export class ModalDeleteNamespaceComponent implements OnInit {
   namespaceTyped: string;
   namespacenameMatch: boolean = false;
   nameSpaceIndex: any;
+  private unsubscribe$: Subject<any> = new Subject<any>();  
 
-
-
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_DELETE_NAMESPACE: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalDeleteNamespaceComponent>,
+    private rolesService: RolesService,
   ) { 
     // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] data ', data)
     if (data && data.selectedNamespace ) {
@@ -56,7 +64,44 @@ export class ModalDeleteNamespaceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //  this.listenToProjectUser()
   }
+
+    listenToProjectUser() {
+        this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    
+        this.rolesService.getUpdateRequestPermission()
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(status => {
+            this.ROLE = status.role;
+            this.PERMISSIONS = status.matchedPermissions;
+            console.log('[MODAL-DELETE] - this.ROLE:', this.ROLE);
+            console.log('[MODAL-DELETE] - this.PERMISSIONS', this.PERMISSIONS);
+            this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+            console.log('[MODAL-DELETE] - hasDefaultRole', this.hasDefaultRole);
+    
+  
+            // PERMISSION_TO_DELETE_NAMESPACE
+            if (status.role === 'owner' || status.role === 'admin') {
+              // Owner and Admin always has permission
+              this.PERMISSION_TO_DELETE_NAMESPACE = true;
+              console.log('[MODAL-DELETE] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+    
+            } else if (status.role === 'agent') {
+              // Agent never have permission
+              this.PERMISSION_TO_DELETE_NAMESPACE = false;
+              console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+    
+            } else {
+              // Custom roles: permission depends on matchedPermissions
+              this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
+              console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+            }
+  
+  
+          });
+    
+      }
 
   // ngOnChanges(changes: SimpleChanges): void {
 
@@ -77,7 +122,7 @@ export class ModalDeleteNamespaceComponent implements OnInit {
 
   checkNamespaceTyped() {
     // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaceTyped ', this.namespaceTyped)
-    if (this.namespaceTyped !== this.selectedNamespace.name) {
+    if (this.namespaceTyped !== this.selectedNamespace.id) {
       this.namespacenameMatch = false 
     } else {
       this.namespacenameMatch = true 

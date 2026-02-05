@@ -18,8 +18,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-import scrollToWithAnimation from 'scrollto-with-animation'
+// import scrollToWithAnimation from 'scrollto-with-animation'
 import { CHANNELS_NAME } from 'app/utils/util';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -33,6 +35,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   @Input() wsRequestsUnserved: Request[];
   @Input() ws_requests_length: number
   @Input() requestCountResp: any;
+  CHAT_PANEL_MODE: boolean = false
 
   countRequestsServedByHumanRr: number
   countRequestsServedByBotRr: number
@@ -70,6 +73,10 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   scrollYposition: any;
   storedRequestId: string
   CHANNELS_NAME = CHANNELS_NAME;
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+
   /**
    * Constructor
    * @param botLocalDbService 
@@ -99,7 +106,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public translate: TranslateService,
     public logger: LoggerService,
     private wsMsgsService: WsMsgsService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public rolesService: RolesService
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -130,31 +138,78 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.getTranslations();
     this.getLoggedUser();
     this.getProjectUserRole();
-    
+    this.listenToProjectUser() 
   }
 
- 
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        
+        console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
+        console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
+        
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+
+        
+
+      
+      });
+  }
+
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      scrollToWithAnimation(
-        this.scrollEl, // element to scroll
-        'scrollTop', // direction to scroll
-        +this.scrollYposition, // target scrollY (0 means top of the page)
-        500, // duration in ms
-        'easeInOutCirc',
-        // Can be a name of the list of 'Possible easing equations' or a callback
-        // that defines the ease. # http://gizma.com/easing/
+    // setTimeout(() => {
+    //   scrollToWithAnimation(
+    //     this.scrollEl, // element to scroll
+    //     'scrollTop', // direction to scroll
+    //     +this.scrollYposition, // target scrollY (0 means top of the page)
+    //     500, // duration in ms
+    //     'easeInOutCirc',
+    //     // Can be a name of the list of 'Possible easing equations' or a callback
+    //     // that defines the ease. # http://gizma.com/easing/
 
-        () => { // callback function that runs after the animation (optional)
-          this.logger.log('done!')
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-        }
-      );
-    }, 100);
+    //     () => { // callback function that runs after the animation (optional)
+    //       this.logger.log('done!')
+    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+    //     }
+    //   );
+    // }, 100);
   }
 
- 
+
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
@@ -179,26 +234,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
       this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
 
-      // if (this.wsRequestsUnserved.length > 0) {
-      //   this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
-        // setTimeout(() => {
-        //   scrollToWithAnimation(
-        //     this.scrollEl, // element to scroll
-        //     'scrollTop', // direction to scroll
-        //     +this.scrollYposition, // target scrollY (0 means top of the page)
-        //     500, // duration in ms
-        //     'easeInOutCirc',
-        //     // Can be a name of the list of 'Possible easing equations' or a callback
-        //     // that defines the ease. # http://gizma.com/easing/
-
-        //     () => { // callback function that runs after the animation (optional)
-        //       this.logger.log('done!')
-        //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-        //     }
-        //   );
-        // }, 100);
-
-      // }
+      
     }
 
   }
@@ -207,7 +243,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
- 
+
 
   // -------------------------------------------------------------
   // @ Subscribe to project user role
@@ -460,62 +496,67 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   archiveSelected() {
-    let count = 0;
-    this.requests_selected.forEach((requestid, index) => {
-      this.wsRequestsService.closeSupportGroup(requestid)
-        .subscribe((data: any) => {
-          //  this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      let count = 0;
+      this.requests_selected.forEach((requestid, index) => {
+        this.wsRequestsService.closeSupportGroup(requestid)
+          .subscribe((data: any) => {
+            //  this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - requestid ', requestid);
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
 
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
 
-          if (requestid === this.storedRequestId) {
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
+            // this.allChecked = false;
+            // this.requests_selected = []
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+            //  NOTIFY ERROR 
+            // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+          }, () => {
+
             this.usersLocalDbService.removeFromStorage('last-selection-id')
-          }
-          // this.allChecked = false;
-          // this.requests_selected = []
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
-        }, (err) => {
-          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
-
-
-          //  NOTIFY ERROR 
-          // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-        }, () => {
-
-          this.usersLocalDbService.removeFromStorage('last-selection-id')
-          // this.ngOnInit();
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-          count = count + 1;
-          //  NOTIFY SUCCESS
-          // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-          const index = this.requests_selected.indexOf(requestid);
-          if (index > -1) {
-            this.requests_selected.splice(index, 1);
-
-          }
-          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
-
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - this.requests_selected.length ', this.requests_selected.length);
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - requests_selected array ', this.requests_selected);
-
-          if (this.requests_selected.length === 0) {
-            this.allChecked = false;
-            var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-            this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-            this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
-            if (checkbox) {
-              checkbox.indeterminate = false;
+            // this.ngOnInit();
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
+            count = count + 1;
+            //  NOTIFY SUCCESS
+            // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+            const index = this.requests_selected.indexOf(requestid);
+            if (index > -1) {
+              this.requests_selected.splice(index, 1);
 
             }
-          }
+            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
-        });
-    })
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - this.requests_selected.length ', this.requests_selected.length);
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - requests_selected array ', this.requests_selected);
+
+            if (this.requests_selected.length === 0) {
+              this.allChecked = false;
+              var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+              this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+              this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+              if (checkbox) {
+                checkbox.indeterminate = false;
+
+              }
+            }
+
+          });
+      })
+
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
 
@@ -617,35 +658,39 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
   archiveRequest(request_id: string, request: any) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - HAS CLICKED ARCHIVE CONV (CLOSE SUPPORT GROUP) - CONV: ', request);
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - HAS CLICKED ARCHIVE CONV (CLOSE SUPPORT GROUP) - CONV: ', request);
 
 
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
+      this.wsRequestsService.closeSupportGroup(request_id)
+        .subscribe((data: any) => {
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
 
-        this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
 
-        if (request_id === this.storedRequestId) {
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          if (request_id === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+          //  NOTIFY ERROR 
+          this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
           this.usersLocalDbService.removeFromStorage('last-selection-id')
-        }
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
-      }, (err) => {
-        this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
-
-        //  NOTIFY ERROR 
-        this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        this.usersLocalDbService.removeFromStorage('last-selection-id')
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-
-        //  NOTIFY SUCCESS
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-      });
+          //  NOTIFY SUCCESS
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
 
@@ -659,11 +704,16 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // Join request
   // ------------------------------------------
   joinRequest(request_id: string) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return
+    }  
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest request_id', request_id);
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest currentUserID', this.currentUserID);
 
     this.displayModalAreyouSureYouWantToTakeChargeOfTheConversation(request_id, this.currentUserID);
-    // this.onJoinHandled(request_id, this.currentUserID);
+      // this.onJoinHandled(request_id, this.currentUserID);
+    
   }
 
   displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) {

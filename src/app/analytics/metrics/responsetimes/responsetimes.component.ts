@@ -16,6 +16,7 @@ import { CHANNELS, CHANNELS_NAME } from 'app/utils/util';
 import { ProjectService } from 'app/services/project.service';
 import { takeUntil } from 'rxjs/operators';
 
+
 @Component({
   selector: 'appdashboard-responsetimes',
   templateUrl: './responsetimes.component.html',
@@ -61,7 +62,7 @@ export class ResponseTimesComponent implements OnInit {
     { id: '', name: 'All' },
     ... CHANNELS
   ];
-
+  
   CHANNELS_NAME = CHANNELS_NAME;
   
   constructor(

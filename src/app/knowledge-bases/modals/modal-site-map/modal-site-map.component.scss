@@ -26,7 +26,7 @@
 .fake-input {
     height: 37px;
     border-radius: 6px;
-    border:  1px solid #ccc;
+    border: 1px solid #ccc;
     display: flex;
     align-items: center;
     padding: 12px;
@@ -110,7 +110,7 @@
     min-height: 37px;
     max-height: auto;
     border-radius: 6px;
-    border:  1px solid #ccc;
+    border: 1px solid #ccc;
     padding: 6px 12px 20px;
     cursor: text;
     overflow: hidden;
@@ -124,14 +124,14 @@
     }
 }
 
-.form-container {
+.form--container {
     margin-top: 12px;
     margin-bottom: 12px;
     display: inline-block;
     width: 100%;
 
     .input-container {
-        margin-bottom: 14px;
+        margin-bottom: -4px;
     }
 
 
@@ -140,11 +140,12 @@
         height: 37px;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #3c4858 !important;
         line-height: 35px;
         font-weight: 400;
         margin-bottom: 10px;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {
@@ -162,7 +163,7 @@
         border-radius: 6px;
         border: 1px solid #ccc;
         padding: 10px 15px;
-        color: #22272d;
+        color: #3c4858 !important;
         // line-height: 35px;
         // font-weight: 400;
         line-height: inherit;
@@ -214,7 +215,8 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
-
+    font-size: 14px;
+    line-height: 1.3;
     .info-icon {
         margin-right: 8px;
         font-size: 20px;
@@ -235,7 +237,7 @@
 .input-label {
     font-family: var(--header-font-family);
     font-weight: 400;
-    font-size: 13px;
+    font-size: 14px;
     padding-bottom: 0;
 }
 
@@ -276,9 +278,10 @@ mat-expansion-panel ::ng-deep {
     .mat-expansion-panel-header {
         background-color: transparent !important;
         padding: 0 2px;
-         &:hover {
+
+        &:hover {
             background-color: blueviolet;
-         }
+        }
     }
 
     .mat-expansion-panel-header.mat-expanded {
@@ -288,7 +291,7 @@ mat-expansion-panel ::ng-deep {
     .mat-expansion-panel-body {
         padding: 0 4px !important;
     }
-    
+
     .disable_ripple:hover {
         background: transparent !important;
     }
@@ -303,7 +306,7 @@ mat-expansion-panel ::ng-deep {
 
 
 ::ng-deep .mat-chip-list-wrapper {
-    max-height: 100px; 
+    max-height: 100px;
     overflow: scroll;
 
     .mat-standard-chip {
@@ -319,7 +322,7 @@ mat-expansion-panel ::ng-deep {
     border-radius: 5px;
     border: solid 1px #e4e4e4 !important;
     box-shadow: none;
- }
+}
 
 
 ::ng-deep.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
@@ -342,7 +345,26 @@ mat-expansion-panel ::ng-deep {
 }
 
 ::ng-deep.custom--expansion-panel:not(.mat-expanded) {
-    background: rgba(0, 0, 0, .04) !important;
+    // background: rgba(0, 0, 0, .04) !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    border: 1px solid #ccc !important;
+}
+
+.custom--expansion-panel ::ng-deep {
+
+    .mat-expansion-panel-header {
+        padding: 0 4px !important;
+    }
+
+    .mat-expansion-panel-header-title {
+        color: #000000de !important;
+        font-weight: 500 !important;
+    }
+
+    .mat-expansion-indicator::after {
+        color: #000000de !important;
+    }
 }
 
 ::ng-deep.custom--expansion-panel {
@@ -365,7 +387,7 @@ mat-expansion-panel ::ng-deep {
     letter-spacing: 1px;
     background: transparent;
     border: 1px solid #d1d9e0;
-    color: var(--btn-get-feature-color); 
+    color: var(--btn-get-feature-color);
     font-weight: 400;
     box-shadow: unset !important;
     text-transform: none !important;
@@ -381,7 +403,7 @@ mat-expansion-panel ::ng-deep {
 
 .get--feature-upgrade-plan-icon {
     vertical-align: middle;
-    color: var(--btn-get-feature-color); 
+    color: var(--btn-get-feature-color);
     font-size: 21px;
 }
 
@@ -391,7 +413,7 @@ mat-expansion-panel ::ng-deep {
     font-weight: 400;
 }
 
-.contact-sales-to-enable-feature > div{
+.contact-sales-to-enable-feature>div {
     cursor: pointer;
     color: var(--blue-20);
     padding: 0 4px;
@@ -400,7 +422,38 @@ mat-expansion-panel ::ng-deep {
     margin: auto;
 }
 
-.contact-sales-to-enable-feature > div:hover {
+.contact-sales-to-enable-feature>div:hover {
     // text-decoration: underline;
     background-color: var(--only-text-btn-hover-background);
+}
+
+.upsell-for-refresh-rate {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px;
+   
+    // padding: 0 40px;
+    // align-items: flex-end;
+    // margin-top: 10px;
+}
+
+.upsell-for-refresh-rate .upsell-text {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.upsell-for-refresh-rate .upsell-text-link {
+    font-weight: 400;
+    cursor: pointer;
+    color: var(--blue-20);
+}
+
+
+.refresh-rate--upgrade-plan {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 14px;
 }

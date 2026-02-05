@@ -212,6 +212,7 @@ p {
     display: flex;
     align-items: center;
     padding: 0 12px;
+    font-size: 14px;
 
     .button-icon {
         font-size: 18px;
@@ -403,6 +404,7 @@ p {
     border-radius: 9999px;
     padding-right: 9px;
     background-color: transparent;
+    font-size: 14px;
 }
 
 .wa-only-icon-btn:hover {
@@ -438,6 +440,7 @@ p {
     align-items: center;
     border-right: 1px solid rgba(131, 134, 158, .2);
     min-width: 175px !important;
+    gap: 8px;
 }
 
 .cl-card-automation-stats-second-column {
@@ -449,6 +452,7 @@ p {
     align-items: center;
     // border-right: 1px solid rgba(131, 134, 158, .2);
     min-width: 175px !important;
+    gap: 8px;
 }
 
 .broadcast-logs-accordion ::ng-deep .mat-expansion-panel-content .mat-expansion-panel-body {
@@ -499,7 +503,12 @@ p {
 .automation-detail-header > .automation-name {
     font-size: 21px;
     font-weight: 500;
-    font-family: var(--header-font-family);;
+    font-family: var(--header-font-family);
+}
+
+.automation-detail-header > .automation-sent-date {
+    font-size: 13px;
+    padding-top: 4px;
 }
 
 .automation-detail-header > .automation-sent-date > span{

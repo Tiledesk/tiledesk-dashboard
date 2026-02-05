@@ -110,8 +110,7 @@
                 <mat-slider class="wait-slider max-tokens-slider" thumbLabel step="1" [min]="max_tokens_min" max="100000" [(ngModel)]="max_tokens"
                     (input)="max_tokens = $event.value" (change)="updateSliderValue($event.value, 'max_tokens')" [displayWith]="formatMaxTokens" aria-label="units">
                 </mat-slider>
-                <!-- {{max_tokens_max}} -->
-                <div class="action-wait-range"> 100000</div>
+                <div class="action-wait-range">100000</div>
             </div>
             <!-- <input type="text" class="slider-output" value="{{max_tokens}}" disabled> -->
         </div>
@@ -429,7 +428,7 @@
         </div>
 
         <textarea class="context-texarea" [(ngModel)]="context" rows="2" placeholder="You are an awesome assistant"
-            (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+            (ngModelChange)="onChangeTextInContex($event)" style="font-size: 14px;">  </textarea>
     </div>
 
 

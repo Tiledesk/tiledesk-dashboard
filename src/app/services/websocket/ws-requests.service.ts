@@ -205,7 +205,7 @@ export class WsRequestsService implements OnDestroy {
 
       if (project) {
         // this.logger.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 2', project._id)
-        this.logger.log('[WS-REQUESTS-SERV] - SUBSCRIBE (REF) WITH NEW PROJECT-ID', project._id)
+        // console.log('[WS-REQUESTS-SERV] - SUBSCRIBE (REF) WITH NEW PROJECT-ID', project._id)
         this.logger.log('[WS-REQUESTS-SERV] - OLD PROJECT-ID', this.project_id)
 
         this.project_id = project._id;
@@ -402,6 +402,7 @@ export class WsRequestsService implements OnDestroy {
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
       // this.wsRequestsList$.next(this.wsRequestsList);
+      // console.log('[WS-REQUESTS-SERV] wsRequestsList ', this.wsRequestsList ) 
 
     }
 
@@ -468,7 +469,7 @@ export class WsRequestsService implements OnDestroy {
 
         if (this.wsRequestsList) {
           this.wsRequestsList$.next(this.wsRequestsList);
-          this.logger.log("[WS-REQUESTS-SERV] -  ON-UPATE REQUESTS LIST ", this.wsRequestsList);
+          // console.log("[WS-REQUESTS-SERV] -  ON-UPATE REQUESTS LIST ", this.wsRequestsList);
         }
       }
     }
@@ -1300,13 +1301,17 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
+    // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses  ', statuses);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses length ', statuses?.length);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+    // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
     
+    if (Array.isArray(status)) {
+      status = status.join(',');
+    }
+
     if (Array.isArray(status)) {
       status = status.join(',');
     }

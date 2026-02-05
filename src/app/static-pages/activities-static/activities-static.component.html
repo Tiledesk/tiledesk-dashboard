@@ -1,12 +1,12 @@
-<!-- margin-top:6px; -->
-<p style="padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand"
+
+<!-- <p style="padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
   </i>
   {{ "Activities" | translate }}
   
-</p>
+</p> -->
 
 <div class="main-content" style="padding-top:0px; background-color: #ffffff;">
   <div class="container-fluid">
@@ -59,11 +59,11 @@
                   <div class="row">
                     <div class="col-sm-4" style="padding-left:0px;padding-right:0px;">
 
-                      <label class="col-xs-12 col-sm-12" style="text-align: left; color:#7695a5; padding-right:0px">
+                      <label class="col-12 col-sm-12" style="text-align: left; color:#7695a5; padding-right:0px">
                         {{ 'HistoryPage.DateRange' | translate }}
                       </label>
                       <mat-form-field class="activity-date-range-picker" appearance="standard"
-                        style="margin-left: 14px; width: 100%;">
+                        style="width: 100%;">
                         <mat-date-range-input [rangePicker]="picker">
                           <input matStartDate placeholder="{{'StartDate' | translate}}" disabled>
                           <input matEndDate placeholder="{{'EndDate' | translate}}" disabled>
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="col-sm-4">
-                      <label class="col-xs-12 col-sm-12"
+                      <label class="col-12 col-sm-12"
                         style="text-align: left; color: #7695a5 !important;padding-left:2px">
                         {{ 'HistoryPage.Agent' | translate }}
                       </label>
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="col-sm-4">
-                      <label _ngcontent-c8="" class="col-xs-12 col-sm-12 activity-label"
+                      <label _ngcontent-c8="" class="col-12 col-sm-12 activity-label"
                         style="text-align: left; color: #7695a5 !important;padding-left:2px">
                         {{ 'Activity' | translate }}
                       </label>
@@ -105,7 +105,7 @@
                     <div class="row">
                       <div class="col-sm-12">
                         <button class="btn btn-white" style="padding:9px 30px;" type="submit">
-                          <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+                          <i class="material-icons">search</i>
                         </button>
 
                         <button class="btn btn-white clearsearchbtn" style="padding:9px 30px;color:#7695a5"
@@ -120,7 +120,7 @@
                           </span>
                         </button>
 
-                        <button class="btn btn-white pull-right export-to-csv-btn"
+                        <button class="btn btn-white float-end export-to-csv-btn"
                           style="padding:9px 30px;color:#7695a5">
                           <span class="clear-search-text">
                             {{ 'ExportToCSV' | translate }}

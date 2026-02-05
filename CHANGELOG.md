@@ -51,43 +51,143 @@
 ### 2.7.138
 - Implements caching strategy for projects, project users, and departments to reduce redundant HTTP requests and improve performance
 - Adds cache invalidation on data updates to ensure data consistency
+### 2.7.164-AR
+- Bootstrap 5
 
-### 2.7.137
-- Adds MCP server to integrations
+### 2.7.163-AR
+- Removes maintenance 
 
-### 2.7.136
-- Adds a link to the documentation on the New Broadcast page
+### 2.7.162-AR
+- Improves the Re-index feature
 
-### 2.7.135
-- Adds the ability to select between multiple LLMs in the AI ​​settings dialog
+### 2.7.161-AR
+- Adds maintenance component
 
-### 2.7.134
-- Adds a tooltip to the file upload button in the conversation detail that indicates the maximum size allowed
-- Displays a confirm dialog on delete Canned response 
-- Manage the Knowledge preview error “allowed max tokens”
-- Allows txt extension on Knowledge Base page > Add contents > Upload files
+### 2.7.160-AR
+- Fixes the bug: in teammate details, if role is updated, Chat Limit field is set to -1
 
-### 2.7.133
-- Updates markdown library
+### 2.7.159-AR
+- Improves full-text search on the history page and non-real-time conversations page
 
-### 2.7.132
-- Fixes the bug: Ai Agent duplicate not working
+### 2.7.158-AR
+- Blocks working status changes for conversations archived more than 10 days with a warning message
+- Fixes the "Able to send messages and upload files" permission label to specify that it applies to admin chat
+- Hides the section that allows sending messages in the admin panel if the "Able to send message and upload file from Admin panel chat" permission is not enabled
+- Opens selected conversations in chat in a new tab only for teammates with predefined roles
+- Fixes the bug: in some cases the text color of reply messages in the chat in the conversation details is black instead of white
+- Improves performances
 
-### 2.7.131
-- Adds the ability to manage which pages the widget can appear on in Widget Settings
-- Adds the ability to manage the file types users can upload from the widget in Widget Settings
-- Adds the ability to manage the file types users can upload from the agent chat in Project Settings > Advanced
-- Adds the ability to manage emoji sending in Project Settings > Advanced
-- Adds the ability to manage URL submission based on the domains whitelist in Project Settings > Advanced
+### 2.7.157-AR
+- Fixes the bug: Fixed REST call generating 504 error message in conversation details
+
+### 2.7.156-AR
+- Implements caching strategy for project users to reduce redundant HTTP requests and improve performance
+- Check if a teammate is a member of any groups or has created tags before deleting them
+- Fixes the bug: Group members are not updated correctly when switching between groups
+- Adds permission to show/hide unassigned chat notifications
+- Fixes the bug: project user permissions and role data are not refreshed when switching between projects, requiring a page refresh to display correct permissions
+
+### 2.7.155-AR
+- Fixes the bug: Some sidebar items do not become active if a query parameter is present
+- Fixes the bug: Non-real-time conversations and conversation history are not loaded if there is a query parameter different from the ones used by the search
+- Fixes the bug: in department details, if a group is deleted, it remains visible in the groups load balance section
+
+### 2.7.154-AR
+- Manages the "tiledesk_logOut" query parameter which shows/hides the logout button
+- Removes permission to view conversations on the contact details page
+- Adds the ability to search for abandoned conversations to the Status combobox of the History page
+- Fixes the bug: on the History page, search does not work if the Status combobox is empty
+- Adds an event listener to the onOpenTicketExternally event
+
+### 2.7.153-AR
+- Adds an eventListener to chat-ionic events
+- Fixes the bug: Unable to access monitor page if dashboard is embedded in iframe due to security policies
+
+### 2.7.152-AR
+- Added ionic chat in an iframe
+- Fixes the bug: The user profile page is still accessible by clicking on the avatar
+- Fixes the bug: Operator logging in
+
+### 2.7.151-AR
+- Hides the "Edit Profile" and the "Support" buttons based on the values passed from the brand file
+
+### 2.7.150-AR
+- Adds permission to manage the ability to filter conversations on the History page per agent
+
+### 2.7.149-AR
+- Fixes the bug: Creating a new Knowledge Base is exposed to Cross-site scripting (reflected) attacks
+- Fixes the bug: combo boxes to filter conversations by channels display items that shouldn't display
+- Hides the Signup and Forgot Password buttons on the login page
+- Adds the ability to view the departments to which the group is assigned to on the group details page
+
+### 2.7.148-AR
+- Adds the ability to view/hide conversation tags created by AI agents via permissions
+- Fixes the bug: When a tag is created by an AI agent on the tags page, the value of created by is n.a.
+- Adds the ability to manage the display of conversation details with dedicated permission
+- Adds the list of groups the teammate is a member of to the teammate's details page
+- Improves the service to create a new canned response
+- Adds the ability to hide the logout button based on query parameters
 
 
-### 2.7.130
-- Adds links to documentations
-- Adds translations
+### 2.7.147-AR
+- Adds the ability to hide or show quota usage 
+- Hides or displays the "Create new AI agent" and "Create new group" buttons on the department details page based on permissions
+- Hides or shows the Settings sidebar menu item only if the permissions to edit tags and to edit canned responses are also enabled
+- Adds 'create', 'edit'  and 'delete' permissions for groups
+- Adds 'create', 'edit'  and 'delete' permissions for roles
+- Adds the ability to hide or show the ticket ID in the conversation details page via permissions
 
+### 2.7.146-AR
+- Improves the conversation details sidebar
 
-### 2.7.129
-- Adds the ability to create WhatsApp Broadcasts
+### 2.7.145-AR
+- Adds the ability to hide or show the conversation simulation button and the switch project combo box via permissions
+- Adds the ability to hide or show the sidebar menu item Home via permissions
+
+### 2.7.144-AR
+- Fixes the bug: Email search doesn't work in Teammates
+- Fixes the bug: the whitelist of allowed domains does not work properly
+
+### 2.7.143-AR
+- Displays a confirmation dialog on the conversation details page when resolving a conversation only when panel is in chat mode
+- In the conversation details chat, if the Resolved option is selected, the conversation is closed without sending the message.
+
+### 2.7.142-AR
+- Adds and fix translations
+- Does not allow deletion of groups associated with departments
+- Fixes the bug: duplicating an AI Agent does not work
+- Block file uploads in conversation details based on permission “Able to send message and upload file”
+
+### 2.7.141-AR
+- Adds the ability to hide the rating section via permissions
+- Removes the "Create Ticket" button
+
+### 2.7.140-AR
+- Adds in the groups list pagination and Search box
+
+### 2.7.139-AR
+- Prevents XSS attack via markdown
+
+### 2.7.138-AR
+- Hides sidebar menu items based on permissions
+- Manages permissions in the Home page
+- Hides sections based on permissions.
+- Does not allow to change the name of an existing role
+- Adds in the teammates list pagination and Search box
+- Fixes the bug: Served by tooltips are enabled in conversation details when panel is in a iframe
+
+### 2.7.137-AR
+- Minor improvements and bug fixing
+
+### 2.7.136-AR
+- Adds the ability to assign more than one group to a department and to define their load percentage
+
+### 2.7.135-AR
+- Improves groups load balancing
+- Fixes the bug: in the flows sidebar the icon of the first menu item is always active
+
+### 2.7.134-AR
+- Add the percentage of group load in the department details
 
 ### 2.7.128
 - Minor improvements and bug fixing
@@ -136,11 +236,26 @@
 ### 2.7.114
 - Minor improvements and bug fixing
 
+### 2.7.114-rc5
+- changed: added request_id in flow-request-logs row
+
+### 2.7.114-rc4
+- Added: added flow request logs
+
+### 2.7.114-rc2
+- Fixes the bug: changed css module in knowledge-base
+
+### 2.7.114-rc1
+- Added: added flow webhooks logs
+
 ### 2.7.113
 - Adds the environment variable "oauth2SigninEnabled"
 
 ### 2.7.112
 - Adds the ability for teammates with admin roles to edit email templates
+
+### 2.7.112-rc5
+- Added: added unanswered-questions module in knowledge-base
 
 ### 2.7.111
 - Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari

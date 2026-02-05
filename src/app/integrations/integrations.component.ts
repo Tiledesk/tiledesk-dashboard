@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration} from './utils'; // , DeepseekIntegration
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, } from './utils'; // , DeepseekIntegration
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,11 @@ import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
 import { AppConfigService } from 'app/services/app-config.service';
 
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { C } from '@angular/cdk/keycodes';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { browserRefresh } from 'app/app.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -28,6 +33,7 @@ const Swal = require('sweetalert2')
 
 
 export class IntegrationsComponent implements OnInit, OnDestroy {
+  public browserRefresh: boolean;
   project: any;
   projectID: string;
   project_plan: any;
@@ -75,6 +81,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   public_Key: string;
   isVisiblePAY: boolean;
 
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
@@ -89,6 +99,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private projectPlanService: ProjectPlanService,
     private appService: AppStoreService,
     public appConfigService: AppConfigService,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) {
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
@@ -107,11 +119,60 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
+    this.checkPermissions();
+    this.listenToProjectUser();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log("[INTEGRATION-COMP] - PERMISSION_TO_UPDATE Project: ", this.project) ;
+        console.log('[INTEGRATION-COMP] - Role:', status.role);
+        console.log('[INTEGRATION-COMP] - Permissions:', status.matchedPermissions);
+
+        // PERMISSION TO UPDATE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.INTEGRATIONS_UPDATE)) {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          } else {
+            this.PERMISSION_TO_UPDATE = false;
+            if (this.PERMISSION_TO_UPDATE === false) {
+              this.router.navigate(['project/' + this.projectID + '/integrations/'])
+            }
+           
+            console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE = true
+          console.log('[INTEGRATION-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        }
+
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('integrations')
+    console.log('[INTEGRATION-COMP] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[INTEGRATION-COMP] isAuthorized ', this.isAuthorized)
+    console.log('[INTEGRATION-COMP] permissionChecked ', this.permissionChecked)
   }
 
   // ------------------------------
@@ -194,7 +255,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
           this.project = project
           this.projectID = project._id
-          this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
+          console.log("[INTEGRATION-COMP] getCurrentProject Project: ", this.project) ;
+          console.log("[INTEGRATION-COMP] getCurrentProject PERMISSION_TO_UPDATE: ", this.PERMISSION_TO_UPDATE) ;
+           if (this.PERMISSION_TO_UPDATE === false) {
+              this.router.navigate(['project/' + this.projectID + '/integrations/'])
+           }
         }
       });
   }
@@ -279,7 +344,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
 
         this.showSpinner = false
@@ -424,9 +489,20 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       })
     })
   }
-
+  // if (this.browserRefresh && !this.PERMISSION_TO_UPDATE) {
+  //      this.router.navigate(['project/' + this.projectID + '/integrations/'])
+  //     } 
   onIntegrationSelect(integration) {
-    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
+
+
+
+    console.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
     this.checkPlan(integration, integration.plan).then(() => {
@@ -480,7 +556,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   integrationUpdateEvent(data) {
-    this.logger.log('[INTEGRATION-COMP] data', data)
+    console.log('[INTEGRATION-COMP] data', data)
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
       this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
@@ -503,7 +579,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   integrationDeletedEvent(integration) {
     this.presentDeleteConfirmModal(integration);
-  
+
   }
 
   reloadSelectedIntegration(integration) {
@@ -588,8 +664,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(key) {
+    console.log('[INTEGRATION-COMP] browserRefresh', this.browserRefresh)
     this.logger.log("[INTEGRATION-COMP] change route in ", key);
+
     this.router.navigate(['project/' + this.projectID + '/integrations/'], { queryParams: { name: key } })
+
   }
 
   goToPricing() {
@@ -644,16 +723,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.OLLAMA) {
       return new OllamaIntegration();
     }
-
-    if (key === INTEGRATIONS_KEYS.MCP) {
-      return new McpIntegration();
-    }
-
-    if (key === INTEGRATIONS_KEYS.VLLM) {
-      return new vLLMIntegration();
-    }
-
-    
 
     if (key === INTEGRATIONS_KEYS.DEEPSEEK) {
       return new DeepseekIntegration();
@@ -1070,48 +1139,48 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   trackSavedIntegration(integrationName, integrationisVerified) {
     this.logger.log('[INTEGRATIONS] trackSavedIntegration integrationName ', integrationName)
     this.logger.log('[INTEGRATIONS] trackSavedIntegration integrationisVerified ', integrationisVerified)
-        let userFullname = ''
-        if (this.user.firstname && this.user.lastname) {
-          userFullname = this.user.firstname + ' ' + this.user.lastname
-        } else if (this.user.firstname && !this.user.lastname) {
-          userFullname = this.user.firstname
-        }
-        if (!isDevMode()) {
-          try {
-            window['analytics'].track('Integration saved', {
-              "type": "organic",
-              "username": userFullname,
-              "email": this.user.email,
-              'userId': this.user._id,
-              'integration': integrationName,
-              'apiKeyVerified': integrationisVerified,
-              'action': 'save'
-            });
-          } catch (err) {
-            // this.logger.error(`Track Integration saved error`, err);
-          }
-    
-          try {
-            window['analytics'].identify(this.user._id, {
-              username: userFullname,
-              email: this.user.email,
-              logins: 5,
-    
-            });
-          } catch (err) {
-            // this.logger.error(`Identify Integration saved error`, err);
-          }
-    
-          try {
-            window['analytics'].group(this.project._id, {
-              name: this.project.name,
-              plan: this.profile_name
-    
-            });
-          } catch (err) {
-            // this.logger.error(`Group Integration saved error`, err);
-          }
-        }
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname) {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track('Integration saved', {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.user.email,
+          'userId': this.user._id,
+          'integration': integrationName,
+          'apiKeyVerified': integrationisVerified,
+          'action': 'save'
+        });
+      } catch (err) {
+        // this.logger.error(`Track Integration saved error`, err);
+      }
+
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        // this.logger.error(`Identify Integration saved error`, err);
+      }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.profile_name
+
+        });
+      } catch (err) {
+        // this.logger.error(`Group Integration saved error`, err);
+      }
+    }
   }
 
   trackDeletedIntegration(integrationName) {

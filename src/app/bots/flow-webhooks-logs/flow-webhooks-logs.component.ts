@@ -10,6 +10,8 @@ import { Location } from '@angular/common';
 import { NotifyService } from 'app/core/notify.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FlowWebhooksLogsService } from 'app/services/flow-webhooks-logs.service';
+import { NavigationService } from 'app/services/navigation.service';
+import { Subscription } from 'rxjs';
 const Swal = require('sweetalert2');
 
 export enum LogType {
@@ -64,6 +66,8 @@ export class FlowWebhooksLogsComponent implements OnInit {
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
 
+  private backSub?: Subscription;
+
   constructor(
     private auth: AuthService,
     private translate: TranslateService,
@@ -75,6 +79,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
     public notify: NotifyService,
     private flowWebhooksLogsService: FlowWebhooksLogsService,
     private faqKbService: FaqKbService,
+    private navSvc: NavigationService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -83,6 +88,17 @@ export class FlowWebhooksLogsComponent implements OnInit {
     this.getFlowWebhooks();
     await this.getServerBaseURL();
     await this.getRouteParams();
+    this.listenToGoBack()
+  }
+
+   ngOnDestroy() {
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
 
@@ -101,7 +117,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
         this.log_type = params.type;
         this.log_id = params.id;
 
-        this.logger.log('[FLOW-WEBHOOKS-LOGS] params ', params);
+        console.log('[FLOW-WEBHOOKS-LOGS] params ', params);
         if (this.log_type === LogType.WEBHOOK && this.log_id) {
           await this.getFlowWebhookById(params.id);
           if (this.webhook_id) {

@@ -703,10 +703,19 @@ export class ProjectService {
 
     let url = this.PROJECTS_URL + this.projectID + '/'
     // this.logger.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
-
-    let body = {}
-    body["settings.email.from"] = undefined;
-    body["settings.email.config"] = undefined;
+    let body = {"settings.email.from": null,"settings.email.config": null}
+    // body["settings.email.from"] = null;
+    // body["settings.email.config"] = null;
+    // let body = {
+    //   'settings.email.from': "",
+    //   'settings.email.config.host': "",
+    //   'settings.email.config.port': "",
+    //   'settings.email.config.secure': "",
+    //   'settings.email.config.user': "",
+    //   'settings.email.config.pass': "",
+    // }
+    
+  
 
     this.logger.log('[PROJECT-SERV] RESET TO DEFAULT SMTP - body ', body);
 
@@ -723,7 +732,7 @@ export class ProjectService {
     return update$;
   }
 
-  public sendTestEmail(recipientemail, smtp_host_name, smtp_port_number, smtp_connetion_security, smtp_usermame, smtp_pswd) {
+  public sendTestEmail(recipientemail,sender_email_address, smtp_host_name, smtp_port_number, smtp_connetion_security, smtp_usermame, smtp_pswd) {
     let url = this.SERVER_BASE_PATH + this.projectID + '/emails/test/send'
     const httpOptions = {
       headers: new HttpHeaders({
@@ -732,7 +741,7 @@ export class ProjectService {
         'Authorization': this.TOKEN
       })
     };
-
+    // 'from':sender_email_address,
     const body = { "to": recipientemail, "config": { "host": smtp_host_name, 'port': smtp_port_number, 'secure': smtp_connetion_security, 'user': smtp_usermame, 'pass': smtp_pswd } }
     this.logger.log('[PROJECT-SERV] SEND TEST EMAIL POST - body ', body);
 
@@ -1125,7 +1134,7 @@ export class ProjectService {
   // --------------------------------------------------------------------------------------
   saveAgentsChatAllowedExtensions (allowed_upload_extentions) {
     let promise = new Promise((resolve, reject) => {
-      this.logger.log("[PROJECT-SERV] SAVE allowed_upload_extentions", allowed_upload_extentions)
+      console.log("[PROJECT-SERV] SAVE allowed_upload_extentions", allowed_upload_extentions)
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
@@ -1142,7 +1151,6 @@ export class ProjectService {
     })
     return promise;
   }
-
 
 
   // -------------------------------------

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
+import { RoleService } from 'app/services/role.service';
 import { URL_web_integrations } from 'app/utils/util';
 
 // function _window() : any {
@@ -35,11 +37,15 @@ export class WidgetInstallationComponent implements OnInit {
   // get nativeWindow() : any {
   //   return _window();
   // }
-
+  isAuthorized = false;
+  permissionChecked = false; // To avoid showing the content before check completes
+  private accordionInitialized = false;
   constructor( 
      private auth: AuthService,
      public appConfigService: AppConfigService,
-     public brandService: BrandService
+     public brandService: BrandService,
+     private roleService: RoleService,
+     private router: Router,
     ) { 
       const brand = brandService.getBrand();
       this.tparams = brand;
@@ -52,9 +58,30 @@ export class WidgetInstallationComponent implements OnInit {
     this.getBrowserVersion();
     this.listenSidebarIsOpened()
     this. getWidgetUrl()
-    // this.getAndManageAccordionInstallWidget();
-    this.getAndManageAccordionInstallWidget2();
+    // this.getAndManageAccordionInstallWidget(); // already commented
+    // this.getAndManageAccordionInstallWidget2();
     this.getCurrentProject()
+    this.checkPermissions();
+  }
+
+
+    ngAfterViewChecked() {
+    if (this.isAuthorized && !this.accordionInitialized) {
+   
+      // if (acc.length > 0) {
+         this.getAndManageAccordionInstallWidget2();
+        this.accordionInitialized = true;
+      // }
+    }
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('widget-installation')
+    console.log('[WIDGET-SET-UP] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[WIDGET-SET-UP] isAuthorized ',  this.isAuthorized)
+    console.log('[WIDGET-SET-UP] permissionChecked ',  this.permissionChecked)
   }
 
   getCurrentProject() {
@@ -197,9 +224,11 @@ export class WidgetInstallationComponent implements OnInit {
     // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
   }
 
+  goToSupport() {
+    this.router.navigate(['project/' + this.id_project + '/support'])
+  }
 
 
- 
   openChatWidget(){
     if (window && window['tiledesk']) {
       window['tiledesk'].setParameter({ key: 'startFromHome', value: false });

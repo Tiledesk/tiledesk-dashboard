@@ -42,6 +42,7 @@ export class UnansweredQuestionsService {
 
   getUnansweredQuestions(id_project: string, namespace_id: string): Observable<UnansweredQuestion[]> {
     const url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
+    console.log('getUnansweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -72,3 +73,5 @@ export class UnansweredQuestionsService {
     return this._httpClient.delete<any>(url, httpOptions);
   }
 } 
+
+

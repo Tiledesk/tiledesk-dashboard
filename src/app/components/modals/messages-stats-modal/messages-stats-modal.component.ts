@@ -11,6 +11,8 @@ import { takeUntil } from 'rxjs/operators'
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'appdashboard-messages-stats-modal',
@@ -36,6 +38,8 @@ export class MessagesStatsModalComponent implements OnInit {
   
   projectId: string
 
+  PERMISSION_TO_VIEW_ANALYTICS: boolean
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<MessagesStatsModalComponent>,
@@ -45,6 +49,7 @@ export class MessagesStatsModalComponent implements OnInit {
     private usersService: UsersService,
     public auth: AuthService,
     private router: Router,
+    public rolesService: RolesService,
   ) {
     this.logger.log('[MSGS-STATS-MODAL] data ', data)
     if (data && data.agent) {
@@ -80,13 +85,49 @@ export class MessagesStatsModalComponent implements OnInit {
     this.getMessagesByLastNDays(this.selectedDaysId, this.agentId);
     this.getUserRole()
     this.getCurrentProject()
+    this.listenToProjectUser()
   }
+
+
 
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();
   }
+
+   listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+  
+  
+          // ----------------------------
+          // PERMISSION_TO_VIEW_ANALYTICS
+          // ----------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_ANALYTICS = true;
+            console.log('[CHATBOT-STATS-MODAL] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_ANALYTICS = false;
+            console.log('[CHATBOT-STATS-MODAL] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+            console.log('[CHATBOT-STATS-MODAL] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          }
+  
+  
+       
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -102,7 +143,7 @@ export class MessagesStatsModalComponent implements OnInit {
     this.subscription = this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
-        this.logger.log('[ActivitiesComponent] - projectId ', this.projectId)
+        this.logger.log('[CHATBOT-STATS-MODAL] - projectId ', this.projectId)
       }
     });
   }

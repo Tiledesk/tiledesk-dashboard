@@ -11,12 +11,16 @@ import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, isValidEmail, PLAN_
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
 import { ContactsWaBroadcastModalComponent } from './contacts-wa-broadcast-modal/contacts-wa-broadcast-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewContactModalComponent } from './add-new-contact-modal/add-new-contact-modal.component';
 import { BrandService } from 'app/services/brand.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -126,6 +130,17 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   fullTextIsAValidEmail: boolean = false;
   public hideHelpLink: boolean;
 
+  customHeight: boolean = true
+  
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  // isAuthorized = false;
+  // permissionChecked = false;
+  PERMISSION_TO_TRASH_LEAD: boolean;
+  // PERMISSION_TO_UPDATE_LEAD: boolean; // used for the restore contact
+  PERMISSION_TO_RESTORE_LEAD: boolean
+  PERMISSION_TO_DELETE_LEAD: boolean;
+  PERMISSION_TO_EXPORT_LEADS: boolean;
+
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -137,13 +152,17 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) { 
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
   }
 
+
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('contacts')
     this.getTranslation();
     this.getOSCODE();
     this.getContacts();
@@ -170,7 +189,119 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.getBrowserVersion();
     
+
+    // this.checkPermissions();
+    this.listenToProjectUser()
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[CONTACTS-DTLS] - Role:', status.role);
+        console.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
+
+       
+   
+        // --------------------------------
+        // PERMISSION_TO_TRASH_LEAD
+        // --------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_TRASH)) {
+            this.PERMISSION_TO_TRASH_LEAD = true
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+          } else {
+            this.PERMISSION_TO_TRASH_LEAD = false
+
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_TRASH_LEAD = true
+          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+        }
+
+        // ---------------------------
+        // PERMISSION_TO_RESTORE_LEAD 
+        // --------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_RESTORE)) {
+
+            this.PERMISSION_TO_RESTORE_LEAD = true
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
+          } else {
+            this.PERMISSION_TO_RESTORE_LEAD = false
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_RESTORE_LEAD = true
+          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
+        }
+
+        // -------------------------  
+        // PERMISSION_TO_EXPORT_LEADS
+        // --------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEADS_EXPORT)) {
+
+            this.PERMISSION_TO_EXPORT_LEADS = true
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
+          } else {
+            this.PERMISSION_TO_EXPORT_LEADS = false
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
+          }
+        } else {
+          this.PERMISSION_TO_EXPORT_LEADS = true
+          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
+        }
+
+        // -------------------------
+        // PERMISSION_TO_DELETE_LEAD 
+        // -------------------------
+         if (status.role === 'owner') {
+          // Owner always has permission
+          this.PERMISSION_TO_DELETE_LEAD = true;
+          console.log('[CONTACTS-COMP] - Project user is owner (1)', 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
+
+        } else if (status.role === 'admin' || status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_DELETE_LEAD = false;
+          console.log('[CONTACTS-COMP] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE_LEAD = status.matchedPermissions.includes(PERMISSIONS.LEAD_DELETE);
+          console.log('[CONTACTS-COMP] - Custom role (3) role ', status.role, 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
+        }
+
+
+
+        
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+  // async checkPermissions() {
+  //   const result = await this.roleService.checkRoleForCurrentProject('contacts')
+  //   console.log('[CONTACTS-COMP] result ', result)
+  //   this.isAuthorized = result === true;
+  //   this.permissionChecked = true;
+  //   console.log('[CONTACTS-COMP] isAuthorized ', this.isAuthorized)
+  //   console.log('[CONTACTS-COMP] permissionChecked ', this.permissionChecked)
+  // }
+
+
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -397,9 +528,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+ 
 
   buildPlanName(planName: string, browserLang: string, planType: string) {
     if (planType === 'payment') {
@@ -728,16 +857,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[CONTACTS-COMP] - GET LEADS RESPONSE ', leads_object);
 
       this.contacts = leads_object['leads'];
-       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
-
-       this.contacts.forEach(contact => {
+      this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+      this.contacts.forEach(contact => {
         
         if (contact.email && !isValidEmail(contact.email)) {
           contact.email = null; // Or 'N/A', depending on what you want to display
         }
 
       });
-
 
 
       const contactsCount = leads_object['count'];
@@ -923,6 +1050,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   deleteContactForever(contactid: string) {
+    if (this.USER_ROLE === 'admin' || this.USER_ROLE === 'agent' || this.PERMISSION_TO_DELETE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     this.contactsService.getRequestsByRequesterId(contactid, 0)
       .subscribe((requests_object: any) => {
         this.logger.log('[CONTACTS-COMP]  deleteContactForever requests_object', requests_object);
@@ -1008,6 +1139,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   // MOVE TO TRASH
   // --------------------------------------------------
   moveContactToTrash(contactid: string, fullName: string) {
+
+
+    if(this.PERMISSION_TO_TRASH_LEAD === false || this.USER_ROLE === 'agent') {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     // this.logger.log('!!!!! CONTACTS - ON MODAL DELETE OPEN -> USER ID ', id);
 
     // this.displayDeleteModal = 'block';
@@ -1085,6 +1222,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   restore_contact(contactid: string) {
+    if(this.USER_ROLE === 'agent' || this.PERMISSION_TO_RESTORE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
     this.contactsService.restoreLead(contactid)
       .subscribe((lead: any) => {
         this.logger.log('[CONTACTS-COMP] - RESTORE CONTACT RES ', lead);
@@ -1229,6 +1371,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   exportContactsToCsv() {
+    if(this.PERMISSION_TO_EXPORT_LEADS === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+
+    }
+
     if (!this.overridePay) {
       if (this.payIsVisible) {
         const isAvailable = this.checkPlanAndPresentModal()
@@ -1236,7 +1384,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (isAvailable === false) {
           return
         }
-
+        console.log('[CONTACTS-COMP] here YES ')
         this.dwnldCSV()
 
         //  this.logger.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
@@ -1250,6 +1398,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (isAvailable === false) {
         return
       }
+      console.log('[CONTACTS-COMP] here YES 2')
       this.dwnldCSV()
     }
   }

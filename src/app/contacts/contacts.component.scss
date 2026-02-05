@@ -16,6 +16,7 @@ input[type="text"] {
     border-radius: 5px !important;
     background-color: #fff !important;
     background-image: none !important;
+    color: #3c4858 !important;
     // border: solid 1px #ddd;
 }
 
@@ -36,7 +37,8 @@ input[type="email"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    // border: solid 1px #ddd;
+    color: #3c4858 !important;
+    font-weight: 300; 
 }
 
 /* Remove input background colour from Chrome autocomplete */
@@ -59,22 +61,26 @@ input:-webkit-autofill:active {
     margin: auto;
 }
 
-.search-form > div > div > .full-text-input {
-    border-radius: var(--search-bar-border-radius)
+// .search-form > div > div > .full-text-input {
+//     border-radius: var(--search-bar-border-radius)
+// }
+
+.full-text-input {
+    border-radius: var(--search-bar-border-radius) !important
 }
 
-@media screen and (min-width: 768px) {
-    .search-form {
-        width: 600px;
-        // margin: 0 auto;
-        // padding: 15px;
-        max-width: 720px;
-    }
+// @media screen and (min-width: 768px) {
+//     .search-form {
+//         width: 600px;
+//         // margin: 0 auto;
+//         // padding: 15px;
+//         max-width: 720px;
+//     }
 
-    .full-text-search {
-        max-width: 350px;
-    }
-}
+//     .full-text-search {
+//         max-width: 350px;
+//     }
+// }
 
 @media screen and (max-width: 767px) {
     .search-form {
@@ -205,16 +211,19 @@ input:-webkit-autofill:active {
     position: relative;
     margin-bottom: 16px;
     flex-direction: row;
-    justify-content: center;
+    // justify-content: center;
+    justify-content: flex-start;
 }
 
 .lead-applied-filter-title {
     color: #353f45;
     padding: 6px 12px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     border-radius: 10px;
     font-weight: 500;
     height: 32px;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .lead-applied-filter {
@@ -222,11 +231,12 @@ input:-webkit-autofill:active {
     background-color: #e8f0fe;
     color: #1a73e8;
     padding: 6px 12px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     border-radius: 10px;
     font-weight: 500;
     height: 32px;
     margin-right: 12px;
+    font-size: 14px;
 }
 
 .lead-filter-icon-and-text-wpr {
@@ -277,10 +287,10 @@ input:-webkit-autofill:active {
     border: 0.1px solid lightgrey;
 }
 
-.contacts-paginantion>.input-group {
-    background: unset;
-    border: unset;
-}
+// .contacts-paginantion>.input-group {
+//     background: unset;
+//     border: unset;
+// }
 
 .search-field {
     border-radius: 0 !important;
@@ -290,6 +300,8 @@ input:-webkit-autofill:active {
     background: transparent;
     height: 50px;
     padding: 5px 10px;
+    color: #3c4858;
+    font-weight: 300;
 }
 
 .fa-search {
@@ -306,16 +318,34 @@ input:-webkit-autofill:active {
     background: transparent;
     border: none;
     border-radius: 50%;
+    padding: 3px 4px;
+}
+
+#lead-advanced-search-dropdown-menu.show {
+    top: 16px !important;
+    left: 5px !important;
+}
+
+.custom-input-group---btn.dropdown-toggle {
+    padding: 1px 2px;   
+}
+
+// Remove Bootstrap default caret (::after) for custom-input-group---btn dropdown
+.custom-input-group---btn.dropdown-toggle::after {
+    display: none !important;
+    content: none !important;
 }
 
 .custom-input-group---btn:active {
     background-color: rgba(60, 64, 67, 0.12);
     outline: none;
     border-radius: 999px;
+    
 }
 
+
 .fa-search-btn {
-    margin-top: 5px;
+    // margin-top: 5px;
     cursor: pointer;
     -webkit-border-radius: 50%;
     border-radius: 50%;
@@ -323,7 +353,7 @@ input:-webkit-autofill:active {
 }
 
 .fa-advanced-option-btn {
-    margin-top: 5px;
+    // margin-top: 5px;
     cursor: pointer;
     -webkit-border-radius: 50%;
     border-radius: 50%;
@@ -332,7 +362,7 @@ input:-webkit-autofill:active {
 }
 
 .fa-clear-search-btn {
-    margin-top: 5px;
+    // margin-top: 5px;
     cursor: pointer;
     -webkit-border-radius: 50%;
     border-radius: 50%;
@@ -355,13 +385,30 @@ input:-webkit-autofill:active {
     box-shadow: 0 1px 1px 0 rgba(65, 69, 73, 0.3), 0 1px 3px 1px rgba(65, 69, 73, 0.15);
 }
 
+// Position buttons after search_field_wrap to the right of the search box
+.search_field_wrap {
+    flex: 1;
+    display: flex;
+    margin-right: 12px;
+}
+
+// Add spacing between search field and buttons on the right
+.full-text-input .search_field_wrap ~ .input-group-text {
+    margin-left: 12px;
+}
+
+// Ensure proper spacing for all buttons after the search field
+.full-text-input .input-group-text:not(:first-child) {
+    margin-left: 8px;
+}
+
 
 
 .notification_on_trash {
     position: absolute;
-    top: -7px;
+    top: 5px;
     border: 1px solid #fff;
-    right: 5px;
+    right: 4px;
     font-size: 9px;
     background: rgba(32, 33, 36, 0.54);
     color: #ffffff;
@@ -415,6 +462,7 @@ input:-webkit-autofill:active {
     min-width: 240px;
     max-width: 240px;
     margin-right: 10px;
+    font-size: 14px;
 }
 
 #contacts-sideBar>div {
@@ -530,16 +578,18 @@ input:-webkit-autofill:active {
     font-size: 11px;
     color: #757575;
     position: relative;
-    top: -2px;
+    top: 0px;
     left: -2px;
     font-weight: 400;
 }
 
 .display-more-tags-btn {
     font-size: 11px;
-    color: var(--blue-light); // #3ea9f5;
+    // color: var(--blue-light); // #3ea9f5;
+    color: #757575;
     position: relative;
-    top: -2px;
+    text-decoration: none;
+    // top: -2px;
 }
 
 .display-more-tags-btn:hover {
@@ -604,4 +654,12 @@ input:-webkit-autofill:active {
   
   .kb-link-to-docs:hover {
     text-decoration: underline;
+    // color: #fff;
+    // padding-right: 3px;
+    // position: relative;
+    // top: 2px;
+
+    vertical-align: middle; 
+    font-size: 19px;
+    top: 0px;
   }

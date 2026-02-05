@@ -1,6 +1,6 @@
 <div class="row" style="text-align: center; margin-top:35px">
     <div class="col-md-12">
-        <h4 class="section-title">
+        <h4 class="analytics-section-title">
             {{ 'Analytics.RealTimeMonitoring' | translate}}
         </h4>
     </div>
@@ -8,9 +8,12 @@
 
 <!-- // START ALL THE REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
 <div class="row">
-    <!-- ============ TOTAL ACTIVE - OVER ALL THE REQUESTS ============ -->
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-        <div class="card card-stats" style="border-radius: 10px;">
+
+    <!-- -------------------------------------- -->
+    <!--  TOTAL ACTIVE - OVER ALL THE REQUESTS  -->
+    <!-- -------------------------------------- -->
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="card card-stats" style="border-radius: 12px;">
 
             <div class="card-header tiledesk_card_header">
 
@@ -47,7 +50,7 @@
 
                 </div>
 
-                <span style="color: #ff9800">
+                <span style="color: #ff9800; font-size: 14px;">
                     <span *ngIf="global_activeRequestsCount > 1 || global_activeRequestsCount == 0">
                         {{ "Requests" | translate }}
                     </span>
@@ -62,10 +65,12 @@
             </div>
         </div>
     </div>
-
-    <!-- ============ SERVED - OVER ALL THE REQUESTS ============ -->
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-        <div class="card card-stats" style="border-radius: 10px;">
+    
+    <!-- -------------------------------- -->
+    <!--  SERVED - OVER ALL THE REQUESTS  -->
+    <!-- -------------------------------- -->
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="card card-stats" style="border-radius: 12px;">
 
             <div class="card-header tiledesk_card_header">
 
@@ -105,7 +110,7 @@
                     </span>
                 </p>
 
-                <div class="request_count" style="color: #00bcd4">
+                <div class="request_count" style="color: #00bcd4;">
 
                     <span class="request_count_icons_numbers">
                         {{ global_servedRequestsCount }}
@@ -113,7 +118,7 @@
 
                 </div>
 
-                <span style="color: #00bcd4">
+                <span style="color: #00bcd4;  font-size: 14px;">
                     <span *ngIf="global_servedRequestsCount > 1 || global_servedRequestsCount == 0">
                         {{ "Requests" | translate }}
                     </span>
@@ -129,9 +134,11 @@
         </div>
     </div>
 
-    <!-- ============ UNSERVED - COUNT OVER ALL THE REQUESTS ============ -->
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-        <div class="card card-stats" style="border-radius: 10px;">
+    <!-- --------------------------------------- -->
+    <!-- UNSERVED - COUNT OVER ALL THE REQUESTS  -->
+    <!-- --------------------------------------- -->
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="card card-stats" style="border-radius: 12px;">
 
             <div class="card-header tiledesk_card_header">
 
@@ -178,7 +185,7 @@
                         {{ global_unservedRequestsCount }}
                     </span>
                 </div>
-                <span style="color: #f44336">
+                <span style="color: #f44336; font-size: 14px;">
                     <span *ngIf="global_unservedRequestsCount > 1 || global_unservedRequestsCount == 0">
                         {{ "Requests" | translate }}
                     </span>
@@ -194,17 +201,19 @@
         </div>
     </div>
 </div>
-<!-- // END GLOBAL REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
+<!-- ./GLOBAL REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
+
 <div class="row">
-    <!-- /// start ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
+    <!-- ---------------------------------- -->
+    <!-- TABLE REQUESTS X AGENT  -->
+    <!-- ---------------------------------- -->
     <div class="col-md-4">
-        <div class="card">
+        <div class="card"  style="border-radius: 12px; margin-top: 0px;">
             <div class="card-header card-header-custom"
-                style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                style="background-color: #fff; padding-top: 12px;padding-bottom: 10px; border-top-left-radius: 12px;border-top-right-radius: 12px;">
                 <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
-
-                    {{ "RequestsForAgent" | translate }}
-
+                    <!-- {{ "RequestsForAgent" | translate }} -->
+                    {{ "RequestsForTeammate" | translate }}
                 </h4>
             </div>
 
@@ -242,7 +251,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody style="font-size: 14px;">
                         <!-- (click)="goToMemberProfile(member?.id_user?._id)" -->
                         <tr *ngFor="let member of projectUsers">
                             <td style="width:45px; padding-top:4px !important; padding-bottom:4px!important; cursor:pointer"
@@ -277,13 +286,15 @@
             </div>
         </div>
     </div>
-    <!-- /// end ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
+    <!-- ./ TABLE "REQUESTS X AGENT" -->
 
-    <!-- /// start ======== --- TABLE "REQUESTS X DEPTS" --- ======== /// -->
+    <!-- ------------------------- -->
+    <!--  TABLE "REQUESTS X DEPTS" -->
+    <!-- ------------------------- -->
     <div class="col-md-4">
-        <div class="card" style="border-radius: 10px">
+        <div class="card" style="border-radius: 12px; margin-top: 0px;">
             <div class="card-header card-header-custom"
-                style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                style="background-color: #fff; padding-top: 12px;padding-bottom: 10px; border-top-left-radius: 12px;border-top-right-radius: 12px;">
                 <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
 
                     {{ "RequestsForDept" | translate }}
@@ -305,7 +316,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody style="font-size: 14px;">
                         <tr *ngFor="let dept of departments">
                             <!-- *ngIf="dept.default === false" -->
                             <td style="cursor:pointer; font-weight: 400;" (click)="goToEditAddPage_EDIT(dept?._id)">
@@ -326,7 +337,9 @@
         </div>
     </div>
 
-    <!-- /// start ======== --- CARD "LAST MONTH REQUESTS COUNT" --- ======== /// -->
+    <!-- --------------------------------- -->
+    <!-- CARD "LAST MONTH REQUESTS COUNT" -->
+    <!-- --------------------------------- -->
     <div class="col-md-4">
         <div class="card card-stats" style="border-radius: 10px; margin-top:0px">
 
@@ -356,7 +369,7 @@
 
                 </div>
 
-                <span style="color: #ff9800">
+                <span style="color: #ff9800; font-size: 14px;">
                     <span *ngIf="lastMonthrequestsCount > 1 || lastMonthrequestsCount == 0"> {{ "Requests" | translate
                         }} </span>
                     <span *ngIf="lastMonthrequestsCount == 1"> {{ "Request" | translate }} </span>

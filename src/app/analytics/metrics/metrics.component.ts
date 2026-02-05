@@ -12,9 +12,7 @@ export class MetricsComponent implements OnInit {
  
   constructor(
     private logger: LoggerService
-
-  ) {
-   }
+  ) {}
 
   ngOnInit() {
 

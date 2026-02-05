@@ -17,7 +17,7 @@
         </svg>
 
         <span [ngStyle]="{'color': secondaryColor }"
-          style="position: relative; top: -4px;  font-weight: 400; font-size: 16px;">
+          style="position: relative; top: 2;  font-weight: 400; font-size: 16px;">
           {{projectName}}
         </span>
       </span>
@@ -80,9 +80,9 @@
 
 
       <div *ngIf="!IS_ONBOARDING_PAGE" style="position: relative;">
-        <div class="td-widget-preview-msg-sent-p-wpr" style="margin-right: 38px;">
+        <div class="td-widget-preview-msg-sent-p-wpr" style="margin-right: 20px;">
 
-          <div class="td-widget-preview-msg-sent-p" style="">
+          <div class="td-widget-preview-msg-sent-p">
             <!-- Hi, i'm having trouble logging in. -->
             {{chatPreviewText1}}
           </div>
@@ -108,11 +108,11 @@
               src="{{imageStorage}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
               onerror="this.src='assets/img/no_image_user.png'" />
           </div>
-          <div style="">
+          <div>
             <!-- text-align: right; padding: 6px 12px;  background-color: #f7f7f7; color: #1a1a1a; margin-left: 66px; margin-top: 0px; border-radius: 8px; -->
             <div class="td-widget-preview-msg_receive" style="margin-left: 8px;">
 
-              <div style=""> {{current_user_name}} </div>
+              <div> {{current_user_name}} </div>
               <p class="td-widget-preview-msg_receive-p" >
                 <!-- Can you tell me more? -->
                 {{chatPreviewText2}}

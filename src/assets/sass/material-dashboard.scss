@@ -1,24 +1,30 @@
  /*!
-
+ 
   =========================================================
   * Material Dashboard Angular CLI - V1.4.2
   =========================================================
-
+ 
   * Product Page: https://www.creative-tim.com/product/material-dashboard-angular2
   * Copyright 2017 Creative Tim (https://www.creative-tim.com)
   * Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-angular/blob/master/LICENSE.md)
-
+ 
   =========================================================
-
+ 
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
+ 
   */
-
-
-//variables and mixins
-@import "md/variables";
-@import "md/mixins";
-@import "md/shadows";
+ 
+ // Set base font-size to 10px for easier rem calculations (1rem = 10px instead of 16px)
+ // This ensures compatibility with existing rem values after Angular 5 upgrade
+ // Must be placed before other imports to ensure it takes precedence
+ html {
+   font-size: 10px !important; /* 1rem = 10px */
+ }
+ 
+ //variables and mixins
+ @import "md/variables";
+ @import "md/mixins";
+ @import "md/shadows";
 
 //plugin css
 @import "md/plugins/_plugin-nouislider";

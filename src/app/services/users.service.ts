@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user-model';
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
-import { Observable , BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalDbService } from '../services/users-local-db.service';
@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
+import { of } from 'rxjs';
 import { CachePuService } from './cache/cache-pu.service';
 import { map, shareReplay, tap } from 'rxjs/operators';
 
@@ -28,7 +29,7 @@ export class UsersService {
 
   wsService: WebSocketJs;
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public user_is_busy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -277,7 +278,7 @@ export class UsersService {
   // Delete user account 
   // ---------------------------------------------------------
   public deleteUserAccount() {
-    const url = this.SERVER_BASE_PATH + 'users';
+    const url = this.SERVER_BASE_PATH + '--users';
     this.logger.log('[USER-SERV] - DELETE USER ACCOUNT - URL ', url);
 
     const httpOptions = {
@@ -339,9 +340,9 @@ export class UsersService {
   }
 
 
-  public no_cached_getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+  public old_getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
-    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+    console.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -380,7 +381,6 @@ export class UsersService {
     
     return projectUsers$;
   }
-
 
 
   // -------------------------------------------------------------
@@ -503,7 +503,7 @@ export class UsersService {
   public deletePendingInvitation(pendingInvitationId): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
     this.logger.log('[USER-SERV] - DELETE PENDING INVITATION - URL ', url);
-   
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -533,7 +533,7 @@ export class UsersService {
         'Authorization': this.TOKEN
       })
     };
- 
+
     return this._httpClient
       .get<PendingInvitation[]>(url, httpOptions)
 
@@ -547,20 +547,99 @@ export class UsersService {
    */
   // 'Authorization': this.TOKEN
   public getPendingUsersById(pendingInvitationId): Observable<PendingInvitation[]> {
-  
+
     const url = this.SERVER_BASE_PATH + 'auth/pendinginvitationsnoauth/' + pendingInvitationId;
     this.logger.log('[USER-SERV] - GET PENDING INVITATION BY PENDING INVITATION ID ', url);
-    
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-       
+
       })
     };
-    
+
     return this._httpClient
       .get<PendingInvitation[]>(url, httpOptions)
+  }
+
+
+  public getCurrentProjectUser(): Observable<any[]> {
+
+    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
+    const url = this.PROJECT_USER_URL + 'me';
+    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+
+    return this._httpClient
+      .get<any[]>(url, httpOptions)
+  }
+
+  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+
+    const url = this.SERVER_BASE_PATH + project_id + '/project_users/me';
+    // const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
+  }
+
+  public _getCurrentProjectUser(): Observable<any> {
+    const fakeMember = {
+      user_available: false,
+      number_assigned_requests: 0,
+      last_login_at: '2025-05-25T11:40:13.941Z',
+      status: 'active',
+      _id: '6834487fefb254002d625604',
+      id_project: '66acde4ab2d8d9002d383c09',
+      id_user: {
+        status: 100,
+        _id: '5f69e0ffeb20290045d00cf1',
+        email: 'gianni@bello.it',
+        firstname: 'Gianni',
+        lastname: 'Bello',
+        emailverified: false,
+        createdAt: '2020-09-22T11:33:19.662Z',
+        updatedAt: '2020-09-22T11:33:19.662Z',
+        __v: 0,
+        fullname_initial: 'GB',
+        fillColour: '#faa774'
+      },
+      role: 'Custom role',
+      permissions: ['request_read'],
+      createdBy: '6464e1d7068dcf00312ee5b5',
+      tags: [],
+      createdAt: '2025-05-26T10:54:55.831Z',
+      updatedAt: '2025-05-26T10:54:55.831Z',
+      __v: 0,
+      isAuthenticated: true,
+      id: '6834487fefb254002d625604',
+      isBusy: false,
+      hasImage: false
+    };
+    const url = this.PROJECT_USER_URL + 'me';
+    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    this.logger.log('[USER-SERV] - MOCKED GET PROJECT USER BY ID');
+
+    return of([fakeMember]);
   }
 
   /**
@@ -568,10 +647,10 @@ export class UsersService {
    * @param user_id 
    * @returns 
    */
-  public getProjectUserByUserId(user_id: string): Observable<ProjectUser[]> {
+  public getProjectUserByUserId(user_id: string): Observable<any[]> {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
-    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -580,30 +659,10 @@ export class UsersService {
         'Authorization': this.TOKEN
       })
     };
-  
+
 
     return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
-  }
-
-  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
-
-    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
-
-    const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
-    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-  
-
-    return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
+      .get<any[]>(url, httpOptions)
   }
 
 
@@ -615,7 +674,7 @@ export class UsersService {
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
 
     const url = this.PROJECT_USER_URL + projectuser_id;
-    this.logger.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
+    console.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -628,6 +687,47 @@ export class UsersService {
     return this._httpClient
       .get<ProjectUser[]>(url, httpOptions)
   }
+
+  public _getProjectUsersById(projectuser_id: string): Observable<any> {
+    const fakeMember = {
+      user_available: false,
+      number_assigned_requests: 0,
+      last_login_at: '2025-05-25T11:40:13.941Z',
+      status: 'active',
+      _id: '6834487fefb254002d625604',
+      id_project: '66acde4ab2d8d9002d383c09',
+      id_user: {
+        status: 100,
+        _id: '5f69e0ffeb20290045d00cf1',
+        email: 'gianni@bello.it',
+        firstname: 'Gianni',
+        lastname: 'Bello',
+        emailverified: false,
+        createdAt: '2020-09-22T11:33:19.662Z',
+        updatedAt: '2020-09-22T11:33:19.662Z',
+        __v: 0,
+        fullname_initial: 'GB',
+        fillColour: '#faa774'
+      },
+      role: 'Nik',
+      permissions: [],
+      createdBy: '6464e1d7068dcf00312ee5b5',
+      tags: [],
+      createdAt: '2025-05-26T10:54:55.831Z',
+      updatedAt: '2025-05-26T10:54:55.831Z',
+      __v: 0,
+      isAuthenticated: true,
+      id: '6834487fefb254002d625604',
+      isBusy: false,
+      hasImage: false
+    };
+
+    this.logger.log('[USER-SERV] - MOCKED GET PROJECT USER BY ID');
+
+    return of(fakeMember);
+  }
+
+
 
 
   // ------------------------------------------------------------------------------------------------
@@ -783,7 +883,7 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser:any) {
+  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser: any) {
     this.logger.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
     this.logger.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
     this.logger.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
@@ -913,7 +1013,7 @@ export class UsersService {
    * @param projectUser_role 
    */
   public user_role(projectUser_role: string) {
-    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+    console.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
 
     // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);
@@ -930,19 +1030,19 @@ export class UsersService {
     //   this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
     //   this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
 
-      // if (storedUserRole !== projectUser_role) {
-      // this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
+    // if (storedUserRole !== projectUser_role) {
+    // this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
 
-      //   // const projectForStorage: Project = {
-      //   //   _id: storedProjectId,
-      //   //   name: storedProjectName,
-      //   //   role: projectUser_role,
-      //   //   operatingHours: storedProjectOH
-      //   // }
+    //   // const projectForStorage: Project = {
+    //   //   _id: storedProjectId,
+    //   //   name: storedProjectName,
+    //   //   role: projectUser_role,
+    //   //   operatingHours: storedProjectOH
+    //   // }
 
-      //   // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
-      //   localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
-      // }
+    //   // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
+    //   localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
+    // }
     // }
   }
 
@@ -1024,7 +1124,7 @@ export class UsersService {
 
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
-    
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -1069,7 +1169,7 @@ export class UsersService {
       })
     };
 
-    const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
+    const body: any = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT  BODY ', body);
 
     const update$ = this._httpClient
@@ -1085,7 +1185,7 @@ export class UsersService {
     return update$;
   }
 
- 
+
   // //  http://localhost:3001/6256ac8c729977ad37f0aee6/project_users/ID_PROJECT_USER
   public updateProjectUserTags(projectUser_id: string, tagarray: any) {
     let url = this.PROJECT_USER_URL + projectUser_id;
@@ -1118,7 +1218,8 @@ export class UsersService {
 
 
   /**
-   * DELETE PROJECT-USER (DELETE) 
+   * DELETE (Locically) - to delete from DB use ?hard=true / DISABLED PROJECT-USER (DELETE) 
+   * DELETE note: Locically delete "?soft=true" - fisically "?hard=true"
    * @param projectUser_id 
    * @returns 
    */
@@ -1168,7 +1269,7 @@ export class UsersService {
     const url = this.UPDATE_USER_URL;
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME (PUT) URL ', url);
 
-   const httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -1240,7 +1341,7 @@ export class UsersService {
     const url = this.UPDATE_USER_URL;
     this.logger.log('[USER-SERV] - UPDATE USER WITH COMMUNITY PROFILE (PUT) URL ', url);
 
-   const httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -1248,7 +1349,7 @@ export class UsersService {
       })
     };
 
-    const body = { 'public_website': userWebsite, 'public_email': userPublicEmail, 'description': userDescription  };
+    const body = { 'public_website': userWebsite, 'public_email': userPublicEmail, 'description': userDescription };
 
     this.logger.log('[USER-SERV] - UPDATE USER WITH COMMUNITY PROFILE - BODY ', body);
 

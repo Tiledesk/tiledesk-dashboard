@@ -29,7 +29,7 @@
           <div class="fake-input">
             <div class="fake-input-inner">
               <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-                (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()"> 
+                (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()" style="font-size: 14px;"> 
               <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
             </div>
           </div>
@@ -51,7 +51,7 @@
             <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
             <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: 
                 <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
-                <span *ngIf="!source_url">{{ qa.source }}</span>
+                <span *ngIf="!source_url" style="font-size: 12px;">{{ qa.source }}</span>
             </span>
   
           </div>

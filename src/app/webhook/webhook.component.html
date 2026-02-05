@@ -1,20 +1,17 @@
-<!-- <p class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px;"[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i>
-  Webhook
-</p> -->
 
-<span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
+
+<!-- <span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
+<span #navbarbrand></span>
 
 <div class="main-content main-content-no-padding">
 
-  <div class="page-title--sidebar-settings"
+  <div class="page-title--sidebar-settings" style="top: 19px;"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -27,155 +24,168 @@
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-        <!-- <div *ngIf="hideHelpLink" class="row"> -->
-          <!-- <div class="col-xs-12 link-to-webhook-doc">
-            <div class="link-to-doc-icon-wpr">
-              <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="readme"
-                class="svg-inline--fa fa-readme fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512">
-                <path fill="#0f62ff"
-                  d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
-                </path>
-              </svg>
+                <!-- <div *ngIf="hideHelpLink" class="row"> -->
+                <!-- <div class="col-xs-12 link-to-webhook-doc">
+                <div class="link-to-doc-icon-wpr">
+                  <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="readme"
+                    class="svg-inline--fa fa-readme fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 576 512">
+                    <path fill="#0f62ff"
+                      d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+                    </path>
+                  </svg>
 
-              <span class="webhook-link-to-doc" (click)="openWebhookDoc()">
-                {{'HowWebhooksWorks' | translate}}
-              </span>
+                  <span class="webhook-link-to-doc" (click)="openWebhookDoc()">
+                    {{'HowWebhooksWorks' | translate}}
+                  </span>
+                </div>
+              </div>
+            </div> -->
+            <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
+              <div class="row link-to-docs">
+                <div class="col-md-12">
+                  <span style="margin-left: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                      fill="none">
+                      <path
+                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                    </svg>
+                  </span>
+                  <a class="custom-anchor-to-docs" (click)="goCannedResponseDocs()">
+                    {{'HowWebhooksWorks' | translate}}
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        </div> -->
-        <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
-          <div class="row link-to-docs">
-            <div class="col-md-12">
-              <span>
-                
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="none">
-                  <path
-                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                </svg>
-              </span>
-              <a class="custom-anchor-to-docs" (click)="goCannedResponseDocs()">
-                {{'HowWebhooksWorks' | translate}}
-              </a>
-            </div>
-          </div>
-        </div>
 
-        <div class="row">
-          <div class="col-sm-8 left-col-custom-padding">
-            <div class="card card-custom-margin" style="">
-              <div class="card-header card-header-custom-bkgrnd">
-                <!-- btn-primary -->
+            <div class="row">
+              <div class="col-sm-8 left-col-custom-padding">
                 <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
-                   (click)="presentWebhookModal_inAddMode()">
-                  <!-- <span class="icon" style="padding-right: 8px;">
-                    <i class="material-icons">add_circle</i>
-                  </span> -->
-                  {{ "Webhook.AddSubscription" | translate }}
-                </button>
-              </div>
+                      (click)="presentWebhookModal_inAddMode()">
+                      {{ "Webhook.AddSubscription" | translate }}
+                    </button>
+                <div class="card card-custom-margin">
+                  <!-- <div class="card-header card-header-custom-bkgrnd">
+                
+                    <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
+                      (click)="presentWebhookModal_inAddMode()">
+                      {{ "Webhook.AddSubscription" | translate }}
+                    </button>
+                  </div> -->
 
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-              <div *ngIf="!showSpinner" class="card-content table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>
-                        <span class="column-th-span">
-                          {{ "Webhook.Subscriptions" | translate }}
-                        </span>
-                      </th>
-                      <th>
-                        <span class="column-th-span">
-                          <!-- {{ "Webhook.Actions" | translate }} -->
-                          {{ "Actions" | translate }}
-                        </span>
-                      </th>
-                    </tr>
-                  </thead>
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <div *ngIf="!showSpinner" class="card-content table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>
+                            <span class="column-th-span" style="font-size: 14px; font-weight: 500; color: #353f45">
+                              {{ "Webhook.Subscriptions" | translate }}
+                            </span>
+                          </th>
+                          <th class="text-end">
+                            <span class="column-th-span" style="font-size: 14px; font-weight: 500; color: #353f45">
+                              {{ "Actions" | translate }}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
 
-                  <tbody>
+                      <tbody>
 
-                    <!-- NO SUBSCRIPTION FOUND FOR SELECTED PROJECT ID -->
-                    <tr *ngIf="subscriptionsList && subscriptionsList?.length === 0">
-                      <td colspan="2" style="text-align: center;">
-                        <p style="font-size:1em; margin-bottom: 0px; margin-top: 10px; color:#7695a5; font-weight: 400">
-                          <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #3ea9f5;">
-                            info
-                          </i>
-                          {{ "Webhook.NoWebhookSubscriptions" | translate }}
-                        </p>
-                      </td>
-                    </tr>
+                        <!-- NO SUBSCRIPTION FOUND FOR SELECTED PROJECT ID -->
+                        <tr *ngIf="subscriptionsList && subscriptionsList?.length === 0">
+                          <td colspan="2" style="text-align: center;">
+                            <p
+                              style="font-size:14px; margin-bottom: 0px; margin-top: 10px; color:#7695a5; font-weight: 400">
+                              <i class="material-icons"
+                                style="vertical-align: middle; margin-bottom: 2px;color: #3ea9f5;">
+                                info
+                              </i>
+                              {{ "Webhook.NoWebhookSubscriptions" | translate }}
+                            </p>
+                          </td>
+                        </tr>
 
-                    <tr *ngFor="let subscription of subscriptionsList; let id = index">
+                        <tr *ngFor="let subscription of subscriptionsList; let id = index">
 
-                      <td>
-                        <span style="display: block; font-weight: 500; font-size: 14px; color: rgba(0, 0,0, 0.87);">
-                          {{subscription?.target}}
-                        </span>
-                        <span style="display: block; color:#7695a5; font-size: 13px;">
-                          {{subscription?.event}}
-                        </span>
-                      </td>
+                          <td>
+                            <span style="display: block; font-weight: 400; font-size: 14px; color: rgba(0, 0,0, 0.87);">
+                              {{subscription?.target}}
+                            </span>
+                            <span style="display: block; color:#7695a5; font-size: 13px;">
+                              {{subscription?.event}}
+                            </span>
+                          </td>
 
-                      <td class="td-actions text-right" style="padding-top:20px">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                          (click)='presentWebhookModal_inEditMode(subscription?._id)'>
-                          <i class="material-icons">edit</i>
-                        </button>
+                          <td class="td--actions text-end">
+                            <button type="button" rel="tooltip" title="" 
+                              class="btn btn-tdblu"
+                              (click)='presentWebhookModal_inEditMode(subscription?._id)'>
+                              <i class="material-icons">edit</i>
+                            </button>
 
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
-                          (click)='showModal_ConfirmDeleteSubscription(subscription?._id)'>
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
+                            <button type="button" rel="tooltip" title="" 
+                              class="btn btn-danger"
+                              (click)='showModal_ConfirmDeleteSubscription(subscription?._id)'>
+                              <i class="material-icons">close</i>
+                            </button>
+                          </td>
 
-                    </tr>
+                        </tr>
 
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- // RIGHT SIDEBAR -->
-          <div class="col-sm-4 right-col-custom-padding">
-            <div class="card card--no-border card-custom-margin">
-              <div class="card-content">
-                <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              Webhook
-            </h4> -->
-
-                <div class="row">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined">
-                      <span class="card_title__underline">
-                        {{ "QuickTips" | translate }}
-                      </span>
-                    </h3>
+                      </tbody>
+                    </table>
                   </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
+
+                </div>
+              </div>
+
+              <!-- // RIGHT SIDEBAR -->
+              <div class="col-sm-4 right-col-custom-padding">
+                <div class="card card--no-border card-custom-margin">
+                  <div class="card-content">
+                    <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+                Webhook
+                </h4> -->
+
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined" style="margin-top: 6px;">
+                          <span class="card_title__underline">
+                            {{ "QuickTips" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
+
+                    <!-- <p style="color:#7695a5">
+                  {{ "Webhook.MoreInfoWebhook" | translate }} <a href="https://developer.tiledesk.com/apis/webhooks"
+                    target="_blank">https://developer.tiledesk.com/apis/webhooks</a>
+                    </p> -->
+
+                    <p style="color:#7695a5; font-size: 14px; line-height: 1.3;">
+                      {{ "WebhooksQuickTipsIntroduction" | translate }}
+                    </p>
                   </div>
                 </div>
-
-                <!-- <p style="color:#7695a5">
-              {{ "Webhook.MoreInfoWebhook" | translate }} <a href="https://developer.tiledesk.com/apis/webhooks"
-                target="_blank">https://developer.tiledesk.com/apis/webhooks</a>
-            </p> -->
-
-                <p style="color:#7695a5">
-                  {{ "WebhooksQuickTipsIntroduction" | translate }}
-                </p>
               </div>
-            </div>
-          </div>
 
-        </div>
+            </div>
+
+
+          </ng-container>
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+          </ng-template>
+        </ng-container>
+
       </div>
     </div>
   </div>
@@ -204,7 +214,7 @@
             {{ "Webhook.SharedSecretGenerated" | translate }}
           </span>
         </h4>
-      
+
       </div>
       <div class="modal-body">
         <p class="modal-body--content col-sm-10 " style="margin-bottom: 0px;">
@@ -215,8 +225,7 @@
             <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text"
               style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
             <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-              <button class="btn btn-tdblu-no-boxshadow" (click)="copySharedSecret()"
-                style="margin-bottom: 10px; border-top-left-radius: 5px !important;
+              <button class="btn btn-tdblu-no-boxshadow" (click)="copySharedSecret()" style="margin-bottom: 10px; border-top-left-radius: 5px !important;
                 border-bottom-left-radius: 5px !important;
                 height: 36px; padding-top: 7px !important;">
                 {{ "Webhook.Copy" | translate }}
@@ -224,7 +233,7 @@
             </span>
           </div>
         </div>
-        <p  class="col-sm-10 modal-body--content">
+        <p class="col-sm-10 modal-body--content">
           {{ "Webhook.UseThisSecret" | translate }}
         </p>
         <p style="color:#f44336 !important; margin-bottom: 24px;" class="col-sm-10 modal-body--content">
@@ -250,7 +259,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title warning">
-          <span class="modal-header-icon-wpr"> 
+          <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
                 d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
@@ -273,7 +282,7 @@
         <button class="btn btn-red" (click)="deleteSubscription()">
           {{ "Webhook.ConfirmButton" | translate }}
         </button>
-        
+
       </div>
     </div>
   </div>

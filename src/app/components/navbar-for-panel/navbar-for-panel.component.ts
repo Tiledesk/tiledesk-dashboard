@@ -126,7 +126,8 @@ export class NavbarForPanelComponent implements OnInit {
 
   getProjectUser() {
     this.logger.log('NAVBAR-X-PANEL  CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+    // this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
       this.logger.log('NAVBAR-X-PANEL GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('NAVBAR-X-PANEL GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       this.logger.log('NAVBAR-X-PANEL GET BY USER-ID - PROJECT USER ', projectUser);

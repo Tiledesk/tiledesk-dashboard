@@ -1,19 +1,17 @@
 <div class="row">
-  <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px;">
+  <div class="col-12" style="right:16px;">
     <nav class="navbar navbar-transparent navbar-absolute">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <!-- <button type="button" class="navbar-toggle" style="margin-top:-3px; color:#fff" data-toggle="collapse"
-            (click)="sidebarToggle()">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button> -->
+        <!-- Bootstrap 5: navbar-header removed, navbar-brand directly in container-fluid -->
+        <a style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
 
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
+          <!-- <img style="width:100px" src="assets/img/tiledesk-logo.png"/> -->
+          <img [ngStyle]="{'height':companyLogo_height, 'top': companyLogo_top, 'left': companyLogo_left}" [src]="companyLogo"
+            style="z-index: 1;position: relative;" />
+        
+        </a>
+        <div class="collapse navbar-collapse show">
+          <ul class="navbar-nav ms-auto">
 
             <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
             <!-- <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">
@@ -37,10 +35,9 @@
             </li>
 
 
-            <li class="dropdown projects-user-avatar-dropdown">
-              <!-- class="dropdown-toggle" -->
+            <li class="dropdown projects-user-avatar-dropdown" [class.open]="isAvatarDropdownOpen">
               <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
-              <a data-toggle="dropdown" href="#">
+              <a class="dropdown-toggle" (click)="toggleAvatarDropdown($event)" href="#" aria-haspopup="true" [attr.aria-expanded]="isAvatarDropdownOpen">
                 <!-- <i class="material-icons open-user-profile-person-icon">person</i> -->
 
 
@@ -121,9 +118,9 @@
                       {{ user?.email }}
                     </h4>
 
-                    <li class="divider"></li>
+                    <!-- <li *ngIf="editProfileBtnVisible" class="divider"></li> -->
 
-                    <div class="user-profile-link" routerLink="/user-profile">
+                    <!-- <div *ngIf="editProfileBtnVisible" class="user-profile-link" routerLink="/user-profile">
 
                       <div class="user-profile-link-icon">
 
@@ -148,39 +145,33 @@
 
                       </div>
 
-                    </div>
+                    </div> -->
 
-                    <!-- <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
-                      <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
-                    </button> -->
+                   <!-- && PERMISSION_TO_LOGOUT -->
                     <li *ngIf="logoutBtnVisible" class="divider"></li>
-                    <!-- <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                      {{ 'NavBar.LogOut' | translate }}
-                    </button> -->
+                    
+                    <!-- <ng-container *ngIf="PERMISSION_TO_LOGOUT"> -->
+                      <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
+                        <div  class="user-profile-link-icon">
 
-                    <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                            viewBox="0 0 24 24">
+                            <g>
+                              <path d="M0,0h24v24H0V0z" fill="none" />
+                            </g>
+                            <g>
+                              <path
+                                d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z" />
+                            </g>
+                          </svg>
+                        </div>
 
-                      <div  class="user-profile-link-icon">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
-                          viewBox="0 0 24 24">
-                          <g>
-                            <path d="M0,0h24v24H0V0z" fill="none" />
-                          </g>
-                          <g>
-                            <path
-                              d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z" />
-                          </g>
-                        </svg>
+                        <div class="user-profile-link-text">
+                          {{ 'NavBar.LogOut' | translate }}
+                        </div>
                       </div>
+                    <!-- </ng-container> -->
 
-                      <div class="user-profile-link-text">
-
-                        {{ 'NavBar.LogOut' | translate }}
-
-                      </div>
-
-                    </div>
                   </div>
 
                 </div>
@@ -220,17 +211,17 @@
   </span>
 
 </div>
-<!-- target="_blank" href="http://www.tiledesk.com" -->
-<a style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
 
-  <!-- <img style="width:100px" src="assets/img/tiledesk-logo.png"/> -->
+<!-- <a style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
+
+
   <img [ngStyle]="{'height':companyLogo_height, 'top': companyLogo_top, 'left': companyLogo_left}" [src]="companyLogo"
     style="z-index: 1;position: relative;" />
 
-</a>
+</a> -->
 
 
-<div class="main-content">
+<div class="main-content" style="margin-top: 0px;">
 
   <!--  TEST EMAIL VERIFY -->
   <!-- <div>
@@ -252,7 +243,7 @@
   </div>
 
   <!-- // added for new style start -->
-  <div class="container">
+  <div class="container" style="position: relative; z-index: 2;">
     <!-- style="margin-bottom:90px " -->
     <div class="row text-center">
       <div class="col-md-12 text-center align-self-center my-5">
@@ -273,7 +264,7 @@
 
     <div *ngIf="!showSpinner" class="projects-cards">
       <div class="row">
-        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer"
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-12" style="cursor:pointer"
         (click)='goToCreateProject()'>
 
           <!-- CARD ADD PROJECT -->
@@ -282,7 +273,7 @@
 
           <!-- (click)='goToCreateProject()' -->
           <div id="create-prjct-card" class="card prjct-card" >
-            <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '207px' }">
+            <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '213px' }">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon"
                 [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
@@ -299,7 +290,7 @@
 
 
         <div *ngIf="projects?.length === 0 && MT === false">
-          <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
+          <div class="col-4 offset-4" style="cursor:pointer">
 
             <div class="card prjct-card">
               <div class="card-content" style="height:203px">
@@ -315,7 +306,7 @@
           </div>
         </div>
 
-        <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 col-md-offset-4' : projects?.length === 1 && 'MT' === false}" -->
+        <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 offset-md-4' : projects?.length === 1 && 'MT' === false}" -->
         <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
@@ -421,7 +412,7 @@
                   [ngClass]="{'availabily-and-busy-wpr--prjcts-for-panel-no-ppb': !project_plan_badge}">
 
 
-                  <div class="availabily---wpr--prjct-for-panel"
+                  <div class="availabily---wpr--prjct-for-panel" style="font-size: 14px;"
                     (click)="$event.stopPropagation(); $event.stopImmediatePropagation(); $event.preventDefault();">
 
                     <select class="select-pu-status" #selectStatus name="status_{{project?.id_project?._id}}"

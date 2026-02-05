@@ -337,7 +337,94 @@ export class AuthGuard implements CanActivate {
   // ------------------------------------------------------------------------
   // canActivate SSO 
   // ------------------------------------------------------------------------
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+ canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+  this.logger.log('[AUTH-GUARD] - user ', this.user);
+
+  const url = state.url;
+  const decodeCurrentUrl = decodeURIComponent(url);
+
+  // Rimuovo swg se arrivo su /projects
+  if (decodeCurrentUrl === '/projects') {
+    const hasSigninWithGoogle = this.localDbService.getFromStorage('swg');
+    if (hasSigninWithGoogle) {
+      this.localDbService.removeFromStorage('swg');
+    }
+  }
+
+  // Rimuovo wannago se corrisponde
+  const storedRoute = this.localDbService.getFromStorage('wannago');
+  if (decodeCurrentUrl === storedRoute) {
+    this.localDbService.removeFromStorage('wannago');
+  }
+
+  // Pulizia route e queryParams
+  const route = url.split('?')[0];
+  const queryString = url.split('?')[1] || '';
+  const queryParamsFromUrl = new URLSearchParams(queryString);
+
+  const token = queryParamsFromUrl.get('token');
+  const tiledeskLogOut = queryParamsFromUrl.get('tiledesk_logOut');
+   console.log('[AUTH-GUARD] SSO queryParamsFromUrl token:', tiledeskLogOut);
+   console.log('[AUTH-GUARD] SSO queryParamsFromUrl tiledeskLogOut:', tiledeskLogOut);
+  // Memorizzo tiledesk_logOut nello storage se presente
+  if (tiledeskLogOut !== null) {
+    this.localDbService.setInStorage('tiledesk_logOut', tiledeskLogOut);
+  } else {
+    // Se il parametro non è presente, lo rimuovo
+    this.localDbService.removeFromStorage('tiledesk_logOut');
+    console.log('[AUTH-GUARD] SSO tiledesk_logOut rimosso perché non presente nell’URL');
+  } 
+
+  const persistentLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+
+  console.log('[AUTH-GUARD] SSO Route pulita:', route);
+  console.log('[AUTH-GUARD] SSO Token:', token);
+  console.log('[AUTH-GUARD] SSO tiledesk_logOut persistente:', persistentLogOut);
+
+  const HAS_JWT = JSON.stringify(next.queryParams).includes('JWT');
+  console.log('[AUTH-GUARD] SSO HAS_JWT', HAS_JWT);
+
+  // Logica principale
+  if (
+    (this.user && !HAS_JWT) ||
+    this.is_verify_email_page ||
+    this.is_signup_page ||
+    this.is_reset_psw_page ||
+    this.is_handleinvitation_page ||
+    this.is_signup_on_invitation_page
+  ) {
+    return true;
+  } else {
+    if (!HAS_JWT) {
+      this.router.navigate(['/login']);
+
+      const storedRoute = this.localDbService.getFromStorage('wannago');
+      if (!storedRoute) {
+        const URLtoStore = url;
+        if (URLtoStore !== '/projects') {
+          this.localDbService.setInStorage('wannago', URLtoStore);
+        }
+        if (URLtoStore.indexOf('/activate-product') !== -1) {
+          this.router.navigate(['/signup']);
+        }
+      }
+    } else {
+      // JWT presente -> naviga autologin
+      console.log('[AUTH-GUARD] SSO Navigazione autologin');
+      this.router.navigate(
+        ['/autologin', route, token],
+        { queryParams: { tiledesk_logOut: persistentLogOut } }
+      );
+      // this.router.navigate(['/autologin', route, token]);
+      return false;
+    }
+  }
+}
+
+
+
+  old_canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE !!! AlwaysAuthGuard');
     this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
 

@@ -45,6 +45,9 @@ import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 const Swal = require('sweetalert2')
 
@@ -56,6 +59,7 @@ const Swal = require('sweetalert2')
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
+
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -188,7 +192,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
-  refreshRateIsEnabled: boolean
+  refreshRateIsEnabled: boolean;
+
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  // PERMISSION_TO_DELETE_CONTENTS: boolean;
+  // PERMISSION_TO_DELETE_NAMESPACE: boolean;
+  
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_ADD_KB: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+  PERMISSION_TO_ADD_CONTENTS: boolean;
+  PERMISSION_TO_EXPORT_CONTENTS: boolean;
+  PERMISSION_TO_EDIT_FLOWS:boolean
 
   // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
@@ -198,10 +215,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.loadUnansweredQuestions();
     }
   }
-
+  
   unansweredQuestions: UnansweredQuestion[] = [];
   isLoadingUnanswered = false;
   isLoadingNamespaces = true;
+
+
+  fakeUnansered = [
+      { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
+      { _id: '68b92286f81418001303bfcf', question: 'What is the refund policy?' },
+      { _id: '68b92286f81418001303bfcf', question: 'How do I contact support?' },
+      { _id: '68b92286f81418001303bfcf', question: 'Where can I find my invoices?' }
+    ]
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -224,7 +250,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private unansweredQuestionsService: UnansweredQuestionsService,
-    private quotasService: QuotesService
+    private quotasService: QuotesService,
+    private roleService: RoleService,
+    private rolesService: RolesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -234,7 +262,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   ngOnInit(): void {
-
+    this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
 
     // Misura il tempo dal click nella sidebar all'inizializzazione
@@ -262,6 +290,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getAllNamespaces()
     // this.getDeptsByProjectId()
      // this.listenSidebarIsOpened();
+    // this.listenSidebarIsOpened();
     // this.getTemplates();
     // this.getCommunityTemplates()
     // this.getOSCODE();
@@ -271,6 +300,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
     this.loadUnansweredQuestions();
+    this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
@@ -282,6 +312,154 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.trackPage();
       this.getTranslations();
     }, 0);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval_id);
+    this.unsubscribe$.next();   
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
+        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
+
+    
+
+
+        // PERMISSION_TO_DELETE
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_DELETE = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DELETE = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+        }
+
+          // PERMISSION_TO_DELETE_NAMESPACE
+          // if (status.role === 'owner' || status.role === 'admin') {
+          //   // Owner and Admin always has permission
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+  
+          // } else if (status.role === 'agent') {
+          //   // Agent never have permission
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+  
+          // } else {
+          //   // Custom roles: permission depends on matchedPermissions
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          // }
+
+        // PERMISSION_TO_ADD_KB
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_KB = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_KB = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO VIEW FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+
+        // PERMISSION_TO_ADD_CONTENTS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_CONTENTS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_CONTENTS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+        }
+
+
+        // PERMISSION_TO_EXPORT_CONTENTS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_EXPORT_CONTENTS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EXPORT_CONTENTS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EXPORT_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_EXPORT);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+        }
+
+      });
+
   }
 
   checkChromeVersion(): boolean {
@@ -393,9 +571,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   async getQuotas() {
     this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
+      
       this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
     })
+    this.logger.log('[KNOWLEDGE-BASES-COMP] ', this.quotas)
   }
+
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
@@ -723,7 +904,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
 
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("KbPage.NewNamespaceCreatedSuccessfully", { namespace_name: this.selectedNamespace.name }), 2, 'done');
+      // Build safe message without using translate with parameters (to avoid XSS)
+      // const safeNamespaceName = this.sanitizeForNotification(this.selectedNamespace.name);
+      // const message = `The Knowledge Base ${safeNamespaceName} has been successfully created`;
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('TheKBHasBeenSuccessfullyCreated') , 2, 'done');
     });
   }
 
@@ -1755,6 +1939,10 @@ _presentDialogImportContents() {
   }
 
   presentDialogGoToCDS(chatbot) {
+    if(!this.PERMISSION_TO_EDIT_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
 
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
     const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {
@@ -1920,6 +2108,10 @@ _presentDialogImportContents() {
   }
 
   onOpenDeleteNamespaceModal() {
+    if(!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log("onOpenDeleteNamespaceModal called....")
     if (this.selectedNamespace.default && this.kbsList.length === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
@@ -1949,7 +2141,7 @@ _presentDialogImportContents() {
     });
   }
 
-  onOpenBaseModalDetail(kb) {
+  onOpenBaseModalDetail(kb, type) {
     // this.kbid_selected = kb;
     this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
@@ -1963,10 +2155,17 @@ _presentDialogImportContents() {
       },
     });
     dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal KB DETAILS] Dialog kb: ', kb);
+     console.log('[Modal KB DETAILS] Dialog kb typeof: ', typeof kb);
+     console.log('[Modal KB DETAILS] Dialog kb : ', kb);
       if (kb) {
         this.onUpdateKb(kb)
       }
+      // if (typeof kb !== 'object') {
+      //   this.onUpdateKb(kb)
+      // } else {
+         
+      //   this.onOpenBaseModalDelete(kb.kb)
+      // }
     });
   }
 
@@ -1975,21 +2174,50 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
+    if (kb.type !== 'sitemap') {
+      const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          kb: kb
+        },
+      });
+      dialogRef.afterClosed().subscribe(kb => {
+        this.logger.log('[Modal DELETE KB] kb: ', kb);
+        if (kb) {
+          this.onDeleteKnowledgeBase(kb)
+        }
+      });
+    } else if (kb.type === 'sitemap') {
+      this.presentDialogComfimDeleteSitemap(kb)
+    }
+  }
 
-    const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        kb: kb
-      },
-    });
-    dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal DELETE KB] kb: ', kb);
-      if (kb) {
-        this.onDeleteKnowledgeBase(kb)
-      }
-    });
+  presentDialogComfimDeleteSitemap(kb) {
+     kb.deleting = false;
+     Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+        // this.logger.log('XXXX ' , result) 
+        if (result.isDenied) { 
+          this.onDeleteKnowledgeBase(kb)
+        } else {
+          kb.deleting = false;
+        }
+      })
   }
 
 
@@ -2002,7 +2230,7 @@ _presentDialogImportContents() {
     });
 
     dialogRef.afterClosed().subscribe(type => {
-      this.logger.log('[Modal ADD CONTENT] type: ', type);
+      this.logger.log('[KNOWLEDGE BASES COMP] type: ', type);
       if (type) {
         this.openAddKnowledgeBaseModal(type)
       }
@@ -2139,7 +2367,8 @@ _presentDialogImportContents() {
         t_params: this.t_params,
         id_project: this.id_project,
         project_name: this.project_name,
-        payIsVisible: this.payIsVisible
+        payIsVisible: this.payIsVisible,
+        selectedNamespace: this.selectedNamespace
       },
     });
     dialogRef.afterClosed().subscribe(body => {
@@ -2149,7 +2378,8 @@ _presentDialogImportContents() {
       // }
       if (body) {
         if (!body.hasOwnProperty('upgrade_plan')) {
-          this.onAddMultiKb(body)
+          // this.onAddMultiKb(body)
+          this.importSitemap(body)
         } else {
           this.logger.log('Property "upgrade_plan" exist');
           this.goToPricing()
@@ -2234,9 +2464,7 @@ _presentDialogImportContents() {
   }
 
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval_id);
-  }
+ 
 
   // No more used
   // listenToKbVersion() {
@@ -2776,10 +3004,97 @@ _presentDialogImportContents() {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
   }
+
+  importSitemap(body) {
+   this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap body', body)
+
+    let error = this.msgErrorAddUpdateKb;
+    this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
+
+    this.kbService.importSitemap(body, this.selectedNamespace['id']).subscribe((kbs: any) => {
+
+     this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
+
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+
+      this.kbsListCount = this.kbsListCount + kbs.length;
+      this.refreshKbsList = !this.refreshKbsList;
+
+    }, (err) => { 
+      this.logger.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
+      if (err.error && err.error.plan_limit) {
+        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
+        error = this.msgErrorAddUpdateKbLimit
+      }
+
+        if (this.payIsVisible === true) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.upgrade,
+          cancelButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+        }).then((result: any) => {
+
+          if (result.isConfirmed) {
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'free') {
+                this.router.navigate(['project/' + this.id_project + '/pricing']);
+              } else {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            }
+          }
+        })
+      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false
+        })
+      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+        // this.logger.log('here 1')
+        Swal.fire({
+          title: this.warningTitle,
+          text: error + '. ' + this.contactUsToUpgrade,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          // confirmButtonColor: "var(--blue-light)",
+          canecelButtonText: this.cancel,
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
+        })
+      }
+
+    }, () => {
+
+      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*: "
+        
+      );
+    })
+  }
+
 
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
@@ -2997,7 +3312,7 @@ _presentDialogImportContents() {
 
   /** */
   onUpdateKb(kb) {
-    //  this.logger.log('onUpdateKb: ', kb);
+    console.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
@@ -3530,6 +3845,17 @@ _presentDialogImportContents() {
           this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
         }
       );
+  }
+
+  private sanitizeForNotification(value: string): string {
+    if (!value) return '';
+    // Escape HTML special characters for safe display in notifications
+    return value
+      .replace(/&/g, '&amp;')  // Must be first
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
 }

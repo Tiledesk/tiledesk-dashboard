@@ -73,7 +73,8 @@ input[type="email"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
+  color: #000000de !important;
+  font-weight: 300;
 }
 
 .login-container input[type="text"]:hover,
@@ -168,4 +169,12 @@ label {
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
+}
+
+.contat-us h4 a {
+  text-decoration: none;
+}
+
+.contat-us:hover {
+  text-decoration: undeline !important;
 }

@@ -94,8 +94,8 @@
     <p *ngIf="qa && qa.source" class="answer-title">{{ 'KbPage.Source' | translate }}</p>
     <div *ngIf="qa && qa.source" id="answer" class="answer">
       <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
-        <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
-        <span *ngIf="!source_url">{{ qa.source }}</span>
+        <a *ngIf="source_url" href="{{source_url}}" target="_blank" style="font-size: 12px;">{{ source_url }}</a>
+        <span *ngIf="!source_url" style="font-size: 12px;line-height: 1.3;">{{ qa.source }}</span>
       </span>
 
     </div>

@@ -1,7 +1,7 @@
 <div class="kb-alert-content">
 
     <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(prjct_profile_type === 'free') && (kbsListCount > kbLimit)">
-      <span class="msg-alert">
+      <span class="msg-alert" style="font-size: 14px; line-height: 1.3;">
         {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
       </span>
       <!-- (click)=" openModalTrialExpired()  " -->
@@ -13,7 +13,7 @@
     </div>
   
     <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(subscription_is_active && prjct_profile_type === 'payment') && (kbsListCount > kbLimit)">
-      <span class="msg-alert">
+      <span class="msg-alert" style="font-size: 14px; line-height: 1.3;">
         {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
       </span>
       <!-- (click)=" openModalTrialExpired" -->

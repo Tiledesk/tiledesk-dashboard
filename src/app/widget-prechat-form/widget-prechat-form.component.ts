@@ -72,7 +72,7 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
     this.elementRef.nativeElement.style.setProperty('--themeColor', this.primaryColor);
     this.elementRef.nativeElement.style.setProperty('--foregroundColor', this.secondaryColor);
 
-    if (this.themeColorOpacity === '0.50') {
+    if (this.themeColorOpacity === '0') {
       this.generateLinearGradient(this.primaryColor)
     } else if (this.themeColorOpacity === '1') {
       this.genetateThemeColorNoOpacity();

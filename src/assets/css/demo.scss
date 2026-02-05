@@ -1,6 +1,10 @@
 @import "./src/assets/sass/md/_variables.scss";
 @import "./src/assets/sass/cds/_variables.scss";
 
+.navbar .navbar-brand {
+  font-size: 18px;
+}
+
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -488,6 +492,19 @@ my-app .main-panel .main-content .card {
 /* tooltip top using attribute */
 
 /* table style overwrite */
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+  border-style: unset;
+}
+
+.table .td-actions .btn {
+  padding: 8px 5px;
+}
+
 .table>thead>tr>th,
 .table>tbody>tr>th,
 .table>tfoot>tr>th,
@@ -699,6 +716,10 @@ my-app .main-panel .main-content .card {
   color: var(--primary-btn-color) !important;
   // border: unset;
   height: 40px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-tdblu-no-boxshadow.h45 {
@@ -870,12 +891,49 @@ my-app .main-panel .main-content .card {
 .btn-blu-gray-outline:focus {
   background: transparent !important
 }
+
 .btn-blu-gray-outline:active {
   background: transparent !important
 }
 
 
+/* BTN Round Gray outline
+/* ------------------------- */
+.btn-blu-gray-outline {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 9px !important;
+  font-size: 14px;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+  border: 1px solid #cbd5e1;
+  height: 40px;
+  border-radius: var(--btn-border-radius) !important;
+  background: transparent;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.btn-blu-gray-outline>svg {
+  fill: #333
+}
+
+
+.btn-blu-gray-outline:hover {
+  box-shadow: unset !important;
+  background: rgba(136, 148, 171, 0.08) !important;
+  border-color: rgba(136, 148, 171, .56);
+}
+
+.btn-blu-gray-outline:focus {
+  background: transparent !important
+}
+
+.btn-blu-gray-outline:active {
+  background: transparent !important
+}
 
 /* BTN GRAY NO BOX-SHADOW
 /* ------------------------- */
@@ -965,6 +1023,7 @@ my-app .main-panel .main-content .card {
   box-shadow: none;
   padding: 10px;
   border-radius: var(--card-border-radius);
+  font-size: 14px;
 }
 
 .c-alert>i {
@@ -1010,6 +1069,14 @@ my-app .main-panel .main-content .card {
   color: var(--secondary-text-color);
   line-height: 18px;
   font-weight: 400;
+}
+
+.span-18-inline {
+  display: inline-block;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
 }
 
 .span-20 {
@@ -1442,7 +1509,7 @@ my-app .main-panel .main-content .card {
   text-overflow: ellipsis;
   font-weight: 500;
   margin-left: 2px;
-  margin-top: 2px;
+  // margin-top: 2px;
   margin-right: 8px;
 }
 
@@ -1559,6 +1626,11 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
+.analytics-section-title {
+  font-size: 18px;
+  font-family: var(--header-font-family);
+}
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -1597,8 +1669,11 @@ my-app .main-panel .main-content .card {
 }
 
 /* 
- * CUSTOM STYLE FOT THE CHAT SECTION IN CONVERSATION DETAIL 
+ * CUSTOM STYLE FOR THE CHAT SECTION IN CONVERSATION DETAIL 
  * -------------------------------------------------------- */
+ div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt {
+   color: #fff;
+ }
 /* Removes the bottom margin from the paragraph created by the marked pipe */
 div.card-content>.chat-body>div>div>div>div>div>div.txt>p.message.ow>p {
   margin-bottom: 0px !important;
@@ -1658,9 +1733,20 @@ div.card-content>div>div>div>div>div>div>div.txt>div.message.ow>div>p>p {
 }
 
 /* USE CASE MESSSAGE SENT BY THE AGENT */
-div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
+// div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
+//   color: #fff;
+// }
+
+div.card-content div.txt p.message.ow.alt {
   color: #fff;
 }
+
+div.card-content div.txt p.message.ow.alt * {
+  color: #fff;
+}
+
+
+
 
 div.card-content>div>div>div>div>div>div>div.txt>p.internal-note-text-color>p {
   color: #222 !important;
@@ -1810,9 +1896,10 @@ span.navbar-brand-title {
 
 .page-title--sidebar-settings {
   position: absolute;
-  top: 21px;
+  top: 23px;
   z-index: 1050;
   font-size: 18px;
+  font-family: var(--header-font-family);
 }
 
 .page-title--sidebar-settings_opened {
@@ -2144,23 +2231,6 @@ footer ul {
   line-height: 0px;
 }
 
-// select reply type (send message i conversation detail)
-.ng-select.select-response-type {
-  text-align: initial !important;
-  margin-left: 12px !important;
-  max-width: 250px;
-}
-
-.ng-select.select-response-type:focus {
-  outline: none !important;
-}
-
-.ng-select.select-response-type .ng-select-container {
-  display: flex !important;
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
-  border: unset !important;
-}
 
 .ng-select.select-wa-template.custom-panel-height .ng-dropdown-panel {
   max-height: 200px !important;
@@ -2333,6 +2403,10 @@ footer ul {
   vertical-align: middle !important;
 }
 
+// .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper {
+  
+// }
+
 .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-separator {
   margin-bottom: 6px !important;
 }
@@ -2394,94 +2468,6 @@ footer ul {
   vertical-align: middle !important;
 }
 
-/* select teammate status in user detail drawer */
-.ng-select.teammate-status-in-drawer .ng-select-container {
-  background-color: #2d323e;
-  color: #fff;
-  border: 1px solid #2d323e;
-}
-
-.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
-  background-color: #2d323e;
-  border: 1px solid #2d323e;
-}
-
-.ng-dropdown-panel.teammate-status-in-drawer {
-  background-color: #2d323e;
-  border: 1px solid #2d323e;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel {
-  background-color: #2d323e;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel.ng-select-bottom {
-  border: 1px solid #2d323e !important;
-  margin-top: 11px !important;
-  border-top-right-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items {
-  border-top-right-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: #2d323e !important;
-  color: #fff !important;
-}
-
-.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgba(30, 33, 41, 0.8) !important;
-}
-
-// removes the blu google blue border
-.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-  background-color: #2d323e;
-  box-shadow: unset;
-}
-
-// ng-select add tags
-.ng-select.ng-select-tags {
-  border: 0px;
-  min-height: 0px;
-  border-radius: 0;
-  position: relative;
-  top: -6px;
-}
-
-.ng-select.ng-select-tags .ng-select-container {
-  border-radius: 0;
-  border: unset;
-  // width: 503px;
-}
-
-.ng-select.custom-input .ng-select-container {
-  border: none;
-}
-
-// Used in KB
-// .ng-select.custom--input .ng-select-container {
-//   box-shadow: 0 0 4px #c7c7c7 !important;
-//   border: unset !important;
-//   border-radius: 12px !important;
-// }
-
-.ng-select-container {
-  height: 36px !important;
-}
-
-
-.ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
-  margin-top: 0px !important;
-  margin-left: 0px !important;
-}
-
-.ng-select.ng-select-tags .ng-select-container:hover {
-  box-shadow: unset !important;
-}
-
 .mat-autocomplete-panel.mat-autocomplete-visible {
   // width: calc(100% - 49px);
   // top: -16px;
@@ -2507,6 +2493,21 @@ footer ul {
   color: var(--blue-20) !important
 }
 
+/* Angular material checkbox 
+/* ****************************** */
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+/* Angular radio button 
+/* ****************************** */
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: var(--blue-20) !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--blue-20) !important;
+}
 
 
 // Used 
@@ -2782,10 +2783,6 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 /* -----------------------------------------
 /* New buttons > new primary button 
 /* ----------------------------------------- */
-// rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
-// 7c8eb9  (--opal-violet;)
-// --indigo -> #6883d0
-//--indigo-deep -> #5b5dbc
 
 .btn.btn-p {
   background-color: var(--blue-light);
@@ -2945,25 +2942,136 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 
 
-// https://github.com/ng-select/ng-select/issues/608
-// .ng-select.custom {
-//   .ng-select-container {
-//     height: 42px;
-//     background-color: $nav-active-gray;
-//     border: 1px solid $form-input-border;
-//     .ng-value-container {
-//       color: $select-font-color;
-
-//       .ng-placeholder {
-//         color: $select-font-color;
-//       }
-//     }
-//   }
-// }
-
 /*
 /* CUSTOMIZED NG-SELECT
 /* -------------------------------------------------- */
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  top: 10px !important;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
+  padding: 2px 5px !important;
+}
+
+/* Imposta font-size a 14px dentro il menu di ng-select */
+.ng-dropdown-panel {
+  font-size: 14px !important;
+}
+
+/* Testo delle opzioni */
+.ng-dropdown-panel .ng-option {
+  font-size: 14px !important;
+}
+
+/* Contenitore scrollabile */
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  font-size: 14px !important;
+}
+
+
+
+// select reply type (send message i conversation detail)
+.ng-select.select-response-type {
+  text-align: initial !important;
+  margin-left: 12px !important;
+  max-width: 250px;
+  font-size: 14px;
+}
+
+.ng-select.select-response-type:focus {
+  outline: none !important;
+}
+
+.ng-select.select-response-type .ng-select-container {
+  display: flex !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  border: unset !important;
+}
+
+/* select teammate status in user detail drawer */
+.ng-select.teammate-status-in-drawer .ng-select-container {
+  background-color: #2d323e;
+  color: #fff;
+  border: 1px solid #2d323e;
+}
+
+.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
+  background-color: #2d323e;
+  border: 1px solid #2d323e;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer {
+  background-color: #2d323e;
+  border: 1px solid #2d323e;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel {
+  background-color: #2d323e;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel.ng-select-bottom {
+  border: 1px solid #2d323e !important;
+  margin-top: 11px !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items {
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: #2d323e !important;
+  color: #fff !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: rgba(30, 33, 41, 0.8) !important;
+}
+
+// removes the blu google blue border
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  background-color: #2d323e;
+  box-shadow: unset;
+}
+
+// ng-select add tags
+.ng-select.ng-select-tags {
+  border: 0px;
+  min-height: 0px;
+  border-radius: 0;
+  position: relative;
+  top: -6px;
+}
+
+.ng-select.ng-select-tags .ng-select-container {
+  border-radius: 0;
+  border: unset;
+  // width: 503px;
+}
+
+.ng-select.custom-input .ng-select-container {
+  border: none;
+}
+
+
+.ng-select-container {
+  height: 36px !important;
+}
+
+
+.ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+}
+
+.ng-select.ng-select-tags .ng-select-container:hover {
+  box-shadow: unset !important;
+}
+
 
 // ------------------------------
 // ticket-priority select
@@ -3017,6 +3125,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .ng-select.ticket-followers .ng-select-container .ng-value-container .ng-placeholder {
+  top: 10px !important;
   color: var(--secondary-text-color);
 }
 
@@ -3093,7 +3202,54 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 // -------------------------
-// add-contact-t select
+// add-conversaton-tag select 
+// -------------------------
+
+.ng-select.convs-tags .ng-select-container {
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.convs-tags .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+  // font-family: var(--header-font-family);
+  margin-left: -9px;
+  // font-size: 13px;
+  // font-weight: 400;
+}
+
+.ng-dropdown-panel.convs-tags {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.convs-tags .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.convs-tags.ng-select-opened>.ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// -------------------------
+// add-contact-tag select
 // -------------------------
 .ng-select.add-contact-tag .ng-select-container {
   background-color: var(--select-background) !important;
@@ -3103,6 +3259,10 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 .ng-select.add-contact-tag .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color);
+  // font-family: var(--header-font-family);
+  // margin-left: -9px;
+  // font-size: 13px;
+  // font-weight: 400;
 }
 
 .ng-dropdown-panel.add-contact-tag {
@@ -3178,6 +3338,11 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   color: var(--text-color) !important;
 }
 
+// Select tag in adavanced search (history and NORT)
+.ng-select.advanced-search-select-tag .ng-select-container .ng-value-container .ng-input {
+  top: 10px !important;  
+}
+
 // ----------------------
 // Shared close button
 // ----------------------
@@ -3199,6 +3364,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 .close--round-btn>span {
   font-size: 31px;
   color: var(--btn-color) !important;
+  font-weight: 300;
+  line-height: 0.7;
 }
 
 ::ng-deep .conv-dtls-custom-mat-tooltip {
@@ -3247,7 +3414,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 // /* hide recaptcha badge*/
 .grecaptcha-badge {
-  visibility: hidden;
+  visibility: hidden !important;
+  z-index: 3;
 }
 
 // /* only show recaptcha badge on needed pages */
@@ -3379,6 +3547,10 @@ appdashboard-bots-sidebar {
   color: var(--settings-sidebar-hover-color);
 }
 
+.settings-sidebar>li> a{ 
+  text-decoration: none;
+}
+
 // ---------------------------------------
 // Only in Bot sidebar 
 // ---------------------------------------
@@ -3416,6 +3588,7 @@ appdashboard-bots-sidebar {
   line-height: 14px;
   text-transform: var(--settings-sidebar-group-name-text-transform);
   cursor: default;
+  text-decoration: none;
   // letter-spacing: -0.01em;
   // font-weight: bold;
   // display: flex;
@@ -3459,6 +3632,7 @@ appdashboard-bots-sidebar {
   background-color: transparent;
   color: inherit;
   padding: 9px 12px;
+  text-decoration: none;
 
   // font-weight: var(--settings-sidebar-font-weight);
   // display: flex;
@@ -3556,12 +3730,12 @@ li.active-item a i.settings-sidebar-icons {
 
 // Only Settings sidebar
 .settings-sidebar>li>.settings-sidebar-anchor {
-  padding-top: 3px;
+  padding-top: 5px;
 }
 
 .toggle-setting-sidebar-icon-wpr {
   position: absolute;
-  top: 22px;
+  top: 20px;
   z-index: 1050;
   width: 22px;
   height: 22px;
@@ -3575,7 +3749,7 @@ li.active-item a i.settings-sidebar-icons {
 }
 
 .toggle-setting-sidebar-icon-wpr.is_closed {
-  left: 40px;
+  left: 42px;
   // left: 50px; // increased fro the new sidebar width
 }
 
@@ -4023,7 +4197,7 @@ div:where(.swal2-container) .swal2-select {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  // margin-top: 21px;
+  margin-top: 2px;
 }
 
 
@@ -4103,7 +4277,8 @@ div:where(.swal2-container) .swal2-select {
   width: 100%;
   // z-index: 1028;
   position: relative;
-  top: -5px;
+  // top: -5px;
+  top: 58px;
   box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
   padding-bottom: 5px;
   float: left;
@@ -4128,6 +4303,9 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav-analytics li a:hover {
@@ -4166,9 +4344,50 @@ div:where(.swal2-container) .swal2-select {
   padding: 18px 15px;
   color: #797979;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav-widget-translations li a:hover {
+  text-decoration: none;
+  //  background-color: #eee;
+}
+
+/* Bottom nav fixed position
+/* *************************** */
+.bottom-nav-fixed {
+  background-color: #fff;
+  width: 100%;
+  position: fixed;
+  top: 65px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+}
+
+.bottom-nav-fixed li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav-fixed li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
+}
+
+.bottom-nav-fixed li a:hover {
   text-decoration: none;
   //  background-color: #eee;
 }
@@ -4202,8 +4421,11 @@ div:where(.swal2-container) .swal2-select {
 
 .bottom-nav li a {
   padding: 18px 15px;
-  color: #797979;
+  color: #797979 !important;
   line-height: 20px;
+  text-decoration: none;
+  font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .bottom-nav li a:hover {
@@ -4217,7 +4439,7 @@ div:where(.swal2-container) .swal2-select {
   cursor: default !important;
 }
 
-.li-active a {
+li.li-active a {
   color: var(--blue-20) !important; //$brand-primary!important;
 }
 
@@ -4275,6 +4497,120 @@ div:where(.swal2-container) .swal2-select {
   }
 }
 
+/* Fix Angular Material tabs inside Bootstrap 5 modal */
+#assign-reassign-modal .mat-tab-header,
+#assign-reassign-modal .mat-tab-label-container {
+  overflow: visible !important;
+}
+
+#assign-reassign-modal .mat-tab-header-pagination {
+  z-index: 1060;
+  /* > modal (1055) */
+}
+
+/*
+/* Bootstrap 5 fix
+/* ************************ */
+.td--actions {
+  white-space: nowrap;
+
+}
+
+.td--actions .btn {
+  padding: 2px 3px;
+  cursor: pointer;
+}
+
+.td--actions .btn-tdblu {
+  background-color: transparent;
+  color: var(--blue-20);
+  box-shadow: unset;
+}
+
+.td--actions .btn-danger {
+  box-shadow: unset;
+  background: transparent;
+  color: #f44336;
+}
+
+.td--actions .btn-danger:focus {
+  box-shadow: unset;
+  background: transparent;
+  color: #f44336;
+}
+
+.td--actions .btn:hover {
+  box-shadow: unset;
+}
+
+.card--footer .input-group-wpr .contacts-paginantion { 
+  width: 120px;
+  margin: 0px auto 12px;
+}
+
+.card--footer .input-group-wpr div {
+  width: 120px;
+  margin: 0 auto;
+  margin-top: 10px
+}
+
+.card--footer .input-group-wpr div .input-group {
+  flex-wrap: nowrap;
+  background: #fff;
+  border: unset;
+
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.left-btn {
+  padding-left: 0px;
+  padding-right: 5px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.left-btn .btn {
+  padding: 6px 8px;
+  margin-bottom: 0px;
+  border-bottom-left-radius: 9999px;
+  border-top-left-radius: 9999px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.center-btn {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.center-btn .btn {
+  padding: 6px 8px;
+  white-space: nowrap;
+  margin-bottom: 0px;
+  pointer-events: none;
+  box-shadow: unset;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.right-btn {
+  padding-right: 0px;
+  padding-left: 5px;
+}
+
+.card--footer .input-group-wpr div .input-group .input-group-btn.right-btn .btn {
+  padding: 6px 8px;
+  margin-bottom: 0px;
+  border-bottom-right-radius: 9999px;
+  border-top-right-radius: 9999px;
+}
+
+/* Widget installation
+/* ***************************** */
+.install-widget-instructions {
+  font-size: 14px;
+}
+
+.install-widget-instructions .install-widget-steps {
+  line-height: 1.3;
+}
+
+.install-widget-steps {
+  padding-bottom: 3px;
+}
 
 
 /* analytics > metrics */

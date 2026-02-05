@@ -15,6 +15,7 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { NavigationService } from 'app/services/navigation.service';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -51,6 +52,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
   currentUser: any;
   project: any;
   displayChangePwd: boolean;
+  private backSub?: Subscription;
   constructor(
     public notify: NotifyService,
     private _location: Location,
@@ -62,7 +64,8 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
     private logger: LoggerService,
     private translate: TranslateService,
     public prjctPlanService: ProjectPlanService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private navSvc: NavigationService
   ) { 
     super(prjctPlanService, notify);
     const brand = brandService.getBrand(); 
@@ -78,6 +81,20 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
     this.getProjectUserRole();
     this.getBrowserVersion();
     this.getCurrentUser();
+    this.listenToGoBack()
+  }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+  
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getCurrentUser() {
@@ -97,11 +114,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
     })
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-    // this.subscription.unsubscribe()
-  }
+ 
 
   // getProjectPlan() {
   //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {

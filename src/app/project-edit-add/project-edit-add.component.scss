@@ -15,6 +15,8 @@ input[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff;
+  color: #000000de;
+  font-weight: 300;
 }
 
 input[type="tel"] {
@@ -32,6 +34,8 @@ input[type="tel"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff;
+  color: #000000de;
+  font-weight: 300;
 }
 
 .chat-limit input[type="number"] {
@@ -264,9 +268,9 @@ button.close {
 
 .label--switch-wpr {
   display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 }
 
 .custom-label {
@@ -278,32 +282,7 @@ button.close {
   text-align: right !important;
 }
 
-@media (max-width: 768px) {
-  .custom-label {
-    // height: 0px !important;
-    height: 30px !important;
-  }
 
-  .custom-label-left {
-    text-align: left !important;
-  }
-
-  .link-to-widget-auth {
-    text-align: center;
-  }
-
-  .subscription-info {
-    margin-top: 0px !important;
-  }
-
-  .payment-plan-name {
-    top: -4px !important;
-  }
-
-  .what-youre-missing-card {
-    display: none;
-  }
-}
 
 // @media (min-width: 768px) {
 //   .upgrade-plan-btn-row {
@@ -360,23 +339,147 @@ button.close {
 
 .payment-plan-name {
   position: relative;
-  top: 7px;
+  top: 10px;
   margin-left: 3px;
+  font-size: 14px;
 }
 
 .subscription-info {
-  // margin-top: 15px;
-  // display: block;
-  position: relative;
-  top: -3px;
+  // position: relative;
+  // top: -3px;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  gap: 3px;
+}
+
+@media (max-width: 768px) {
+  .custom-label {
+    // height: 0px !important;
+    height: 30px !important;
+  }
+
+  .custom-label-left {
+    text-align: left !important;
+  }
+
+  .link-to-widget-auth {
+    text-align: center;
+  }
+
+  .subscription-info {
+    margin-top: 0px !important;
+  }
+
+  .payment-plan-name {
+    top: -4px !important;
+  }
+
+  .what-youre-missing-card {
+    display: none;
+  }
 }
 
 // - start - BOTTOM NAVBAR  //
-@media (max-width: 991px) {
-  .bottom-nav {
-    top: -2px !important;
+// Prevent bottom-nav items from disappearing when window is narrowed
+// Apply only to project-settings-bottom-nav to avoid affecting other bottom-nav in the dashboard
+#project-settings-bottom-nav {
+  display: flex !important; // Use flexbox instead of float
+  flex-wrap: nowrap !important; // Prevent wrapping
+  overflow-x: auto !important; // Enable horizontal scroll
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px !important; // Add space between items and scrollbar to keep border visible
+  min-width: 100% !important; // Ensure it takes at least full width of parent
+  width: max-content !important; // Allow expansion beyond parent width for proper scrolling
+
+  // Hide scrollbar but keep functionality
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+
+  li {
+    float: none !important; // Override float from global styles
+    flex-shrink: 0 !important; // Prevent items from shrinking
+    white-space: nowrap !important; // Prevent text wrapping
+    width: max-content !important; // Ensure items maintain their natural width for proper scrolling
+  }
+
+  // Increase border thickness for btn-with-border-effect to make it more visible
+  // These styles are specific to project-settings-bottom-nav to avoid affecting other bottom-nav
+  .btn-with-border-effect {
+    background: none;
+    border: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 300;
+    position: relative;
+    vertical-align: middle;
+
+    &::before,
+    &::after {
+      box-sizing: inherit;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .border-from-center {
+    &:hover {
+      color: var(--blue-20);
+    }
+
+    &::before,
+    &::after {
+      top: 0px;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      transform-origin: center;
+    }
+
+    &::before {
+      border-bottom: 5px solid var(--blue-20); // Increased from 3px to 4px for better visibility
+      transform: scale3d(0, 1, 1);
+    }
+
+    &:hover::before,
+    &:hover::after {
+      transform: scale3d(1, 1, 1);
+      transition: transform 0.5s;
+    }
+  }
+
+  .li-active {
+    border-bottom: 5px solid var(--blue-20) !important; // Increased from 3px to 4px for better visibility
+    color: var(--blue-20) !important;
+    cursor: default !important;
+  }
+
+  li.li-active a {
+    color: var(--blue-20) !important;
   }
 }
+
+// @media (max-width: 991px) {
+//   .bottom-nav {
+//     top: -2px !important;
+//   }
+// }
 
 @media (max-width: 370px) {
   .bottom-nav {
@@ -966,6 +1069,7 @@ button.close {
 .security-section-subtitle {
   margin-bottom: 16px;
   margin-left: 15px;
+  font-size: 14px;
 }
 
 .security-warning {
@@ -976,21 +1080,27 @@ button.close {
   margin-left: 15px;
   color: rgb(161, 99, 0);
   border-radius: var(--card-border-radius);
+  font-size: 14px;
 }
 
-.security-warning >span {
+.security-warning>span {
   display: flex;
 }
 
-.security-warning >span > i{ 
-  vertical-align: middle; display: inline-flex;  color:rgb(161, 99, 0); margin-right: 3px;font-size: 20px;
+.security-warning>span>i {
+  vertical-align: middle;
+  display: inline-flex;
+  color: rgb(161, 99, 0);
+  margin-right: 3px;
+  font-size: 20px;
 }
 
-.security-warning >span > span { 
-  vertical-align: middle; display: inline-flex;
+.security-warning>span>span {
+  vertical-align: middle;
+  display: inline-flex;
 }
 
-.unban-visitor > span > svg {
+.unban-visitor>span>svg {
   fill: var(--blue-light);
 }
 
@@ -1427,16 +1537,17 @@ button.close {
   font-weight: 400;
 }
 
-.link-to-automatic-assignment-doc-wpr {
-  margin-right: -30px !important;
-  margin-right: 40px !important;
-}
+// .link-to-automatic-assignment-doc-wpr {
+//   margin-right: -30px !important;
+//   margin-right: 40px !important;
+// }
 
 .link-to-automatic-assignment-doc {
   // background-color: rgb(241, 241, 241);
   // margin-top: -17px;
   // padding: 20px 20px 10px 36px;
-  margin-left: 55px;
+  // margin-left: 55px;
+  margin-bottom: 8px;
 }
 
 // .link-to-automatic-assignment-doc>div {
@@ -1452,30 +1563,41 @@ button.close {
   fill: var(--blue-light);
 }
 
+.card--footer {
+  border-top: 1px solid #e8f0f5 !important;
+  margin-top: 18px;
+}
+
+
+.btn-edit-smart-assigment {
+  margin-top: 18px !important;
+}
+
 .configure-urls-whitelist-btn {
-    border: 1px solid var(--blue-20);
-    border-radius: 9999px;
-    background: var(--blue-20);
-    color: #fff;
-    font-family: 'Poppins';
-    font-size: 12px;
-    padding: 4px 16px;
-    text-transform: none;
-    box-shadow: unset;
-    height: 40px;
+  border: 1px solid var(--blue-20);
+  border-radius: 9999px;
+  background: var(--blue-20);
+  color: #fff;
+  font-family: 'Poppins';
+  font-size: 12px;
+  padding: 4px 16px;
+  text-transform: none;
+  box-shadow: unset;
+  height: 40px;
 }
 
 .configure-urls-whitelist-btn-wpr {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 
 
 /* Allowed extentions
 /* ************************* */
 .option-description {
-    font-weight: 400;
-    margin-bottom: 6px;
-    margin-top: 5px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  margin-top: 5px;
+  font-size: 14px;
 }
 
 .extensions--container {
@@ -1512,7 +1634,7 @@ button.close {
   min-height: 49px;
 }
 
-.extensions-box.no-extentions  { 
+.extensions-box.no-extentions {
   border: 1px solid #ba1a1a;
 }
 
@@ -1536,16 +1658,16 @@ button.close {
   padding-right: 3px;
 }
 
-.extension-chip button .material-icons { 
-    font-size: 16px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    font-weight: 500;
+.extension-chip button .material-icons {
+  font-size: 16px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  font-weight: 500;
 }
 
-.extension-chip button:hover .material-icons { 
-   color: var(--delete-icon-color);
+.extension-chip button:hover .material-icons {
+  color: var(--delete-icon-color);
 }
 
 .add-extensions--input {
@@ -1556,7 +1678,7 @@ button.close {
   max-width: 300px !important;
 }
 
-.option--row > .add-extensions-btn {
+.option--row>.add-extensions-btn {
   background: var(--blue-20) !important;
   border: 1px solid var(--blue-20);
   height: 36px;
@@ -1566,16 +1688,16 @@ button.close {
   cursor: pointer;
 }
 
-.option--row > .add-extensions-btn.add-extensions-btn-disabled {
+.option--row>.add-extensions-btn.add-extensions-btn-disabled {
   cursor: not-allowed;
   opacity: .8;
 }
 
-.option--row > .add-extensions-btn:hover {
+.option--row>.add-extensions-btn:hover {
   opacity: .8;
 }
 
-.option--row > .add-extensions-btn > .material-icons {
+.option--row>.add-extensions-btn>.material-icons {
   vertical-align: middle;
   color: #fff;
 }
@@ -1605,7 +1727,7 @@ input[type="radio"]:checked {
 }
 
 /* Puntino bianco dentro */
-.option--row > input[type="radio"]:checked::after {
+.option--row>input[type="radio"]:checked::after {
   content: "";
   position: absolute;
   top: 3px;

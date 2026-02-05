@@ -3,10 +3,10 @@
   {{'ManageRegexlist' | translate}}
 </h2>
 
-<mat-dialog-content>
+<mat-dialog-content >
 
 
-  <form [formGroup]="regexForm" (ngSubmit)="addPattern()" style="display: flex;">
+  <form [formGroup]="regexForm" (ngSubmit)="addPattern()" style="display: flex;" style="font-size: 14px;display: flex;">
     <mat-form-field class="full-width url-input" appearance="outline" floatLabel="always" [class.show-error]="submitted && patternControl.invalid">
       <mat-label>{{'RegexPattern' | translate }}</mat-label>
       <span matPrefix style="position: relative; top: -3px;">/&nbsp;</span> <!-- prefix -->
@@ -37,11 +37,10 @@
   </form>
 
   <p *ngIf="formArray.length === 0" class="no-urls-message">
-    
       {{'NoPatternAddedYet' | translate}}
   </p>
 
-  <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0">
+  <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0" >
     <mat-list-item *ngFor="let ctrl of formArray.controls; let i = index">
       <mat-form-field class="full-width">
         <span matPrefix>/&nbsp;</span>
@@ -59,6 +58,7 @@
       </button>
     </mat-list-item>
   </mat-list>
+  
 
 </mat-dialog-content>
 

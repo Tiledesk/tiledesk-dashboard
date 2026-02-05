@@ -1,5 +1,6 @@
 .card-app-store>.card-content>.card-title {
-    font-family: var(--header-font-family)
+    font-family: var(--header-font-family);
+    font-size: 18px;
 }
 
 .app-icon img {
@@ -31,6 +32,8 @@
     color: #7695a5;
     height: 72px;
     overflow: hidden;
+    font-size: 14px;
+    line-height: 1.3;
 }
 
 .app-store-right-col-btn {
@@ -76,6 +79,10 @@
     margin: 0 15px 0px;
     padding-top: 0px;
     border-top: 1px solid #e5effe;
+    background: #fff;
+    font-size: 14px;
+    padding-bottom: 0px;
+    margin: 0px 5px;
 }
 
 .app-card-icon {
@@ -169,9 +176,10 @@
     color: #f0806f;
     text-align: center;
     margin-bottom: 15px;
-    font-family: "Poppins", Arial, sans-serif;
+    font-family: var(--header-font-family);
     font-weight: 400;
     font-size: 24px;
+    line-height: 1.3;
 }
 
 .create-app-card {
@@ -197,7 +205,7 @@
     letter-spacing: -0.01em;
     border-bottom: 1px solid rgb(239, 242, 246);
     color: #080f1a;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
 }
 
 .hide-paid-app {
@@ -212,7 +220,7 @@
     top: 60px;
     padding: 15px;
     font-size: 16px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif
+    font-family: var(--header-font-family);
 }
 
 .app-alert>div>.link-to-integrations {

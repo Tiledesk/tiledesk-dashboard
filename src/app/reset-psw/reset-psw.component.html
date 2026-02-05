@@ -51,7 +51,7 @@
                 <label for="email">Email</label>
                 <input type="email" class="input" formControlName="email" id="email" required>
 
-                <h6 style="text-transform: none">
+                <h6 style="text-transform: none; font-size: 12px;font-weight: 400;">
                   <!-- To request a password reset email, please enter your account email address -->
                   {{ "ToRequestAPswReseTEmail" | translate }}
                 </h6>
@@ -68,8 +68,8 @@
                 </button>
                 <!-- text-align: center -->
                 <div  class="reset-password-back-to-login" style="margin-top: 16px" routerLink="/login">
-                  <i class="material-icons" style="">keyboard_arrow_left</i>
-                  <span style="">
+                  <i class="material-icons" style="vertical-align: middle;">keyboard_arrow_left</i>
+                  <span style="font-size: 14px;">
                     {{ "BackToLogin" | translate }}
                   </span>
                 </div>
@@ -88,8 +88,10 @@
                 <i class="material-icons"
                   style="vertical-align: middle !important; color:#4caf50; font-size: 40px;">check_circle_outline</i>
                 <!-- style="font-weight: 500" -->
-                <h4> {{ "PswResetEmailSent" | translate }} </h4>
-                <h4 style="vertical-align: middle; line-height: normal; font-size: 1em;">
+                <h4 style="font-size: 16px;font-weight: 400;"> 
+                  {{ "PswResetEmailSent" | translate }} 
+                </h4>
+                <h4 style="vertical-align: middle; line-height: normal; font-size: 14px;">
                   {{ "YouWillReceiveAnEmail" | translate }}
                 </h4>
               </div>
@@ -102,30 +104,30 @@
                 <h4> {{ "AnErrorOccurredWhileSendingTheEmail" | translate }} </h4>
 
                 <h4 *ngIf="ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND === true"
-                  style="vertical-align: middle; line-height: normal; font-size: 1em;">
+                  style="vertical-align: middle; line-height: normal; font-size: 14px;">
                   {{ "UserNotFound" | translate }}
                 </h4>
                 <h4 *ngIf="ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR === true"
-                  style="vertical-align: middle; line-height: normal; font-size: 1em;">
+                  style="vertical-align: middle; line-height: normal; font-size: 14px;">
                   {{ OTHER_ERROR_MSG }}
                 </h4>
               </div>
 
 
               <div class="reset-password-back-to-login" style="margin-top: 26px; float: left" routerLink="/login">
-                <i class="material-icons" style="">keyboard_arrow_left</i>
-                <span style="">
+                <i class="material-icons" style="vertical-align: middle;">keyboard_arrow_left</i>
+                <span style="font-size: 14px;">
                   {{ "BackToLogin" | translate }}
                 </span>
               </div>
 
               <div class="contat-us" style="">
               
-                <h4 style="font-size: 1.1em; margin-top:0px">
+                <h4 style="font-size:14px; margin-top:0px">
               
                   {{ 'HavingTrouble' | translate }}?
 
-                  <a target="_blank" href="mailto:{{contact_us_email}}" style="">
+                  <a target="_blank" href="mailto:{{contact_us_email}}">
                   
                     {{ 'ContactUs' | translate }}
                   </a>

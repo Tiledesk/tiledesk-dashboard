@@ -115,7 +115,8 @@
     cursor: text;
     overflow: hidden;
     transition: max-height 0.5s ease-out;
-
+    font-size: 14px;
+    
     .answer-title {
         margin-bottom: 0px;
         font-size: 12px;
@@ -136,6 +137,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -144,12 +146,12 @@
         height: 37px;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 0px 15px;
-        color: #22272d;
+        padding: 0px 10px;
+        color: #333;
         // line-height: 35px;
         // font-weight: 400;
         margin-bottom: 10px;
-
+        font-size: 14px;
         // letter-spacing: 0.5px;
         &.invalid {
             border: 2px solid red !important;
@@ -162,9 +164,9 @@
         width: 100%;
         border-radius: 6px;
         border: 1px solid #ccc;
-        padding: 10px 15px;
-        color: #22272d;
-
+        padding: 10px 10px;
+        color: #333;
+        font-size: 14px;
         // line-height: 35px;
         // font-weight: 400;
         &.invalid {
@@ -236,6 +238,7 @@
         margin-top: 0px;
         display: inline-block;
         padding-top: 0px;
+        padding-bottom: 3px;
     }
 }
 
@@ -266,6 +269,7 @@
     flex-direction: row;
     justify-content: space-between;
     font-weight: 400;
+    font-size: 14px;
 }
 
 .chunk {
@@ -274,6 +278,8 @@
     color: #787f86;
     padding: 8px 15px 6px;
     border-radius: 4px;
+    word-break: break-word;
+    font-size: 12px;
 }
 
 .chunk:hover {
@@ -291,3 +297,19 @@
 .chunk-error > span {
     vertical-align: middle;
 }
+
+.sitemap-refresh-wpr {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.sitemap-refresh-rate-value {
+    font-style: italic;
+}
+
+.btn-red-custom:hover {
+    background: var(--red-btn-background-color) !important;
+    box-shadow: unset !important;
+}   

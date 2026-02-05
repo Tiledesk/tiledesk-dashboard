@@ -11,15 +11,24 @@ p {
   align-items: center;
   justify-content: space-between;
   height: 50px;
-  
+
   .signup {
     display: flex;
+    font-size: 14px;
 
     p {
       margin: 0 0 0 5px;
     }
   }
-  
+
+  .signup a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .status {
     display: flex;
     align-items: center;
@@ -38,31 +47,44 @@ p {
   margin: 20px 0px;
 
   label {
-    color: black;
-    font-size: 12px;
-    font-weight: 500;
+    color: #7695a5;
+    font-weight: 400;
+    font-size: 14px;
+    padding-bottom: 2px;
   }
 }
 
 .custom-input {
-  padding: 8px;
-  border-radius: 8px;
-  border: solid 1px #e0e0e0;
+  padding: 0 8px;
+  border-radius: 5px;
+  border: solid 1px #d9d9d9;
   max-width: 500px;
+  font-size: 14px;
+  font-weight: 300;
+  font-size: 14px;
+  height: 36px;
 }
 
 .password-input {
   display: flex;
   max-width: 500px;
-  border-radius: 8px;
-  border: solid 1px #e0e0e0;
-  padding: 8px;
-  height: 38px;
+  border-radius: 5px;
+  border: solid 1px #d9d9d9;
+  height: 36px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff !important;
+  color: #000000de;
+  font-weight: 300;
+  font-size: 14px;
 
   input {
     width: 100%;
     border: none;
     background: none;
+    font-weight: 300;
   }
 }
 
@@ -73,12 +95,13 @@ p {
   .material-icons-outlined {
     font-size: 20px;
     color: grey;
+    vertical-align: middle;
   }
 
   &:hover {
     .material-icons-outlined {
       font-size: 20px;
-      color: black;
+      color: #333;
     }
   }
 }
@@ -91,11 +114,12 @@ p {
   align-items: center;
   justify-content: flex-end;
   max-width: 500px;
+  gap: 12px;
 }
 
-.integration-footer > .btn-tdblu-no-boxshadow {
-  margin-right: 8px;
-}
+// .integration-footer > .btn-tdblu-no-boxshadow {
+//   margin-right: 8px;
+// }
 
 .custom-primary-button {
   color: white;
@@ -129,7 +153,7 @@ p {
   }
 }
 
-.status > svg {
+.status>svg {
   width: 20px;
   //display: block;
   //margin: 40px auto 0;

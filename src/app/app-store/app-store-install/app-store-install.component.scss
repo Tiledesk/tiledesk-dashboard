@@ -86,5 +86,24 @@
 }
 
 
+.unauthorized-message-container-in-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // height: 100%;
+    height: calc(100vh - 190px);
+}
+
+.unauthorized-page-title {
+    font-family: var(--header-font-family);
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+.unauthorized-page-subtitle {
+    color: var(--secondary-text-color);
+}
+
 
 

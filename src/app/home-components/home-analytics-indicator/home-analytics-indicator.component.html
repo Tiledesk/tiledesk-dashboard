@@ -23,19 +23,22 @@
         </div>
         <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
           <!-- truncate -->
-          <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-white text-md font-medium ">
-            <div class="arrow-container" (click)="goToContacts()">
-              <div id="arrow_1" class="arrow-wrapper">
-                <div class="text-block" style="margin-right: 16px;">
-                  <!-- {{ 'GoToContactList' | translate }} -->
-                  Go to contact list
+
+          <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+            <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-white text-md font-medium ">
+                <div class="arrow-container" (click)="goToContacts()">
+                  <div id="arrow_1" class="arrow-wrapper">
+                    <div class="text-block" style="margin-right: 16px; font-size: 12px;">
+                      <!-- {{ 'GoToContactList' | translate }} -->
+                      Go to contact list
+                    </div>
+                    <div class="arrow arrow--right">
+                      <span></span>
+                    </div>
+                  </div>
                 </div>
-                <div class="arrow arrow--right">
-                  <span></span>
-                </div>
-              </div>
             </div>
-          </div>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -64,20 +67,22 @@
           {{'Last30DaysVisitors' | translate }}
         </div> -->
         <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-          <!-- truncate -->
-          <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-white text-md font-medium ">
-            <div class="arrow-container" (click)="goToVisitorsAnalytics()">
-              <div id="arrow_1" class="arrow-wrapper">
-                <div class="text-block" style="margin-right: 16px;">
-                  <!-- {{ 'FilterReportInAnalytics' | translate }} -->
-                  Filter report in analytics
-                </div>
-                <div class="arrow arrow--right">
-                  <span></span>
+          
+          <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+            <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-white text-md font-medium ">
+              <div class="arrow-container" (click)="goToVisitorsAnalytics()">
+                <div id="arrow_1" class="arrow-wrapper">
+                  <div class="text-block" style="margin-right: 16px;font-size: 12px;">
+                    <!-- {{ 'FilterReportInAnalytics' | translate }} -->
+                    Filter report in analytics
+                  </div>
+                  <div class="arrow arrow--right">
+                    <span></span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
 
         </div>
       </div>
@@ -107,22 +112,23 @@
         <!-- <div class="other-analytics-text truncate">
           {{'Last30DaysMessages' | translate}}
         </div> -->
-        <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="flex items-baseline justify-center w-full mt-5 text-secondary">
-          <!-- truncate -->
-          <div class="text-accent-link-on-white text-md font-medium ">
-            <div class="arrow-container" (click)="goToMessagesAnalytics()">
-              <div id="arrow_1" class="arrow-wrapper">
-                <div class="text-block" style="margin-right: 16px;">
-                  <!-- {{ 'FilterReportInAnalytics' | translate }} -->
-                  Filter report in analytics
-                </div>
-                <div class="arrow arrow--right">
-                  <span></span>
+        <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+          <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="flex items-baseline justify-center w-full mt-5 text-secondary">
+            <div class="text-accent-link-on-white text-md font-medium ">
+              <div class="arrow-container" (click)="goToMessagesAnalytics()">
+                <div id="arrow_1" class="arrow-wrapper">
+                  <div class="text-block" style="margin-right: 16px;font-size: 12px;">
+                    <!-- {{ 'FilterReportInAnalytics' | translate }} -->
+                    Filter report in analytics
+                  </div>
+                  <div class="arrow arrow--right">
+                    <span></span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
 
       </div>
     </div>

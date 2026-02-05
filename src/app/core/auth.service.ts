@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Injectable } from '@angular/core'
+import { Injectable, Injector } from '@angular/core'
 import {
   Router,
   NavigationEnd,
@@ -31,6 +31,8 @@ import { CachePuService } from 'app/services/cache/cache-pu.service'
 import { DepartmentsCacheService } from 'app/services/cache/departments-cache.service'
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service'
 import { SleekplanService } from 'app/services/sleekplan.service'
+import { UsersService } from 'app/services/users.service'
+import { RolesService } from 'app/services/roles.service'
 // import { ProjectService } from 'app/services/project.service'
 // import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
@@ -97,6 +99,8 @@ export class AuthService {
   customRedirectAfterLogout: boolean;
   afterLogoutRedirectURL: string
   isActivePAY: boolean;
+  keycloakURLToRedirectAfterLogout:string;
+  redirectToKeycloakURLAfterLogout:boolean;
 
   constructor(
     private _httpClient: HttpClient,
@@ -110,6 +114,7 @@ export class AuthService {
     private logger: LoggerService,
     public brandService: BrandService,
     private scriptService: ScriptService,
+    private injector: Injector,
     private cacheService: AllProjectsCacheService,
     private projectCacheService: ProjectCacheService,
     private cachePuService: CachePuService,
@@ -133,6 +138,8 @@ export class AuthService {
       this.logger.log('[AUTH-SERV] afterLogoutRedirectURL ', this.afterLogoutRedirectURL)
     }
 
+     this.getKeycloakURLToRedirectAfterLogout()
+
     this.logger.log('[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ', this.version)
     this.APP_IS_DEV_MODE = isDevMode()
     // this.logger.log('[AUTH-SERV] ====== isDevMode ', this.APP_IS_DEV_MODE);
@@ -149,6 +156,14 @@ export class AuthService {
     this.checkIfExpiredSessionModalIsOpened()
     this.getAppConfigAnBuildUrl()
     // this.getProjectPlan()
+  }
+
+
+  getKeycloakURLToRedirectAfterLogout() {
+    this.keycloakURLToRedirectAfterLogout = this.appConfigService.getConfig().logoutURL
+    this.redirectToKeycloakURLAfterLogout =  typeof this.keycloakURLToRedirectAfterLogout === 'string' && this.keycloakURLToRedirectAfterLogout.trim() !== '';
+    // console.log('[AUTH-SERV] keycloakURLToRedirectAfterLogout ', this.keycloakURLToRedirectAfterLogout)
+    // console.log('[AUTH-SERV] redirectToKeycloakURLAfterLogout ', this.redirectToKeycloakURLAfterLogout)
   }
 
   getPAYValue() {
@@ -295,7 +310,31 @@ export class AuthService {
 
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
-    // PUBLISH THE project
+    this.cachePuService.clearPuCache();
+    
+    // Reset BehaviorSubjects BEFORE publishing project to prevent stale permission data when switching projects
+    // Project user permissions are different per project (e.g., admin in one project, agent in another)
+    // This ensures that checkRoleForCurrentProject() won't use old permission data from the previous project
+    // Sidebar and Navbar will reload project user data via getProjectUser() after receiving the new project
+    // Using Injector to avoid circular dependency issues
+    try {
+      const usersService = this.injector.get(UsersService);
+      if (usersService && usersService.project_user_role_bs && usersService.projectUser_bs) {
+        usersService.project_user_role_bs.next('');
+        usersService.projectUser_bs.next(null);
+        this.logger.log('[AUTH-SERV] - PROJECT SELECTED - Reset project user BehaviorSubjects to ensure fresh permission data for new project');
+      }
+      
+      // Also reset permissions in RolesService to ensure listenToProjectUser() gets fresh data
+      const rolesService = this.injector.get(RolesService);
+      if (rolesService) {
+        rolesService.resetPermissions();
+      }
+    } catch (error) {
+      this.logger.error('[AUTH-SERV] - PROJECT SELECTED - Error resetting BehaviorSubjects:', error);
+    }
+    
+    // PUBLISH THE project so components (sidebar, navbar) can react and reload project user data
     this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project, ' calledBy ', calledBy)
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     
@@ -1101,7 +1140,7 @@ export class AuthService {
     }
   }
 
-  signOut(calledby: string) {
+  signOut(calledby: string) {    
     this.cacheService.clearAllProjectsCache()
     // Pulisci anche la cache dei progetti al logout
     this.projectCacheService.clearAllProjectCache()
@@ -1112,8 +1151,9 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] - SIGNOUT - Cleared all project cache, project users cache and departments cache')
     // this.resetSleekplanUser()
     this.closeSleekplanWidget()
-    // this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    console.log('[AUTH-SERV] SSO Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
+      this.localDbService.removeFromStorage('tiledesk_logOut');
       try {
         if (window && window['tiledesk_widget_logout']) {
           // this.logger.log('window', window)
@@ -1409,12 +1449,23 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            that.router.navigate(['/login'])
+            // that.router.navigate(['/login']) // nk commented
             // if ( this.customRedirectAfterLogout  === false) {
             //   that.router.navigate(['/login'])
             // } else {
             //   window.open( this.afterLogoutRedirectURL, '_self');
             // }
+            
+            // ----------------------------------------
+            // KeycloakURLAfterLogout
+            // ----------------------------------------
+            if (this.redirectToKeycloakURLAfterLogout  === false) {
+              console.log('[AUTH-SERV] HERE firebaseSignout 1 ', '/login')
+              that.router.navigate(['/login'])
+            } else {
+              console.log('[AUTH-SERV] HERE firebaseSignout 1 ', 'REDIRECT')
+              location.replace( this.keycloakURLToRedirectAfterLogout);
+            }
           }
         },
         function (error) {
@@ -1422,12 +1473,22 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            that.router.navigate(['/login'])
+            that.router.navigate(['/login']) // nk commented
             // if ( this.customRedirectAfterLogout  === false) {
             //   that.router.navigate(['/login'])
             // } else {
             //   window.open( this.afterLogoutRedirectURL, '_self');
             // }
+
+            // ----------------------------------------
+            if ( this.redirectToKeycloakURLAfterLogout  === false) {
+              console.log('[AUTH-SERV] HERE firebaseSignout 2 ', '/login')
+              that.router.navigate(['/login'])
+            } else {
+              // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
+              console.log('[AUTH-SERV] HERE firebaseSignout 2 ', 'REDIRECT')
+              location.replace( this.keycloakURLToRedirectAfterLogout);
+            }
           }
         },
       )
@@ -1437,12 +1498,25 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] signoutNoFirebase called By (1)', calledby)
     if (calledby !== 'autologin') {
       this.logger.log('[AUTH-SERV] signoutNoFirebase called By (2)', calledby)
-      this.router.navigate(['/login'])
+      // this.router.navigate(['/login']) // nk commented
       // if ( this.customRedirectAfterLogout  === false) {
       //   this.router.navigate(['/login'])
       // } else {
       //   window.open( this.afterLogoutRedirectURL, '_self');
       // }
+
+       if ( this.redirectToKeycloakURLAfterLogout  === false) {
+        console.log('[AUTH-SERV] HERE signoutNoFirebase ', '/login')
+        this.router.navigate(['/login'])
+       
+      } else {
+        // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
+        console.log('[AUTH-SERV] HERE signoutNoFirebase ', 'REDIRECT')
+        // location.replace( this.keycloakURLToRedirectAfterLogout);
+        this.router.navigateByUrl('/', { replaceUrl: true }).then(() => {
+          location.replace(this.keycloakURLToRedirectAfterLogout);
+        });
+      }
     }
   }
 
@@ -1470,27 +1544,21 @@ export class AuthService {
     const url = this.SERVER_BASE_PATH + "auth/google"
     // const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
     window.open(url, '_self');
-
     this.localDbService.setInStorage('swg', 'true')
-
   }
 
   public siginUpWithGoogle() {
     const url = this.SERVER_BASE_PATH + "auth/google?redirect_url=%23%2Fcreate-project-gs"
     // const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
-
     // this.logger.log('siginUpWithGoogle ', url)
     window.open(url, '_self');
-
   }
 
   signinWithOAuth2() {
     const url = this.SERVER_BASE_PATH + 'auth/oauth2'
-    this.logger.log('[AUTH-SERV] signinWithOAuth2 url ', url)
+    console.log('[AUTH-SERV] signinWithOAuth2 url ', url)
     window.open(url, '_self');
   }
-
-
 
 
 }

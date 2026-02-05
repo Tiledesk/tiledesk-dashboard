@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
+import { NavigationService } from 'app/services/navigation.service';
 @Component({
   selector: 'appdashboard-automation-static',
   templateUrl: './automation-static.component.html',
@@ -53,7 +54,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
   PLAN_NAME = PLAN_NAME
-
+  private backSub?: Subscription;
+  
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -64,7 +66,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public location: Location,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private navSvc: NavigationService
   ) {
     // super(translate)
     super(prjctPlanService, notify);
@@ -83,11 +86,19 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     this.presentModalsOnInit()
     this.tparams = { 'plan_name': PLAN_NAME.E }
     this.listenSidebarIsOpened();
+    this.listenToGoBack()
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getBrowserVersion() {

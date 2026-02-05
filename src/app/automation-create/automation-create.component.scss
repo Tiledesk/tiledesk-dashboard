@@ -73,6 +73,8 @@
 .template-select-label {
     font-family: var(--header-font-family);
     font-weight: 400;
+    font-size: 14px;
+    padding-bottom: 3px;
 }
 
 .choose-wa-tmplt-label-and-select-wpr {
@@ -80,6 +82,7 @@
     border-radius: var(--cl-card-border-radius);
     padding: 16px;
     max-height: fit-content;
+    font-size: 14px;
 }
 
 .contacts-columns {
@@ -141,6 +144,7 @@
     display: flex;
     align-items: center;
     font-weight: 400;
+    font-size: 14px;
 }
 
 /* Preview 
@@ -345,6 +349,7 @@
     margin-top: 25px;
     color: #aaa;
     font-weight: 400;
+    font-size: 14px;
 }
 
 button.icon-only {
@@ -454,6 +459,7 @@ button.icon-only {
     flex-direction: column;
     align-items: center;
     line-height: 27px;
+    font-size: 14px;
 }
 
 // .csv-table-scroll-wrapper {

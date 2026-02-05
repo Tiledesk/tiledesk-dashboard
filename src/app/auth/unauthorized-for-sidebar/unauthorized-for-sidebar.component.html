@@ -1,0 +1,28 @@
+
+<!-- <p style=" padding-left:40px;position: absolute;z-index: 1050;  margin-top: -64px;" class="navbar-brand">
+    {{ pageName | translate }}
+
+    <span *ngIf="callingPage === 'all-conversations'">
+        ( {{'NotInRealTime' | translate }})
+    </span>
+</p> -->
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+    <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+        <div class="unauthorized--message-container">
+            <h2 class="unauthorized-page-title">
+
+                {{ "UnauthorizedPage.UnauthorizedAccess" | translate }}
+
+            </h2>
+            <h3 class="unauthorized-page-subtitle">
+
+                {{ "UnauthorizedPage.OopsYouDontHave" | translate }}
+            </h3>
+        </div>
+    </div>
+
+</div>

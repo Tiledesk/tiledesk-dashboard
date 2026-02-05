@@ -45,6 +45,7 @@ import { SharedModule } from './shared/shared.module';
 
 
 import { ChatComponent } from './chat/chat.component';
+import { ConversationDetailIframeComponent } from './conversation-detail-iframe/conversation-detail-iframe.component';
 
 import { UsersService } from './services/users.service';
 import { ContactsService } from './services/contacts.service';
@@ -406,8 +407,12 @@ import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
 import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
+import { RolesService } from './services/roles.service';
+import { KeycloakService } from './services/keycloak.service';
 import { HttpStatsService } from './services/http-stats.service';
 import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
+import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+
 
 
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
@@ -502,6 +507,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HomeComponent, // now lazy
     // ContactsComponent, // now lazy
     ChatComponent,
+    ConversationDetailIframeComponent,
     // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy
@@ -727,6 +733,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     LogoutModalComponent,
     UnauthorizedToUpgradeComponent,
     HttpStatsDashboardComponent,
+    MaintenancePageComponent
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
@@ -857,6 +864,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SleekplanSsoService,
     SleekplanService,
     SleekplanApiService,
+    RolesService,
+    KeycloakService,
     HttpStatsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],

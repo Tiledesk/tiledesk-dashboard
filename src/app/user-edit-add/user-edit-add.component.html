@@ -1,173 +1,189 @@
-<!-- <div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
-  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i>
-  <span *ngIf="CREATE_VIEW">
-    {{ "UsersPage.Invites" | translate }}
-  </span>
-  <span *ngIf="EDIT_VIEW">
-    {{ "UserEditAddPage.EditUserRole" | translate }}
-  </span>
-</div> -->
-<span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
+
+<!-- <span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
 
-<div class="main-content main_content_no_left_right_padding" style="padding-top: 0px">
+<span #navbarbrand></span>
+<!-- main_content_no_left_right_padding -->
+<div class="main-content" style="padding-top:0px; padding-right: 0px; margin-left: -5px;">
 
-  <div class="page-title--sidebar-settings"
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+
+    <div class="page-title--sidebar-settings" style="top:19px"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-      (click)="goBack()">keyboard_arrow_left</i>
+      <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+        (click)="goBack()">keyboard_arrow_left</i>
 
-    <span *ngIf="CREATE_VIEW">
-      {{ "UsersPage.Invites" | translate }}
-    </span>
+      <span *ngIf="CREATE_VIEW">
+        {{ "UsersPage.Invites" | translate }}
+      </span>
 
-    <span *ngIf="EDIT_VIEW">
-      {{ "UserEditAddPage.EditUserRole" | translate }}
-    </span>
+      <span *ngIf="EDIT_VIEW">
+        {{ "UserEditAddPage.EditUserRole" | translate }}
+      </span>
+    </div>
 
-  </div>
-  <div class="container-fluid" style="padding-left: 0px; margin-left: -5px;">
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
-        <!-- -------------------------------------------------- -->
-        <!--  PROJECT PROFILE INFO  -->
-        <!-- -------------------------------------------------- -->
-        <div class="row">
-          
-          <div class="row" *ngIf="areActivePay">
-            <div class="col-md-12">
-              <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
-                <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
+
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
+
+            <!-- -------------------------------------------------- -->
+            <!--  PROJECT PROFILE INFO  -->
+            <!-- -------------------------------------------------- -->
+            <div class="row">
+
+              <div class="col-md-12" *ngIf="areActivePay">
+                <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
+                    <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
                     (prjct_profile_type === 'free' && trial_expired === false) || 
                     (prjct_profile_type === 'free' && trial_expired === true)) && 
-                    (projectUsersLength + countOfPendingInvites <= seatsLimit))">
+                    (projectUsersLength + countOfPendingInvites <= seatsLimit))" style="font-size: 14px;">
 
-                  <i class="material-icons" style="vertical-align: middle;"
-                    [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }">
-                    info
-                  </i>
-                  <span class="msg-alert"
-                    [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#394f5a' }">
-                    {{ "YouCurrentlyAreUsing" | translate }}
-                    {{ this.projectUsersLength + this.countOfPendingInvites }}
-                    {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                    <span style="text-transform: capitalize">
-                      {{ prjct_profile_name }}</span> - <span class="link-string" (click)="getMoreOperatorsSeats()">
-                      <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
-                        {{ "GetMore" | translate }}
+                      <i class="material-icons" style="vertical-align: middle;"
+                        [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }">
+                        info
+                      </i>
+                      <span class="msg-alert"
+                        [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#394f5a' }">
+                        {{ "YouCurrentlyAreUsing" | translate }}
+                        {{ this.projectUsersLength + this.countOfPendingInvites }}
+                        {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                        <span style="text-transform: capitalize">
+                          {{ prjct_profile_name }}</span> - <span class="link-string" (click)="getMoreOperatorsSeats()">
+                          <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
+                            {{ "GetMore" | translate }}
+                          </span>
+                          <span *ngIf="prjct_profile_type === 'free'">
+                            {{ "Pricing.UpgradePlan" | translate }}
+                          </span>
+
+                        </span>
                       </span>
-                      <span *ngIf="prjct_profile_type === 'free'">
-                        {{ "Pricing.UpgradePlan" | translate }}
-                      </span>
 
-                    </span>
-                  </span>
-
-                </div>
-            
-                <div class="card-content  alert-exceed-numb-of-seats-allowed"
-                  style="background: #f44336;color: #fff;text-align: center;"
-                  *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
-
-                  <span class="msg-alert">
-                    {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
-                  </span>
-                  <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                    <!-- upgrade---plan-btn  -->
-                    <button class="btn btn-white-rounded" (click)="presentGoToPricingModal()">
-                      {{ "Pricing.UpgradePlan" | translate }}
-                    </button>
-                  </div>
-
-                </div>
-
-                <div class="card-content alert-exceed-numb-of-seats-allowed"
-                  style="background: #f44336;color: #fff;text-align: center;"
-                  *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === true) && (projectUsersLength + countOfPendingInvites > seatsLimit)">
-                  <span class="msg-alert">
-                    {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
-                  </span>
-                  
-                  <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-
-                    <!-- upgrade---plan-btn -->
-                    <button class="btn btn-white-rounded" (click)="presentContactUsModal()">
-                      {{ "Pricing.UpgradePlan" | translate }}
-                    </button>
-                  </div>
-                </div>
-               
-                <div class="card-content  alert-exceed-numb-of-seats-allowed"
-                  style="background: #f44336;color: #fff;text-align: center;"
-                  *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
-
-
-                  <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
-                    <span style="text-transform: capitalize">
-                      {{ prjct_profile_name }}
-                    </span>
-                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
-
-                    <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
-                      {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
-                    </span>
-
-                    <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                      <button class="btn btn-white-rounded" (click)="openModalSubsExpired()">
-                        {{ "Pricing.UpgradePlan" | translate }}
-                      </button>
                     </div>
-                  </span>
 
-                </div>
+                    <div class="card-content  alert-exceed-numb-of-seats-allowed"
+                      style="background: #f44336;color: #fff;text-align: center;"
+                      *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
+
+                      <span class="msg-alert">
+                        {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                      </span>
+                      <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+                        <!-- upgrade---plan-btn  -->
+                        <button class="btn btn-white-rounded" (click)="presentGoToPricingModal()">
+                          {{ "Pricing.UpgradePlan" | translate }}
+                        </button>
+                      </div>
+
+                    </div>
+
+                    <div class="card-content alert-exceed-numb-of-seats-allowed"
+                      style="background: #f44336;color: #fff;text-align: center;"
+                      *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === true) && (projectUsersLength + countOfPendingInvites > seatsLimit)">
+                      <span class="msg-alert">
+                        {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                      </span>
+
+                      <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+
+                        <!-- upgrade---plan-btn -->
+                        <button class="btn btn-white-rounded" (click)="presentContactUsModal()">
+                          {{ "Pricing.UpgradePlan" | translate }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="card-content  alert-exceed-numb-of-seats-allowed"
+                      style="background: #f44336;color: #fff;text-align: center;"
+                      *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
 
 
-              </div>
-            </div>
-          </div>
-          <!-- -------------------------------------------------- -->
-          <!--  ./ PROJECT PROFILE INFO  -->
-          <!-- -------------------------------------------------- -->
+                      <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                        <span style="text-transform: capitalize">
+                          {{ prjct_profile_name }}
+                        </span>
+                        {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
 
-          <!-- CREATE VIEW -->
-          <span *ngIf="CREATE_VIEW" class="create-view">
-            <div class="col-md-8">
+                        <span style="display: block;"
+                          *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+                          {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
+                        </span>
 
-              <div class="card invite-teammate-card">
-                <div class="card-content">
-                  <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
-                  <label class="col-sm-2 custom-label">
-                    <!-- {{ "UserEditAddPage.UserEmail" | translate }} -->
-                    Email
-                  </label>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="email"
-                      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                      placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}'
-                      [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}"
-                      [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+                        <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+                          <button class="btn btn-white-rounded" (click)="openModalSubsExpired()">
+                            {{ "Pricing.UpgradePlan" | translate }}
+                          </button>
+                        </div>
+                      </span>
 
-                    <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
-                      {{ "EnterValidEmail" | translate }}
-                    </span>
+                    </div>
+
+
                   </div>
+                </div>
+              <!-- -------------------------------------------------- -->
+              <!--  ./ PROJECT PROFILE INFO  -->
+              <!-- -------------------------------------------------- -->
 
-                  <div class="col-sm-12" style="height:10px"></div>
+              <!-- CREATE VIEW -->
+              <div *ngIf="CREATE_VIEW" class="create-view col-md-8">
 
-                  <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
-                  <label class="col-sm-2 custom-label">
-                    {{ "UserEditAddPage.Role" | translate }}
-                  </label>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <div class="card invite-teammate-card">
+                    <div class="card-content">
+                      <label class="col-sm-2 custom-label-pu" style="text-align: left !important; padding-left: 0px !important;">
+                        <!-- {{ "UserEditAddPage.UserEmail" | translate }} -->
+                        Email
+                      </label>
+                      <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                        <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="email"
+                          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                          placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}'
+                          [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}"
+                          [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+
+                        <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
+                          {{ "EnterValidEmail" | translate }}
+                        </span>
+                      </div>
+
+                      <div class="col-sm-12" style="height:10px"></div>
+
+                      <label class="col-sm-2 custom-label-pu" style="text-align: left !important; padding-left: 0px !important;">
+                        {{ "UserEditAddPage.Role" | translate }}
+                      </label>
+                      <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                        <select #selectElem (change)="setSelected(selectElem.value)" 
+                          [(ngModel)]="selectedRole"
+                          style="width: 100%;border-radius: 5px; color: #333;font-weight: 300;"
+                          [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+                          <option class="not_selected" value="ROLE_NOT_SELECTED" 
+                          [selected]="selected == true">
+                            {{ "UserEditAddPage.SelectRole" | translate }}
+                          </option>
+                          <option value="admin">{{ 'admin' | translate }}</option>
+                          <option value="agent">{{ 'agent' | translate }} </option>
+                          <option *ngFor="let role of roles" [value]="role.name">
+                            {{ role.name }}
+                          </option>
+
+                        </select>
+                        <!-- roles {{roles | json}} -->
+
+                      </div>
+
+
+
+                      <!-- New role select  -->
+                      <!-- <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                     <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class=""
                       style="width: 100%;border-radius: 5px;"
                       [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
@@ -177,355 +193,410 @@
                       <option value="admin">{{ 'admin' | translate }}</option>
                       <option value="agent">{{ 'agent' | translate }} </option>
                     </select>
-
-                  </div>
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:15px"></div>
-
-                  <label class="col-sm-2"></label>
-                  <div class="col-sm-10">
-                    <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
-                    <!-- email length {{ user_email?.length }}  -->
-                    <!-- btn-primary  -->
-                    <button class="btn btn-tdblu-no-boxshadow invite-button"
-                      [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || projectUsersLength + countOfPendingInvites >= seatsLimit"
-                      (click)="invite()">
-                      {{ "UserEditAddPage.Invites" | translate }}
-                    </button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            <!-- /. end col-md-8 -->
-          </span>
-
-
-          <!-- ---------------------------------------------------------------------------- -->
-          <!--  EDIT VIEW -->
-          <!-- ---------------------------------------------------------------------------- -->
-          <span *ngIf="EDIT_VIEW">
-            <div class="col-md-8 left-col-custom-padding">
-              <div class="card card--no-border edit-view-card" style="padding-bottom:0px; margin-top: 0px;">
-                <loading-spinner *ngIf="showSpinner"></loading-spinner>
-                <div *ngIf="!showSpinner" class="card-content">
-
-
-                  <!-- new -->
-                  <div class="row">
-                    <label
-                      style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5"
-                      class="col-sm-2 avatar_label">
-                      Avatar
-                    </label>
-                    <div class="col-sm-10">
-
-                      <div class="card-avatar" style="padding-bottom:15px">
-                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      {{ "UserProfile.Name" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <input style="color:#999999" [(ngModel)]="user_fullname" type="text" disabled>
-                    </div>
-                  </div>
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:10px"></div>
-
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      Email
-                    </label>
-
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <input style="color:#999999" [(ngModel)]="user_email" type="text"
-                        placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' disabled>
-                    </div>
-                  </div>
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:10px"></div>
-
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      {{ "UserEditAddPage.Role" | translate }}
-                    </label>
-
-
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <div *ngIf="user_role">
-                        <select #selectElem (change)="setSelected(selectElem.value)" style="width: 100%;" id="userrole"
-                          [disabled]="CURRENT_USER_ROLE !== 'owner' || CURRENT_USER_ID === projectUser?.id_user?._id">
-
-                          <option [selected]="user_role === 'owner'" disabled>
-                            {{ "owner" | translate }}
-                          </option>
-
-                          <option value="admin" [selected]="user_role === 'admin'">
-                            {{ "UserEditAddPage.Admin" | translate }}
-                          </option>
-                          <option value="agent" [selected]="user_role === 'agent'">
-
-                            {{ "UserEditAddPage.Agent" | translate }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:15px"></div>
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      ID
-                    </label>
-
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <input style="color:#999999" [(ngModel)]="user_id" type="text" disabled>
-                    </div>
-                  </div>
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:15px"></div>
-
-
-                  <!-- new -->
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      {{ "Status" | translate }}
-                    </label>
-
-
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-
-                      <!-- currentUser_projectUserID !== projectUser?._id && -->
-                      <!-- <div class="onoffswitch__availability_status">
-                    <input (change)="changeAvailabilityStatus($event, projectUser?._id)"
-                      [checked]="projectUser?.user_available === true" type="checkbox" name="onoffswitch"
-                      class="onoffswitch-checkbox__availability_status" id="roleonoffswitch"
-                      [disabled]="CURRENT_USER_ROLE === 'agent'">
-                    <label class="onoffswitch-label__availability_status" for="roleonoffswitch"
-                      style="margin-bottom: 0px;">
-                      <span class="onoffswitch-inner__availability_status"></span>
-                      <span class="onoffswitch-switch__availability_status"></span>
-                    </label>
                   </div> -->
 
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
 
-                      <ng-select style="text-align: left;"
-                        (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)"
-                        [(ngModel)]="selectedStatus" class="teammate-status-in-pu-details" [items]="teammateStatus"
-                        bindLabel="name" bindValue="id" [clearable]="false" [searchable]="false">
-                        <ng-template ng-label-tmp let-item="item">
-                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                          <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
-                            {{item.name | translate}} </span>
-                        </ng-template>
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                          <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
-                            {{item.name | translate }} </span>
-                        </ng-template>
-                      </ng-select>
-                    </div>
-                  </div>
-
-
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:15px"></div>
-
-                  <div *ngIf="isVisibleAdvancedFeatureChatLimit === true || isUNIS === true" class="row">
-                    <label class="col-sm-2 custom-label" style="white-space: nowrap;">
-                      {{'ChatLimit' | translate}}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <input style="margin-bottom: 1px;" [(ngModel)]="max_assigned_chat" type="number"
-                        [disabled]="CURRENT_USER_ROLE === 'agent'">
-                      <span
-                        style="display: block; font-size: 12px; font-weight: 400;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                        {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate }}
-                      </span>
-                    </div>
-                  </div>
-                  <!-- ---------------------------------------------------- -->
-                  <!-- start project user-tags -->
-                  <!-- -------------------------------------------------------- -->
-                  <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
-                    <label class="col-sm-2 custom-label" style="white-space: nowrap;">
-                      {{'Tags.Tag' | translate}}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <div class="pu-tag-input-wrapper">
-
-                        <div class="dropdown" style="float: left;">
-                          <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                            <b class="caret" style="color:#000000"></b>
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li *ngFor="let color of tagColor" class="{{color.name}}">
-
-                              <a (click)="tagSelectedColor(color?.hex)">
-                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                                  class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 512 512">
-
-                                  <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
-                                    d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                  </path>
-                                </svg>
-                                {{ 'Tags.Color.' + color?.name | translate }}
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <input id="tag_name" name="tag_name" (keyup.enter)="onPressEnterInIputTypeNewTag()"
-                          (ngModelChange)="onChangeTagname($event)" [(ngModel)]="tagname" class="input" type="text"
-                          placeholder="{{ 'Tags.AddTags' | translate }} ..." style="height: 37px;">
-                        <div class="tag-color-dot" [ngStyle]="{'background-color':tag_selected_color}"></div>
-                        <button class="btn btn-primary add-tag-to-pu-btn" (click)="addTagToProjectUser()" type="submit"
-                          [disabled]="!tagname || tagname?.length === 0 ">
-                          <span class="icon add-tag-icon">
-                            <i class="material-icons">add_circle</i>
-                          </span>
+                      <label class="col-sm-2"></label>
+                      <div class="col-sm-10">
+                        <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
+                        <!-- email length {{ user_email?.length }}  -->
+                        <!-- btn-primary  -->
+                        <button class="btn btn-tdblu-no-boxshadow invite-button"
+                          [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || projectUsersLength + countOfPendingInvites >= seatsLimit"
+                          (click)="invite()">
+                          {{ "UserEditAddPage.Invites" | translate }}
                         </button>
                       </div>
 
-                      <div *ngIf="display_tag_name_required === true" class="tag-name-required-error">
-                        {{'TagNameIsRequired' | translate }}
+                    </div>
+                  </div>
+                <!-- /. end col-md-8 -->
+              </div>
+
+
+              <!-- ---------------------------------------------------------------------------- -->
+              <!--  EDIT VIEW -->
+              <!-- ---------------------------------------------------------------------------- -->
+              <div *ngIf="EDIT_VIEW" class="col-md-8 left-col-custom-padding">
+                  <div class="card card--no-border edit-view-card" style="padding-bottom:0px; margin-top: 0px;">
+                    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                    <div *ngIf="!showSpinner" class="card-content">
+
+
+                      <!-- new -->
+                      <div class="row">
+                        <label
+                          style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5"
+                          class="col-sm-2 avatar_label">
+                          Avatar
+                        </label>
+                        <div class="col-sm-10">
+
+                          <div class="card-avatar" style="padding-bottom:15px">
+                            <!-- Avatar con iniziali (mostrato di default) -->
+                            <div class="user-img-in-edit-profile avatar-with-initials" 
+                              [ngStyle]="{'background': 'linear-gradient(rgb(255,255,255) -125%,' + (projectUser?.id_user?.fillColour || 'rgb(98, 100, 167)') + ')', 'display': 'flex'}"
+                              style="align-items: center; justify-content: center; border-radius: 50%; position: relative;">
+                              <span class="avatar-initials-text">
+                                {{ projectUser?.id_user?.fullname_initial || 'N/A' }}
+                              </span>
+                              
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Firebase -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
+                                #firebaseImg
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media"
+                                (load)="firebaseImg.style.display='block'; firebaseImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                (error)="firebaseImg.style.display='none';"
+                                style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE uploadEngine Native -->
+                              <!-- --------------------------------------------------- -->
+                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
+                                #nativeImg
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                (load)="nativeImg.style.display='block'; nativeImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                (error)="nativeImg.style.display='none';"
+                                style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="row">
+                        <label class="col-sm-2 custom-label-pu">
+                          {{ "UserProfile.Name" | translate }}
+                        </label>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          <input style="color:#999999" [(ngModel)]="user_fullname" type="text" disabled>
+                        </div>
+                      </div>
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:10px"></div>
+
+                      <div class="row">
+                        <label class="col-sm-2 custom-label-pu">
+                          Email
+                        </label>
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          <input style="color:#999999" [(ngModel)]="user_email" type="text"
+                            placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' disabled>
+                        </div>
+                      </div>
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:10px"></div>
+
+                      <div class="row">
+                        <label class="col-sm-2 custom-label-pu">
+                          {{ "UserEditAddPage.Role" | translate }}
+                        </label>
+
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          <div *ngIf="user_role">
+                            <select #selectElem (change)="setSelected(selectElem.value)" style="width: 100%;font-weight: 300;color: #333"
+                              id="userrole"
+                              [disabled]="CURRENT_USER_ROLE !== 'owner' || CURRENT_USER_ID === projectUser?.id_user?._id">
+
+                              <option [selected]="user_role === 'owner'" disabled>
+                                {{ "owner" | translate }}
+                              </option>
+
+                              <option value="admin" [selected]="user_role === 'admin'">
+                                {{ "UserEditAddPage.Admin" | translate }}
+                              </option>
+                              <option value="agent" [selected]="user_role === 'agent'">
+                                {{ "agent" | translate }}
+                              </option>
+
+                              <option *ngFor="let role of roles" [value]="role.name"
+                                [selected]="user_role === role.name">
+                                {{ role.name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
+                      <div class="row">
+                        <label class="col-sm-2 custom-label-pu">
+                          ID
+                        </label>
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          <input style="color:#999999" [(ngModel)]="user_id" type="text" disabled>
+                        </div>
+                      </div>
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:8px"></div>
+
+
+                      <!-- new -->
+                      <div class="row">
+                        <label class="col-sm-2 custom-label-pu">
+                          {{ "Status" | translate }}
+                        </label>
+
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+
+                          <div class="teammate-status-select-wpr" style="font-size: 14px;">
+                            <ng-select style="text-align: left;"
+                              (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)"
+                              [(ngModel)]="selectedStatus" 
+                              class="teammate-status-in-pu-details" 
+                              [items]="teammateStatus"
+                              bindLabel="name" 
+                              bindValue="id" 
+                              [clearable]="false" 
+                              [searchable]="false">
+                              <ng-template ng-label-tmp let-item="item">
+                                <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                                <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
+                                  {{item.name | translate}} </span>
+                              </ng-template>
+                              <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                                <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
+                                  {{item.name | translate }} </span>
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
+
+                      <div *ngIf="isVisibleAdvancedFeatureChatLimit === true || isUNIS === true" class="row">
+                        <label class="col-sm-2 custom-label-pu">
+                          {{'ChatLimit' | translate}}
+                        </label>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          <input style="margin-bottom: 1px;" [ngModel]="max_assigned_chat === -1 ? '' : max_assigned_chat" (ngModelChange)="onMaxAssignedChatChange($event)" (blur)="onMaxAssignedChatBlur($event)" (keydown)="onKeyDownMaxAssignedChat($event)" type="number"
+                            [disabled]="CURRENT_USER_ROLE === 'agent'">
+                          <span
+                            style="display: block; font-size: 12px; font-weight: 400;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                            {{ "UserEditAddPage.NumberOfChatsAgentIsAllowedToTake" | translate }}
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
+
+                      <div class="row" *ngIf="PERMISSION_TO_VIEW_GROUPS">
+                        <label class="col-sm-2 custom-label-pu">
+                          {{'Groups' | translate}}
+                        </label>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          
+                          <div class="groups-container" *ngIf="groupsList?.length > 0">
+                            <div class="group" *ngFor="let group of groupsList" 
+                            [ngClass]="{ 'not-enabled-group': !group.enabled }"
+                            (click)="goToGroup(group)"  
+                            [class.disabled]="!PERMISSION_TO_EDIT_GROUPS"
+                            [style.cursor]="PERMISSION_TO_EDIT_GROUPS ? 'pointer' : 'default'">
+                              {{group.name}}
+                            </div>
+                          </div>
+
+
+                          <div *ngIf="groupsList?.length === 0" style="margin-top: 3px; font-size: 14px;">
+                            {{'NotAssignedToAnyGroups' | translate}}
+                          </div>
+                        </div>
+                      </div>
+                      <!-- SPACER -->
+                      <div class="col-sm-12" style="height:15px"></div>
+                      <!-- ---------------------------------------------------- -->
+                      <!-- start project user-tags -->
+                      <!-- -------------------------------------------------------- -->
+                      <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
+                        <label class="col-sm-2 custom-label-pu">
+                          {{'Tags.Tag' | translate}}
+                        </label>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                          <div class="pu-tag-input-wrapper">
+
+                            <div id="pu-tag-dropdown" class="dropdown" style="float: left;">
+                              <a  id="pu-tag-dropdown-btn" href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="caret-icon" style="color:#000000; display: inline-block; width: 0; height: 0; margin-left: 2px; vertical-align: middle; border-top: 4px dashed; border-right: 4px solid transparent; border-left: 4px solid transparent;"></span>
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="pu-tag-dropdown-btn" id="pu-tag-dropdown-menu">
+                                <li *ngFor="let color of tagColor" class="{{color.name}}">
+
+                                  <a (click)="tagSelectedColor(color?.hex)" class="dropdown-item">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                      class="svg-inline--fa fa-tag fa-w-16" role="img"
+                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                      <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
+                                        d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                      </path>
+                                    </svg>
+                                    {{ 'Tags.Color.' + color?.name | translate }}
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div class="tag-name-input-wpr" style="position: relative;"> 
+                              <input id="tag_name" name="tag_name" 
+                                (keyup.enter)="onPressEnterInIputTypeNewTag()"
+                                (ngModelChange)="onChangeTagname($event)" 
+                                [(ngModel)]="tagname" 
+                                class="input" type="text"
+                                placeholder="{{ 'Tags.AddTags' | translate }} ...">
+                              <div class="tag-color-dot" [ngStyle]="{'background-color':tag_selected_color}"></div>
+                            </div>
+
+                            <button class="btn btn-primary add-tag-to-pu-btn" (click)="addTagToProjectUser()"
+                              type="submit" [disabled]="!tagname || tagname?.length === 0 ">
+                              <span class="icon add-tag-icon">
+                                <i class="material-icons">add_circle</i>
+                              </span>
+                            </button>
+                          </div>
+
+                          <div *ngIf="display_tag_name_required === true" class="tag-name-required-error">
+                            {{'TagNameIsRequired' | translate }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row"> 
+                        <label class="col-2 custom-label-pu"> </label>
+                        <div class="col-10">
+                          <form style="position: relative; font-size: 14px;">
+                            <div class="pu-tags-container">
+                              <span class="pu-tag" *ngFor="let tag of tagsArray" role="button">
+
+                                <div (click)="removeTagFromProjectUser(tag)">
+                                  <div class="icon-container" style="display: inline-block;">
+                                    <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                                      aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                      class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                      <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                        d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                      </path>
+                                    </svg>
+                                    <span class="tag-delete">
+                                      <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                                    </span>
+                                  </div>
+                                  {{ tag.tag}}
+                                </div>
+
+                              </span>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
+                      <!-- end project user tags -->
+
+
+                    </div> <!-- ./ card-content -->
+
+                    <div class="card-footer" style="border-color: #e8f0f5 !important; background: #fff;">
+
+                      <div class="row">
+
+                        <div class="col-sm-10">
+
+                          <!-- btn-primary update-pu-btn -->
+                          <button [disabled]="CURRENT_USER_ROLE === 'agent'"
+                            class="btn btn-tdblu-no-boxshadow update-pu-btn" (click)="updateUserRoleAndMaxchat(); ">
+                            {{ "UserEditAddPage.Update" | translate }}
+                          </button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+              </div>
+
+              <!-- RIGHT SIDEBAR -->
+              <div class="col-md-4 right-col-custom-padding">
+                <div class="card card-custom-margin card--no-border">
+                  <div class="card-content" style="font-size: 14px;line-height: 1.3;">
+                    <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
+                      {{ "UserEditAddPage.UserRoles" | translate }}
+                    </h4> -->
+
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            {{ "UserEditAddPage.UserRoles" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
                       </div>
                     </div>
-                  </div>
-
-                  <label class="col-sm-2 custom-label"> </label>
-                  <form style="position: relative;">
-                    <div class="pu-tags-container">
-                      <span class="pu-tag" *ngFor="let tag of tagsArray" role="button">
-
-                        <div (click)="removeTagFromProjectUser(tag)">
-                          <div class="icon-container" style="display: inline-block;">
-                            <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;" aria-hidden="true"
-                              focusable="false" data-prefix="fas" data-icon="tag"
-                              class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                              <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
-                                d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                              </path>
-                            </svg>
-                            <span class="tag-delete">
-                              <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
-                            </span>
-                          </div>
-                          {{ tag.tag}}
-                        </div>
-
-                      </span>
-                    </div>
-                  </form>
-
-                  <!-- end project user tags -->
 
 
-                </div> <!-- ./ card-content -->
+                    <p style="color:#7695a5">
+                      {{ "UserEditAddPage.ThereAreThreeRolesIn" | translate: tparams }}
+                    </p>
+                    <p class="title-attribute" style="margin-bottom: 3px">
+                      {{ "UserEditAddPage.Owner" | translate }}
+                    </p>
 
-                <div class="card-footer" style="border-color: #e8f0f5 !important;">
+                    <p style="color:#7695a5">
 
-                  <div class="row">
+                      {{ "UserEditAddPage.TheOwnerIs" | translate: tparams }}. {{ "UserEditAddPage.AnOwenerHas" |
+                      translate:
+                      tparams }}
+                    </p>
 
-                    <div class="col-sm-10">
+                    <p class="title-attribute" style="margin-bottom: 3px">
+                      {{ "UserEditAddPage.Admin" | translate }}
+                    </p>
 
-                      <!-- btn-primary update-pu-btn -->
-                      <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-tdblu-no-boxshadow update-pu-btn"
-                        (click)="updateUserRoleAndMaxchat(); ">
-                        {{ "UserEditAddPage.Update" | translate }}
-                      </button>
-                    </div>
-                  </div>
+                    <p style="color:#7695a5">
 
-                </div>
-              </div>
-            </div>
-          </span>
+                      {{ "UserEditAddPage.AnAdministratorHas" | translate: tparams }}
+                    </p>
 
-          <!-- RIGHT SIDEBAR -->
-          <div class="col-md-4 right-col-custom-padding">
-            <div class="card card-custom-margin card--no-border">
-              <div class="card-content">
-                <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
-              {{ "UserEditAddPage.UserRoles" | translate }}
-            </h4> -->
+                    <p class="title-attribute" style="margin-bottom: 3px">
+                      <!-- <strong> -->
+                      <!-- Agent -->
+                      <!-- {{ "UserEditAddPage.Agent" | translate }} -->
+                      {{ "agent" | translate }}
+                      <!-- </strong> -->
+                    </p>
+                    <p style="color:#7695a5">
+                      <!-- An Agent can use this control panel to monitor help requests and chat with Visitors. -->
+                      {{ "UserEditAddPage.AnAgentCan" | translate }}
+                    </p>
 
-                <div class="row">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined">
-                      <span class="card_title__underline">
-                        {{ "UserEditAddPage.UserRoles" | translate }}
-                      </span>
-                    </h3>
-                  </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
-                  </div>
-                </div>
+                    <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
 
+                      {{ "RelatedKnowledgeBase" | translate }}
 
-                <p style="color:#7695a5">
-                  {{ "UserEditAddPage.ThereAreThreeRolesIn" | translate: tparams }}
-                </p>
-                <p class="title-attribute" style="margin-bottom: 3px">
-                  {{ "UserEditAddPage.Owner" | translate }}
-                </p>
+                    </p>
+                    <p class="help-link" *ngIf="hideHelpLink">
 
-                <p style="color:#7695a5">
-
-                  {{ "UserEditAddPage.TheOwnerIs" | translate: tparams }}. {{ "UserEditAddPage.AnOwenerHas" | translate:
-                  tparams }}
-                </p>
-
-                <p class="title-attribute" style="margin-bottom: 3px">
-                  {{ "UserEditAddPage.Admin" | translate }}
-                </p>
-
-                <p style="color:#7695a5">
-
-                  {{ "UserEditAddPage.AnAdministratorHas" | translate: tparams }}
-                </p>
-
-                <p class="title-attribute" style="margin-bottom: 3px">
-                  <!-- <strong> -->
-                  <!-- Agent -->
-                  {{ "UserEditAddPage.Agent" | translate }}
-                  <!-- </strong> -->
-                </p>
-                <p style="color:#7695a5">
-                  <!-- An Agent can use this control panel to monitor help requests and chat with Visitors. -->
-                  {{ "UserEditAddPage.AnAgentCan" | translate }}
-                </p>
-
-                <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
-
-                  {{ "RelatedKnowledgeBase" | translate }}
-
-                </p>
-                <p class="help-link" *ngIf="hideHelpLink">
-
-                  <span>
-                    <!-- <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                      <span>
+                        <!-- <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                       data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
                       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                       <path fill="#0f62ff"
@@ -533,24 +604,27 @@
                       </path>
                     </svg> -->
 
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                      fill="none" style="vertical-align: middle;">
-                      <path
-                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                    </svg>
-                  </span>
-                  <a 
-                    href="{{KNOWLEDGE_BASE_USER_ROLE_URL}}" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                          fill="none" style="vertical-align: middle;">
+                          <path
+                            d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                        </svg>
+                      </span>
+                      <a href="{{KNOWLEDGE_BASE_USER_ROLE_URL}}" target="_blank">
 
-                    {{ 'LearnMoreAboutDefaultRoles' | translate }}
-                  </a>
-                </p>
+                        {{ 'LearnMoreAboutDefaultRoles' | translate }}
+                      </a>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-
-        </div>
+          </ng-container>
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+          </ng-template>
+        </ng-container>
 
       </div>
     </div>
@@ -558,22 +632,23 @@
 </div>
 
 
-<!-- ============ MODAL - INFO WINDOWS ============ -->
+<!--  MODAL - INFO WINDOWS  -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title">
+        <h4 class="modal-title" style="font-size: 14px;">
           {{ "UserEditAddPage.modalInviteUser" | translate }}
         </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseModal()"></button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
 
         <span class="modal-loader-wpr" *ngIf="SHOW_CIRCULAR_SPINNER">
           <div class="loader" style="top:25%">
@@ -622,7 +697,7 @@
           <!--      WHEN NO ERROR OCCUR      -->
           <span
             *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+            <p style="margin-top: 0px; text-align: center; font-weight: 400; color: #333;">
               {{ "UserEditAddPage.TheUserHasBeenInvited" | translate }}
             </p>
           </span>
@@ -630,7 +705,7 @@
           <!--      ERROR - Not Allowed Action * You Can Not Invite Yourself *    -->
           <span
             *ngIf="INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+            <p style="margin-top: 0px; text-align: center; font-weight: 400; color: #333;">
               {{ "UserEditAddPage.YouCanNotInviteYourself" | translate }}
             </p>
           </span>
@@ -638,7 +713,7 @@
           <!--      ERROR - Not Allowed Action * You can not invite a user already member of the project *    -->
           <span
             *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+            <p style="margin-top: 0px; text-align: center; font-weight: 400; color: #333;">
               {{ "UserEditAddPage.YouCanNotInviteAProjectMember" | translate }}
             </p>
           </span>
@@ -646,7 +721,7 @@
           <!--      ERROR - User not found * You cannot invite a user that not is registered *    -->
           <span
             *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+            <p style="margin-top: 0px; text-align: center; font-weight: 400;color: #333;">
               {{ "UserEditAddPage.TheEmail" | translate }}
               <span style="font-weight: 600">{{ user_email }} </span>
               {{ "UserEditAddPage.wasNotFoundNoteThat" | translate }}
@@ -656,7 +731,7 @@
           <!--      ERROR - PENDING INVITATION ALREADY EXIST *    -->
           <span
             *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && PENDING_INVITATION_ALREADY_EXIST">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+            <p style="margin-top: 0px; text-align: center; font-weight: 400; color: #333;">
               {{ "YouHaveAlreadyInvitedThisUserSeeThePendingInvitations" | translate }}
               <!-- <span style="font-weight: 600">{{ user_email }} </span>  -->
 
@@ -666,7 +741,7 @@
           <!--      ERROR - other error     -->
           <span
             *ngIf="!INVITE_YOURSELF_ERROR && INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+            <p style="margin-top: 0px; text-align: center; font-weight: 400; color: #333;">
               {{ "UserEditAddPage.AnErrorHasOccurred" | translate }}
             </p>
           </span>

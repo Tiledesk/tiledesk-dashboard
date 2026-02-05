@@ -155,6 +155,64 @@ export class NotifyService {
 
   }
 
+  presentDialogNoPermissionToPermomfAction(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YonDontHavePermissionsToPerformThisAction'),
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+
+  presentDialogNoPermissionToEditFlow(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO EDIT FLOWS CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YouDoNotHavePermissionToEditFlows'),
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+  presentDialogNoPermissionToViewReports(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO VIEW REPORTS CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YonDontHavePermissionsToViewReports'),
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+
+   presentDialogNoPermissionToViewThisSection(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: this.translate.instant('PermissionDenied'),
+      text: this.translate.instant('YonDontHavePermissionsToViewThisSection'),
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
 
   // "{{'YourTrialHasEnded' | translate }}"
   // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
@@ -554,10 +612,10 @@ export class NotifyService {
       // '<span class="foreground-notification-img-circle pull-left  [ngStyle]="{"background": '+ requester_avatar_bckgrnd +' } ">' +
       // requester_avatar_initial 
       // +'</span>' +
-      template: '<div id="foreground-not" data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+      template: '<div id="foreground-not" data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="z-index: 1051;box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
         '<span data-notify="icon"></span>' +
-        '<span data-notify="header">New message</span>' +
-        '<span data-notify="title">{1}</span>' +
+        '<span data-notify="header" style="font-size:14px">New message</span>' +
+        '<span data-notify="title" style="font-size:14px">{1}</span>' +
         '<span data-notify="message">{2}</span>' +
         `<a href="{3}" data-notify="url"></a>` +
         '</div>'
@@ -566,7 +624,7 @@ export class NotifyService {
 
 
   showUnservedNotication(sender, msg, link) {
-    // console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
+     console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_initial', requester_avatar_initial)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_bckgrnd', requester_avatar_bckgrnd)
     $.notifyDefaults({
@@ -591,13 +649,13 @@ export class NotifyService {
       // '<span class="foreground-notification-img-circle pull-left  [ngStyle]="{"background": '+ requester_avatar_bckgrnd +' } ">' +
       // requester_avatar_initial 
       // +'</span>' +
-      template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+      template: '<div data-notify="container" class="col-3 col-sm-3 alert alert-{0}" role="alert" style="z-index: 1051; box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
 
         '<span data-notify="icon"></span>' +
-        '<span data-notify="header">New unassigned chat</span>' +
-        '<span data-notify="title">{1}</span>' +
+        '<span data-notify="header" style="font-size:14px">New unassigned chat</span>' +
+        '<span data-notify="title" style="font-size:14px">{1}</span>' +
         '<span data-notify="message">{2}</span>' +
-        `<a href="{3}" data-notify="url"></a>` +
+        `<a href="{3}" data-notify="url" style="z-index: 1051;"></a>` +
         '</div>'
 
     });
@@ -680,7 +738,7 @@ export class NotifyService {
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
         `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: ${icon_bckgrnd_color}; border-radius: 50%; font-size:16px " class="material-icons">` + icon + '</i> </span> ' +
-        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + message + '</span>' +
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px; font-size:14px">' + message + '</span>' +
         '</div>'
     });
   }
@@ -766,7 +824,7 @@ export class NotifyService {
         align: 'center'
       },
       // tslint:disable-next-line:max-line-length
-      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color:' + color + '; color:rgb(66, 77, 87);font-size: 15px;font-weight: 600;" role="alert">' +
+      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color:' + color + '; color:rgb(66, 77, 87);font-size: 15px;font-weight: 500;padding: 10px 50px; max-width: fit-content;" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
@@ -793,7 +851,7 @@ export class NotifyService {
       allow_dismiss: true,
       showProgressbar: false,
       // timer: 55000,
-      template: '<div data-notify="container" style="padding:8px 15px " class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+      template: '<div data-notify="container" style="padding:8px 15px;font-size:12px" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         '<span data-notify="icon"></span> ' +
         '<span data-notify="title">{1}</span> ' +
@@ -813,7 +871,7 @@ export class NotifyService {
     this.notifyArchivingRequest.update({
       'type': 'success', 'message':
         `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
-        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px;font-size:12px">' + msg_part1 + '</span>'
     })
   }
 
@@ -823,7 +881,7 @@ export class NotifyService {
     this.notifyArchivingRequest.update({
       'type': 'success', 'message':
         `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
-        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + msg_part1 + '</span>'
+        '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px; font-size:12px">' + msg_part1 + '</span>'
     })
   }
 
@@ -839,7 +897,7 @@ export class NotifyService {
     // tslint:disable-next-line:max-line-length
     this.notifyArchivingRequest.update({
       'type': 'success',
-      'message': '<i class="material-icons" style="vertical-align: middle;padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg + '</span> <span style="padding-left:28px">' + '</span>'
+      'message': '<i class="material-icons" style="vertical-align: middle;padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px; font-size:14px">' + msg + '</span> <span style="padding-left:28px">' + '</span>'
     })
   }
 

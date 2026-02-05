@@ -8,6 +8,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: UserEditAddComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
     NgSelectModule,
     FormsModule,
     MomentModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class UserEditAddModule { }
