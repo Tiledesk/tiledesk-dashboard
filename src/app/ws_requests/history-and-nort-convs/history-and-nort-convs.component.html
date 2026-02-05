@@ -178,9 +178,8 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - right section [ngStyle]="{'opacity':payIsVisible === true ? '1' : '0' }" -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-right">
-            <button class="btn pull-right export-to-csv-btn btn-outlined"
-              style="margin-top: 18px;" (click)="exportRequestsToCSV()">
+          <div  class="filters-on-right">
+            <button *ngIf="PERMISSION_TO_EXPORT_REQUESTS" class="btn pull-right export-to-csv-btn btn-outlined" (click)="exportRequestsToCSV()">
               <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
                 save_alt
               </span>
