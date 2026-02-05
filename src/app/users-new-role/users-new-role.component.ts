@@ -122,6 +122,8 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ, label: 'Able to view notifications of unassigned chat' },
         { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
         { key: PERMISSIONS.HISTORY_FILTER_BY_AGENT, label: 'Able to filter conversations by Agent in History' },
+        { key: PERMISSIONS.REQUESTS_EXPORT, label: 'Able to export conversations' },
+       
         // { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
         // { key: PERMISSIONS.REQUEST_CREATE_TICKET, label: 'Able to create a ticket'},
         { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message and upload file from Admin panel chat' },

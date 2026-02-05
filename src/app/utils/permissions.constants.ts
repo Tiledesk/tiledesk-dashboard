@@ -26,6 +26,7 @@ export const PERMISSIONS = {
 
   HISTORY_READ: 'history_read',
   HISTORY_FILTER_BY_AGENT: 'history_filter_by_agent',
+  REQUESTS_EXPORT:'requests_export',
   
   CONVERSATION_DETAIL_READ: 'conversation_detail_read',
   TICKET_ID_READ:'ticket_id_read',
