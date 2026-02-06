@@ -2746,7 +2746,7 @@ _presentDialogImportContents() {
 
 
   onLoadPage(searchParams?: any) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
@@ -2784,7 +2784,7 @@ _presentDialogImportContents() {
 
   onLoadByFilter(searchParams) {
     this.lastKbSearchParams = { ...searchParams };
-    // this.logger.log('onLoadByFilter:',searchParams);
+    console.log('[KNOWLEDGE BASES COMP] onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
@@ -2793,8 +2793,8 @@ _presentDialogImportContents() {
 
 
   getListOfKb(params?: any, calledby?: any) {
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
       this.kbsList = [];
@@ -3322,7 +3322,7 @@ _presentDialogImportContents() {
 
   /** */
   onUpdateKb(kb) {
-    //  this.logger.log('onUpdateKb: ', kb);
+   console.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
@@ -3384,8 +3384,9 @@ _presentDialogImportContents() {
             // this.kbsList.unshift(kbNew);
             this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
             //this.hasUpdatedKb = true;
+            console.log('onUpdateKb here 1: ', kb);
           }
-
+        console.log('onUpdateKb here 2: ', kb);
           const index = this.kbsList.findIndex(item => item.id === kb._id);
           if (index > -1) {
             this.kbsList[index] = kbNew;
@@ -3395,9 +3396,11 @@ _presentDialogImportContents() {
            // After an update/create, reload the list using the last filters, if available
           if (this.lastKbSearchParams) {
             this.onLoadByFilter(this.lastKbSearchParams);
+            console.log('onUpdateKb here 3: ', kb);
           } else {
             // Fallback: load with default params
             this.onLoadPage({});
+             console.log('onUpdateKb here 4: ', kb);
           }
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {

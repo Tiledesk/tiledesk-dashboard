@@ -217,12 +217,12 @@
         {{ "Update" | translate }}
     </button>
     <!-- || kb._id && kb.type === 'sitemap' -->
-    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
+    <!-- <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
-    </button>
+    </button> -->
 
-     <button *ngIf="kb._id && kb.type === 'sitemap'" class="btn btn-red btn-red-custom"
+     <button *ngIf="kb._id && (kb.type === 'sitemap' || kb.type === 'url')" class="btn btn-red btn-red-custom"
         mat-button (click)="onDeleteKnowledgeBase()" style="height: 36px; line-height: 20px;">
         {{ "Delete" | translate }}
     </button>
