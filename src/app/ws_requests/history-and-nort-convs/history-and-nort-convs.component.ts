@@ -2498,10 +2498,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
-    // this.pageNo = 0
-     // Only reset pageNo if not called from get-query-params (which preserves pagination when returning from detail)
+    // Only reset pageNo if not called from get-query-params (which preserves pagination when returning from detail)
     if (calledby !== 'get-query-params') {
-      // this.pageNo = 0
+      // New search: always start from first page
+      this.pageNo = 0;
       // Update URL immediately when resetting pageNo
       if (this.IS_HERE_FOR_HISTORY) {
         const queryParams = { 
