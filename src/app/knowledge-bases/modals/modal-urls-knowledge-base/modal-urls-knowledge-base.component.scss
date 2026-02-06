@@ -238,6 +238,26 @@
     text-transform: none;
 }
 
+.btn-sm {
+    font-size: 12px;
+    padding: 4px 8px;
+    line-height: 1.5;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #f5f5f5;
+    }
+
+    mat-icon {
+        vertical-align: middle;
+    }
+}
+
 
 
 
@@ -291,6 +311,8 @@
     display: flex;
 }
 
+
+
 // .option-box {
 //     // margin-right: 12px;
 //     // padding: 0px 10px 10px 10px;
@@ -326,6 +348,50 @@ mat-expansion-panel ::ng-deep {
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: .25em 0;
     padding-bottom: 4px;
+}
+
+.scrape-options-header {
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 6px;
+}
+
+.scrape-options-title {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+}
+
+.scrape-options-title>span {
+    vertical-align: middle;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.mat-icon-wpr>mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.mat-icon-wpr:hover>mat-icon {
+    color: var(--blue-20);
+}
+
+
+.paste-scrape-options-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    box-shadow: unset;
+    background-color: var(--blue-20);
+    color: #fff;
+    border-radius: 9999px;
 }
 
 

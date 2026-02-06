@@ -20,4 +20,12 @@ export interface KB {
     updatedAt?: Date;
     status?: number;
     deleting?: boolean;
+    extract_tags?: string[];
+    unwanted_tags?: string[];
+    unwanted_classnames?: string[];
+    scrape_options?: {
+        tags_to_extract?: string[];
+        unwanted_tags?: string[];
+        unwanted_classnames?: string[];
+    };
 }

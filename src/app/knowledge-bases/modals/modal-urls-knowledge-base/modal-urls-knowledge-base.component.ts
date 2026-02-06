@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject, ChangeDetectorRef } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -34,10 +34,11 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     { name: "Advanced", value: 4 },
   ];
 
-  selectedScrapeType = 2;
-  extract_tags = [];
+  selectedScrapeType = 4;
+  extract_tags = ['body']; // Always preset to 'body'
   unwanted_tags = [];
   unwanted_classnames = [];
+  stored_scrape_option: boolean
 
   // ---------------------
   // Refressh rate
@@ -65,7 +66,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
     private logger: LoggerService,
     public brandService: BrandService,
-    private kbService: KnowledgeBaseService
+    private kbService: KnowledgeBaseService,
+    private cdr: ChangeDetectorRef
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-URLS] data: ", data);
@@ -90,6 +92,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   /** */
   ngOnInit(): void {
     // this.kbForm = this.createConditionGroup();
+    this.hasStoredScrapeOptions()
   }
 
   /** */
@@ -257,5 +260,94 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
 
   contacUsViaEmail() {
     window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
+  }
+
+  /**
+   * Copy all scrape options to localStorage
+   */
+  copyAllScrapeOptions(): void {
+    this.logger.log('[MODALS-URLS] copyAllScrapeOptions called');
+    this.logger.log('[MODALS-URLS] Current extract_tags:', this.extract_tags);
+    this.logger.log('[MODALS-URLS] Current unwanted_tags:', this.unwanted_tags);
+    this.logger.log('[MODALS-URLS] Current unwanted_classnames:', this.unwanted_classnames);
+    
+    const scrapeOptions = {
+      extract_tags: [...this.extract_tags],
+      unwanted_tags: [...this.unwanted_tags],
+      unwanted_classnames: [...this.unwanted_classnames]
+    };
+    this.logger.log('[MODALS-URLS] Scrape options object to save:', scrapeOptions);
+    
+    try {
+      const jsonString = JSON.stringify(scrapeOptions);
+      this.logger.log('[MODALS-URLS] JSON string to save:', jsonString);
+      localStorage.setItem('scrape_options', jsonString);
+      
+      // Verify it was saved
+      const saved = localStorage.getItem('scrape_options');
+      this.logger.log('[MODALS-URLS] Verified saved value:', saved);
+      this.logger.log('[MODALS-URLS] Scrape options copied to storage successfully');
+    } catch (error) {
+      this.logger.error('[MODALS-URLS] Error saving scrape options to storage:', error);
+    }
+  }
+
+  /**
+   * Check if stored scrape options exist
+   */
+  hasStoredScrapeOptions(): boolean {
+    try {
+      this.stored_scrape_option =
+        localStorage.getItem('scrape_options') !== null;
+
+      return this.stored_scrape_option;
+    } catch (error) {
+      this.logger.error(
+        '[MODALS-URLS] Error reading scrape options from storage:',
+        error
+      );
+      this.stored_scrape_option = false;
+      return false;
+    }
+  }
+
+  /**
+   * Paste all scrape options from localStorage
+   */
+  pasteAllScrapeOptions(): void {
+    try {
+      const stored = localStorage.getItem('scrape_options');
+      this.logger.log('[MODALS-URLS] Stored value from localStorage:', stored);
+      if (stored) {
+        const scrapeOptions = JSON.parse(stored);
+        this.logger.log('[MODALS-URLS] Parsed scrape options:', scrapeOptions);
+        // Replace existing tags with stored ones
+        if (scrapeOptions.extract_tags && Array.isArray(scrapeOptions.extract_tags)) {
+          this.extract_tags = [...scrapeOptions.extract_tags];
+          this.logger.log('[MODALS-URLS] extract_tags after paste:', this.extract_tags);
+        } else {
+          this.extract_tags = [];
+        }
+        if (scrapeOptions.unwanted_tags && Array.isArray(scrapeOptions.unwanted_tags)) {
+          this.unwanted_tags = [...scrapeOptions.unwanted_tags];
+          this.logger.log('[MODALS-URLS] unwanted_tags after paste:', this.unwanted_tags);
+        } else {
+          this.unwanted_tags = [];
+        }
+        if (scrapeOptions.unwanted_classnames && Array.isArray(scrapeOptions.unwanted_classnames)) {
+          this.unwanted_classnames = [...scrapeOptions.unwanted_classnames];
+          this.logger.log('[MODALS-URLS] unwanted_classnames after paste:', this.unwanted_classnames);
+        } else {
+          this.unwanted_classnames = [];
+        }
+        this.logger.log('[MODALS-URLS] All arrays after paste - extract_tags:', this.extract_tags, 'unwanted_tags:', this.unwanted_tags, 'unwanted_classnames:', this.unwanted_classnames);
+        // Force change detection to update the view
+        this.cdr.detectChanges();
+      } else {
+        this.logger.log('[MODALS-URLS] No stored value found in localStorage');
+      }
+    } catch (error) {
+      this.logger.error('[MODALS-URLS] Error reading scrape options from storage:', error);
+    }
   }
 }
