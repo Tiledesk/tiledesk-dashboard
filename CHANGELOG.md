@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.170-stage 
+- Refresh the knowledge base list after updating content
+
 ### 2.7.169-stage 
 - Adds the ability to copy and paste the scraping options for URL-type and sitemap-type content
 
