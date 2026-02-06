@@ -308,12 +308,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
-    this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
+    console.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
     this.logger.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
     this.logger.log('[KB TABLE] ngOnChanges hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb);
     this.logger.log('[KB TABLE] ngOnChanges project_name ', this.project_name);
     
     
+    if (this.hasUpdatedKb) {
+      // this.onLoadByFilter()
+    }
 
     if (this.hasRemovedKb && this.kbsList.length === 0)  {
       this.SHOW_TABLE = false;
@@ -414,14 +417,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   onLoadByFilter(filterValue?: string, column?: string) {
     this.hasFiltered = true;
-    this.logger.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
-    this.logger.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
-    this.logger.log('[KB TABLE] >>> filterType ', this.filterType)
+    console.log('[KB TABLE] >>>  onLoadByFilter hasFiltered ', this.hasFiltered)
+    console.log('[KB TABLE] >>> onLoadByFilter filterStatus ', this.filterStatus)
+    console.log('[KB TABLE] >>> onLoadByFilter filterType ', this.filterType)
     // let status = '';
     // let search = '';
-    this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
-    this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
-    this.logger.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+    console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
     
     if (column == 'status') {
       this.searchParams.status = filterValue;

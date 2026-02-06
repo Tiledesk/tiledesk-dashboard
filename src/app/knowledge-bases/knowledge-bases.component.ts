@@ -163,6 +163,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   msgNamespaceHasBeenSuccessfullyUpdated: string;
   hasRemovedKb: boolean = false
   hasUpdatedKb: boolean = false
+  // Stores the last search/filter params used by the table, so we can
+  // re-apply them after an update without causing loops
+  lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
   botid: string;
@@ -2751,12 +2754,12 @@ _presentDialogImportContents() {
 
 
   onLoadPage(searchParams?: any) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     this.numberPage++;
-    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
@@ -2788,6 +2791,8 @@ _presentDialogImportContents() {
   }
 
   onLoadByFilter(searchParams) {
+    // Store last used search params so we can re-apply them after an update
+    this.lastKbSearchParams = { ...searchParams };
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
@@ -2797,8 +2802,8 @@ _presentDialogImportContents() {
 
 
   getListOfKb(params?: any, calledby?: any) {
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
       this.kbsList = [];
@@ -3385,18 +3390,23 @@ _presentDialogImportContents() {
               this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
             }
           } else {
-            // this.kbsList.push(kb);
-            // this.kbsList.unshift(kbNew);
+    
             this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
-            this.hasUpdatedKb = true;
           }
 
           const index = this.kbsList.findIndex(item => item.id === kb._id);
           if (index > -1) {
             this.kbsList[index] = kbNew;
           }
-          // this.removeKb(kb._id);
-          //-->this.updateStatusOfKb(kbNew._id, 0);
+
+          // After an update/create, reload the list using the last filters, if available
+          if (this.lastKbSearchParams) {
+            this.onLoadByFilter(this.lastKbSearchParams);
+          } else {
+            // Fallback: load with default params
+            this.onLoadPage({});
+          }
+
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {
           //   this.checkStatusWithRetry(kbNew);
