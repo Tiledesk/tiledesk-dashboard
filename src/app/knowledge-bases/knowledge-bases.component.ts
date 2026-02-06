@@ -159,6 +159,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   msgNamespaceHasBeenSuccessfullyUpdated: string;
   hasRemovedKb: boolean = false
   hasUpdatedKb: boolean = false
+  // Stores the last search/filter params used by the table, so we can
+  // re-apply them after an update without causing loops
+  lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
   botid: string;
@@ -2547,6 +2550,7 @@ _presentDialogImportContents() {
   }
 
   onLoadByFilter(searchParams) {
+    this.lastKbSearchParams = { ...searchParams };
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
@@ -3064,6 +3068,14 @@ _presentDialogImportContents() {
           const index = this.kbsList.findIndex(item => item.id === kb._id);
           if (index > -1) {
             this.kbsList[index] = kbNew;
+          }
+
+           // After an update/create, reload the list using the last filters, if available
+          if (this.lastKbSearchParams) {
+            this.onLoadByFilter(this.lastKbSearchParams);
+          } else {
+            // Fallback: load with default params
+            this.onLoadPage({});
           }
           // this.removeKb(kb._id);
           //-->this.updateStatusOfKb(kbNew._id, 0);
