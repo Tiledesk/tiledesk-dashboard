@@ -48,7 +48,7 @@
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
                 <!-- SCRAPE TYPE -->
-                <div class="option-box">
+                <!-- <div class="option-box">
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">
                             {{'KbPage.IndexingType' | translate}}
@@ -64,20 +64,59 @@
                             [searchable]="false" 
                             [(ngModel)]="selectedScrapeType" 
                             (change)="onSelectScrapeType(selectedScrapeType)">
-            
-                            <!-- <ng-option *ngFor="let type of scrape_types" [value]="type.value">{{type.name}}</ng-option> -->
                             
                         </ng-select>
                     </div>
-                </div>
-                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; margin-left: 12px;">
+                </div> -->
+                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%;">
+
+                    <!-- COPY/PASTE OPTIONS -->
+                    <!-- <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;"> -->
+                    <div class="scrape-options-header">
+                        <div class="scrape-options-title">
+                            {{'KbPage.ScrapingRules' | translate}}
+                            <span class="material-icons-outlined" 
+                                matTooltipClass="kb-custom-mat-tooltip"
+                                [matTooltip]="'KbPage.ScrapingRulesDesc' | translate"
+                                #pasteTooltip="matTooltip"
+                                matTooltipPosition="above"
+                                matTooltipHideDelay="100">
+                                help_outline
+                               
+                            </span>
+                        </div>
+
+                        <!-- *ngIf="hasStoredScrapeOptions()" -->
+                         <div class="mat-icon-wpr"
+                            (click)="pasteAllScrapeOptions()"
+                            matTooltipClass="kb-custom-mat-tooltip"
+                            [matTooltip]="stored_scrape_option ? ('KbPage.PasteScrapingRules' | translate) : ('KbPage.NoScrapingRulesToPaste' | translate)"
+                            #pasteTooltip="matTooltip"
+                            matTooltipPosition="above"
+                            matTooltipHideDelay="100"
+                            [ngStyle]="{'cursor':stored_scrape_option ? 'pointer' : 'not-allowed' }">
+                            <mat-icon>content_paste</mat-icon>
+                         </div>
+                        <!-- <button type="button" 
+                            [disabled]="!stored_scrape_option"
+                            class="btn paste-scrape-options-btn" 
+                            (click)="pasteAllScrapeOptions()"
+                            matTooltipClass="kb-custom-mat-tooltip"
+                            [matTooltip]="'PasteScrapeOptions' | translate"
+                            #pasteTooltip="matTooltip"
+                            matTooltipPosition="above"
+                            matTooltipHideDelay="100">
+                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">content_paste</mat-icon>
+                            <span>{{'Paste' | translate}}</span> 
+                        </button> -->
+                    </div>
 
                     <!-- TAGS TO EXTRACT -->
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">
                             {{'KbPage.ExtractTags' | translate }}
                         </span>
-                        <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                        <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                             <mat-chip-list #extractTags aria-label="Tag selection">
                                 <mat-chip *ngFor="let tag of extract_tags" 
                                     (removed)="removeTag('extract_tags', tag)">
@@ -102,7 +141,7 @@
                             <!-- Unwanted Tags -->
                             {{'KbPage.UnwantedTags' | translate}}
                         </span>
-                        <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                        <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                             <mat-chip-list #unwantedTags aria-label="Tag selection">
                                 <mat-chip *ngFor="let tag of unwanted_tags"
                                     (removed)="removeTag('unwanted_tags', tag)">
@@ -126,7 +165,7 @@
                             <!-- Unwanted Classnames -->
                             {{'KbPage.UnwantedClassnames' | translate}}
                         </span>
-                        <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                        <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                             <mat-chip-list #unwantedClassnames aria-label="Tag selection">
                                 <mat-chip *ngFor="let tag of unwanted_classnames"
                                     (removed)="removeTag('unwanted_classnames', tag)">

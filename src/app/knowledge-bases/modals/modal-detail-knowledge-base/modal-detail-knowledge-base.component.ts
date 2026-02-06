@@ -23,6 +23,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   chunksCount: number;
   showSpinner: boolean = true;
   getChunksError: boolean = false;
+  showCopiedMessage: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -117,6 +118,113 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     // this.logger.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.dialogRef.close(this.kb);
     // this.updateKnowledgeBase.emit(this.kb);
+  }
+
+    /**
+   * Copy all scrape options to localStorage and clipboard
+   */
+  copyAllScrapeOptions(): void {
+    // Get scrape options from KB object (check both direct properties and scrape_options object)
+    const extract_tags = this.kb.extract_tags || this.kb.scrape_options?.tags_to_extract || [];
+    const unwanted_tags = this.kb.unwanted_tags || this.kb.scrape_options?.unwanted_tags || [];
+    const unwanted_classnames = this.kb.unwanted_classnames || this.kb.scrape_options?.unwanted_classnames || [];
+    
+    this.logger.log('[MODAL-DETAIL-KB] copyAllScrapeOptions called');
+    this.logger.log('[MODAL-DETAIL-KB] Current extract_tags:', extract_tags);
+    this.logger.log('[MODAL-DETAIL-KB] Current unwanted_tags:', unwanted_tags);
+    this.logger.log('[MODAL-DETAIL-KB] Current unwanted_classnames:', unwanted_classnames);
+    
+    const scrapeOptions = {
+      extract_tags: [...extract_tags],
+      unwanted_tags: [...unwanted_tags],
+      unwanted_classnames: [...unwanted_classnames]
+    };
+    console.log('[MODAL-DETAIL-KB] Scrape options object to save:', scrapeOptions);
+    
+    try {
+      const jsonString = JSON.stringify(scrapeOptions);
+      this.logger.log('[MODAL-DETAIL-KB] JSON string to save:', jsonString);
+      
+      // Save to localStorage
+      localStorage.setItem('scrape_options', jsonString);
+      
+      // Copy to clipboard
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(jsonString).then(() => {
+          this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to clipboard successfully');
+          this.showCopiedMessage = true;
+          setTimeout(() => {
+            this.showCopiedMessage = false;
+          }, 2000);
+        }).catch((err) => {
+          this.logger.error('[MODAL-DETAIL-KB] Error copying to clipboard:', err);
+          // Fallback to execCommand
+          const success = this.fallbackCopyToClipboard(jsonString);
+          if (success) {
+            this.showCopiedMessage = true;
+            setTimeout(() => {
+              this.showCopiedMessage = false;
+            }, 2000);
+          }
+        });
+      } else {
+        // Fallback for older browsers
+        const success = this.fallbackCopyToClipboard(jsonString);
+        if (success) {
+          this.showCopiedMessage = true;
+          setTimeout(() => {
+            this.showCopiedMessage = false;
+          }, 2000);
+        }
+      }
+      
+      // Verify it was saved
+      const saved = localStorage.getItem('scrape_options');
+      console.log('[MODAL-DETAIL-KB] Verified saved value:', saved);
+      this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to storage successfully');
+    } catch (error) {
+      this.logger.error('[MODAL-DETAIL-KB] Error saving scrape options to storage:', error);
+    }
+  }
+
+  /**
+   * Fallback method to copy text to clipboard for older browsers
+   */
+  private fallbackCopyToClipboard(text: string): boolean {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
+        this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to clipboard using fallback method');
+        return true;
+      } else {
+        this.logger.error('[MODAL-DETAIL-KB] Fallback copy command failed');
+        return false;
+      }
+    } catch (err) {
+      this.logger.error('[MODAL-DETAIL-KB] Error in fallback copy:', err);
+      return false;
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+
+  /**
+   * Check if KB has scrape options to copy
+   */
+  hasScrapeOptions(): boolean {
+    if (!this.kb) return false;
+    const extract_tags = this.kb.extract_tags || this.kb.scrape_options?.tags_to_extract || [];
+    const unwanted_tags = this.kb.unwanted_tags || this.kb.scrape_options?.unwanted_tags || [];
+    const unwanted_classnames = this.kb.unwanted_classnames || this.kb.scrape_options?.unwanted_classnames || [];
+    return extract_tags.length > 0 || unwanted_tags.length > 0 || unwanted_classnames.length > 0;
   }
 
 }
