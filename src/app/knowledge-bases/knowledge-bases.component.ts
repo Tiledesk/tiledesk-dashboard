@@ -163,6 +163,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   msgNamespaceHasBeenSuccessfullyUpdated: string;
   hasRemovedKb: boolean = false
   hasUpdatedKb: boolean = false
+  // Stores the last search/filter params used by the table, so we can
+  // re-apply them after an update without causing loops
+  lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
   botid: string;
@@ -2780,6 +2783,7 @@ _presentDialogImportContents() {
   }
 
   onLoadByFilter(searchParams) {
+    this.lastKbSearchParams = { ...searchParams };
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
@@ -3379,7 +3383,7 @@ _presentDialogImportContents() {
             // this.kbsList.push(kb);
             // this.kbsList.unshift(kbNew);
             this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
-            this.hasUpdatedKb = true;
+            //this.hasUpdatedKb = true;
           }
 
           const index = this.kbsList.findIndex(item => item.id === kb._id);
@@ -3388,6 +3392,13 @@ _presentDialogImportContents() {
           }
           // this.removeKb(kb._id);
           //-->this.updateStatusOfKb(kbNew._id, 0);
+           // After an update/create, reload the list using the last filters, if available
+          if (this.lastKbSearchParams) {
+            this.onLoadByFilter(this.lastKbSearchParams);
+          } else {
+            // Fallback: load with default params
+            this.onLoadPage({});
+          }
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {
           //   this.checkStatusWithRetry(kbNew);
