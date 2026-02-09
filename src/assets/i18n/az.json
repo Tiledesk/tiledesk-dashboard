@@ -2213,6 +2213,7 @@
         "ExtractTagsNoMandatory": "Teqləri Çıxart",
         "NoScrapingRulesConfigured": "Kazıma qaydaları konfiqurasiya edilməyib",
         "ScrapingRulesDesc": "Səhifəni kazıyan zaman hansı HTML elementlərinin çıxarılacağını və ya istisna ediləcəyini təyin edin",
+        "ScrapingRulesSubtitle": "Mətn çıxarılmadan əvvəl səhifələr tam olaraq headless Chromium nümunəsində göstərilir və icra edilir",
         "PasteScrapingRules": "Kazıma qaydalarını yapışdır",
         "NoScrapingRulesToPaste": "Yapışdırmaq üçün kazıma qaydası yoxdur",
         "AdvancedContext":"Qabaqcıl kontekst",

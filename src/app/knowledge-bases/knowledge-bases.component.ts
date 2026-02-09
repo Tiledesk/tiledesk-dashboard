@@ -3400,12 +3400,14 @@ _presentDialogImportContents() {
           }
 
           // After an update/create, reload the list using the last filters, if available
-          if (this.lastKbSearchParams) {
-            this.onLoadByFilter(this.lastKbSearchParams);
-          } else {
-            // Fallback: load with default params
-            this.onLoadPage({});
-          }
+          setTimeout(() => {
+            if (this.lastKbSearchParams) {
+              this.onLoadByFilter(this.lastKbSearchParams);
+            } else {
+              // Fallback: load with default params
+              this.onLoadPage({});
+            }
+          }, 300);
 
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {

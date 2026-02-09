@@ -2212,6 +2212,7 @@
         "ExtractTagsNoMandatory": "Extraire les Balises",
         "NoScrapingRulesConfigured": "Aucune règle de scraping configurée",
         "ScrapingRulesDesc": "Définir quels éléments HTML doivent être extraits ou exclus lors du scraping de la página",
+        "ScrapingRulesSubtitle": "Les pages sont entièrement rendues et exécutées dans une instance Chromium sans tête avant l'extraction du texte",
         "PasteScrapingRules": "Coller les règles de scraping",
         "NoScrapingRulesToPaste": "Aucune règle de scraping à coller",
         "AdvancedContext":"Contexte avancé",

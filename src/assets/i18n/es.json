@@ -2185,6 +2185,7 @@
         "ExtractTagsNoMandatory": "Extraer Etiquetas",
         "NoScrapingRulesConfigured": "No hay reglas de scraping configuradas",
         "ScrapingRulesDesc": "Define qué elementos HTML deben extraerse o excluirse al hacer scraping de la página",
+        "ScrapingRulesSubtitle": "Las páginas se renderizan y ejecutan completamente en una instancia de Chromium sin cabeza antes de la extracción de texto",
         "PasteScrapingRules": "Pegar reglas de scraping",
         "NoScrapingRulesToPaste": "No hay reglas de scraping para pegar",
         "AdvancedContext":"Contexto avanzado",

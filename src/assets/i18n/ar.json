@@ -2213,6 +2213,7 @@
         "ExtractTagsNoMandatory": "استخراج العلامات",
         "NoScrapingRulesConfigured": "لم يتم تكوين قواعد استخراج",
         "ScrapingRulesDesc": "تحديد عناصر HTML التي يجب استخراجها أو استبعادها عند استخراج المحتوى من الصفحة",
+        "ScrapingRulesSubtitle": "يتم عرض الصفحات وتنفيذها بالكامل في مثالة كروميوم بلا واجهة قبل استخراج النص",
         "PasteScrapingRules": "لصق قواعد الاستخراج",
         "NoScrapingRulesToPaste": "لا توجد قواعد استخراج للصق",
         "AdvancedContext":"السياق المتقدم",

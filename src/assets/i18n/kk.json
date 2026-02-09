@@ -2228,6 +2228,7 @@
         "ExtractTagsNoMandatory": "Тегтерді Шығару",
         "NoScrapingRulesConfigured": "Scraping ережелері конфигурацияланбаған",
         "ScrapingRulesDesc": "Бетті scrapinge кезінде қай HTML элементтерін шығару керек немесе жоққа шығару керектігін анықтаңыз",
+        "ScrapingRulesSubtitle": "Мәтін шығарылмас бұрын беттер толығымен headless Chromium данасында көрсетіледі және орындалады",
         "PasteScrapingRules": "Scraping ережелерін қою",
         "NoScrapingRulesToPaste": "Қою үшін scraping ережелері жоқ",
         "AdvancedContext": "Жетілдірілген контекст",

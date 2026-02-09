@@ -2213,6 +2213,7 @@
         "ExtractTagsNoMandatory": "Извуци Ознаке",
         "NoScrapingRulesConfigured": "Нема конфигурисаних правила скрапинга",
         "ScrapingRulesDesc": "Дефинишите које HTML елементе треба извући или искључити приликом скрапинга странице",
+        "ScrapingRulesSubtitle": "Странице се у потпуности приказују и извршавају у headless Chromium инстанци пре извлачења текста",
         "PasteScrapingRules": "Налепи правила скрапинга",
         "NoScrapingRulesToPaste": "Нема правила скрапинга за лепљење",
         "AdvancedContext":"Напредни контекст",

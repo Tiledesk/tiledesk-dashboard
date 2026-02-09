@@ -2212,6 +2212,7 @@
         "ExtractTagsNoMandatory": "Teglarni Chiqarish",
         "NoScrapingRulesConfigured": "Scraping qoidalari konfiguratsiya qilinmagan",
         "ScrapingRulesDesc": "Sahifani scraping qilishda qaysi HTML elementlarini chiqarish yoki istisno qilish kerakligini belgilang",
+        "ScrapingRulesSubtitle": "Sahifalar matn chiqarilishidan oldin headless Chromium namunasida to'liq ko'rsatiladi va bajariladi",
         "PasteScrapingRules": "Scraping qoidalarini joylash",
         "NoScrapingRulesToPaste": "Joylash uchun scraping qoidalari yo'q",
         "AdvancedContext":"Kengaytirilgan kontekst",
