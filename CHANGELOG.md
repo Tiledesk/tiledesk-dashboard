@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.152
+- Updates the file upload service
+
 ### 2.7.151
 - Enables the ability to do the sign in with Google
 
