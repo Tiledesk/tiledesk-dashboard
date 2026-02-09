@@ -623,7 +623,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
       });
     } else {
-      this.launcherLogoUrl = imageStorage + 'images?path=uploads%2Fusers%2F' + this.id_project + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+      this.launcherLogoUrl = imageStorage + 'files?path=uploads%2Fusers%2F' + this.id_project + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
     }
     this.timeStamp = (new Date()).getTime();
 
@@ -3653,13 +3653,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           });
         }
         else {
-          this.uploadImageNativeService.uploadAttachment_Native(file).then(downloadURL => {
-            this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
+          this.uploadImageNativeService.uploadAssetFile(file).then(downloadURL => {
+            console.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
 
             if (downloadURL) {
 
               this.logoUrl = downloadURL;
-              this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, this.logoUrl);
+              console.log(`[WIDGET-SET-UP] - upload native downloadURL `, this.logoUrl);
+              this.widgetObj['logoChat'] = this.logoUrl
+              this.widgetService.updateWidgetProject(this.widgetObj)
             }
 
             this.fileUpload.nativeElement.value = '';
@@ -3695,12 +3697,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   deleteWidegetLogo() {
-    this.logger.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo ', this.logoUrl)
+    console.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo ', this.logoUrl)
     const firebase_conf = this.appConfigService.getConfig().firebase;
     const storageBucket = firebase_conf['storageBucket'];
     const baseUrl = this.appConfigService.getConfig().baseImageUrl;
     if (this.logoUrl.includes(storageBucket) || this.logoUrl.includes(baseUrl)) {
-      this.logger.log('the Image has  been uploaded');
+      console.log('the Image has  been uploaded');
       this.logger.log(`[WS-REQUESTS-MSGS] - deleteWidegetLogo  storageBucket`, storageBucket);
       this.logger.log(`[WS-REQUESTS-MSGS] - deleteWidegetLogo  baseUrl`, baseUrl);
 
@@ -3708,35 +3710,38 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo  logoUrl contains baseUrl', this.logoUrl.includes("baseUrl"))
 
 
-      let UID = this.logoUrl.split(this.currentUserId)[1].split('%2F')[1]; // get the UID of the image
-      let imageName = this.logoUrl.split(UID + '%2F')[1].split('?')[0];
-      this.logger.log('[WS-REQUESTS-MSGS] - delete firebase attachment img UID ', UID)
-      this.logger.log('[WS-REQUESTS-MSGS] - delete firebase attachment img name ', imageName)
+      // let UID = this.logoUrl.split(this.currentUserId)[1].split('%2F')[1]; // get the UID of the image
+      // let imageName = this.logoUrl.split(UID + '%2F')[1].split('?')[0];
+      // this.logger.log('[WS-REQUESTS-MSGS] - delete firebase attachment img UID ', UID)
+      // this.logger.log('[WS-REQUESTS-MSGS] - delete firebase attachment img name ', imageName)
       this.logger.log(`[WS-REQUESTS-MSGS] - delete native logoUrl `, this.logoUrl);
 
-      if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-        this.uploadImageService.removeUploadedAttachmentPromise(this.currentUserId, UID, imageName)
-          .then(res => {
-            this.logger.log('[WS-REQUESTS-MSGS] - delete firebase res', res)
-            this.logoUrl = this.widgetLogoURL;
-            this.logger.log('[WS-REQUESTS-MSGS] - delete firebase logoUrl', this.logoUrl)
+      // if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      //   this.uploadImageService.removeUploadedAttachmentPromise(this.currentUserId, UID, imageName)
+      //     .then(res => {
+      //       this.logger.log('[WS-REQUESTS-MSGS] - delete firebase res', res)
+      //       this.logoUrl = this.widgetLogoURL;
+      //       this.logger.log('[WS-REQUESTS-MSGS] - delete firebase logoUrl', this.logoUrl)
 
-            this.logoUrl = 'No Logo';
-          })
-          .catch(error => {
-            this.logoUrl = null
-            this.logger.error('Error deleting firebase file:', error);
-          });
+      //       this.logoUrl = 'No Logo';
+      //     })
+      //     .catch(error => {
+      //       this.logoUrl = null
+      //       this.logger.error('Error deleting firebase file:', error);
+      //     });
 
-      } else {
+      // } else {
+        console.log(`[WS-REQUESTS-MSGS] - delete attachment `);
         this.uploadImageNativeService.deleteImageUploadAttachment_Native(this.logoUrl)
           .then(res => {
-            this.logger.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
+            console.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
             if (res === true) {
               // this.logoUrl = this.widgetLogoURL;
               this.logger.log('[WS-REQUESTS-MSGS] - delete native logoUrl', this.logoUrl)
 
               this.logoUrl = 'No Logo';
+              this.widgetObj['logoChat'] = 'nologo';
+              this.widgetService.updateWidgetProject(this.widgetObj)
 
             }
           })
@@ -3744,11 +3749,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.logoUrl = null
             this.logger.error('Error deleting native file:', error);
           });
-      }
+      // }
 
     } else {
-      this.logger.log('[WS-REQUESTS-MSGS] - Removed default logo');
+      console.log('[WS-REQUESTS-MSGS] - Removed default logo');
       this.logoUrl = 'No Logo';
+      this.widgetObj['logoChat'] = 'nologo';
+      this.widgetService.updateWidgetProject(this.widgetObj)
     }
 
   }

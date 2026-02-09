@@ -571,8 +571,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
         if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl === "https://api.tiledesk.com/v2/") {
           // this.logger.log('upload env prod? ', environment.production)
-          this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
-          // this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          this.userProfileImageurl = "https://rtm.tiledesk.com/files?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+          // this.userProfileImageurl = "https://rtm.tiledesk.com/files?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
 
           this.logger.log('[USER-PROFILE] userProfileImageurl ', this.userProfileImageurl)
         } else if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl !== "https://api.tiledesk.com/v2/") {
@@ -581,7 +581,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           // this.logger.log('upload env prod? ', environment.production)
           this.userProfileImageurl = downloadurl;
         }
-        // this.logger.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
+        console.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
@@ -623,7 +623,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     } else {
       // Native upload
       this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-        this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+        console.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
           this.userImageHasBeenUploaded = image_exist;
           if (this.userImageHasBeenUploaded === true) {
@@ -648,7 +648,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
+      console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -666,20 +666,9 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   setImageProfileUrl_Native(baseUrl) {
-    this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
-    // this.timeStamp = (new Date()).getTime();
-
-    // this.userProfileImageurl = ''
-    // if (environment.production && environment.production === true) {
-    //   // this.logger.log('setImageProfileUrl_Native env prod ', environment.production)
-    //   this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
-
-    // } else if (!environment.production) {
-    //   this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    // }
-
-    // this.logger.log('setImageProfileUrl_Native userProfileImageurl ', this.userProfileImageurl)
+    this.userProfileImageurl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    console.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    
     // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
@@ -709,8 +698,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     stored_user['hasImage'] = false;
     this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
 
-    const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
-    delete_user_image_btn.blur();
+    // const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
+    // delete_user_image_btn.blur();
   }
 
   getUserProfileImage() {
