@@ -2,6 +2,7 @@
 
 ### 2.7.152
 - Updates the file upload service
+- Adds Anthropic's Claude Opus 3.6 to supported LLMs
 
 ### 2.7.151
 - Enables the ability to do the sign in with Google
