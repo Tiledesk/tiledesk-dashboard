@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -19,7 +19,7 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit {
+export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -34,6 +34,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     citations: null,
     chunkOnly: null,
     reRanking: null,
+    reRankingMultipler: null,
   }]
   panelOpenState = false; 
   selectedNamespace: any;
@@ -47,6 +48,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   isopenasetting: boolean;
   hasStoredQuestion: boolean;
   private dialogRefAiSettings: MatDialogRef<any>;
+  @ViewChild('questionTextarea', { static: false }) questionTextarea: ElementRef<HTMLTextAreaElement>;
 
   // models_list = [
   //   { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -73,6 +75,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   prompt_token_size: number;
   public chunkOnly: boolean;
   public reRanking: boolean;
+  public reRankingMultipler: number
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
@@ -101,6 +104,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
+      this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
@@ -119,6 +123,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.reRanking = this.selectedNamespace.preview_settings.reranking
         this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
       }
+
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
         this.advancedPrompt = false
@@ -147,6 +152,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // this.submitQuestion()
     }
     this.listenToCurrentURL()
+  }
+
+  ngAfterViewInit() {
+  
   }
 
   listenToCurrentURL() {
@@ -204,6 +213,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       width: '300px',
       position: { left: 'calc(50% + 215px)', top: '138px' },
       hasBackdrop: false,
+      autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
         calledBy: "modal-preview-kb"
@@ -234,6 +244,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
   reuseLastQuestion() {
+    const textarea = this.questionTextarea.nativeElement;
+    // console.log("[MODAL-PREVIEW-KB] reuseLastQuestion textarea: ", textarea);
+    setTimeout(() => {
+      this.onTextareaInput(textarea);
+    }, 0);
+   
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
       this.hasStoredQuestion = true;
@@ -247,7 +263,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
     this.question = this.storedQuestionNoDoubleQuote;
     // this.submitQuestion()
-    this.onInputPreviewChange()
+    // this.onInputPreviewChange()
   }
 
 
@@ -318,6 +334,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from editedAiSettings 2', editedAiSettings[0]['top_k'])
           this.topK = this.selectedNamespace.preview_settings.top_k
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
+        }
+        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
+          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 2', editedAiSettings[0]['reRankingMultipler'])
+          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
         }
 
         if (editedAiSettings && editedAiSettings[0]['context']) {
@@ -399,6 +423,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
       "reranking": this.reRanking,
+      "reranking_multiplier":  this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
@@ -515,13 +540,62 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     return urlPattern.test(url);
   }
 
+  onTextareaInput(textarea: HTMLTextAreaElement): void { 
+    // console.log('[MODAL-PREVIEW-KB] textarea', textarea ) 
+    const minHeight = 37;
+    const maxHeight = 52;
 
-  onInputPreviewChange() {
-    let element = document.getElementById('enter-button')
-    if (this.question !== "") {
-      element.style.display = 'inline-block';
-    } else {
-      element.style.display = 'none';
+    // Reset per ricalcolare correttamente lo scrollHeight
+    textarea.style.height = minHeight + 'px';
+
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    textarea.style.height = newHeight + 'px';
+
+    textarea.style.overflowY =
+    textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+ }
+
+
+  // onInputPreviewChange() {
+  //   let element = document.getElementById('enter-button')
+  //   if (this.question !== "") {
+  //     element.style.display = 'inline-block';
+  //   } else {
+  //     element.style.display = 'none';
+  //   }
+    
+  //   // Auto-resize textarea
+  //   this.adjustTextareaHeight();
+  // }
+
+  // adjustTextareaHeight() {
+  //   if (this.questionTextarea && this.questionTextarea.nativeElement) {
+  //     const textarea = this.questionTextarea.nativeElement;
+  //     // Reset height to calculate scrollHeight
+  //     textarea.style.height = 'auto';
+  //     const lineHeight = parseInt(getComputedStyle(textarea).lineHeight) || 20;
+  //     // Initial height: 37px (container has padding: 0px 12px, so no vertical padding)
+  //     const minHeight = 37; // Initial height to match container
+  //     const maxHeight = lineHeight * 3; // 3 rows max
+  //     const scrollHeight = textarea.scrollHeight;
+      
+  //     if (scrollHeight <= maxHeight) {
+  //       // Ensure minimum height of initial size (37px)
+  //       const newHeight = Math.max(scrollHeight, minHeight);
+  //       textarea.style.height = newHeight + 'px';
+  //       textarea.style.overflowY = 'hidden';
+  //     } else {
+  //       textarea.style.height = maxHeight + 'px';
+  //       textarea.style.overflowY = 'auto';
+  //     }
+  //   }
+  // }
+
+  onEnterKeyDown(event: KeyboardEvent) {
+    // Submit on Enter (without Shift), otherwise allow new line
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.submitQuestion();
     }
   }
 
@@ -531,11 +605,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.answer = "";
     this.source_url = null;
     this.searching = false;
-    // this.error_answer = false;
+
     this.show_answer = false;
-    let element = document.getElementById('enter-button')
-    element.style.display = 'none';
-    // this.closeBaseModal.emit();
+    // let element = document.getElementById('enter-button')
+    // element.style.display = 'none';
+
     this.dialogRef.close();
     if (this.dialogRefAiSettings) {
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)

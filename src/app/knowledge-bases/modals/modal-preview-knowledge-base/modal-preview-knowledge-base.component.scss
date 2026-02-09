@@ -140,6 +140,55 @@
     }
 }
 
+// Custom styles for question textarea
+.question-textarea {
+  width: 100%;
+  min-height: 37px;
+  max-height: 52px; /* 2 righe */
+  resize: none;
+  overflow-y: hidden;
+
+  line-height: 18px;
+  font-size: 14px;
+  padding: 8px 12px;
+    
+  border: solid 1px #ccc;
+  border-radius: 6px;
+}
+
+// Adjust fake-input when it contains question-textarea
+.fake-input:has(.question-textarea) {
+    min-height: 37px;
+    height: auto;
+    // align-items: flex-start;
+    padding: 0px 12px;
+}
+
+// Enter button styles (moved to mat-dialog-actions but keeping original styles)
+#enter-button {
+    display: none;
+    transition: background-color 0.15s ease 0s, color 0.15s ease 0s;
+    cursor: pointer;
+    animation: 0.15s ease 0s 1 normal none running fadein, 0.15s ease 0s 1 normal none running moveinleft;
+    box-sizing: border-box;
+    min-width: 22px;
+    height: 22.4px;
+    margin-top: -4px;
+    margin-bottom: -4px;
+    padding-right: 8px;
+    padding-left: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 5px;
+    color: rgb(98, 119, 140);
+    background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+    color: #fff;
+    background: var(--blue-20);
+    // box-shadow: rgb(212, 217, 230) 0px 1px 0px;
+}
+
 ::ng-deep .custom-spinner {
     .sk-fading-circle {
         width: 20px;

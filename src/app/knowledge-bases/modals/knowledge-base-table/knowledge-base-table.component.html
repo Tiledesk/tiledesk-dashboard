@@ -579,11 +579,12 @@
                                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
+                               <!-- type {{kb.type}} -->
                                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                                    <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'"
+                                     <!-- *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'" -->
+                                    <button *ngIf="kb.type === 'url'"
                                         mat-menu-item (click)="onRunIndexing(kb)">
                                         <mat-icon>play_arrow</mat-icon>
-                                        <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
                                     <button mat-menu-item (click)="onCheckStatus(kb)">

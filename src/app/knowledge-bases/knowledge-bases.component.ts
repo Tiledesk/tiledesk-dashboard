@@ -1191,14 +1191,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   presentDialogExportContents() {
     Swal.fire({
-      title: this.translate.instant('Warning'),
+      // title: this.translate.instant('Warning'),
       text: this.translate.instant('KbPage.OnlyUrlTextFaqWillBeExported'),
-      icon: "info",
+      // icon: "info",
       showCloseButton: false,
       showCancelButton: true,
       showConfirmButton: true,
       showDenyButton: false,
-      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonText: this.translate.instant('Export'),
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
@@ -1876,6 +1876,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '360px',
+      autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
       },
