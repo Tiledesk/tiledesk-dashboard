@@ -682,7 +682,9 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   setImageProfileUrl_Native(baseUrl) {
-    this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+   // this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  this.userProfileImageurl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+
     this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     // this.timeStamp = (new Date()).getTime();
 

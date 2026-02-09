@@ -3733,7 +3733,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           });
         }
         else {
-          this.uploadImageNativeService.uploadAttachment_Native(file).then(downloadURL => {
+         // this.uploadImageNativeService.uploadAttachment_Native(file).then(downloadURL => {
+         this.uploadImageNativeService.uploadAssetFile(file).then(downloadURL => {
             this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
 
             if (downloadURL) {

@@ -165,7 +165,8 @@ export class ModalUploadFileComponent implements OnInit {
 
       this.file_name_ellipsis_the_middle = this.start_and_end(file.name)
 
-      this.uploadImageNativeService.uploadAttachment_Native(this.uploadedFile)
+      // this.uploadImageNativeService.uploadAttachment_Native(this.uploadedFile)
+      this.uploadImageNativeService.uploadAssetFile(this.uploadedFile, 86400)
         .then(downloadURL => {
           // this.logger.log(`[MODAL-UPLOAD-FILE] - upload native downloadURL `, downloadURL);
           if (downloadURL) {
