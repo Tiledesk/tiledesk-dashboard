@@ -363,7 +363,7 @@
 
                            
                                   <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                     alt="" onerror="this.src='assets/img/no_image_user.png'">
 
                                   <div class="teammates-with-picture-status-icon"
@@ -885,7 +885,7 @@
                 <!-- ---------------------------------------- -->
                 <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
                   style="border-radius:50%;object-fit: cover;"
-                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                   alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
                 <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
@@ -910,7 +910,7 @@
                 <!-- ---------------------------------------- -->
                 <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
                   style="border-radius:50%;object-fit: cover;"
-                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                   alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
                 <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
