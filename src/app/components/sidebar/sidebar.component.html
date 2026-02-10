@@ -23,7 +23,7 @@
     <img id="sidebaravatar-img"
       *ngIf="(userProfileImageExist === true || userImageHasBeenUploaded === true) && !UPLOAD_ENGINE_IS_FIREBASE"
       class="avatar"
-      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg&{{timeStamp}}"
+      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg&{{timeStamp}}"
       onerror="this.src='assets/img/no_image_user.png'" />
 
     <div id="sidebaravatar-no-img" class="avatar"

@@ -241,7 +241,7 @@
                                     <!-- --------------------------------------------------- -->
                                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
                                       #nativeImg
-                                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                       (load)="nativeImg.style.display='block'; nativeImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
                                       (error)="nativeImg.style.display='none';"
                                       style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
@@ -451,7 +451,7 @@
                         <!-- USECASE uploadEngine Native -->
                         <!-- --------------------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-group"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}files?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 

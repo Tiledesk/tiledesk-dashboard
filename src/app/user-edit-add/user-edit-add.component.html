@@ -258,7 +258,7 @@
                               <!-- --------------------------------------------------- -->
                               <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-edit-profile"
                                 #nativeImg
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                src="{{baseUrl}}files?path=uploads%2Fusers%2F{{user_id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                 (load)="nativeImg.style.display='block'; nativeImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
                                 (error)="nativeImg.style.display='none';"
                                 style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />

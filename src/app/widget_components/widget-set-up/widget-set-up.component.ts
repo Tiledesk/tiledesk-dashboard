@@ -709,7 +709,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
       });
     } else {
-      this.launcherLogoUrl = imageStorage + 'images?path=uploads%2Fusers%2F' + this.id_project + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+      this.launcherLogoUrl = imageStorage + 'files?path=uploads%2Fusers%2F' + this.id_project + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
     }
     this.timeStamp = (new Date()).getTime();
 

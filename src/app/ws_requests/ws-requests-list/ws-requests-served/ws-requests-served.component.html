@@ -842,7 +842,7 @@
                     <!-- Usecase  Native (bot) -->
                     <!-- --------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                     <span class="served-by-agent">
@@ -906,7 +906,7 @@
                     <!-- Usecase  Native -->
                     <!-- --------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                       onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -963,7 +963,7 @@
                         <!-- --------------------------------------- -->
                         <img *ngIf="agent?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)">
 
                         <!-- --------------------------------------- -->
@@ -1022,7 +1022,7 @@
                     <!-- Usecase  Native (bot) -->
                     <!-- --------------------------------------- -->
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
-                      src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 

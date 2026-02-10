@@ -3241,7 +3241,15 @@ span .conv-svg-icon {
   padding-left: 12px;
   padding-right: 5px;
   position: relative;
-  left: 10px;
+  // left: 10px;
+}
+
+.fa-file-image-o:before {
+    font-size: 14px;
+    padding-top: 13px;
+}
+.fa-file-o:before {
+   font-size: 14px;
 }
 
 .remove-attachment {

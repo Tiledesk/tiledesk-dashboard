@@ -587,8 +587,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
         if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl === "https://api.tiledesk.com/v2/") {
           // this.logger.log('upload env prod? ', environment.production)
-          this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
-          // this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          this.userProfileImageurl = "https://rtm.tiledesk.com/files?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+          // this.userProfileImageurl = "https://rtm.tiledesk.com/files?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
 
           this.logger.log('[USER-PROFILE] userProfileImageurl ', this.userProfileImageurl)
         } else if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl !== "https://api.tiledesk.com/v2/") {
@@ -682,7 +682,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   setImageProfileUrl_Native(baseUrl) {
-   // this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+   // this.userProfileImageurl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
   this.userProfileImageurl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
 
     this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
@@ -691,10 +691,10 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     // this.userProfileImageurl = ''
     // if (environment.production && environment.production === true) {
     //   // this.logger.log('setImageProfileUrl_Native env prod ', environment.production)
-    //   this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+    //   this.userProfileImageurl = "https://rtm.tiledesk.com/files?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
 
     // } else if (!environment.production) {
-    //   this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    //   this.userProfileImageurl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     // }
 
     // this.logger.log('setImageProfileUrl_Native userProfileImageurl ', this.userProfileImageurl)

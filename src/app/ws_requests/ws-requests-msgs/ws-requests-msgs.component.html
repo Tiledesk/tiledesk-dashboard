@@ -267,7 +267,7 @@
                                 <!-- Usecase  Native  -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-msg-list"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{message?.sender}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
 
@@ -290,7 +290,7 @@
                                 <!-- Usecase  Native (bot) -->
                                 <!-- --------------------------------------- -->
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-in-msg-list"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
                             </div>
@@ -417,16 +417,25 @@
                     <!-- <div class=" w-100"> -->
                     <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
                     <div class="chat-msg-attachement" *ngIf="uploadedFiles">
-                      <span *ngIf="showSpinnerAttachmentUplolad === true">
-                        <i class="fa fa-spinner fa-spin" style="vertical-align: middle;"></i>
+    
+                        <div *ngIf="showSpinnerAttachmentUplolad === true"  class="spinner-border spinner-border-sm" role="status" style="height: 12px;width: 12px;position: relative;top: 4px;">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      <!-- <span>
+                        <i class="fa fa-spinner fa-spin" style="vertical-align: middle;padding-top: 4px;"></i>
+                      </span> -->
+                      <ng-container *ngIf="!showSpinnerAttachmentUplolad">
+                        <span *ngIf="uploadedFiles?.type.startsWith('image')">
+                          <i class="fa fa-file-image-o" style="vertical-align: middle;padding-top: 4px;"></i>
+                        </span>
+                        <span *ngIf="!uploadedFiles?.type.startsWith('image')">
+                          <i class="fa fa-file-o" style="vertical-align: middle; padding-top: 4px;"></i>
+                        </span>
+                      </ng-container>
+                      <span class="chat-attachement-name" style="font-size: 14px; position: relative;vertical-align: middle;top: 2px;">
+                        {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
                       </span>
-                      <span *ngIf="uploadedFiles?.type.startsWith('image')">
-                        <i class="fa fa-file-image-o" style="vertical-align: middle;"></i>
-                      </span>
-                      <span *ngIf="!uploadedFiles?.type.startsWith('image')">
-                        <i class="fa fa-file-o" style="vertical-align: middle;"></i>
-                      </span>
-                      {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
+                  
                       <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
                         (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
                         <span class="material-icons">
@@ -1098,7 +1107,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- (mouseenter)="agentntimg.open()" -->
                                 <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   class="served-by-avatar--img" [satPopoverAnchor]="agentntimg"
                                   (click)="!CHAT_PANEL_MODE && agentntimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentntimg.close()" matTooltipClass="custom-mat-tooltip"
@@ -1189,7 +1198,7 @@
                                 <!-- satPopoverAnchor]="botntengine" (click)="botntengine.toggle()" (document:click)="botntengine.close()" {{'ClickToDisplayActions' | translate}}-->
                                 <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
                                   class="served-by-avatar--img"
-                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
                                   (click)="goToMemberProfile(agent, agent?._id )" matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
@@ -1252,7 +1261,7 @@
                                         <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                             class="served-by-avatar--img"
                                             (click)="goToMemberProfile(agent, agent?._id )" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
@@ -1324,7 +1333,7 @@
                                         <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img class="served-by-avatar--img"
-                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;"
                                             *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
@@ -3786,7 +3795,7 @@
                             <!-- --------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -3960,7 +3969,7 @@
                             <!-- --------------------------------------- -->
                             <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                               [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              src="{{baseUrl}}files?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                               onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
@@ -4485,7 +4494,7 @@
                         <!-- --------------------------------------- -->
                         <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                           [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
 
@@ -4665,7 +4674,7 @@
                           <!-- --------------------------------------- -->
                           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
                             [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 

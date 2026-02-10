@@ -736,7 +736,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   checkBotImageExistOnNative() {
     const baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-    const imageUrl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    const imageUrl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     const self = this;
     this.verifyImageURL(imageUrl, function (imageExists) {
 
@@ -802,7 +802,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   setImageProfileUrl_Native(storage) {
-    this.botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    this.botProfileImageurl = storage + 'files?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
