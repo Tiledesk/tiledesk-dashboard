@@ -710,6 +710,7 @@
     "AllowedFileExtensions": "Extensiones de archivo permitidas",
     "AllowedFileExtensionsWidgetDesc": "Gestiona el tipo de archivos que los usuarios pueden subir desde el widget",
     "AllowedFileExtensionsAgentChatDesc": "Gestionar los tipos de archivo que los compañeros de equipo pueden subir desde el chat del agente",
+    "AllowedFileExtensionsForChatDesc": "Gestionar los tipos de archivo que los compañeros de equipo pueden subir desde el chat",
     "AddExtension": "Añadir extensión",
     "QuotaResetsOn": "La cuota se reinicia el {{reset_date}}",
     "AllExtensions": "Todos",

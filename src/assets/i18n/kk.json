@@ -710,6 +710,7 @@
     "AllowedFileExtensions": "Рұқсат етілген файл кеңейтімдері",
     "AllowedFileExtensionsWidgetDesc": "Пайдаланушылардың виджеттен жүктей алатын файл түрлерін басқарыңыз",
     "AllowedFileExtensionsAgentChatDesc": "Команда мүшелерінің агент чатынан жүктей алатын файл түрлерін басқару",
+    "AllowedFileExtensionsForChatDesc": "Команда мүшелерінің чаттан жүктей алатын файл түрлерін басқару",
     "AddExtension": "Кеңейтуді қосу",
     "QuotaResetsOn": "Квота {{reset_date}} күні қалпына келтіріледі",
     "AllExtensions": "Барлығы",

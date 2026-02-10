@@ -711,6 +711,7 @@
     "AllowedFileExtensions": "Разрешенные расширения файлов",
     "AllowedFileExtensionsWidgetDesc": "Управление типами файлов, которые пользователи могут загружать из виджета",
     "AllowedFileExtensionsAgentChatDesc": "Управление типами файлов, которые члены команды могут загружать из чата агента",
+      "AllowedFileExtensionsForChatDesc": "Управление типами файлов, которые члены команды могут загружать из чата",
     "AddExtension": "Добавить расширение",
     "QuotaResetsOn": "Квота сбрасывается {{reset_date}}",
     "AllExtensions": "Все",

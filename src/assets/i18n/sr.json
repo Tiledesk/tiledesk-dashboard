@@ -711,6 +711,7 @@
     "AllowedFileExtensions": "Дозвољене екстензије датотека",
     "AllowedFileExtensionsWidgetDesc": "Управљајте врстама датотека које корисници могу отпремити из виџета",
     "AllowedFileExtensionsAgentChatDesc": "Управљај типовима фајлова које саиграчи могу отпремити из ћаскања са агентом",
+    "AllowedFileExtensionsForChatDesc": "Управљај типовима фајлова које саиграчи могу отпремити из ћаскања",
     "AddExtension": "Додај екстензију",
     "QuotaResetsOn": "Квота се resetује {{reset_date}}",
     "AllExtensions": "Све",

@@ -711,6 +711,7 @@
     "AllowedFileExtensions": "İcazə verilən fayl uzantıları",
     "AllowedFileExtensionsWidgetDesc": "İstifadəçilərin vidjetdən yükləyə biləcəyi fayl növlərini idarə edin",
     "AllowedFileExtensionsAgentChatDesc": "Komanda yoldaşlarının agent söhbətindən yükləyə biləcəyi fayl növlərini idarə edin",
+    "AllowedFileExtensionsForChatDesc": "Komanda yoldaşlarının söhbətdən yükləyə biləcəyi fayl növlərini idarə edin",
     "AddExtension": "Uzantı əlavə et",
     "QuotaResetsOn": "Kvota {{reset_date}} tarixində sıfırlanır",
     "AllExtensions": "Hamısı",

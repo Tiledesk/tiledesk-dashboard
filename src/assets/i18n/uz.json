@@ -711,6 +711,7 @@
     "AllowedFileExtensions": "Ruxsat etilgan fayl kengaytmalari",
     "AllowedFileExtensionsWidgetDesc": "Foydalanuvchilar vidjetdan yuklay oladigan fayl turlarini boshqaring",
     "AllowedFileExtensionsAgentChatDesc":  "Jamoa a'zolarining agent chatidan yuklay oladigan fayl turlarini boshqaring",
+    "AllowedFileExtensionsForChatDesc": "Jamoa a'zolarining chatdan yuklay oladigan fayl turlarini boshqaring",
     "AddExtension": "Kengaytma qo'shish",
     "QuotaResetsOn": "Kvota {{reset_date}} sanada qayta tiklanadi",
     "AllExtensions": "Hammasi",

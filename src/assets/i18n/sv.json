@@ -712,6 +712,7 @@
     "AllowedFileExtensions": "Tillåtna filtillägg",
     "AllowedFileExtensionsWidgetDesc": "Hantera vilken typ av filer användare kan ladda upp från widgeten",
     "AllowedFileExtensionsAgentChatDesc": "Hantera filtyper som lagkamrater kan ladda upp från agentchatt",
+    "AllowedFileExtensionsForChatDesc": "Hantera filtyper som lagkamrater kan ladda upp från chatt",
     "AddExtension": "Lägg till tillägg",
     "QuotaResetsOn": "Kvoten återställs den {{reset_date}}",
     "AllExtensions": "Alla",

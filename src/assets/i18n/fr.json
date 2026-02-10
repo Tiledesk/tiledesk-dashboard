@@ -710,6 +710,7 @@
     "AllowedFileExtensions": "Extensions de fichier autorisées",
     "AllowedFileExtensionsWidgetDesc": "Gérer le type de fichiers que les utilisateurs peuvent télécharger depuis le widget",
     "AllowedFileExtensionsAgentChatDesc": "Gérer les types de fichiers que les coéquipiers peuvent télécharger depuis le chat de l'agent",
+    "AllowedFileExtensionsForChatDesc": "Gérer les types de fichiers que les coéquipiers peuvent télécharger depuis le chat",
     "AddExtension": "Ajouter une extension",
     "QuotaResetsOn": "Le quota se réinitialise le {{reset_date}}",
     "AllExtensions": "Toutes",

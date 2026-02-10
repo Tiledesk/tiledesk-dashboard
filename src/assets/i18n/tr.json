@@ -712,6 +712,7 @@
     "AllowedFileExtensions": "İzin verilen dosya uzantıları",
     "AllowedFileExtensionsWidgetDesc": "Kullanıcıların widget'tan yükleyebileceği dosya türlerini yönetin",
     "AllowedFileExtensionsAgentChatDesc": "Takım arkadaşlarının ajan sohbetinden yükleyebileceği dosya türlerini yönetin",
+    "AllowedFileExtensionsForChatDesc": "Takım arkadaşlarının sohbetten yükleyebileceği dosya türlerini yönetin",
     "AddExtension": "Uzantı ekle",
     "QuotaResetsOn": "Kota {{reset_date}} tarihinde sıfırlanır",
     "AllExtensions": "Tümü",

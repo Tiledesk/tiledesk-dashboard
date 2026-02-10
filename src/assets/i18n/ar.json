@@ -710,6 +710,7 @@
     "AllowedFileExtensions": "امتدادات الملفات المسموحة",
     "AllowedFileExtensionsWidgetDesc": "إدارة نوع الملفات التي يمكن للمستخدمين تحميلها من الودجت",
     "AllowedFileExtensionsAgentChatDesc":  "إدارة أنواع الملفات التي يمكن لزملاء الفريق تحميلها من دردشة الوكيل",
+    "AllowedFileExtensionsForChatDesc": "إدارة أنواع الملفات التي يمكن لزملاء الفريق تحميلها من الدردشة",
     "AddExtension": "إضافة امتداد",
     "QuotaResetsOn": "إعادة تعيين الحصة في {{reset_date}}",
     "AllExtensions": "الكل",

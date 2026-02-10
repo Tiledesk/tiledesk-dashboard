@@ -712,6 +712,7 @@
     "AllowedFileExtensions": "Allowed file extensions",
     "AllowedFileExtensionsWidgetDesc": "Manage the type of files users can upload from the widget",
     "AllowedFileExtensionsAgentChatDesc": "Manage the file types teammates can upload from agent chat",
+    "AllowedFileExtensionsForChatDesc": "Manage the file types teammates can upload from chat",
     "AddExtension": "Add extension",
     "QuotaResetsOn": "Quota resets on {{reset_date}}",
     "AllExtensions": "All",
