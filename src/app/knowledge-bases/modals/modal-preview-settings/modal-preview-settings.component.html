@@ -39,7 +39,7 @@
         </label>
 
         <div class="ai-models-wpr" style="font-size: 14px;"> 
-            <ng-select
+            <!-- <ng-select
                 appendTo="body"
                 [items]="model_list"
                 bindLabel="name"
@@ -65,9 +65,6 @@
                         <div style="font-weight: 400;">
                             {{item.name}}
                         </div>
-                        <!-- <div *ngIf="item.multiplier" style="color: rgba(0, 0, 0, .6);font-weight: 400; position: absolute;right: 25px;"> 
-                            {{item.multiplier }} 
-                        </div> -->
                     </div>
                 </ng-template>
                 <ng-template ng-option-tmp let-item="item" let-index="index">
@@ -90,10 +87,33 @@
                             </div>
 
                         </div>
-                        <!-- <div style="display: flex;flex-direction: row; justify-content: space-between;"> -->
                         <div *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
                             {{item.multiplier }}
                         </div>
+                    </div>
+                </ng-template>
+            </ng-select> -->
+        
+            <ng-select
+                class="select-llm-model"
+                appendTo="body"
+                [items]="flattenedModels"
+                bindLabel="name"
+                bindValue="value"
+                [groupBy]="'providerName'"
+                [virtualScroll]="true"
+                [searchable]="true"
+                placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+                [(ngModel)]="selectedModel"
+                (change)="onSelectModel(selectedModel)"
+                [clearable]="false">
+
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;font-family: var(--header-font-family) ;">
+                    {{ item.name }}
+                        <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
+                        {{ item.multiplier }}
+                        </span>
                     </div>
                 </ng-template>
             </ng-select>
