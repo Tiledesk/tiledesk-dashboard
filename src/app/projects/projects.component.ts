@@ -81,9 +81,133 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   browserLang: string;
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
+    
+  // Language selection variables (from user-profile)
+  selected_dashboard_language: any;
+  display_msg_please_select_language: boolean = false;
+  display_msg_refresh_page_for_selected_lang: boolean = false;
+  display_msg_refresh_page_for_browser_lang: boolean = false;
+  hasSelectedPreferredLangRadioBtn: boolean;
+  hasSelectedBrowserLangRadioBtn: boolean;
+  HAS_SELECTED_PREFERRED_LANG: boolean = false;
+  i18n_for_this_brower_language_is_available: boolean = false;
+  browser_lang: string;
+  dashboard_languages = [
+    {
+      id: 1,
+      name: 'it',
+      avatar: 'assets/img/language_flag/it.png'
+    },
+    {
+      id: 2,
+      name: 'en',
+      avatar: 'assets/img/language_flag/en.png'
+    },
+    {
+      id: 3,
+      name: 'de',
+      avatar: 'assets/img/language_flag/de.png'
+    },
+    {
+      id: 4,
+      name: 'es',
+      avatar: 'assets/img/language_flag/es.png'
+    },
+    {
+      id: 5,
+      name: 'pt',
+      avatar: 'assets/img/language_flag/pt.png'
+    },
+    {
+      id: 6,
+      name: 'fr',
+      avatar: 'assets/img/language_flag/fr.png'
+    },
+    {
+      id: 7,
+      name: 'ru',
+      avatar: 'assets/img/language_flag/ru.png'
+    },
+    {
+      id: 8,
+      name: 'tr',
+      avatar: 'assets/img/language_flag/tr.png'
+    },
+    {
+      id: 9,
+      name: 'sr',
+      avatar: 'assets/img/language_flag/sr.png'
+    },
+    {
+      id: 10,
+      name: 'ar',
+      avatar: 'assets/img/language_flag/ar.png'
+    },
+    {
+      id: 11,
+      name: 'uk',
+      avatar: 'assets/img/language_flag/uk.png'
+    },
+    {
+      id: 12,
+      name: 'sv',
+      avatar: 'assets/img/language_flag/sv.png'
+    },
+    {
+      id: 13,
+      name: 'az',
+      avatar: 'assets/img/language_flag/az.png'
+    },
+    {
+      id: 14,
+      name: 'pl',
+      avatar: 'assets/img/language_flag/pl.png'
+    },
+    {
+      id: 15,
+      name: 'nl',
+      avatar: 'assets/img/language_flag/nl.png'
+    },
+    {
+      id: 16,
+      name: 'cs',
+      avatar: 'assets/img/language_flag/cs.png'
+    },
+    {
+      id: 14,
+      name: 'pl',
+      avatar: 'assets/img/language_flag/pl.png'
+    },
+    {
+      id: 15,
+      name: 'nl',
+      avatar: 'assets/img/language_flag/nl.png'
+    },
+    {
+      id: 16,
+      name: 'cs',
+      avatar: 'assets/img/language_flag/cs.png'
+    },
+    {
+      id: 17,
+      name: 'zh',
+      avatar: 'assets/img/language_flag/zh.png'
+    },
+    {
+      id: 18,
+      name: 'kk',
+      avatar: 'assets/img/language_flag/kk.png'
+    },
+    {
+      id: 19,
+      name: 'uz',
+      avatar: 'assets/img/language_flag/uz.png'
+    }
+  ];
   prjct_profile_name: string;
   DISPLAY_PROJECT_ID: boolean = false;
   public logoutBtnVisible: boolean;
+  userId: string;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -133,6 +257,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
     this.getRouteParams();
+    this.getLoggedUser();
   }
 
   ngAfterContentInit(): void {
@@ -159,6 +284,36 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+   getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[PROJECTS] - user ', user)
+
+        if (user) {
+          this.user = user;
+          this.userId = user._id;
+          
+          // Check for stored preferred language (like in user-profile.component)
+          const stored_preferred_lang = localStorage.getItem(this.userId + '_lang');
+          
+          if (stored_preferred_lang) {
+            this.HAS_SELECTED_PREFERRED_LANG = true;
+            this.selected_dashboard_language = stored_preferred_lang;
+            this.logger.log('[PROJECTS] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+            this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+          } else {
+            this.HAS_SELECTED_PREFERRED_LANG = false;
+            this.logger.log('[PROJECTS] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+            this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+          }
+        }
+      })
+  }
+
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
       this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
@@ -182,6 +337,8 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
         this.currentUserId = user._id;
         this.logger.log('[PROJECTS] - Current USER ID ', this.currentUserId)
 
+        // Get browser language first
+        this.getBrowserLanguage();
 
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
         // this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
@@ -238,6 +395,73 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
         this.logger.log('[PROJECTS] getLangTranslation', translation)
         this.tlangparams = { language_name: translation }
       });
+  }
+
+    // Language selection methods (from user-profile)
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    if (tranlatedLanguage.includes(this.browser_lang)) {
+      this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang))
+      this.i18n_for_this_brower_language_is_available = true;
+      this.logger.log('[PROJECTS] - browser_lang', this.browser_lang)
+      this.logger.log('[PROJECTS] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available)
+    } else {
+      this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang))
+      this.i18n_for_this_brower_language_is_available = false;
+      this.logger.log('[PROJECTS] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available)
+    }
+  }
+
+  onSelectPreferredDsbrdLang(selectedLanguageCode) {
+    this.logger.log('[PROJECTS] onSelectPreferredDsbrdLang - selectedLanguage ', selectedLanguageCode)
+    this.logger.log('[PROJECTS] onSelectPreferredDsbrdLang - userId ', this.userId)
+    this.selected_dashboard_language = selectedLanguageCode;
+    if (this.userId) {
+      localStorage.setItem(this.userId + '_lang', selectedLanguageCode);
+      this.logger.log('[PROJECTS] onSelectPreferredDsbrdLang - Saved to localStorage: ', this.userId + '_lang = ' + selectedLanguageCode)
+    } else {
+      this.logger.warn('[PROJECTS] onSelectPreferredDsbrdLang - userId is not available, cannot save to localStorage')
+    }
+    this.HAS_SELECTED_PREFERRED_LANG = true;
+    this.display_msg_please_select_language = false;
+    this.display_msg_refresh_page_for_selected_lang = true;
+    this.hasSelectedPreferredLangRadioBtn = true;
+  }
+
+  onSelectPreferredLangFromRadioBtn($event) {
+    this.logger.log('[PROJECTS] onSelectPreferredLangFromRadioBtn - event ', $event.target.checked);
+    this.HAS_SELECTED_PREFERRED_LANG = true;
+    this.hasSelectedPreferredLangRadioBtn = $event.target.checked;
+    this.hasSelectedBrowserLangRadioBtn = false;
+
+    if ($event.target.checked === true && this.selected_dashboard_language === undefined) {
+      this.logger.log('[PROJECTS] this.selected_dashboard_language ', this.selected_dashboard_language);
+      this.display_msg_please_select_language = true;
+    }
+
+    if ($event.target.checked === true && this.selected_dashboard_language !== undefined) {
+      this.logger.log('[PROJECTS] this.selected_dashboard_language ', this.selected_dashboard_language);
+      this.display_msg_refresh_page_for_selected_lang = true;
+    }
+  }
+
+  onSelectBrowserLangFromRadioBtn($event) {
+    this.logger.log('[PROJECTS] onSelectBrowserLangFromRadioBtn - event ', $event.target.checked)
+    if (this.userId) {
+      localStorage.removeItem(this.userId + '_lang');
+    }
+    this.HAS_SELECTED_PREFERRED_LANG = false;
+    this.hasSelectedBrowserLangRadioBtn = $event.target.checked
+    this.hasSelectedPreferredLangRadioBtn = false;
+    this.logger.log('[PROJECTS] hasSelectedPreferredLangRadioBtn ', this.hasSelectedPreferredLangRadioBtn);
+    if ($event.target.checked === true) {
+      this.display_msg_refresh_page_for_browser_lang = true;
+      this.logger.log('[PROJECTS] onSelectBrowserLangFromRadioBtn ', this.display_msg_refresh_page_for_browser_lang);
+    }
+  }
+
+  refreshPage() {
+    location.reload();
   }
 
   ckeckUserPhotoProfileOnFirebase(user) {
