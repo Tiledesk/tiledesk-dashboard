@@ -727,8 +727,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     stored_user['hasImage'] = false;
     this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
 
-    const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
-    delete_user_image_btn.blur();
+    // const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
+    // delete_user_image_btn.blur();
   }
 
   getUserProfileImage() {
