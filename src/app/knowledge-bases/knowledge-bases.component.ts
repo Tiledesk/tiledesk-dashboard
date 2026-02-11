@@ -2753,20 +2753,27 @@ _presentDialogImportContents() {
   // ---------------- SERVICE FUNCTIONS --------------- // 
 
 
-  onLoadPage(searchParams?: any) {
+  onLoadPage(searchParams?: any, calledby?: string) {
     console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
     console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
-    this.numberPage++;
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
+    
+    // Use page from searchParams if provided, otherwise increment numberPage
+    if (searchParams && searchParams.page !== undefined) {
+      this.numberPage = searchParams.page;
+    } else {
+      this.numberPage++;
+    }
+    
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams?.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
     params += "&page=" + this.numberPage;
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
    
-    this.logger.log('onLoadNextPage searchParams > search (2):', searchParams.search);
+    this.logger.log('onLoadNextPage searchParams > search (2):', searchParams?.search);
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
       this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage status:', params);
@@ -2787,17 +2794,17 @@ _presentDialogImportContents() {
     } else {
       params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
     }
-    this.getListOfKb(params, 'onLoadPage');
+    this.getListOfKb(params, calledby || 'onLoadPage');
   }
 
-  onLoadByFilter(searchParams) {
+  onLoadByFilter(searchParams, calledby?: string) {
     // Store last used search params so we can re-apply them after an update
     this.lastKbSearchParams = { ...searchParams };
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
-    this.onLoadPage(searchParams);
+    this.onLoadPage(searchParams, calledby);
   }
 
 
@@ -2805,7 +2812,7 @@ _presentDialogImportContents() {
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
+    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' ) {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
@@ -2815,25 +2822,35 @@ _presentDialogImportContents() {
       this.kbsListCount = resp.count;
       this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
-      resp.kbs.forEach((kb: any, i: number) => {
-        // this.kbsList.push(kb);
-        const index = this.kbsList.findIndex(objA => objA._id === kb._id);
-        if (index !== -1) {
-          this.kbsList[index] = kb;
-        } else {
-          if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-            this.kbsList.unshift(kb);
+      
+      // If called after update, replace the entire list to maintain server order
+      if (calledby === 'after-update') {
+        this.kbsList = [...resp.kbs];
+      } else {
+        resp.kbs.forEach((kb: any, i: number) => {
+          // this.kbsList.push(kb);
+          const index = this.kbsList.findIndex(objA => objA._id === kb._id);
+          if (index !== -1) {
+            this.kbsList[index] = kb;
           } else {
-            this.kbsList.push(kb);
+            if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
+              this.kbsList.unshift(kb);
+            } else {
+              this.kbsList.push(kb);
+            }
           }
-        }
-        this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
-        this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
-        if (i === this.kbsListCount - 1) {
-          this.getKbCompleted = true;
-          this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
-        }
-      });
+          this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
+          this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
+          if (i === this.kbsListCount - 1) {
+            this.getKbCompleted = true;
+            this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
+          }
+        });
+      }
+      
+      if (calledby === 'after-update') {
+        this.getKbCompleted = true;
+      }
 
       this.refreshKbsList = !this.refreshKbsList;
 
@@ -3399,13 +3416,16 @@ _presentDialogImportContents() {
             this.kbsList[index] = kbNew;
           }
 
-          // After an update/create, reload the list using the last filters, if available
+          // After an update/create, reload the list using the last filters, but always start from page 0
           setTimeout(() => {
             if (this.lastKbSearchParams) {
-              this.onLoadByFilter(this.lastKbSearchParams);
+              // Create a copy of lastKbSearchParams and reset page to 0
+              const refreshParams = { ...this.lastKbSearchParams };
+              refreshParams.page = 0;
+              this.onLoadByFilter(refreshParams, 'after-update');
             } else {
-              // Fallback: load with default params
-              this.onLoadPage({});
+              // Fallback: load with default params, starting from page 0
+              this.onLoadPage({ page: 0 }, 'after-update');
             }
           }, 300);
 

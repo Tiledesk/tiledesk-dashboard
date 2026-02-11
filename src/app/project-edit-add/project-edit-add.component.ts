@@ -3378,7 +3378,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   
   addExtension(): void {
-    const ext = this.newExtension.trim().toLowerCase();
+    let ext = this.newExtension.trim().toLowerCase();
+
+    // Add dot prefix if missing
+    if (ext && !ext.startsWith('.')) {
+      ext = '.' + ext;
+    }
 
     if (ext && !this.extensions.includes(ext)) {
       this.extensions.push(ext);
