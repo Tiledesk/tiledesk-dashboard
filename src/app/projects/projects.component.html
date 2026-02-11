@@ -48,7 +48,7 @@
 
                       <div class="browser-lang-wpr"
                         [ngClass]="{'browser-lang-disabled-wpr':HAS_SELECTED_PREFERRED_LANG }">
-                        <img [src]="flag_url"
+                        <img [src]="browser_flag_url"
                           style="width: 18px;height: 18px; position: relative;top: -1px;">
 
                         <span class="browser-lang" style="font-weight: 300; color: #333;font-size: 14px; "
@@ -65,9 +65,9 @@
                         </span>
                       </div>
                       <div *ngIf="display_msg_refresh_page_for_browser_lang && hasSelectedBrowserLangRadioBtn"
-                        class="refresh-page" style="margin-top: 3px;font-size: 12px;">
+                        class="refresh-page" style="margin-top: 3px;font-size: 12px;font-weight: 400;">
                         {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}}
-                        <span style="color: #03a5e8;cursor: pointer;" (click)="refreshPage(); $event.stopPropagation()">
+                        <span style="color: #03a5e8;cursor: pointer;display: block;" (click)="refreshPage(); $event.stopPropagation()">
                           {{'RefreshNow' | translate}}
                         </span>
                       </div>
@@ -119,9 +119,9 @@
                         {{'PleaseSelectALanguage' | translate}}
                       </div>
                       <div *ngIf="display_msg_refresh_page_for_selected_lang && hasSelectedPreferredLangRadioBtn"
-                        class="refresh-page" style="font-size: 14px;">
+                        class="refresh-page" style="margin-top: 3px;font-size: 12px;font-weight: 400;">
                         {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}}
-                        <span style="color: #03a5e8;cursor: pointer;" (click)="refreshPage(); $event.stopPropagation()">
+                        <span style="color: #03a5e8;cursor: pointer;display: block;" (click)="refreshPage(); $event.stopPropagation()">
                           {{'RefreshNow' | translate}}
                         </span>
                       </div>

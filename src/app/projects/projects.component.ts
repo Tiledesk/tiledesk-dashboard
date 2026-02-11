@@ -78,6 +78,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   project_plan_badge: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   flag_url: string;
+  browser_flag_url: string; // Separate flag URL for browser language (never changes)
   dsbrd_lang: string;
   tlangparams: any
   browserLang: string;
@@ -411,11 +412,12 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
           // this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         } else {
-          this.browserLang = this.translate.getBrowserLang();
-          this.dsbrd_lang = this.browserLang;
+          // Use browser_lang already set by getBrowserLanguage() which checks if it's supported
+          this.browserLang = this.browser_lang;
+          this.dsbrd_lang = this.browser_lang;
           this.getLangTranslation(this.dsbrd_lang)
           // this.logger.log('[PROJECTS] - browser_lang ', this.browserLang)
-          this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
+          this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
           this.translate.use(this.dsbrd_lang);
           // this.logger.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
@@ -457,18 +459,24 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
       });
   }
 
-  // Language selection methods (from user-profile)
+   // Language selection methods (from user-profile)
   getBrowserLanguage() {
-    this.browser_lang = this.translate.getBrowserLang();
+    const browserLangFull = this.translate.getBrowserLang();
+    // Extract only the main language code (e.g., "it" from "it-IT")
+    this.browser_lang = browserLangFull ? browserLangFull.split('-')[0] : 'en';
     if (tranlatedLanguage.includes(this.browser_lang)) {
       this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang))
       this.i18n_for_this_brower_language_is_available = true;
       this.logger.log('[PROJECTS] - browser_lang', this.browser_lang)
       this.logger.log('[PROJECTS] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available)
+      // Set browser flag URL (never changes, always shows browser language flag)
+      this.browser_flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
     } else {
       this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang))
       this.i18n_for_this_brower_language_is_available = false;
       this.logger.log('[PROJECTS] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available)
+      // Set browser flag URL to English if browser language is not supported
+      this.browser_flag_url = "assets/img/language_flag/en.png"
     }
   }
 
