@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.165-AR
+- Fixes the bug: is not possible to update a knowledge base (ITDELSDAM-5137)
+- Fixes the bug: user's choice of preflight and current page is not retained when going back in History from conversation detail (ITDELSDAM-5119)
+- Sets the default value of the Preflight query parameter to false (ITDELSDAM-5091)
+- Adds "Able to export conversations" permission without which a teammate with custom role will not be able to export CSV of conversations from History page and Non-real time conversations page (ITDELSDAM-50929)
+- Minor improvements
+
 ### 2.7.164-AR
 - Bootstrap 5
 
