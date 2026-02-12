@@ -178,14 +178,15 @@ input[type="text"] {
 }
 
 .user-profile-fullname {
-  padding: 0px 16px;
-  margin-bottom: 0px;
+  // padding: 0px 16px;
+  margin-bottom: 6px;
   font-size: 16px;
   // color: #3c4858;
   color: var(--text-color);
   // font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   font-family: var(--header-font-family);
   font-weight: 400;
+  line-height: 19px;
 }
 
 .user-profile-email {
@@ -204,7 +205,7 @@ input[type="text"] {
   align-items: center;
   flex-direction: row;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 6px 16px;
   cursor: pointer;
 }
 
