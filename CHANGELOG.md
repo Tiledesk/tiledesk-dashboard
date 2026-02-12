@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.153
+- Adds the ability to select the dashboard language from the "Your Projects" page
+
 ### 2.7.152
 - Updates the file upload service
 - Adds Anthropic's Claude Opus 3.6 to supported LLMs
