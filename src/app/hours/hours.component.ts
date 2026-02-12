@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
+import { URL_IF_OH_Action } from 'app/utils/util';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -571,6 +572,10 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
   // Slot - END
 
+  goToIfOHActionDoc(){
+      const url = URL_IF_OH_Action;
+      window.open(url, '_blank'); 
+  }
   
 
   // ngOnInit() {

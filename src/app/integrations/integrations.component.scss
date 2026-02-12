@@ -228,10 +228,10 @@ mat-expansion-panel ::ng-deep {
     //background: #3ea9f5;
     background: linear-gradient(45deg, #3167e2, #3167e2, #a736ff);
     border: none;
-    border-radius: 6px;
-    height: 30px;
+    border-radius: 9999px;
+    height: 40px;
     font-weight: 500;
-    padding: 0px 8px;
+    padding: 0px 26px;
     opacity: 0.8;
 
     &:hover {

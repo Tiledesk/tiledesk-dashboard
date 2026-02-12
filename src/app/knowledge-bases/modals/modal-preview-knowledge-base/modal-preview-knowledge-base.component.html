@@ -25,13 +25,11 @@
 
   <div class="form--container">
     <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
-    <div class="fake-input">
-      <div class="fake-input-inner">
-        <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-          (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()">
-        <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
-      </div>
-    </div>
+    <!-- <div class="fake-input"> -->
+      <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
+    <!-- </div> -->
   </div>
 
   <div *ngIf="searching" class="search-placeholder">
@@ -127,7 +125,10 @@
     [disabled]="!hasStoredQuestion">
     <!-- Re-use last question -->
     {{"KbPage.ReUseLastQuestion" | translate }}
-
+  </button>
+  <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
+  <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
+        {{ "Send" | translate }}
   </button>
 
 </div>

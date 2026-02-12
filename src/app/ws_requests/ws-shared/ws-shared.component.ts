@@ -215,7 +215,7 @@ export class WsSharedComponent implements OnInit {
                 // ------------------------------------------------------------------------------
                 // Usecase uploadEngine Native 
                 // ------------------------------------------------------------------------------
-                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                imgUrl = imageStorage + "files?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
               }
 
               this.checkImageExists(imgUrl, (existsImage) => {
@@ -278,7 +278,7 @@ export class WsSharedComponent implements OnInit {
                   // ------------------------------------------------------------------------------
                   // Usecase uploadEngine Native 
                   // ------------------------------------------------------------------------------
-                  imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                  imgUrl = imageStorage + "files?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                 }
 
                 this.checkImageExists(imgUrl, (existsImage) => {
@@ -391,7 +391,7 @@ export class WsSharedComponent implements OnInit {
             // ------------------------------------------------------------------------------
             // Usecase uploadEngine Native 
             // ------------------------------------------------------------------------------
-            imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + participantid + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+            imgUrl = imageStorage + "files?path=uploads%2Fusers%2F" + participantid + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
@@ -425,7 +425,7 @@ export class WsSharedComponent implements OnInit {
                 // ------------------------------------------------------------------------------
                 // Usecase uploadEngine Native 
                 // ------------------------------------------------------------------------------
-                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + participantid + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                imgUrl = imageStorage + "files?path=uploads%2Fusers%2F" + participantid + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
               }
 
               this.checkImageExists(imgUrl, (existsImage) => {

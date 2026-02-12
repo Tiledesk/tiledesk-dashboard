@@ -5,6 +5,11 @@ import { RouterModule ,Routes} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: "", component: ProjectsComponent},
@@ -19,7 +24,12 @@ const routes: Routes = [
     CommonModule,
     TranslateModule,
     SharedModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    NgSelectModule
   ],
   exports: [
     RouterModule

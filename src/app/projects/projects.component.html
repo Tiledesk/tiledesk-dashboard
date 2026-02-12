@@ -27,13 +27,115 @@
             <!--  ------------------------------------------------ -->
             <!--  Dashboard language -->
             <!--  ------------------------------------------------ -->
-            <li class="projects-dashboard-language">
-              <!-- style="cursor: pointer;" -->
-              <a routerLink="/user-profile" fragment="language">
+            <li class="projects-dashboard-language" style="margin-top: 9px;">
+             <!-- <a routerLink="/user-profile" fragment="language">
                 <img [src]="flag_url" matTooltipClass="custom-mat-tooltip"
                   [matTooltip]="languageNotSupported ? ( 'TheDashboardIsTranslatedIntoEnglish' | translate ) : ( 'TheDashboardIsTranslatedInto' | translate: tlangparams ) "
                   #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-              </a>
+              </a> -->
+              <button mat-icon-button [matMenuTriggerFor]="languageMenu" matTooltipClass="custom-mat-tooltip"
+                [matTooltip]="languageNotSupported ? ( 'TheDashboardIsTranslatedIntoEnglish' | translate ) : ( 'TheDashboardIsTranslatedInto' | translate: tlangparams ) "
+                #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                style="padding: 0; border: none; background: transparent;">
+                <img [src]="flag_url" style="width: 24px; height: 24px;">
+              </button>
+              <mat-menu #languageMenu="matMenu" class="language-selection-menu">
+                <div style="padding: 16px;" (click)="$event.stopPropagation()">
+                  <!-- Automatic Dashboard Language -->
+                  <div class="row" style="margin-bottom: 12px;">
+                    <div class="col-md-12 automatic-dshbrd-lang">
+                      <div class="radio" style="margin-bottom: 2px; margin-left: -10px; width: fit-content;">
+                        <label>
+                          <input (change)="onSelectBrowserLangFromRadioBtn($event); $event.stopPropagation()" type="radio"
+                            name="dashboardLanguage" value="browserlang"
+                            [checked]="!HAS_SELECTED_PREFERRED_LANG">
+                          {{'AutomaticDashboardLanguage' | translate }}
+                        </label>
+                      </div>
+
+                      <div class="browser-lang-wpr"
+                        [ngClass]="{'browser-lang-disabled-wpr':HAS_SELECTED_PREFERRED_LANG }">
+                        <img [src]="browser_flag_url"
+                          style="width: 18px;height: 18px; position: relative;top: -1px;">
+
+                        <span class="browser-lang" style="font-weight: 300; color: #333;font-size: 14px; "
+                          [ngClass]="{'not-available-language': !i18n_for_this_brower_language_is_available}">
+                          {{ browser_lang | translate}}
+                        </span>
+                        <span class="not-available-language-string"
+                          *ngIf="!i18n_for_this_brower_language_is_available && hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
+                          ({{'LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish'|translate}})
+                        </span>
+                        <span class="not-available-language-string"
+                          *ngIf="!i18n_for_this_brower_language_is_available && !hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
+                          ({{'LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish'|translate}})
+                        </span>
+                      </div>
+                      <div *ngIf="display_msg_refresh_page_for_browser_lang && hasSelectedBrowserLangRadioBtn"
+                        class="refresh-page" style="margin-top: 3px;font-size: 12px;line-height: 17px;font-weight: 400;">
+                        {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}}
+                        <span style="color: #03a5e8;cursor: pointer; display: block;" (click)="refreshPage(); $event.stopPropagation()">
+                          {{'RefreshNow' | translate}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span class="span-12"></span>
+
+                  <!-- Preferred Dashboard Language -->
+                  <div class="row" style="margin-bottom: 12px;">
+                    <div class="col-md-12 preferred-dshbrd-lang">
+                      <div class="radio" style="margin-bottom: 2px;margin-left: -10px;width: fit-content;">
+                        <label>
+                          <input type="radio" value="preferredlang"
+                            (change)="onSelectPreferredLangFromRadioBtn($event); $event.stopPropagation()"
+                            name="dashboardLanguage" [checked]="HAS_SELECTED_PREFERRED_LANG">
+                          {{'PreferredDashboardLanguage' | translate }}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="preferred-lang-selection-wpr" style="font-size: 14px;padding-right: 18px;">
+                        <ng-select [items]="dashboard_languages" 
+                          bindLabel="name" 
+                          bindValue="name"
+                          appendTo="body" 
+                          [clearable]="false" 
+                          [(ngModel)]="selected_dashboard_language"
+                          [searchable]="false"
+                          (change)="onSelectPreferredDsbrdLang(selected_dashboard_language); $event.stopPropagation()"
+                          (click)="$event.stopPropagation()"
+                          placeholder="{{'PreferredDashboardLanguage' | translate}}">
+                          <ng-template ng-label-tmp let-item="item">
+                            <img style="width: 18px;height: 18px;" height="18" width="18" [src]="item.avatar" />
+                            <span>
+                              {{item.name | translate}}
+                            </span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <img style="width: 18px;height: 18px;" height="18" width="18" [src]="item.avatar" />
+                            <span>
+                              {{item.name | translate }}
+                            </span>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                      <div *ngIf="display_msg_please_select_language" class="language-not-selected" style="margin-top: 3px;font-size: 12px;">
+                        {{'PleaseSelectALanguage' | translate}}
+                      </div>
+                      <div *ngIf="display_msg_refresh_page_for_selected_lang && hasSelectedPreferredLangRadioBtn"
+                        class="refresh-page" style="margin-top: 3px;font-size: 12px;line-height: 17px;font-weight: 400;">
+                        {{'TheSettingsWillBeAppliedAfterRefreshingTheDashboard' | translate}}
+                        <span style="color: #03a5e8;cursor: pointer;display: block;" (click)="refreshPage(); $event.stopPropagation()">
+                          {{'RefreshNow' | translate}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-menu>
             </li>
 
 
@@ -66,7 +168,7 @@
                   <!-- --------------------------------------------------- -->
                   <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                   <img *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE " class="user-img-user-img-in-dropdown"
-                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                     onerror="this.src='assets/img/no_image_user.png'" />
 
                   <!-- --------------------------------------------------- -->
@@ -100,7 +202,7 @@
                       <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
                       <img style="width:80px; height:80px" *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE "
                         class="user-img-user-img-in-dropdown"
-                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        src="{{baseUrl}}files?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/no_image_user.png'" />
 
                       <!-- --------------------------------------------------- -->
@@ -121,9 +223,9 @@
                       {{ user?.email }}
                     </h4>
 
-                    <li class="divider"></li>
+                  
 
-                    <div class="user-profile-link" routerLink="/user-profile">
+                 <!--   <div class="user-profile-link" routerLink="/user-profile">
 
                       <div class="user-profile-link-icon">
 
@@ -148,15 +250,9 @@
 
                       </div>
 
-                    </div>
-
-                    <!-- <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
-                      <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
-                    </button> -->
+                    </div> -->
                     <li *ngIf="logoutBtnVisible" class="divider"></li>
-                    <!-- <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                      {{ 'NavBar.LogOut' | translate }}
-                    </button> -->
+                    
 
                     <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
 

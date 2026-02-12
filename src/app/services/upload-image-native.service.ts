@@ -21,6 +21,7 @@ export class UploadImageNativeService {
 
   BASE_URL: string
   TOKEN: string;
+  projectId: string;
   public files: any[];
 
   constructor(
@@ -31,11 +32,21 @@ export class UploadImageNativeService {
     public notify: NotifyService,
     private translate: TranslateService,
   ) {
-    this.getToken()
+    this.getToken();
+    this.getCurrentProject()
 
     this.files = [];
     this.BASE_URL = this.appConfigService.getConfig().baseImageUrl
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - BASE URL ', this.BASE_URL)
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        console.log('[UPLOAD-IMAGE-NATIVE.SERV] - projectId ', this.projectId)
+      }
+    });
   }
 
   getToken() {
@@ -53,9 +64,9 @@ export class UploadImageNativeService {
   // {"message":"Image uploded successfully","filename":"uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fphoto.jpg","thumbnail":"uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg"}*
 
   // in PROD
-  // https://api.tiledesk.com/v2/images?path=uploads%2Fusers%2F5ebf9b2892befe0019055217%2Fimages%2Fphoto.jpg
+  // https://api.tiledesk.com/v2/files?path=uploads%2Fusers%2F5ebf9b2892befe0019055217%2Fimages%2Fphoto.jpg
 
-  // https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg
+  // https://tiledesk-server-pre.herokuapp.com/files?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg
   // : Promise<any>
 
   uploadUserPhotoProfile_Native(file: File): Observable<any> {
@@ -74,23 +85,24 @@ export class UploadImageNativeService {
     // formData.append('file', file, file.name);
 
     // USE IMAGE API
-    const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] BASE_URL_IMAGES ', BASE_URL_IMAGES)
+    // const BASE_URL_IMAGES = this.BASE_URL + 'images'
+    const BASE_URL_IMAGES = this.BASE_URL + this.projectId + '/files'
+    console.log('[UPLOAD-IMAGE-NATIVE.SERV] Photo Profile upload BASE_URL_IMAGES ', BASE_URL_IMAGES)
     return this._httpClient
-      .put<any>(BASE_URL_IMAGES + '/users/photo?force=true', formData, requestOptions)
+      .post<any>(BASE_URL_IMAGES + '/users/photo', formData, requestOptions)
       .pipe(map((res: any) => {
-        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
+        console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
         if (res && res.message) {
-          this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
+          console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
 
-          if (res.message === 'Image uploded successfully') {
+          if (res.message === 'Image uploaded successfully') {
             this.userImageWasUploaded_Native.next(true);
           } else {
             this.userImageWasUploaded_Native.next(false);
             this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - ERROR RES MSG ', res.message);
           }
         }
-        const downloadURL = BASE_URL_IMAGES + '?path=' + res['filename'];
+        const downloadURL = this.BASE_URL + 'files?path=' + res['filename'];
         // const downloadURL = BASE_URL_IMAGES + '?path=' + res['thumbnail'];
         // this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - downloadURL ', downloadURL);
         this.userImageDownloadUrl_Native.next(downloadURL);
@@ -111,11 +123,39 @@ export class UploadImageNativeService {
     );
   }
 
+    // https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fphoto.jpg
+  deletePhotoProfile_Native(id, calledfor: string) {
+    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] CALLING DELETE - ID) ', id);
+    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] CALLING DELETE calledfor ', calledfor);
+
+    const headers = new HttpHeaders({
+      Authorization: this.TOKEN,
+      // 'Content-Type': 'multipart/form-data',
+    });
+    const requestOptions = { headers: headers };
+    // const url = "https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F" + id + "%2Fimages%2Fphoto.jpg"
+    // const BASE_URL_IMAGES = this.BASE_URL + 'images'
+    const BASE_URL_IMAGES = this.BASE_URL + this.projectId + '/files'
+    return this._httpClient
+      .delete(BASE_URL_IMAGES + "?path=uploads/users/" + id + "/images/photo.jpg", requestOptions)
+      .subscribe((res: any) => {
+        console.log('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - RES ', res);
+
+        if (res && res.message === "File deleted successfully") {
+          if (calledfor === 'user') {
+            this.hasDeletedUserPhoto.next(true);
+          }
+        } else if (res && res.message !== "File deleted successfully") {
+          if (calledfor === 'user') {
+            this.hasDeletedUserPhoto.next(false);
+            this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - ERROR ', res.message);
+          }
+        }
+      });
+  }
+
 
   // @nicola_74 when you upload by bot (or otherwise not the current user) you have to use this: 
-
-
-
   uploadBotPhotoProfile_Native(file: File, id: string): Observable<any> {
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD BOT PHOTO PROFILE NATIVE file ', file)
     const headers = new HttpHeaders({
@@ -138,7 +178,7 @@ export class UploadImageNativeService {
       .pipe(map((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES ', res);
         if (res && res.message) {
-          this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES MSG ', res.message);
+          console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES MSG ', res.message);
           if (res.message === 'Image uploded successfully') {
 
             this.botImageWasUploaded_Native.next(true);
@@ -168,35 +208,7 @@ export class UploadImageNativeService {
   }
 
 
-  // https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fphoto.jpg
-  deletePhotoProfile_Native(id, calledfor: string) {
-    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] CALLING DELETE - ID (OF USER OR BOT) ', id);
-    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] CALLING DELETE calledfor ', calledfor);
 
-    const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
-      // 'Content-Type': 'multipart/form-data',
-    });
-    const requestOptions = { headers: headers };
-    // const url = "https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F" + id + "%2Fimages%2Fphoto.jpg"
-    const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    return this._httpClient
-      .delete(BASE_URL_IMAGES + "/users/?path=uploads/users/" + id + "/images/photo.jpg", requestOptions)
-      .subscribe((res: any) => {
-        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - RES ', res);
-
-        if (res && res.message === "Image deleted successfully") {
-          if (calledfor === 'user') {
-            this.hasDeletedUserPhoto.next(true);
-          }
-        } else if (res && res.message !== "Image deleted successfully") {
-          if (calledfor === 'user') {
-            this.hasDeletedUserPhoto.next(false);
-            this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - ERROR ', res.message);
-          }
-        }
-      });
-  }
 
 
   uploadLauncherLogoOnNative(file: File): Observable<any> {
@@ -238,7 +250,7 @@ export class UploadImageNativeService {
       }))
   }
 
-
+  // this.URL_TILEDESK_FILE = this.getBaseUrl() + projectId + '/files'
   uploadAttachment_Native(upload): Promise<any> {
     //  this.logger.log('[NATIVE UPLOAD] - upload new image/file ... upload', upload)
     const headers = new HttpHeaders({
@@ -253,11 +265,12 @@ export class UploadImageNativeService {
     if ((upload.type.startsWith('image') && (!upload.type.includes('svg')))) {
       // this.logger.log('[NATIVE UPLOAD] - upload new image')
       //USE IMAGE API
-      const url = this.BASE_URL + 'images' + '/users'
+      // const url = this.BASE_URL + 'images' + '/users'
+      const url = this.BASE_URL + this.projectId + '/files/chat'
       return new Promise((resolve, reject) => {
         that.uploadAttachment$.next(0);
         that._httpClient.post(url, formData, requestOptions).subscribe(data => {
-          const downloadURL = this.BASE_URL + 'images' + '?path=' + data['filename'];
+          const downloadURL = this.BASE_URL + 'files' + '?path=' + data['filename'];
           resolve(downloadURL)
           that.uploadAttachment$.next(100);
         }, (error) => {
@@ -269,12 +282,13 @@ export class UploadImageNativeService {
       });
     } else {
       // this.logger.log('[NATIVE UPLOAD] - upload new file')
-      //USE FILE API
-      const url = this.BASE_URL + 'files' + '/users'
+      // USE FILE API
+      // const url = this.BASE_URL + 'files' + '/users'
+      const url = this.BASE_URL + this.projectId + '/files/chat'
       return new Promise((resolve, reject) => {
         that.uploadAttachment$.next(0);
         that._httpClient.post(url, formData, requestOptions).subscribe(data => {
-          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURI(data['filename']);
+          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURIComponent(data['filename']);
           resolve(downloadURL)
           that.uploadAttachment$.next(100);
           // that.BSStateUpload.next({upload: upload});
@@ -288,6 +302,44 @@ export class UploadImageNativeService {
       });
     }
   }
+
+
+  uploadAssetFile(upload, expirationTime?:any): Promise<any> {
+    //  this.logger.log('[NATIVE UPLOAD] - upload new image/file ... upload', upload)
+    const headers = new HttpHeaders({
+      Authorization: this.TOKEN,
+      //'Content-Type': 'multipart/form-data',
+    });
+    const requestOptions = { headers: headers };
+    const formData = new FormData();
+    formData.append('file', upload);
+
+    const that = this;
+
+      let url = this.BASE_URL + this.projectId + '/files/assets'
+
+      if (expirationTime) {
+        url += `?expirationTime=${encodeURIComponent(expirationTime)}`;
+      }
+
+      return new Promise((resolve, reject) => {
+        that.uploadAttachment$.next(0);
+        that._httpClient.post(url, formData, requestOptions).subscribe(data => {
+          const downloadURL = this.BASE_URL + 'files' + '?path=' + (data['filename']);
+          resolve(downloadURL)
+          that.uploadAttachment$.next(100);
+        }, (error) => {
+          that.uploadAttachment$.next(100);
+          this.manageUploadError(error)
+          this.logger.error('[NATIVE UPLOAD] - ERROR upload new file ', error)
+          this.logger.log('[NATIVE UPLOAD] uploadAssetFile error 2', error)
+          reject(error)
+        });
+      });
+    
+  }
+
+  
 
   manageUploadError(error) {
     if (error.status === 413) {
@@ -303,7 +355,7 @@ export class UploadImageNativeService {
   }
 
   deleteImageUploadAttachment_Native(path) {
-    this.logger.log('[NATIVE UPLOAD] - delete image path ',path)
+    console.log('[NATIVE UPLOAD] - delete image path ',path)
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
       //'Content-Type': 'multipart/form-data',
@@ -312,7 +364,8 @@ export class UploadImageNativeService {
 
     //USE IMAGE API
     const that = this;
-    const url = this.BASE_URL + 'images' + '/users' + '?path=' + path.split('path=')[1]
+    // const url = this.BASE_URL + 'images' + '/users' + '?path=' + path.split('path=')[1]
+    const url = this.BASE_URL + this.projectId + '/files?path=' + path.split('path=')[1]
     this.logger.log('[NATIVE UPLOAD] delete Image Attachment URL ', url)
     return new Promise((resolve, reject) => {
       that._httpClient.delete(url, requestOptions).subscribe(data => {
@@ -328,7 +381,7 @@ export class UploadImageNativeService {
 
 
   deleteDocumentUploadAttachment_Native(path) {
-    this.logger.log('[NATIVE UPLOAD] - delete Document path ',path)
+   console.log('[NATIVE UPLOAD] - delete Document path ',path)
    const headers = new HttpHeaders({
      Authorization: this.TOKEN,
      //'Content-Type': 'multipart/form-data',
@@ -336,8 +389,9 @@ export class UploadImageNativeService {
    const requestOptions = { headers: headers };
 
    const that = this;
-  //  this.BASE_URL + 'files' + '/users'
-   const url = this.BASE_URL + 'files' + '/users' + '?path=' + path.split('path=')[1]
+
+  //  const url = this.BASE_URL + 'files' + '/users' + '?path=' + path.split('path=')[1]
+   const url = this.BASE_URL + this.projectId + '/files?path=' + path.split('path=')[1]
    this.logger.log('[NATIVE UPLOAD] delete Document Attachment URL ', url)
    return new Promise((resolve, reject) => {
      that._httpClient.delete(url, requestOptions).subscribe(data => {

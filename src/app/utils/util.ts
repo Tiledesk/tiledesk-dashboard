@@ -810,6 +810,7 @@ export const COHERE_MODEL: Array<{ name: string, value: string, description:stri
   { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Command A (03-2025)",              value: "command-a-03-2025",            description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Command A Reasoning (08-2025)",    value: "command-a-reasoning-08-2025",  description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Command R7B (12-2024)",            value: "command-r7b-12-2024",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Command A Vision (07-2025)",       value: "command-a-vision-07-2025",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
@@ -835,6 +836,7 @@ export const ANTHROPIC_MODEL: Array<{ name: string, value: string, description:s
   { name: "Claude 3.5 Haiku",                 value: "claude-3-5-haiku-latest",           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude 4.5 Haiku",                 value: "claude-haiku-4-5",                  description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude 3.7 Sonnet",                value: "claude-3-7-sonnet-latest",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Claude Opus 4.6",                  value: "claude-opus-4-6",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude Opus 4.5",                  value: "claude-opus-4-5",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude Opus 4.1",                  value: "claude-opus-4-1",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Claude Opus 4",                    value: "claude-opus-4-0",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
@@ -1179,6 +1181,7 @@ export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-
 export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
 export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
 export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+export const URL_reranking_doc = "https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/re-ranking";
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
 export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
@@ -1186,4 +1189,6 @@ export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/a
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
 export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-to-send-whatsapp-messages-to-contacts';
+export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/if-operating-hours#how-to-configure-the-action'
+
 

@@ -608,7 +608,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (isfirebaseuploadengine === true) {
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imagestorage + "/o/profiles%2F" + projectuser.id_user._id + "%2Fphoto.jpg?alt=media";
           } else {
-            imgUrl = imagestorage + "images?path=uploads%2Fusers%2F" + projectuser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+            imgUrl = imagestorage + "files?path=uploads%2Fusers%2F" + projectuser.id_user._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
 
           this.checkImageExists(imgUrl, (existsImage) => {
@@ -1614,7 +1614,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                   if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
                     imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
                   } else {
-                    imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                     this.logger.log('[WS-REQUESTS-LIST] - LAST PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
                   }
                   this.checkImageExists(imgUrl, (existsImage) => {
@@ -1668,7 +1668,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                       if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
                         imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
                       } else {
-                        imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         this.logger.log('[WS-REQUESTS-LIST] - OTHER PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
                       }
                       this.checkImageExists(imgUrl, (existsImage) => {
@@ -1958,7 +1958,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
     } else {
-      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+      imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
     }
 
     const last_abandoned_by_project_user_array = []
@@ -1983,7 +1983,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
     } else {
-      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + other_project_users_found['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+      imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + other_project_users_found['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
     }
 
     this.other_project_users_that_has_abandoned_array.push(

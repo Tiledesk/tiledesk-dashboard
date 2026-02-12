@@ -18,6 +18,7 @@ import { NotifyService } from '../../core/notify.service';
 import { AppConfigService } from '../../services/app-config.service';
 // import * as moment from 'moment';
 import moment from "moment";
+import 'moment-timezone';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
@@ -306,6 +307,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   requests_status_selected_from_advanced_option: string;
   youCannotJoinChat: string;
   joinChatTitle: string;
+  currentUTCName: string;
 
   upgradePlan: string;
   cancel: string;
@@ -1612,7 +1614,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                       if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
                         imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
                       } else {
-                        imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         this.logger.log('[HISTORY & NORT-CONVS] - LAST PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
                       }
                       this.checkImageExists(imgUrl, (existsImage) => {
@@ -1666,7 +1668,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                           if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
                             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + projectuser['id_user']._id + "%2Fphoto.jpg?alt=media"
                           } else {
-                            imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + projectuser['id_user']._id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             this.logger.log('[HISTORY & NORT-CONVS] - OTHER PROJECT-USER THAT HAS ABANDONED has image ', imgUrl)
                           }
                           this.checkImageExists(imgUrl, (existsImage) => {
@@ -2391,6 +2393,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   search() {
+    this.logger.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH calledby ', 'search')
     this.logger.log('HERE IN SEARCH duration operator ', this.duration_op)
     this.logger.log('HERE IN SEARCH duration ', this.duration)
     this.logger.log('HERE IN SEARCH duration called_phone ', this.called_phone)
@@ -2598,6 +2601,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.call_id = ""
     }
 
+    // Get timezone only if both start_date and end_date are selected
+    let timezoneParam = '';
+    if (this.startDateValue && this.endDateValue) {
+      this.currentUTCName = moment.tz.guess();
+      timezoneParam = '&timezone=' + (this.currentUTCName || 'UTC');
+    }
 
     this.queryString =
       variable_parameter
@@ -2615,6 +2624,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'called=' + this.called_phone + '&'
       + 'caller=' + this.caller_phone + '&'
       + 'call_id=' + this.call_id
+      + timezoneParam
 
     // + 'called_phone=' + this.called_phone + '&'
     // + 'caller_phone=' + this.caller_phone
@@ -3555,7 +3565,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + user['_id'] + "%2Fphoto.jpg?alt=media"
     } else {
-      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+      imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + user['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
     }
 
     const last_abandoned_by_project_user_array = []
@@ -3580,7 +3590,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + other_project_users_found['_id'] + "%2Fphoto.jpg?alt=media"
     } else {
-      imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + other_project_users_found['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+      imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + other_project_users_found['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
     }
 
     this.other_project_users_that_has_abandoned_array.push(

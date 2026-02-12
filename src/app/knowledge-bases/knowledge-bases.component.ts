@@ -159,6 +159,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   msgNamespaceHasBeenSuccessfullyUpdated: string;
   hasRemovedKb: boolean = false
   hasUpdatedKb: boolean = false
+  lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
   botid: string;
@@ -948,7 +949,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             // ------------------------------------------------------------------------------
             // Usecase uploadEngine Native 
             // ------------------------------------------------------------------------------
-            imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+            imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
@@ -1191,14 +1192,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   presentDialogExportContents() {
     Swal.fire({
-      title: this.translate.instant('Warning'),
+      // title: this.translate.instant('Warning'),
       text: this.translate.instant('KbPage.OnlyUrlTextFaqWillBeExported'),
-      icon: "info",
+      // icon: "info",
       showCloseButton: false,
       showCancelButton: true,
       showConfirmButton: true,
       showDenyButton: false,
-      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonText: this.translate.instant('Export'),
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
@@ -1876,6 +1877,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '360px',
+      autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
       },
@@ -2508,12 +2510,17 @@ _presentDialogImportContents() {
   // ---------------- SERVICE FUNCTIONS --------------- // 
 
 
-  onLoadPage(searchParams?: any) {
+  onLoadPage(searchParams?: any, calledby?: string) {
     this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
-    this.numberPage++;
+    // Use page from searchParams if provided, otherwise increment numberPage
+    if (searchParams && searchParams.page !== undefined) {
+      this.numberPage = searchParams.page;
+    } else {
+      this.numberPage++;
+    }
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
@@ -2542,15 +2549,15 @@ _presentDialogImportContents() {
     } else {
       params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
     }
-    this.getListOfKb(params, 'onLoadPage');
+    this.getListOfKb(params,  calledby || 'onLoadPage');
   }
 
-  onLoadByFilter(searchParams) {
+  onLoadByFilter(searchParams, calledby?: string) {
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
-    this.onLoadPage(searchParams);
+    this.onLoadPage(searchParams, calledby);
   }
 
 
@@ -2558,7 +2565,7 @@ _presentDialogImportContents() {
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
+    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update') {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
@@ -2568,25 +2575,34 @@ _presentDialogImportContents() {
       this.kbsListCount = resp.count;
       this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
-      resp.kbs.forEach((kb: any, i: number) => {
-        // this.kbsList.push(kb);
-        const index = this.kbsList.findIndex(objA => objA._id === kb._id);
-        if (index !== -1) {
-          this.kbsList[index] = kb;
-        } else {
-          if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-            this.kbsList.unshift(kb);
+      // If called after update, replace the entire list to maintain server order
+      if (calledby === 'after-update') {
+        this.kbsList = [...resp.kbs];
+      } else {
+        resp.kbs.forEach((kb: any, i: number) => {
+          // this.kbsList.push(kb);
+          const index = this.kbsList.findIndex(objA => objA._id === kb._id);
+          if (index !== -1) {
+            this.kbsList[index] = kb;
           } else {
-            this.kbsList.push(kb);
+            if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
+              this.kbsList.unshift(kb);
+            } else {
+              this.kbsList.push(kb);
+            }
           }
-        }
-        this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
-        this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
-        if (i === this.kbsListCount - 1) {
-          this.getKbCompleted = true;
-          this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
-        }
-      });
+          this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
+          this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
+          if (i === this.kbsListCount - 1) {
+            this.getKbCompleted = true;
+            this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
+          }
+        });
+      }
+
+      if (calledby === 'after-update') {
+        this.getKbCompleted = true;
+      }
 
       this.refreshKbsList = !this.refreshKbsList;
 
@@ -3066,6 +3082,20 @@ _presentDialogImportContents() {
           }
           // this.removeKb(kb._id);
           //-->this.updateStatusOfKb(kbNew._id, 0);
+
+          // After an update/create, reload the list using the last filters, but always start from page 0
+          setTimeout(() => {
+            if (this.lastKbSearchParams) {
+              // Create a copy of lastKbSearchParams and reset page to 0
+              const refreshParams = { ...this.lastKbSearchParams };
+              refreshParams.page = 0;
+              this.onLoadByFilter(refreshParams, 'after-update');
+            } else {
+              // Fallback: load with default params, starting from page 0
+              this.onLoadPage({ page: 0 }, 'after-update');
+            }
+          }, 300);
+
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {
           //   this.checkStatusWithRetry(kbNew);

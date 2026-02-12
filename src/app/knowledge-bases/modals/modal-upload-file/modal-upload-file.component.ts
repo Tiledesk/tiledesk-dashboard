@@ -56,7 +56,7 @@ export class ModalUploadFileComponent implements OnInit {
 
       if (fileList.length > 0) { }
       const file: File = fileList[0];
-      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
+      console.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
 
       this.uploadedFile = file;
 
@@ -93,7 +93,7 @@ export class ModalUploadFileComponent implements OnInit {
       // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
       // || mimeType === "application/json"
       // || mimeType === "text/plain"
-      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || mimeType === "text/plain") {
 
         this.fileSupported = true;
 
@@ -115,7 +115,7 @@ export class ModalUploadFileComponent implements OnInit {
         }
         // this.doFormData(file)
         // && mimeType !==  "text/plain"
-      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType === "text/plain") {
         // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
         
         this.fileSupported = false;
@@ -165,7 +165,7 @@ export class ModalUploadFileComponent implements OnInit {
 
       this.file_name_ellipsis_the_middle = this.start_and_end(file.name)
 
-      this.uploadImageNativeService.uploadAttachment_Native(this.uploadedFile)
+      this.uploadImageNativeService.uploadAssetFile(this.uploadedFile, 86400)
         .then(downloadURL => {
           // this.logger.log(`[MODAL-UPLOAD-FILE] - upload native downloadURL `, downloadURL);
           if (downloadURL) {

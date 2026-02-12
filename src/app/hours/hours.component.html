@@ -109,6 +109,7 @@
           <div class="oaerror info" style="margin-bottom: 16px;">
             <div *ngIf="selectedSlot.id === 0" class="slot-description">
               <span [innerHTML]="'HoursPage.GeneralOperatingHoursDescription' | translate"></span>
+              <span class="custom-anchor-to-docs" style="display: block; margin-left: 0px; font-size: 13px;" [innerHTML]="'HoursPage.LearnMoreAboutTheIfOperatingHoursAction' | translate" (click)="goToIfOHActionDoc()"> </span>
 
               <!-- <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a> -->
 
