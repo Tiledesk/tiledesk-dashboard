@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.154
+- Adds MCP servers tools
+
 ### 2.7.153
 - Adds the ability to select the dashboard language from the "Your Projects" page
 
