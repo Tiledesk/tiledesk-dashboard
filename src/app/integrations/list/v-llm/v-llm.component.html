@@ -1,0 +1,108 @@
+<!-- <div class="header">
+
+    <div class="signup">
+        <a href="https://ollama.com/signup" target="_blank">{{ 'Integration.Signup' | translate }}</a><p [innerHTML]="'Integration.FreeAccount' | translate: translateparams"></p>
+    </div>
+    
+    <div *ngIf="isVerified === true" class="status">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1"
+                cy="65.1" r="62.1" />
+            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
+                stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+        </svg>
+        <p class="success">{{ 'Integration.Verified' | translate }}</p>
+    </div>
+
+    <div *ngIf="isVerified === false" class="status">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+            <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1"
+                cy="65.1" r="62.1" />
+            <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round"
+                stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+            <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round"
+                stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
+        </svg>
+        <p class="error">{{ 'Integration.Failed' | translate }}</p>
+    </div>
+</div> -->
+
+<div class="content">
+
+
+
+    <div class="input-field">
+        <label>URL</label>
+        <input id="vLLM-url" class="custom-input" type="url" name="vLLM-url"
+            placeholder="URL of the external vLLM server" (input)="handleInput($event)"
+            [(ngModel)]="integration.value.url" autocomplete="off" style="font-size: 14px;">
+    </div>
+
+
+
+    <!-- <div class="input-field">
+        <label>Authorization Token (optional)</label>
+        <input class="custom-input" type="text" [(ngModel)]="integration.value.token"
+            placeholder="You authorization Token">
+
+    </div> -->
+
+
+
+    <div class="input-field">
+        <label>{{'Models' | translate}} ({{'Optional' | translate}})</label>
+        <div class="fake--input">
+            <div class="fake--input-inner">
+                <input id="vLLM-models" class="custom-input" name="vLLM-models"
+                    placeholder="Type an LLM model and press Enter to add it to your favorites" type="text"
+                    [(ngModel)]="newModelName"  (ngModelChange)="onEnterModel($event)" autocomplete="off" (keyup.enter)="addModel(newModelName)"
+                    style="font-size: 14px;">
+                <div id="enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <ul>
+        <li *ngFor="let model of integration.value.models">
+            {{ model }}
+            <button (click)="removeModel(model)">Remove</button>
+        </li>
+    </ul> -->
+
+    <!-- <div class="tags-container">
+        <div class="tag" *ngFor="let model of integration.value.models">
+            <span>{{ model }}</span>
+            <button class="remove-btn" (click)="removeModel(model)">×</button>
+        </div>
+    </div> -->
+
+    <!-- <div class="lead-tags--container-wpr"> -->
+    <div class="models--container">
+        <div aria-label="models" *ngFor="let model of integration.value.models" class="model-name-and-btn-wpr">
+            <p weight="400" class="model-name">{{model}}</p>
+            <button type="button" class="delete-model" (click)="removeModel(model)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                    class="remove-tag-icon" style="min-width: 12px; min-height: 12px; margin-right: 0px;">
+                    <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                    </path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <div class="integration-footer">
+        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+            {{ 'Integration.Save' | translate }}
+        </button>
+        <button *ngIf="integration._id" class="btn btn-red" (click)="deleteIntegration()">
+            {{ 'Integration.Delete' | translate }}
+        </button>
+        <button *ngIf="!integration._id" class="btn btn-outlined" (click)="resetValues()">
+            {{ 'Integration.Clear' | translate }}
+        </button>
+    </div>
+
+</div>

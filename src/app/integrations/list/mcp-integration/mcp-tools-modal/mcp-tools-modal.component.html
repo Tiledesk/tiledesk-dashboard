@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>
+  <span>{{ 'Integration.MCPTools' | translate }}</span>
+  <button mat-icon-button class="close-button" (click)="onClose()" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</h1>
+
+<div mat-dialog-content class="tools-content">
+  <div class="server-info" *ngIf="serverUrl">
+    <p class="server-url-label">{{ 'Integration.ServerURL' | translate }}:</p>
+    <p class="server-url-value">{{ serverUrl }}</p>
+  </div>
+
+  <div class="tools-count" *ngIf="tools.length > 0">
+    <p>{{ 'Integration.TotalTools' | translate }}: <strong>{{ tools.length }}</strong></p>
+  </div>
+
+  <div class="tools-list" *ngIf="tools.length > 0">
+    <div class="tool-item" *ngFor="let tool of tools">
+      <div class="tool-header">
+        <h3 class="tool-name">{{ tool.name }}</h3>
+      </div>
+      <p class="tool-description" *ngIf="tool.description">{{ tool.description }}</p>
+      <p class="tool-description-placeholder" *ngIf="!tool.description">
+        {{ 'Integration.NoDescriptionAvailable' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <div class="no-tools" *ngIf="tools.length === 0">
+    <div class="no-tools-message">
+      <span class="material-icons-outlined">inbox</span>
+      <p>{{ 'Integration.NoToolsFound' | translate }}</p>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button class="btn-close" (click)="onClose()">
+    {{ 'Close' | translate }}
+  </button>
+</div>

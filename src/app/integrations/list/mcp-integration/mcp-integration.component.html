@@ -1,0 +1,114 @@
+<div class="content">
+
+    <!-- Form Section -->
+    <div class="form-section">
+        <div class="form-header">
+            <h4 *ngIf="!isEditing">{{ 'Integration.AddMCPServer' | translate }}</h4>
+            <h4 *ngIf="isEditing">{{ 'Integration.EditMCPServer' | translate }}</h4>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Name' | translate }}</label>
+            <input id="mcp-name" class="custom-input" type="text" name="mcp-name"
+                placeholder="Enter MCP server name"
+                [(ngModel)]="currentServer.name" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="input-field">
+            <label>URL</label>
+            <input id="mcp-url" class="custom-input" type="url" name="mcp-url"
+                placeholder="URL of the external MCP server"
+                [(ngModel)]="currentServer.url" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Type' | translate }}</label>
+            <!-- <select id="mcp-transport" class="custom-input" name="mcp-transport"
+                [(ngModel)]="currentServer.transport">
+                <option *ngFor="let option of transportOptions" [value]="option.value">
+                    {{ option.display }}
+                </option>
+            </select> -->
+            <div class="readonly-field">
+                <span class="readonly-value">{{ getTransportDisplay(currentServer.transport) }}</span>
+            </div>
+        </div>
+
+        <!-- Tools Info Section (shown when editing a server with tools) -->
+        <div class="tools-info-section" *ngIf="isEditing && currentServerHasTools()">
+            <div class="tools-badge-info">
+                <span class="tools-label">{{ 'Integration.Tools' | translate }}:</span>
+                <span class="tools-count-badge" [disabled]="isLoadingTools" (click)="viewCurrentServerTools()" >{{ getCurrentServerToolsCount() }}</span>
+            </div>
+            <!-- <button 
+                class="btn btn-outlined btn-view-tools" 
+                (click)="viewCurrentServerTools()"
+                [disabled]="isLoadingTools">
+                {{ 'Integration.ViewTools' | translate }}
+            </button> -->
+        </div>
+
+        <div class="form-actions">
+            <!-- Connect button - shown when NOT editing OR when editing a server WITHOUT tools -->
+            <button 
+                *ngIf="!isEditing || (isEditing && !currentServerHasTools())"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="connectToServer()"
+                [disabled]="isLoadingTools || !currentServer.url">
+                <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
+                    {{ 'Integration.Connect' | translate }}
+                </span>
+                <span *ngIf="isLoadingTools && loadingServerUrl === currentServer.url" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.LoadingTools' | translate }}
+                </span>
+            </button>
+
+            <!-- Refresh Tools button - shown when editing a server WITH tools -->
+            <button 
+                *ngIf="isEditing && currentServerHasTools()"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="refreshCurrentServerTools()"
+                [disabled]="isLoadingTools || !currentServer.url">
+                <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
+                    {{ 'Integration.RefreshTools' | translate }}
+                </span>
+                <span *ngIf="isLoadingTools && loadingServerUrl === currentServer.url" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.LoadingTools' | translate }}
+                </span>
+            </button>
+
+            <!-- Add button - shown only after tools are retrieved (new server) -->
+            <button 
+                *ngIf="hasToolsRetrieved() && !isEditing"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="addOrUpdateServer()"
+                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
+                {{ 'Add' | translate }}
+            </button>
+
+            <!-- Update button - shown when editing -->
+            <button 
+                *ngIf="isEditing"
+                class="btn btn-tdblu-no-boxshadow" 
+                (click)="addOrUpdateServer()"
+                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
+                {{ 'Update' | translate }}
+            </button>
+
+            <button *ngIf="isEditing" class="btn btn-outlined" (click)="resetForm()">
+                {{ 'Cancel' | translate }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <mcp-server-table 
+        [mcpServers]="integration.value.servers"
+        (onSelectServer)="onSelectServer($event)"
+        (onDeleteServer)="onDeleteServer($event)">
+    </mcp-server-table>
+
+</div>
+
