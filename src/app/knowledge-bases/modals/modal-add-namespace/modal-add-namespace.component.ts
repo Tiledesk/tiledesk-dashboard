@@ -31,7 +31,7 @@ export class ModalAddNamespaceComponent implements OnInit {
   }
   
   contactUs() {
-    window.open(`mailto:${this.salesEmail}?subject=Increase quotas`);
+    window.open(`mailto:${this.salesEmail}?subject=Activate Hibrid search`);
   }
 
   onOkPresssed(namespaceName, selectedNamespaceType){

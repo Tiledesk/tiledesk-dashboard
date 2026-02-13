@@ -135,6 +135,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   listSitesOfSitemap: any = [];
 
   payIsVisible: boolean = false;
+  overridePay: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   anErrorOccurredWhileUpdating: string;
@@ -222,7 +223,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   unansweredQuestions: UnansweredQuestion[] = [];
   isLoadingUnanswered = false;
   isLoadingNamespaces = true;
-
+  public_Key: string;
 
   fakeUnansered = [
       { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
@@ -1378,14 +1379,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   presentDialogExportContents() {
     Swal.fire({
-      title: this.translate.instant('Warning'),
+      // title: this.translate.instant('Warning'),
       text: this.translate.instant('KbPage.OnlyUrlTextFaqWillBeExported'),
-      icon: "info",
+      // icon: "info",
       showCloseButton: false,
       showCancelButton: true,
       showConfirmButton: true,
       showDenyButton: false,
-      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonText: this.translate.instant('Export'),
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
@@ -2006,6 +2007,7 @@ _presentDialogImportContents() {
       width: '600px',
       data: {
         pay: this.payIsVisible,
+        overridePay: this.overridePay,
         hybridActive: this.isActiveHybrid
       },
     })
@@ -2598,14 +2600,14 @@ _presentDialogImportContents() {
 
   getOSCODE() {
 
-    let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
-    let keys = public_Key.split("-");
+    let keys = this.public_Key.split("-");
 
     keys.forEach(key => {
       if (key.includes("PAY")) {
         let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        // this.logger.log('PUBLIC-KEY [KNOWLEDGE-BASES-COMP] - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
           // this.logger.log("payIsVisible: ", this.payIsVisible)
@@ -2614,7 +2616,25 @@ _presentDialogImportContents() {
           // this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
+       if (key.includes("OVP")) {
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.overridePay = false;
+          // this.logger.log("payIsVisible: ", this.payIsVisible)
+        } else {
+          this.overridePay = true;
+          // this.logger.log("payIsVisible: ", this.payIsVisible)
+        }
+      }
     })
+
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+    }
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
   }
 
 

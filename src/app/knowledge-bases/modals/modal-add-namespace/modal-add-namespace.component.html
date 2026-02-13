@@ -4,7 +4,7 @@
 
     <div class="add--content-cards-wpr" style="padding: 10px;">
 
-        <div *ngIf="data.pay"
+        <div *ngIf="data.pay && !data.overridePay || !data.pay && data.overridePay"
             class="add--content-card-wpr" 
             matRipple
             [ngClass]="{'selected-option': selectedNamespaceType === 'standard'}"
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div *ngIf="data.pay"
+        <div *ngIf="data.pay && !data.overridePay || !data.pay && data.overridePay"
             class="add--content-card-wpr" 
             matRipple
             [matRippleDisabled]="!hybridActive"
@@ -85,7 +85,7 @@
         </div>    
     </div>
 
-    <div class="upsell" *ngIf="!hybridActive && data.pay">
+    <div class="upsell" *ngIf="(!hybridActive && (data.pay && !data.overridePay)) ||  (!hybridActive && (!data.pay && data.overridePay))">
         <span class="material-icons-outlined">bolt</span>
         <span class="upsell-text">
            <!-- Want to try the new <b>Hybrid Search</b> feature? -->

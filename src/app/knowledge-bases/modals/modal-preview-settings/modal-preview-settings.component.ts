@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { LLM_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util'; // TYPE_GPT_MODEL,
+import { LLM_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_reranking_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util'; // TYPE_GPT_MODEL,
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -53,6 +53,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public context: string
   public context_placeholder: string
   public chunkOnly: boolean
+  public reRanking: boolean
+  public reRankingMultipler: number
   public advancedPrompt: boolean // = false;
   public citations: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
@@ -66,6 +68,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private contextDefaultValue = null
   private advancedPromptDefaultValue = false
   private citationsDefaultValue = false
+  private chunksOnlyDefaultValue = false
+  private reRankigDefaultValue = false
+  private reRankigMultiplerDefaultValue = 2
 
   public countOfOverrides = 0
 
@@ -76,6 +81,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private hasAlreadyOverridedTopk: boolean;
   private hasAlreadyOverridedContex: boolean;
   private hasAlreadyOverrideAdvancedContex: boolean;
+  private hasAlreadyOverrideChunckOnly: boolean;
+  private hasAlreadyOverrideReRanking: boolean;
+  private hasAlreadyOverrideReRankingMultipler: boolean;
   private hasAlreadyOverrideCitations: boolean;
 
   public hideHelpLink: boolean;
@@ -92,6 +100,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     top_k: null,
     context: null,
     chunkOnly: null,
+    reRanking: null,
+    reRankingMultipler: null,
     advancedPrompt: null,
     citations: null,
   }]
@@ -189,6 +199,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       } else {
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly ", this.chunkOnly)
+      }
+
+      if (!this.selectedNamespace.preview_settings.reranking) {
+        this.reRanking = false
+        this.selectedNamespace.preview_settings.reranking = this.reRanking
+      } else {
+        this.reRanking = this.selectedNamespace.preview_settings.reranking
+        this.logger.log("[MODAL PREVIEW SETTINGS] reRanking ", this.reRanking)
+      }
+
+      if (this.selectedNamespace.preview_settings.reranking_multiplier) {
+        this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
+      } else {
+        this.reRankingMultipler = 2
       }
 
       this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.advancedPrompt)
@@ -503,6 +527,26 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
+    if (type === "re_ranking_multipler") {
+      if (!this.wasOpenedFromThePreviewKBModal) {
+        this.selectedNamespace.preview_settings.reranking_multiplier = value;
+      }
+
+      if (value !== this.selectedNamespace.preview_settings.reranking_multiplier) {
+        if (this.hasAlreadyOverrideReRankingMultipler !== true) {
+          this.countOfOverrides = this.countOfOverrides + 1;
+        }
+        this.hasAlreadyOverrideReRankingMultipler = true
+      } else {
+        this.countOfOverrides = this.countOfOverrides - 1;
+      }
+
+    // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
+    this.aiSettingsObject[0].reRankingMultipler = value
+    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+  }
+
     // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
   }
 
@@ -544,6 +588,41 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].chunkOnly = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.chunkOnly !== this.selectedNamespace.preview_settings.chunks_only) {   
+      if (this.hasAlreadyOverrideChunckOnly !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideChunckOnly = true
+    } else if (this.chunkOnly === this.selectedNamespace.preview_settings.chunks_only) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideChunckOnly = false
+    }
+  }
+
+  changeReranking(event) {
+    // this.saveDialogScrollPosition();
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking event ", event.target.checked)
+    this.reRanking = event.target.checked
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.reranking = this.reRanking
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
+    this.aiSettingsObject[0].reRanking = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.reRanking !== this.selectedNamespace.preview_settings.reranking) {   
+      if (this.hasAlreadyOverrideReRanking !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideReRanking = true
+    } else if (this.reRanking === this.selectedNamespace.preview_settings.reranking) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideReRanking = false
+    }
+    // this.restoreDialogScrollPosition();
   }
 
   changeAdvancePrompt(event) {
@@ -646,6 +725,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hasAlreadyOverridedContex = false;
     this.hasAlreadyOverrideAdvancedContex = false;
     this.hasAlreadyOverrideCitations = false;
+    this.hasAlreadyOverrideChunckOnly = false;
+    this.hasAlreadyOverrideReRanking = false;
+    this.hasAlreadyOverrideReRankingMultipler = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
@@ -678,7 +760,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
     this.context = this.selectedNamespaceClone.preview_settings.context;
 
-    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt
+    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt;
+
+    this.chunkOnly = this.selectedNamespaceClone.preview_settings.chunks_only;
+
+    this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
 
     this.citations = this.selectedNamespaceClone.preview_settings.citations
     this.logger.log('Reset this.citations ', this.citations)
@@ -703,6 +789,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiSettingsObject[0].context = this.context
     this.aiSettingsObject[0].advancedPrompt = this.advancedPrompt;
     this.aiSettingsObject[0].citations = this.citations;
+    this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
+    this.aiSettingsObject[0].reRanking = this.reRanking;
+    this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -736,11 +825,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.citations = this.citationsDefaultValue
     this.selectedNamespace.preview_settings.citations = this.citationsDefaultValue;
 
+    this.chunkOnly = this.chunksOnlyDefaultValue
+    this.selectedNamespace.preview_settings.chunks_only = this.chunksOnlyDefaultValue
+    
+    this.reRanking = this.reRankigDefaultValue
+    this.selectedNamespace.preview_settings.reranking = this.reRankigDefaultValue
+
     this.aiSettingsObject[0].model = this.modelDefaultValue;
     this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
     this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
     this.aiSettingsObject[0].top_k = this.topkDefaultValue;
     this.aiSettingsObject[0].context = this.contextDefaultValue;
+    this.aiSettingsObject[0].chunkOnly = this.chunksOnlyDefaultValue;
+    this.aiSettingsObject[0].reRanking = this.reRankigDefaultValue;
+    this.aiSettingsObject[0].reRankingMultipler = this.reRankigMultiplerDefaultValue;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }

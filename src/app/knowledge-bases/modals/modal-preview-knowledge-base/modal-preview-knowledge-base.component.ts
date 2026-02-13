@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -32,6 +32,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
+    chunkOnly: null,
+    reRanking: null,
+    reRankingMultipler: null,
   }]
   panelOpenState = false; 
   selectedNamespace: any;
@@ -45,6 +48,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   isopenasetting: boolean;
   hasStoredQuestion: boolean;
   private dialogRefAiSettings: MatDialogRef<any>;
+  @ViewChild('questionTextarea', { static: false }) questionTextarea: ElementRef<HTMLTextAreaElement>;
 
   // models_list = [
   //   { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -70,6 +74,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number;
   public chunkOnly: boolean
+  public reRanking: boolean;
+  public reRankingMultipler: number
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
@@ -98,6 +104,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
+      this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
@@ -107,6 +114,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
+      }
+
+      if (!this.selectedNamespace.preview_settings.reranking) {
+        this.reRanking = false
+        this.selectedNamespace.preview_settings.reranking = this.reRanking
+      } else {
+        this.reRanking = this.selectedNamespace.preview_settings.reranking
+        this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
       }
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
@@ -165,8 +180,22 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.hasStoredQuestion = true;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+      try {
+        // Try to parse as JSON first (for new format)
+        let parsed = JSON.parse(storedQuestion);
+        // Even after JSON.parse, if the original string had literal \n, they might still be literal
+        // Replace any remaining literal \n with real newlines
+        this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+      } catch (e) {
+        // If parsing fails, it might be an old format or already a string with literal \n
+        // Replace literal \n with real newlines
+        let cleaned = storedQuestion.replace(/\\n/g, '\n');
+        // Remove surrounding quotes if present
+        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+          cleaned = cleaned.substring(1, cleaned.length - 1);
+        }
+        this.storedQuestionNoDoubleQuote = cleaned;
+      }
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
@@ -223,20 +252,38 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
   reuseLastQuestion() {
+    const textarea = this.questionTextarea.nativeElement;
+    setTimeout(() => {
+      this.onTextareaInput(textarea);
+    }, 0);
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
       this.hasStoredQuestion = true;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+      try {
+        // Try to parse as JSON first (for new format)
+        let parsed = JSON.parse(storedQuestion);
+        // Even after JSON.parse, if the original string had literal \n, they might still be literal
+        // Replace any remaining literal \n with real newlines
+        this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+      } catch (e) {
+        // If parsing fails, it might be an old format or already a string with literal \n
+        // Replace literal \n with real newlines
+        let cleaned = storedQuestion.replace(/\\n/g, '\n');
+        // Remove surrounding quotes if present
+        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+          cleaned = cleaned.substring(1, cleaned.length - 1);
+        }
+        this.storedQuestionNoDoubleQuote = cleaned;
+      }
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
     }
     this.question = this.storedQuestionNoDoubleQuote;
     // this.submitQuestion()
-    this.onInputPreviewChange()
+    // this.onInputPreviewChange()
   }
 
 
@@ -309,6 +356,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
         }
 
+        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
+          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 2', editedAiSettings[0]['reRankingMultipler'])
+          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
+        }
+
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from editedAiSettings 1', this.context)
@@ -327,6 +383,17 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
           this.chunkOnly = this.selectedNamespace.preview_settings.chunkOnly
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
+        } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
+        } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
+          this.reRanking = this.selectedNamespace.preview_settings.reranking
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -376,6 +443,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
+      "reranking": this.reRanking,
+      "reranking_multiplier":  this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
@@ -484,8 +553,22 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.hasStoredQuestion = true;
         this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
         this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-        this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+        try {
+          // Try to parse as JSON first (for new format)
+          let parsed = JSON.parse(storedQuestion);
+          // Even after JSON.parse, if the original string had literal \n, they might still be literal
+          // Replace any remaining literal \n with real newlines
+          this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+        } catch (e) {
+          // If parsing fails, it might be an old format or already a string with literal \n
+          // Replace literal \n with real newlines
+          let cleaned = storedQuestion.replace(/\\n/g, '\n');
+          // Remove surrounding quotes if present
+          if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+            cleaned = cleaned.substring(1, cleaned.length - 1);
+          }
+          this.storedQuestionNoDoubleQuote = cleaned;
+        }
       } else {
         this.hasStoredQuestion = false;
         this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
@@ -496,6 +579,29 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   private isValidURL(url) {
     var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
     return urlPattern.test(url);
+  }
+
+  onTextareaInput(textarea: HTMLTextAreaElement): void { 
+    // console.log('[MODAL-PREVIEW-KB] textarea', textarea ) 
+    const minHeight = 37;
+    const maxHeight = 52;
+
+    // Reset per ricalcolare correttamente lo scrollHeight
+    textarea.style.height = minHeight + 'px';
+
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    textarea.style.height = newHeight + 'px';
+
+    textarea.style.overflowY =
+    textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+ }
+
+  onEnterKeyDown(event: KeyboardEvent) {
+    // Submit on Enter (without Shift), otherwise allow new line
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.submitQuestion();
+    }
   }
 
 
@@ -516,8 +622,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.searching = false;
     // this.error_answer = false;
     this.show_answer = false;
-    let element = document.getElementById('enter-button')
-    element.style.display = 'none';
+    // let element = document.getElementById('enter-button')
+    // element.style.display = 'none';
     // this.closeBaseModal.emit();
     this.dialogRef.close();
     if (this.dialogRefAiSettings) {
