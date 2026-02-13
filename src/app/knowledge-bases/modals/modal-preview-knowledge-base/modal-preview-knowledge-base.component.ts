@@ -243,7 +243,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
 
-  reuseLastQuestion() {
+  _reuseLastQuestion() {
     const textarea = this.questionTextarea.nativeElement;
     // console.log("[MODAL-PREVIEW-KB] reuseLastQuestion textarea: ", textarea);
     setTimeout(() => {
@@ -257,6 +257,41 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
       this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
 
+    } else {
+      this.hasStoredQuestion = false;
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    }
+    this.question = this.storedQuestionNoDoubleQuote;
+    // this.submitQuestion()
+    // this.onInputPreviewChange()
+  }
+
+  reuseLastQuestion() {
+    const textarea = this.questionTextarea.nativeElement;
+    setTimeout(() => {
+      this.onTextareaInput(textarea);
+    }, 0);
+    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+    if (storedQuestion) {
+      this.hasStoredQuestion = true;
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+      try {
+        // Try to parse as JSON first (for new format)
+        let parsed = JSON.parse(storedQuestion);
+        // Even after JSON.parse, if the original string had literal \n, they might still be literal
+        // Replace any remaining literal \n with real newlines
+        this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+      } catch (e) {
+        // If parsing fails, it might be an old format or already a string with literal \n
+        // Replace literal \n with real newlines
+        let cleaned = storedQuestion.replace(/\\n/g, '\n');
+        // Remove surrounding quotes if present
+        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+          cleaned = cleaned.substring(1, cleaned.length - 1);
+        }
+        this.storedQuestionNoDoubleQuote = cleaned;
+      }
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
