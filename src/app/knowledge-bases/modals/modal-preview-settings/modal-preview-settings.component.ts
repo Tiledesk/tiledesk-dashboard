@@ -766,6 +766,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
     this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
 
+    this.reRankingMultipler = this.selectedNamespaceClone.preview_settings.reranking_multiplier
+
     this.citations = this.selectedNamespaceClone.preview_settings.citations
     this.logger.log('Reset this.citations ', this.citations)
     if (this.citations) {
