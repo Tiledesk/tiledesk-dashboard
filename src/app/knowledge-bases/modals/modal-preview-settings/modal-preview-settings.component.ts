@@ -74,6 +74,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private citationsDefaultValue = false
   private chunksOnlyDefaultValue = false
   private reRankigDefaultValue = false
+  private reRankigMultiplerDefaultValue = 2
 
   public countOfOverrides = 0
 
@@ -1021,6 +1022,7 @@ private restoreDialogScrollPosition(): void {
     this.hasAlreadyOverrideCitations = false;
     this.hasAlreadyOverrideChunckOnly = false;
     this.hasAlreadyOverrideReRanking = false;
+    //this.hasAlreadyOverrideReRankingMultipler = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
@@ -1059,6 +1061,8 @@ private restoreDialogScrollPosition(): void {
 
     this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
 
+   this.reRankingMultipler = this.selectedNamespaceClone.preview_settings.reranking_multiplier
+
     this.citations = this.selectedNamespaceClone.preview_settings.citations;
     this.logger.log('Reset this.citations ', this.citations)
     if (this.citations) {
@@ -1076,6 +1080,7 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].citations = this.citations;
     this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
     this.aiSettingsObject[0].reRanking = this.reRanking;
+    this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -1114,6 +1119,9 @@ private restoreDialogScrollPosition(): void {
     
     this.reRanking = this.reRankigDefaultValue
     this.selectedNamespace.preview_settings.reranking = this.reRankigDefaultValue
+
+    this.reRankingMultipler = this.reRankigMultiplerDefaultValue;
+    this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankigMultiplerDefaultValue
 
     this.aiSettingsObject[0].model = this.modelDefaultValue;
     this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
