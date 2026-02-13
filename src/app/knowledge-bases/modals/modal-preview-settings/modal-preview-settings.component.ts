@@ -833,6 +833,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.reRanking = this.reRankigDefaultValue
     this.selectedNamespace.preview_settings.reranking = this.reRankigDefaultValue
 
+    this.reRankingMultipler = this.reRankigMultiplerDefaultValue;
+    this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankigMultiplerDefaultValue
+
     this.aiSettingsObject[0].model = this.modelDefaultValue;
     this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
     this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
