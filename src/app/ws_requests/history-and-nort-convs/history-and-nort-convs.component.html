@@ -26,7 +26,8 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - left section -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-left" *ngIf="!showAdvancedSearchOption">
+          <div class="filters-on-left-spacer" style="flex: 0 0 180px;"></div>
+          <div class="filters-on-left" *ngIf="!showAdvancedSearchOption" style="display: none;">
 
             <span *ngIf="!IS_HERE_FOR_HISTORY" style="padding-right: 16px; font-weight: 400;">
               {{'FilterFor' | translate}}
@@ -109,13 +110,14 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-center" [ngClass]="{'filters-on-center-then-on-left' : showAdvancedSearchOption}">
+          <!-- [ngClass]="{'filters-on-center-then-on-left' : showAdvancedSearchOption}" -->
+          <div class="filters-on-center" >
             <div class="input-group full-text-search"
               [ngClass]="{'full-text-search-full-width' : showAdvancedSearchOption}">
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
                 <button class="custom-input-group---btn tool_tip" type="submit">
-                  <i class="fa fa-search fa-search-btn" (click)="search()" style="color:grey; font-size: 18px;"></i>
+                  <i class="fa fa-search fa-search-btn" (click)="search('fiter-central-section')" style="color:grey; font-size: 18px;"></i>
                   <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'Search' | translate}}
                     <i></i>
@@ -166,7 +168,7 @@
           <!-- ---------------------------------------------------------------- -->
           <div class="filters-on-right">
             <button class="btn pull-right export-to-csv-btn btn-outlined"
-              style="margin-top: 14px;" (click)="exportRequestsToCSV()">
+              style="margin-top: 18px;" (click)="exportRequestsToCSV()">
               <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
                 save_alt
               </span>
@@ -177,361 +179,363 @@
         </div>
 
 
-        <div class="request_filter" style="margin-top: -15px; margin-right: 180px;">
-          <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
-            <div style="margin-top: 6px;">
-              <div class="row">
+        <div class="request_filter">
+          <div class="filter-bar-advanced-options-wrapper" style="display: flex; justify-content: center;">
+            <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
+              <div style="margin-top: 6px;">
+                <div class="row">
 
-                <!-- ---------------------------------------------------------- -->
-                <!-- Select DEPARTMENTS -->
-                <!-- ---------------------------------------------------------- -->
-                <div class="col-sm-6">
-                  <label class="col-sm-12 label-7695a5">
-                    {{ 'HistoryPage.FilterByDepartment' | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
-                      (change)="depSelected(selectedDeptId)">
-                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> -->
-                      <ng-option [value]="''">{{ allDeptsLabel }}</ng-option>
-                      <ng-option *ngFor="let dept of departments" [value]="dept._id">
-                        {{dept.name}}
-                      </ng-option>
-                    </ng-select>
-                  </div>
-                </div>
-
-
-                <!-- ---------------------------------------------------------- -->
-                <!-- Select DATE RANGE -->
-                <!-- ---------------------------------------------------------- -->
-                <div class="col-sm-6">
-                  <label for="contain" class="col-sm-12 label-7695a5">
-                    {{ 'HistoryPage.DateRange' | translate }}
-                    <!-- <span *ngIf="date_picker_is_disabled" class="pro-only-badge" style="top:-1px !important">
-                      {{'ProOnly' | translate }}
-                    </span> -->
-                  </label>
-
-                  <div class="col-sm-12 left-date-picker">
-                    <!-- <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
-                      (dateChanged)="startDateSelected($event)" [options]="myDatePickerOptions" [(ngModel)]="startDate"
-                      [disabled]="date_picker_is_disabled">
-                    </my-date-picker>
-                  </div>
-                  <div class="col-sm-6 right-date-picker">
-                    <my-date-picker placeholder="{{ 'To' | translate }}" name="mydate"
-                      (dateChanged)="endDateSelected($event)" [options]="endDatePickerOptions" [(ngModel)]="endDate"
-                      [disabled]="date_picker_is_disabled || start_date_is_null">
-                    </my-date-picker> -->
-
-                    <!-- ---------------------------------------- -->
-                    <!-- New date picker -->
-                    <!-- ---------------------------------------- -->
-                    <!-- <mat-form-field appearance="fill">
-                    <mat-label>Enter a date range</mat-label> 
-                      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                        <input matStartDate formControlName="start" placeholder="Start date">
-                        <input matEndDate formControlName="end" placeholder="End date">
-                      </mat-date-range-input>
-                      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-date-range-picker #picker></mat-date-range-picker>
-                    
-                      <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-                   </mat-form-field>
-                    
-                    <p>Selected range: {{range?.value | json}}</p> -->
-
-                    <mat-form-field class="custom-date-range-picker" appearance="standard">
-                      <!-- <mat-label>Enter a date range</mat-label> -->
-                      <!-- (dateInput)="addEventStartDate('input', $event)" -->
-                      <!-- (dateInput)="addEventEndDate('input', $event)" -->
-                      <mat-date-range-input [rangePicker]="picker">
-                        <input (dateChange)="addEventStartDate($event.value)"
-                          (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}">
-                        <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}">
-                      </mat-date-range-input>
-                      <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
-                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
-                      </mat-datepicker-toggle>
-
-                      <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-
-
-              <!-- ---------------------------------------------------------- -->
-              <!-- Select USERS/BOTS -->
-              <!-- ---------------------------------------------------------- -->
-              <div class="row" style="margin-bottom:8px">
-                <div class="col-sm-6">
-                  <label class="col-sm-12 label-7695a5">
-                    {{ 'HistoryPage.Agent' | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
-                      (change)="agentSelected(selectedAgentId)">
-                      <ng-option [value]="''">
-                        {{ 'HistoryPage.AllAgents' | translate }}
-                      </ng-option>
-                      <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id">
-                        {{ agent.firstname }} {{ agent.lastname }}
-                      </ng-option>
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="col-sm-6">
-                  <label class="col-sm-12 label-7695a5">
-                    {{ "Tags.Tags" | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <!-- placeholder="{{'Tags.SelectTag' | translate}}"  -->
-                    <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
-                      placeholder="{{'SelectOrTypeTheTagToSearch' | translate }}"
-                      [(ngModel)]="selecteTagName"
-                      (change)="onSelectedTagName()" 
-                      (search)="onSearchTagName($event)"
-                      [clearable]='true' 
-                      [loading]=loadingTags 
-                      notFoundText="{{'TagNotFoundInTheList' | translate}}"
-                      [editableSearchTerm]="true"
-                      loadingText="{{'Loading' | translate}}"
-                      >
-                      <ng-template ng-label-tmp let-item="item">
-                        <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                        <!-- style="margin-left:6px;" -->
-                        <span>{{item.name}}</span>
-                      </ng-template>
-                      <ng-template ng-option-tmp let-item="item" let-index="index">
-                        <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
-                        <!-- style="margin-left:6px;" -->
-                        <span>{{item.name}}</span>
-                      </ng-template>
-                    </ng-select>
-                  </div>
-                </div>
-              </div>
-              <!-- style="margin-bottom: 8px;" -->
-              <div class="row">
-                <div class="col-sm-6" *ngIf="!IS_HERE_FOR_HISTORY">
-                  <label class="col-sm-12 label-7695a5">
-                    {{ "Status" | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <ng-select name="requeststatus" [(ngModel)]="requests_status"
-                      (change)="requestsStatusSelectFromAdvancedOption(requests_status)"
-                      [items]="status | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                      [searchable]="false" bindValue="id" placeholder="Select status">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="col-sm-6">
-                  <label class="col-sm-12 label-7695a5">
-                    {{ 'MessageChannel' | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <ng-select name="conversationtype" [(ngModel)]="conversation_type"
-                      style="text-transform: capitalize;" (change)="requestsTypeSelectFromAdvancedOption()"
-                      [items]="conversationType | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                      [searchable]="false" bindValue="id" placeholder="{{'SelectConversationType' | translate }}">
-                    </ng-select>
-                  </div>
-                </div>
-
-
-                <!-- // SEARCH FOR EMAIL -->
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <label class="col-sm-12 label-7695a5">
-                    Email
-                  </label>
-                  <div class="col-sm-12">
-                    <input name="requester_email" type="email" [(ngModel)]="requester_email" class="input-custom"
-                      autocomplete="off" placeholder="Email">
-                  </div>
-                </div>
-              </div>
-
-              <!-- ------------------------------------- -->
-              <!-- Caller Phone and call id -->
-              <!-- ------------------------------------- -->
-
-              <!-- // SEARCH FOR Caller style="margin-bottom: 8px;" -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY && conversation_type === 'voice-vxml'">
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <label class="col-sm-12 label-7695a5">
-                    <!-- Requester phone number -->
-                    {{ 'RequesterPhoneNumber' | translate}}
-                  </label>
-                  <div class="col-sm-12">
-                    <input name="caller-phone" type="text" [(ngModel)]="caller_phone" class="input-custom"
-                      autocomplete="off" placeholder="{{'PhoneNumber' | translate}}"
-                      style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
-                  </div>
-                </div>
-
-                <!-- // SEARCH FOR Call id -->
-                <!--  -->
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY" style="display: flex;">
-
-                  <div class="called-phone-wpr">
-                    <!--  -->
-                    <label class="col-sm-12 label-7695a5" style="padding-right: 3px;">
-                      {{'CalledNumber' | translate}}
+                  <!-- ---------------------------------------------------------- -->
+                  <!-- Select DEPARTMENTS -->
+                  <!-- ---------------------------------------------------------- -->
+                  <div class="col-sm-6">
+                    <label class="col-sm-12 label-7695a5">
+                      {{ 'HistoryPage.FilterByDepartment' | translate }}
                     </label>
-                    <!--  -->
-                    <div class="col-sm-12" style="padding-right: 3px;">
-                      <input name="called-phone" type="text" [(ngModel)]="called_phone" class="input-custom"
-                        autocomplete="off" placeholder="{{'PhoneNumber' | translate}}">
-                    </div>
-                  </div>
-
-                  <div class="call-id-wpr">
-                    <label class="col-sm-12 label-7695a5" style="padding-left: 3px;">
-                      {{'CallID' | translate }}
-                    </label>
-                    <div class="col-sm-12" style="padding-left: 3px;">
-                      <input name="call-id" type="text" [(ngModel)]="call_id" class="input-custom" autocomplete="off"
-                        placeholder="Call ID">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ------------------------------------- -->
-              <!-- Duration -->
-              <!-- ------------------------------------- -->
-
-              <!-- // SEARCH duration -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-bottom: 8px;">
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <label class="col-sm-12 label-7695a5">
-                    {{'Duration' | translate}}
-                  </label>
-
-                  <div class="duration-input-wpr col-sm-12">
-                    <div class="duration-operator">
-                      <ng-select name="duration_operator" [(ngModel)]="duration_operator_temp"
-                        (change)="onChangeDurationOperator()" [items]="request_duration_operator_array" bindLabel="name"
-                        [clearable]='false' [searchable]="false" bindValue="id">
+                    <div class="col-sm-12">
+                      <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
+                        (change)="depSelected(selectedDeptId)">
+                        <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> -->
+                        <ng-option [value]="''">{{ allDeptsLabel }}</ng-option>
+                        <ng-option *ngFor="let dept of departments" [value]="dept._id">
+                          {{dept.name}}
+                        </ng-option>
                       </ng-select>
+                    </div>
+                  </div>
 
+
+                  <!-- ---------------------------------------------------------- -->
+                  <!-- Select DATE RANGE -->
+                  <!-- ---------------------------------------------------------- -->
+                  <div class="col-sm-6">
+                    <label for="contain" class="col-sm-12 label-7695a5">
+                      {{ 'HistoryPage.DateRange' | translate }}
+                      <!-- <span *ngIf="date_picker_is_disabled" class="pro-only-badge" style="top:-1px !important">
+                        {{'ProOnly' | translate }}
+                      </span> -->
+                    </label>
+
+                    <div class="col-sm-12 left-date-picker">
+                      <!-- <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
+                        (dateChanged)="startDateSelected($event)" [options]="myDatePickerOptions" [(ngModel)]="startDate"
+                        [disabled]="date_picker_is_disabled">
+                      </my-date-picker>
+                    </div>
+                    <div class="col-sm-6 right-date-picker">
+                      <my-date-picker placeholder="{{ 'To' | translate }}" name="mydate"
+                        (dateChanged)="endDateSelected($event)" [options]="endDatePickerOptions" [(ngModel)]="endDate"
+                        [disabled]="date_picker_is_disabled || start_date_is_null">
+                      </my-date-picker> -->
+
+                      <!-- ---------------------------------------- -->
+                      <!-- New date picker -->
+                      <!-- ---------------------------------------- -->
+                      <!-- <mat-form-field appearance="fill">
+                      <mat-label>Enter a date range</mat-label> 
+                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                          <input matStartDate formControlName="start" placeholder="Start date">
+                          <input matEndDate formControlName="end" placeholder="End date">
+                        </mat-date-range-input>
+                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      
+                        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                    </mat-form-field>
+                      
+                      <p>Selected range: {{range?.value | json}}</p> -->
+
+                      <mat-form-field class="custom-date-range-picker" appearance="standard">
+                        <!-- <mat-label>Enter a date range</mat-label> -->
+                        <!-- (dateInput)="addEventStartDate('input', $event)" -->
+                        <!-- (dateInput)="addEventEndDate('input', $event)" -->
+                        <mat-date-range-input [rangePicker]="picker">
+                          <input (dateChange)="addEventStartDate($event.value)"
+                            (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
+                            placeholder="{{'StartDate' | translate}}">
+                          <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
+                            placeholder="{{'EndDate' | translate}}">
+                        </mat-date-range-input>
+                        <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                          <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                        </mat-datepicker-toggle>
+
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- ---------------------------------------------------------- -->
+                <!-- Select USERS/BOTS -->
+                <!-- ---------------------------------------------------------- -->
+                <div class="row" style="margin-bottom:8px">
+                  <div class="col-sm-6">
+                    <label class="col-sm-12 label-7695a5">
+                      {{ 'HistoryPage.Agent' | translate }}
+                    </label>
+                    <div class="col-sm-12">
+                      <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
+                        (change)="agentSelected(selectedAgentId)">
+                        <ng-option [value]="''">
+                          {{ 'HistoryPage.AllAgents' | translate }}
+                        </ng-option>
+                        <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id">
+                          {{ agent.firstname }} {{ agent.lastname }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="col-sm-12 label-7695a5">
+                      {{ "Tags.Tags" | translate }}
+                    </label>
+                    <div class="col-sm-12">
+                      <!-- placeholder="{{'Tags.SelectTag' | translate}}"  -->
+                      <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
+                        placeholder="{{'SelectOrTypeTheTagToSearch' | translate }}"
+                        [(ngModel)]="selecteTagName"
+                        (change)="onSelectedTagName()" 
+                        (search)="onSearchTagName($event)"
+                        [clearable]='true' 
+                        [loading]=loadingTags 
+                        notFoundText="{{'TagNotFoundInTheList' | translate}}"
+                        [editableSearchTerm]="true"
+                        loadingText="{{'Loading' | translate}}"
+                        >
+                        <ng-template ng-label-tmp let-item="item">
+                          <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                          <!-- style="margin-left:6px;" -->
+                          <span>{{item.name}}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                          <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                          <!-- style="margin-left:6px;" -->
+                          <span>{{item.name}}</span>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <!-- style="margin-bottom: 8px;" -->
+                <div class="row">
+                  <div class="col-sm-6" *ngIf="!IS_HERE_FOR_HISTORY">
+                    <label class="col-sm-12 label-7695a5">
+                      {{ "Status" | translate }}
+                    </label>
+                    <div class="col-sm-12">
+                      <ng-select name="requeststatus" [(ngModel)]="requests_status"
+                        (change)="requestsStatusSelectFromAdvancedOption(requests_status)"
+                        [items]="status | selectOptionsTranslate" bindLabel="name" [clearable]='false'
+                        [searchable]="false" bindValue="id" placeholder="Select status">
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="col-sm-12 label-7695a5">
+                      {{ 'MessageChannel' | translate }}
+                    </label>
+                    <div class="col-sm-12">
+                      <ng-select name="conversationtype" [(ngModel)]="conversation_type"
+                        style="text-transform: capitalize;" (change)="requestsTypeSelectFromAdvancedOption()"
+                        [items]="conversationType | selectOptionsTranslate" bindLabel="name" [clearable]='false'
+                        [searchable]="false" bindValue="id" placeholder="{{'SelectConversationType' | translate }}">
+                      </ng-select>
+                    </div>
+                  </div>
+
+
+                  <!-- // SEARCH FOR EMAIL -->
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                    <label class="col-sm-12 label-7695a5">
+                      Email
+                    </label>
+                    <div class="col-sm-12">
+                      <input name="requester_email" type="email" [(ngModel)]="requester_email" class="input-custom"
+                        autocomplete="off" placeholder="Email">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ------------------------------------- -->
+                <!-- Caller Phone and call id -->
+                <!-- ------------------------------------- -->
+
+                <!-- // SEARCH FOR Caller style="margin-bottom: 8px;" -->
+                <div class="row" *ngIf="IS_HERE_FOR_HISTORY && conversation_type === 'voice-vxml'">
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                    <label class="col-sm-12 label-7695a5">
+                      <!-- Requester phone number -->
+                      {{ 'RequesterPhoneNumber' | translate}}
+                    </label>
+                    <div class="col-sm-12">
+                      <input name="caller-phone" type="text" [(ngModel)]="caller_phone" class="input-custom"
+                        autocomplete="off" placeholder="{{'PhoneNumber' | translate}}"
+                        style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
+                    </div>
+                  </div>
+
+                  <!-- // SEARCH FOR Call id -->
+                  <!--  -->
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY" style="display: flex;">
+
+                    <div class="called-phone-wpr">
+                      <!--  -->
+                      <label class="col-sm-12 label-7695a5" style="padding-right: 3px;">
+                        {{'CalledNumber' | translate}}
+                      </label>
+                      <!--  -->
+                      <div class="col-sm-12" style="padding-right: 3px;">
+                        <input name="called-phone" type="text" [(ngModel)]="called_phone" class="input-custom"
+                          autocomplete="off" placeholder="{{'PhoneNumber' | translate}}">
+                      </div>
                     </div>
 
-                    <div class="duration-value">
-                      <div class="input---group">
-                        <input name="request-duration" type="number" [(ngModel)]="duration" class="input-custom" min="0"
-                          autocomplete="off" placeholder="Duration" style=" border-radius: 4px 0px 0px 4px !important;">
-                        <div class="input-group-addon">
-                          <span class="suffix-text">
-                            {{'mins' | translate}}
-                          </span>
-                        </div>
+                    <div class="call-id-wpr">
+                      <label class="col-sm-12 label-7695a5" style="padding-left: 3px;">
+                        {{'CallID' | translate }}
+                      </label>
+                      <div class="col-sm-12" style="padding-left: 3px;">
+                        <input name="call-id" type="text" [(ngModel)]="call_id" class="input-custom" autocomplete="off"
+                          placeholder="Call ID">
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- // SEARCH FOR Call id -->
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <!-- <label class="col-sm-12 label-7695a5">
-                    Call ID
-                  </label>
-                  <div class="col-sm-12">
-                    <input name="call_id" type="text" [(ngModel)]="call_id" class="" autocomplete="off"
-                    placeholder="Call ID" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
-                  </div>-->
-                </div>
-              </div>
-
-
-
-
-              <!-- -------------------------------------------------- -->
-
-              <!-- ------------------------------------- -->
-              <!-- Select statuses in HISTORY -->
-              <!-- ------------------------------------- -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY">
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <label class="col-sm-12 label-7695a5" style="padding-right: 30px;">
-                    {{ "Status" | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <ng-select class="request-statuses-select" name="requeststatuses" [(ngModel)]="requests_statuses"
-                      (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
-                      [items]="statusInHistory | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                      [multiple]="true" [searchable]="false" bindValue="id" placeholder="Select status">
-                    </ng-select>
-                  </div>
-                </div>
-
                 <!-- ------------------------------------- -->
-                <!-- Select preflight -->
+                <!-- Duration -->
                 <!-- ------------------------------------- -->
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <div class="preflight-checkbox">
-                    <div class="checkbox">
-                      <label class="checkbox--label">
-                        <input type="checkbox" [(ngModel)]="_preflight" class="form-check-input" id="exampleCheck1"
-                          (change)="onChangePreflight($event)">
-                          <div class="checkbox--label-text">
-                            <!-- Include Chatbot only converations -->
-                            {{'IncludeChatbotsOnlyConversations' | translate}}
-                            <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
-                              matTooltipClass="mat-white-tooltip"
-                              matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
-                              #tooltip="matTooltip"
-                              matTooltipPosition='below' 
-                              matTooltipHideDelay="100">
-                              help
-                            </span> -->
+
+                <!-- // SEARCH duration -->
+                <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-bottom: 8px;">
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                    <label class="col-sm-12 label-7695a5">
+                      {{'Duration' | translate}}
+                    </label>
+
+                    <div class="duration-input-wpr col-sm-12">
+                      <div class="duration-operator">
+                        <ng-select name="duration_operator" [(ngModel)]="duration_operator_temp"
+                          (change)="onChangeDurationOperator()" [items]="request_duration_operator_array" bindLabel="name"
+                          [clearable]='false' [searchable]="false" bindValue="id">
+                        </ng-select>
+
+                      </div>
+
+                      <div class="duration-value">
+                        <div class="input---group">
+                          <input name="request-duration" type="number" [(ngModel)]="duration" class="input-custom" min="0"
+                            autocomplete="off" placeholder="Duration" style=" border-radius: 4px 0px 0px 4px !important;">
+                          <div class="input-group-addon">
+                            <span class="suffix-text">
+                              {{'mins' | translate}}
+                            </span>
                           </div>
-                      </label>
-                      
+                        </div>
+                      </div>
                     </div>
-                    <div class="help-icon-wpr">
-                      <i  class="material-icons" 
-                        matTooltipClass="mat-white-tooltip"
-                        matTooltip="{{'IncludeChatbotsOnlyConversationsDesc' | translate}}" 
-                        #tooltip="matTooltip"
-                        matTooltipPosition='below' 
-                        matTooltipHideDelay="100"> 
-                        help_outline 
-                      </i>
+                  </div>
+
+                  <!-- // SEARCH FOR Call id -->
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                    <!-- <label class="col-sm-12 label-7695a5">
+                      Call ID
+                    </label>
+                    <div class="col-sm-12">
+                      <input name="call_id" type="text" [(ngModel)]="call_id" class="" autocomplete="off"
+                      placeholder="Call ID" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
+                    </div>-->
+                  </div>
+                </div>
+
+
+
+
+                <!-- -------------------------------------------------- -->
+
+                <!-- ------------------------------------- -->
+                <!-- Select statuses in HISTORY -->
+                <!-- ------------------------------------- -->
+                <div class="row" *ngIf="IS_HERE_FOR_HISTORY">
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                    <label class="col-sm-12 label-7695a5" style="padding-right: 30px;">
+                      {{ "Status" | translate }}
+                    </label>
+                    <div class="col-sm-12">
+                      <ng-select class="request-statuses-select" name="requeststatuses" [(ngModel)]="requests_statuses"
+                        (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
+                        [items]="statusInHistory | selectOptionsTranslate" bindLabel="name" [clearable]='false'
+                        [multiple]="true" [searchable]="false" bindValue="id" placeholder="Select status">
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <!-- ------------------------------------- -->
+                  <!-- Select preflight -->
+                  <!-- ------------------------------------- -->
+                  <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                    <div class="preflight-checkbox">
+                      <div class="checkbox">
+                        <label class="checkbox--label">
+                          <input type="checkbox" [(ngModel)]="_preflight" class="form-check-input" id="exampleCheck1"
+                            (change)="onChangePreflight($event)">
+                            <div class="checkbox--label-text">
+                              <!-- Include Chatbot only converations -->
+                              {{'IncludeChatbotsOnlyConversations' | translate}}
+                              <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
+                                matTooltipClass="mat-white-tooltip"
+                                matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100">
+                                help
+                              </span> -->
+                            </div>
+                        </label>
+                        
+                      </div>
+                      <div class="help-icon-wpr">
+                        <i  class="material-icons" 
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{'IncludeChatbotsOnlyConversationsDesc' | translate}}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='below' 
+                          matTooltipHideDelay="100"> 
+                          help_outline 
+                        </i>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
 
-              <!-- ------------------------------------------ -->
-              <!-- BTNS SEARCH & CLEAR SEARCH -->
-              <!-- ------------------------------------------ -->
-              <div class="row">
-                <div class="col-sm-12" style="margin-top: 16px;">
-                  <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search()">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    {{ 'Search' | translate}}
-                  </button>
+                <!-- ------------------------------------------ -->
+                <!-- BTNS SEARCH & CLEAR SEARCH -->
+                <!-- ------------------------------------------ -->
+                <div class="row">
+                  <div class="col-sm-12" style="margin-top: 16px;">
+                    <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
+                      class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search('template')">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      {{ 'Search' | translate}}
+                    </button>
 
-                  <button type="submit" class="btn btn-gray-no-boxshadow  clearsearchbtn pull-right"
-                    (click)="clearSearch()" style="margin-right: 12px;">
+                    <button type="submit" class="btn btn-gray-no-boxshadow  clearsearchbtn pull-right"
+                      (click)="clearSearch()" style="margin-right: 12px;">
 
-                    <!-- {{ 'HistoryPage.ClearSearch' | translate }} -->
-                    {{ 'ResetFilters' | translate }}
+                      <!-- {{ 'HistoryPage.ClearSearch' | translate }} -->
+                      {{ 'ResetFilters' | translate }}
 
-                  </button>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -873,7 +877,7 @@
                   </div>
                 </th>
 
-                <th class="table-header-option" style="text-align: center" (click)="search()">
+                <th class="table-header-option" style="text-align: center" (click)="search('refresh')">
                   <div class="refresh-icon-wpr"
                     [ngClass]="{'not_is_owner': USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'is_agent': USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
