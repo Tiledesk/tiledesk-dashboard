@@ -1963,34 +1963,76 @@ _presentDialogImportContents() {
         kb: kb
       },
     });
-    dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal KB DETAILS] Dialog kb: ', kb);
-      if (kb) {
-        this.onUpdateKb(kb)
+    dialogRef.afterClosed().subscribe(res => {
+      this.logger.log('[Modal KB DETAILS] Dialog kb: ', res);
+      if (res) {
+      if(res.method === 'update') {
+        //  let kb = res.kb.kb
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        this.onUpdateKb(res.kb)
+      } else if (res.method === 'delete') {
+        
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        this.onOpenBaseModalDelete(res.kb)
       }
+     }
+      // if (kb) {
+      //   this.onUpdateKb(kb)
+      // }
     });
   }
 
-  onOpenBaseModalDelete(kb) {
+ onOpenBaseModalDelete(kb) {
     this.kbid_selected = kb;
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
+    if (kb.type !== 'sitemap') {
+      const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          kb: kb
+        },
+      });
+      dialogRef.afterClosed().subscribe(kb => {
+        this.logger.log('[Modal DELETE KB] kb: ', kb);
+        if (kb) {
+          this.onDeleteKnowledgeBase(kb)
+        }
+      });
+    } else if (kb.type === 'sitemap') {
+      this.presentDialogComfimDeleteSitemap(kb)
+    }
+  }
 
-    const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        kb: kb
-      },
-    });
-    dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal DELETE KB] kb: ', kb);
-      if (kb) {
-        this.onDeleteKnowledgeBase(kb)
-      }
-    });
+    presentDialogComfimDeleteSitemap(kb) {
+     kb.deleting = false;
+     Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+        // this.logger.log('XXXX ' , result) 
+        if (result.isDenied) { 
+          this.onDeleteKnowledgeBase(kb)
+        } else {
+          kb.deleting = false;
+        }
+      })
   }
 
 
@@ -2140,7 +2182,8 @@ _presentDialogImportContents() {
         t_params: this.t_params,
         id_project: this.id_project,
         project_name: this.project_name,
-        payIsVisible: this.payIsVisible
+        payIsVisible: this.payIsVisible,
+        selectedNamespace: this.selectedNamespace
       },
     });
     dialogRef.afterClosed().subscribe(body => {
@@ -2150,7 +2193,8 @@ _presentDialogImportContents() {
       // }
       if (body) {
         if (!body.hasOwnProperty('upgrade_plan')) {
-          this.onAddMultiKb(body)
+          // this.onAddMultiKb(body)
+          this.importSitemap(body)
         } else {
           this.logger.log('Property "upgrade_plan" exist');
           this.goToPricing()
@@ -2796,6 +2840,93 @@ _presentDialogImportContents() {
 
   }
 
+  importSitemap(body) {
+   this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap body', body)
+
+    let error = this.msgErrorAddUpdateKb;
+    this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
+
+    this.kbService.importSitemap(body, this.selectedNamespace['id']).subscribe((kbs: any) => {
+
+     this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
+
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+
+      this.kbsListCount = this.kbsListCount + kbs.length;
+      this.refreshKbsList = !this.refreshKbsList;
+
+    }, (err) => { 
+      this.logger.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
+      if (err.error && err.error.plan_limit) {
+        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
+        error = this.msgErrorAddUpdateKbLimit
+      }
+
+        if (this.payIsVisible === true) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.upgrade,
+          cancelButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+        }).then((result: any) => {
+
+          if (result.isConfirmed) {
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'free') {
+                this.router.navigate(['project/' + this.id_project + '/pricing']);
+              } else {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            }
+          }
+        })
+      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+        Swal.fire({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonText: this.cancel,
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false
+        })
+      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+        // this.logger.log('here 1')
+        Swal.fire({
+          title: this.warningTitle,
+          text: error + '. ' + this.contactUsToUpgrade,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          // confirmButtonColor: "var(--blue-light)",
+          canecelButtonText: this.cancel,
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
+        })
+      }
+
+    }, () => {
+
+      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap *COMPLETE*");
+      this.getAllNamespaces()
+    })
+  }
+
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
     // this.onCloseBaseModal();
@@ -2877,6 +3008,7 @@ _presentDialogImportContents() {
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
       this.trackUserActioOnKB('Added Knowledge Base')
+      this.getAllNamespaces()
     })
   }
 
@@ -2999,6 +3131,7 @@ _presentDialogImportContents() {
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
 
           this.getListOfKb(paramsDefault, 'deleteNamespace');
+          this.getAllNamespaces();
         }
       })
 

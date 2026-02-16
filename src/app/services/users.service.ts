@@ -176,7 +176,7 @@ export class UsersService {
 
 
   verifyIfExistProfileImage(user_id, imageStorage) {
-    console.log('[USER-SERV] verifyIfExistProfileImage imageStorage' , imageStorage) 
+    this.logger.log('[USER-SERV] verifyIfExistProfileImage imageStorage' , imageStorage) 
     let imageUrl = ''
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + imageStorage + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';

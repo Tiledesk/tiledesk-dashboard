@@ -44,7 +44,7 @@ export class UploadImageNativeService {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
-        console.log('[UPLOAD-IMAGE-NATIVE.SERV] - projectId ', this.projectId)
+        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - projectId ', this.projectId)
       }
     });
   }
@@ -87,13 +87,13 @@ export class UploadImageNativeService {
     // USE IMAGE API
     // const BASE_URL_IMAGES = this.BASE_URL + 'images'
     const BASE_URL_IMAGES = this.BASE_URL + this.projectId + '/files'
-    console.log('[UPLOAD-IMAGE-NATIVE.SERV] Photo Profile upload BASE_URL_IMAGES ', BASE_URL_IMAGES)
+    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] Photo Profile upload BASE_URL_IMAGES ', BASE_URL_IMAGES)
     return this._httpClient
       .post<any>(BASE_URL_IMAGES + '/users/photo', formData, requestOptions)
       .pipe(map((res: any) => {
-        console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
+        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
         if (res && res.message) {
-          console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
+          this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
 
           if (res.message === 'Image uploaded successfully') {
             this.userImageWasUploaded_Native.next(true);
@@ -139,7 +139,7 @@ export class UploadImageNativeService {
     return this._httpClient
       .delete(BASE_URL_IMAGES + "?path=uploads/users/" + id + "/images/photo.jpg", requestOptions)
       .subscribe((res: any) => {
-        console.log('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - RES ', res);
+        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - RES ', res);
 
         if (res && res.message === "File deleted successfully") {
           if (calledfor === 'user') {
@@ -178,7 +178,7 @@ export class UploadImageNativeService {
       .pipe(map((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES ', res);
         if (res && res.message) {
-          console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES MSG ', res.message);
+          this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES MSG ', res.message);
           if (res.message === 'Image uploded successfully') {
 
             this.botImageWasUploaded_Native.next(true);
@@ -343,7 +343,7 @@ export class UploadImageNativeService {
 
   manageUploadError(error) {
     if (error.status === 413) {
-      // console.log(`[NATIVE UPLOAD] - upload native error message 1`, error.error.err)
+      // this.logger.log(`[NATIVE UPLOAD] - upload native error message 1`, error.error.err)
       this.logger.log(`[NATIVE UPLOAD] - upload native error message 2`, error.error.limit_file_size)
       const uploadLimitInBytes = error.error.limit_file_size
       const uploadFileLimitSize = formatBytesWithDecimal(uploadLimitInBytes, 2)
@@ -355,7 +355,7 @@ export class UploadImageNativeService {
   }
 
   deleteImageUploadAttachment_Native(path) {
-    console.log('[NATIVE UPLOAD] - delete image path ',path)
+    this.logger.log('[NATIVE UPLOAD] - delete image path ',path)
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
       //'Content-Type': 'multipart/form-data',
@@ -381,7 +381,7 @@ export class UploadImageNativeService {
 
 
   deleteDocumentUploadAttachment_Native(path) {
-   console.log('[NATIVE UPLOAD] - delete Document path ',path)
+   this.logger.log('[NATIVE UPLOAD] - delete Document path ',path)
    const headers = new HttpHeaders({
      Authorization: this.TOKEN,
      //'Content-Type': 'multipart/form-data',

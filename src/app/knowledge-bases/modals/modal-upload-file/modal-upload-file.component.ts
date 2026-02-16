@@ -56,7 +56,7 @@ export class ModalUploadFileComponent implements OnInit {
 
       if (fileList.length > 0) { }
       const file: File = fileList[0];
-      console.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
+      this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
 
       this.uploadedFile = file;
 

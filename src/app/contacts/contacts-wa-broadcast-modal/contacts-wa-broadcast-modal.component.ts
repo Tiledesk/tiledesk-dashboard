@@ -483,7 +483,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
 
   onSelectTemplate() {
     this.selected_template = this.templates_list.find(t => t.name === this.templateName);
-    console.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
+    this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] onSelectTemplate selected_template', this.selected_template)
     if (this.selected_template) {
       // Check if template uses NAMED parameters
       this.isNamedTemplate = this.selected_template.parameter_format === 'NAMED';
@@ -1706,7 +1706,7 @@ export class ContactsWaBroadcastModalComponent implements OnInit {
   }
 
   goToMessageList() {
-   console.error('[CONTACTS-WA-BROADCAST-MODAL] Error sending this.data.contact._id:', this.data.contact._id);
+   this.logger.log('[CONTACTS-WA-BROADCAST-MODAL] Error sending this.data.contact._id:', this.data.contact._id);
     this.dialogRef.close();
     // this.router.navigate(['project/' + this.projectId + '/automations'])
     this.router.navigate(['project/' + this.projectId + '/contact', this.data.contact._id], { queryParams: { tab: 'sent-messages' } });

@@ -3654,12 +3654,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
         else {
           this.uploadImageNativeService.uploadAssetFile(file).then(downloadURL => {
-            console.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
+            this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
 
             if (downloadURL) {
 
               this.logoUrl = downloadURL;
-              console.log(`[WIDGET-SET-UP] - upload native downloadURL `, this.logoUrl);
+              this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, this.logoUrl);
               this.widgetObj['logoChat'] = this.logoUrl
               this.widgetService.updateWidgetProject(this.widgetObj)
             }
@@ -3697,12 +3697,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   deleteWidegetLogo() {
-    console.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo ', this.logoUrl)
+    this.logger.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo ', this.logoUrl)
     const firebase_conf = this.appConfigService.getConfig().firebase;
     const storageBucket = firebase_conf['storageBucket'];
     const baseUrl = this.appConfigService.getConfig().baseImageUrl;
     if (this.logoUrl.includes(storageBucket) || this.logoUrl.includes(baseUrl)) {
-      console.log('the Image has  been uploaded');
+      this.logger.log('the Image has  been uploaded');
       this.logger.log(`[WS-REQUESTS-MSGS] - deleteWidegetLogo  storageBucket`, storageBucket);
       this.logger.log(`[WS-REQUESTS-MSGS] - deleteWidegetLogo  baseUrl`, baseUrl);
 
@@ -3731,10 +3731,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       //     });
 
       // } else {
-        console.log(`[WS-REQUESTS-MSGS] - delete attachment `);
+        this.logger.log(`[WS-REQUESTS-MSGS] - delete attachment `);
         this.uploadImageNativeService.deleteImageUploadAttachment_Native(this.logoUrl)
           .then(res => {
-            console.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
+            this.logger.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
             if (res === true) {
               // this.logoUrl = this.widgetLogoURL;
               this.logger.log('[WS-REQUESTS-MSGS] - delete native logoUrl', this.logoUrl)
@@ -3752,7 +3752,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // }
 
     } else {
-      console.log('[WS-REQUESTS-MSGS] - Removed default logo');
+      this.logger.log('[WS-REQUESTS-MSGS] - Removed default logo');
       this.logoUrl = 'No Logo';
       this.widgetObj['logoChat'] = 'nologo';
       this.widgetService.updateWidgetProject(this.widgetObj)

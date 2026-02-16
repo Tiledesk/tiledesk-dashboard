@@ -14,12 +14,30 @@
             <!-- Use cese URL -->
             <!-- ------------------------------------ -->
             <div *ngIf="kb.type === 'url'">
+                <span *ngIf="!kb.sitemap_origin" class="input-label">{{ 'KbPage.Url' | translate }}</span>
+                <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span>
+                <a class="input-label link-page" [href]="source" target="_blank" style="text-decoration: none;">
+                    <span class="material-icons-outlined">
+                        open_in_new
+                    </span>
+                </a>
+
+                <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input">
+                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input">
+
+
+            </div>
+
+
+             <div *ngIf="kb.type === 'sitemap' ">
                 <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
+                <!-- <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span> -->
                 <a class="input-label link-page" [href]="source" target="_blank">
                     <span class="material-icons-outlined">
                         open_in_new
                     </span>
                 </a>
+
                 <input [(ngModel)]="source" type="url" name="url" class="custom-input">
 
             </div>
@@ -44,34 +62,146 @@
 
     </div>
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
-        <div class="chunk-title-and-count">
-            <div class="chunk-title">
-                Chunks
-            </div>
-            <div class="chunk-count">
-                {{chunksCount}}
-            </div>
-        </div>
 
-        <div class="chunk-error" *ngIf="getChunksError"> 
-            <span class="material-icons-outlined">
-                error
-            </span>
-            {{ 'AnErrorHasOccurred' | translate }}
+    <ng-container *ngIf="!showSpinner">
+        <div class="scrape-options-wpr" *ngIf="kb.type === 'url' || kb.type === 'sitemap'">
+            <div class="scrape-options-header">
+                <div class="scrape-options-title">
+                   {{'KbPage.ScrapingRules' | translate}}
+                </div>
+
+               <div class="mat-icon-wpr" style="position: relative;">
+                    <div class="mat-icon-wpr"
+                         (click)="copyAllScrapeOptions(); $event.stopPropagation()"
+                         matTooltipClass="kb-custom-mat-tooltip"
+                         matTooltip="{{'KbPage.CopyScrapingRules' | translate}}"
+                         #copyTooltip="matTooltip"
+                         matTooltipPosition="above"
+                         matTooltipHideDelay="100">
+                        <mat-icon>content_copy</mat-icon>
+                    </div>
+                    <span *ngIf="showCopiedMessage" class="copied-message">{{'Copied' | translate}}!</span>
+                </div>
+                <!-- <button type="button" 
+                    *ngIf="hasScrapeOptions()"
+                    class="btn copy-scrape-options-btn" 
+                    (click)="copyAllScrapeOptions(); $event.stopPropagation()"
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    [matTooltip]="'CopyScrapeOptions' | translate"
+                    #copyTooltip="matTooltip"
+                    matTooltipPosition="above"
+                    matTooltipHideDelay="100">
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">content_copy</mat-icon>
+                    <span>{{'Copy' | translate}}</span>
+                </button> -->
+            </div>
+            <div *ngIf="hasScrapeOptions()" style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                <div style="margin-bottom: 8px;">
+                    <strong style="display: block; margin-bottom: 4px;">{{'KbPage.ExtractTagsNoMandatory' | translate}}:</strong>
+                    <mat-chip-list *ngIf="(kb.scrape_options?.tags_to_extract && kb.scrape_options.tags_to_extract.length > 0)">
+                        <mat-chip *ngFor="let tag of (kb.extract_tags || kb.scrape_options?.tags_to_extract || [])" class="scrape-option-chip">
+                            {{ tag }}
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div *ngIf="(!kb.scrape_options?.tags_to_extract || kb.scrape_options.tags_to_extract.length === 0)"
+                        style="font-style: italic;">
+                         {{'KbPage.NoScrapingRulesConfigured' | translate}}
+                    </div>
+                </div>
+                <div  style="margin-bottom: 8px;">
+                    <strong style="display: block; margin-bottom: 4px;">{{'KbPage.UnwantedTags' | translate}}:</strong>
+                    <mat-chip-list *ngIf="(kb.scrape_options?.unwanted_tags && kb.scrape_options.unwanted_tags.length > 0)">
+                        <mat-chip *ngFor="let tag of (kb.unwanted_tags || kb.scrape_options?.unwanted_tags || [])" class="scrape-option-chip">
+                            {{ tag }}
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div *ngIf="(!kb.scrape_options?.unwanted_tags || kb.scrape_options.unwanted_tags.length === 0)"
+                        style="font-style: italic;">
+                        {{'KbPage.NoScrapingRulesConfigured' | translate}}
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <strong style="display: block; margin-bottom: 4px;">{{'KbPage.UnwantedClassnames' | translate}}:</strong>
+                    <mat-chip-list *ngIf="(kb.scrape_options?.unwanted_classnames && kb.scrape_options.unwanted_classnames.length > 0)">
+                        <mat-chip *ngFor="let tag of (kb.scrape_options?.unwanted_classnames || [])" class="scrape-option-chip">
+                            {{ tag }}
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div *ngIf="(!kb.scrape_options?.unwanted_classnames || kb.scrape_options.unwanted_classnames.length === 0)"
+                        style="font-style: italic;"> 
+                         {{'KbPage.NoScrapingRulesConfigured' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!hasScrapeOptions()" style="font-size: 12px; color: #999; font-style: italic;">
+                <!-- No extraction rules configured -->
+               {{'KbPage.NoScrapingRulesConfigured' | translate}}
+                
+            </div>
         </div>
-        
-        <div class="content-chunks" style="display: flex;     flex-wrap: nowrap;    flex-direction: column; gap: 12px">
+    </ng-container>
+
+    <ng-container *ngIf="kb.type !== 'sitemap'"> 
+        <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
+            <div class="chunk-title-and-count">
+                <div class="chunk-title">
+                    Chunks
+                </div>
+                <div class="chunk-count">
+                    {{chunksCount}}
+                </div>
+            </div>
+
+            <div class="chunk-error" *ngIf="getChunksError"> 
+                <span class="material-icons-outlined">
+                    error
+                </span>
+                {{ 'AnErrorHasOccurred' | translate }}
+            </div>
             
-            <div class="chunk-wpr" *ngFor="let chunk of chunks">
-                <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
-                <article class="chunk" >
-                    {{ chunk.text}}
-                </article>
-            </div>
+            <div class="content-chunks" style="display: flex;     flex-wrap: nowrap;    flex-direction: column; gap: 12px">
+                
+                <div class="chunk-wpr" *ngFor="let chunk of chunks">
+                    <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
+                    <article class="chunk" >
+                        {{ chunk.text}}
+                    </article>
+                </div>
 
+            </div>
         </div>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="kb.type === 'sitemap'">
+  
+        <hr style="margin-top: 0px;margin-bottom: 12px;">
+
+        <div class="sitemap-refresh-wpr"> 
+            <div class="sitemap-refresh-rate-label" style="font-weight: 400;">
+                {{'KbPage.RefreshRate' | translate}}:
+            </div>
+            
+            <div class="sitemap-refresh-rate-value">
+                <!-- {{kb.refresh_rate}} -->
+
+                <span *ngIf="kb.refresh_rate === 'never' ">
+                    {{'Never' | translate}}
+                </span>
+                <span *ngIf="kb.refresh_rate === 'daily' ">
+                    {{'Daily' | translate}}
+                </span>
+
+                <span *ngIf="kb.refresh_rate === 'weekly' ">
+                    {{'Weekly' | translate}}
+                </span>
+
+                <span *ngIf="kb.refresh_rate === 'monthly' ">
+                    {{'Monthly' | translate}}
+                </span>
+            </div>
+        </div>
+
+    </ng-container>
 
 
 </div>
@@ -86,10 +216,15 @@
         {{ "Update" | translate }}
     </button>
 
-    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
+    <!-- <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
+    </button> -->
+     <button *ngIf="kb._id && (kb.type === 'sitemap' || kb.type === 'url')" class="btn btn-red btn-red-custom"
+        mat-button (click)="onDeleteKnowledgeBase()" style="height: 36px; line-height: 20px;">
+        {{ "Delete" | translate }}
     </button>
+
 
     <button *ngIf="kb._id && (kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx')" class="mat-dialog-ok-btn"
         [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">

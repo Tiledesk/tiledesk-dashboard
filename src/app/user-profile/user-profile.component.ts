@@ -181,7 +181,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     super(prjctPlanService, notify);
     const brand = brandService.getBrand(); 
     this.displayChangePwd = brand['display_change_pwd']
-    // console.log('[USER-PROFILE] displayChangePwd ' , this.displayChangePwd) 
+    // this.logger.log('[USER-PROFILE] displayChangePwd ' , this.displayChangePwd) 
    }
 
   ngOnInit() {
@@ -224,87 +224,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   }
 
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-  //     // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
-  //     if (projectProfileData) {
-  //       this.prjct_id = projectProfileData._id
-  //       this.prjct_name = projectProfileData.name
 
-  //       if (projectProfileData && projectProfileData.extra3) {
-  //         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-  //         this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
-  //       }
-
-
-  //       if (projectProfileData.profile_type === 'free') {
-  //         if (projectProfileData.trial_expired === false) {
-  //           this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-
-  //         } else {
-  //           this.prjct_profile_name = "Free plan";
-
-  //         }
-  //       } else if (projectProfileData.profile_type === 'payment') {
-
-  //         if (projectProfileData.profile_name === PLAN_NAME.A) {
-  //           if (!this.appSumoProfile) {
-  //             this.prjct_profile_name = PLAN_NAME.A + " plan";
-
-  //           } else {
-  //             this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-  //           }
-  //         } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-  //           if (!this.appSumoProfile) {
-  //             this.prjct_profile_name = PLAN_NAME.B + " plan";
-
-  //           } else {
-  //             this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-
-  //           }
-  //         } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-  //           this.prjct_profile_name = PLAN_NAME.C + " plan";
-  //         }
-  //       }
-
-  //       // if (projectProfileData.profile_type === 'free') {
-  //       //   if (projectProfileData.trial_expired === false) {
-
-  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-  //       //   } else {
-
-  //       //     this.prjct_profile_name = "Free plan"
-
-  //       //   }
-  //       // } else if (projectProfileData.profile_type === 'payment') {
-
-  //       //   if (projectProfileData.profile_name === PLAN_NAME.A) {
-  //       //     this.prjct_profile_name = PLAN_NAME.A + " plan";
-
-  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
-
-  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan";
-
-  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
-
-  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-  //       //     this.prjct_profile_name = PLAN_NAME.C + " plan";
-
-  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
-  //       //   }
-
-  //       // }
-  //     }
-  //   }, error => {
-  //     this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
-  //   }, () => {
-
-  //     this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
-
-  //   });
-  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -581,7 +501,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           // this.logger.log('upload env prod? ', environment.production)
           this.userProfileImageurl = downloadurl;
         }
-        console.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
+        this.logger.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
@@ -623,7 +543,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     } else {
       // Native upload
       this.uploadImageNativeService.userImageWasUploaded_Native.subscribe((image_exist) => {
-        console.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
+        this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
           this.userImageHasBeenUploaded = image_exist;
           if (this.userImageHasBeenUploaded === true) {
@@ -648,7 +568,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
+      this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -667,7 +587,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
   setImageProfileUrl_Native(baseUrl) {
     this.userProfileImageurl = baseUrl + 'files?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    console.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     
     // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();

@@ -38,11 +38,14 @@
                                         </span>
                                     </div>
                                     <span class="span-6"> </span>
-                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbURL' | translate }}
+                                    <p class="add-content-card-content-title"> 
+                                        <!-- {{'KbPage.AddKbURL' | translate }} -->
+                                          {{'KbPage.Websites' | translate }} 
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        {{'KbPage.AddsURLSDescription' | translate }}
+                                        <!-- {{'KbPage.AddsURLSDescription' | translate }} -->
+                                         {{'KbPage.AddsURLSAndSitemapDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -59,7 +62,9 @@
                                         </span>
                                     </div>
                                     <span class="span-6"> </span>
-                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbSitemap' | translate }}
+                                    <p class="add-content-card-content-title"> 
+                                        <!-- {{'KbPage.AddKbSitemap' | translate }} -->
+                                        {{'KbPage.SynchronizedSitemap' | translate }}
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
@@ -242,9 +247,12 @@
                             <ng-option value="pdf">
                                 PDF
                             </ng-option>
-                            <!-- <ng-option value="txt">
-                        TXT
-                    </ng-option> -->
+                            <ng-option value="sitemap">
+                                {{'KbPage.AddKbSitemap'| translate}}
+                            </ng-option>
+                            <ng-option value="txt">
+                                TXT
+                            </ng-option>
                             <ng-option value="docx">
                                 DOCX
                             </ng-option>
@@ -276,7 +284,8 @@
                             <mat-icon>refresh</mat-icon>
                         </button>
                     </div>
-                    <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: <span class="contents-count-num">{{ kbsListCount }}</span>
+                    <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: 
+                        <span class="contents-count-num">{{ kbsListCount }}</span>
                     </div>
                 </div>
 
@@ -451,6 +460,12 @@
                                     style="font-size: 16px; color: white;">link</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
                             </div>
+                             <div *ngIf="kb.type == 'sitemap'" class="chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #ff6154; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span id="description" class="material-icons-outlined"
+                                    style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
+                            </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
@@ -462,64 +477,70 @@
 
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
-
-                            <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                class="material-icons-outlined status-icon" 
-                                style="vertical-align: middle;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                matTooltip="{{'KbPage.StatusNotStarted' | translate}}" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100">
-                                done
-                            </span>
-                            <span *ngIf="kb.status == 100" id="done"
-                                class="material-icons-outlined status-icon"
-                                style="vertical-align: middle;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                matTooltip="{{'KbPage.StatusQueued' | translate}}" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100">
+                            <ng-container *ngIf="kb.type !== 'sitemap'"> 
+                                <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
+                                    class="material-icons-outlined status-icon" 
+                                    style="vertical-align: middle;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'KbPage.StatusNotStarted' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100">
+                                    done
+                                </span>
+                                <span *ngIf="kb.status == 100" id="done"
+                                    class="material-icons-outlined status-icon"
+                                    style="vertical-align: middle;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'KbPage.StatusQueued' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100">
+                                    done_all
+                                </span>
+                                <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
+                                    class="material-icons-outlined status-icon animated-icon"
+                                    style="vertical-align: middle;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'KbPage.StatusStarted' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100">
+                                    cached
+                                </span>
+                                <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
+                                    class="material-icons-outlined status-icon status-done"
+                                    style="vertical-align: middle;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'KbPage.StatusFinished' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100">
                                 done_all
-                            </span>
-                            <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                class="material-icons-outlined status-icon animated-icon"
-                                style="vertical-align: middle;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                matTooltip="{{'KbPage.StatusStarted' | translate}}" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100">
-                                cached
-                            </span>
-                            <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                class="material-icons-outlined status-icon status-done"
-                                style="vertical-align: middle;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                matTooltip="{{'KbPage.StatusFinished' | translate}}" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100">
-                               done_all
-                            </span>
-                            <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                class="material-icons-outlined status-icon status-error"
-                                style="vertical-align: middle;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                matTooltip="{{'KbPage.StatusError' | translate}}" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100">
-                                error
-                            </span>
+                                </span>
+                                <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
+                                    class="material-icons-outlined status-icon status-error"
+                                    style="vertical-align: middle;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'KbPage.StatusError' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100">
+                                    error
+                                </span>
+                            </ng-container>
+                            <ng-container *ngIf="kb.type === 'sitemap'"> 
+                                <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                    remove
+                                </span>
+                            </ng-container>
                         </td>
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
-                            <span *ngIf="kb.type === 'url'"
+                            <span *ngIf="kb.type === 'url' || kb.type === 'sitemap'"
                                 matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
@@ -542,7 +563,7 @@
                                     {{'Monthly' | translate}}
                                 </span>
                             </span>
-                            <span *ngIf="kb.type !== 'url'">
+                            <span *ngIf="kb.type !== 'url' && kb.type !== 'sitemap'">
                                 —
                             </span>
 
@@ -566,9 +587,25 @@
                                 {{kb.content | slice:0:500 }}
 
                             </div>
-                            <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                                <span *ngIf="!kb.sitemap_origin">
+                                    {{kb.source }}
+                                </span>
 
-                                {{kb.source }}
+                                <span *ngIf="kb.sitemap_origin"> 
+                                   <span style="background: #ff6154;
+                                        color: #fff;
+                                        border-radius: 9999px;
+                                        padding: 0 5px;
+                                        font-size: 9px;
+                                        font-weight: 400;
+                                        margin-right: 3px;"> 
+                                        {{'KbPage.AddKbSitemap'| translate}}
+                                    </span> 
+                                    {{kb.sitemap_origin }}
+                                    <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
+                                    <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
+                                 </span>
 
                             </div>
                         </td>

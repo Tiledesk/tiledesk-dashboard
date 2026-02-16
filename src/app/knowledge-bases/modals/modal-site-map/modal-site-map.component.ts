@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
@@ -27,7 +27,7 @@ export class ModalSiteMapComponent implements OnInit {
   listOfUrls: string;
   countSitemap: number;
   errorLimit: boolean = false;
-
+  selectedNamespace: string;
 
   panelOpenState = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -45,13 +45,14 @@ export class ModalSiteMapComponent implements OnInit {
     { name: "Advanced", value: 4 },
   ];
 
-  selectedScrapeType = 2;
-  extract_tags = [];
+  selectedScrapeType = 4;
+  extract_tags = ['body']; // Always preset to 'body' 
   unwanted_tags = [];
   unwanted_classnames = [];
+  stored_scrape_option: boolean
 
   refresh_rate: Array<any> = [ 
-    { name: "Never", value: 'never' },
+    // { name: "Never", value: 'never' },
     { name: "Daily", value: 'daily' },
     { name: "Weekly", value: 'weekly' },
     { name: "Monthly", value: 'monthly'}
@@ -66,6 +67,7 @@ export class ModalSiteMapComponent implements OnInit {
   payIsVisible:  boolean;
   t_params: any;
   salesEmail: string;
+  siteMap: string;
   kb: KB = {
     _id: null,
     type: '',
@@ -79,10 +81,15 @@ export class ModalSiteMapComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-     public brandService: BrandService
+    public brandService: BrandService,
+    private cdr: ChangeDetectorRef
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-SITEMAP] data: ", data);
+
+    this.selectedRefreshRate = this.refresh_rate[2].value
+    this.logger.log("[MODALS-SITEMAP] this.refresh_rate[2]: ", this.refresh_rate[2].value);
+
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
       this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
@@ -90,6 +97,7 @@ export class ModalSiteMapComponent implements OnInit {
       this.id_project = data.id_project;
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
+      this.selectedNamespace = data.selectedNamespace
       this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
       this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
       this.logger.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
@@ -103,7 +111,8 @@ export class ModalSiteMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.kbForm = this.createConditionGroup();
-    this.listenToOnSenSitemapSiteListEvent()
+    this.listenToOnSenSitemapSiteListEvent();
+    this.hasStoredScrapeOptions();
   }
 
   listenToOnSenSitemapSiteListEvent() {
@@ -212,18 +221,30 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   onSaveKnowledgeBase(){
-    if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
-      this.errorLimit = true;
-    } else {
-      this.errorLimit = false;
-      const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
-        return row.trim() !== '';
-      });
-      let body = {
-        'list': arrayURLS,
-        scrape_type: this.selectedScrapeType,
-        refresh_rate: this.selectedRefreshRate
-      }
+    if(!this.refreshRateIsEnabled) {
+      return
+    }
+    // if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
+    //   this.errorLimit = true;
+    // } else {
+    //   this.errorLimit = false;
+    //   const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
+    //     return row.trim() !== '';
+    //   });
+    //   let body = {
+    //     'list': arrayURLS,
+    //     scrape_type: this.selectedScrapeType,
+    //     refresh_rate: this.selectedRefreshRate
+    //   }
+      let body  = {
+          "name":   this.siteMap,
+          "source": this.siteMap,
+          "content": "",
+          "type": "sitemap",
+          "namespace": this.selectedNamespace['id'],
+          "refresh_rate": this.selectedRefreshRate,
+          "scrape_type": this.selectedScrapeType
+        }
 
       if (this.selectedScrapeType === 4) {
         body['scrape_options'] = {
@@ -234,7 +255,7 @@ export class ModalSiteMapComponent implements OnInit {
       }
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);
-    }
+   // }
     
   }
 
@@ -293,5 +314,91 @@ export class ModalSiteMapComponent implements OnInit {
     window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 
+    /**
+   * Copy all scrape options to localStorage
+   */
+  copyAllScrapeOptions(): void {
+    this.logger.log('[MODALS-SITEMAP] copyAllScrapeOptions called');
+    this.logger.log('[MODALS-SITEMAP] Current extract_tags:', this.extract_tags);
+    this.logger.log('[MODALS-SITEMAP] Current unwanted_tags:', this.unwanted_tags);
+    this.logger.log('[MODALS-SITEMAP] Current unwanted_classnames:', this.unwanted_classnames);
+    
+    const scrapeOptions = {
+      extract_tags: [...this.extract_tags],
+      unwanted_tags: [...this.unwanted_tags],
+      unwanted_classnames: [...this.unwanted_classnames]
+    };
+    this.logger.log('[MODALS-SITEMAP] Scrape options object to save:', scrapeOptions);
+    
+    try {
+      const jsonString = JSON.stringify(scrapeOptions);
+      this.logger.log('[[MODALS-SITEMAP] JSON string to save:', jsonString);
+      localStorage.setItem('scrape_options', jsonString);
+      
+      // Verify it was saved
+      const saved = localStorage.getItem('scrape_options');
+      this.logger.log('[MODALS-SITEMAP] Verified saved value:', saved);
+      this.logger.log('[MODALS-SITEMAP] Scrape options copied to storage successfully');
+    } catch (error) {
+      this.logger.error('[MODALS-SITEMAP] Error saving scrape options to storage:', error);
+    }
+  }
+
+  /**
+   * Check if stored scrape options exist
+   */
+  hasStoredScrapeOptions(): boolean {
+    try {
+      this.stored_scrape_option = localStorage.getItem('scrape_options') !== null;
+
+      return this.stored_scrape_option;
+    } catch (error) {
+      this.logger.error('[MODALS-SITEMAP] Error reading scrape options from storage:',
+        error
+      );
+      this.stored_scrape_option = false;
+      return false;
+    }
+  }
+
+  /**
+   * Paste all scrape options from localStorage
+   */
+  pasteAllScrapeOptions(): void {
+    try {
+      const stored = localStorage.getItem('scrape_options');
+      this.logger.log('[MODALS-SITEMAP] Stored value from localStorage:', stored);
+      if (stored) {
+        const scrapeOptions = JSON.parse(stored);
+        this.logger.log('[MODALS-SITEMAP] Parsed scrape options:', scrapeOptions);
+        // Replace existing tags with stored ones
+        if (scrapeOptions.extract_tags && Array.isArray(scrapeOptions.extract_tags)) {
+          this.extract_tags = [...scrapeOptions.extract_tags];
+          this.logger.log('[MODALS-SITEMAP] extract_tags after paste:', this.extract_tags);
+        } else {
+          this.extract_tags = [];
+        }
+        if (scrapeOptions.unwanted_tags && Array.isArray(scrapeOptions.unwanted_tags)) {
+          this.unwanted_tags = [...scrapeOptions.unwanted_tags];
+          this.logger.log('[MODALS-SITEMAP] unwanted_tags after paste:', this.unwanted_tags);
+        } else {
+          this.unwanted_tags = [];
+        }
+        if (scrapeOptions.unwanted_classnames && Array.isArray(scrapeOptions.unwanted_classnames)) {
+          this.unwanted_classnames = [...scrapeOptions.unwanted_classnames];
+          this.logger.log('[MODALS-SITEMAP] unwanted_classnames after paste:', this.unwanted_classnames);
+        } else {
+          this.unwanted_classnames = [];
+        }
+        this.logger.log('[MODALS-SITEMAP] All arrays after paste - extract_tags:', this.extract_tags, 'unwanted_tags:', this.unwanted_tags, 'unwanted_classnames:', this.unwanted_classnames);
+        // Force change detection to update the view
+        this.cdr.detectChanges();
+      } else {
+        this.logger.log('[MODALS-SITEMAP] No stored value found in localStorage');
+      }
+    } catch (error) {
+      this.logger.error('[MODALS-SITEMAP] Error reading scrape options from storage:', error);
+    }
+  }
 
 }

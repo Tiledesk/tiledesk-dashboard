@@ -663,7 +663,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   setImageProfileUrl_Native(storage) {
     this.userProfileImageurl = storage + 'files?path=uploads%2Fusers%2F' + this.user._id + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    console.log('[SIDEBAR-USER-DETAILS] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.logger.log('[SIDEBAR-USER-DETAILS] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
 
