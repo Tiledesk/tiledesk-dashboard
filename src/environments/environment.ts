@@ -2,7 +2,8 @@
 export const environment = {
   production: false,
   remoteConfig: true,
-  remoteConfigUrl: './dashboard-config.json',
+ //  remoteConfigUrl: './dashboard-config.json',
+  remoteConfigUrl: './environments/real_data/dashboard-config-stage.json',
   VERSION: require('../../package.json').version,
   t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:T-ANA:T-ACT:T-TRI:T-GRO:T-DEP:T-OPH:T-MTL:T-DGF:T-NAT:T-CAR:T-V1L:T-PSA:T-MTT:T-SUP:T-LBS:T-APP:T-DEV:T-NOT:T-RAS:T',
   widgetUrl: 'http://localhost:4200/launch.js',
@@ -26,11 +27,11 @@ export const environment = {
       authDomain: 'CHANGEIT',
       databaseURL: 'CHANGEIT',
       projectId: 'CHANGEIT',
-      storageBucket: 'CHANGEIT',
-      messagingSenderId: 'CHANGEIT',
-      appId: 'CHANGEIT',
-      vapidKey: 'CHANGEIT'
-  }
+     storageBucket: 'CHANGEIT',
+     messagingSenderId: 'CHANGEIT',
+     appId: 'CHANGEIT',
+     vapidKey: 'CHANGEIT'
+ }
 };
 
 

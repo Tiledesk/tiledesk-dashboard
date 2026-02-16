@@ -391,6 +391,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
         this.availableApps.push(voiceApp);
 
+        let voiceEnghouseApp = response.apps.find(a => (a.title === APPS_TITLE.VXML_VOICE_ENGHOUSE && a.version === "v2"));
+        if (environment['voiceConfigUrl']) {
+          if (voiceEnghouseApp) {
+            voiceEnghouseApp.runURL = environment['voiceConfigUrl'];
+            voiceEnghouseApp.channel = "voice-vxml-enghouse";
+          } else {
+            voiceApp = {
+              voiceEnghouseApp: environment['voiceConfigUrl'],
+              channel: "voice-vxml-enghouse"
+            }
+          }
+        }
+        else {
+          if (voiceEnghouseApp) {
+            voiceEnghouseApp.channel = "voice-vxml-enghouse";
+          }
+        }
+        this.availableApps.push(voiceEnghouseApp);
+
         // -------
 
         let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
@@ -985,6 +1004,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // Remove TWILIO_VOICE if getPayValue() is false or if customization.voice_twilio is false
       if (!isVisiblePAY || (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false)) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (!isVisiblePAY || (projectProfileData.customization[this.INT_KEYS.VXML_VOICE_ENGHOUSE] === false)) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE_ENGHOUSE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
