@@ -43,6 +43,7 @@
               "src/dashboard-mqtt.json",
               "src/dashboard-pre-mqtt-engine-config.json",
               "src/environments/externalenv.json",
+              "src/environments/real_data/dashboard-config-stage.json",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",
