@@ -474,7 +474,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         // -------
 
         let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
-
         if (environment['voiceTwilioConfigUrl']) {
           if (voiceTwiloApp) {
             voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
@@ -1072,10 +1071,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
-      if (!isVisiblePAY || (projectProfileData.customization[this.INT_KEYS.VXML_VOICE_ENGHOUSE] === false)) {
-        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE_ENGHOUSE);
-        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
-      }
 
       // -----------------------------
       // VXML_VOICE
@@ -1123,6 +1118,28 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       //    this.INTEGRATIONS.push(twilioVoiceObjct)
       //  }
       //}
+
+      // -----------------------------
+      // VXML_ENGHOUSE
+      // -----------------------------
+      if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE_ENGHOUSE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE_ENGHOUSE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE_ENGHOUSE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
+      // Restores the "VXML Enghouse voice" integration (use case: it was removed from the Integration array in a project where it was not active)
+      if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE_ENGHOUSE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE_ENGHOUSE] === true) {
+        this.logger.log('[INTEGRATIONS] manageAppVisibility VXML_VOICE_ENGHOUSE ')
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE_ENGHOUSE);
+        if (index != -1) {
+          this.logger.log('VXML_VOICE_ENGHOUSE index A', index)
+        } else if (index == -1) {
+          this.logger.log('VXML_VOICE_ENGHOUSE index B', index)
+          const VXMLVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.VXML_VOICE_ENGHOUSE);
+          this.logger.log('VXMLVoiceObjct', VXMLVoiceObjct)
+          this.INTEGRATIONS.push(VXMLVoiceObjct)
+        }
+      }
 
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
