@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.157
+- Fixes the bug: Unanswered questions table has header even if there is no contents
+
 ### 2.7.156
 - Implements pagination for unanswered questions
 - Improves loading spinners on the knowledge base page
