@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.171-stage 
+- Added the VXML Enghouse integration 
+
 ### 2.7.170-stage 
 - Refresh the knowledge base list after updating content
 
