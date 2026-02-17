@@ -352,7 +352,7 @@
 
 
 
-        <div *ngIf="!isLoading || SHOW_MORE_BTN" #tableBody class="table-body card-content table-responsive">
+       <div *ngIf="SHOW_MORE_BTN || showKBTableSpinner || !isLoading || kbsList?.length > 0" #tableBody class="table-body card-content table-responsive">
          
             <table class="table table-hover">
                 <thead>
@@ -415,9 +415,17 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody *ngIf="showKBTableSpinner">
+                    <tr>
+                        <td colspan="6" style="width: 100%; text-align: center;">
+                            <loading-spinner></loading-spinner>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody *ngIf="!showKBTableSpinner">
                     <tr *ngIf="kbsList?.length == 0">
-                        <td colspan="5" style="width: 100%; ">
+                        <td colspan="6" style="width: 100%; ">
                             <div class="ellipsis-text" style="width: 100%;
                                 display: inline-block;
                                 text-align: center;

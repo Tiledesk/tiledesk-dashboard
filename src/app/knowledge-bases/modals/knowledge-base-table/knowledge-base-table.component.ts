@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges, ElementRef, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -32,6 +32,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refreshRateIsEnabled: boolean;
   @Input() payIsVisible: boolean;
   @Input() t_params: string;
+  @Input() showKBTableSpinner: boolean = false;
+  @Input() currentSortParams: any = null;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
@@ -68,7 +70,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private logger: LoggerService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
     const brand = brandService.getBrand(); 
@@ -125,6 +128,16 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
+
+    if (changes['kbsList'] && changes['kbsList'].previousValue && changes['kbsList'].previousValue.length > 0) {
+      const previousLength = changes['kbsList'].previousValue.length;
+      const currentLength = this.kbsList?.length || 0;
+      // If list was replaced and we're starting fresh, reset numberPage
+      if (currentLength > 0 && previousLength !== currentLength && this.searchParams?.page === 0) {
+        this.numberPage = 0;
+        this.logger.log('[KB TABLE] Reset numberPage due to list replacement, previous length:', previousLength, 'current length:', currentLength);
+      }
+    }
 
     if (changes['kbsList'] && this.kbsList && this.kbsList.length > 0) {
       performance.mark('kb-table-data-ready');
@@ -228,6 +241,29 @@ export class KnowledgeBaseTableComponent implements OnInit {
     if (changes.refresh) {
       this.isLoading = false;
     }
+
+    // Sync internal sorting state when parent changes sort params (e.g., after adding content)
+    if (changes.currentSortParams) {
+      if (this.currentSortParams && this.currentSortParams.sortField && this.currentSortParams.direction !== undefined) {
+        const previousDirection = this.directionDesc;
+        this.searchParams.sortField = this.currentSortParams.sortField;
+        this.searchParams.direction = this.currentSortParams.direction;
+        this.directionDesc = this.currentSortParams.direction;
+        // Reset numberPage when sort params change from parent (e.g., after add/update)
+        // This ensures we're on page 0 when parent forces a reload
+        if (this.searchParams.page === 0 || changes.currentSortParams.previousValue === null) {
+          this.numberPage = 0;
+          this.searchParams.page = 0;
+        }
+        this.logger.log('[KB TABLE] Synced sort params from parent:', this.currentSortParams);
+        this.logger.log('[KB TABLE] Previous directionDesc:', previousDirection, 'New directionDesc:', this.directionDesc);
+        this.logger.log('[KB TABLE] Reset numberPage to:', this.numberPage);
+        this.logger.log('[KB TABLE] Updated searchParams:', this.searchParams);
+        // Force change detection with OnPush strategy
+        this.cdr.markForCheck();
+      }
+    }
+
     if (this.kbsList?.length == 0) {
       this.SHOW_MORE_BTN = false;
     }
@@ -260,6 +296,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.searchParams.sortField = type;
     this.directionDesc = this.directionDesc * -1;
     this.searchParams.direction = this.directionDesc;
+    // Reset page to 0 when sorting
+    this.searchParams.page = 0;
+    this.numberPage = 0;
     this.isLoading = true;
     this.loadByFilter.next(this.searchParams);
     this.logger.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
@@ -274,6 +313,13 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // let search = '';
     this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
     this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+
+    // If called without parameters (manual refresh), reset page to 0
+    if (filterValue === undefined && column === undefined) {
+      this.searchParams.page = 0;
+      this.numberPage = 0;
+      this.logger.log('[KB TABLE] >>> onLoadByFilter - Manual refresh: reset page to 0');
+    }
 
     if (column == 'status') {
       this.searchParams.status = filterValue;

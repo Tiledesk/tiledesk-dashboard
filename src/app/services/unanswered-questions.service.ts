@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from './app-config.service';
+import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 
 export interface UnansweredQuestion {
   id: string;
@@ -40,8 +41,33 @@ export class UnansweredQuestionsService {
     this.project = this.auth.project_bs.value;
   }
 
-  getUnansweredQuestions(id_project: string, namespace_id: string): Observable<UnansweredQuestion[]> {
+  _getUnansweredQuestions(id_project: string, namespace_id: string, LIMIT: KB_DEFAULT_PARAMS, page: number): Observable<UnansweredQuestion[]> {
     const url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    return this._httpClient.get<UnansweredQuestion[]>(url, httpOptions);
+  }
+
+  getUnansweredQuestions(id_project: string, namespace_id: string, limit?: number, page?: number): Observable<UnansweredQuestion[]> {
+    let url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
+    
+    // Add pagination parameters if provided
+    const params: string[] = [];
+    if (limit !== undefined) {
+      params.push(`limit=${limit}`);
+    }
+    if (page !== undefined) {
+      params.push(`page=${page}`);
+    }
+    if (params.length > 0) {
+      url += '?' + params.join('&');
+    }
+    
+    console.log('getUnansweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

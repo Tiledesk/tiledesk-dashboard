@@ -349,6 +349,8 @@
                       [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature" [t_params]="t_params"
                       [refreshRateIsEnabled]="refreshRateIsEnabled" [payIsVisible]="payIsVisible" [salesEmail]="salesEmail"
                       [project_name]="project_name" [id_project]="id_project"
+                      [showKBTableSpinner]="showKBTableSpinner"
+                      [currentSortParams]="currentSortParams"
                       (openBaseModalDetail)="onOpenBaseModalDetail($event)"
                       (openBaseModalDelete)="onOpenBaseModalDelete($event)"
                       (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
@@ -360,7 +362,7 @@
                     </knowledge-base-table>
                   </div>
                   <div [@fadeInOut] *ngIf="selectedTab === 'unanswered'">
-                    <ng-container *ngIf="!isLoadingUnanswered; else loadingUnanswered">
+                   <!-- <ng-container *ngIf="!isLoadingUnanswered; else loadingUnanswered">
                       <modal-unanswered-questions 
                         [unansweredQuestions]="unansweredQuestions"
                         [namespace]="selectedNamespace"
@@ -371,7 +373,19 @@
                     </ng-container>
                     <ng-template #loadingUnanswered>
                       <loading-spinner></loading-spinner>
-                    </ng-template>
+                    </ng-template> -->
+                    <modal-unanswered-questions 
+                      [unansweredQuestions]="unansweredQuestions"
+                      [unansweredQuestionsCount]="unansweredQuestionsCount"
+                      [hasMore]="hasMoreUnansweredQuestions"
+                      [isLoadingMore]="isLoadingMoreUnanswered"
+                      [showUQTableSpinner]="showUQTableSpinner"
+                      [namespace]="selectedNamespace"
+                      [id_project]="id_project"
+                      (refresh)="refreshUnansweredQuestions()"
+                      (loadMore)="loadMoreUnansweredQuestions()"
+                      (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)">
+                    </modal-unanswered-questions>
                   </div>
                   <!-- END TABLE -->
       

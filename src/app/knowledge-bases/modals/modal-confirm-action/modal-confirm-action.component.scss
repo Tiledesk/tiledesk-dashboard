@@ -4,6 +4,7 @@
   font-family: var(--header-font-family, 'Poppins', 'Roboto', 'Arial', sans-serif);
 }
 
+/**
 h1[mat-dialog-title] {
   font-size: 24px;
   font-weight: 600;
@@ -11,12 +12,18 @@ h1[mat-dialog-title] {
   margin-bottom: 8px;
   font-family: var(--header-font-family, 'Poppins', 'Roboto', 'Arial', sans-serif);
 }
+**/
 
 .form-container {
   margin-top: 12px;
   margin-bottom: 12px;
   display: inline-block;
   width: 100%;
+    p {
+    font-size: 16px;
+    color: #000000de;
+    line-height: 21px;
+  }
 }
 
 .info-container {

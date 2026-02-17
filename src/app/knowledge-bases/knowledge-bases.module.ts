@@ -44,6 +44,7 @@ import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-questions/modal-unanswered-questions.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -73,7 +74,8 @@ const routes: Routes = [
     ModalNsLimitReachedComponent,
     ModalConfirmGotoCdsComponent,
     ModalAddContentComponent,
-    ModalUnansweredQuestionsComponent
+    ModalUnansweredQuestionsComponent,
+    ModalConfirmActionComponent
   ],
   imports: [
     ClipboardModule,

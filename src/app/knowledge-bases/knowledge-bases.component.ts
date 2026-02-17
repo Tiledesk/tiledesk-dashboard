@@ -74,6 +74,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   secretsModal = 'none';
   missingGptkeyModal = 'none';
   showSpinner: boolean = true;
+  showKBTableSpinner: boolean = false;
+  showUQTableSpinner: boolean = false;
+  currentSortParams: any = null; // Store current sort params to sync with table component
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
@@ -201,8 +204,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   unansweredQuestions: UnansweredQuestion[] = [];
+  unansweredQuestionsPage: number = 0;
+  unansweredQuestionsCount: number = 0;
   isLoadingUnanswered = false;
+  isLoadingMoreUnanswered: boolean = false;
+  hasMoreUnansweredQuestions: boolean = false;
   isLoadingNamespaces = true;
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -2593,14 +2601,53 @@ _presentDialogImportContents() {
     } else {
       params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
     }
+    // Show table spinner only for initial load or refresh (page 0 or empty list), not for load more
+    const isLoadMore = searchParams && searchParams.page !== undefined && searchParams.page > 0 && this.kbsList.length > 0;
+    if (!isLoadMore) {
+      this.showKBTableSpinner = true;
+    }
     this.getListOfKb(params,  calledby || 'onLoadPage');
   }
 
-  onLoadByFilter(searchParams, calledby?: string) {
+  _onLoadByFilter(searchParams, calledby?: string) {
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
+    this.onLoadPage(searchParams, calledby);
+  }
+
+  onLoadByFilter(searchParams, calledby?: string) {
+    // Store last used search params so we can re-apply them after an update
+    this.lastKbSearchParams = { ...searchParams };
+    // Update current sort params to sync with table component
+    // Always ensure sortField and direction are set
+    // Always create a new object to force change detection
+    let sortField, direction;
+    if (searchParams.sortField && searchParams.direction !== undefined) {
+      sortField = searchParams.sortField;
+      direction = searchParams.direction;
+    } else {
+      // If not provided in searchParams, use last known or defaults
+      sortField = searchParams.sortField || this.lastKbSearchParams?.sortField || KB_DEFAULT_PARAMS.SORT_FIELD;
+      direction = searchParams.direction !== undefined ? searchParams.direction : 
+                 (this.lastKbSearchParams?.direction !== undefined ? this.lastKbSearchParams.direction : KB_DEFAULT_PARAMS.DIRECTION);
+      // Also update searchParams to ensure they are passed to onLoadPage
+      searchParams.sortField = sortField;
+      searchParams.direction = direction;
+    }
+    // Always create a new object to force Angular change detection
+    this.currentSortParams = {
+      sortField: sortField,
+      direction: direction,
+      timestamp: Date.now() // Add timestamp to force change detection
+    };
+    // this.logger.log('onLoadByFilter:',searchParams);
+    // searchParams.page = 0;
+    this.numberPage = -1;
+    this.kbsList = [];
+    // Show table spinner for table operations
+    this.showKBTableSpinner = true;
     this.onLoadPage(searchParams, calledby);
   }
 
@@ -2609,7 +2656,7 @@ _presentDialogImportContents() {
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update') {
+    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' || calledby === 'after-add' ) {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
@@ -2619,8 +2666,8 @@ _presentDialogImportContents() {
       this.kbsListCount = resp.count;
       this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
-      // If called after update, replace the entire list to maintain server order
-      if (calledby === 'after-update') {
+      // If called after update or add, replace the entire list to maintain server order
+      if (calledby === 'after-update' || calledby === 'after-add') {
         this.kbsList = [...resp.kbs];
       } else {
         resp.kbs.forEach((kb: any, i: number) => {
@@ -2644,7 +2691,7 @@ _presentDialogImportContents() {
         });
       }
 
-      if (calledby === 'after-update') {
+      if (calledby === 'after-update' || calledby === 'after-add') {
         this.getKbCompleted = true;
       }
 
@@ -2653,11 +2700,12 @@ _presentDialogImportContents() {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
       this.showSpinner = false
+       this.showKBTableSpinner = false;
       this.getKbCompleted = false
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
-
+       this.showKBTableSpinner = false;
       // this.presentKBTour()
 
     })
@@ -2731,17 +2779,24 @@ _presentDialogImportContents() {
       } else {
         //this.kbsList.push(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-        // this.kbsListCount++;
-        this.kbsList.unshift(kb);
-        this.kbsListCount = this.kbsListCount + 1;
-        this.refreshKbsList = !this.refreshKbsList;
-        // let searchParams = {
-        //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
-        //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
-        //   "status": '',
-        //   "search": '',
-        // }
-        // this.onLoadByFilter(searchParams);
+        // Don't modify kbsList here - it will be reloaded from server
+        // this.kbsList.unshift(kb);
+        // this.kbsListCount = this.kbsListCount + 1;
+        // this.refreshKbsList = !this.refreshKbsList;
+        
+        // After adding a new content, reload the list with descending order by updatedAt
+        // to show the newly added content at the top, regardless of current sorting
+        setTimeout(() => {
+          const refreshParams = {
+            sortField: 'updatedAt',
+            direction: -1, // descending order (most recent first)
+            page: 0,
+            status: this.lastKbSearchParams?.status || '',
+            search: this.lastKbSearchParams?.search || '',
+            type: this.lastKbSearchParams?.type || ''
+          };
+          this.onLoadByFilter(refreshParams, 'after-add');
+        }, 300);
       }
       this.updateStatusOfKb(kb._id, -1);
       // this.updateStatusOfKb(kb._id, 0);
@@ -3217,17 +3272,31 @@ _presentDialogImportContents() {
           //-->this.updateStatusOfKb(kbNew._id, 0);
 
           // After an update/create, reload the list using the last filters, but always start from page 0
+          // setTimeout(() => {
+          //  if (this.lastKbSearchParams) {
+          // Create a copy of lastKbSearchParams and reset page to 0
+          //    const refreshParams = { ...this.lastKbSearchParams };
+          //    refreshParams.page = 0;
+          //    this.onLoadByFilter(refreshParams, 'after-update');
+          //  } else {
+          // Fallback: load with default params, starting from page 0
+          //   this.onLoadPage({ page: 0 }, 'after-update');
+          //  }
+          // }, 300);
+
+          // After an update/create, reload the list with descending order by updatedAt
+          // to show the updated content at the top
           setTimeout(() => {
-            if (this.lastKbSearchParams) {
-              // Create a copy of lastKbSearchParams and reset page to 0
-              const refreshParams = { ...this.lastKbSearchParams };
-              refreshParams.page = 0;
+              const refreshParams = {
+                sortField: 'updatedAt',
+                direction: -1, // descending order (most recent first)
+                page: 0,
+                status: this.lastKbSearchParams?.status || '',
+                search: this.lastKbSearchParams?.search || '',
+                type: this.lastKbSearchParams?.type || ''
+              };
               this.onLoadByFilter(refreshParams, 'after-update');
-            } else {
-              // Fallback: load with default params, starting from page 0
-              this.onLoadPage({ page: 0 }, 'after-update');
-            }
-          }, 300);
+            }, 300);
 
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {
@@ -3669,6 +3738,10 @@ _presentDialogImportContents() {
       if (result && result.isSingle === "true" && result.body) {
         // Qui puoi anche attendere la risposta del servizio se serve
         this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
+        // Update count when question is removed
+        if (this.unansweredQuestionsCount > 0) {
+          this.unansweredQuestionsCount--;
+        }
         this.onAddKb(result.body, event.done);
       } else {
         // Annullato o errore
@@ -3677,7 +3750,7 @@ _presentDialogImportContents() {
     });
   }
 
-  loadUnansweredQuestions() {
+  _loadUnansweredQuestions() {
     if (!this.id_project || !this.selectedNamespace?.id) return;
     //this.isLoadingUnanswered = true;
     this.unansweredQuestionsService.getUnansweredQuestions(this.id_project, this.selectedNamespace.id)
@@ -3692,6 +3765,84 @@ _presentDialogImportContents() {
           this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
         }
       );
+  }
+
+    loadUnansweredQuestions(page: number = 0, append: boolean = false) {
+    if (!this.id_project || !this.selectedNamespace?.id) return;
+    
+    if (page === 0 && !append) {
+      this.isLoadingUnanswered = true;
+      this.showUQTableSpinner = true;
+      this.unansweredQuestionsPage = 0;
+    } else {
+      this.isLoadingMoreUnanswered = true;
+    }
+    
+    this.unansweredQuestionsService.getUnansweredQuestions(
+      this.id_project, 
+      this.selectedNamespace.id,
+      KB_DEFAULT_PARAMS.LIMIT,
+      page
+    )
+      .subscribe(
+        (res) => {
+          const questions = res['questions'] || [];
+          
+          if (append) {
+            // Append new questions to existing list
+            this.unansweredQuestions = [...this.unansweredQuestions, ...questions];
+          } else {
+            // Replace list with new questions
+            this.unansweredQuestions = questions;
+          }
+          
+          // Update count if available in response
+          if (res['total'] !== undefined) {
+            this.unansweredQuestionsCount = res['total'];
+          } else if (res['count'] !== undefined) {
+            this.unansweredQuestionsCount = res['count'];
+          } else {
+            // Fallback: use length if no count provided
+            this.unansweredQuestionsCount = this.unansweredQuestions.length;
+          }
+          
+          // Calculate if there are more questions to load
+          const loadedCount = this.unansweredQuestions.length;
+          this.hasMoreUnansweredQuestions = loadedCount < this.unansweredQuestionsCount;
+          
+          this.isLoadingUnanswered = false;
+          this.showUQTableSpinner = false;
+          this.isLoadingMoreUnanswered = false;
+          this.unansweredQuestionsPage = page;
+          
+          this.logger.log('[KnowledgeBasesComponent] Loaded unanswered questions:', {
+            page,
+            loaded: questions.length,
+            total: this.unansweredQuestions.length,
+            count: this.unansweredQuestionsCount,
+            hasMore: this.hasMoreUnansweredQuestions
+          });
+        },
+        (err) => {
+          this.isLoadingUnanswered = false;
+          this.showUQTableSpinner = false;
+          this.isLoadingMoreUnanswered = false;
+          if (!append) {
+            this.unansweredQuestions = [];
+          }
+          this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
+        }
+      );
+  }
+
+  loadMoreUnansweredQuestions() {
+    const nextPage = this.unansweredQuestionsPage + 1;
+    this.loadUnansweredQuestions(nextPage, true);
+  }
+
+  refreshUnansweredQuestions() {
+    this.unansweredQuestionsPage = 0;
+    this.loadUnansweredQuestions(0, false);
   }
 
 }
