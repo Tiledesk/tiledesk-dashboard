@@ -970,6 +970,7 @@ export const CHANNELS_NAME = {
     MESSANGER: 'messenger',
     WHATSAPP: 'whatsapp',
     VOICE_VXML: 'voice-vxml',
+    VOICE_VXML_ENGHOUSE: 'voice-vxml-enghouse',
     VOICE_TWILIO: 'voice_twilio',
     SMS_TWILIO: 'sms-twilio',
 }
