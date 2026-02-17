@@ -1,11 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.156
+- Implements pagination for unanswered questions
+- Improves loading spinners on the knowledge base page
+
 ### 2.7.155
 - Adds ability for the knowledge base to add synchronized sitemaps
 - Removes the "Standard" indexing option from the "Import from Websites" and "Import from Sitemap" dialogs from the advanced options available for knowledge base web content.
 - Adds the ability for the knowledge bases to copy scraping rules from a web content and paste them into new web content
 - Improves navigation from history to conversation details by keeping the starting page when returning to the list
-
 
 ### 2.7.154
 - Adds MCP servers tools
