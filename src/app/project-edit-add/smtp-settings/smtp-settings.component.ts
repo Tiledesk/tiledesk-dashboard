@@ -201,14 +201,14 @@ export class SmtpSettingsComponent implements OnInit {
   }
 
   showPassword() {
-    const show_password_btn = <HTMLElement>document.querySelector('.show-password-btn');
-    show_password_btn.blur();
+    // const show_password_btn = <HTMLElement>document.querySelector('.show-password-btn');
+    // show_password_btn.blur();
     this.showPswd = !this.showPswd;
   }
 
   sendSMTPTestEmail() {
-    const send_smtp_test_email = <HTMLElement>document.querySelector('.send-smtp-test-email');
-    send_smtp_test_email.blur();
+    // const send_smtp_test_email = <HTMLElement>document.querySelector('.send-smtp-test-email');
+    // send_smtp_test_email.blur();
 
     this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND TEST EMAIL')
 
