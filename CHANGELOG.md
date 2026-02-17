@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.166-AR
+- Implements pagination for unanswered questions
+- Improves loading spinners on the knowledge base page
+
 ### 2.7.165-AR
 - Fixes the bug: is not possible to update a knowledge base (ITDELSDAM-5137)
 - Fixes the bug: user's choice of preflight and current page is not retained when going back in History from conversation detail (ITDELSDAM-5119)
