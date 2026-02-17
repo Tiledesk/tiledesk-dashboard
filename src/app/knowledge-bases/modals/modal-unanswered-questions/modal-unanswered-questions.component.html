@@ -11,7 +11,7 @@
   </div>
 
   <!-- *ngIf="!showUQTableSpinner" -->
-  <div class="uq-list-header" >
+  <div class="uq-list-header" *ngIf="unansweredQuestions.length > 0">
     <span class="uq-list-header-question">{{'FaqPage.Question' | translate}}</span>
     <span class="uq-list-header-actions">{{'Actions' | translate}}</span>
   </div>
