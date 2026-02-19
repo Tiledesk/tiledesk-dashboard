@@ -183,14 +183,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.listenToAiSettingsChanges()
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
-      this.hasStoredQuestion = true;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+      try {
+        // Usa JSON.parse per recuperare correttamente la stringa salvata
+        const parsedQuestion = JSON.parse(storedQuestion);
+        this.hasStoredQuestion = true;
+        this.logger.log("[MODAL-PREVIEW-KB] ngOnInit hasStoredQuestion: ", this.hasStoredQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] ngOnInit storedQuestion: ", storedQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] ngOnInit parsed question: ", parsedQuestion);
+      } catch (error) {
+        // Fallback: se il parsing fallisce, prova con substring (per compatibilità con vecchi dati)
+        this.logger.error("[MODAL-PREVIEW-KB] Error parsing stored question in ngOnInit: ", error);
+        this.hasStoredQuestion = storedQuestion.length > 2;
+      }
     } else {
       this.hasStoredQuestion = false;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] ngOnInit hasStoredQuestion: ", this.hasStoredQuestion);
     }
   }
 
@@ -265,16 +272,27 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
-      this.hasStoredQuestion = true;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+      try {
+        // Usa JSON.parse per recuperare correttamente la stringa salvata
+        this.question = JSON.parse(storedQuestion);
+        this.hasStoredQuestion = true;
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion parsed question: ", this.question);
+      } catch (error) {
+        // Fallback: se il parsing fallisce, prova con substring (per compatibilità con vecchi dati)
+        this.logger.error("[MODAL-PREVIEW-KB] Error parsing stored question, trying substring: ", error);
+        if (storedQuestion.length > 2) {
+          this.question = storedQuestion.substring(1, storedQuestion.length - 1);
+        } else {
+          this.question = storedQuestion;
+        }
+        this.hasStoredQuestion = true;
+      }
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
     }
-    this.question = this.storedQuestionNoDoubleQuote;
   
    // this.onInputPreviewChange()
   }
@@ -469,7 +487,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
     // this.error_answer = false;
 
-    this.localDbService.setInStorage(`last_question-${this.namespaceid}`, JSON.stringify(this.question))
+    // Salva la question solo se non è vuota
+    if (this.question && this.question.trim() !== '') {
+      this.localDbService.setInStorage(`last_question-${this.namespaceid}`, JSON.stringify(this.question))
+      this.logger.log("[MODAL-PREVIEW-KB] Saved last question: ", this.question);
+    }
     this.searching = true;
     this.show_answer = false;
     this.answer = '';
@@ -569,14 +591,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
       const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
       if (storedQuestion) {
-        this.hasStoredQuestion = true;
-        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-        this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+        try {
+          // Usa JSON.parse per recuperare correttamente la stringa salvata
+          const parsedQuestion = JSON.parse(storedQuestion);
+          this.hasStoredQuestion = true;
+          this.logger.log("[MODAL-PREVIEW-KB] askAI complete hasStoredQuestion: ", this.hasStoredQuestion);
+          this.logger.log("[MODAL-PREVIEW-KB] askAI complete storedQuestion: ", storedQuestion);
+          this.logger.log("[MODAL-PREVIEW-KB] askAI complete parsed question: ", parsedQuestion);
+        } catch (error) {
+          // Fallback: se il parsing fallisce, prova con substring (per compatibilità con vecchi dati)
+          this.logger.error("[MODAL-PREVIEW-KB] Error parsing stored question in askAI complete: ", error);
+          this.hasStoredQuestion = storedQuestion.length > 2;
+        }
       } else {
         this.hasStoredQuestion = false;
-        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] askAI complete hasStoredQuestion: ", this.hasStoredQuestion);
       }
     })
   }
