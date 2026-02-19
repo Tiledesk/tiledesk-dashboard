@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit,  ElementRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KB } from 'app/models/kbsettings-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -33,6 +33,13 @@ export class ModalFaqsComponent implements OnInit {
     content: ''
   }
 
+  // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: string = '20px';
+
   constructor(
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -57,6 +64,18 @@ export class ModalFaqsComponent implements OnInit {
     this.kbForm = this.createConditionGroup();
   }
 
+   ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+  ngOnDestroy() { 
+    console.log('[MODAL-FAQS] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
   createConditionGroup(): FormGroup {
     // const contentPattern = /^[^&<>]{3,}$/;
     const namePattern = /^[^&<>]{3,}$/;
@@ -74,6 +93,29 @@ export class ModalFaqsComponent implements OnInit {
     }
   }
 
+  // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        console.log("[MODAL-FAQS] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    console.log("[MODAL-FAQS] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    console.log("[MODAL-FAQS] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   onSaveKnowledgeBase(isSingle) {
     this.logger.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb, 'isSingle ', isSingle )
     const content = this.kb.name + "\n" + this.kb.content
@@ -81,7 +123,8 @@ export class ModalFaqsComponent implements OnInit {
       'name': this.kb.name,
       'source': this.kb.name,
       'content': content, // this.kb.content,
-      'type': 'faq'
+      'type': 'faq',
+      'tags': this.kbTagsArray
     }
     this.dialogRef.close({'body': body, 'isSingle': isSingle});
 
@@ -96,7 +139,11 @@ export class ModalFaqsComponent implements OnInit {
   }
 
   changeSectionToAddFaqsManually() {
-    this.displayAddManuallySection = true
+    this.displayAddManuallySection = true;
+    // Inizializza l'observer quando la sezione diventa visibile
+    setTimeout(() => {
+      this.initTagContainerObserver();
+    }, 0);
   }
 
   goBack() {
@@ -172,7 +219,7 @@ export class ModalFaqsComponent implements OnInit {
       formData.append('uploadFile', file, file.name);
       this.logger.log('FORM DATA ', formData)
 
-      this.kbService.uploadFaqCsv(formData, this.namespaceid)
+      this.kbService.uploadFaqCsv(formData, this.namespaceid, this.kbTagsArray)
 
         .subscribe(data => {
           this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
@@ -193,6 +240,64 @@ export class ModalFaqsComponent implements OnInit {
         });
 
     }
+  }
+
+  /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
+
+
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
 }

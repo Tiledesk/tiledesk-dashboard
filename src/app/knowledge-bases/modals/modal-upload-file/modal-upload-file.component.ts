@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
@@ -29,6 +29,13 @@ export class ModalUploadFileComponent implements OnInit {
   fileSupported: boolean = true;
   body: any;
   tparams = { "file_size_limit": "10" }
+
+  // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: any;
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,6 +46,18 @@ export class ModalUploadFileComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+  ngOnDestroy() { 
+    console.log('[MODAL-UPLOAD-FILE] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
   // listenToUploadingStatus() {
@@ -149,6 +168,29 @@ export class ModalUploadFileComponent implements OnInit {
     this.isHovering = false;
   }
 
+  // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        console.log("[MODAL-UPLOAD-FILE] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    console.log("[MODAL-UPLOAD-FILE] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    console.log("[MODAL-UPLOAD-FILE] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   handleFileUploading(file: any) {
     if (this.hasAlreadyUploadAfile === false) {
       this.hideProgressBar = false;
@@ -178,6 +220,7 @@ export class ModalUploadFileComponent implements OnInit {
               source: downloadURL,
               content: "",
               name: this.uploadedFileName,
+              tags: this.kbTagsArray
             }
           }
         })
@@ -256,6 +299,64 @@ export class ModalUploadFileComponent implements OnInit {
     this.dialogRef.close(this.body);
     
     // this.logger.log('[MODAL-UPLOAD-FILE] onOkPresssed')
+  }
+
+  /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
+
+
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
 }

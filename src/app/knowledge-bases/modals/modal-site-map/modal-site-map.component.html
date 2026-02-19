@@ -223,13 +223,35 @@
         </form>
     </div> -->
 
-    <div class="form--container">
+    <div class="form--container" style="margin-bottom:8px;">
       
         <div class="input-container">
             <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
             <input type="url" name="url" class="custom-input" [(ngModel)]="siteMap"
                 placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)" [disabled]="!refreshRateIsEnabled"
                 style="margin-top: 3px;">
+        </div>
+
+         <!-- KB Tags -->
+        <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+            [placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
+            [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)">
+
+        <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
+
+            <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
+            <p weight="400" class="kb-tag">{{kbtag}}</p>
+            <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-tag-btn" (click)="removeKbTag(kbtag)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
+                <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                </path>
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                </svg>
+            </button>
+            </span>
+
         </div>
        
         <ng-container *ngIf="payIsVisible">

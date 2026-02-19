@@ -112,7 +112,10 @@ export class KnowledgeBaseService {
     return this.httpClient.put(url, body, httpOptions);
   }
 
-  public uploadFaqCsv(formData: any, namespaceid) {
+  public uploadFaqCsv(formData: any, namespaceid, kbTagsArray) {
+     if (kbTagsArray && kbTagsArray.length > 0) {
+      formData.set('tags', JSON.stringify(kbTagsArray));
+    }
     const options = {
       headers: new HttpHeaders({
         'Accept': 'application/json',

@@ -112,7 +112,7 @@
 
   <div class="form-container">
     <form [formGroup]="kbForm">
-      <div class="input-container">
+      <div class="input-container" style="margin-bottom: 0px;">
         <span class="input-label">{{ 'FaqEditAddPage.Question' | translate }}</span>
         <!-- placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}"  -->
         <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
@@ -128,6 +128,29 @@
 
       </div>
     </form>
+  </div>
+
+  <!-- KB Tags -->
+  <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+      p[placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
+      [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+      style="margin-top: 4px;">
+
+  <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
+
+      <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
+      <p weight="400" class="kb-tag">{{kbtag}}</p>
+      <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-tag-btn" (click)="removeKbTag(kbtag)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+          class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
+          <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+          </path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg>
+      </button>
+      </span>
+
   </div>
 
 </div>
@@ -171,37 +194,30 @@
         </div>
       </div>
 
-      <!-- <div class="download-example-csv-wpr">
-        <div class="download-example-csv-button">
-          <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer">
-            <i class="material-icons" style="font-size:18px; top: 4px; position: relative;">save_alt</i>
-            {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
-          </p>
-        </div>
+      <!-- KB Tags -->
+      <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+            [placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
+            [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+            style="margin-top: 16px;">
 
-        <div class="csv-file-preview">
-     
-          <span>
-            <em>
-              {{ 'FaqPage.Question' | translate }}*
-            </em>
-          </span>
+      <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
+
+        <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
+        <p weight="400" class="kb-tag">{{kbtag}}</p>
+        <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-tag-btn" (click)="removeKbTag(kbtag)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+            class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
+            <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg>
+        </button>
+        </span>
+
+      </div>
 
       
-          <span>
-            <strong>
-              {{csvColumnsDelimiter}}
-            </strong>
-          </span>
-
-      
-          <span>
-            <em>
-              {{ 'FaqPage.Answer' | translate }}*
-            </em>
-          </span>
-        </div>
-      </div> -->
 
       <div class="csv-file-delimiter-container">
         <div class="csv-file-delimiter-wpr">
@@ -263,7 +279,7 @@
           stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
       </svg>
       <div class="dialog-content-after-to-upload-msg">
-        <p class="success">{{'FaqPage.FaqsSuccessfullyUploaded' | translate}}!</p>
+        <p class="success" style="font-size: 14px;">{{'FaqPage.FaqsSuccessfullyUploaded' | translate}}!</p>
       </div>
     </div>
     <!-- parse_err > {{parse_err}} -->
@@ -279,7 +295,7 @@
           stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
       </svg>
       <div class="dialog-content-after-to-upload-msg">
-        <p class="error">{{'FaqPage.AnErrorOccurredDuringTheUpload' | translate}}!</p>
+        <p class="error" style="font-size: 14px;">{{'FaqPage.AnErrorOccurredDuringTheUpload' | translate}}!</p>
       </div>
     </div>
   </div>
