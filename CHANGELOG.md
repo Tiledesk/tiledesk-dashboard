@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.172-stage 
+- Adds the ability to add tags to knowledge base contents
+
 ### 2.7.171-stage 
-- Added the VXML Enghouse integration 
+- Adds the VXML Enghouse integration 
 
 ### 2.7.170-stage 
 - Refresh the knowledge base list after updating content
