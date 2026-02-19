@@ -235,7 +235,8 @@
          <!-- KB Tags -->
         <input id="kb-tags" class="adds-kb-input" name="kb-tags"
             [placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
-            [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)">
+            [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+            style="margin-top: 14px;">
 
         <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
 

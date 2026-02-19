@@ -132,7 +132,7 @@
 
   <!-- KB Tags -->
   <input id="kb-tags" class="adds-kb-input" name="kb-tags"
-      p[placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
+      [placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
       [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
       style="margin-top: 4px;">
 
