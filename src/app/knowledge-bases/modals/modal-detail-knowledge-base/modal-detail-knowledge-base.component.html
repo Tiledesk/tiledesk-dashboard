@@ -141,6 +141,21 @@
         </div>
     </ng-container>
 
+    <ng-container *ngIf="!showSpinner">
+        <div class="content-tags-wpr" *ngIf="kb?.tags">
+            <div class="content-tags-title">
+                {{'Tags.Tags' | translate}}
+            </div>
+            <div class="content-tags-container" >
+                <div class="kb--tag" *ngFor="let tag of kb?.tags">
+                    <span>
+                    {{tag}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
     <ng-container *ngIf="kb.type !== 'sitemap'"> 
         <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
             <div class="chunk-title-and-count">

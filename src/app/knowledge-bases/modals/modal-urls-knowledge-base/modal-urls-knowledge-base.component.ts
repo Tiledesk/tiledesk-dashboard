@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
   templateUrl: './modal-urls-knowledge-base.component.html',
   styleUrls: ['./modal-urls-knowledge-base.component.scss']
 })
-export class ModalUrlsKnowledgeBaseComponent implements OnInit {
+export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
   @Output() saveKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -62,6 +62,13 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   salesEmail: string;
   siteMap:string;
 
+  // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
@@ -90,13 +97,17 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
-  /** */
+
   ngOnInit(): void {
     // this.kbForm = this.createConditionGroup();
     this.hasStoredScrapeOptions()
   }
 
-  /** */
+  ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+
   ngOnChanges(changes: SimpleChanges){
     // this.logger.log('ModalSiteMapComponent changes: ', changes);
     // if(this.listSitesOfSitemap.length > 0){
@@ -105,9 +116,17 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     // } 
   }
 
+  ngOnDestroy() { 
+    console.log('[MODALS-URLS] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
   fetchSiteMap() {
     this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
-    const body = {sitemap: this.siteMap}
+    const body = {sitemap: this.siteMap, tags: this.kbTagsArray}
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("[MODALS-URLS] addSitemap:", resp);
       this.logger.log("[MODALS-URLS] addSitemap sites:", resp.sites);
@@ -161,7 +180,29 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     this.logger.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
   }
 
-  /** */
+  // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        console.log("[MODALS-URLS] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    console.log("[MODALS-URLS] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    console.log("[MODALS-URLS] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   onSaveKnowledgeBase(){
     //const arrayURLS = this.content.split('\n');
     const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
@@ -170,7 +211,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     let body: any = {
       list: arrayURLS,
       scrape_type: this.selectedScrapeType,
-      refresh_rate: this.selectedRefreshRate
+      refresh_rate: this.selectedRefreshRate,
+      tags: this.kbTagsArray
     }
 
     if (this.selectedScrapeType === 4) {
@@ -339,4 +381,62 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
       this.logger.error('[MODALS-URLS] Error reading scrape options from storage:', error);
     }
   }
+
+   /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
+
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+  
 }

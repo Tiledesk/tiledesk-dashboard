@@ -749,7 +749,12 @@ td {
 
 
 .imported-file {
-    margin-top: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: 40px;
+}
+.imported-file-with-tags {
+    padding-top: 8px;
 }
 
 .kb-welcome-msg {
