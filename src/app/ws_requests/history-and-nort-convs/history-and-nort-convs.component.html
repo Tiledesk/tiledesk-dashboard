@@ -263,9 +263,9 @@
                       <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}">
+                          placeholder="{{'StartDate' | translate}}" style="padding: 0 5px;">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}">
+                          placeholder="{{'EndDate' | translate}}" style="padding: 0 5px;">
                       </mat-date-range-input>
                       <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -387,22 +387,22 @@
               <!-- ------------------------------------- -->
 
               <!-- // SEARCH FOR Caller style="margin-bottom: 8px;" -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY && conversation_type === 'voice-vxml'">
+              <div class="row" *ngIf="IS_HERE_FOR_HISTORY">
                 <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
                   <label class="col-sm-12 label-7695a5">
                     <!-- Requester phone number -->
                     {{ 'RequesterPhoneNumber' | translate}}
                   </label>
                   <div class="col-sm-12">
-                    <input name="caller-phone" type="text" [(ngModel)]="caller_phone" class="input-custom"
+                    <input name="phone" type="text" [(ngModel)]="phone" class="input-custom"
                       autocomplete="off" placeholder="{{'PhoneNumber' | translate}}"
-                      style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
+                      style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;"
+                      [disabled]="conversation_type === 'chat21' || conversation_type === 'telegram' || conversation_type === 'messenger' || conversation_type === 'email' || conversation_type === 'form'">
                   </div>
                 </div>
 
-                <!-- // SEARCH FOR Call id -->
-                <!--  -->
-                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY" style="display: flex;">
+                <!-- // SEARCH FOR CalledNumber & Call id -->
+                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY" style="display: flex;" *ngIf="IS_HERE_FOR_HISTORY && (conversation_type === 'voice-vxml' || conversation_type ===  'voice_twilio')">
 
                   <div class="called-phone-wpr">
                     <!--  -->
