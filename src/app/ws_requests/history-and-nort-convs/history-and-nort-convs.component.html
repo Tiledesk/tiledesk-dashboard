@@ -211,9 +211,9 @@
                       <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}">
+                          placeholder="{{'StartDate' | translate}}" style="padding: 0 5px;">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}">
+                          placeholder="{{'EndDate' | translate}}" style="padding: 0 5px;">
                       </mat-date-range-input>
                       
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -274,7 +274,7 @@
                 </div>
               </div>
 
-              <div class="row" style="margin-top: 8px;">
+              <div class="row" style="margin-top: 4px;">
                 <!-- ---------------------------------------------------------- -->
                 <!-- Select CHANNEL -->
                 <!-- ---------------------------------------------------------- -->
@@ -369,7 +369,7 @@
               <!-- ---------------------------------------------------------- -->
               <!-- DURATION, STATUS, CHECKBOX (only for history) -->
               <!-- ---------------------------------------------------------- -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-top: 8px;">
+              <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-top: 4px;">
                 <div class="col-12 col-md-4">
                   <label class="col-sm-12 label-7695a5">
                     {{'Duration' | translate}}
@@ -434,7 +434,7 @@
                       <label class="checkbox--label">
                         <input type="checkbox" [(ngModel)]="_preflight" class="form-check-input" id="exampleCheck1"
                           (change)="onChangePreflight($event)">
-                          <div class="checkbox--label-text">
+                          <div class="checkbox--label-text" style="line-height: 17px;">
                             <!-- Include Chatbot only converations -->
                             {{'IncludeChatbotsOnlyConversations' | translate}}
                           </div>
@@ -458,39 +458,41 @@
               <!-- ------------------------------------- -->
               <!-- Caller Phone and call id -->
               <!-- ------------------------------------- -->
-              <!-- // SEARCH FOR Caller style="margin-bottom: 8px;" -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY && (conversation_type === 'voice-vxml' || conversation_type ===  'voice_twilio')" style="margin-top: 8px;">
+              <!-- && (conversation_type === 'voice-vxml' || conversation_type ===  'voice_twilio') -->
+              <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-top: 16px;">
                 <div class="col-12 col-md-4" *ngIf="IS_HERE_FOR_HISTORY">
                   <label class="col-sm-12 label-7695a5">
                     <!-- Requester phone number -->
                     {{ 'RequesterPhoneNumber' | translate}}
                   </label>
                   <div class="col-sm-12">
-                    <input name="caller-phone" type="text" [(ngModel)]="caller_phone" class="input-custom"
+                    <input name="phone" type="tel" [(ngModel)]="phone" class="input-custom"
                       autocomplete="off" placeholder="{{'PhoneNumber' | translate}}"
-                      style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
+                      style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px; font-size: 14px;font-weight: 300;"
+                      [disabled]="conversation_type === 'chat21' || conversation_type === 'telegram' || conversation_type === 'messenger' || conversation_type === 'email' || conversation_type === 'form'">
                   </div>
                 </div>
 
                 <!-- // SEARCH FOR Called Number -->
-                <div class="col-12 col-md-4" *ngIf="IS_HERE_FOR_HISTORY">
+                <div class="col-12 col-md-4" *ngIf="IS_HERE_FOR_HISTORY && (conversation_type === 'voice-vxml' || conversation_type ===  'voice_twilio')">
                   <label class="col-sm-12 label-7695a5">
                     {{'CalledNumber' | translate}}
                   </label>
                   <div class="col-sm-12">
-                    <input name="called-phone" type="text" [(ngModel)]="called_phone" class="input-custom"
-                      autocomplete="off" placeholder="{{'PhoneNumber' | translate}}">
+                    <input name="called-phone" type="tel" [(ngModel)]="called_phone" class="input-custom"
+                      autocomplete="off" placeholder="{{'PhoneNumber' | translate}}" 
+                      style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px; font-size: 14px;font-weight: 300;">
                   </div>
                 </div>
 
                 <!-- // SEARCH FOR Call id -->
-                <div class="col-12 col-md-4" *ngIf="IS_HERE_FOR_HISTORY">
+                <div class="col-12 col-md-4" *ngIf="IS_HERE_FOR_HISTORY && (conversation_type === 'voice-vxml' || conversation_type ===  'voice_twilio')">
                   <label class="col-sm-12 label-7695a5">
                     {{'CallID' | translate }}
                   </label>
                   <div class="col-sm-12">
                     <input name="call-id" type="text" [(ngModel)]="call_id" class="input-custom" autocomplete="off"
-                      placeholder="Call ID">
+                      placeholder="{{'CallID' | translate }}" style="font-size: 14px;font-weight: 300;">
                   </div>
                 </div>
               </div>
@@ -2310,7 +2312,7 @@
                         #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                         timer
                       </span>
-                      <span>
+                      <span style="vertical-align: middle;">
                         {{ request?.duration_in_table }}
                       </span>
                     </span>
