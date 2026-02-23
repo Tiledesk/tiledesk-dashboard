@@ -4,10 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { KB_DEFAULT_PARAMS } from 'app/utils/util';
+import { LoggerService } from './logger/logger.service';
 
 export interface UnansweredQuestion {
   id: string;
   text: string;
+  question?: string; // alias per text, usato nel template
+  _id?: string; // opzionale per compatibilità con backend
+  createdAt?: any; // data di creazione
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +23,8 @@ export class UnansweredQuestionsService {
   constructor(
     private _httpClient: HttpClient,
     private auth: AuthService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
+    private logger: LoggerService,
   ) {
     this.getAppConfig();
     this.getToken();
@@ -67,7 +72,7 @@ export class UnansweredQuestionsService {
       url += '?' + params.join('&');
     }
     
-    console.log('getUnansweredQuestions URL ', url)
+    this.logger.log('getUnansweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

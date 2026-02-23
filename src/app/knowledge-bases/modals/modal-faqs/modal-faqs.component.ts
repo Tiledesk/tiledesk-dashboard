@@ -69,7 +69,7 @@ export class ModalFaqsComponent implements OnInit {
   }
 
   ngOnDestroy() { 
-    console.log('[MODAL-FAQS] ngOnDestroy called');
+    this.logger.log('[MODAL-FAQS] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
@@ -100,7 +100,7 @@ export class ModalFaqsComponent implements OnInit {
       // Verifica che il tag non sia già presente
       if (!this.kbTagsArray.includes(trimmedTag)) {
         this.kbTagsArray.push(trimmedTag);
-        console.log("[MODAL-FAQS] addsKbTags kbTagsArray: ", this.kbTagsArray);
+        this.logger.log("[MODAL-FAQS] addsKbTags kbTagsArray: ", this.kbTagsArray);
       }
       // Svuota l'input dopo aver aggiunto il tag
       this.kbTag = '';
@@ -110,9 +110,9 @@ export class ModalFaqsComponent implements OnInit {
 
   removeKbTag(kbTagName){
     const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
-    console.log("[MODAL-FAQS] removeKbTags index: ", index);
+    this.logger.log("[MODAL-FAQS] removeKbTags index: ", index);
     this.kbTagsArray.splice(index, 1)
-    console.log("[MODAL-FAQS] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    this.logger.log("[MODAL-FAQS] removeKbTags kbTagsArray: ", this.kbTagsArray);
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 

@@ -53,7 +53,7 @@ export class ModalUploadFileComponent implements OnInit {
   }
 
   ngOnDestroy() { 
-    console.log('[MODAL-UPLOAD-FILE] ngOnDestroy called');
+    this.logger.log('[MODAL-UPLOAD-FILE] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
@@ -175,7 +175,7 @@ export class ModalUploadFileComponent implements OnInit {
       // Verifica che il tag non sia già presente
       if (!this.kbTagsArray.includes(trimmedTag)) {
         this.kbTagsArray.push(trimmedTag);
-        console.log("[MODAL-UPLOAD-FILE] addsKbTags kbTagsArray: ", this.kbTagsArray);
+        this.logger.log("[MODAL-UPLOAD-FILE] addsKbTags kbTagsArray: ", this.kbTagsArray);
       }
       // Svuota l'input dopo aver aggiunto il tag
       this.kbTag = '';
@@ -185,9 +185,9 @@ export class ModalUploadFileComponent implements OnInit {
 
   removeKbTag(kbTagName){
     const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
-    console.log("[MODAL-UPLOAD-FILE] removeKbTags index: ", index);
+    this.logger.log("[MODAL-UPLOAD-FILE] removeKbTags index: ", index);
     this.kbTagsArray.splice(index, 1)
-    console.log("[MODAL-UPLOAD-FILE] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    this.logger.log("[MODAL-UPLOAD-FILE] removeKbTags kbTagsArray: ", this.kbTagsArray);
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 

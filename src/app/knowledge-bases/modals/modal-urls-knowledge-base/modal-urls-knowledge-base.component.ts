@@ -117,7 +117,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() { 
-    console.log('[MODALS-URLS] ngOnDestroy called');
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
@@ -187,7 +187,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       // Verifica che il tag non sia già presente
       if (!this.kbTagsArray.includes(trimmedTag)) {
         this.kbTagsArray.push(trimmedTag);
-        console.log("[MODALS-URLS] addsKbTags kbTagsArray: ", this.kbTagsArray);
+        this.logger.log("[MODALS-URLS] addsKbTags kbTagsArray: ", this.kbTagsArray);
       }
       // Svuota l'input dopo aver aggiunto il tag
       this.kbTag = '';
@@ -197,9 +197,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
   removeKbTag(kbTagName){
     const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
-    console.log("[MODALS-URLS] removeKbTags index: ", index);
+    this.logger.log("[MODALS-URLS] removeKbTags index: ", index);
     this.kbTagsArray.splice(index, 1)
-    console.log("[MODALS-URLS] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    this.logger.log("[MODALS-URLS] removeKbTags kbTagsArray: ", this.kbTagsArray);
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 

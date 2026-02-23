@@ -127,7 +127,7 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   ngOnDestroy() { 
-    console.log('[MODALS-URLS] ngOnDestroy called');
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
@@ -246,7 +246,7 @@ export class ModalSiteMapComponent implements OnInit {
       // Verifica che il tag non sia già presente
       if (!this.kbTagsArray.includes(trimmedTag)) {
         this.kbTagsArray.push(trimmedTag);
-        console.log("[MODALS-SITEMAP] addsKbTags kbTagsArray: ", this.kbTagsArray);
+        this.logger.log("[MODALS-SITEMAP] addsKbTags kbTagsArray: ", this.kbTagsArray);
       }
       // Svuota l'input dopo aver aggiunto il tag
       this.kbTag = '';
@@ -256,9 +256,9 @@ export class ModalSiteMapComponent implements OnInit {
 
   removeKbTag(kbTagName){
     const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
-    console.log("[MODALS-SITEMAP] removeKbTags index: ", index);
+    this.logger.log("[MODALS-SITEMAP] removeKbTags index: ", index);
     this.kbTagsArray.splice(index, 1)
-    console.log("[MODALS-SITEMAP] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    this.logger.log("[MODALS-SITEMAP] removeKbTags kbTagsArray: ", this.kbTagsArray);
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 

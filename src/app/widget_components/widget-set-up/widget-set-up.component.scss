@@ -2399,6 +2399,65 @@ button.buttonRounded:hover {
 
 // --------- ./end new on-off btn logo ---------
 
+// --------- start on-off btn adavanced section ---------
+.advanced-sect-nw-onoffswitch {
+  position: relative;
+  width: 45px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.advanced-sect-nw-onoffswitch-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.advanced-sect-nw-onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  height: 25px;
+  padding: 0;
+  line-height: 25px;
+  border: 2px solid var(--accent-text-color);
+  border-radius: 25px;
+  background-color: var(--accent-text-color); // #ffffff;
+  transition: background-color 0.3s ease-in;
+}
+
+.advanced-sect-nw-onoffswitch-label:before {
+  content: "";
+  display: block;
+  width: 25px;
+  margin: 0px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 20px;
+  border: 2px solid var(--accent-text-color);
+  border-radius: 25px;
+  transition: all 0.3s ease-in 0s;
+}
+
+.advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label {
+  background-color: #fff; // var(--accent-text-color); 
+}
+
+.advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label,
+.advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label:before {
+  border-color:  #e3e3e3// var(--accent-text-color); 
+}
+
+.advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label:before {
+  right: 0px;
+}
+
+// --------- ./end on-off btn adavanced section ---------
+
 // start new switch left / right widget alignment
 // https://thestizmedia.com/radio-buttons-as-toggle-buttons-with-css/
 .switch-field {

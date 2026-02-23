@@ -3796,6 +3796,19 @@ _presentDialogImportContents() {
             this.unansweredQuestions = questions;
           }
           
+          // Ordinamento lato client commentato - in attesa che il server restituisca le domande già ordinate
+          // Ordina tutte le domande caricate per data di creazione in modo decrescente (dalla più recente alla più vecchia)
+          // Questo garantisce che quando carichi nuove pagine con "load more", le domande più recenti salgano in cima
+          // this.unansweredQuestions = this.unansweredQuestions.sort((a, b) => {
+          //   const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          //   const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          //   // Se una domanda non ha createdAt, la mettiamo alla fine
+          //   if (!a.createdAt && !b.createdAt) return 0;
+          //   if (!a.createdAt) return 1;
+          //   if (!b.createdAt) return -1;
+          //   return dateB - dateA; // Ordine decrescente (più recente prima)
+          // });
+          
           // Update count if available in response
           if (res['total'] !== undefined) {
             this.unansweredQuestionsCount = res['total'];

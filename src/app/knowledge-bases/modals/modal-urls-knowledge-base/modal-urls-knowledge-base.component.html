@@ -84,7 +84,8 @@
                             #pasteTooltip="matTooltip"
                             matTooltipPosition="above"
                             matTooltipHideDelay="100"
-                            [ngStyle]="{'cursor':stored_scrape_option ? 'pointer' : 'not-allowed' }">
+                            [ngStyle]="{'cursor':stored_scrape_option ? 'pointer' : 'not-allowed' }"
+                            [ngClass]="{'no-scrape-option-to-paste': !stored_scrape_option}">
                             <mat-icon>content_paste</mat-icon>
                          </div>
                         <!-- <button type="button" 
@@ -188,13 +189,13 @@
                 rows="4"></textarea>
             <!-- [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched" -->
             <!-- <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span> -->
-            <span *ngIf="!errorLimit" class="input-label input-label-on-bottom">
+            <div *ngIf="!errorLimit" class="input-label input-label-on-bottom" style="margin-top: -7px;"> 
                 {{'KbPage.YouCanAddKBUrlsLimit' | translate }} {{KB_LIMIT_CONTENT}}
-            </span>
+            </div>
             <!-- <span *ngIf="!errorLimit" class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span> -->
-            <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }}
-                {{KB_LIMIT_CONTENT}}
-            </span>
+            <div *ngIf="errorLimit" class="input-label-error" style="margin-top: -7px;">
+                {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
+            </div>
         </div>
         <!-- </form> -->
          
@@ -232,7 +233,7 @@
                 {{'KbPage.RefreshRate' | translate}}
             </span>
 
-            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+            <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
                 appendTo="body" 
                 [items]="refresh_rate | selectOptionsTranslate" 
                 bindLabel="name" bindValue="value" 

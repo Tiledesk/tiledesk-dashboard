@@ -27,7 +27,12 @@
         <span class="uq-list-header-actions">{{'Actions' | translate}}</span>
       </div>
       <div *ngFor="let q of unansweredQuestions" class="uq-list-item">
-        <span class="uq-question-text">{{ q.question }}</span>
+        <span class="uq-question-text">{{ q.question || q.text }}</span>
+        <span class="uq-date-text" *ngIf="q.createdAt">
+          <div>{{ q.createdAt | amTimeAgo }}</div>
+          <div style="font-size: 0.85em; color: #666;">{{ q.createdAt | date: 'd/M/y HH:mm:ss' }}</div>
+        </span>
+        <span class="uq-date-text" *ngIf="!q.createdAt">-</span>
         <span class="uq-actions">
           <button class="uq-btn uq-btn-icon" mat-icon-button 
             matTooltipClass="kb-custom-mat-tooltip" 

@@ -113,8 +113,8 @@ export class KnowledgeBaseService {
   }
 
   public uploadFaqCsv(formData: any, namespaceid, kbTagsArray) {
-
-     if (kbTagsArray && kbTagsArray.length > 0) {
+  this.logger.log('[KNOWLEDGE BASE SERVICE] UPLOAD FAQS CSV - kbTagsArray ', kbTagsArray)
+    if (kbTagsArray && kbTagsArray.length > 0) {
       formData.set('tags', JSON.stringify(kbTagsArray));
     }
     const options = {
@@ -200,6 +200,7 @@ export class KnowledgeBaseService {
   }
 
   importSitemap(body: any, namespaceid:string) {
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

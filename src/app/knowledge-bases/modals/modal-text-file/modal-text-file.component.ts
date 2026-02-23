@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Inject, ViewChild, ElementRef 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'modal-text-file',
@@ -35,6 +36,7 @@ export class ModalTextFileComponent implements OnInit {
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalTextFileComponent>,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +48,7 @@ export class ModalTextFileComponent implements OnInit {
   }
 
   ngOnDestroy() { 
-    console.log('[MODALS-URLS] ngOnDestroy called');
+     this.logger.log('[MODALS-URLS] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
@@ -79,7 +81,7 @@ export class ModalTextFileComponent implements OnInit {
       // Verifica che il tag non sia già presente
       if (!this.kbTagsArray.includes(trimmedTag)) {
         this.kbTagsArray.push(trimmedTag);
-        console.log("[MODALS-SITEMAP] addsKbTags kbTagsArray: ", this.kbTagsArray);
+         this.logger.log("[MODALS-SITEMAP] addsKbTags kbTagsArray: ", this.kbTagsArray);
       }
       // Svuota l'input dopo aver aggiunto il tag
       this.kbTag = '';
@@ -89,9 +91,9 @@ export class ModalTextFileComponent implements OnInit {
 
   removeKbTag(kbTagName){
     const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
-    console.log("[MODALS-SITEMAP] removeKbTags index: ", index);
+     this.logger.log("[MODALS-SITEMAP] removeKbTags index: ", index);
     this.kbTagsArray.splice(index, 1)
-    console.log("[MODALS-SITEMAP] removeKbTags kbTagsArray: ", this.kbTagsArray);
+     this.logger.log("[MODALS-SITEMAP] removeKbTags kbTagsArray: ", this.kbTagsArray);
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 
@@ -104,7 +106,7 @@ export class ModalTextFileComponent implements OnInit {
       "tags": this.kbTagsArray
     }
     // this.saveKnowledgeBase.emit(body);
-    // console.log('MODAL-TEXT-FILE body ', body ) 
+    //  this.logger.log('MODAL-TEXT-FILE body ', body ) 
     this.dialogRef.close(body);
 
   }

@@ -164,16 +164,38 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   ngOnInit(): void {
     this.listenPreviewKbHasBeenCloseBackdropClicking()
     this.listenToAiSettingsChanges()
+    this.checkStoredQuestion();
+  }
+
+  /**
+   * Helper method per controllare e parsare la question salvata
+   * Gestisce sia il formato JSON che il formato vecchio
+   */
+  private checkStoredQuestion(): void {
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
       this.hasStoredQuestion = true;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion storedQuestion: ", storedQuestion);
+      try {
+        // Try to parse as JSON first (for new format)
+        let parsed = JSON.parse(storedQuestion);
+        // Even after JSON.parse, if the original string had literal \n, they might still be literal
+        // Replace any remaining literal \n with real newlines
+        this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+      } catch (e) {
+        // If parsing fails, it might be an old format or already a string with literal \n
+        // Replace literal \n with real newlines
+        let cleaned = storedQuestion.replace(/\\n/g, '\n');
+        // Remove surrounding quotes if present
+        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+          cleaned = cleaned.substring(1, cleaned.length - 1);
+        }
+        this.storedQuestionNoDoubleQuote = cleaned;
+      }
     } else {
       this.hasStoredQuestion = false;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
     }
   }
 
@@ -182,7 +204,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   }
 
   ngOnDestroy() { 
-    console.log('[MODALS-URLS] ngOnDestroy called');
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
@@ -259,62 +281,19 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
 
-  _reuseLastQuestion() {
-    const textarea = this.questionTextarea.nativeElement;
-    // console.log("[MODAL-PREVIEW-KB] reuseLastQuestion textarea: ", textarea);
-    setTimeout(() => {
-      this.onTextareaInput(textarea);
-    }, 0);
-   
-    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
-    if (storedQuestion) {
-      this.hasStoredQuestion = true;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
-    } else {
-      this.hasStoredQuestion = false;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-    }
-    this.question = this.storedQuestionNoDoubleQuote;
-    // this.submitQuestion()
-    // this.onInputPreviewChange()
-  }
-
   reuseLastQuestion() {
     const textarea = this.questionTextarea.nativeElement;
     setTimeout(() => {
       this.onTextareaInput(textarea);
     }, 0);
-    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
-    if (storedQuestion) {
-      this.hasStoredQuestion = true;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      try {
-        // Try to parse as JSON first (for new format)
-        let parsed = JSON.parse(storedQuestion);
-        // Even after JSON.parse, if the original string had literal \n, they might still be literal
-        // Replace any remaining literal \n with real newlines
-        this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
-      } catch (e) {
-        // If parsing fails, it might be an old format or already a string with literal \n
-        // Replace literal \n with real newlines
-        let cleaned = storedQuestion.replace(/\\n/g, '\n');
-        // Remove surrounding quotes if present
-        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
-          cleaned = cleaned.substring(1, cleaned.length - 1);
-        }
-        this.storedQuestionNoDoubleQuote = cleaned;
-      }
-    } else {
-      this.hasStoredQuestion = false;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    
+    // Usa la funzione helper per controllare e parsare la question salvata
+    this.checkStoredQuestion();
+    
+    // Imposta la question nel textarea
+    if (this.hasStoredQuestion && this.storedQuestionNoDoubleQuote) {
+      this.question = this.storedQuestionNoDoubleQuote;
     }
-    this.question = this.storedQuestionNoDoubleQuote;
-    // this.submitQuestion()
-    // this.onInputPreviewChange()
   }
 
 
@@ -470,7 +449,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // Verifica che il tag non sia già presente
       if (!this.kbTagsArray.includes(trimmedTag)) {
         this.kbTagsArray.push(trimmedTag);
-        console.log("[MODAL-PREVIEW-KB] addsKbTags kbTagsArray: ", this.kbTagsArray);
+        this.logger.log("[MODAL-PREVIEW-KB] addsKbTags kbTagsArray: ", this.kbTagsArray);
       }
       // Svuota l'input dopo aver aggiunto il tag
       this.kbTag = '';
@@ -480,9 +459,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   removeKbTag(kbTagName){
     const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
-    console.log("[MODAL-PREVIEW-KB] removeKbTags index: ", index);
+    this.logger.log("[MODAL-PREVIEW-KB] removeKbTags index: ", index);
     this.kbTagsArray.splice(index, 1)
-    console.log("[MMODAL-PREVIEW-KB] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    this.logger.log("[MMODAL-PREVIEW-KB] removeKbTags kbTagsArray: ", this.kbTagsArray);
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 
@@ -506,7 +485,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
     // this.error_answer = false;
 
-    this.localDbService.setInStorage(`last_question-${this.namespaceid}`, JSON.stringify(this.question))
+    // Salva la question solo se non è vuota
+    if (this.question && this.question.trim() !== '') {
+      this.localDbService.setInStorage(`last_question-${this.namespaceid}`, JSON.stringify(this.question))
+      this.logger.log("[MODAL-PREVIEW-KB] Saved last question: ", this.question);
+    }
     this.searching = true;
     this.show_answer = false;
     this.answer = '';
@@ -596,17 +579,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.searching = false;
       this.aiQuotaExceeded = false
 
-      const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
-      if (storedQuestion) {
-        this.hasStoredQuestion = true;
-        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-        this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
-      } else {
-        this.hasStoredQuestion = false;
-        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      }
+      // Usa la funzione helper per controllare e parsare la question salvata
+      this.checkStoredQuestion();
     })
   }
 

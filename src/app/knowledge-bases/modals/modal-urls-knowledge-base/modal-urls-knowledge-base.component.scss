@@ -138,6 +138,9 @@
         margin-bottom: 14px;
     }
 
+    .textarea-label {
+        font-weight: 400;
+    }
 
     .custom-input {
         width: 100%;
@@ -280,6 +283,7 @@
 
 .input-label-error {
     color: #c62445;
+    font-size: 12px;
 }
 
 // .mat-dialog-close-btn {
@@ -378,6 +382,8 @@ mat-expansion-panel ::ng-deep {
     vertical-align: middle;
     font-size: 16px;
     cursor: pointer;
+    top: -1px;
+    position: relative;
 }
 
 .mat-icon-wpr>mat-icon {
@@ -385,9 +391,15 @@ mat-expansion-panel ::ng-deep {
     width: 16px;
     height: 16px;
     vertical-align: middle;
+    top: -2px;
+    position: relative;
 }
 
-.mat-icon-wpr:hover>mat-icon {
+// .mat-icon-wpr:hover>mat-icon {
+//     color: var(--blue-20);
+// }
+
+.mat-icon-wpr:hover:not(.no-scrape-option-to-paste) > mat-icon {
     color: var(--blue-20);
 }
 
