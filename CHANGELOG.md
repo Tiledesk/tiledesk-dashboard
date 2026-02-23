@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+ ### 2.7.173-stage 
+ - Adds the ability to search for phone number to the history page
+
 ### 2.7.172-stage 
 - Adds the ability to add tags to knowledge base contents
 
