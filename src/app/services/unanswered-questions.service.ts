@@ -7,6 +7,9 @@ import { AppConfigService } from './app-config.service';
 export interface UnansweredQuestion {
   id: string;
   text: string;
+  question?: string; // alias per text, usato nel template
+  _id?: string; // opzionale per compatibilità con backend
+  createdAt?: any; // data di creazione
 }
 
 @Injectable({ providedIn: 'root' })

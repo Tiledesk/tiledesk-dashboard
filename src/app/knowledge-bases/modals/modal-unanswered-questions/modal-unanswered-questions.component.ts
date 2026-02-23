@@ -13,6 +13,7 @@ export interface UnansweredQuestion {
   id: string;
   text: string;
   _id?: string; // opzionale per compatibilità con backend
+  createdAt?: any;
 }
 
 /**
