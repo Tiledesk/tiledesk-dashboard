@@ -984,6 +984,7 @@ export const CHANNELS = [
     { id: CHANNELS_NAME.WHATSAPP, name: 'WhatsApp' },
     { id: CHANNELS_NAME.VOICE_VXML, name: 'Voice' },
     { id: CHANNELS_NAME.VOICE_TWILIO, name: 'Voice' },
+    { id: CHANNELS_NAME.VOICE_VXML_ENGHOUSE, name: 'Voice' },
     { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
 
 ]
