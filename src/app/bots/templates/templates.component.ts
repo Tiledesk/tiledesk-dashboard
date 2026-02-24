@@ -395,7 +395,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     const voiceTwilio = customization[INTEGRATIONS_KEYS.TWILIO_VOICE] ?? false;
     const voice = customization[INTEGRATIONS_KEYS.VXML_VOICE] ?? false;
   
-    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
+    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice_twilio:', voiceTwilio);
     this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice:', voice);
   
     this.diplayTwilioVoiceChabotCard = voiceTwilio === true;
@@ -434,7 +434,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       }
 
       const myChatbot = faqKb.filter((obj) => {
-        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
+        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
       });
       this.logger.log('[BOTS-TEMPLATES]  - myChatbot', myChatbot);
       if (myChatbot) {

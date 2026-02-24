@@ -19,7 +19,7 @@ export enum INTEGRATIONS_KEYS {
     TWILIO = 'twilio',
     VXML_VOICE = 'voice',
     VXML_VOICE_ENGHOUSE = 'voice-vxml-enghouse',
-    TWILIO_VOICE = "voice-twilio",
+    TWILIO_VOICE = "voice_twilio",
     WHATSAPP = 'whatsapp',
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',
@@ -135,7 +135,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Twilio SMS",            category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_SMS,             src_icon: "assets/img/int/twilio-sms.png",                  src_logo: "assets/img/int/twilio-sms.png",              pro: true,  plan:  'Pro' },
     { name: "VXML Voice",            category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.VXML_VOICE,             src_icon: "assets/img/int/vxml-icon.png",                   src_logo: "assets/img/int/vxml-icon.png",               pro: true,  plan: 'Pro' },
     { name: "VXML Voice Enghouse",   category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.VXML_VOICE_ENGHOUSE,    src_icon: "assets/img/int/vxml-enghouse-icon.png",          src_logo: "assets/img/int/vxml-enghouse-icon.png",      pro: true,  plan: 'Pro' },
-    { name: "Twilio Voice",          category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_VOICE,           src_icon: "assets/img/int/voice-twilio-icon.png",           src_logo: "assets/img/int/voice-twilio-icon.png",       pro: true,  plan: 'Starter' },
+    { name: "Twilio Voice",          category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_VOICE,           src_icon: "assets/img/int/voice_twilio-icon.png",           src_logo: "assets/img/int/voice_twilio-icon.png",       pro: true,  plan: 'Starter' },
     { name: "WhatsApp",              category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,               src_icon: "assets/img/int/whatsapp-icon.png",               src_logo: "assets/img/int/whatsapp-logo.png",           pro: true,  plan: 'Pro' },
     //{ name: "Zapier",              category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,                 src_icon: "assets/img/int/zapier-icon.png",                 src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
     //{ name: "Zendesk",             category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,                src_icon: "assets/img/int/zendesk-icon.png",                src_logo: "assets/img/int/zendesk-logo.png",            pro: true,  plan: 'Premium' },
@@ -154,7 +154,7 @@ export function getKeyByValue(value, keys) {
 }
 
 export const automations = ['webhook', 'copilot'];
-export const aiAgents = ['chatbot', 'voice', 'voice-twilio'];
+export const aiAgents = ['chatbot', 'voice', 'voice_twilio'];
 
 // MODELS
 
