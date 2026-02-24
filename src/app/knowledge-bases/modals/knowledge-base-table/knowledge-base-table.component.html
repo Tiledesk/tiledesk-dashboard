@@ -404,7 +404,7 @@
 
 
 
-        <div *ngIf="!isLoading || SHOW_MORE_BTN" #tableBody class="table-body card-content table-responsive">
+       <div *ngIf="SHOW_MORE_BTN || showKBTableSpinner || !isLoading || kbsList?.length > 0" #tableBody class="table-body card-content table-responsive">
          
             <table class="table table-hover">
                 <thead>
@@ -453,7 +453,7 @@
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
-                        <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
+                        <th class="column-th-span" style="width:auto;white-space: nowrap;" (click)="onOrderBy('name')">
                             <div>
                                 <span style="margin: 0px;">{{'Name' | translate }}</span>
                                 <span *ngIf="directionDesc === 1" id="expand_more"
@@ -466,14 +466,21 @@
                         </th>
                     </tr>
                 </thead>
+                <tbody *ngIf="showKBTableSpinner">
+                    <tr>
+                        <td colspan="6" style="width: 100%; text-align: center;">
+                            <loading-spinner></loading-spinner>
+                        </td>
+                    </tr>
+                </tbody>
 
-                <tbody>
+                <tbody *ngIf="!showKBTableSpinner">
                     <tr *ngIf="kbsList?.length == 0">
-                        <td colspan="5" style="width: 100%; ">
+                        <td colspan="6" style="width: 100%; ">
                             <div class="ellipsis-text" style="width: 100%;
                                 display: inline-block;
                                 text-align: center;
-                                padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                                padding: 10px;font-size: 14px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
@@ -536,55 +543,15 @@
                             <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
                             <ng-container *ngIf="kb.type !== 'sitemap'"> 
                                 <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                    class="material-icons-outlined status-icon"  
-                                    style="vertical-align: middle;"    
-                                    matTooltipClass="kb-custom-mat-tooltip" 
-                                    matTooltip="{{'KbPage.StatusNotStarted' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='above' 
-                                    matTooltipHideDelay="100">
-                                    done
-                                </span>
+                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done</span>
                                 <span *ngIf="kb.status == 100" id="done"
-                                    class="material-icons-outlined status-icon"  
-                                    style="vertical-align: middle;" 
-                                    matTooltipClass="kb-custom-mat-tooltip" 
-                                    matTooltip="{{'KbPage.StatusQueued' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='above' 
-                                    matTooltipHideDelay="100">
-                                    done_all
-                                </span>
+                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done_all</span>
                                 <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                    class="material-icons-outlined status-icon animated-icon"  
-                                    style="vertical-align: middle;" 
-                                    matTooltipClass="kb-custom-mat-tooltip" 
-                                    matTooltip="{{'KbPage.StatusStarted' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='above' 
-                                    matTooltipHideDelay="100">
-                                    cached
-                                </span>
+                                    class="material-icons-outlined status-icon animated-icon"  style="vertical-align: middle;">cached</span>
                                 <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                    class="material-icons-outlined status-icon status-done"  
-                                    style="vertical-align: middle;"
-                                    matTooltipClass="kb-custom-mat-tooltip" 
-                                    matTooltip="{{'KbPage.StatusFinished' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='above' 
-                                    matTooltipHideDelay="100">
-                                    done_all
-                                </span>
+                                    class="material-icons-outlined status-icon status-done"  style="vertical-align: middle;">done_all</span>
                                 <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                    class="material-icons-outlined status-icon status-error"  
-                                    style="vertical-align: middle;"
-                                    matTooltipClass="kb-custom-mat-tooltip" 
-                                    matTooltip="{{'KbPage.StatusError' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='above' 
-                                    matTooltipHideDelay="100">
-                                    error
-                                </span>
+                                    class="material-icons-outlined status-icon status-error"  style="vertical-align: middle;">error</span>
                             
                             </ng-container>
                             <ng-container *ngIf="kb.type === 'sitemap'"> 
@@ -637,64 +604,47 @@
 
 
                         <td class="kb-name-col" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                            <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && kb?.tags?.length > 0}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
-                                matTooltipClass="kb-custom-mat-tooltip" 
-                                [matTooltip]="'URLAutomaticallySynchronized' | translate" 
-                                #tooltip="matTooltip"
-                                matTooltipPosition='above' 
-                                matTooltipHideDelay="100"
-                                [matTooltipDisabled]="!kb.sitemap_origin">
-                                {{ kb.name }}
-                            </div>
-
-                            <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
-                                style="max-width: 100%;">
-
-                                {{kb.content | slice:0:500 }}
-
-                            </div>
-                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="max-width: 100%;">
-
-                              <span *ngIf="!kb.sitemap_origin"> 
-                               {{kb.source }}
-                             </span>  
-                             <!-- || kb.type === 'sitemap' -->
-                             <span *ngIf="kb.sitemap_origin"> 
-                               <span style="background: #ff6154;
-                                    color: #fff;
-                                    border-radius: 9999px;
-                                    padding: 0 5px;
-                                    font-size: 9px;
-                                    font-weight: 400;
-                                    margin-right: 3px;"> 
-                                    {{'KbPage.AddKbSitemap'| translate}}
-                                </span> 
-                                {{kb.sitemap_origin }}
-                                <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
-                                <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
-                             </span>
-
-                            </div>
-                            <div class="kb-tags-wpr" *ngIf="kb?.tags?.length > 0" style="display: flex;gap: 2px;">
-                                <div *ngFor="let tag of kb?.tags">
-                                    <div class="kb-tag-wpr" style="display: flex;align-items: center;gap:1px;margin-right: 3px;">
-                                        <svg style="width: 9px; height: auto;min-width: 9px;" aria-hidden="true" focusable="false" data-prefix="fas"
-                                            data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                                            <path fill="#7695a5" class="tag_icon_in_ws_msgs"
-                                            d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                            </path>
-                                        </svg>
-
-                                        <div style="font-size: 11px; color: #7695a5;right: 2px;margin-right: 2px;white-space: nowrap;">
-                                            {{ tag}}
-                                        </div>
-                                    </div>
+                            <!-- <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0; width: 100%;"> -->
+                                <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
+                                    class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    [matTooltip]="'URLAutomaticallySynchronized' | translate" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="!kb.sitemap_origin">
+                                    {{ kb.name }}
                                 </div>
 
-                            </div>
+                                <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
+                                    style="min-width: 0; width: 100%; display: block;">
+
+                                    {{kb.content | slice:0:500 }}
+
+                                </div>
+                                <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="min-width: 0; width: 100%; display: block;">
+
+                                  <span *ngIf="!kb.sitemap_origin"> 
+                                   {{kb.source }}
+                                 </span>  
+                                 <!-- || kb.type === 'sitemap' -->
+                                 <span *ngIf="kb.sitemap_origin"> 
+                                   <span style="background: #ff6154;
+                                        color: #fff;
+                                        border-radius: 9999px;
+                                        padding: 0 5px;
+                                        font-size: 9px;
+                                        font-weight: 400;
+                                        margin-right: 3px;"> 
+                                        {{'KbPage.AddKbSitemap'| translate}}
+                                    </span> 
+                                    {{kb.sitemap_origin }}
+                                    <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
+                                    <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
+                                 </span>
+
+                                </div>
+                            <!-- </div> -->
                         </td>
 
                         <td style="max-width: 40px; text-align: end;">
@@ -703,12 +653,13 @@
                                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
+                             <!-- type   {{kb.type}} -->
                                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                                    <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'"
+                                    <!-- *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'" -->
+                                    <button *ngIf="kb.type === 'url'"
                                         mat-menu-item (click)="onRunIndexing(kb)"
                                         [disabled]="!PERMISSION_TO_REINDEX_CONTENT">
                                         <mat-icon>play_arrow</mat-icon>
-                                        <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
                                     <button mat-menu-item (click)="onCheckStatus(kb)"

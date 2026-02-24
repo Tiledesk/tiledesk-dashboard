@@ -31,11 +31,24 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
   @Input() id_project: string = '';
   /** Lista delle domande senza risposta */
   @Input() unansweredQuestions: UnansweredQuestion[] = [];
+    /** Totale delle domande senza risposta */
+  @Input() unansweredQuestionsCount: number = 0;
+  /** Se ci sono più domande da caricare */
+  @Input() hasMore: boolean = false;
+  /** Se sta caricando più domande */
+  @Input() isLoadingMore: boolean = false;
+  /** Se mostrare lo spinner al posto della lista (refresh completo) */
+  @Input() showUQTableSpinner: boolean = false;
+
   /** Evento per aprire la modale di aggiunta KB */
   @Output() openAddKnowledgeBaseModal = new EventEmitter<any>();
   /** Evento per aggiungere una FAQ dalla unanswered question */
   @Output() addFaqFromUnanswered = new EventEmitter<{q: UnansweredQuestion, done: (success: boolean) => void}>();
   @Output() refresh = new EventEmitter<void>();
+
+    /** Evento per caricare più domande */
+  @Output() loadMore = new EventEmitter<void>();
+
 
   /** Domanda in fase di lavorazione */
   pendingQuestion: UnansweredQuestion | null = null;
@@ -59,6 +72,13 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
   refreshList() {
     this.refresh.emit();
   }
+
+  loadMoreData() {
+    if (!this.isLoadingMore && this.hasMore) {
+      this.loadMore.emit();
+    }
+  }
+
 
   /**
    * Apre la modale per aggiungere una domanda alla knowledge base
@@ -87,7 +107,7 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
       width: '400px',
       data: {
         title: this.translate.instant('DiscardQuestion'), //'Discard Question',
-        message: this.translate.instant('AreYouSureYouWantToDiscard'), // 'Are you sure you want to discard this question?',
+        message: this.translate.instant('AreYouSureYouWantToDiscard') + '?', // 'Are you sure you want to discard this question?',
         confirmText: this.translate.instant('Discard'), //'Discard',
         cancelText: this.translate.instant('Cancel') //'Cancel'
       }
@@ -103,13 +123,16 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
    * Elimina la domanda senza popup di conferma (usata dopo salvataggio o conferma)
    * @param q domanda da eliminare
    */
-  discardQuestionConfirmed(q: UnansweredQuestion): void {
+   discardQuestionConfirmed(q: UnansweredQuestion): void {
     this.logger.log('[ModalUnansweredQuestions] Discard question:', q);
     const prevQuestions = [...this.unansweredQuestions];
     this.unansweredQuestionsService.deleteUnansweredQuestion(this.id_project, q._id!).subscribe({
       next: () => {
         this.logger.log('[ModalUnansweredQuestions] Question deleted successfully');
+        // Remove from local array - parent will handle count update if needed
         this.unansweredQuestions = this.unansweredQuestions.filter(item => item._id !== q._id);
+        // Emit refresh to update count in parent
+        this.refresh.emit();
       },
       error: (err) => {
         this.logger.error('[ModalUnansweredQuestions] Error deleting question', err);
