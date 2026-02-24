@@ -19,7 +19,7 @@ export enum INTEGRATIONS_KEYS {
     TWILIO = 'twilio',
     VXML_VOICE = 'voice',
     VXML_VOICE_ENGHOUSE = 'voice-vxml-enghouse',
-    TWILIO_VOICE = "voice_twilio",
+    TWILIO_VOICE = "voice-twilio",
     WHATSAPP = 'whatsapp',
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',
@@ -154,7 +154,7 @@ export function getKeyByValue(value, keys) {
 }
 
 export const automations = ['webhook', 'copilot'];
-export const aiAgents = ['chatbot', 'voice', 'voice_twilio'];
+export const aiAgents = ['chatbot', 'voice', 'voice-twilio'];
 
 // MODELS
 

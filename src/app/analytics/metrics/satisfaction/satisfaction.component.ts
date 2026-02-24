@@ -13,7 +13,7 @@ import { AnalyticsService } from 'app/services/analytics.service';
 import { CHANNELS, CHANNELS_NAME } from 'app/utils/util';
 import { AuthService } from 'app/core/auth.service';
 import { ProjectService } from 'app/services/project.service';
-
+import { INTEGRATIONS_KEYS } from 'app/integrations/utils';
 @Component({
   selector: 'appdashboard-satisfaction',
   templateUrl: './satisfaction.component.html',
@@ -124,17 +124,17 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
         const projectProfile = current_selected_prjct.id_project.profile
         
         // voice -> VXML voice
-        // voice_twilio -> Twilio voice
+        // voice-twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
             const customization = projectProfile.customization;
             this.logger.log('[ANALYTICS - SATISFACTION] - customization', customization);
 
             // Filtra i canali in base alle customizzazioni
             this.conversationType = this.conversationType.filter(channel => {
-              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
+              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization[INTEGRATIONS_KEYS.TWILIO_VOICE] || customization[INTEGRATIONS_KEYS.TWILIO_VOICE] === false)) {
                 return false; // escludi TWILIO
               }
-              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
+              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization[INTEGRATIONS_KEYS.VXML_VOICE] || customization[INTEGRATIONS_KEYS.VXML_VOICE] === false)) {
                 return false; // escludi VXML
               }
               return true; // mantieni gli altri

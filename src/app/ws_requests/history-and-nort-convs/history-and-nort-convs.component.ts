@@ -36,6 +36,7 @@ import { BrandService } from 'app/services/brand.service';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { INTEGRATIONS_KEYS } from 'app/integrations/utils';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -946,17 +947,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
         // voice -> VXML voice
-        // voice_twilio -> Twilio voice
+        // voice-twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
             const customization = projectProfile.customization;
             console.log('[HISTORY & NORT-CONVS] - customization', customization);
 
             // Filtra i canali in base alle customizzazioni
             this.conversationType = this.conversationType.filter(channel => {
-              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization.voice_twilio || customization.voice_twilio === false)) {
+              if (channel.id === CHANNELS_NAME.VOICE_TWILIO && (!customization[INTEGRATIONS_KEYS.TWILIO_VOICE] || customization[INTEGRATIONS_KEYS.TWILIO_VOICE] === false)) {
                 return false; // escludi TWILIO
               }
-              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization.voice || customization.voice === false)) {
+              if (channel.id === CHANNELS_NAME.VOICE_VXML && (!customization[INTEGRATIONS_KEYS.VXML_VOICE] || customization[INTEGRATIONS_KEYS.VXML_VOICE] === false)) {
                 return false; // escludi VXML
               }
               return true; // mantieni gli altri
@@ -2520,14 +2521,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
 
-    if (this.conversation_type === 'voice-vxml') {
+    if (this.conversation_type === CHANNELS_NAME.VOICE_VXML) {
       // this.conversationTypeValue = 'whatsapp'
-      this.conversation_type = 'voice-vxml'
+      this.conversation_type = CHANNELS_NAME.VOICE_VXML
     }
 
-    if (this.conversation_type === 'voice_twilio') {
+    if (this.conversation_type === CHANNELS_NAME.VOICE_TWILIO) {
       // this.conversationTypeValue = 'whatsapp'
-      this.conversation_type = 'voice_twilio'
+      this.conversation_type = CHANNELS_NAME.VOICE_TWILIO
     }
   }
 

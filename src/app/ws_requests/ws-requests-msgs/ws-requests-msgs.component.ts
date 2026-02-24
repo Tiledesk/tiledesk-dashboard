@@ -4268,7 +4268,7 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
         if (pair && pair._bots) {
           this.bots = pair._bots
             .filter(bot => {
-              if (bot['trashed'] === false && bot['type'] === 'tilebot' && (!bot['subtype'] || bot['subtype'] === "chatbot" || bot['subtype'] === "voice" || bot['subtype'] === 'voice_twilio')) {
+              if (bot['trashed'] === false && bot['type'] === 'tilebot' && (!bot['subtype'] || bot['subtype'] === "chatbot" || bot['subtype'] === "voice" || bot['subtype'] === 'voice-twilio')) {
                 return true
               } else {
                 return false

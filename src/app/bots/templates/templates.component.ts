@@ -25,9 +25,9 @@ import { ProjectService } from 'app/services/project.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { INTEGRATIONS_KEYS } from 'app/integrations/utils';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 const Swal = require('sweetalert2')
-
 
 @Component({
   selector: 'appdashboard-templates',
@@ -392,10 +392,10 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       return;
     }
   
-    const voiceTwilio = customization['voice_twilio'] ?? false;
-    const voice = customization['voice'] ?? false;
+    const voiceTwilio = customization[INTEGRATIONS_KEYS.TWILIO_VOICE] ?? false;
+    const voice = customization[INTEGRATIONS_KEYS.VXML_VOICE] ?? false;
   
-    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice_twilio:', voiceTwilio);
+    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
     this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice:', voice);
   
     this.diplayTwilioVoiceChabotCard = voiceTwilio === true;
@@ -434,7 +434,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       }
 
       const myChatbot = faqKb.filter((obj) => {
-        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
+        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
       });
       this.logger.log('[BOTS-TEMPLATES]  - myChatbot', myChatbot);
       if (myChatbot) {

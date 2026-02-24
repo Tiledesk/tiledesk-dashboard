@@ -4,7 +4,7 @@
     <span *ngIf="botSubType === 'chatbot'">
         {{'CreateAnAIAgent' | translate}}
     </span>
-    <span *ngIf="botSubType === 'voice' || botSubType === 'voice_twilio'">
+    <span *ngIf="botSubType === 'voice' || botSubType === 'voice-twilio'">
         {{'CreateAnAIVoiceAgent' | translate}}
     </span>
     <span *ngIf="botSubType === 'copilot'">
@@ -44,7 +44,7 @@
             <span *ngIf="botSubType === 'chatbot'">
                 {{'ChatbotName' | translate}}
             </span>
-            <span *ngIf="botSubType === 'voice' || botSubType === 'voice_twilio'">
+            <span *ngIf="botSubType === 'voice' || botSubType === 'voice-twilio'">
                 {{'AIVoiceAgentName' | translate}}
             </span>
 

@@ -349,7 +349,7 @@
                     <!-- Voice Chatbot (Twilio) -->
                     <!-- ------------------------------------ -->
                     <div *ngIf="diplayTwilioVoiceChabotCard" class="add--content-card-wpr"
-                      (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddBotFromScratch('voice_twilio')" 
+                      (click)="PERMISSION_TO_ADD_FLOWS && presentModalAddBotFromScratch('voice-twilio')" 
                       matRipple
                       [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
                       [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
@@ -677,7 +677,7 @@
                             <img *ngIf="faqkb?.subtype && faqkb?.subtype === 'webhook'" class="bot-type-logo"
                               src="assets/img/logos/webhook-logo.svg" />
                             <img
-                              *ngIf="faqkb?.subtype && (faqkb?.subtype === 'voice' || faqkb?.subtype === 'voice_twilio')"
+                              *ngIf="faqkb?.subtype && (faqkb?.subtype === 'voice' || faqkb?.subtype === 'voice-twilio')"
                               class="bot-type-logo" src="assets/img/logos/voice-logo.svg" />
 
 
@@ -1001,7 +1001,7 @@
           </span>
           <span style="vertical-align: middle; padding-left:8px">
             <span
-              *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice_twilio' ">
+              *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice-twilio' ">
               {{ "DeleteAIAgent" | translate }}
             </span>
             <span *ngIf="botSubType === 'copilot' || botSubType === 'webhook'">
@@ -1027,7 +1027,7 @@
 
         <label class="col-sm-10 modal-body--content">
           <span
-            *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice_twilio' ">
+            *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice-twilio' ">
             {{ "ToDeleteAIAgentTypeID" | translate }}:
           </span>
           <span *ngIf="botSubType === 'copilot' || botSubType === 'webhook'">

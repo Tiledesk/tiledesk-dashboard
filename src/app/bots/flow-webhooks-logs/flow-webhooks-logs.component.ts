@@ -141,7 +141,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
       }
 
       const myChatbot = faqKb.filter((obj) => {
-        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
+        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
       });
       this.logger.log('[FLOW-WEBHOOKS]  - myChatbot', myChatbot);
       if (myChatbot) {

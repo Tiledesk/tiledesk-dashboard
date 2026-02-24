@@ -477,18 +477,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (environment['voiceTwilioConfigUrl']) {
           if (voiceTwiloApp) {
             voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
-            voiceTwiloApp.channel = "voice_twilio";
+            voiceTwiloApp.channel = "voice-twilio";
           } else {
             voiceTwiloApp = {
               voiceTwiloApp: environment['voiceTwilioConfigUrl'],
-              channel: "voice_twilio"
+              channel: "voice-twilio"
             }
           }
         }
         else {
           this.logger.log('heree voiceTwiloApp ', voiceTwiloApp)
           if (voiceTwiloApp) {
-            voiceTwiloApp.channel = "voice_twilio";
+            voiceTwiloApp.channel = "voice-twilio";
           }
         }
         this.availableApps.push(voiceTwiloApp);
@@ -941,8 +941,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
        // TWILIO_VOICE: Check trial/subscription status first, then customization
       // Reject if: trial is expired (profileType === 'free' && trialExpired === true), 
       //            or subscription is expired (profileType === 'payment' && subscriptionIsActive === false),
-      //            or getPayValue() is false, or customization doesn't exist, or voice_twilio key doesn't exist, or voice_twilio is false
-      // Resolve only if trial/subscription is active, getPayValue() is true, and voice_twilio exists and is true
+      //            or getPayValue() is false, or customization doesn't exist, or voice-twilio key doesn't exist, or voice-twilio is false
+      // Resolve only if trial/subscription is active, getPayValue() is true, and voice-twilio exists and is true
       if (integration && integration.key === this.INT_KEYS.TWILIO_VOICE) {
         // First check: if trial is expired (free profile with expired trial)
         if (this.profileType === 'free' && this.trialExpired === true) {
@@ -1066,7 +1066,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
-      // Remove TWILIO_VOICE if getPayValue() is false or if customization.voice_twilio is false
+      // Remove TWILIO_VOICE if getPayValue() is false or if customization.voice-twilio is false
       if (!isVisiblePAY || (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false)) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
