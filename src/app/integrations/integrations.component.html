@@ -144,6 +144,12 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </ollama-integration>
 
+                                        <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </v-llm>
+
                                         <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
@@ -163,6 +169,12 @@
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </ext-integration>
+
+                                        <mcp-integration *ngIf="integrationSelectedName === INT_KEYS.MCP"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </mcp-integration>
 
                                     </div>
 
