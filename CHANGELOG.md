@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+ ### 2.7.174-stage 
+ - Adds pagination and creation date to the unanswered questions table
+
  ### 2.7.173-stage 
  - Adds the ability to search for phone number to the history page
 
