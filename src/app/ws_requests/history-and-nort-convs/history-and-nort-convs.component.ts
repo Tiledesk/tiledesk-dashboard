@@ -948,7 +948,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
         // voice -> VXML voice
-        // voice-twilio -> Twilio voice
+        // voice_twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
             const customization = projectProfile.customization;
             console.log('[HISTORY & NORT-CONVS] - customization', customization);

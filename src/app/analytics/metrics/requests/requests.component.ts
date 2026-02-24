@@ -151,7 +151,7 @@ export class RequestsComponent implements OnInit {
         const projectProfile = current_selected_prjct.id_project.profile
         
         // voice -> VXML voice
-        // voice-twilio -> Twilio voice
+        // voice_twilio -> Twilio voice
         if (projectProfile && projectProfile.customization) {
             const customization = projectProfile.customization;
             this.logger.log('[ANALYTICS - CONVS] - customization', customization);
