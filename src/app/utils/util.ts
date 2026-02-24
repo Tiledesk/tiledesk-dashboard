@@ -861,7 +861,7 @@ export const GROQ_MODEL: Array<{ name: string, value: string, description:string
   { name: "Llama 3 70B – 8K context",                         value: "llama3-70b-8192",                                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Llama Guard 4 – 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "DeepSeek R1 Distilled Llama 70B",                  value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
   { name: "Llama 4 Scout – 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Kimi K2 Instruct (Moonshot AI)",                   value: "moonshotai/kimi-k2-instruct",                       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
   { name: "Qwen 3 – 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
