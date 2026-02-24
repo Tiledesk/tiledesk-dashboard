@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { TYPE_GPT_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
+import { LLM_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util'; // TYPE_GPT_MODEL,
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -259,30 +259,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
-    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+    // const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
-    // this.model_list = OPENAI_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
+    // this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
     //   if (ai_models[el.value])
     //     return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
     //   else
     //     return { ...el, multiplier: null }
     // })
 
-    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
-      if (ai_models[el.value])
-        return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
-      else
-        return { ...el, multiplier: null }
-    })
-
-    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+    // this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
     // this.listenToAiSettingsChanges()
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
-
+    this.loadModelGroups();
   }
 
  
@@ -297,6 +290,72 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   //     }
   //   })
   // }
+
+   loadModelGroups() {
+    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+    this.logger.log('LLM_MODEL', LLM_MODEL)
+    const orderedProviders = [
+      ...LLM_MODEL.filter(p => p.value === 'openai'),
+      ...LLM_MODEL.filter(p => p.value !== 'openai')
+    ];
+
+    // crea l’array dei gruppi di modelli per la select
+    this.modelGroups = orderedProviders.map(provider => ({
+      providerName: provider.name,
+      models: (provider.models || [])  // fallback se models è undefined
+        .filter(m => m.status === 'active')  // solo modelli attivi
+        .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
+        .map(model => ({
+          ...model,
+          multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
+        }))
+    }));
+
+    this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
+
+    this.flattenedModels = this.modelGroups.flatMap(group => {
+      // trova il provider corrispondente in LLM_MODEL
+      const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
+
+      return group.models.map(model => ({
+        ...model,
+        providerName: group.providerName,
+        llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
+        llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
+      }));
+    });
+
+    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // eventualmente seleziona il modello corrente
+    const selectedProvider = this.modelGroups.find(g =>
+      g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
+    );
+    if (selectedProvider) {
+      const selectedModelObj = selectedProvider.models.find(m =>
+        m.value === this.selectedNamespace.preview_settings.model
+      );
+      this.selectedModel = selectedModelObj?.value;
+    }
+
+    this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+
+
+
+    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+
+    const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
+  }
+
+  getLlmProviderByModel(modelValue: string): string | null {
+    const found = this.flattenedModels.find(el => el.value === modelValue);
+    return found ? found.llmValue : null;
+  }
+
 
 
   ngOnChanges(changes: SimpleChanges): void {
