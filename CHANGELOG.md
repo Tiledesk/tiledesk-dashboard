@@ -1,5 +1,17 @@
 # tiledesk-dashboard
 
+ ### 2.7.174-stage 
+ - Adds pagination and creation date to the unanswered questions table
+
+ ### 2.7.173-stage 
+ - Adds the ability to search for phone number to the history page
+
+### 2.7.172-stage 
+- Adds the ability to add tags to knowledge base contents
+
+### 2.7.171-stage 
+- Adds the VXML Enghouse integration 
+
 ### 2.7.170-stage 
 - Refresh the knowledge base list after updating content
 
