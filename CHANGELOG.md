@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.168-AR
+- Adds multi LLMs
+- Adds MCP servers
+- Adds the ability to search for phone numbers in the history page (ITDELSDAM-5096)
+
 ### 2.7.167-AR
 - Fixes the bug: Unanswered questions table has header even if there is no contents
 
