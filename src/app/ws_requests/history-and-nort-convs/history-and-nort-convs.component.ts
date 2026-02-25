@@ -2496,6 +2496,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   requestsTypeSelectFromAdvancedOption() {
     // this.logger.log('this.conversationTypeValue: ', this.conversationTypeValue)
     this.logger.log('this.conversation_type: ', this.conversation_type)
+    
+    // Svuota il campo phone se il conversation_type disabilita il campo
+    const disabledPhoneTypes = ['chat21', 'telegram', 'messenger', 'email', 'form'];
+    if (disabledPhoneTypes.includes(this.conversation_type)) {
+      this.phone = '';
+      this.logger.log('[HISTORY & NORT-CONVS] Phone field cleared due to conversation_type:', this.conversation_type);
+    }
+    
     if (this.conversation_type === 'all') {
       // this.conversationTypeValue = 'all'
       this.conversation_type = 'all'
