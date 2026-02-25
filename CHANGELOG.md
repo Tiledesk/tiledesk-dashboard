@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.169-AR
+- Improves the search for phone numbers in the history page
+
 ### 2.7.168-AR
 - Adds multi LLMs
 - Adds MCP servers
