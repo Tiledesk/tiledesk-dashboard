@@ -120,11 +120,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   endDateFormatted: string;
   endDateFormatted_temp: string;
 
-  // Check if both dates are filled for search validation
-  get areDatesComplete(): boolean {
-    return !!(this.startDateDefaultValue && this.endDateDefaultValue);
-  }
-
   deptName: string;
   fullText: string;
   fullText_applied_filter: string
@@ -142,7 +137,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   _preflight: boolean;
   preflightValue: boolean;
 
-  showAdvancedSearchOption: boolean // = true; // false;
+  showAdvancedSearchOption: boolean  = false; // false;
   hasFocused = false;
   departments: any;
   selectedDeptId: string;
@@ -329,7 +324,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
   isDefaultRole: boolean;
-  currentUTCName: string;
+
 
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
@@ -1012,7 +1007,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
-      if (!hasRelevantQueryParams && this.areDatesComplete) {
+      if (!hasRelevantQueryParams) {
         this._preflight = false;
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();

@@ -264,13 +264,10 @@
                                 src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                 onerror="this.src='assets/img/no_image_user_2.png'" />
 
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Native class="user-img-in-teammates-list" -->
-                          <!-- --------------------------------------------------- -->
-                          <!-- projectUser?.hasImage &&  onerror="this.src='assets/img/no_image_user.png'"-->
-                          <img *ngIf="projectUser?.hasImage === true && !UPLOAD_ENGINE_IS_FIREBASE" id="img-{{projectUser?.id_user?._id}}" 
-                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/no_image_user_2.png'" />
+                              <!-- --------------------------------------------------- -->
+                              <!-- USECASE No profile Image -->
+                              <!-- --------------------------------------------------- -->
+                              <!-- *ngIf="projectUser?.hasImage === false" [ngStyle]="{'display': displayAvatarNoProfileFoto }" -->
 
                               <div *ngIf="projectUser?.hasImage === false" class="avatar-no-profile-photo"
                                 [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
@@ -496,188 +493,11 @@
                             </svg>
                           </div>
 
-                          <div class="cl-card-action-btn-wpr">
-                            <button id="btn-copy-{{invites?._id}}" mat-icon-button
-                              (click)="$event.stopPropagation();copyInviteURL(invites?._id)"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{'CopyInviteURL' | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>content_copy</mat-icon>
-                            </button>
-                          </div>
-
-                          <!-- -------------------------------------------- -->
-                          <!-- More Actions (Pending Invitations) -->
-                          <!-- -------------------------------------------- -->
-                          <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                            <button mat-icon-button [matMenuTriggerFor]="moreactionspi"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{Actions | translate}}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                              <mat-icon>more_vert</mat-icon>
-                            </button>
-
-                            <mat-menu #moreactionspi="matMenu">
-                              <button class="mat-menu-btn"
-                                *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                                mat-menu-item (click)='openCancelInvitationModal(invites?._id, invites?.email )'>
-                                <mat-icon>delete</mat-icon>
-
-                                <span>{{ 'UsersPage.modalCancelInvite' | translate }}</span>
-                              </button>
-                            </mat-menu>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./ Pending invitations -->
-            </div>
-            <!-- ./ New teammates list -->
-          </div>
-        </div>
-
-        <!-- ------------------------------------------------ -->
-        <!-- Old teammates list -->
-        <!-- ------------------------------------------------ -->
-        <div style="display: none;" class="row">
-          <div class="col-md-12">
-            <div class="card card card--no-border"
-              style="min-height: 195px;margin-top: 15px;box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px !important;padding: 0px 6px;">
-
-
-              <!-- table-responsive -->
-              <div class="card-header card-header-custom-bckgrnd"
-                style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
-
-                <!-- displayBtn {{displayInviteTeammateBtn}} -> USER_ROLE > {{ USER_ROLE}} -->
-                <ng-container *ngIf="displayInviteTeammateBtn">
-                  <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
-                    style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
-                    [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
-                    <span class="icon" style="padding-right:8px">
-                      <i class="material-icons">add_circle</i>
-                    </span>
-                    {{ "UsersPage.Invites" | translate }}
-                  </button>
-                </ng-container>
-
-
-
-                <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
-                {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
-              </div> -->
-              </div>
-
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
-
-              <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px; width: 100%;">
-
-                <table class="table table-hover">
-                  <thead>
-                    <tr style="display: none;">
-
-                      <!-- ------------------------------------- -->
-                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                      <!-- ------------------------------------- -->
-                      <!-- <th>
-                    <span style="color: #566787">
-                      <strong>
-                        Project_User Id
-                      </strong>
-                    </span>
-                  </th> -->
-
-
-                      <!-- --------------------------------- -->
-                      <!-- User Avatar -->
-                      <!-- --------------------------------- -->
-                      <th>
-                        <span class="column-th-span" style="white-space: nowrap">
-                          {{ "UsersPage.User" | translate }}
-                        </span>
-                      </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- User Fullname -->
-                      <!-- --------------------------------- -->
-                      <th> </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- Chat with -->
-                      <!-- --------------------------------- -->
-                      <th> </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- Role -->
-                      <!-- --------------------------------- -->
-                      <th>
-                        <span class="column-th-span">
-                          {{ "UsersPage.Role" | translate }}
-                        </span>
-                      </th>
-
-
-                      <!-- ------------------------------------------- -->
-                      <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
-                      <!-- ------------------------------------------- -->
-                      <th>
-                        <span class="column-th-span">
-                          {{ "Status" | translate }}
-                        </span>
-                      </th>
-
-
-                      <!-- --------------------------------- -->
-                      <!-- IS BUSY -->
-                      <!-- --------------------------------- -->
-                      <th>
-                        <span class="column-th-span">
-                          {{ "Actions" | translate }}
-                        </span>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
-                    <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
-
-                      <td (click)="goToEditUser(projectUser?._id)"
-                        style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
-
-                        <div class="user-avatar-wrap">
-
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Firebase -->
-                          <!-- --------------------------------------------------- -->
-
-                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-                            class="user-img-in-teammates-list"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
-
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE uploadEngine Native -->
-                          <!-- --------------------------------------------------- -->
-                          <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                            class="user-img-in-teammates-list"
-                            src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/no_image_user.png'" />
-
-                          <!-- --------------------------------------------------- -->
-                          <!-- USECASE No profile Image -->
-                          <!-- --------------------------------------------------- -->
-                          <!-- [ngStyle]="{'background-color': projectUser?.id_user?.fillColour }" -->
-                          <div *ngIf="projectUser?.hasImage === false"
-                            style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
-                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.id_user?.fillColour + ')'}">
-                            <span class="altenative-projetuser-avatar">
-                              {{ projectUser?.id_user?.fullname_initial }}
+                          <div class="cl-card-info-wpr">
+                            <span class="cl-card-item-name-wpr">
+                              <div class="cl-card-item-name" style="font-size: 14px;">
+                                <span>{{ projectUser?.email }}</span>
+                              </div>
                             </span>
 
                             <!-- <div class="cl-card-item-description-wpr">

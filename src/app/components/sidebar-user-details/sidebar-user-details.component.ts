@@ -539,8 +539,8 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   getProjectUser() {
     this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    // this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
       console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);

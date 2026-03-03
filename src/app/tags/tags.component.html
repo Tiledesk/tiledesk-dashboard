@@ -90,41 +90,10 @@
                         <!-- ------------------------------------------------------- -->
                         <!-- Add tag btn  btn-primary -->
                         <!-- ------------------------------------------------------- -->
-                        <span class="td-tag-table">
-                          {{ tag?.tag}}
-                        </span>
-                      </td>
-
-                      <!-- ------------------------------------------------------- -->
-                      <!-- Created at -->
-                      <!-- ------------------------------------------------------- -->
-                      <td>
-                        <span class="td-tag-table">
-                          {{ tag?.createdAt | amTimeAgo}}
-                        </span>
-                      </td>
-                      
-                      <!-- ------------------------------------------------------- -->
-                      <!-- Created By -->
-                      <!-- ------------------------------------------------------- -->
-                      <td>
-                        <!-- --------------------------------------------------- -->
-                        <!-- USECASE uploadEngine Firebase -->
-                        <!-- --------------------------------------------------- -->
-                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-tags"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{tag?.createdBy}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <!-- --------------------------------------------------- -->
-                        <!-- USECASE uploadEngine Native -->
-                        <!-- --------------------------------------------------- -->
-                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-tags"
-                          src="{{baseUrl}}files?path=uploads%2Fusers%2F{{tag?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <span class="td-tag-table">
-                          <span *ngIf="tag.createdBy_user">
-                            {{ tag?.createdBy_user?.firstname }} {{ tag?.createdBy_user?.lastname }}
+                        <button class="btn btn-tdblu-no-boxshadow  create-tag-btn" (click)="createTag()" type="submit"
+                          style="border-bottom-left-radius: 0px !important;border-top-left-radius: 0px !important">
+                          <span class="add-tags-text">
+                            {{ "Tags.CrateTag" | translate }}
                           </span>
                         </button>
                       </form>

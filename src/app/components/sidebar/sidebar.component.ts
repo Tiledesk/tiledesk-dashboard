@@ -2507,8 +2507,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
   getProjectUser() {
     this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    // this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+    // this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);

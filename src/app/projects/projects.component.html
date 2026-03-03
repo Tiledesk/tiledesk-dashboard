@@ -215,9 +215,10 @@
                       {{ user?.email }}
                     </h4>
 
-                  
+                    <li style="padding: 0px 10px;"><hr class="dropdown-divider"></li>
+                    <!-- <li *ngIf="editProfileBtnVisible" class="divider"></li> -->
 
-                 <!--   <div class="user-profile-link" routerLink="/user-profile">
+                    <!-- <div *ngIf="editProfileBtnVisible" class="user-profile-link" routerLink="/user-profile">
 
                       <div class="user-profile-link-icon">
 
@@ -243,8 +244,13 @@
                       </div>
 
                     </div> -->
+
+                   <!-- && PERMISSION_TO_LOGOUT -->
                     <li *ngIf="logoutBtnVisible" class="divider"></li>
                     
+                    <!-- <ng-container *ngIf="PERMISSION_TO_LOGOUT"> -->
+                      <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
+                        <div  class="user-profile-link-icon">
 
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                             viewBox="0 0 24 24">

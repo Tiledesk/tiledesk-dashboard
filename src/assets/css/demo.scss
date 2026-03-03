@@ -4537,6 +4537,31 @@ li.li-active a {
   color: #f44336;
 }
 
+.td--actions .btn-success {
+  box-shadow: unset;
+  background: transparent;
+}
+
+.td--actions .btn-success:hover {
+  box-shadow: unset;
+  background: transparent;
+}
+
+.td--actions .btn-success:focus {
+  box-shadow: unset;
+  background: transparent;
+}
+
+.td--actions .btn-success:active {
+  box-shadow: unset;
+  background: transparent;
+}
+
+.td--actions .btn-success:active:hover {
+  box-shadow: unset;
+  background: transparent;
+}
+
 .td--actions .btn-danger:focus {
   box-shadow: unset;
   background: transparent;

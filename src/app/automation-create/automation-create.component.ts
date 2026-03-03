@@ -117,7 +117,7 @@ export class AutomationCreateComponent implements OnInit {
             this.logger.log('[AUTOMATION-CREATE] - projectId ', this.projectId)
           }
         });
-    }
+  }
 
   downloadFile(data, filename) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
@@ -156,8 +156,20 @@ export class AutomationCreateComponent implements OnInit {
     this.automationsService.getWATemplates().subscribe((templates: any) => {
       this.logger.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates ", templates);
       // this.logger.log("[AUTOMATION-CREATE] GET WA TEMPLATES templates fake ", this.fakeTmplt);
-      this.templates_list = templates;
-      
+      this.templates_list = templates
+
+      // .map(t => {
+      //   if (t.category === 'MARKETING') {
+      //     t['icon'] = "campaign"
+      //   }
+      //   else {
+      //     t['icon'] = "notifications_active"
+      //   }
+      //   // t['description'] = t.components.find(c => c.type === 'BODY').text;
+      //   return t;
+      // })
+
+
     }, (error) => {
 
       this.logger.error("[AUTOMATION-CREATE] - GET WA TEMPLATES - ERROR: ", error)
@@ -204,13 +216,6 @@ export class AutomationCreateComponent implements OnInit {
     // Check if template uses NAMED parameters
     this.isNamedTemplate = this.selected_template?.parameter_format === 'NAMED';
     
-    if (!this.templates_list?.length) {
-      console.warn('templates_list non inizializzato');
-      return;
-    }
-    console.log('[AUTOMATION-CREATE] onSelectTemplate  this.templateName ', this.templateName) 
-    this.selected_template = this.templates_list.find(t => t.name === this.templateName) || null;
-    console.log('[AUTOMATION-CREATE] onSelectTemplate selected_template', this.selected_template)
     this.selected_template_name = this.selected_template.name
     this.selected_template_lang = this.selected_template.language
 
@@ -226,9 +231,7 @@ export class AutomationCreateComponent implements OnInit {
       // }
     }
     
-
-    console.log('[AUTOMATION-CREATE] csvOutput', this.csvOutput)
- 
+    // Always create template preview to show the template (even if NAMED and not supported)
     this.createTemplatePreview()
   }
 

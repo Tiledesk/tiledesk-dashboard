@@ -635,6 +635,10 @@ p.member:hover {
   border-radius: 50%;
 }
 
+.custom-input-group---btn.toggle-advanced{
+  padding: 4px 8px;
+}
+
 .custom-input-group---btn:hover {
   background-color: rgba(60, 64, 67, 0.08);
   -webkit-transition: background-color 300ms linear;
@@ -642,6 +646,10 @@ p.member:hover {
   transition: background-color 300ms linear;
 
   .fa-search-btn {
+    color: black !important;
+  }
+
+  .fa-caret-down {
     color: black !important;
   }
 

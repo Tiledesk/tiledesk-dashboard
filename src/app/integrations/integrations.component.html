@@ -11,18 +11,19 @@
 <div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
 
     <div class="page-title--sidebar-settings"
-        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-        {{'Integrations' | translate}}
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+     {{'Integrations' | translate}}
     </div>
 
-
+    
     <div class="container-fluid" style="padding-right: 5px;padding-left: 10px;">
         <div class="content-wpr" style="display: flex;">
 
             <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
-
+            
             <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
-
+                    
+                    
                 <ng-container *ngIf="permissionChecked">
                     <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
@@ -49,9 +50,8 @@
                                                 <!-- dispayBadgeAvaibleFromInAppStore >  {{dispayBadgeAvaibleFromInAppStore}} -->
                                                 <div class="integration-name-and-badge">
                                                     <p>{{ integration.name }}</p>
-                                                    <!-- >> {{ integration.displayBadge}} -->
-                                                    <div *ngIf="integration.displayBadge === true" class="pro-badge">
-                                                        {{integration.plan}}</div>
+                                                <!-- >> {{ integration.displayBadge}} -->
+                                                    <div *ngIf="integration.displayBadge === true" class="pro-badge">{{integration.plan}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,13 +62,12 @@
                             </div>
 
                             <div class="spinner-container" *ngIf="showSpinner">
-                                <loading-spinner
-                                    style="width: 100% !important; display: flex; align-items: center;"></loading-spinner>
+                                <loading-spinner style="width: 100% !important; display: flex; align-items: center;"></loading-spinner>
                             </div>
                             <ng-container *ngIf="!showSpinner">
                                 <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
-                                    <integration-header *ngIf="!showInIframe"
+                                    <integration-header *ngIf="!showInIframe" 
                                         [integrationModel]="selectedIntegrationModel">
                                     </integration-header>
 
@@ -144,17 +143,22 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </ollama-integration>
 
+                                        <mcp-integration *ngIf="integrationSelectedName === INT_KEYS.MCP"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </mcp-integration>
                                         <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </v-llm>
 
-                                        <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
+                                    <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                        </deepseek-integration>
+                                        </deepseek-integration> 
 
 
                                         <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
@@ -164,250 +168,101 @@
                                         </qapla-integration>
 
                                         <ext-integration *ngIf="integrationSelectedType === 'external'"
-                                            [integration]="selectedIntegration" [renderUrl]="renderUrl"
+                                            [integration]="selectedIntegration"
+                                            [renderUrl]="renderUrl"
                                             [id_project]="project._id"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </ext-integration>
 
-                                        <mcp-integration *ngIf="integrationSelectedName === INT_KEYS.MCP"
-                                            [integration]="selectedIntegration"
-                                            (onUpdateIntegration)=integrationUpdateEvent($event)
-                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                        </mcp-integration>
-
                                     </div>
-
-                                    <div *ngIf="integrationLocked === true" style="width: 100%;">
+                                
+                                    <div *ngIf="integrationLocked === true && ((profileType === 'payment' && subscriptionIsActive === true) || (profileType === 'free' && trialExpired === false))"  style="width: 100%;">
                                         <div class="int-lock-container">
                                             <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
 
-                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
-                                                class="upgrade-title">
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-title">
+                                                {{ 'ContactUs' | translate }}!</p>
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle">
+                                            <span style="display: block;"> Voice brings real-time, human interaction into your workflows. </span>  
+                                            <span style="display: block;">With Twilio Voice, you can handle calls, automate voice interactions, and seamlessly switch between chat and voice.</span>
+                                            </p>
+                                            
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">
                                                 {{ 'Integration.UpgradePlan' | translate }}</p>
-                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
-                                                class="upgrade-subtitle">
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">
                                                 {{'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
-                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
-                                                class="upgrade-subtitle">
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">
                                                 {{'Integration.OpenaiSubtitle2' | translate }}</p>
-                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
-                                                class="upgrade-subtitle"
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle"
                                                 [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
                                             </p>
 
-                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI"
-                                                class="upgrade-title">
+                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE" class="upgrade-title">
                                                 {{'Integration.UpgradePlan' | translate }}</p>
-                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI"
-                                                class="upgrade-subtitle"
+                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle"
                                                 [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
                                             </p>
 
-                                            <button class="custom-upgrade-primary-button" (click)="goToPricing()">
-                                                {{'Integration.UpgradeNow' | translate }}</button>
+                                        
+
+                                            <button *ngIf="integrationSelectedName !== INT_KEYS.TWILIO_VOICE" 
+                                                class="custom-upgrade-primary-button" 
+                                                (click)="goToPricing()">
+                                                {{'Integration.UpgradeNow' |  translate }}
+                                            </button>
+                                            <button *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" 
+                                                class="custom-upgrade-primary-button" 
+                                                (click)="contactUs()">
+                                                {{'ContactUs' |  translate }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div *ngIf="integrationLocked === true && ((profileType === 'free' && trialExpired === true) || (profileType === 'payment' && subscriptionIsActive === false))"  style="width: 100%;">
+                                        <div class="int-lock-container">
+                                            <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
+
+                                            <p class="upgrade-title">
+                                                {{ 'Pricing.SubscriptionPaymentProblem' | translate }}</p>
+
+                                            <p class="upgrade-subtitle">
+                                                <span style="display: block;"> 
+                                                {{ 'Pricing.WeWereUnableToAutomaticallyRenewYourSubscription' | translate }}.
+                                                </span>
+                                                <span style="display: block;"> 
+                                                {{ 'Pricing.PleaseContactUs' | translate }} {{ 'Pricing.ToUpdateYourPaymentInformation' | translate }}.
+                                                </span>
+                                            </p>
+                                        
+                                            <button
+                                                class="custom-upgrade-primary-button" 
+                                                (click)="contactUsToUpgradePlan()">
+                                                {{'ContactUs' |  translate }}
+                                            </button>
                                         </div>
                                     </div>
 
                                 </div>
 
 
-                    </div>
-
-                    <div class="spinner-container" *ngIf="showSpinner">
-                        <loading-spinner style="width: 100% !important; display: flex; align-items: center;"></loading-spinner>
-                    </div>
-                    <ng-container *ngIf="!showSpinner">
-                        <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
-
-                            <integration-header *ngIf="!showInIframe" 
-                                [integrationModel]="selectedIntegrationModel">
-                            </integration-header>
-
-                            <div *ngIf="integrationLocked === false" class="integration-outer-container">
-
-                                <brevo-integration *ngIf="integrationSelectedName === INT_KEYS.BREVO"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </brevo-integration>
-
-                                <customerio-integration *ngIf="integrationSelectedName === INT_KEYS.CUSTOMERIO"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </customerio-integration>
-
-                                <!-- // NOT VISIBLE -->
-                                <gsheets-integration *ngIf="integrationSelectedName === 'gsheets'">
-                                </gsheets-integration>
-
-                                <hubspot-integration *ngIf="integrationSelectedName === INT_KEYS.HUBSPOT"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </hubspot-integration>
-
-                                <make-integration *ngIf="integrationSelectedName === INT_KEYS.MAKE"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </make-integration>
-
-                                <n8n-integration *ngIf="integrationSelectedName === INT_KEYS.N8N"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </n8n-integration>
-
-                                <openai-integration *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </openai-integration>
-
-                                <google-integration *ngIf="integrationSelectedName === INT_KEYS.GOOGLE"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </google-integration>
-
-                                <anthropic-integration *ngIf="integrationSelectedName === INT_KEYS.ANTHROPIC"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </anthropic-integration>
-
-                                <groq-integration *ngIf="integrationSelectedName === INT_KEYS.GROQ"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </groq-integration>
-
-                                <cohere-integration *ngIf="integrationSelectedName === INT_KEYS.COHERE"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </cohere-integration>
-
-                                <ollama-integration *ngIf="integrationSelectedName === INT_KEYS.OLLAMA"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </ollama-integration>
-
-                                <mcp-integration *ngIf="integrationSelectedName === INT_KEYS.MCP"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </mcp-integration>
-                                <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </v-llm>
-
-                               <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </deepseek-integration> 
-
-
-                                <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
-                                    [integration]="selectedIntegration"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </qapla-integration>
-
-                                <ext-integration *ngIf="integrationSelectedType === 'external'"
-                                    [integration]="selectedIntegration"
-                                    [renderUrl]="renderUrl"
-                                    [id_project]="project._id"
-                                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </ext-integration>
-
-                            </div>
-                          
-                            <div *ngIf="integrationLocked === true && ((profileType === 'payment' && subscriptionIsActive === true) || (profileType === 'free' && trialExpired === false))"  style="width: 100%;">
-                                <div class="int-lock-container">
-                                    <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
-
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-title">
-                                        {{ 'ContactUs' | translate }}!</p>
-
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle">
-                                       <span style="display: block;"> Voice brings real-time, human interaction into your workflows. </span>  
-                                       <span style="display: block;">With Twilio Voice, you can handle calls, automate voice interactions, and seamlessly switch between chat and voice.</span>
-                                    </p>
-                                    
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">
-                                        {{ 'Integration.UpgradePlan' | translate }}</p>
-
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">
-                                        {{'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
-
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">
-                                        {{'Integration.OpenaiSubtitle2' | translate }}</p>
-
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle"
-                                        [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
-                                    </p>
-
-                                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE" class="upgrade-title">
-                                        {{'Integration.UpgradePlan' | translate }}</p>
-                                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle"
-                                        [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
-                                    </p>
-
-                                 
-
-                                    <button *ngIf="integrationSelectedName !== INT_KEYS.TWILIO_VOICE" 
-                                        class="custom-upgrade-primary-button" 
-                                        (click)="goToPricing()">
-                                        {{'Integration.UpgradeNow' |  translate }}
-                                    </button>
-                                    <button *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" 
-                                        class="custom-upgrade-primary-button" 
-                                        (click)="contactUs()">
-                                        {{'ContactUs' |  translate }}
-                                    </button>
-                                </div>
-                            </div>
-                            
-                             <div *ngIf="integrationLocked === true && ((profileType === 'free' && trialExpired === true) || (profileType === 'payment' && subscriptionIsActive === false))"  style="width: 100%;">
-                                <div class="int-lock-container">
-                                    <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
-
-                                    <p class="upgrade-title">
-                                        {{ 'Pricing.SubscriptionPaymentProblem' | translate }}</p>
-
-                                    <p class="upgrade-subtitle">
-                                        <span style="display: block;"> 
-                                        {{ 'Pricing.WeWereUnableToAutomaticallyRenewYourSubscription' | translate }}.
-                                        </span>
-                                        <span style="display: block;"> 
-                                        {{ 'Pricing.PleaseContactUs' | translate }} {{ 'Pricing.ToUpdateYourPaymentInformation' | translate }}.
-                                        </span>
-                                    </p>
-                                 
-                                    <button
-                                        class="custom-upgrade-primary-button" 
-                                        (click)="contactUsToUpgradePlan()">
-                                        {{'ContactUs' |  translate }}
-                                    </button>
+                                <div *ngIf="integrationSelectedName === 'none'" class="empty-menu-container">
+                                    <img src="assets/img/int/getstarted.svg" class="getstarted-icon" alt="Get started">
+                                    <p class="no-integration-selected">{{ 'Integration.SelectToStart' | translate }}</p>
                                 </div>
                             </ng-container>
 
-                        </div>
 
+                        </div>
                     </ng-container>
                     <ng-template #unauthorizedTpl>
                         <unauthorized-for-settings></unauthorized-for-settings>
                     </ng-template>
                 </ng-container>
-
             </div>
         </div>
     </div>

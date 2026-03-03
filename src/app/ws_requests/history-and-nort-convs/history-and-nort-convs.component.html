@@ -110,18 +110,15 @@
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
           <div class="filters-on-center">
-            <div class="input-group full-text-search">
+            <div class="input-group full-text-search" [ngClass]="{'full-text-search-full-width' : showAdvancedSearchOption}">
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
                 <button class="custom-input-group---btn" type="submit"
-                  [disabled]="!areDatesComplete"
-                  [matTooltip]="!areDatesComplete ? ('SelectTheDateRangeToSearch' | translate) : ''"
+                  matTooltip="{{ 'Search' | translate}}"
                   matTooltipClass="mat-white-tooltip"
                   matTooltipPosition="above">
                   <i class="fa fa-search fa-search-btn" 
-                  (click)="search('fiter-central-section')" 
-                  [style.color]="areDatesComplete ? 'grey' : '#ccc'"
-                  [style.cursor]="areDatesComplete ? 'pointer' : 'not-allowed'"
+                  (click)="search('fiter-central-section')"
                   style="font-size: 18px;"></i>
                   <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'Search' | translate}}
@@ -157,16 +154,21 @@
 
               <!-- // TOGGLE ADVANCED OPTION BTN -->
               <span class="input-group-btn" style="padding-left: 2px;">
-                <button class="custom-input-group---btn tool_tip" type="button">
+                <button class="custom-input-group---btn toggle-advanced" type="button"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'AdvancedSearch' | translate}}" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
                   <i class="fa" 
                     [ngClass]="showAdvancedSearchOption ? 'fa-caret-up' : 'fa-caret-down'"
                     (click)="toggle()"
                     style="color:grey; font-size: 18px; vertical-align: middle;"></i>
 
-                  <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                  <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'AdvancedSearch' | translate }}
                     <i></i>
-                  </span>
+                  </span> -->
                 </button>
               </span>
             </div>
@@ -206,7 +208,6 @@
 
                   <div class="col-sm-12 left-date-picker" >
                     <mat-form-field class="custom-date-range-picker" 
-                      [ngClass]="{'date-range-error': !areDatesComplete}"
                       appearance="standard">
                       <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
@@ -223,11 +224,6 @@
 
                       <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-                    <!-- Info message when dates are not complete -->
-                    <div *ngIf="!areDatesComplete" class="date-validation-message" style="margin-top: -8px; color: #f44336; font-size: 12px;font-weight: 400;">
-                      <i class="material-icons" style="vertical-align: middle; font-size: 16px;position: relative;top: -1px;">info</i>
-                      {{ 'PleaseSelectBothDates' | translate }}
-                    </div>
                   </div>
                 </div>
 
@@ -309,8 +305,7 @@
                       <ng-select name="requeststatus" [(ngModel)]="requests_status"
                         (change)="requestsStatusSelectFromAdvancedOption(requests_status)"
                         [items]="status | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                        [searchable]="false" bindValue="id" placeholder="Select status"
-                        [disabled]="!areDatesComplete">
+                        [searchable]="false" bindValue="id" placeholder="Select status">
                       </ng-select>
                     </div>
                   </div>
@@ -389,7 +384,7 @@
                     <div class="duration-value" style="font-size: 14px;">
                       <div class="input---group">
                         <input name="request-duration" type="number" [(ngModel)]="duration" class="input-custom" min="0"
-                          autocomplete="off" placeholder="Duration" style=" border-radius: 4px 0px 0px 4px !important;max-width: 126px;">
+                          autocomplete="off" placeholder="Duration" style=" border-radius: 4px 0px 0px 4px !important;">
                         <div class="input-group-addon">
                           <span class="suffix-text">
                             {{'mins' | translate}}
@@ -419,7 +414,7 @@
                         [searchable]="false" 
                         bindValue="id" 
                         placeholder="Select status"
-                        [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV || !areDatesComplete">
+                        [disabled]="!PERMISSION_TO_VIEW_OPENED_CONV">
                       </ng-select>
                     </div>
                   </div>
@@ -511,63 +506,24 @@
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
                   <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" 
-                    [disabled]="!areDatesComplete"
-                    [matTooltip]="!areDatesComplete ? ('SelectTheDateRangeToSearch' | translate) : ''"
-                    matTooltipClass="mat-white-tooltip"
-                    matTooltipPosition="above"
+                    class="btn btn-tdblu-no-boxshadow pull-right search-btn"
                     (click)="search('template')">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     {{ 'Search' | translate}}
                   </button>
 
-                <!-- // SEARCH FOR Call id -->
-                <div class="col-sm-12 col-md-4 filter-col" *ngIf="IS_HERE_FOR_HISTORY && (conversation_type === 'voice-vxml' || conversation_type ===  'voice_twilio')">
-                  <label class="col-sm-12 label-7695a5">
-                    {{'CallID' | translate }}
-                  </label>
-                  <div class="col-sm-12">
-                    <input name="call-id" type="text" [(ngModel)]="call_id" class="input-custom" autocomplete="off"
-                      placeholder="{{'CallID' | translate }}" style="font-size: 14px;font-weight: 300;">
-                  </div>
-                </div>
-              </div>
+                  <button type="submit" class="btn btn-gray-no-boxshadow  clearsearchbtn pull-right"
+                    (click)="clearSearch()" style="margin-right: 12px;">
 
+                    <!-- {{ 'HistoryPage.ClearSearch' | translate }} -->
+                    {{ 'ResetFilters' | translate }}
 
-                <!-- ------------------------------------------ -->
-                <!-- BTNS SEARCH & CLEAR SEARCH -->
-                <!-- ------------------------------------------ -->
-                <div class="row">
-                  <div class="col-sm-12" style="margin-top: 16px;">
-                    <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                      class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search('template')">
-                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                      {{ 'Search' | translate}}
-                    </button>
-
-                    <button type="submit" class="btn btn-gray-no-boxshadow  clearsearchbtn pull-right"
-                      (click)="clearSearch()" style="margin-right: 12px;">
-
-                      <!-- {{ 'HistoryPage.ClearSearch' | translate }} -->
-                      {{ 'ResetFilters' | translate }}
-
-                    </button>
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
           </div>
-        </div>
-
-        <div class="msg-alert-for-search" *ngIf="!areDatesComplete">
-          <span>
-            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">info</i>
-          </span>
-          <span style="vertical-align: middle;">
-            {{'SelectTheDateRangeToSearch' | translate}}
-          </span>
-          
         </div>
       </div>
 
@@ -772,61 +728,6 @@
     </div>
 
 
-    <!-- <div class="applied-filter">
-      <span
-        *ngIf="!fullText_applied_filter || !startDateFormatted || !selectedAgentFirstname || !selectedDeptName || !requests_status === '200' || !requests_status === '100' || !selecteTagColor">
-        {{ 'TotalConversations' | translate }}: {{requestsCount}}
-      </span>
-      <span
-      *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
-      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
-    </span>
-    </div> -->
-
-  </div>
-  <!-- style="display: flex; position: relative; float: right;top: 51px;z-index: 99; " -->
-  <div class="row" *ngIf="!IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px ">
-    <div class="col-xs-12 conversations-count">
-      <span
-        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor && !conversation_type">
-        {{ 'TotalConversations' | translate }}:
-        <!-- https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations -->
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
-
-      <span
-        *ngIf="!IS_HERE_FOR_HISTORY && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type)">
-        {{ 'ConversationsFound' | translate }}:
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
-    </div>
-  </div>
-  <!-- style="display: flex; position: relative; float: right;top: 51px;z-index: 99; " -->
-  <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px">
-    <div class="col-xs-12 conversations-count">
-      <span
-        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor  && !conversation_type">
-        {{ 'TotalConversations' | translate }}:
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
-
-      <span
-       *ngIf="has_searched && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type)">
-        {{ 'ConversationsFound' | translate }}:
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
     </div>
   </div>
 
@@ -1139,7 +1040,7 @@
               <!-- ------------------------------ -->
               <!--  IF THERE ISN'T REQUEST -->
               <!--  ------------------------------ -->
-              <tr *ngIf="(IS_HERE_FOR_HISTORY && (!has_searched || (requestList && requestList?.length === 0))) || (!IS_HERE_FOR_HISTORY && (!has_searched || (requestList && requestList?.length === 0)))">
+              <tr *ngIf="(IS_HERE_FOR_HISTORY && (!has_searched || (requestList && requestList?.length === 0))) || (!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0)">
                 <td colspan="10" style="text-align: center; padding-top: 16px; height: 150px;">
 
                   <span class="material-icons no-request-icon" style="vertical-align: middle;" *ngIf="!has_searched">
