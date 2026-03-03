@@ -34,18 +34,20 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+     console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
+      this.logger.log('[MODAL-DETAIL-KB] source ', this.source)
       this.content = this.kb.content;
+      console.log('[MODAL-DETAIL-KB] content ', this.content)
 
       if (this.kb.type === 'faq') {
        this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
       } 
 
       // Recupera i chunks solo se esiste _id
-      if (this.kb._id) {
+      if (this.kb._id && this.kb.type !== 'sitemap') {
         this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
       } else {
         this.showSpinner = false;
@@ -53,6 +55,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
+    
     this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
       if (chunks) {
         
@@ -145,6 +148,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       unwanted_classnames: [...unwanted_classnames]
     };
     this.logger.log('[MODAL-DETAIL-KB] Scrape options object to save:', scrapeOptions);
+    console.log('[MODAL-DETAIL-KB] Scrape options object to save:', scrapeOptions);
     
     try {
       const jsonString = JSON.stringify(scrapeOptions);
@@ -186,6 +190,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       // Verify it was saved
       const saved = localStorage.getItem('scrape_options');
       this.logger.log('[MODAL-DETAIL-KB] Verified saved value:', saved);
+      console.log('[MODAL-DETAIL-KB] Verified saved value:', saved);
       this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to storage successfully');
     } catch (error) {
       this.logger.error('[MODAL-DETAIL-KB] Error saving scrape options to storage:', error);

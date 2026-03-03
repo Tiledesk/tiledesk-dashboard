@@ -6,10 +6,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { SortByPipe } from 'app/sortby.pipe';
 import { SharedModule } from 'app/shared/shared.module';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: "", component: GroupsComponent },
@@ -26,10 +28,15 @@ const routes: Routes = [
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,
-     MatTooltipModule,
-        MatMenuModule,
-        MatIconModule,
-        MatButtonModule
+    UnauthorizedForSettingsModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export class GroupsModule { }

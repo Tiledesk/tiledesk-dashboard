@@ -1,7 +1,6 @@
 <h2 mat-dialog-title class="dialog-title">
+  {{'ManageWhitelist' | translate}}   
   
-  {{'ManageWhitelist' | translate}}
-
   <i [satPopoverAnchor]="whiteListRules" class="material-icons"
     (mouseenter)="whiteListRules.open()" (mouseleave)="whiteListRules.close()"> 
     help_outline 
@@ -31,9 +30,9 @@
       <div class="custom-panel--popover-description"> 
         <ul style="padding-left: 12px;"> 
           <li> {{'WildcardExampleDotCom' | translate}}
-            <span class="material-icons-outlined" style="vertical-align: middle;font-size: 10px;">
+            <i class="material-icons" style="vertical-align: middle;font-size: 10px;">
               arrow_forward
-            </span>
+            </i>
             {{'AllowsLinksFromAnySubdomainOf' | translate}}
           </li>
         </ul>
@@ -44,9 +43,8 @@
 
 <mat-dialog-content>
 
-
   <form [formGroup]="urlForm" (ngSubmit)="addUrl()" style="display: flex;">
-    <mat-form-field class="full-width url-input" appearance="outline" [class.show-error]="submitted && urlControl.invalid">
+    <mat-form-field class="full-width url-input" appearance="outline" [class.show-error]="submitted && urlControl.invalid" style="font-size: 14px;">
       <mat-label>{{'Domain' | translate }} </mat-label>
       <input matInput placeholder="{{'EnterADomain' | translate}}" formControlName="url" />
       <mat-error *ngIf="submitted && urlControl.hasError('required')">

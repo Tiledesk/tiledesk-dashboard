@@ -70,7 +70,8 @@ export class CreateGroupComponent implements OnInit {
       groups.forEach(group => {
         if (this.deptName_toUpdate + ' ' + 'group' === group.name) {
           this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - GET GROUPS - this group name already exist ', this.deptName_toUpdate + ' ' + 'group');
-          this.group_name_already_exist = true
+          // this.group_name_already_exist = true
+          this.group_name_already_exist = false
         }
       });
 
@@ -187,7 +188,7 @@ export class CreateGroupComponent implements OnInit {
         if (group) {
           this.group_name = group['name'];
           this.new_group_id = group['_id']
-
+          // this.notify.showWidgetStyleUpdateNotification('Group successfully created', 2, 'done');
           this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - new_group_id ', this.new_group_id);
         }
 

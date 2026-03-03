@@ -117,14 +117,25 @@
 }
 
 .widget-all-settings-wrap {
-  .code-help {
+  .code--help {
     align-self: stretch;
     color: #1c2b45;
     display: flex;
     flex-direction: row;
     margin-top: 5px;
-    padding-top: 16px;
-
+    // padding-top: 16px;
+    padding-top: 10px;
+    width: fit-content;
+    font-size: 14px;
+    align-items: center;
+    a {
+      text-decoration: none;
+      font-weight: 400;
+    } 
+    // &:hover{
+    //   text-decoration: underline;
+    //   color: #3ea9f5;
+    // }
     svg {
       fill: #3ea9f5;
       height: 20px;
@@ -179,7 +190,7 @@
     -webkit-box-align: center;
     align-items: center;
     background-color: transparent;
-    padding: 0px;
+    padding: 12px;
     outline: 0px;
     position: relative;
     width: 100%;
@@ -216,7 +227,7 @@
     width: 32px;
     height: 32px;
     position: absolute;
-    left: 10px;
+    left: 15px;
 
     svg {
       height: 100%;
@@ -272,3 +283,9 @@
   display: none;
 }
 
+.btn-link {
+  text-decoration: none !important;
+  text-transform: none !important;
+  font-size: 14px;
+
+}

@@ -7,7 +7,12 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { FaqService } from 'app/services/faq.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
 import { WebhookService } from 'app/services/webhook.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-flow-webhooks',
@@ -42,6 +47,13 @@ export class FlowWebhooksComponent implements OnInit {
 
   SERVER_BASE_PATH: string;
 
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  PERMISSION_TO_COPY_WEBHOOK_URL: boolean;
+  PERMISSION_TO_ENABLE_DISABLE_WEBHOOK: boolean;
+  PERMISSION_TO_DELETE_WEBHOOK: boolean;
   project: any;
 
   constructor(
@@ -53,14 +65,18 @@ export class FlowWebhooksComponent implements OnInit {
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     public notify: NotifyService,
+    private roleService: RoleService,
+    private rolesService: RolesService,
   ) { }
 
 
   ngOnInit(): void {
+    this.roleService.checkRoleForCurrentProject('flow-webhook')
     this.getBrowserVersion();
     this.getFaqKbByProjectId()
     this.getFlowWebhooks()
     this.getServerBaseURL()
+    this.listenToProjectUser()
     this.getCurrentProject()
   }
 
@@ -71,6 +87,74 @@ export class FlowWebhooksComponent implements OnInit {
       }
     })
   }
+
+   listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+  
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          this.ROLE = status.role;
+          this.PERMISSIONS = status.matchedPermissions;
+          console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - this.ROLE:', this.ROLE);
+          console.log('PERMISSION_TO_COPY_WEBHOOK_URL] - this.PERMISSIONS', this.PERMISSIONS);
+          this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+          console.log('PERMISSION_TO_COPY_WEBHOOK_URL] - hasDefaultRole', this.hasDefaultRole);
+  
+          // PERMISSION_TO_COPY_WEBHOOK_URL
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_COPY_WEBHOOK_URL = true;
+            console.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_COPY_WEBHOOK_URL = false;
+            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_COPY_WEBHOOK_URL = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_COPY);
+            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
+          }
+
+          // PERMISSION_TO_ENABLE_DISABLE_WEBHOOK
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK = true;
+            console.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK = false;
+            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_EDIT);
+            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
+          }
+
+
+          // PERMISSION_TO_DELETE_WEBHOOK
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_DELETE_WEBHOOK = true;
+            console.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_DELETE_WEBHOOK = false;
+            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_DELETE_WEBHOOK = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_DELETE);
+            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
+          }
+        });
+  
+    }
 
   getServerBaseURL() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
@@ -117,6 +201,12 @@ export class FlowWebhooksComponent implements OnInit {
   //  @ Enable / disable flow webkook
   // --------------------------------------------------------------------------------------
   webhookOnOff(event, webhook_id) {
+    if (!this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK) {
+      event.preventDefault();
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
     this.logger.log('[FLOW-WEBHOOKS] Enable / Disable flow webhook - event', event.target.checked, 'webhook_id ', webhook_id)
 
     this.webhookService.updateFlowWebhook(event.target.checked, webhook_id).subscribe((res: any) => {
@@ -136,9 +226,14 @@ export class FlowWebhooksComponent implements OnInit {
 
 
   deleteWebhook(webhookid) {
+    if (!this.PERMISSION_TO_DELETE_WEBHOOK) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
     this.logger.log('[FLOW-WEBHOOKS] delete flow webhook - webhookid ', webhookid)
     Swal.fire({
-      title: this.translate.instant('AreYouSure'),
+      title: this.translate.instant('AreYouSure')+ "?",
       text: this.translate.instant('TheWebhookWillBeDeleted'),
       icon: "warning",
       showCloseButton: false,

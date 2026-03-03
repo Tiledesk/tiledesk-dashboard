@@ -8,5 +8,6 @@ export interface Group {
     trashed: boolean;
     id_project: string;
     createdBy: string;
+    percentage:number;
     __v: any;
 }

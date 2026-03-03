@@ -35,6 +35,10 @@
             placeholder="URL of the external vLLM server" 
             [(ngModel)]="integration.value.url" autocomplete="off" 
             autocorrect="off" autocapitalize="off" spellcheck="false">
+            
+        <input id="vLLM-url" class="custom-input" type="url" name="vLLM-url"
+            placeholder="URL of the external vLLM server" (input)="handleInput($event)"
+            [(ngModel)]="integration.value.url" autocomplete="off" style="font-size: 14px;">
     </div>
 
 
@@ -86,7 +90,8 @@
             <div class="fake--input-inner">
                 <input id="vLLM-models" class="custom-input" name="vLLM-models"
                     placeholder="Type an LLM model and press Enter to add it to your favorites" type="text"
-                    [(ngModel)]="newModelName"  (ngModelChange)="onEnterModel($event)" autocomplete="off" (keyup.enter)="addModel(newModelName)">
+                    [(ngModel)]="newModelName"  (ngModelChange)="onEnterModel($event)" autocomplete="off" (keyup.enter)="addModel(newModelName)"
+                    style="font-size: 14px;">
                 <div id="enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
             </div>
         </div>

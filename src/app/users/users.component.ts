@@ -24,8 +24,15 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import * as moment from 'moment';
 import { ProjectUser } from 'app/models/project-user'
+import { RoleService } from 'app/services/role.service'
+import { RolesService } from 'app/services/roles.service'
+import { PERMISSIONS } from 'app/utils/permissions.constants'
+import { GroupService } from 'app/services/group.service'
+import { TagsService } from 'app/services/tags.service'
 
-const swal = require('sweetalert')
+// const swal = require('sweetalert')
+const Swal = require('sweetalert2')
+
 
 @Component({
   selector: 'appdashboard-users',
@@ -42,8 +49,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   public_Key: string
   showSpinner = true
-  projectUsersList: any
-  pendingInvitationList: any
+ 
+
 
   id_projectUser: string
   user_firstname: string
@@ -129,6 +136,31 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // tagsArray: Array<any> = [];
   // displayAvatarNoProfileFoto: boolean = false
 
+  isAuthorized = false;
+  permissionChecked = false;
+
+  PERMISSION_TO_INVITE: boolean;
+  // PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_UPDATE: boolean;
+  PERMISSION_TO_VIEW_ROLES: boolean;
+  PERMISSION_TO_VIEW_GROUPS:boolean;
+  PERMISSION_TO_VIEW_ANALYTICS: boolean;
+
+  // Dati originali e filtrati
+  projectUsersList:  any[] = []; 
+  pendingInvitationList: any[] = [];
+  paginatedUsers: any[] = []; 
+  filteredUsers: any[] = [];
+
+  // Variabili per paginazione
+  pageSize = 20;
+  currentPage = 1;
+  totalItems = 0;
+  totalPagesNo_roundToUp: number;
+   
+  // Variabili per ricerca
+  searchTerm = '';
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -143,6 +175,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     public wsRequestsService: WsRequestsService,
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
+    private roleService: RoleService,
+    public rolesService: RolesService,
+    private groupService: GroupService,
+    private tagsService: TagsService,
     private cachePuService: CachePuService
 
   ) {
@@ -155,7 +191,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject()
+    // this.auth.checkRoleForCurrentProject()
     this.getUploadEgineAndProjectUsers()
     this.translateStrings()
     // this.getAllUsersOfCurrentProject(); // MOVED IN GET STORAGE BUCKET
@@ -170,12 +206,150 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
     this.getDashboardCurrentLang()
+    this.checkPermissions();
+    this.listenToProjectUser()
   }
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   ngAfterViewInit(): void {
     // setTimeout(() => {
     //   this.displayAvatarNoProfileFoto = true
     // }, 500);
   }
+
+  private sanitizeForNotification(value: string): string {
+    if (!value) return '';
+    return value
+      .replace(/&/g, '&amp;')  // Must be first
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[USERS] - Role:', status.role);
+        console.log('[USERS] - Permissions:', status.matchedPermissions);
+        // ---------------------------------------------------
+        // PERMISSION_TO_INVITE
+        // ---------------------------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_INVITE = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_INVITE = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_INVITE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+        }
+
+        // ---------------------
+        // PERMISSION_TO_UPDATE
+        // ---------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_UPDATE);
+        }
+
+        // ------------------------
+        // PERMISSION_TO_VIEW_ROLES
+        // ------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ROLES = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ROLES = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+        }
+
+        // -------------------------
+        // PERMISSION_TO_VIEW_GROUPS
+        // -------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_GROUPS = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_GROUPS = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+        }
+
+        // ----------------------------
+        // PERMISSION_TO_VIEW_ANALYTICS
+        // ----------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = true;
+          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = false;
+          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+        }
+
+
+     
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('teammates')
+    console.log('[USERS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[USERS] - checkPermissions -isAuthorized ', this.isAuthorized)
+    console.log('[USERS] - checkPermissions - permissionChecked ', this.permissionChecked)
+  }
+
 
   getDashboardCurrentLang() {
     const browserLang = this.translate.getBrowserLang();
@@ -241,11 +415,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
 
-  ngOnDestroy() {
-    // this.subscription.unsubscribe()
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+
 
   presentDialogResetBusy() {
     this.logger.log('[USERS] presentDialogResetBusy ')
@@ -441,12 +611,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // }
 
   goToEditUser(projectUser_id) {
-    this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id])
+    if (this.PERMISSION_TO_UPDATE) {
+      this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id])
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   goToGroups() {
     this.logger.log('[USERS] - goToGroups')
     this.router.navigate(['project/' + this.id_project + '/groups'])
+  }
+
+  goToUsersRoles() {
+    this.router.navigate(['project/' + this.id_project + '/roles']);
   }
 
   goToPendingInvitation() {
@@ -611,13 +789,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.logger.log('[USERS] - GET ALL USERS OF CURRENT PROJECT - Cleared project users cache to ensure fresh data');
     
     let users_id_array = [];
+    this.cachePuService.clearPuCache()
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
-        this.logger.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
+        console.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
 
         if (projectUsers) {
           this.projectUsersList = projectUsers
+          this.applyFilterAndPagination();
 
           let order = { owner: 1, admin: 2, agent: 3 };
           this.projectUsersList.sort(function (a, b) {
@@ -675,6 +855,274 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       },
     )
   }
+
+   getPendingInvitation() {
+    this.usersService.getPendingUsers().subscribe(
+      (pendingInvitation: any) => {
+        console.log('[USERS] - GET PENDING INVITATION - RES', pendingInvitation)
+
+        if (pendingInvitation) {
+          this.pendingInvitationList = pendingInvitation
+          this.countOfPendingInvites = pendingInvitation.length
+          
+          this.applyFilterAndPagination();
+          this.logger.log('[USERS] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.countOfPendingInvites)
+        }
+      }, (error) => {
+        // this.showSpinner = false
+        this.logger.error('[USERS] - GET PENDING INVITATION - ERROR', error)
+      }, () => {
+        this.logger.log('[USERS] - GET PENDING INVITATION * COMPLETE * ')
+        this.HAS_FINISHED_GET_PENDING_USERS = true
+        // this.showSpinner = false
+      },
+    )
+  }
+
+
+
+   // Metodo per applicare filtro e paginazione
+
+ applyFilterAndPagination() {
+  // Imposta il tipo per ciascun elemento
+  this.projectUsersList.forEach(item => item.type = 'user');
+  this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+  // Combina utenti e pending
+  const combinedItems = [
+    ...this.projectUsersList,
+    ...this.pendingInvitationList
+  ];
+
+  console.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
+
+  // Applica il filtro su tutti (users + pending)
+  const filtered = this.filterUsers(combinedItems, this.searchTerm);
+
+  console.log('applyFilterAndPagination elementi filtrati:', filtered);
+
+  // Aggiorna conteggio e paginazione
+  this.totalItems = filtered.length;
+  this.applyPagination(filtered);
+
+  this.filteredUsers = filtered;
+  console.log('filteredUsers ',  this.filteredUsers) 
+}
+
+ ordered_applyFilterAndPagination() {
+  // Imposta il tipo per ciascun elemento
+  this.projectUsersList.forEach(item => item.type = 'user');
+  this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+  // Combina utenti e pending
+  const combinedItems = [
+    ...this.projectUsersList,
+    ...this.pendingInvitationList
+  ];
+
+  // Applica il filtro su tutti (users + pending)
+  const filtered = this.filterUsers(combinedItems, this.searchTerm);
+
+  // Ordina solo per tipo: utenti prima, pending dopo
+  const ordered = filtered.sort((a, b) => {
+    if (a.type === 'user' && b.type === 'invitation') return -1;
+    if (a.type === 'invitation' && b.type === 'user') return 1;
+    return 0; // mantiene l'ordine relativo all'interno dello stesso tipo
+  });
+
+  // Aggiorna conteggio e paginazione
+  this.totalItems = ordered.length;
+  this.applyPagination(ordered);
+
+  // Salva l'elenco filtrato per il template
+  this.filteredUsers = ordered;
+
+  // console.log('applyFilterAndPagination elementi filtrati ordinati:', this.filteredUsers);
+}
+
+// ordina per visualizzare prima  User poi  pending e ordine alfabetico
+// applyFilterAndPagination() {
+//   // Imposta il tipo per ciascun elemento
+//   this.projectUsersList.forEach(item => item.type = 'user');
+//   this.pendingInvitationList.forEach(item => item.type = 'invitation');
+
+//   // Combina utenti e pending
+//   const combinedItems = [
+//     ...this.projectUsersList,
+//     ...this.pendingInvitationList
+//   ];
+
+//   console.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
+
+//   // Applica il filtro su tutti (users + pending)
+//   const filtered = this.filterUsers(combinedItems, this.searchTerm);
+
+//   console.log('applyFilterAndPagination elementi filtrati:', filtered);
+
+//   // ✅ Ordina: utenti prima, pending dopo
+//   const ordered = filtered.sort((a, b) => {
+//     if (a.type === 'user' && b.type === 'invitation') return -1;
+//     if (a.type === 'invitation' && b.type === 'user') return 1;
+//     // Ordinamento alfabetico secondario (per nome o email)
+//     const aName = (a.id_user?.firstname || a.email || '').toLowerCase();
+//     const bName = (b.id_user?.firstname || b.email || '').toLowerCase();
+//     return aName.localeCompare(bName);
+//   });
+
+//   // Aggiorna conteggio e paginazione
+//   this.totalItems = ordered.length;
+//   this.applyPagination(ordered);
+
+//   // ✅ Salviamo anche l'elenco filtrato per il template
+//   this.filteredUsers = ordered;
+// }
+
+
+
+filterUsers(items: any[], searchTerm: string): any[] {
+  if (!searchTerm.trim()) {
+    return items;
+  }
+
+  const term = searchTerm.toLowerCase().trim();
+
+  return items.filter(item => {
+    // Se è un utente normale
+    if (item.type === 'user' && item.id_user) {
+      const email = item.id_user.email?.toLowerCase() || '';
+      const firstname = item.id_user.firstname?.toLowerCase() || '';
+      const lastname = item.id_user.lastname?.toLowerCase() || '';
+      const fullName = `${firstname} ${lastname}`.trim();
+
+      return (
+        email.includes(term) ||
+        firstname.includes(term) ||
+        lastname.includes(term) ||
+        fullName.includes(term)
+      );
+    }
+
+    // Se è una pending invitation
+    if (item.type === 'invitation' && item.email) {
+      console.log('Pendind item', item)
+      const email = item.email.toLowerCase();
+      return email.includes(term);
+    }
+
+    return false;
+  });
+}
+
+
+searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
+    console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ', searchTerm);
+
+    if (!searchTerm.trim()) {
+      return users;
+    }
+
+    const term = searchTerm.toLowerCase().trim();
+
+    return users.filter(user => {
+      const email = user.id_user.email?.toLowerCase() || '';
+      const firstname = user.id_user.firstname?.toLowerCase() || '';
+      const lastname = user.id_user.lastname?.toLowerCase() || '';
+      const fullName = `${firstname} ${lastname}`.trim();
+
+      // 🔍 Cerca sempre in nome, cognome, nome completo ed email
+      return (
+        email.includes(term) ||
+        firstname.includes(term) ||
+        lastname.includes(term) ||
+        fullName.includes(term)
+      );
+    });
+}
+
+
+  _filterUsers(users: any[], searchTerm: string): any[] {
+    console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ' , searchTerm)
+    if (!searchTerm.trim()) {
+      return users;
+    }
+    console.log('[USERS] - PROJECT USERS filterUsers > users ' , users)
+
+    const term = searchTerm.toLowerCase().trim();
+    
+    // Verifica se il termine di ricerca è un'email
+    const isEmail = this.isValidEmail(term);
+
+    return users.filter(user => {
+       console.log('[USERS] - PROJECT USERS filterUsers > user ' , user)
+      if (isEmail) {
+        // Cerca per email
+        return user.id_user.email.toLowerCase().includes(term);
+      } else {
+        // Cerca per nome e cognome
+        const fullName = `${user.id_user.firstname || ''} ${user.id_user.lastname || ''}`.toLowerCase().trim();
+         console.log('[USERS] - PROJECT USERS filterUsers > fullName ' , fullName)
+        return fullName.includes(term) ||
+               (user.id_user.firstname && user.id_user.firstname.toLowerCase().includes(term)) ||
+               (user.id_user.lastname && user.id_user.lastname.toLowerCase().includes(term));
+      }
+    });
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  applyPagination(combinedItems) {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    // this.paginatedUsers = this.filteredUsers.slice(startIndex, endIndex);
+    this.paginatedUsers = combinedItems.slice(startIndex, endIndex)
+    // console.log('paginatedUsers',  this.paginatedUsers)
+  }
+
+  // Metodo chiamato quando cambia il termine di ricerca
+  onSearchChange($event) {
+     console.log('[USERS] - PROJECT USERS filterUsers > onSearchChange event' , $event)
+     console.log('[USERS] - PROJECT USERS filterUsers > onSearchChange searchTerm' , this.searchTerm)
+    this.currentPage = 1; // Reset alla prima pagina
+    this.applyFilterAndPagination();
+  }
+
+  onPageChange(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      // this.applyPagination();
+      this.applyFilterAndPagination();
+    }
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  // Metodo per ottenere l'array delle pagine disponibili (per la UI)
+  get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+   // Metodi aggiuntivi per navigazione (opzionali)
+  goToFirstPage() {
+    this.onPageChange(1);
+  }
+
+  goToLastPage() {
+    this.onPageChange(this.totalPages);
+  }
+
+  goToNextPage() {
+    this.onPageChange(this.currentPage + 1);
+  }
+
+  goToPreviousPage() {
+    this.onPageChange(this.currentPage - 1);
+  }
+
 
   getFlatMembersArrayFromAllRequestsAndRunGetOccurrence(users_id_array) {
     this.logger.log('[USERS] CALL GET COUNT OF REQUEST FOR AGENT');
@@ -786,26 +1234,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     imageData.src = imageUrl
   }
 
-  getPendingInvitation() {
-    this.usersService.getPendingUsers().subscribe(
-      (pendingInvitation: any) => {
-        this.logger.log('[USERS] - GET PENDING INVITATION - RES', pendingInvitation)
-
-        if (pendingInvitation) {
-          this.pendingInvitationList = pendingInvitation
-          this.countOfPendingInvites = pendingInvitation.length
-          this.logger.log('[USERS] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.countOfPendingInvites)
-        }
-      }, (error) => {
-        // this.showSpinner = false
-        this.logger.error('[USERS] - GET PENDING INVITATION - ERROR', error)
-      }, () => {
-        this.logger.log('[USERS] - GET PENDING INVITATION * COMPLETE * ')
-        this.HAS_FINISHED_GET_PENDING_USERS = true
-        // this.showSpinner = false
-      },
-    )
-  }
+ 
 
   resendInvite(pendingInvitationId: string) {
     this.logger.log('[USERS] - RESEND INVITE TO PENDING INVITATION ID: ', pendingInvitationId)
@@ -824,7 +1253,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         }, () => {
           this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - COMPLETE')
           // =========== NOTIFY SUCCESS===========
-          this.notify.showWidgetStyleUpdateNotification(this.resendInviteSuccessNoticationMsg + this.pendingInvitationEmail, 2, 'done')
+          const safeEmail = this.sanitizeForNotification(this.pendingInvitationEmail);
+          const message = `${this.resendInviteSuccessNoticationMsg}${safeEmail}`;
+          this.notify.showWidgetStyleUpdateNotification(message, 2, 'done')
         },
       )
   }
@@ -897,13 +1328,16 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
           this.notify.showWidgetStyleUpdateNotification(this.canceledInviteErrorMsg, 4, 'report_problem')
         }, () => {
           this.logger.log('[USERS] DELETE PENDING INVITATION * COMPLETE *')
-          this.notify.showWidgetStyleUpdateNotification(this.canceledInviteSuccessMsg + this.pendingInvitationEmailToCancel, 2, 'done')
+          const safeEmail = this.sanitizeForNotification(this.pendingInvitationEmailToCancel);
+          const message = `${this.canceledInviteSuccessMsg}${safeEmail}`;
+          this.notify.showWidgetStyleUpdateNotification(message, 2, 'done')
           this.getPendingInvitation()
         },
       )
   }
 
   goToAddUser() {
+    if(this.PERMISSION_TO_INVITE) {
     this.logger.log('[USERS] INVITE USER (GOTO) No of Project Users ', this.projectUsersLength)
     this.logger.log('[USERS] INVITE USER (GOTO) No of Pending Invites ', this.countOfPendingInvites)
     this.logger.log('[USERS] INVITE USER (GOTO) No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
@@ -942,16 +1376,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       //   this.router.navigate(['project/' + this.id_project + '/user/add'])
       // }
     }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 
   openDeleteModal(
+    projectUser: any,
     projectUser_id: string,
     userID: string,
     userFirstname: string,
     userLastname: string,
   ) {
-    this.displayDeleteModal = 'block'
+    console.log('[USERS] openDeleteModal projectUser', projectUser ,'  projectUser_id ', projectUser_id , ' userID ', userID) 
     this.id_projectUser = projectUser_id
     this.user_id = userID
     this.user_firstname = userFirstname
@@ -969,6 +1407,159 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     }
 
     this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
+    this.checkUserAssociations(userID, 'delete')
+  }
+
+  checkUserAssociations(userId: string, reason?: string) {
+    console.log('[USERS] checkUserAssociations - DELETE / DISABLE reason ', reason);
+    console.log('[USERS] checkUserAssociations - ID OF THE USER TO DELETE / DISABLE ', userId);
+
+    // Controlla sia i gruppi che le tag in parallelo
+    this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('[USERS] ON MODAL DELETE OPEN - GET GROUPS RES', groups);
+
+      this.tagsService.getTags().subscribe((tags: any) => {
+        console.log('[USERS] ON MODAL DELETE OPEN - GET TAGS RES', tags);
+
+        // ✅ Controlla se l'utente è membro di un gruppo
+        const groupsListWithUser = groups?.filter((group: any) => 
+          Array.isArray(group.members) && group.members.includes(userId)
+        ) || [];
+
+        // ✅ Controlla se l'utente ha creato una tag
+        const tagsCreatedByUser = tags?.filter((tag: any) => 
+          tag.createdBy === userId
+        ) || [];
+
+        console.log('[USERS] ON MODAL DELETE OPEN - groupsListWithUser', groupsListWithUser);
+        console.log('[USERS] ON MODAL DELETE OPEN - tagsCreatedByUser', tagsCreatedByUser);
+
+        // Se l'utente non è associato a gruppi né ha creato tag, procedi con l'eliminazione/disabilitazione
+        if (groupsListWithUser.length === 0 && tagsCreatedByUser.length === 0) {
+          console.log('[USERS] ON MODAL DELETE/DISABLE OPEN - USER NOT ASSOCIATED');
+          if (reason === 'delete') {
+            this.displayDeleteModal = 'block';
+          } else {
+            this.displayDisableModal = 'block';
+          }
+          return;
+        }
+
+        // ✅ Utente associato ad almeno un gruppo o ha creato tag
+        console.log('[USERS] ON MODAL DELETE OPEN - USER ASSOCIATED');
+        
+        const warnings: string[] = [];
+
+        if (groupsListWithUser.length > 0) {
+          const MAX_NAMES_TO_SHOW = 3;
+          const groupsNames = groupsListWithUser.map((g: any) => g.name);
+          const isPlural = groupsListWithUser.length > 1;
+          
+          let groupsDisplayText = '';
+          if (groupsNames.length <= MAX_NAMES_TO_SHOW) {
+            // Mostra tutti i nomi se sono pochi
+            groupsDisplayText = groupsNames.join(', ');
+          } else {
+            // Mostra solo i primi N nomi e aggiungi "... e altri X"
+            const namesToShow = groupsNames.slice(0, MAX_NAMES_TO_SHOW).join(', ');
+            const remainingCount = groupsNames.length - MAX_NAMES_TO_SHOW;
+            const andOthersText = this.translate.instant('UsersPage.AndOthers', { count: remainingCount });
+            groupsDisplayText = `${namesToShow} ${andOthersText}`;
+          }
+          
+          const translationKey = isPlural
+            ? 'UsersPage.TheUserIsMemberOfGroups'
+            : 'UsersPage.TheUserIsMemberOfGroup';
+          
+          warnings.push(
+            this.translate.instant(translationKey, { groups_name: groupsDisplayText })
+          );
+        }
+
+        if (tagsCreatedByUser.length > 0) {
+          const MAX_NAMES_TO_SHOW = 3;
+          const tagsNames = tagsCreatedByUser.map((t: any) => t.tag || t.name || t.label || 'Tag');
+          const isPlural = tagsCreatedByUser.length > 1;
+          
+          let tagsDisplayText = '';
+          if (tagsNames.length <= MAX_NAMES_TO_SHOW) {
+            // Mostra tutti i nomi se sono pochi
+            tagsDisplayText = tagsNames.join(', ');
+          } else {
+            // Mostra solo i primi N nomi e aggiungi "... e altri X"
+            const namesToShow = tagsNames.slice(0, MAX_NAMES_TO_SHOW).join(', ');
+            const remainingCount = tagsNames.length - MAX_NAMES_TO_SHOW;
+            const andOthersText = this.translate.instant('UsersPage.AndOthers', { count: remainingCount });
+            tagsDisplayText = `${namesToShow} ${andOthersText}`;
+          }
+          
+          const translationKey = isPlural
+            ? 'UsersPage.TheUserHasCreatedTags'
+            : 'UsersPage.TheUserHasCreatedTag';
+          
+          warnings.push(
+            this.translate.instant(translationKey, { tags_name: tagsDisplayText })
+          );
+        }
+
+        // Determine the appropriate action message based on what associations exist
+        let actionMessage = '';
+        const hasGroups = groupsListWithUser.length > 0;
+        const hasTags = tagsCreatedByUser.length > 0;
+        
+        if (hasGroups && hasTags) {
+          // Both groups and tags
+          actionMessage = reason === 'delete'
+            ? this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDelete')
+            : this.translate.instant('UsersPage.RemoveUserFromGroupsAndTagsBeforeDisable');
+        } else if (hasGroups) {
+          // Only groups
+          actionMessage = reason === 'delete'
+            ? this.translate.instant('UsersPage.RemoveUserFromGroupsBeforeDelete')
+            : this.translate.instant('UsersPage.RemoveUserFromGroupsBeforeDisable');
+        } else if (hasTags) {
+          // Only tags
+          actionMessage = reason === 'delete'
+            ? this.translate.instant('UsersPage.RemoveUserFromTagsBeforeDelete')
+            : this.translate.instant('UsersPage.RemoveUserFromTagsBeforeDisable');
+        }
+
+        const warningMessage = warnings.join('. ') + '. ' + actionMessage;
+
+        this.showWarningAlert(
+          this.translate.instant('Warning'),
+          warningMessage
+        );
+      }, (error) => {
+        this.logger.error('[USERS] - GET TAGS - ERROR ', error);
+        // In caso di errore, procedi comunque con l'eliminazione/disabilitazione
+        if (reason === 'delete') {
+          this.displayDeleteModal = 'block';
+        } else {
+          this.displayDisableModal = 'block';
+        }
+      });
+    }, (error) => {
+      this.logger.error('[USERS] - GET GROUPS - ERROR ', error);
+      // In caso di errore, procedi comunque con l'eliminazione/disabilitazione
+      if (reason === 'delete') {
+        this.displayDeleteModal = 'block';
+      } else {
+        this.displayDisableModal = 'block';
+      }
+    });
+  }
+
+  private showWarningAlert(title: string, text: string): void {
+    Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonText: this.translate.instant('Ok'),
+    });
   }
 
   onCloseDeleteModalHandled() {
@@ -977,8 +1568,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     const soft = true;
     this.usersService.deleteProjectUser(this.id_projectUser, soft).subscribe(
       (projectUsers: any) => {
-        this.logger.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
-        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
+        console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
         // this.ngOnInit();
         if (!isDevMode()) {
           this.trackDeleteProjectUser(projectUsers)
@@ -995,19 +1586,21 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         // NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
-        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
-          for (var i = 0; i < this.projectUsersList.length; i++) {
-                if (this.projectUsersList[i].id === this.id_projectUser) {
-                  this.projectUsersList.splice(i, 1);
-                  i--;
-                }
-          }
+       console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
+        for (var i = 0; i < this.paginatedUsers.length; i++) {
+              if (this.paginatedUsers[i].id === this.id_projectUser) {
+                this.paginatedUsers.splice(i, 1);
+                i--;
+              }
+        }
 
-          this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
-          this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
-          this.projectUsersLength = this.projectUsersList.length;
-        },
         
+
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
+        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
+        this.projectUsersLength = this.projectUsersList.length;
+        this.cachePuService.clearPuCache()
+      },
     )
   }
 
@@ -1018,7 +1611,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     userFirstname: string,
     userLastname: string,
   ) {
-    this.displayDisableModal = 'block'
     this.id_projectUser = projectUser_id
     this.user_id = userID
     this.user_firstname = userFirstname
@@ -1035,16 +1627,11 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.user_fullname = this.user_lastname
     }
 
-    this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',  this.id_projectUser, ' - (Firstname: ',  userFirstname, '; Lastname: ',    userLastname,  ')')
+    this.logger.log('[USERS] OPEN DISABLE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
+    this.checkUserAssociations(userID, 'disable')
   }
 
-  openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
-    this.displayRestoreModal = 'block';
-    this.id_projectUser = projectUser_id
-    this.user_id = userID
-    this.user_firstname = userFirstname
-    this.user_lastname = userLastname
-  }
+
 
   onCloseDisableModalHandled() {
     this.displayDisableModal = 'none'
@@ -1071,8 +1658,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         if (userToDisable) {
           userToDisable.status = 'disabled';
         }
+
+        this.cachePuService.clearPuCache()
+
       },
     )
+  }
+
+
+  openRestoreModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
+    this.displayRestoreModal = 'block';
+    this.id_projectUser = projectUser_id
+    this.user_id = userID
+    this.user_firstname = userFirstname
+    this.user_lastname = userLastname
   }
 
   onCloseRestoreModalHandled() {
@@ -1081,13 +1680,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
     }, (error) => {
       this.logger.error('[USERS] ON-CLOSE-RESTORE-MODAL - RESTORE PROJECT USERS - ERROR ', error)
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileRestoringTheTeammate") , 4, 'report_problem')
+      this.notify.showWidgetStyleUpdateNotification("An error occurred restoring teammate", 4, 'report_problem')
     }, () => {
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("TeammateRestoredSuccessfully"), 2, 'done')
+      this.notify.showWidgetStyleUpdateNotification("Teammate successfully restored", 2, 'done')
       const userToEnable = this.projectUsersList.find(user => user._id === this.id_projectUser);
       if (userToEnable) {
         userToEnable.status = 'active';
       }
+      this.cachePuService.clearPuCache()
     })
   }
 
@@ -1100,6 +1700,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   // New changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string, ngselectid: number, $event: any) {
   changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
+
+    if(this.PERMISSION_TO_UPDATE ){
 
     this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue)
     this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
@@ -1152,9 +1754,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         //  NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
-
+        this.cachePuService.clearPuCache();
         // this.getUploadEgineAndProjectUsers()
       },)
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   // IF THE AVAILABILITY STATUS IS CHANGED BY THE SIDEBAR AVAILABILITY / UNAVAILABILITY BUTTON

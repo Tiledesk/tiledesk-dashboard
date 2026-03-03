@@ -15,6 +15,7 @@ import { CodeInstallationModule } from 'app/components/widget-installations/code
 import { MagentoInstallationComponent } from 'app/components/widget-installations/magento-installation/magento-installation.component';
 import { WixComponent } from 'app/components/widget-installations/wix/wix.component';
 import { BigcommerceInstallationComponent } from 'app/components/widget-installations/bigcommerce-installation/bigcommerce-installation.component';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: WidgetInstallationComponent},
@@ -39,7 +40,8 @@ const routes: Routes = [
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,
-    CodeInstallationModule
+    CodeInstallationModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class WidgetInstallationModule { }

@@ -45,7 +45,7 @@ export class ModalAddNamespaceComponent implements OnInit {
     this.dialogRef.close();
   }
 
-   goToHybridSearchDoc() {
+  goToHybridSearchDoc() {
       const url = URL_hybrid_search_doc;
       window.open(url, '_blank');
   }

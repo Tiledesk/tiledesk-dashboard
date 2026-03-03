@@ -11,6 +11,10 @@ import { BrandService } from 'app/services/brand.service';
 import { DepartmentService } from 'app/services/department.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoleService } from 'app/services/role.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -24,7 +28,7 @@ export class GroupsComponent implements OnInit {
   showSpinner = true;
   showSpinnerInModal: boolean;
 
-  groupsList: Group[];
+  // groupsList: Group[];
   project_id: string;
   display_users_list_modal = 'none';
   group_name: string;
@@ -57,6 +61,32 @@ export class GroupsComponent implements OnInit {
   warning: string;
 
   public hideHelpLink: boolean;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
+  percentage: number;
+  totalPercentage = 0;
+  overflowGroupId: string | null = null;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
+  PERMISSION_TO_VIEW_TEAMMATES: boolean;
+  PERMISSION_TO_VIEW_ROLES: boolean;
+  PERMISSION_TO_EDIT_GROUP: boolean;
+  PERMISSION_TO_CREATE_GROUP: boolean;
+  PERMISSION_TO_DELETE_GROUP: boolean;
+
+  groupsList: Group[] = [];
+  filteredGroups: any[] = [];
+  paginatedGroups: any[] = [];
+
+  searchTerm: string = '';
+  pageSize: number = 20;  // numero di gruppi per pagina
+  currentPage: number = 1;
+  totalPages: number = 1;
+
+
+
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
@@ -68,6 +98,7 @@ export class GroupsComponent implements OnInit {
     public departmentService: DepartmentService,
     private translate: TranslateService,
     private roleService: RoleService,
+    private rolesService: RolesService
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -75,7 +106,7 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('groups')
+    // this.roleService.checkRoleForCurrentProject('groups')
     this.getCurrentProject();
     this.getOSCODE();
     this.getGroupsByProjectId();
@@ -83,6 +114,132 @@ export class GroupsComponent implements OnInit {
     this.getOSCODE();
     this.getBrowserVersion()
     this.getTranslations();
+    this.checkPermissions();
+    this.listenToProjectUser()
+  }
+
+   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[USERS] - Role:', status.role);
+          console.log('[USERS] - Permissions:', status.matchedPermissions);
+        
+          // ----------------------------
+          // PERMISSION_TO_VIEW_TEAMMATES
+          // ----------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_TEAMMATES = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_TEAMMATES = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          }
+  
+          // ------------------------
+          // PERMISSION_TO_VIEW_ROLES
+          // ------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_ROLES = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_ROLES = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+          }
+
+          // ------------------------
+          // PERMISSION_TO_EDIT_GROUP
+          // ------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_EDIT_GROUP = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_EDIT_GROUP = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_EDIT_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUP_UPDATE);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+          }
+
+          // --------------------------
+          // PERMISSION_TO_CREATE_GROUP
+          // --------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_CREATE_GROUP = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_CREATE_GROUP = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_CREATE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUPS_CREATE);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+          }
+
+          // --------------------------
+          // PERMISSION_TO_DELETE_GROUP
+          // --------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_DELETE_GROUP = true;
+            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_DELETE_GROUP = false;
+            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_DELETE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUP_DELETE);
+            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+          }
+
+          
+  
+          
+          // You can also check status.role === 'owner' if needed
+        });
+    }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('groups')
+    console.log('[GROUPS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[GROUPS] isAuthorized ', this.isAuthorized)
+    console.log('[GROUPS] permissionChecked ', this.permissionChecked)
   }
 
   getBrowserVersion() {
@@ -137,14 +294,18 @@ export class GroupsComponent implements OnInit {
    * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID   */
   getGroupsByProjectId() {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      this.logger.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
-
+      console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
       if (groups) {
-        this.groupsList = groups;
+        this.groupsList = (groups || []).sort((a, b) => {
+        const nameA = (a.name || '').toLowerCase();
+        const nameB = (b.name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+        this.filteredGroups = [...this.groupsList];
+        this.updatePagination();
+        console.log('[GROUPS] - GET GROUPS BY PROJECT this.groupsList ', this.groupsList);
         this.createGroupAvatar(this.groupsList)
-
       }
-      // this.faqkbList = faqKb;
 
     }, (error) => {
       this.logger.error('[GROUPS] GET GROUPS - ERROR ', error);
@@ -156,10 +317,59 @@ export class GroupsComponent implements OnInit {
 
   }
 
+  filterGroups() {
+    const term = this.searchTerm.trim().toLowerCase();
+    this.filteredGroups = this.groupsList.filter(group =>
+      group.name?.toLowerCase().includes(term)
+    );
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredGroups.length / this.pageSize);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedGroups = this.filteredGroups.slice(start, end);
+  }
+
+
+   nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
+
+  // onPercentageChange(changedGroup: Group): void {
+  //   this.totalPercentage = this.groupsList.reduce(
+  //     (sum, group) => sum + (group.percentage || 0),
+  //     0
+  //   );
+
+  //   // If overflow, mark the last changed group
+  //   this.overflowGroupId = this.totalPercentage > 100 ? changedGroup._id : null;
+  // }
+
+  // get totalPercentage(): number {
+  //   return this.groupsList.reduce((sum, group) => sum + (group.percentage || 0), 0);
+  // }
+
+  // isTotalOverLimit(): boolean {
+  //   return this.totalPercentage > 100;
+  // }
+
   createGroupAvatar(groupsList) {
     groupsList.forEach(group => {
       group['groupName_initial'] = avatarPlaceholder(group.name)
-       group['fillColour'] = getColorBck(group.name)
+      group['fillColour'] = getColorBck(group.name)
     });
   }
 
@@ -171,7 +381,14 @@ export class GroupsComponent implements OnInit {
     this.router.navigate(['project/' + this.project_id + '/users']);
   }
 
+  goToUsersRoles() {
+    this.router.navigate(['project/' + this.project_id + '/roles']);
+  }
+
   goToEditAddPage_edit(id_group: string) {
+    if(!this.PERMISSION_TO_EDIT_GROUP) {
+      return;
+    }
     this.router.navigate(['project/' + this.project_id + '/group/edit/' + id_group]);
   }
 
@@ -181,6 +398,11 @@ export class GroupsComponent implements OnInit {
   }
 
   openDeleteModal(id_group: string, group_name: string) {
+    // this.displayDeleteModal = 'block';
+    if(!this.PERMISSION_TO_DELETE_GROUP){
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.id_group_to_delete = id_group;
     this.name_group_to_delete = group_name;
     this.logger.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
@@ -188,26 +410,77 @@ export class GroupsComponent implements OnInit {
   }
 
   opendisableModal(id_group: string, group_name: string) {
+    if(!this.PERMISSION_TO_EDIT_GROUP){
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.id_group_to_disable = id_group;
-    this.name_group_to_disable= group_name;
+    this.name_group_to_disable = group_name;
     this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
     this.getDepartments(this.id_group_to_disable, 'disable')
   }
 
-  openRestoreModal(id_group: string, group_name: string){
-    this.displayRestoreModal = 'block';  
+  openRestoreModal(id_group: string, group_name: string) {
+     if(!this.PERMISSION_TO_EDIT_GROUP){
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+    this.displayRestoreModal = 'block';
     this.id_group_to_restore = id_group;
-    this.name_group_to_restore= group_name;
+    this.name_group_to_restore = group_name;
     this.logger.log('[GROUPS] OPEN DISABLE MODAL - ID OF THE GROUP OF DISABLE ', this.id_group_to_disable)
   }
 
- 
-
   getDepartments(selectedGrouId?: string, reason?: string) {
-    this.logger.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
+  console.log('[GROUPS] getDepartments - DELETE / DISABLE reason ', reason);
+  console.log('[GROUPS] getDepartments - ID OF THE GROUP TO DELETE / DISABLE ', selectedGrouId);
+
+  this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+    console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+
+    // ✅ cerca sia nel vecchio campo id_group che nel nuovo array groups[]
+    const deptsArrayWithAssociatedGroup = _departments.filter((dept: any) => {
+      const hasSingleGroup = dept.id_group === selectedGrouId;
+      const hasMultipleGroups = Array.isArray(dept.groups) && dept.groups.some(g => g.group_id === selectedGrouId);
+      return hasSingleGroup || hasMultipleGroups;
+    });
+
+    if (deptsArrayWithAssociatedGroup.length === 0) {
+      console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
+      if (reason === 'delete') {
+        this.displayDeleteModal = 'block';
+      } else {
+        this.displayDisableModal = 'block';
+      }
+      return;
+    }
+
+    // ✅ gruppo associato ad almeno un dipartimento
+    console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP ASSOCIATED');
+    console.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
+
+    const deptsNameAssociatedToGroup = deptsArrayWithAssociatedGroup.map(dept => dept.name);
+    const isPlural = deptsNameAssociatedToGroup.length > 1;
+    const translationKey = isPlural
+      ? 'GroupsPage.TheGroupIsAssociatedWithDepartments'
+      : 'GroupsPage.TheGroupIsAssociatedWithTheDepartment';
+
+    const actionMessage = reason === 'delete'
+      ? this.disassociateTheGroup
+      : this.disassociateTheGroupBeforeToDisableIt;
+
+    this.showWarningAlert(
+      this.warning,
+      `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
+    );
+  });
+}
+
+  _getDepartments(selectedGrouId?: string, reason?: string) {
+    console.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
     this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE / DISABLE ', selectedGrouId)
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+      console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
 
       const deptsArrayWithAssociatedGroup = _departments.filter((obj: any) => {
         return obj.id_group === selectedGrouId;
@@ -230,64 +503,40 @@ export class GroupsComponent implements OnInit {
           deptsNameAssociatedToGroup.push(dept.name)
         });
 
-        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
+        console.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
 
         const isPlural = deptsNameAssociatedToGroup.length > 1;
-        const translationKey = isPlural 
-          ? 'GroupsPage.TheGroupIsAssociatedWithDepartments' 
+        const translationKey = isPlural
+          ? 'GroupsPage.TheGroupIsAssociatedWithDepartments'
           : 'GroupsPage.TheGroupIsAssociatedWithTheDepartment';
 
-        const actionMessage = reason === 'delete' 
-        ? this.disassociateTheGroup 
-        : this.disassociateTheGroupBeforeToDisableIt;
+        const actionMessage = reason === 'delete'
+          ? this.disassociateTheGroup
+          : this.disassociateTheGroupBeforeToDisableIt;
 
         // const translatedMessage = this.translate.instant(translationKey, { 
         //   depts_name: deptsNameAssociatedToGroup.join(', ') 
         // });
 
         this.showWarningAlert(
-        this.warning,
-        `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
+          this.warning,
+          `${this.translate.instant(translationKey, { depts_name: deptsNameAssociatedToGroup.join(', ') })}. ${actionMessage}`
         );
-
-        // Swal.fire({
-        //   title: this.warning,
-        //   text: `${translatedMessage}. ${this.disassociateTheGroup}`,
-        //   icon: "warning",
-        //   showCloseButton: true,
-        //   showCancelButton: false,
-        //   // confirmButtonColor: "var(--blue-light)",
-        //   focusConfirm: false
-        // })
-        
-
-        // if (deptsArrayWithAssociatedGroup.length > 1) {
-        //   Swal.fire({
-        //     title: this.warning,
-        //     text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithDepartments', { depts_name: deptsNameAssociatedToGroup.join(', ') }) +'. ' + this.disassociateTheGroup,
-        //     icon: "warning",
-        //     showCloseButton: true,
-        //     showCancelButton: false,
-        //     // confirmButtonColor: "var(--blue-light)",
-        //     focusConfirm: false,
-        //   })
-        // }
       }
     })
   }
 
   private showWarningAlert(title: string, text: string): void {
     Swal.fire({
-        title,
-        text,
-        icon: 'warning',
-        showCloseButton: true,
-        showCancelButton: false,
-        focusConfirm: false,
-        // confirmButtonColor: 'var(--blue-light)'
+      title,
+      text,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      // confirmButtonColor: 'var(--blue-light)'
     });
-}
-
+  }
 
   onCloseDeleteModal() {
     this.displayDeleteModal = 'none';
@@ -298,6 +547,7 @@ export class GroupsComponent implements OnInit {
   onCloseRestoreModal() {
     this.displayRestoreModal = 'none';
   }
+
 
   deleteGroup() {
     this.displayDeleteModal = 'none';
@@ -316,25 +566,30 @@ export class GroupsComponent implements OnInit {
       // =========== NOTIFY SUCCESS===========
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('GroupsPage.TheGroupHasBeenSuccessfullyDeleted'), 2, 'done');
       // UPDATE THE GROUP LIST
-      // this.ngOnInit()
-       for (var i = 0; i < this.groupsList.length; i++) {
-        if (this.groupsList[i]._id === this.id_group_to_delete) {
-          this.groupsList.splice(i, 1);
+      //this.ngOnInit()
+
+      for (var i = 0; i < this.paginatedGroups.length; i++) {
+        if (this.paginatedGroups[i]._id === this.id_group_to_delete) {
+          this.paginatedGroups.splice(i, 1);
           i--;
         }
       }
+
+      
 
     });
   }
 
 
+
+
   disableGroup(group_id: string) {
     this.displayDisableModal = 'none';
-    this.logger.log("[GROUPS] disableGroup group_id: ", group_id);
+    console.log("[GROUPS] disableGroup group_id: ", group_id);
     this.groupsService.disableGroup(group_id).subscribe((group) => {
-      this.logger.log("[GROUPS] disableGroup response: ", group);
+      console.log("[GROUPS] disableGroup response: ", group);
     }, (error) => {
-      this.logger.error("[GROUPS] error disabling group: ", error);
+      console.error("[GROUPS] error disabling group: ", error);
       if (error.status === 403) {
         // this.notify.showWidgetStyleUpdateNotification('Hey' + error.error.error, 4, 'report_problem')
         // this.getDepartments(group_id, 'disable') 
@@ -383,7 +638,7 @@ export class GroupsComponent implements OnInit {
         this.disassociateTheGroup = text['DisassociateTheGroup'];
       });
 
-      this.translate.get('GroupsPage')
+    this.translate.get('GroupsPage')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
         this.logger.log('[GROUPS] getTranslations GroupsPage : ', text)
@@ -397,8 +652,6 @@ export class GroupsComponent implements OnInit {
         this.warning = text;
       });
 
-  
-  }
-  
 
+  }
 }

@@ -36,8 +36,11 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   @Input() chatbots: Array<Chatbot> = [];
   @Input() displayKbHeroSection: boolean
   @Input() isVisibleKNB: boolean
+  @Input() areVisibleChatbot: boolean
   @Input() project: any;
   @Input() USER_ROLE: string;
+  @Input() PERMISSION_TO_VIEW_FLOWS: boolean
+  @Input() PERMISSION_TO_VIEW_KB: boolean
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   projectId: string;

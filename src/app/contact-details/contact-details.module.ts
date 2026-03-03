@@ -11,6 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ContactInfoModule } from 'app/components/shared/contact-info/contact-info.module';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: ContactDetailsComponent},
@@ -33,7 +34,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    ContactInfoModule
+    ContactInfoModule,
+    UnauthorizedForSettingsModule
   ],
   exports: [
     RouterModule

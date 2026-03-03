@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
@@ -9,12 +9,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { DepartmentService } from 'app/services/department.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { Subject } from 'rxjs';
+import { avatarPlaceholder, getColorBck } from 'app/utils/util';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
   styleUrls: ['./group-edit-add.component.scss']
 })
-export class GroupEditAddComponent implements OnInit {
+export class GroupEditAddComponent implements OnInit, OnDestroy {
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   showSpinner = true;
@@ -65,6 +72,15 @@ export class GroupEditAddComponent implements OnInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   isChromeVerGreaterThan100: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+
+  isAuthorized = false;
+  permissionChecked = false;
+  departmentsOfGroup: any
+
+   private unsubscribe$: Subject<any> = new Subject<any>();
+    PERMISSION_TO_VIEW_DEPT: boolean;
+    PERMISSION_TO_READ_DEPT_DETAILS: boolean;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -76,7 +92,10 @@ export class GroupEditAddComponent implements OnInit {
     private translate: TranslateService,
     public location: Location,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService,
+    public rolesService: RolesService,
+    private deptService: DepartmentService,
   ) { }
 
   ngOnInit() {
@@ -94,6 +113,74 @@ export class GroupEditAddComponent implements OnInit {
     this.getProfileImageStorage();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
+    this.listenToProjectUser()
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[DEPTS] - Role:', status.role);
+          console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+          
+          // PERMISSION_TO_VIEW_DEPT
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENTS_LIST_READ)) {
+  
+              this.PERMISSION_TO_VIEW_DEPT = true
+              console.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+            } else {
+              this.PERMISSION_TO_VIEW_DEPT = false
+              console.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+            }
+          } else {
+            this.PERMISSION_TO_VIEW_DEPT = true
+            console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+          }
+  
+          // PERMISSION_TO_READ_DEPT_DETAILS
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ)) {
+  
+              this.PERMISSION_TO_READ_DEPT_DETAILS = true
+              console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            } else {
+              this.PERMISSION_TO_READ_DEPT_DETAILS = false
+              console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            }
+          } else {
+            this.PERMISSION_TO_READ_DEPT_DETAILS = true
+            console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+          }
+  
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
+
+    
+  async checkEditPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('group-edit')
+    console.log('[GROUP-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[GROUP-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    console.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
+  }
+
+   async checkCreatePermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('group-create')
+    console.log('[GROUP-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[GROUP-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    console.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
   }
 
   listenSidebarIsOpened() {
@@ -190,37 +277,72 @@ export class GroupEditAddComponent implements OnInit {
   detectsCreateEditInTheUrl() {
     if (this.router.url.indexOf('/create') !== -1) {
       this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED CREATE ');
+       this.checkCreatePermissions();
 
       this.CREATE_VIEW = true;
       this.showSpinner = false;
 
     } else {
       this.logger.log('[GROUP-EDIT-ADD] - HAS CLICKED EDIT ');
+      this.checkEditPermissions();
       this.EDIT_VIEW = true;
-      // this.showSpinner = false;
 
-      // GET THE ID OF GROUP PASSED BY GROUP-LIST PAGE
-      this.getGroupId();
+      this.getParamsAndThenGroupById();
     }
   }
-  getGroupId() {
-    this.group_id = this.route.snapshot.params['groupid'];
-    this.logger.log('[GROUP-EDIT-ADD] - GROUP-LIST PAGE HAS PASSED group_id ', this.group_id);
 
-    if (this.group_id) {
-      this.getGroupById();
-    }
 
-    // this.getAllUsersOfCurrentProject();
+
+
+  getParamsAndThenGroupById() {
+    // Sottoscrivi ai cambiamenti dei parametri della route per gestire la navigazione tra gruppi
+    this.route.params
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((params) => {
+        const newGroupId = params['groupid'];
+        console.log('[GROUP-EDIT-ADD] - GROUP-LIST PAGE HAS PASSED group_id ', newGroupId);
+        
+        // Se il group_id è cambiato, resetta i dati prima di caricare il nuovo gruppo
+        if (newGroupId && newGroupId !== this.group_id) {
+          this.resetGroupData();
+          this.group_id = newGroupId;
+          this.getGroupById();
+        } else if (newGroupId && !this.group_id) {
+          // Prima volta che viene caricato
+          this.group_id = newGroupId;
+          this.getGroupById();
+        }
+      });
   }
 
-  /**
-   * GET GROUP BY ID (FOR EDIT VIEW)
-   */
+  // Resetta tutti i dati del gruppo quando si cambia gruppo
+  resetGroupData() {
+    console.log('[GROUP-EDIT-ADD] - RESET GROUP DATA');
+    this.group_members = [];
+    this.users_selected = [];
+    this.groupNameToUpdate = '';
+    this.id_group = '';
+    this.groupCreatedAt = '';
+    this.count = 0;
+    this.has_completed_getGroupById = false;
+    this.departmentsOfGroup = [];
+    
+    // Resetta is_group_member in projectUsersList se esiste
+    if (this.projectUsersList && Array.isArray(this.projectUsersList)) {
+      this.projectUsersList.forEach(user => {
+        user.is_group_member = false;
+      });
+    }
+  }
+
+
+  // ---------------------------------
+  // GET GROUP BY ID (FOR EDIT VIEW)
+  // ---------------------------------
   getGroupById() {
     this.groupsService.getGroupById(this.group_id).subscribe((group: any) => {
-      this.logger.log('[GROUP-EDIT-ADD] - GROUP GET BY ID', group);
-
+      console.log('[GROUP-EDIT-ADD] - GROUP GET BY ID', group);
+      this.group_members = []
       // this.logger.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
       if (group) {
         this.groupNameToUpdate = group.name;
@@ -229,7 +351,7 @@ export class GroupEditAddComponent implements OnInit {
         this.groupCreatedAt = group.createdAt
 
         this.users_selected = this.group_members;
-        this.logger.log('[GROUP-EDIT-ADD] -GROUP MEMBERS ', this.group_members)
+        console.log('[GROUP-EDIT-ADD] -GROUP MEMBERS ', this.group_members)
       }
       // this.showSpinner = false;
 
@@ -242,8 +364,42 @@ export class GroupEditAddComponent implements OnInit {
       this.logger.log('[GROUP-EDIT-ADD] - HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
       this.getAllUsersOfCurrentProject();
+      this.getDeptsByProjectId(this.group_id)
     });
   }
+
+
+  getDeptsByProjectId(groupid: string) {
+  console.log('[GROUP-EDIT-ADD] - GET DEPTS groupid', groupid);
+  this.deptService.getDeptsByProjectId().subscribe((departments: any[]) => {
+    console.log('[GROUP-EDIT-ADD] - GET DEPTS (RAW)', departments);
+
+    if (Array.isArray(departments)) {
+      // filtra e salva il risultato in una proprietà dell'istanza
+      this.departmentsOfGroup = departments.filter(dept =>
+        Array.isArray(dept.groups) && dept.groups.some(g => g.group_id === groupid)
+      );
+
+      console.log('[GROUP-EDIT-ADD] - GET DEPTS (FILTERED) departmentsOfGroup', this.departmentsOfGroup);
+    } else {
+      this.departmentsOfGroup = [];
+      console.warn('[GROUP-EDIT-ADD] - GET DEPTS: response non è un array');
+    }
+  }, error => {
+    this.logger.error('[GROUP-EDIT-ADD] - GET DEPTS - ERROR', error);
+    this.departmentsOfGroup = [];
+  }, () => {
+    this.logger.log('[GROUP-EDIT-ADD] - GET DEPTS - COMPLETE');
+  });
+}
+
+goToDeptDetail(dept_id){
+   if (this.PERMISSION_TO_READ_DEPT_DETAILS) {
+      this.router.navigate(['project/' + this.project_id + '/department/edit', dept_id]);
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+}
 
   // is used to display name lastname role in the members list table
   // if the id of the user in the project_user object is equal match with one of id contains 
@@ -251,44 +407,40 @@ export class GroupEditAddComponent implements OnInit {
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       this.logger.log('[GROUP-EDIT-ADD] - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      this.logger.log('[GROUP-EDIT-ADD] - GROUP MEMBERS TO MATCH', this.group_members);
 
       this.showSpinner = false;
       this.showSpinnerInModal = false;
       this.projectUsersList = projectUsers;
 
       if (this.projectUsersList) {
+        // IMPORTANTE: Resetta is_group_member per tutti gli utenti PRIMA di controllare i nuovi membri
+        this.projectUsersList.forEach(projectUser => {
+          projectUser.is_group_member = false;
+          // Crea avatar con iniziali se non esistono già
+          this.createProjectUserAvatar(projectUser);
+        });
+
         // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
         this.count = 0;
-        this.projectUsersList.forEach(projectUser => {
-
-          for (const p of this.projectUsersList) {
-            // this.logger.log('vv', projectUser._id)
-            if (this.group_members) {
-
-              this.group_members.forEach(group_member => {
-
-                if (p.id_user._id === group_member) {
-                  if (projectUser._id === p._id) {
-                    p.is_group_member = true;
-
-                    this.logger.log('[GROUP-EDIT-ADD] GROUP MEMBER ', group_member)
-                    this.logger.log('[GROUP-EDIT-ADD] IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member);
-                  }
-                }
-              });
+        
+        if (this.group_members && Array.isArray(this.group_members) && this.group_members.length > 0) {
+          this.projectUsersList.forEach(projectUser => {
+            // Controlla se l'ID utente è presente nell'array group_members
+            if (projectUser.id_user && projectUser.id_user._id) {
+              const isMember = this.group_members.includes(projectUser.id_user._id);
+              
+              if (isMember) {
+                projectUser.is_group_member = true;
+                this.count = this.count + 1;
+                this.logger.log('[GROUP-EDIT-ADD] GROUP MEMBER FOUND - User ID: ', projectUser.id_user._id, ' - is_group_member: ', projectUser.is_group_member);
+              }
             }
-          }
+          });
+        }
 
-          /**
-           * *** new: count of is_group_member ***
-           * resolve the bug: if is deleted a project-user the array of members of the group are not updated
-           * so the count of the members done on the lenght of the array not corresponding to the real number of members
-           */
-          if (projectUser.is_group_member === true) {
-            this.count = this.count + 1;
-            this.logger.log('[GROUP-EDIT-ADD] GROUP MEMBER count ', this.count)
-          }
-        });
+        this.logger.log('[GROUP-EDIT-ADD] GROUP MEMBER count ', this.count);
+        this.logger.log('[GROUP-EDIT-ADD] PROJECT USERS LIST WITH is_group_member', this.projectUsersList);
       }
     }, error => {
       this.showSpinner = false;
@@ -309,6 +461,39 @@ export class GroupEditAddComponent implements OnInit {
       }
 
     });
+  }
+
+  // Crea avatar con iniziali per projectUser
+  createProjectUserAvatar(projectUser: any) {
+    if (!projectUser || !projectUser.id_user) {
+      return;
+    }
+
+    const user = projectUser.id_user;
+    
+    // Se già esistono, non ricrearli
+    if (user.fullname_initial && user.fillColour) {
+      return;
+    }
+
+    let fullname = '';
+    if (user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else if (user.firstname) {
+      fullname = user.firstname;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else if (user.email) {
+      // Usa l'email come fallback
+      fullname = user.email;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else {
+      user.fullname_initial = 'N/A';
+      user.fillColour = 'rgb(98, 100, 167)';
+    }
   }
 
   // CREATE
@@ -475,9 +660,16 @@ export class GroupEditAddComponent implements OnInit {
 
       this.COUNT_OF_MEMBERS_ADDED = group['members'].length;
       this.logger.log('[GROUP-EDIT-ADD] - # OF MEMBERS ADDED ', group['members'].length);
+      
+      // Aggiorna i dati del gruppo con la risposta del server
+      if (group) {
+        this.group_members = (group as any).members || [];
+        this.users_selected = this.group_members;
+      }
     }, (error) => {
       this.logger.error('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
       this.SHOW_CIRCULAR_SPINNER = false;
+      this.showSpinner = false;
       this.ADD_MEMBER_TO_GROUP_ERROR = true;
     }, () => {
       this.logger.log('[GROUP-EDIT-ADD]- UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
@@ -488,9 +680,8 @@ export class GroupEditAddComponent implements OnInit {
       // this.notify.showNotification('group successfully updated', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
 
-      // UPDATE THE GROUP LIST
-      this.ngOnInit()
-      // this.getAllUsersOfCurrentProject();
+      // UPDATE THE GROUP LIST - ricarica solo i dati necessari invece di ngOnInit completo
+      this.getAllUsersOfCurrentProject();
     });
   }
 
@@ -519,15 +710,48 @@ export class GroupEditAddComponent implements OnInit {
       this.group_members.splice(index, 1);
       this.logger.log('[GROUP-EDIT-ADD] - GROUP AFTER MEMBER DELETED ', this.group_members);
 
+      // Aggiorna immediatamente projectUsersList senza ricaricare dal server
+      if (this.projectUsersList && Array.isArray(this.projectUsersList)) {
+        const projectUserToUpdate = this.projectUsersList.find(
+          (p: any) => p.id_user && p.id_user._id === this.id_user_to_delete
+        );
+        
+        if (projectUserToUpdate && projectUserToUpdate.is_group_member) {
+          projectUserToUpdate.is_group_member = false;
+          this.count = Math.max(0, this.count - 1);
+          this.logger.log('[GROUP-EDIT-ADD] - UPDATED projectUser.is_group_member to false for user: ', this.id_user_to_delete);
+          this.logger.log('[GROUP-EDIT-ADD] - NEW COUNT: ', this.count);
+        }
+      }
+
       this.groupsService.updateGroup(this.id_group, this.group_members).subscribe((group) => {
 
         this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED', group);
+        
+        // Aggiorna i dati del gruppo con la risposta del server
+        if (group) {
+          this.group_members = (group as any).members || [];
+          this.users_selected = this.group_members;
+        }
 
       }, (error) => {
         this.logger.error('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.removeGroupMemberErrorNoticationMsg, 4, 'report_problem');
+        
+        // In caso di errore, ripristina lo stato precedente
+        if (this.projectUsersList && Array.isArray(this.projectUsersList)) {
+          const projectUserToRestore = this.projectUsersList.find(
+            (p: any) => p.id_user && p.id_user._id === this.id_user_to_delete
+          );
+          if (projectUserToRestore) {
+            projectUserToRestore.is_group_member = true;
+            this.count = this.count + 1;
+          }
+          // Ripristina anche group_members
+          this.group_members.push(this.id_user_to_delete);
+        }
 
       }, () => {
         this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
@@ -536,8 +760,7 @@ export class GroupEditAddComponent implements OnInit {
         // this.notify.showNotification('member successfully removed', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.removeGroupMemberSuccessNoticationMsg, 2, 'done');
 
-        // UPDATE THE GROUP LIST
-        this.ngOnInit()
+        // Non serve più ricaricare tutti gli utenti, abbiamo già aggiornato projectUsersList
         // this.getAllUsersOfCurrentProject();
       });
     }

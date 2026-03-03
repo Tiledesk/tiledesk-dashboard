@@ -3,6 +3,7 @@
   style="padding-top:0px;min-height: calc(100% - 0px); margin-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
 
   <div class="container-fluid">
+ 
     <!-- style="display: flex; justify-content: center;align-items: center;" -->
     <div class="split left" [ngClass]="{'hidden_left_panel' : hide_left_panel === true}">
 
@@ -30,15 +31,7 @@
 
         </div>
 
-        <!-- <div class="welcome-text">
-          <span> Welcome </span> <span style="display: block;"> to Tiledesk </span>
-        </div> -->
-
-        <!-- <div class="welcome-text-subtitle">
-          The community-led no-code platform for customer engagement. 
-          <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> 
-        </div> -->
-
+       
         <div class="signin-no-account-wpr" *ngIf="SUP === true">
           <h2 class="signin-no-account">
             {{ "Dont" | translate }} <br>
@@ -54,18 +47,7 @@
     </div>
 
     <div class="split right">
-      <!-- ALERT WITH ERROR MESSAGE -->
-      <!-- <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
-        <div class="col-md-4 col-md-offset-4" align="center">
-          <div class="alert alert-danger" style="max-width: 400px;">
-            <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
-            <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
-            <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
-          </div>
-        </div>
-      </div> -->
-
-
+     
       <!-- --------------------------------------------------------------- -->
       <!-- Right logo -->
       <!-- --------------------------------------------------------------- -->
@@ -95,24 +77,14 @@
             {{ "SignIn" | translate}}
 
           </h2>
-          <!-- <div *ngIf="SUP === true" class="signin-subtitle">
-            {{ "Dont" | translate }} {{ "HaveAnAccountYet" | translate }}
-            <span class="auth-link-button" (click)="goToSignupPage()">
-              {{ 'CreateAFreeAccount' | translate}}
-            </span>
-          </div> -->
-
-
-          <!-- <img src="assets/img/logos/tiledesk_2.0_logo_black_v2.svg" class="img-fluid" style="max-width: 280px;
-          margin-top: 30px;
-          margin-bottom: 30px;" /> -->
+       
         </div>
 
         <div class="login-container">
 
           <button *ngIf="OAUTH2_SIGNIN_ENABLED" type="button" rel="opener" class="oAuth2-button" (click)="signinWithOAuth2()">
            
-            <div class="oAuth2-button-svg-wpr" style="">
+            <div class="oAuth2-button-svg-wpr">
               <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px"
                 fill="#f0806f" style="position: relative;top: 2px;">
                 <path
@@ -127,7 +99,7 @@
 
 
           <ng-container *ngIf="areActivePay">
-            <button *ngIf="hideGoogleAuthBtn" type="button" rel="opener" class="google-button"
+            <button *ngIf="displayGoogleAuthBtn" type="button" rel="opener" class="google-button"
               (click)="signinWithGoogle()">
               <div  style="margin-right: 10px; background: rgb(255, 255, 255); padding: 10px; border-radius: 2px;">
 
@@ -155,14 +127,14 @@
               </div>
             </button>
 
-            <div *ngIf="hideGoogleAuthBtn" class="auth---divider"><span>&nbsp;&nbsp;or&nbsp;&nbsp;</span></div>
+            <div *ngIf="displayGoogleAuthBtn" class="auth---divider"><span>&nbsp;&nbsp;or&nbsp;&nbsp;</span></div>
           </ng-container>
 
           <div class="h-20"></div>
 
 
 
-          <form [formGroup]="userForm" (ngSubmit)="signin()">
+          <form [formGroup]="userForm" (ngSubmit)="signIn()">
 
             <label for="email">Email</label>
             <input type="email" class="input" formControlName="email" id="email" required autocapitalize="off"
@@ -180,7 +152,7 @@
               {{ formErrors.password }}
             </div> -->
 
-            <p class="signin-forgot-pswrd">
+            <p *ngIf="displayForgotPswBtn" class="signin-forgot-pswrd">
               {{ "ForgotYourPassword" | translate }}?
               <span (click)="goToResetPsw()">
                 {{ "ClickHere" | translate }}
@@ -198,27 +170,11 @@
             </button>
 
 
-            <!-- <div class="left-panel-signup-link" (click)="goToSignup()">
-             
-                {{ "DontHaveAnAccountYet" | translate }}
-                <span style="color: #03a5e8; cursor: pointer;">
-                  {{ "SignUp" | translate }}
-                </span>
-             
-            </div> -->
-
-            <!-- <p class="signin-forgot-pswrd">
-              {{ "ForgotYourPassword" | translate }}?
-              <span style="color: #03a5e8; cursor:pointer" (click)="goToResetPsw()">
-                {{ "ClickHere" | translate }}
-              </span>
-            </p> -->
-
-            <div class="h-20"></div>
-            <div *ngIf="hideGoogleAuthBtn" class="auth---divider"></div>
+            <div *ngIf="SUP === true" class="h-20"></div>
+            <div *ngIf="displayGoogleAuthBtn" class="auth---divider"></div>
 
 
-            <div class="left-panel-signup-link" (click)="goToSignup()">
+            <div *ngIf="SUP === true" class="left-panel-signup-link" (click)="goToSignup()">
 
               {{ "DontHaveAnAccountYet" | translate }}
               <span>

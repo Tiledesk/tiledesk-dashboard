@@ -77,6 +77,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 
 // Andrea
 import { ChatComponent } from './chat/chat.component';
+import { ConversationDetailIframeComponent } from './conversation-detail-iframe/conversation-detail-iframe.component';
 
 // import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy 
 // import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
@@ -152,6 +153,7 @@ import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-te
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { RoleGuard } from './core/role.guard';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
+import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
 
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
@@ -163,7 +165,13 @@ import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/u
 
 const routes: Routes = [
 
-
+  // no-auth page
+  {
+    // path: 'project/:projectid/wsrequests-no-auth',
+    path: 'project/:projectid/:callingpage/no-auth',
+    loadChildren: () => import('app/auth/unauthorized-for-sidebar/unauthorized-for-sidebar.module').then(m => m.UnauthorizedForSidebarModule),
+    canActivate: [AuthGuard]
+  },
 
   // Login
   {
@@ -318,6 +326,11 @@ const routes: Routes = [
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
 
+  // Maintenance page
+  {
+    path: 'project/:projectid/maintenance', component: MaintenancePageComponent,
+    canActivate: [AuthGuard]
+  },
 
   // Activities
   {
@@ -396,47 +409,85 @@ const routes: Routes = [
   // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
 
 
-  // Apps
+  // Apps - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/app-store',
+  //   loadChildren: () => import('app/app-store/app-store.module').then(m => m.AppStoreModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Apps store - Check moved in RoleService
   {
     path: 'project/:projectid/app-store',
     loadChildren: () => import('app/app-store/app-store.module').then(m => m.AppStoreModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
 
+
+  // Apps store install - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/app-store-install/:appid/:reason',
+  //   loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Apps store install - Check moved in RoleService
   {
     path: 'project/:projectid/app-store-install/:appid/:reason',
     loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Apps store install - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/app-store-install/:appid/:reason/:calledby',
+  //   loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  // Apps store install - Check moved in RoleService
   {
     path: 'project/:projectid/app-store-install/:appid/:reason/:calledby',
     loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+  // Check moved in Role service
+  // {
+  //   path: 'project/:projectid/app-create',
+  //   loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Check moved in Role service
   {
     path: 'project/:projectid/app-create',
     loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Check moved in Role service
+  // {
+  //   path: 'project/:projectid/app-edit/:appid',
+  //   loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Check moved in Role service
   {
     path: 'project/:projectid/app-edit/:appid',
     loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
-
 
 
   // Contacts
@@ -541,6 +592,8 @@ const routes: Routes = [
 
   // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
+
+
   // Conversations list demo page
   {
     path: 'project/:projectid/wsrequests-demo',
@@ -635,48 +688,87 @@ const routes: Routes = [
   // { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
 
   // Widget Set Up
+  // {
+  //   path: 'project/:projectid/widget-set-up',
+  //   loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // Widget Set Up control moved in roleService
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
-  // Widget Multilanguage
-  {
-    path: 'project/:projectid/widget/translations',
-    loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Widget Multilanguage - check moved in Roleservice
+  // {
+  //   path: 'project/:projectid/widget/translations',
+  //   loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
 
   // Widget Multilanguage called from widget setup
+  // {
+  //   path: 'project/:projectid/widget/translations/:calledby',
+  //   loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+
+  // Widget Multilanguage Check moved in Roleservice
+  {
+    path: 'project/:projectid/widget/translations',
+    loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
+
+  // Widget Multilanguage called from widget setup Check moved in Roleservice
   {
     path: 'project/:projectid/widget/translations/:calledby',
     loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
 
+
+
   // Widget installation
+  // {
+  //   path: 'project/:projectid/installation',
+  //   loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+
+  // Widget installation - check moved in Role service
   {
     path: 'project/:projectid/installation',
     loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
 
-  // Departments
+  // Departments - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/departments',
+  //   loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Departments 
   {
     path: 'project/:projectid/departments',
     loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Department Create
   {
@@ -688,16 +780,23 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
-  // Department Edit
+  // Department Edit - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/department/edit/:deptid',
+  //   loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  //   // ,
+  //   // canDeactivate: [PendingChangesGuard]
+  // },
+  // { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
+  // Department Edit 
   {
     path: 'project/:projectid/department/edit/:deptid',
     loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-    // ,
-    // canDeactivate: [PendingChangesGuard]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
   // new routing page is the edit department
   // {
@@ -719,23 +818,38 @@ const routes: Routes = [
 
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT)
 
-  // Teammates
+  // Teammates - check moved in Role Service
+  // {
+  //   path: 'project/:projectid/users',
+  //   loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
+ 
+  // Teammates - check moved in Role Service
   {
     path: 'project/:projectid/users',
     loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Add Teammate
+
+  // Add Teammate - ckeck moved in RoleService
+  // {
+  //   path: 'project/:projectid/user/add',
+  //   loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Add Teammate - ckeck moved in RoleService
   {
     path: 'project/:projectid/user/add',
     loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Teammate profile
   {
@@ -755,22 +869,37 @@ const routes: Routes = [
   // { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
 
-  // Group create 
-  {
-    path: 'project/:projectid/group/create',
-    loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Group create - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/group/create',
+  //   loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Group edit
+   {
+    path: 'project/:projectid/group/create',
+    loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+    canActivate: [AuthGuard]
+  },
+
+  // Group edit - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/group/edit/:groupid',
+  //   loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
   {
     path: 'project/:projectid/group/edit/:groupid',
     loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard],
+
   },
+
+  
   // { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Group demo page
@@ -780,6 +909,28 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  // Roles  canActivate: [AuthGuard, ProjectProfileGuard],
+  {
+    path: 'project/:projectid/roles',
+    loadChildren: () => import('app/users-roles/users-roles.module').then(m => m.UsersRolesModule),
+    canActivate: [AuthGuard],
+  },
+
+  // New Role  canActivate: [AuthGuard, ProjectProfileGuard],
+  {
+    path: 'project/:projectid/create-new-role',
+    loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
+    canActivate: [AuthGuard],
+  },
+
+  // Role details
+  {
+    path: 'project/:projectid/edit-role/:roleid',
+    loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
+    canActivate: [AuthGuard],
+  },
 
 
   // Email ticketing
@@ -799,15 +950,21 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
 
-  // Tags
+  // Tags - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/labels',
+  //   loadChildren: () => import('app/tags/tags.module').then(m => m.TagsModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
+
+  // Tags - check moved in RoleService
   {
     path: 'project/:projectid/labels',
     loadChildren: () => import('app/tags/tags.module').then(m => m.TagsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
-
 
   // Working hours 
   {
@@ -841,6 +998,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
+   {
+    path: 'project/:projectid/new-broadcast',
+    loadChildren: () => import('app/automation-create/automation-create.module').then(m => m.AutomationCreateModule),
+    canActivate: [AuthGuard],
+  },
+
+
   // Automations demo page
   {
     path: 'project/:projectid/automations-demo',
@@ -850,98 +1014,163 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Integrations
+  // Integrations - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/integrations',
+  //   loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }],
+  // },
+  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Integrations - check moved in RoleService
   {
     path: 'project/:projectid/integrations',
     loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }],
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] }, // now lazy
-
 
 
   // { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, seems not used
 
-  // Project edit / add - General
+  // Project edit / add - General - check moved in Role service
+  // {
+  //   path: 'project/:projectid/project-settings/general',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }],
+  // },
+  // { path: 'project/:projectid/project-settings/general', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - General - Check moved in RoleService
   {
     path: 'project/:projectid/project-settings/general',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }],
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/general', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Payments section)
+  // Project edit / add - Payments section - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/project-settings/payments',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner'] }],
+  // },
+  // { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Payments section - Check moved in RoleService
   {
     path: 'project/:projectid/project-settings/payments',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner'] }],
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Developer section
+  // Project edit / add - Developer section - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/project-settings/auth',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }],
+  // },
+  // { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  // Project edit / add - Developer section - Check moved in RoleService
   {
     path: 'project/:projectid/project-settings/auth',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }],
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Smart Assignment
+  // Project edit / add - Smart Assignment - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/project-settings/smartassignment',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+   // Project edit / add - Smart Assignment - Check moved in RoleService
   {
     path: 'project/:projectid/project-settings/smartassignment',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
 
-  // Project edit / add - Advanced
+  // Project edit / add - Advanced - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/project-settings/advanced',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner'] }]
+  // },
+  // { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  // Project edit / add - Advanced - Check moved in RoleService
   {
     path: 'project/:projectid/project-settings/advanced',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Notifications
+
+  // Project edit / add - Notifications - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/project-settings/notification',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Notifications - Check moved in RoleService
   {
     path: 'project/:projectid/project-settings/notification',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-
-  // Project edit / add - Security
+  // Project edit / add - Security - Check moved in RoleService 
+  // {
+  //   path: 'project/:projectid/project-settings/security',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner'] }]
+  // },
+  // { path: 'project/:projectid/project-settings/security', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  // Project edit / add - Security - Check moved in RoleService 
   {
     path: 'project/:projectid/project-settings/security',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/security', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Project edit / add - Banned visitors - Check moved in RoleService 
+  // {
+  //   path: 'project/:projectid/project-settings/banned',
+  //   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner'] }]
+  // },
+  // { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Banned visitors
+  // Project edit / add - Banned visitors - Check moved in RoleService 
   {
     path: 'project/:projectid/project-settings/banned',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
 
   // Project edit / add - Customize the notification email templates
   {
     path: 'project/:projectid/notification-email',
     loadChildren: () => import('app/project-edit-add/notification-email/notification-email.module').then(m => m.NotificationEmailModule),
     canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner','admin'] }]
+    data: [{ roles: ['owner', 'admin'] }]
   },
   // { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -956,11 +1185,18 @@ const routes: Routes = [
   // { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Project edit / add - Webhook
-  {
+  // {
+  //   path: 'project/:projectid/webhook',
+  //   loadChildren: () => import('app/webhook/webhook.module').then(m => m.WebhookModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+   // Project edit / add - Check moved in RoleService
+   {
     path: 'project/:projectid/webhook',
     loadChildren: () => import('app/webhook/webhook.module').then(m => m.WebhookModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -994,38 +1230,63 @@ const routes: Routes = [
   // ---------------------------------------
   // KNOWLEDGE BASES (new)
   // ---------------------------------------
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/knowledge-bases',
+  //   loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
   {
     path: 'project/:projectid/knowledge-bases',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
 
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/knowledge-bases/:namespaceid',
+  //   loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   {
     path: 'project/:projectid/knowledge-bases/:namespaceid',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/knowledge-bases/:calledby',
+  //   loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
 
   {
     path: 'project/:projectid/knowledge-bases/:calledby',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy // when called from home
 
   // ---------------------------
   // Chatbots
   // ---------------------------
-  // Start by entering the name of the chatbot
+  // Check moved in Roles service
   {
     path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: [{ roles: ['owner', 'admin'] }]
   },
+
+   // Check moved in Roles service
+  // {
+  //   path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent,
+  //   canActivate: [AuthGuard]
+  // },
 
   {
     path: 'project/:projectid/bots',
@@ -1037,36 +1298,60 @@ const routes: Routes = [
 
 
 
+  // Check moved in role service
+  // {
+  //   path: 'project/:projectid/bots/my-chatbots/all',
+  //   loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
   {
     path: 'project/:projectid/bots/my-chatbots/all',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/flows/flow-aiagent',
+  //   loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
 
   {
     path: 'project/:projectid/flows/flow-aiagent',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
 
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/flows/flow-automations',
+  //   loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
 
   {
     path: 'project/:projectid/flows/flow-automations',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
 
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/flows/flow-webhooks',
+  //   loadChildren: () => import('app/bots/flow-webhooks/flow-webhooks.module').then(m => m.FlowWebhooksModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   {
     path: 'project/:projectid/flows/flow-webhooks',
     loadChildren: () => import('app/bots/flow-webhooks/flow-webhooks.module').then(m => m.FlowWebhooksModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
 
   {
@@ -1077,7 +1362,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'project/:projectid/wsrequests/logs/:type/:id',
+    // path: 'project/:projectid/wsrequests/logs/:type/:id',
+    path: 'project/:projectid/logs/:type/:id',
     loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
     canActivate: [AuthGuard, RoleGuard],
     data: [{ roles: ['owner', 'admin'] }]
@@ -1099,13 +1385,103 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
 
- 
+  // ---------------------------
+  // Templates
+  // ---------------------------
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/all',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Used in app-store to create an External chatbot
+
+   {
+    path: 'project/:projectid/bots/templates/all',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+   },
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/customer-satisfaction',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
   {
-    path: 'project/:projectid/bots/create/:type', component: BotCreateComponent,
+    path: 'project/:projectid/bots/templates/customer-satisfaction',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/increase-sales',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/bots/templates/increase-sales',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard],
+   
+  },
+
+  // Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/bots/templates/community',
+  //   loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  {
+    path: 'project/:projectid/bots/templates/community',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: [{ roles: ['owner', 'admin'] }]
+  },
+
+
+  // Used in app-store to create an External chatbot - Check moved in Roles service
+  // {
+  //   path: 'project/:projectid/bots/create/:type', component: BotCreateComponent,
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+  // Used in app-store to create an External chatbot - Check moved in Roles service 
+  {
+    path: 'project/:projectid/bots/create/:type', component: BotCreateComponent,
+    canActivate: [AuthGuard]
+  },
+
+   // Used to edit an External chatbot - Check moved in Roles service 
+  // {
+  //   path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent,
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+   // Used to edit an External chatbot - !!!!! Left pending 
+  {
+    path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent,
+    canActivate: [AuthGuard]
   },
 
   // Chatbots demo page
@@ -1116,54 +1492,9 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
 
-  // ---------------------------
-  // Templates
-  // ---------------------------
-  {
-    path: 'project/:projectid/bots/templates/all',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/bots/templates/customer-satisfaction',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/bots/templates/increase-sales',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/bots/templates/community',
-    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-  // { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
 
 
-  {
-    path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
-
-  // Used to edit an External chatbot
-  {
-    path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+ 
 
 
   // Unathorized page - Token not valid
@@ -1225,7 +1556,7 @@ const routes: Routes = [
   { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
   { path: 'project/:projectid/unauthorized_access', component: UnauthorizedForProjectComponent },
   { path: 'project/:projectid/unauthorized-to-upgrade', component: UnauthorizedToUpgradeComponent },
-  
+
 
 
 
@@ -1249,6 +1580,11 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
 
+
+    
+  // Conversation detail iframe
+  { path: 'conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
 
 
 

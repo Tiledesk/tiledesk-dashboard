@@ -41,8 +41,22 @@ export class UnansweredQuestionsService {
     this.project = this.auth.project_bs.value;
   }
 
-  _getUnansweredQuestions(id_project: string, namespace_id: string, LIMIT: KB_DEFAULT_PARAMS, page: number): Observable<UnansweredQuestion[]> {
-    const url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
+  _getUnansweredQuestions(id_project: string, namespace_id: string, limit?: number, page?: number): Observable<UnansweredQuestion[]> {
+    let url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
+    
+    // Add pagination parameters if provided
+    const params: string[] = [];
+    if (limit !== undefined) {
+      params.push(`limit=${limit}`);
+    }
+    if (page !== undefined) {
+      params.push(`page=${page}`);
+    }
+    if (params.length > 0) {
+      url += '?' + params.join('&');
+    }
+    
+    console.log('getUnansweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -98,3 +112,5 @@ export class UnansweredQuestionsService {
     return this._httpClient.delete<any>(url, httpOptions);
   }
 } 
+
+

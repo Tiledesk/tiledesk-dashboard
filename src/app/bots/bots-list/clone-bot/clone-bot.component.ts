@@ -41,22 +41,24 @@ export class CloneBotComponent implements OnInit {
 
   ngOnInit(): void {
     const storedCurrentroject = localStorage.getItem('last_project')
-    this.logger.log('[CLONE-BOT] storedCurrentroject  ', storedCurrentroject)
-    this.logger.log('[CLONE-BOT] storedCurrentroject parsed ', JSON.parse(storedCurrentroject) )
+    // console.log('[CLONE-BOT] storedCurrentroject  ', storedCurrentroject)
+    // console.log('[CLONE-BOT] storedCurrentroject parsed ', JSON.parse(storedCurrentroject) )
     const storedCurrentrojectParsed = JSON.parse(storedCurrentroject)
     this.storedCurrentrojectId = storedCurrentrojectParsed._id
-    this.logger.log('[CLONE-BOT] storedCurrentrojectId  ', this.storedCurrentrojectId)
+    // console.log('[CLONE-BOT] storedCurrentrojectId  ', this.storedCurrentrojectId)
   }
 
 
   onSelectProject(selectedprojectid) {
-    this.logger.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', selectedprojectid)
+    // console.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', selectedprojectid)
     this.selectedProjectId = selectedprojectid
     this.logger.log('[CLONE-BOT] - ON SELECTED PROJECT - this.selectedProjectId ', this.selectedProjectId)
   }
 
   onOkPresssed(){
+    // console.log('[MODAL-CHATBOT-NAME] chatbot ', this.chatbot)
     this.getLandingChatbotAndCloseModal();
+    
   }
 
   onNoClick(): void {
@@ -65,15 +67,15 @@ export class CloneBotComponent implements OnInit {
 
 
   getLandingChatbotAndCloseModal() {
-  this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
+    this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
     
     this.projects.forEach(project => {
       this.logger.log('[CLONE-BOT] - GET PROJECTS  project ', project);
       if (project.id_project.id === this.selectedProjectId) {
         this.logger.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
         const _project = project.id_project
-        this.logger.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
-        this.logger.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
+        console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
+        // console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
 
         _project['role'] =  project['role']
 
@@ -100,7 +102,6 @@ export class CloneBotComponent implements OnInit {
   }
 
   closeDialog() {
-   this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT closeDialog this.selectedProjectId ', this.selectedProjectId)
     this.dialogRef.close({storedCurrentrojectId: this.storedCurrentrojectId, selectedProjectId: this.selectedProjectId})
   }
 

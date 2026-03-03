@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
     SharedModule,
     MatTooltipModule,
     SettingsSidebarModule,
+    UnauthorizedForSettingsModule
   ],
   exports: [
     RouterModule

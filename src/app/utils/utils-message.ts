@@ -1,10 +1,10 @@
 import {
-    MESSAGE_TYPE_INFO,
-    MESSAGE_TYPE_MINE,
-    MESSAGE_TYPE_OTHERS,
-    MAX_WIDTH_IMAGES,
-    CHANNEL_TYPE_GROUP,
-    TYPE_SUPPORT_GROUP
+  MESSAGE_TYPE_INFO,
+  MESSAGE_TYPE_MINE,
+  MESSAGE_TYPE_OTHERS,
+  MAX_WIDTH_IMAGES,
+  CHANNEL_TYPE_GROUP,
+  TYPE_SUPPORT_GROUP
 } from './constants';
 
 import emojiRegex from 'emoji-regex';
@@ -33,7 +33,7 @@ export function isFile(message: any) {
 }
 
 export function isAudio(message: any) {
-  if (message && message.type && message.type === 'file' && message.metadata && message.metadata.src && message.metadata.type.includes('audio') ) {
+  if (message && message.type && message.type === 'file' && message.metadata && message.metadata.src && message.metadata.type.includes('audio')) {
     return true;
   }
   return false;
@@ -41,14 +41,14 @@ export function isAudio(message: any) {
 
 /** */
 export function isInfo(message: any) {
-    if (message && message.attributes && (message.attributes.subtype === 'info' || message.attributes.subtype === 'info/support')) {
-      return true;
-    }
-    return false;
+  if (message && message.attributes && (message.attributes.subtype === 'info' || message.attributes.subtype === 'info/support')) {
+    return true;
+  }
+  return false;
 }
 
-export function isUserBanned(message: any){
-  if (message && message.attributes && message.attributes.subtype === 'info' &&  message.attributes.messagelabel && message.attributes.messagelabel.key === 'USER_BANNED') {
+export function isUserBanned(message: any) {
+  if (message && message.attributes && message.attributes.subtype === 'info' && message.attributes.messagelabel && message.attributes.messagelabel.key === 'USER_BANNED') {
     return true;
   }
   return false;
@@ -56,40 +56,40 @@ export function isUserBanned(message: any){
 
 /** */
 export function isMine(message: any) {
-    if (message && message.isSender) {
-      return true;
-    }
-    return false;
-}
-
-export function isSender(sender: string, currentUserId: string) {
-  if (currentUserId) {
-      if (sender === currentUserId) {
-          return true;
-      } else {
-          return false;
-      }
-  } else {
-      return false;
-  }
-}
-
-export function isSameSender(messages, senderId, index):boolean{
-  if(senderId && messages[index - 1] && (senderId === messages[index - 1].sender)){
+  if (message && message.isSender) {
     return true;
   }
   return false;
 }
 
-export function isLastMessage(messages, idMessage):boolean {
+export function isSender(sender: string, currentUserId: string) {
+  if (currentUserId) {
+    if (sender === currentUserId) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+export function isSameSender(messages, senderId, index): boolean {
+  if (senderId && messages[index - 1] && (senderId === messages[index - 1].sender)) {
+    return true;
+  }
+  return false;
+}
+
+export function isLastMessage(messages, idMessage): boolean {
   if (idMessage === messages[messages.length - 1].uid) {
     return true;
   }
   return false;
 }
 
-export function isFirstMessage(messages, senderId, index):boolean{
-  if(senderId && index == 0 && messages[index] && (messages[index] !== senderId)){
+export function isFirstMessage(messages, senderId, index): boolean {
+  if (senderId && index == 0 && messages[index] && (messages[index] !== senderId)) {
     return true;
   }
   return false;
@@ -99,53 +99,53 @@ export function isFirstMessage(messages, senderId, index):boolean{
 /** */
 export function messageType(msgType: string, message: any) {
 
-    if (msgType === MESSAGE_TYPE_INFO) {
-      return isInfo(message);
+  if (msgType === MESSAGE_TYPE_INFO) {
+    return isInfo(message);
+  }
+  if (msgType === MESSAGE_TYPE_MINE) {
+    return isMine(message);
+  }
+  if (msgType === MESSAGE_TYPE_OTHERS) {
+    if (isInfo(message) === false && isMine(message) === false) {
+      return true;
     }
-    if (msgType === MESSAGE_TYPE_MINE) {
-      return isMine(message);
-    }
-    if (msgType === MESSAGE_TYPE_OTHERS) {
-      if (isInfo(message) === false && isMine(message) === false) {
-        return true;
-      }
-      return false;
-    }
+    return false;
+  }
 }
 
 /** */
 export function getSizeImg(message: any, maxWidthImage?: number): any {
-    try {
-      const metadata = message.metadata;
-      const sizeImage = {
-        width: metadata.width,
-        height: metadata.height
-      };
-      if (!maxWidthImage) {
-        maxWidthImage = MAX_WIDTH_IMAGES;
-      }
-      if (metadata.width && metadata.width > maxWidthImage) {
-        const rapporto = (metadata['width'] / metadata['height']);
-        sizeImage.width = maxWidthImage;
-        sizeImage.height = maxWidthImage / rapporto;
-      }
-      return sizeImage;
-    } catch (err) {
-      this.logger.log('error: ', err);
-      return;
+  try {
+    const metadata = message.metadata;
+    const sizeImage = {
+      width: metadata.width,
+      height: metadata.height
+    };
+    if (!maxWidthImage) {
+      maxWidthImage = MAX_WIDTH_IMAGES;
     }
+    if (metadata.width && metadata.width > maxWidthImage) {
+      const rapporto = (metadata['width'] / metadata['height']);
+      sizeImage.width = maxWidthImage;
+      sizeImage.height = maxWidthImage / rapporto;
+    }
+    return sizeImage;
+  } catch (err) {
+    this.logger.log('error: ', err);
+    return;
+  }
 }
 
 /** */
 export function isChannelTypeGroup(channelType: string) {
-    if (channelType === CHANNEL_TYPE_GROUP || channelType === TYPE_SUPPORT_GROUP) {
-      return true;
-    }
-    return false;
+  if (channelType === CHANNEL_TYPE_GROUP || channelType === TYPE_SUPPORT_GROUP) {
+    return true;
+  }
+  return false;
 }
 
-export function isEmojii(message: any){
-  
+export function isEmojii(message: any) {
+
   // let emoji = '';
   // try {
   //   emoji = message.trim(); // .charAt(0);
@@ -164,13 +164,13 @@ export function isEmojii(message: any){
   // }
   // https://localcoder.org/javascript-detect-if-a-string-contains-only-unicode-emojis
   try {
-    if(!message) return false;
+    if (!message) return false;
     const onlyEmojis = message.replace(new RegExp('[\u0000-\u1eeff]', 'g'), '')
     const visibleChars = message.replace(new RegExp('[\n\r\s]+|( )+', 'g'), '')
     const chineseChars = message.replace(new RegExp('[\u4e00-\u9fa5]', 'g'), '')
-    if(onlyEmojis === '' || visibleChars == '' || chineseChars=='') return false
+    if (onlyEmojis === '' || visibleChars == '' || chineseChars == '') return false
     return (onlyEmojis.length === visibleChars.length && onlyEmojis.length <= 2)
-  } catch(e) {
+  } catch (e) {
     return false
   }
 }
@@ -182,30 +182,30 @@ export function isJustRecived(startedAt, time) {
   return false;
 }
 
-export function checkIfIsMemberJoinedGroup(msg, loggedUser): boolean{
-  if(msg && msg.attributes && msg.attributes.messagelabel
-      && msg.attributes.messagelabel['key']=== "MEMBER_JOINED_GROUP" 
-      && msg.attributes.messagelabel.parameters['member_id'] !== loggedUser.uid
-      && !msg.attributes.messagelabel.parameters['member_id'].includes('bot') 
-      && !msg.attributes.messagelabel.parameters['member_id'].includes('system')){
-          return true
+export function checkIfIsMemberJoinedGroup(msg, loggedUser): boolean {
+  if (msg && msg.attributes && msg.attributes.messagelabel
+    && msg.attributes.messagelabel['key'] === "MEMBER_JOINED_GROUP"
+    && msg.attributes.messagelabel.parameters['member_id'] !== loggedUser.uid
+    && !msg.attributes.messagelabel.parameters['member_id'].includes('bot')
+    && !msg.attributes.messagelabel.parameters['member_id'].includes('system')) {
+    return true
   } else if (msg && msg.attributes && msg.attributes.messagelabel
-    && msg.attributes.messagelabel['key'] !== "MEMBER_JOINED_GROUP" ){
-      return true
+    && msg.attributes.messagelabel['key'] !== "MEMBER_JOINED_GROUP") {
+    return true
   }
   return false
-  
+
 }
 
-export function hideInfoMessage(msg, infoMessageKeyEnabled): boolean{
-  if(msg && msg.attributes && msg.attributes.messagelabel
-    && infoMessageKeyEnabled.includes(msg.attributes.messagelabel['key'])){
-      return false
+export function hideInfoMessage(msg, infoMessageKeyEnabled): boolean {
+  if (msg && msg.attributes && msg.attributes.messagelabel
+    && infoMessageKeyEnabled.includes(msg.attributes.messagelabel['key'])) {
+    return false
   }
   return true
 }
 
-export function getProjectIdSelectedConversation(conversationWith: string): string{
+export function getProjectIdSelectedConversation(conversationWith: string): string {
   const conversationWith_segments = conversationWith.split('-')
   // Removes the last element of the array if is = to the separator
   if (conversationWith_segments[conversationWith_segments.length - 1] === '') {

@@ -19,6 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
+import { AssignReassignDialogComponent } from './assign-reassign-dialog/assign-reassign-dialog.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
     WsSidebarAppsComponent,
     ModalChatbotReassignmentComponent,
     ImagePreviewModalComponent,
+    AssignReassignDialogComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

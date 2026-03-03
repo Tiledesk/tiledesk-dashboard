@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -22,6 +22,12 @@ import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
 import { Project } from 'app/models/project-model';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { LocalDbService } from 'app/services/users-local-db.service';
+
+import { environment } from 'environments/environment';
+import { CachePuService } from 'app/services/cache/cache-pu.service';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -30,6 +36,7 @@ import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.compone
 
 })
 export class SidebarUserDetailsComponent implements OnInit {
+  public version: string = environment.VERSION;
   PLAN_NAME = PLAN_NAME
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
   public HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
@@ -72,7 +79,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   currentUserId: string;
   selectedStatus: any;
   isChromeVerGreaterThan100: boolean;
-    NOTIFICATION_SOUND: string;
+  NOTIFICATION_SOUND: string;
   storedValuePrefix = 'dshbrd----'
   teammateStatus = [
     { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
@@ -83,6 +90,8 @@ export class SidebarUserDetailsComponent implements OnInit {
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
   public logoutBtnVisible: boolean;
+  public editProfileBtnVisible: boolean;
+  PERMISSION_TO_LOGOUT: boolean;
 
   constructor(
     public auth: AuthService,
@@ -99,12 +108,18 @@ export class SidebarUserDetailsComponent implements OnInit {
     public notifyService: NotifyService,
     public projectService: ProjectService,
     public dialog: MatDialog,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private route: ActivatedRoute,
+    private rolesService: RolesService,
+    private localDbService: LocalDbService,
+    private cachePuService: CachePuService
   ) {
 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
+    this.editProfileBtnVisible = brand['DISPLAY_EDIT_PROFILE'];
+
   // this.logger.log('[SIDEBAR-USER-DETAILS] logoutBtnVisible ', this.logoutBtnVisible)
   // const brand = brandService.getBrand(); 
   // this.hideHelpLink= brand['DOCS'];
@@ -112,6 +127,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   ngOnInit() {
+    // this.logOutParam = this.route.snapshot.queryParamMap.get('tiledesk_logOut');
+    // console.log('tiledesk_logOut:', this.logOutParam);
+    
     this.getOSCODE();
     this.logger.log('HELLO SIDEBAR-USER-DETAILS')
     this.getLoggedUserAndCurrentDshbrdLang();
@@ -133,7 +151,73 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserIsBusy$()
     this.getBrowserVersion()
     // this.setNotificationSound();
+    // this.listenToProjectUser()
+    // this.checkLogoutVisibility();
+    this.getQueryParams()
+
   }
+
+  
+
+  
+
+   listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[SIDEBAR-USER-DETAILS] - Role:', status.role);
+      
+          console.log('[SIDEBAR-USER-DETAILS] - Permissions:', status.matchedPermissions);
+  
+  
+          // -------------------------------
+          // PERMISSION_TO_LOGOUT
+          // -------------------------------
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+  
+            if (status.matchedPermissions.includes(PERMISSIONS.LOGOUT)) {
+              this.PERMISSION_TO_LOGOUT = true
+              console.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+            } else {
+              this.PERMISSION_TO_LOGOUT = false
+  
+              console.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+            }
+          } else {
+            this.PERMISSION_TO_LOGOUT = true
+            console.log('[SIDEBAR-USER-DETAILS] - Project user has a default role ', status.role, 'PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+          }
+  
+        });
+    }
+
+    getQueryParams() {
+      this.route.queryParamMap
+        .subscribe(params => {
+          // console.log('[SIDEBAR-USER-DETAILS]  queryParams', params['params']);
+          
+          if (params['params']['tiledesk_logOut']) {
+            
+            this.logoutBtnVisible = params['params']['tiledesk_logOut'] == "true" ? true: false
+             console.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
+            
+          } else {
+            this.logoutBtnVisible = true
+          }
+        })
+    }
+
+
+  checkLogoutVisibility(): void {
+    const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+    console.log('[SIDEBAR] tiledesk_logOut:', tiledeskLogOut);
+
+    // Nasconde il logout solo se tiledesk_logOut === 'false'
+    this.logoutBtnVisible = tiledeskLogOut !== 'false';
+  }
+
+
 
 
   // setNotificationSound() {
@@ -176,7 +260,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   presentDialogResetBusy() {
-    this.logger.log('[SIDEBAR] presentDialogResetBusy ')
+    this.logger.log('[SIDEBAR-USER-DETAILS] presentDialogResetBusy ')
     if (this.dialogRef) {
       this.dialogRef.close();
       return
@@ -191,7 +275,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
     this.dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
+      this.logger.log(`[SIDEBAR-USER-DETAILS] Dialog result: ${result}`);
       this.dialogRef = null
     });
 
@@ -202,9 +286,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[SIDEBAR] AppConfigService getAppConfig public_Key', this.public_Key);
+    this.logger.log('[SIDEBAR-USER-DETAILS] AppConfigService getAppConfig public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    this.logger.log('[SIDEBAR] PUBLIC-KEY - public_Key keys', keys)
+    this.logger.log('[SIDEBAR-USER-DETAILS] PUBLIC-KEY - public_Key keys', keys)
     keys.forEach(key => {
       if (key.includes("PAY")) {
         let pay = key.split(":");
@@ -455,9 +539,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   getProjectUser() {
     this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+    // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
+      console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
@@ -478,7 +562,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+          console.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;
@@ -519,7 +603,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       .subscribe((projectUser: any) => {
 
 
-        this.logger.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+       console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_btn_clicked(true)
@@ -536,7 +620,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         // =========== NOTIFY SUCCESS===========
         // this.notifyService.showNotification('status successfully updated', 2, 'done');
         // this.notifyService.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
-
+        this.cachePuService.clearPuCache()
 
 
         // this.getProjectUser();
@@ -741,11 +825,17 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   goToUserProfileLanguageSection() {
+    if(!this.editProfileBtnVisible) {
+      return;
+    }
     this.router.navigate(['project/' + this.projectId + '/user-profile'], { fragment: 'language' });
     this.closeUserDetailSidePanel();
   }
 
   goToUserProfile() {
+    if(!this.editProfileBtnVisible) {
+      return;
+    }
     this.router.navigate(['project/' + this.projectId + '/user-profile']);
     this.closeUserDetailSidePanel();
   }

@@ -196,7 +196,7 @@ button.close {
 
 
 .r-d--column-th-span {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: #353f45;
 }
@@ -247,6 +247,7 @@ button.close {
   color: var(--blue-20);
   font-weight: 400;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .add-department:hover { 
@@ -384,6 +385,16 @@ table > tbody > tr.default-dept-disabled > td {
   font-weight: 400;
   position: relative;
   top: -3px;
+}
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: var(--header-font-family) !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  color: #fff !important;
 }
 
 

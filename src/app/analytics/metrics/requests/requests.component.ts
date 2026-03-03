@@ -10,9 +10,10 @@ import { UsersService } from 'app/services/users.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { CHANNELS, CHANNELS_NAME } from 'app/utils/util';
-import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { ProjectService } from 'app/services/project.service';
+import { takeUntil } from 'rxjs/operators';
+
 
 @Component({
   selector: 'appdashboard-requests',
@@ -51,6 +52,7 @@ export class RequestsComponent implements OnInit {
     { id: '', name: 'All' },
     ...CHANNELS
   ];
+    
   CHANNELS_NAME = CHANNELS_NAME;
 
   percentageOfRequestsHandledByBots: any;

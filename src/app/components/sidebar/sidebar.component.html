@@ -56,48 +56,24 @@
 
   <div class="nav-custom sidebar-up">
 
+
+
+
     <!-- ------------------------------------------- -->
     <!-- CHAT  -->
     <!-- ------------------------------------------- -->
     <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
-      matTooltipHideDelay="100">
+      matTooltipHideDelay="100" routerLinkActive="item-active" 
+      [class.item-active]="CONVERSATION_DETAIL_ROUTE_IS_ACTIVE">
+
       <!-- <i class="material-icons sidebar-icons">chat</i> -->
-      <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
+      <a id="openchat-a" #openchatbtn class="customAncor" 
+        [routerLink]="project ? ['/project', project._id, 'conversation-detail'] : ['/conversation-detail']"
         (click)="openChat()">
         <span id="openchat-span">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21"  xml:space="preserve" width="20" height="20">
-              <path d="M11.5,0.5C5.8,0.5,1.3,5,1.3,10.5c0,1.8,0.5,3.5,1.4,5l-0.8,4.3l4.4-0.8c1.5,0.9,3.3,1.4,5.3,1.4
-              c5.7,0,10.2-4.5,10.2-10S17.2,0.5,11.5,0.5z M11.5,17.2c-2.5,0-4.6-1.3-5.7-2.6c0.6-0.2,0.8-0.8,1.4-1c0.7,0.9,2.5,2.1,4.4,2.1
-              c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z" />
-            </svg> -->
-          <!-- width="20" height="20" -->
-          <!-- <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve" >
-            <style type="text/css">
-              .openchat-st0 {
-                fill: none !important;
-                stroke-miterlimit: 10;
-              }
-            </style>
-            <g>
-              <path class="openchat-st0" d="M10,1.3c-5,0-8.9,3.9-8.9,8.7c0,1.6,0.4,3,1.2,4.3l-0.7,3.7l3.8-0.7c1.3,0.8,2.9,1.2,4.6,1.2
-                  c5,0,8.9-3.9,8.9-8.7S15,1.3,10,1.3z" />
-              <path d="M10,15.8c-2.2,0-4-1.1-5-2.3c0.5-0.2,0.7-0.7,1.2-0.9c0.6,0.8,2.2,1.8,3.8,1.8s3.1-1,3.7-1.8c0.4,0.2,0.8,0.5,1.2,0.8
-                  C14,14.6,12.2,15.8,10,15.8z" />
-            </g>
-          </svg> -->
-
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="none">
-            <style type="text/css">
-              .openchat-st0 {
-                fill: none !important;
-               
-              }
-            </style>
-            <path class="openchat-st0" d="M0 0h24v24H0V0z" fill="none" />
-            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="none">
+            <path d="M80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/>
           </svg>
-
         </span>
         <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
           class="new-messages-count">{{new_messages_count}} </span>
@@ -107,18 +83,11 @@
     <!-- ------------------------------------------- -->
     <!-- HOME   (click)="goToHome()"" -->
     <!-- ------------------------------------------- -->
-    <div matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+    <div *ngIf="PERMISSION_TO_VIEW_HOME" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
       <a target="_self" routerLink="project/{{ project?._id }}/home" class="customAncor">
-        <!-- <i class="material-icons sidebar-icons">
-            home
-          </i> -->
-
-        <!-- <i class="material-symbols-outlined sidebar-icons">
-          home
-        </i> -->
         <span>
-          <!-- height="20px" width="20px" -->
+
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
             <path
               d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
@@ -130,18 +99,13 @@
     <!-- -------------------------------------------------------- -->
     <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="isTiledeskDomain">
-      <ng-container *ngIf="USER_ROLE !== 'agent'">
-        <div id="bot-anchor-wpr" 
-          *ngIf="project" 
-          matTooltipClass="sb-mat-tooltip"
-          matTooltip="{{ 'KnowledgeBases' | translate }}" 
-          #tooltip="matTooltip" matTooltipPosition='right'
-          matTooltipHideDelay="100" routerLinkActive="item-active" 
-          [class.item-active]="KB_ROUTE_IS_ACTIVE ">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
+      <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
+        <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'KnowledgeBases' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="KB_ROUTE_IS_ACTIVE || KB_ROUTE_IS_ACTIVE_NO_AUTH">
           <a id="bot-anchor" #botbtn (click)="goToNewKnowledgeBases()">
             <span>
-              <!-- height="20px" width="20px" -->
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
                 <path
                   d="M390-120q-51 0-88-35.5T260-241q-60-8-100-53t-40-106q0-21 5.5-41.5T142-480q-11-18-16.5-38t-5.5-42q0-61 40-105.5t99-52.5q3-51 41-86.5t90-35.5q26 0 48.5 10t41.5 27q18-17 41-27t49-10q52 0 89.5 35t40.5 86q59 8 99.5 53T840-560q0 22-5.5 42T818-480q11 18 16.5 38.5T840-400q0 62-40.5 106.5T699-241q-5 50-41.5 85.5T570-120q-25 0-48.5-9.5T480-156q-19 17-42 26.5t-48 9.5Zm130-590v460q0 21 14.5 35.5T570-200q20 0 34.5-16t15.5-36q-21-8-38.5-21.5T550-306q-10-14-7.5-30t16.5-26q14-10 30-7.5t26 16.5q11 16 28 24.5t37 8.5q33 0 56.5-23.5T760-400q0-5-.5-10t-2.5-10q-17 10-36.5 15t-40.5 5q-17 0-28.5-11.5T640-440q0-17 11.5-28.5T680-480q33 0 56.5-23.5T760-560q0-33-23.5-56T680-640q-11 18-28.5 31.5T613-587q-16 6-31-1t-20-23q-5-16 1.5-31t22.5-20q15-5 24.5-18t9.5-30q0-21-14.5-35.5T570-760q-21 0-35.5 14.5T520-710Zm-80 460v-460q0-21-14.5-35.5T390-760q-21 0-35.5 14.5T340-710q0 16 9 29.5t24 18.5q16 5 23 20t2 31q-6 16-21 23t-31 1q-21-8-38.5-21.5T279-640q-32 1-55.5 24.5T200-560q0 33 23.5 56.5T280-480q17 0 28.5 11.5T320-440q0 17-11.5 28.5T280-400q-21 0-40.5-5T203-420q-2 5-2.5 10t-.5 10q0 33 23.5 56.5T280-320q20 0 37-8.5t28-24.5q10-14 26-16.5t30 7.5q14 10 16.5 26t-7.5 30q-14 19-32 33t-39 22q1 20 16 35.5t35 15.5q21 0 35.5-14.5T440-250Zm40-230Z" />
@@ -150,113 +114,73 @@
           </a>
         </div>
       </ng-container>
-    </ng-container> 
-
-    <ng-container *ngIf="!isTiledeskDomain">
-      <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleKNB">
-        <div id="bot-anchor-wpr" 
-          *ngIf="project" 
-          matTooltipClass="sb-mat-tooltip"
-          matTooltip="{{ 'KnowledgeBases' | translate }}" 
-          #tooltip="matTooltip" matTooltipPosition='right'
-          matTooltipHideDelay="100" routerLinkActive="item-active" 
-          [class.item-active]="KB_ROUTE_IS_ACTIVE ">
-          <a id="bot-anchor" #botbtn (click)="goToNewKnowledgeBases()">
-            <span>
-              <!-- height="20px" width="20px" -->
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-                <path
-                  d="M390-120q-51 0-88-35.5T260-241q-60-8-100-53t-40-106q0-21 5.5-41.5T142-480q-11-18-16.5-38t-5.5-42q0-61 40-105.5t99-52.5q3-51 41-86.5t90-35.5q26 0 48.5 10t41.5 27q18-17 41-27t49-10q52 0 89.5 35t40.5 86q59 8 99.5 53T840-560q0 22-5.5 42T818-480q11 18 16.5 38.5T840-400q0 62-40.5 106.5T699-241q-5 50-41.5 85.5T570-120q-25 0-48.5-9.5T480-156q-19 17-42 26.5t-48 9.5Zm130-590v460q0 21 14.5 35.5T570-200q20 0 34.5-16t15.5-36q-21-8-38.5-21.5T550-306q-10-14-7.5-30t16.5-26q14-10 30-7.5t26 16.5q11 16 28 24.5t37 8.5q33 0 56.5-23.5T760-400q0-5-.5-10t-2.5-10q-17 10-36.5 15t-40.5 5q-17 0-28.5-11.5T640-440q0-17 11.5-28.5T680-480q33 0 56.5-23.5T760-560q0-33-23.5-56T680-640q-11 18-28.5 31.5T613-587q-16 6-31-1t-20-23q-5-16 1.5-31t22.5-20q15-5 24.5-18t9.5-30q0-21-14.5-35.5T570-760q-21 0-35.5 14.5T520-710Zm-80 460v-460q0-21-14.5-35.5T390-760q-21 0-35.5 14.5T340-710q0 16 9 29.5t24 18.5q16 5 23 20t2 31q-6 16-21 23t-31 1q-21-8-38.5-21.5T279-640q-32 1-55.5 24.5T200-560q0 33 23.5 56.5T280-480q17 0 28.5 11.5T320-440q0 17-11.5 28.5T280-400q-21 0-40.5-5T203-420q-2 5-2.5 10t-.5 10q0 33 23.5 56.5T280-320q20 0 37-8.5t28-24.5q10-14 26-16.5t30 7.5q14 10 16.5 26t-7.5 30q-14 19-32 33t-39 22q1 20 16 35.5t35 15.5q21 0 35.5-14.5T440-250Zm40-230Z" />
-              </svg>
-            </span>
-          </a>
-        </div>
-      </ng-container>
-    </ng-container> 
+    </ng-container>
 
     <!-- ---------------------------------- -->
     <!-- Bot  (click)="goToBots()"   KB_ROUTE_IS_ACTIVE ||-->
     <!-- ---------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
-      <div id="bot-anchor-wpr" 
-        *ngIf="project" 
-        matTooltipClass="sb-mat-tooltip" 
-        matTooltip="{{'Flows' | translate}}" 
-        #tooltip="matTooltip"
-        matTooltipPosition='right' 
-        matTooltipHideDelay="100" 
-        routerLinkActive="item-active" 
-        [class.item-active]="MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
-        FLOW_AUTOMATION_ROUTE_IS_ACTIVE ||
-        FLOW_AIAGENT_ROUTE_IS_ACTIVE ||
-        FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ||
-        MY_BOTS_IS_ROUTE_IS_ACTIVE || 
-        BOTS_DEMO_ROUTE_IS_ACTIVE || 
-        MY_BOTS_CS_ROUTE_IS_ACTIVE ||
-        TMPLT_ALL_ROUTE_IS_ACTIVE || 
-        TMPLT_CMNT_ROUTE_IS_ACTIVE ||
-        TMPLT_IS_ROUTE_IS_ACTIVE ||
-        TMPLT_CS_ROUTE_IS_ACTIVE ||
-        CREATE_BOT_ROUTE_IS_ACTIVE">
-        <a id="bot-anchor" #botbtn (click)="goToAllMyChatbot()">
-
-          <!-- <i class="material-symbols-outlined sidebar-icons">
-            robot_2
-          </i> -->
-          <span>
-           
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-              <path
-                d="M151.33-370.67q-46.66 0-79-32.47Q40-435.61 40-482t32.47-78.86q32.47-32.47 78.86-32.47V-702q0-27 19.84-46.83Q191-768.67 218-768.67h150.67q0-46.66 32.47-79Q433.61-880 480-880t78.86 32.47q32.47 32.47 32.47 78.86H742q27 0 46.83 19.84Q808.67-729 808.67-702v108.67q46.66 0 79 32.47Q920-528.39 920-482t-32.47 78.86q-32.47 32.47-78.86 32.47v184q0 27-19.84 46.84Q769-120 742-120H218q-27 0-46.83-19.83-19.84-19.84-19.84-46.84v-184ZM348.82-464q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.65-33.01-13.66-13.5-33.17-13.5t-33.01 13.65Q302-530.02 302-510.51t13.66 33.01q13.65 13.5 33.16 13.5Zm262.67 0q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.66-33.01-13.65-13.5-33.16-13.5-19.51 0-33.01 13.65-13.5 13.66-13.5 33.17t13.65 33.01q13.66 13.5 33.17 13.5ZM314.67-283.33h330.66V-350H314.67v66.67ZM218-186.67h524V-702H218v515.33Zm262-258Z" />
-            </svg> -->
-
-            <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  >
-            
-            <path  d="M12,21.9c-1,0-1.8-0.3-2.5-1c-0.7-0.7-1-1.5-1-2.5c0-0.8,0.3-1.6,0.8-2.2c0.5-0.6,1.2-1,1.9-1.2v-2.3H5.5V9H3
-              V2.5h6.4V9H7v2.3h10V8.9c-0.8-0.2-1.4-0.6-1.9-1.2c-0.5-0.6-0.8-1.3-0.8-2.2c0-1,0.3-1.8,1-2.5c0.7-0.7,1.5-1,2.5-1
-              c1,0,1.8,0.3,2.5,1c0.7,0.7,1,1.5,1,2.5c0,0.8-0.3,1.6-0.8,2.2c-0.5,0.6-1.2,1-1.9,1.2v3.9h-5.7v2.3c0.8,0.2,1.4,0.6,1.9,1.2
-              c0.5,0.6,0.8,1.3,0.8,2.2c0,1-0.3,1.8-1,2.5C13.8,21.6,13,21.9,12,21.9z M17.8,7.5c0.5,0,1-0.2,1.4-0.6c0.4-0.4,0.6-0.8,0.6-1.4
-              c0-0.5-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6c-0.5,0-1,0.2-1.4,0.6C16,4.5,15.8,5,15.8,5.5c0,0.5,0.2,1,0.6,1.4S17.2,7.5,17.8,7.5
-              z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6
-              c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z" />
-        </svg>
+     
+    <ng-container *ngIf="PERMISSION_TO_VIEW_FLOWS">
+      <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
+        <div id="bot-anchor-wpr" *ngIf="project" 
+          matTooltipClass="sb-mat-tooltip" 
+          matTooltip="{{'Flows' | translate}}" 
+          #tooltip="matTooltip"
+          matTooltipPosition='right' 
+          matTooltipHideDelay="100" 
+          [class.item-active]="isBotRouteActive">
+          <a id="bot-anchor" #botbtn (click)="goToAllMyChatbot()">
+            <span>
+              <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  >
+              
+                <path  d="M12,21.9c-1,0-1.8-0.3-2.5-1c-0.7-0.7-1-1.5-1-2.5c0-0.8,0.3-1.6,0.8-2.2c0.5-0.6,1.2-1,1.9-1.2v-2.3H5.5V9H3
+                  V2.5h6.4V9H7v2.3h10V8.9c-0.8-0.2-1.4-0.6-1.9-1.2c-0.5-0.6-0.8-1.3-0.8-2.2c0-1,0.3-1.8,1-2.5c0.7-0.7,1.5-1,2.5-1
+                  c1,0,1.8,0.3,2.5,1c0.7,0.7,1,1.5,1,2.5c0,0.8-0.3,1.6-0.8,2.2c-0.5,0.6-1.2,1-1.9,1.2v3.9h-5.7v2.3c0.8,0.2,1.4,0.6,1.9,1.2
+                  c0.5,0.6,0.8,1.3,0.8,2.2c0,1-0.3,1.8-1,2.5C13.8,21.6,13,21.9,12,21.9z M17.8,7.5c0.5,0,1-0.2,1.4-0.6c0.4-0.4,0.6-0.8,0.6-1.4
+                  c0-0.5-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6c-0.5,0-1,0.2-1.4,0.6C16,4.5,15.8,5,15.8,5.5c0,0.5,0.2,1,0.6,1.4S17.2,7.5,17.8,7.5
+                  z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6
+                  c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z" />
+              </svg>
 
 
-          </span>
-        </a>
-      </div>
+            </span>
+          </a>
+        </div>
+      </ng-container>
     </ng-container>
-
-
-
-
-
 
 
     <!-- ------------------------------------------- -->
     <!-- Conversations (MONITOR)   [class.item-active]="MONITOR_ROUTE_IS_ACTIVE || CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE"-->
     <!-- ------------------------------------------- -->
-    <ng-container *ngIf="isVisibleMON">
-      <div id="monitor" *ngIf="project" routerLinkActive="item-active" matTooltipClass="sb-mat-tooltip"
-        matTooltip="Monitor" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
-        [ngClass]="{'is-active': MONITOR_ROUTE_IS_ACTIVE || CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE}">
-        <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
-          <!-- <i class="material-symbols-outlined sidebar-icons">
-            planner_review
-          </i> -->
-
-          <span>
-            <!-- height="20px" width="20px" -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-              <path
-                d="M480-80 360-642l-88 402H80v-80h128l113-520h79l122 572 78-332h80l72 280h128v80H690l-48-188-82 348h-80Z" />
-            </svg>
-          </span>
-        </a>
-      </div>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_MONITOR"> 
+      <ng-container *ngIf="isVisibleMON">
+        <div id="monitor" *ngIf="project" 
+          routerLinkActive="item-active" matTooltipClass="sb-mat-tooltip"
+          matTooltip="Monitor" 
+          #tooltip="matTooltip" 
+          matTooltipPosition='right' 
+          matTooltipHideDelay="100"
+          [ngClass]="{'is-active': MONITOR_ROUTE_IS_ACTIVE || 
+            CONV_DETAIL_ROUTE_IS_ACTIVE || 
+            CONV_DEMO_ROUTE_IS_ACTIVE || 
+            NORT_CONV_ROUTE_IS_ACTIVE || 
+            MONITOR_NO_AUTH_ROUTE_IS_ACTIVE
+          }">
+          <!-- routerLink="project/{{ project._id }}/wsrequests" -->
+          <a class="customAncor" 
+            [routerLink]="PERMISSION_TO_VIEW_MONITOR ? ['/project', project._id, 'wsrequests'] : null"
+            (click)="handleMonitorClick($event)">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M480-80 360-642l-88 402H80v-80h128l113-520h79l122 572 78-332h80l72 280h128v80H690l-48-188-82 348h-80Z" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </ng-container>
     </ng-container>
-
-
   </div>
 
 
@@ -281,28 +205,29 @@
         </div>
       </ng-container> -->
 
-    <!-- ----------------------------- -->
-    <!-- WA broadcasts  -->
-    <!-- ----------------------------- -->
-   <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleAUT">
-    <!-- routerLinkActive="item-active"  -->
-        <div id="bot-anchor-wpr" *ngIf="project" 
-          matTooltipClass="sb-mat-tooltip"
-          matTooltip="{{ 'WhatsAppBroadcasts' | translate}}"  
-          #tooltip="matTooltip" 
-          matTooltipPosition='right' 
-          matTooltipHideDelay="100"
-          (click)="goToAutomations()"
-          [class.item-active]="NEW_BROADCAST_ROUTE_IS_ACTIVE || AUTOMATIONS_ROUTE_IS_ACTIVE || AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE || AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE">
-          <a id="bot-anchor" class="customAncor" routerLink="project/{{ project._id }}/automations">
-            <span class="bot-icon-wpr">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" height="24" width="24">
+      <!-- ----------------------------- -->
+      <!-- WA broadcasts  -->
+      <!-- ----------------------------- -->
+      <ng-container *ngIf="PERMISSION_TO_VIEW_WA_BRODCAST"> 
+        <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleAUT">
+          <!-- routerLinkActive="item-active"  -->
+          <div id="bot-anchor-wpr" *ngIf="project" 
+            matTooltipClass="sb-mat-tooltip"
+            matTooltip="{{ 'WhatsAppBroadcasts' | translate}}"  
+            #tooltip="matTooltip" 
+            matTooltipPosition='right' 
+            matTooltipHideDelay="100"
+            [class.item-active]="NEW_BROADCAST_ROUTE_IS_ACTIVE || AUTOMATIONS_ROUTE_IS_ACTIVE || AUTOMATIONS_DETAILS_ROUTE_IS_ACTIVE || AUTOMATIONS_DEMO_ROUTE_IS_ACTIVE || AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE">
+            <a id="bot-anchor" class="customAncor" routerLink="project/{{ project._id }}/automations">
+              <span class="bot-icon-wpr">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" height="24" width="24">
 
-                  <path fill="none" fill-rule="evenodd" d="M40.6666 7.3156c-2.1744 -2.1755 -4.7577 -3.8995 -7.6012 -5.0726C30.222 1.0699 27.1745 0.4708 24.0986 0.4801 11.1899 0.4801 0.6816 10.936 0.6763 23.79c-0.0057 4.093 1.0733 8.1145 3.1269 11.655L0.48 47.52l12.4163 -3.2413c3.4367 1.8619 7.2841 2.8363 11.193 2.835h0.0094c12.9076 0 23.415 -10.4569 23.4212 -23.31 0.0078 -3.0653 -0.594 -6.1017 -1.7706 -8.9324 -1.1766 -2.8306 -2.9043 -5.399 -5.0827 -7.5557ZM24.0987 43.1794h-0.0084c-3.4845 0.001 -6.9057 -0.9315 -9.9078 -2.7007l-0.7109 -0.42 -7.3678 1.9236 1.9666 -7.1494 -0.463 -0.735C5.659 31.0132 4.6267 27.4386 4.6306 23.79c0 -10.6815 8.7371 -19.3724 19.4754 -19.3724 5.1513 -0.0092 10.0953 2.0281 13.7446 5.6638 3.6493 3.6357 5.705 8.572 5.715 13.7233 -0.0041 10.6827 -8.737 19.3747 -19.4669 19.3747Zm10.6774 -14.51c-0.5849 -0.2919 -3.465 -1.701 -3.9984 -1.8952 -0.5334 -0.1943 -0.9271 -0.292 -1.3167 0.2919 -0.3895 0.5837 -1.512 1.89 -1.8532 2.2837 -0.3413 0.3938 -0.6826 0.4368 -1.2675 0.1449 -0.5847 -0.2918 -2.4716 -0.9062 -4.707 -2.8906 -1.7399 -1.5446 -2.9137 -3.4513 -3.255 -4.0341 -0.3413 -0.5828 -0.0368 -0.8988 0.2561 -1.1886 0.2636 -0.2614 0.5849 -0.6804 0.8779 -1.0206 0.2929 -0.3403 0.3906 -0.5839 0.5848 -0.9723 0.1943 -0.3885 0.0976 -0.7288 -0.0483 -1.0195 -0.1459 -0.2909 -1.3167 -3.1585 -1.8039 -4.325 -0.4757 -1.1361 -0.9576 -0.9818 -1.3167 -0.9996 -0.3413 -0.0168 -0.7349 -0.021 -1.1225 -0.021 -0.2961 0.0077 -0.5875 0.0765 -0.856 0.2018 -0.2685 0.1253 -0.5081 0.3048 -0.7043 0.5269 -0.5364 0.5838 -2.0485 1.995 -2.0485 4.8594s2.1001 5.6364 2.3898 6.0248c0.2899 0.3886 4.1265 6.2717 9.997 8.7948 1.0901 0.4669 2.204 0.8763 3.337 1.2264 1.4017 0.4431 2.6775 0.3812 3.6854 0.2311 1.1246 -0.167 3.4651 -1.4092 3.9512 -2.7699 0.4862 -1.3608 0.4872 -2.5263 0.3413 -2.7689 -0.146 -0.2426 -0.5366 -0.3895 -1.1225 -0.6804Z" clip-rule="evenodd" stroke-width="1"></path>
-                </svg>
-            </span>
-          </a>
-        </div>
+                    <path fill="none" fill-rule="evenodd" d="M40.6666 7.3156c-2.1744 -2.1755 -4.7577 -3.8995 -7.6012 -5.0726C30.222 1.0699 27.1745 0.4708 24.0986 0.4801 11.1899 0.4801 0.6816 10.936 0.6763 23.79c-0.0057 4.093 1.0733 8.1145 3.1269 11.655L0.48 47.52l12.4163 -3.2413c3.4367 1.8619 7.2841 2.8363 11.193 2.835h0.0094c12.9076 0 23.415 -10.4569 23.4212 -23.31 0.0078 -3.0653 -0.594 -6.1017 -1.7706 -8.9324 -1.1766 -2.8306 -2.9043 -5.399 -5.0827 -7.5557ZM24.0987 43.1794h-0.0084c-3.4845 0.001 -6.9057 -0.9315 -9.9078 -2.7007l-0.7109 -0.42 -7.3678 1.9236 1.9666 -7.1494 -0.463 -0.735C5.659 31.0132 4.6267 27.4386 4.6306 23.79c0 -10.6815 8.7371 -19.3724 19.4754 -19.3724 5.1513 -0.0092 10.0953 2.0281 13.7446 5.6638 3.6493 3.6357 5.705 8.572 5.715 13.7233 -0.0041 10.6827 -8.737 19.3747 -19.4669 19.3747Zm10.6774 -14.51c-0.5849 -0.2919 -3.465 -1.701 -3.9984 -1.8952 -0.5334 -0.1943 -0.9271 -0.292 -1.3167 0.2919 -0.3895 0.5837 -1.512 1.89 -1.8532 2.2837 -0.3413 0.3938 -0.6826 0.4368 -1.2675 0.1449 -0.5847 -0.2918 -2.4716 -0.9062 -4.707 -2.8906 -1.7399 -1.5446 -2.9137 -3.4513 -3.255 -4.0341 -0.3413 -0.5828 -0.0368 -0.8988 0.2561 -1.1886 0.2636 -0.2614 0.5849 -0.6804 0.8779 -1.0206 0.2929 -0.3403 0.3906 -0.5839 0.5848 -0.9723 0.1943 -0.3885 0.0976 -0.7288 -0.0483 -1.0195 -0.1459 -0.2909 -1.3167 -3.1585 -1.8039 -4.325 -0.4757 -1.1361 -0.9576 -0.9818 -1.3167 -0.9996 -0.3413 -0.0168 -0.7349 -0.021 -1.1225 -0.021 -0.2961 0.0077 -0.5875 0.0765 -0.856 0.2018 -0.2685 0.1253 -0.5081 0.3048 -0.7043 0.5269 -0.5364 0.5838 -2.0485 1.995 -2.0485 4.8594s2.1001 5.6364 2.3898 6.0248c0.2899 0.3886 4.1265 6.2717 9.997 8.7948 1.0901 0.4669 2.204 0.8763 3.337 1.2264 1.4017 0.4431 2.6775 0.3812 3.6854 0.2311 1.1246 -0.167 3.4651 -1.4092 3.9512 -2.7699 0.4862 -1.3608 0.4872 -2.5263 0.3413 -2.7689 -0.146 -0.2426 -0.5366 -0.3895 -1.1225 -0.6804Z" clip-rule="evenodd" stroke-width="1"></path>
+                  </svg>
+              </span>
+            </a>
+          </div>
+        </ng-container>
       </ng-container>
 
   
@@ -310,25 +235,26 @@
     <!-- ----------------------------- -->
     <!-- CONTACTS (LEADS)  -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="isVisibleCNT">
-      <div id="contacts" *ngIf="project" routerLinkActive="item-active" matTooltipClass="sb-mat-tooltip"
-        matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100"
-        [class.item-active]="CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE">
-        <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
-          <!-- <i class="material-icons sidebar-icons">contacts</i> -->
-          <!-- <i class="material-symbols-outlined sidebar-icons">
-            contacts
-          </i> -->
-          <span>
-            <!-- height="20px" width="20px" -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-              <path
-                d="M160-40v-80h640v80H160Zm0-800v-80h640v80H160Zm320 400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm70-80q45-56 109-88t141-32q77 0 141 32t109 88h70v-480H160v480h70Zm118 0h264q-29-20-62.5-30T480-280q-36 0-69.5 10T348-240Zm132-280q-17 0-28.5-11.5T440-560q0-17 11.5-28.5T480-600q17 0 28.5 11.5T520-560q0 17-11.5 28.5T480-520Zm0 40Z" />
-            </svg>
-          </span>
-        </a>
-      </div>
+     
+    <ng-container *ngIf="PERMISSION_TO_VIEW_CONTACTS">
+      <ng-container *ngIf="isVisibleCNT">
+        <div id="contacts" *ngIf="project" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100"
+          [class.item-active]="CONTACTS_ROUTE_IS_ACTIVE || CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE || CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE">
+          <!-- routerLink="project/{{ project._id }}/contacts" -->
+          <a class="customAncor" 
+          [routerLink]="PERMISSION_TO_VIEW_CONTACTS ? ['/project', project._id, 'contacts'] : null"
+          (click)="handleContactsClick($event)">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M160-40v-80h640v80H160Zm0-800v-80h640v80H160Zm320 400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm70-80q45-56 109-88t141-32q77 0 141 32t109 88h70v-480H160v480h70Zm118 0h264q-29-20-62.5-30T480-280q-36 0-69.5 10T348-240Zm132-280q-17 0-28.5-11.5T440-560q0-17 11.5-28.5T480-600q17 0 28.5 11.5T520-560q0 17-11.5 28.5T480-520Zm0 40Z" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </ng-container>
     </ng-container>
 
     <!-- ----------------------------- -->
@@ -350,115 +276,153 @@
     <!-- ----------------------------- -->
     <!-- ANALYTICS -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="isVisibleANA">
-      <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
-        [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
-        matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100">
-        <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
-          <!-- <i class="material-icons sidebar-icons"> bar_chart </i> -->
-          <!-- <i class="material-symbols-outlined sidebar-icons">
-            bar_chart_4_bars
-          </i> -->
-          <span>
-            <!-- height="20px" width="20px" -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-              <path
-                d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
-            </svg>
-          </span>
-        </a>
-      </div>
-    </ng-container>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+      <ng-container *ngIf="isVisibleANA">
+        <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
+          [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100">
+          <a class="customAncor" 
+          [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics'] : null"
+          (click)="handleAnalyticsClick($event)">
+          
+            <span>
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </ng-container>
+    </ng-container> 
+
+      <!-- Maintance module -->
+     <!-- <ng-container>
+      <ng-container>
+        <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
+          matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100">
+        
+          <a class="customAncor" 
+            routerLink="project/{{ project._id }}/maintenance">
+          
+            <span>
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </ng-container>
+    </ng-container>  -->
+
+    
+
 
     <!-- ----------------------------- -->
     <!-- ACTIVITIES -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="isVisibleACT">
-      <div id="activities" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active"
-        [class.item-active]="ACTIVITIES_DEMO_ROUTE_IS_ACTIVE" (click)="stopScroll()" matTooltipClass="sb-mat-tooltip"
-        matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100">
-        <a class="customAncor" routerLink="project/{{ project._id }}/activities">
-          <!-- <i class="material-icons sidebar-icons">assignment</i> -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ACTVITIES">
+      <ng-container *ngIf="isVisibleACT">
+        <div id="activities" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active"
+          [class.item-active]="ACTIVITIES_DEMO_ROUTE_IS_ACTIVE" (click)="stopScroll()" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100">
+          <!-- routerLink="project/{{ project._id }}/activities" -->
+          <a class="customAncor" 
+          [routerLink]="PERMISSION_TO_VIEW_ACTVITIES ? ['/project', project._id, 'activities'] : null"
+          (click)="handleActivitiesClick($event)">     
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm200-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-200v-560 560Z" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- ----------------------------- -->
+    <!-- REQUESTS HISTORY  routerLink="project/{{ project._id }}/history" -->
+    <!-- ----------------------------- -->
+     
+    <ng-container *ngIf="PERMISSION_TO_VIEW_HISTORY">
+      <div id="history" *ngIf="project" routerLinkActive="item-active" (click)="stopScroll()"
+        matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100"
+        [class.item-active]="HISTORY_NO_AUTH_ROUTE_IS_ACTIVE">
+        <a class="customAncor" 
+        [routerLink]="PERMISSION_TO_VIEW_HISTORY ? ['/project', project._id, 'history'] : null"
+        (click)="handleHistoryClick($event)">
+          <!-- <i class="material-icons sidebar-icons">history</i> -->
           <!-- <i class="material-symbols-outlined sidebar-icons">
-            assignment
+            history
           </i> -->
           <span>
             <!-- height="20px" width="20px" -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
               <path
-                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm200-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-200v-560 560Z" />
+                d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </ng-container> 
+
+    <!-- AUTOMATIONS_ROUTE_IS_ACTIVE || -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_SETTING">
+      <div id="settings" *ngIf="project && USER_ROLE !== 'agent'" [class.item-active]=" 
+          TRIGGER_ROUTE_IS_ACTIVE || 
+          TAG_ROUTE_IS_ACTIVE || 
+          CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
+          DEPTS_ROUTE_IS_ACTIVE || 
+          TEAMMATES_ROUTE_IS_ACTIVE || 
+          GROUPS_ROUTE_IS_ACTIVE || 
+          ROLES_ROUTE_IS_ACTIVE || 
+          EDIT_ROLE_ROUTE_IS_ACTIVE ||
+          ADD_ROLE_ROUTE_IS_ACTIVE ||
+          WIDGET_SETUP_ROUTE_IS_ACTIVE ||
+          PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
+          OPERATING_HOURS_ROUTE_IS_ACTIVE ||
+          ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ||
+          ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ||
+          PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE || 
+          PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ||
+          INVITE_TEAMMATE_ROUTE_IS_ACTIVE ||
+          EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
+          EDIT_DEPT_ROUTE_IS_ACTIVE ||
+          CREATE_GROUP_ROUTE_IS_ACTIVE ||
+          EDIT_GROUP_ROUTE_IS_ACTIVE ||
+          INSTALLATION_ROUTE_IS_ACTIVE ||
+          EMAIL_TICKETING_ROUTE_IS_ACTIVE ||
+          OLD_KB_ROUTE_IS_ACTIVE ||
+          APPS_ROUTE_IS_ACTIVE ||
+          INTEGRATIONS_ROUTE_IS_ACTIVE ||
+          TRANSLATIONS_ROUTE_IS_ACTIVE" (click)="goToWidgetSetUpOrToCannedResponses()" matTooltipClass="sb-mat-tooltip"
+        matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100">
+
+        <a class="customAncor">
+          <!-- <i class="material-icons sidebar-icons">settings</i> -->
+          <!-- <i class="material-symbols-outlined sidebar-icons">
+            settings
+          </i> -->
+          <span>
+            <!-- height="20px" width="20px" -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+              <path
+                d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
             </svg>
           </span>
         </a>
       </div>
     </ng-container>
-
-    <!-- ----------------------------- -->
-    <!-- REQUESTS HISTORY -->
-    <!-- ----------------------------- -->
-    <div id="history" *ngIf="project" routerLinkActive="item-active" (click)="stopScroll()"
-      matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip"
-      matTooltipPosition='right' matTooltipHideDelay="100">
-      <a class="customAncor" routerLink="project/{{ project._id }}/history">
-        <!-- <i class="material-icons sidebar-icons">history</i> -->
-        <!-- <i class="material-symbols-outlined sidebar-icons">
-          history
-        </i> -->
-        <span>
-          <!-- height="20px" width="20px" -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-            <path
-              d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z" />
-          </svg>
-        </span>
-      </a>
-    </div>
-
-      <!-- AUTOMATIONS_ROUTE_IS_ACTIVE || -->
-    <div id="settings" *ngIf="project && USER_ROLE !== 'agent'" [class.item-active]=" 
-        TRIGGER_ROUTE_IS_ACTIVE || 
-        TAG_ROUTE_IS_ACTIVE || 
-        CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
-        DEPTS_ROUTE_IS_ACTIVE || 
-        TEAMMATES_ROUTE_IS_ACTIVE || 
-        GROUPS_ROUTE_IS_ACTIVE || 
-        WIDGET_SETUP_ROUTE_IS_ACTIVE ||
-        PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
-        OPERATING_HOURS_ROUTE_IS_ACTIVE ||
-        ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ||
-        ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ||
-        PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE || 
-        PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ||
-        INVITE_TEAMMATE_ROUTE_IS_ACTIVE ||
-        EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
-        EDIT_DEPT_ROUTE_IS_ACTIVE ||
-        CREATE_GROUP_ROUTE_IS_ACTIVE ||
-        EDIT_GROUP_ROUTE_IS_ACTIVE ||
-        INSTALLATION_ROUTE_IS_ACTIVE ||
-        EMAIL_TICKETING_ROUTE_IS_ACTIVE ||
-        OLD_KB_ROUTE_IS_ACTIVE ||
-        APPS_ROUTE_IS_ACTIVE ||
-        INTEGRATIONS_ROUTE_IS_ACTIVE ||
-        TRANSLATIONS_ROUTE_IS_ACTIVE" (click)="goToWidgetSetUpOrToCannedResponses()" matTooltipClass="sb-mat-tooltip"
-      matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-      matTooltipHideDelay="100">
-
-      <a class="customAncor">
-        <!-- <i class="material-icons sidebar-icons">settings</i> -->
-        <!-- <i class="material-symbols-outlined sidebar-icons">
-          settings
-        </i> -->
-        <span>
-          <!-- height="20px" width="20px" -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
-            <path
-              d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
-          </svg>
-        </span>
-      </a>
-    </div>
 
     <div class="sidebar-separator">
       <!-- <i class="material-symbols-outlined sidebar-icons">
@@ -474,7 +438,7 @@
     <!-- ---------------------------------------- -->
     <div class="sb-last-item" [class.item-active]="SUPPORT_ROUTE_IS_ACTIVE" id="support"
       matTooltipClass="sb-mat-tooltip"
-      [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )" #tooltip="matTooltip"
+      [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : (companyName + ' - ver. ' + version)" #tooltip="matTooltip"
       matTooltipPosition='right' matTooltipHideDelay="100" routerLinkActive="active" (click)="stopScroll()">
 
       <a id="support-anchor" *ngIf="isVisibleSupportMenu" class="customAncor" [matMenuTriggerFor]="menuSupport"

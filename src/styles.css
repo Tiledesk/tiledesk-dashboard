@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Set base font-size to 10px for easier rem calculations (1rem = 10px instead of 16px) */
+/* This ensures compatibility with existing rem values after Angular 5 upgrade */
+html {
+  font-size: 10px; /* 1rem = 10px */
+}
+
 /* Angular ng-select themes */
 /* @import "~@ng-select/ng-select/themes/default.theme.css"; */
 /* @import "~@ng-select/ng-select/themes/material.theme.css"; */

@@ -48,7 +48,7 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    // console.log('[WIDGET-CHAT-COMP] primaryColor', this.primaryColor)
+    console.log('[WIDGET-CHAT-COMP] primaryColor', this.primaryColor)
     const current_url = this.router.url
     if (current_url.indexOf('onboarding') > -1) {
       this.IS_ONBOARDING_PAGE = true;
@@ -70,8 +70,8 @@ export class WidgetChatComponent implements OnInit, OnChanges {
     // console.log('[WIDGET-CHAT-COMP] showAttachmentButton ', this.showAttachmentButton)
     // console.log('[WIDGET-CHAT-COMP] showAudioRecorderButton ', this.showAudioRecorderButton)
     // console.log('[WIDGET-CHAT-COMP] LABEL_PLACEHOLDER ', this.LABEL_PLACEHOLDER)
-    // console.log('[WIDGET-CHAT-COMP] themeColorOpacity ', this.themeColorOpacity)
-    if (this.themeColorOpacity === '0.50') {
+    console.log('[WIDGET-CHAT-COMP] themeColorOpacity ', this.themeColorOpacity)
+    if (this.themeColorOpacity === '0') {
       this.generateLinearGradient(this.primaryColor)
     } else if (this.themeColorOpacity === '1') {
       this.genetateThemeColorNoOpacity();
@@ -149,7 +149,7 @@ translateHardcodedStrings(selectedLangCode) {
     // console.log('[WIDGET-CHAT-COMP] primaryColorRGBA_050', this.primaryColorRGBA_050)
 
     this.linearGradient = 'linear-gradient( 180grad, ' + this.primaryColorRGBA_1 + ', ' + this.primaryColorRGBA_050 + ')';
-    // console.log('[WIDGET-CHAT-COMP] linearGradient', this.linearGradient)
+    console.log('[WIDGET-CHAT-COMP] linearGradient', this.linearGradient)
   }
 
 

@@ -3,7 +3,7 @@ import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from 
 
 import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { Router, NavigationEnd, NavigationStart, Event as NavigationEvent } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, Event as NavigationEvent, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs'
 import PerfectScrollbar from 'perfect-scrollbar'; // https://github.com/mdbootstrap/perfect-scrollbar
 
@@ -39,6 +39,7 @@ import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
+import { KeycloakService } from './services/keycloak.service';
 
 // import { UsersService } from './services/users.service';
 
@@ -108,16 +109,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private projectService: ProjectService,
         private sleekplanSsoService: SleekplanSsoService,
         private sleekplanService: SleekplanService,
-        private sleekplanApiService: SleekplanApiService
-
+        private sleekplanApiService: SleekplanApiService,
+        private keycloakService: KeycloakService,
+        private localDbService: LocalDbService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
+        
     ) {
 
+      
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                // console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                this.logger.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
                 this.currenturl = event.url
 
                 if (this.currenturl === '/projects' || this.currenturl === '/login') {
@@ -133,24 +137,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.getCurrentProject(event.urlAfterRedirects)
                 }
 
-
-                const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
-                if (event.url !== '/signup') {
-                    // this.logger.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
-                    if (grecaptchaBadgeEl) {
-                        grecaptchaBadgeEl.style.visibility = 'hidden'
-                    }
-                } else {
-                    if (grecaptchaBadgeEl) {
-                        grecaptchaBadgeEl.style.visibility = 'visible'
-                    }
-                }
+                
+                this.setRecaptchaVisibility(this.currenturl)
+                // const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
+                // // if (event.url === '/signup' || event.url === '/login') {
+                // //     console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
+                // //     if (grecaptchaBadgeEl) {
+                // //         // grecaptchaBadgeEl.style.visibility = 'hidden'
+                // //         grecaptchaBadgeEl.style.visibility = 'visible'
+                // //     }
+                // // } else {
+                // //      console.log('[APP-COMPONENT] grecaptchaBadgeEl (else)', grecaptchaBadgeEl)
+                // //     if (grecaptchaBadgeEl) {
+                // //         // grecaptchaBadgeEl.style.visibility = 'visible'
+                // //         grecaptchaBadgeEl.style.visibility = 'hidden'
+                // //     }
+                // // }
             }
         })
-
-
-
-
+        
         // this.logger.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
@@ -266,6 +271,32 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 browserRefresh = !router.navigated;
                 this.logger.log('[APP-COMPONENT] browserRefresh ', browserRefresh)
                 this.logger.log('[APP-COMPONENT] browserRefresh ', event)
+                this.logger.log('[APP-COMPONENT] router ', router)
+
+                // ------------------------------------------------------------------------------------------
+                // Adds the tiledesk_logOut query parameter to each path change if the "autologin" 
+                // was performed with tiledesk_logOut=false
+                // ------------------------------------------------------------------------------------------  
+                        
+                const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+                this.logger.log('[APP-COMPONENT] SSO tiledeskLogOut ', tiledeskLogOut)
+
+                if (!tiledeskLogOut) return;
+
+                const urlTree: UrlTree = this.router.parseUrl(event.url);
+
+                // Aggiungo solo se non esiste già
+                if (!urlTree.queryParams['tiledesk_logOut']) {
+                    urlTree.queryParams['tiledesk_logOut'] = tiledeskLogOut;
+
+                    // Navigazione solo se URL cambia
+                    const newUrl = this.router.serializeUrl(urlTree);
+                    if (newUrl !== event.url) {
+                    this.router.navigateByUrl(newUrl);
+                    }
+                }
+                // ./ --------------------------------------------------------------------------------------- 
+
                 if (browserRefresh === true) {
                     window.addEventListener('load', () => {
                         this.logger.log('Page fully loaded');
@@ -280,6 +311,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
 
+    }
+
+     ngAfterViewInit() {
+        this.runOnRouteChange();
+        // this.hideFooter();
+    }
+
+    private setRecaptchaVisibility(url: string) {
+        this.logger.log('[APP-COMPONENT] setRecaptchaVisibility  url (in the method) ',url ) 
+        const grecaptchaBadgeEl = document.querySelector('.grecaptcha-badge') as HTMLElement;
+        this.logger.log('[APP-COMPONENT] setRecaptchaVisibility  grecaptchaBadgeEl' , grecaptchaBadgeEl) 
+        const showRecaptcha = url === '/signup' || url === '/login';
+
+        if (grecaptchaBadgeEl) {
+            grecaptchaBadgeEl.style.setProperty('visibility', showRecaptcha ? 'visible' : 'hidden', 'important');
+        }
     }
 
     hideSleekPlanRightPopup = () => {
@@ -530,7 +577,18 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getCurrentUserAndConnectToWs();
 
         this.listenToSwPostMessage();
+
+        this.listenToPostMessage();
+        // this.keycloakInit()
         // this.getCurrentProject()
+    }
+
+    keycloakInit() {
+        this.keycloakService.init().then(authenticated => {
+            if (!authenticated) {
+                this.logger.log('[APP-COMPONENT] 🔑 Login required');
+            }
+        });
     }
 
 
@@ -645,6 +703,31 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 const count = +that.usersLocalDbService.getForegrondNotificationsCount();
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count)
                 that.wsRequestsService.publishAndStoreForegroundRequestCount(count, 'App-comp listenToSwPostMessage')
+            })
+        }
+    }
+
+    listenToPostMessage(){
+        this.logger.log('[APP-COMPONENT] listenToPostMessage - CALLED: ')
+        if(window){
+            const that = this
+            window.addEventListener('message', function(event) {
+                if(event && event.data?.type === 'onUpdateNewConversationBadge'){
+                    that.logger.log('[APP-COMPONENT] catched event:', event.data)
+                    if(window['AGENTDESKTOP']){
+                        that.logger.log('[APP-COMPONENT] setNotification to AgentDesktop:', event.data)
+                        window['AGENTDESKTOP']['TAB'].Badge(event.data.detail.count)
+                    }
+                    
+                }
+
+                if(event && event.data?.type === 'onOpenTicketExternally'){
+                    that.logger.log('[APP-COMPONENT] catched event:', event.data)
+                    if(window['openTicketOnHDA']){
+                        that.logger.log('[APP-COMPONENT] openTIcket on External Service:', event.data)
+                        window['openTicketOnHDA'](event.data.detail.request_id)
+                    }
+                }
             })
         }
     }
@@ -1158,12 +1241,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // (this.route === '/signup') ||
                 if ((this.route === '/login') ||
+                    (this.route === '/login?tiledesk_logOut=false') ||
+                    (this.route === '/login?tiledesk_logOut=true') ||
                     (this.route === '/signup') ||
                     (this.route.indexOf('/signup') !== -1) ||
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route === '/forgotpsw') ||
                     (this.route === '/projects') ||
                     (this.route === '/projects?showid=y') ||
+                    (this.route === '/projects?tiledesk_logOut=false') ||
+                    (this.route === '/projects?tiledesk_logOut=true') ||
                     (this.route.indexOf('/verify') !== -1) ||
                     (this.route.indexOf('/resetpassword') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1) ||
@@ -1267,14 +1354,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-
-
-
-    ngAfterViewInit() {
-        this.runOnRouteChange();
-        this.hideFooter();
-    }
-
     hideFooter() {
         const elemFooter = <HTMLElement>document.querySelector('footer');
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
@@ -1374,16 +1453,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    isMaps(path) {
-        var titlee = this.location.prepareExternalUrl(this.location.path());
-        titlee = titlee.slice(1);
-        if (path == titlee) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
+    // isMaps(path) {
+    //     var titlee = this.location.prepareExternalUrl(this.location.path());
+    //     titlee = titlee.slice(1);
+    //     if (path == titlee) {
+    //         return false;
+    //     }
+    //     else {
+    //         return true;
+    //     }
+    // }
     runOnRouteChange(): void {
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');

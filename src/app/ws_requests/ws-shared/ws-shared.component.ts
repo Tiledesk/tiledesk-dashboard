@@ -492,7 +492,7 @@ export class WsSharedComponent implements OnInit {
         //   resolve(false)
         // }
       },  (error)=> {
-          this.logger.error('[ROLE-GUARD] getProjectUserRole --> ERROR:', error)
+          this.logger.error('[WS-SHARED] getProjectUserRole --> ERROR:', error)
           resolve(error)
       })
     

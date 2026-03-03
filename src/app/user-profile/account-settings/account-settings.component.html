@@ -1,12 +1,11 @@
-<!-- margin-top:6px;  -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+
+<!-- <div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-
   {{ "Settings" | translate }}
-</div>
-<!-- style="top: 5px;" -->
-<ul class="bottom-nav" >
+</div> -->
+
+<ul class="bottom-nav" style="top: 61px;">
   <li class="btn-with-border-effect border-from-center" (click)="goToUserProfile()">
     <a> {{ "UserProfile.Profile" | translate }} </a>
   </li>
@@ -21,7 +20,7 @@
   </li>
 </ul>
 
-<div class="main-content" style="padding-top:0px">
+<div class="main-content" style="padding-top:0px; margin-top: 95px;">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
@@ -42,13 +41,8 @@
 
             <div class="input-wrapper" style="max-width: 992px;">
               <div class="row">
-                <!-- <label class="col-sm-2 custom-label" style="height: 41px;
-                background: azure;
-                margin-top: 10px;
-                margin-bottom: 10px;">
-                  <span class="centered">  {{ "ExtremeMeasures" | translate }} </span>
-                </label> -->
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+               
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="input-group">
                     <!-- btn-danger -->
                     <button class="btn btn-red" (click)="openDeleteAccountModal()">
@@ -77,23 +71,7 @@
     <div class="modal-content custom--modal-content">
       <div class="modal-header" >
 
-        <button type="button" class="close" aria-label="Close" (click)="closeDeleteAccountModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <!-- <button type="button" class="close" aria-label="Close" (click)="closeDeleteAccountModal()"
-          style="position: absolute; right: 14px;top:19px">
-          <span aria-hidden="true">
-
-            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
-              <path
-                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
-              </path>
-            </svg>
-          </span>
-        </button> -->
-
-        <h4 class="modal-title warning">
-
+        <h4 class="modal-title warning" style="font-size: 14px;">
           <span class="modal-header-icon-wpr"> 
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
@@ -105,23 +83,21 @@
             {{ "DeleteAccount" | translate }}
 
           </span>
-
-
         </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeDeleteAccountModal()"></button>
       </div>
 
-      <!-- <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px"> -->
-      <div class="modal-body" style="height: 150px; padding: 16px 24px;">
+      <div class="modal-body" style="height: 150px; padding: 16px 24px; font-size: 14px;">
 
         
         <div *ngIf="hasClickedDeleteAccount === false" class="row">
           <div class="col-sm-12" style="margin-bottom: 10px;">
-            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-TOP: 10px; margin-bottom: 20px">
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-top: 10px; margin-bottom: 20px">
 
               <span *ngIf="deleteAccount_hasError === false">
                 {{ "AreYouSureYouWantDeleteYourAccount" | translate}}?
 
-                <span style="font-size: 15px;line-height: 27px;display: block;margin-top: 12px;">
+                <span style="font-size: 14px;line-height: 18px;display: block;margin-top: 12px;">
                   <span style="display: block;">
                     {{'AllProjectWillBeDeleted' | translate:translateparamCountOfPrjct }}.
                   </span>
@@ -203,12 +179,13 @@
           {{ "Cancel" | translate }}
         </button>
 
-        <button *ngIf="hasClickedDeleteAccount === false" style="margin-top:0px" class="btn btn-red"
+        <button *ngIf="hasClickedDeleteAccount === false" style="margin-bottom: 0px;margin-left: 12px;" class="btn btn-red"
           (click)="deleteAccount()" [disabled]="countOfPrjctsProfileTypePayment > 0">
           {{ "YesDeleteMyAccount" | translate }}
         </button>
 
-        <button *ngIf="showSpinner_deleteAccount === false" style="margin-top:0px" class="btn btn-tdblu-no-boxshadow"
+        <button *ngIf="showSpinner_deleteAccount === false"  class="btn btn-tdblu-no-boxshadow"
+          style="margin-bottom: 0px;margin-left: 12px;"
           (click)="goToLogin()">
           <span style="vertical-align: middle">  {{ "Ok" | translate }}</span>
         </button>

@@ -25,7 +25,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
-import scrollToWithAnimation from 'scrollto-with-animation'
+// import scrollToWithAnimation from 'scrollto-with-animation'
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -38,6 +40,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number;
   @Input() current_selected_prjct: any;
+
+  CHAT_PANEL_MODE: boolean = false;
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
@@ -92,7 +96,14 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   scrollYposition: any;
   storedRequestId: string
   CHANNELS_NAME = CHANNELS_NAME;
-  
+
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
+
   /**
    * Constructor
    * @param botLocalDbService 
@@ -125,7 +136,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
     public route: ActivatedRoute,
-
+    public rolesService: RolesService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -166,7 +177,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
-  
+    this.listenToProjectUser()
 
     // this.router.events.subscribe((event) => { 
     //   if (event instanceof NavigationEnd || event instanceof NavigationStart) {    
@@ -176,26 +187,24 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   }
 
- 
-
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      scrollToWithAnimation(
-        this.scrollEl, // element to scroll
-        'scrollTop', // direction to scroll
-        +this.scrollYposition, // target scrollY (0 means top of the page)
-        500, // duration in ms
-        'easeInOutCirc', 
-        // Can be a name of the list of 'Possible easing equations' or a callback
-        // that defines the ease. # http://gizma.com/easing/
-  
-        () => { // callback function that runs after the animation (optional)
-          this.logger.log('done!')
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId',  this.storedRequestId)
-        }
-      );
-    }, 100);
+    // setTimeout(() => {
+    //   scrollToWithAnimation(
+    //     this.scrollEl, // element to scroll
+    //     'scrollTop', // direction to scroll
+    //     +this.scrollYposition, // target scrollY (0 means top of the page)
+    //     500, // duration in ms
+    //     'easeInOutCirc',
+    //     // Can be a name of the list of 'Possible easing equations' or a callback
+    //     // that defines the ease. # http://gizma.com/easing/
+
+    //     () => { // callback function that runs after the animation (optional)
+    //       this.logger.log('done!')
+    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+    //       this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
+    //     }
+    //   );
+    // }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -215,34 +224,13 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
       // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
     }
-   
-    
-  
+
+
+
     if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
 
-
-      // if (this.wsRequestsServed.length > 0) {
-      //   setTimeout(() => {
-      //     scrollToWithAnimation(
-      //       this.scrollEl, // element to scroll
-      //       'scrollTop', // direction to scroll
-      //       +this.scrollYposition, // target scrollY (0 means top of the page)
-      //       500, // duration in ms
-      //       'easeInOutCirc', 
-      //       // Can be a name of the list of 'Possible easing equations' or a callback
-      //       // that defines the ease. # http://gizma.com/easing/
-       
-      //       () => { // callback function that runs after the animation (optional)
-      //         this.logger.log('done!')
-      //         this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-      //         this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId',  this.storedRequestId)
-      //       }
-      //     );
-      //   }, 100);
-
-      // }
     }
   }
 
@@ -250,6 +238,101 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
+        console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+
+        // PERMISSION_TO_EDIT_FLOWS
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+
+      });
   }
 
   onContextMenu(event: MouseEvent, item) {
@@ -553,7 +636,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // }
 
   goToServedNTR() {
-    this.router.navigate(['project/' + this.projectId + '/all-conversations'],{ queryParams: { leftfilter: 200 } });
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'], { queryParams: { leftfilter: 200 } });
   }
 
 
@@ -587,14 +670,29 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
 
       } else if (bot.type === 'tilebot') {
+
+          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
+
         botType = 'tilebot'
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
 
       } else if (bot.type === 'tiledesk-ai') {
+          if(!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
         botType = 'tiledesk-ai'
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
 
       } else {
+         if(!this.PERMISSION_TO_UPDATE_APP) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
+
         botType = bot.type
         this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
@@ -609,8 +707,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToAgentProfile(member_id) {
+    if (!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
     this.logger.log('[WS-REQUESTS-LIST][SERVED]  goToAgentProfile ', member_id)
-
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
 
@@ -661,44 +762,52 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // }
 
   archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - HAS CLICKED ARCHIVE REQUEST (CLOSE SUPPORT GROUP)');
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - HAS CLICKED ARCHIVE REQUEST (CLOSE SUPPORT GROUP)');
 
 
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
-       
-       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-       this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+      this.wsRequestsService.closeSupportGroup(request_id)
+        .subscribe((data: any) => {
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
 
-       if (request_id === this.storedRequestId) {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+          if (request_id === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+          //  NOTIFY ERROR 
+          this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
           this.usersLocalDbService.removeFromStorage('last-selection-id')
-       }
-      
-      }, (err) => {
-        this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+          // this.ngOnInit();
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
+          //  NOTIFY SUCCESS
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
-        //  NOTIFY ERROR 
-        this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        this.usersLocalDbService.removeFromStorage('last-selection-id')
-        // this.ngOnInit();
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-
-        //  NOTIFY SUCCESS
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-      });
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   // ------------------------------------------
   // Join request
   // ------------------------------------------
   joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
     //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
     //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
     //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
@@ -760,6 +869,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
       }
     }
+
   }
 
   presentModalYouCannotJoinChat() {
@@ -1013,64 +1123,68 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   archiveSelected() {
-    let count = 0;
-    this.requests_selected.forEach((requestid, index) => {
-      this.wsRequestsService.closeSupportGroup(requestid)
-        .subscribe((data: any) => {
-          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-          
-
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
-
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
-   
-          if (requestid === this.storedRequestId) {
-            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STORAGE storedRequestId ', this.storedRequestId);
-             this.usersLocalDbService.removeFromStorage('last-selection-id')
-          }
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      let count = 0;
+      this.requests_selected.forEach((requestid, index) => {
+        this.wsRequestsService.closeSupportGroup(requestid)
+          .subscribe((data: any) => {
+            //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
-          // this.allChecked = false;
-          // this.requests_selected = []
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
-        }, (err) => {
-          this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
+
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
+
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STORAGE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
 
 
-          //  NOTIFY ERROR 
-          // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-        }, () => {
-          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
-          this.usersLocalDbService.removeFromStorage('last-selection-id')
-          // this.ngOnInit();
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-          count = count + 1;
-          //  NOTIFY SUCCESS
-          // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-          const index = this.requests_selected.indexOf(requestid);
-          if (index > -1) {
-            this.requests_selected.splice(index, 1);
-            
-          }
-          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
+            // this.allChecked = false;
+            // this.requests_selected = []
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
 
-          if (this.requests_selected.length === 0) {
-            this.allChecked = false;
-            var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
-            this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-            this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
-            if (checkbox) {
-              checkbox.indeterminate = false;
+            //  NOTIFY ERROR 
+            // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+          }, () => {
+            //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+            // this.ngOnInit();
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
+            count = count + 1;
+            //  NOTIFY SUCCESS
+            // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+            const index = this.requests_selected.indexOf(requestid);
+            if (index > -1) {
+              this.requests_selected.splice(index, 1);
 
             }
-          }
+            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
-        });
-    })
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
+
+            if (this.requests_selected.length === 0) {
+              this.allChecked = false;
+              var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
+              this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+              this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+              if (checkbox) {
+                checkbox.indeterminate = false;
+
+              }
+            }
+
+          });
+      })
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
 
@@ -1201,7 +1315,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   onLogClick(request: any) {
     if (this.projectId && request.request_id) {
-      this.router.navigate([`project/${this.projectId}/wsrequests/logs/request/${request.request_id}`]);
+      // this.router.navigate([`project/${this.projectId}/wsrequests/logs/request/${request.request_id}`]);
+      this.router.navigate([`project/${this.projectId}/logs/request/${request.request_id}`]);
     } else {
       this.logger.error('Project ID o webhook_id non disponibili per la navigazione ai log.');
     }

@@ -38,9 +38,15 @@ p {
     margin: 20px 0px;
   
     label {
-      color: black;
-      font-size: 12px;
-      font-weight: 500;
+    //   color: black;
+    //   font-size: 12px;
+    //   font-weight: 500;
+
+    color: #7695a5;
+    font-weight: 400;
+    font-size: 14px;
+    padding-bottom: 2px;
+
     }
   }
   
@@ -49,6 +55,7 @@ p {
     border-radius: 8px;
     border: solid 1px #e0e0e0;
     max-width: 500px;
+    font-weight: 400;
   }
   
   .password-input {

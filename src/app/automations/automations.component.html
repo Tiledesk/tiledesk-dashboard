@@ -1,5 +1,5 @@
 
-<p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+<!-- <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
   [class.chrome-gt-100]="isChromeVerGreaterThan100" [class.chrome-lt-100]="!isChromeVerGreaterThan100">
 
   <span *ngIf="showAutomationsList"> 
@@ -11,7 +11,7 @@
   <span *ngIf="showAutomationDetail"> 
     {{'BroadcastDetails' | translate}} 
   </span> 
-</p>
+</p> -->
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
@@ -284,7 +284,7 @@
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h4 style="font-weight: 400; font-family: var(--header-font-family);">{{ logs.length }} {{'RequestMsgsPage.Messages' | translate }}</h4>
+            <h4 style="font-weight: 400; font-family: var(--header-font-family); font-size:14px">{{ logs.length }} {{'RequestMsgsPage.Messages' | translate }}</h4>
             <button class="custom-button" (click)="reload('logs')">
               <span class="material-icons-round button-icon">sync</span>
               {{'Reload' | translate}}

@@ -44,7 +44,7 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
   /** Evento per aggiungere una FAQ dalla unanswered question */
   @Output() addFaqFromUnanswered = new EventEmitter<{q: UnansweredQuestion, done: (success: boolean) => void}>();
   @Output() refresh = new EventEmitter<void>();
-   /** Evento per caricare più domande */
+  /** Evento per caricare più domande */
   @Output() loadMore = new EventEmitter<void>();
 
   /** Domanda in fase di lavorazione */
@@ -103,7 +103,7 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
       width: '400px',
       data: {
         title: this.translate.instant('DiscardQuestion'), //'Discard Question',
-        message: this.translate.instant('AreYouSureYouWantToDiscard')  + '?', // 'Are you sure you want to discard this question?',
+        message: this.translate.instant('AreYouSureYouWantToDiscard') + '?', // 'Are you sure you want to discard this question?',
         confirmText: this.translate.instant('Discard'), //'Discard',
         cancelText: this.translate.instant('Cancel') //'Cancel'
       }

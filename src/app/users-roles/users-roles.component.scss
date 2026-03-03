@@ -1,0 +1,42 @@
+
+.page-header--wrapper {
+    justify-content: space-between;
+    display: flex;
+    flex-flow: row;
+    margin: 15px 26px;
+}
+
+
+.main--wrapper {
+  padding: 0px 15px;
+}
+
+.roles-card {
+    border-radius: var(--card-border-radius);
+}
+
+.page-title--wrapper-link-to-doc {
+  justify-content: space-between;
+  display: flex;
+  flex-flow: row;
+  margin: 15px 26px;
+  align-items: center;
+}
+
+.title--header-link-to-docs>span>svg {
+  fill: var(--blue-light);
+}
+
+.title--header-link-to-docs>a {
+  color: var(--blue-light) !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+  text-decoration: none;
+}
+
+.title--header-link-to-docs:hover>a {
+  text-decoration: underline;
+}

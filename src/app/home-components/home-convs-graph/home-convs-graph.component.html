@@ -7,12 +7,15 @@
         <div class="mr-4 text-2xl md:text-3xl graph-title tracking-tight leading-7">
           Conversations Overview
         </div>
-        <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-black" (click)="goToRequestsAnalytics()">
-          <span> More filter in Analytics </span>
-          <span class="material-icons m-i-arrow-on-black">
-            keyboard_arrow_right
-          </span>
-        </div>
+        <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+          <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-black" (click)="goToRequestsAnalytics()">
+            <span> More filter in Analytics </span>
+            <span class="material-icons m-i-arrow-on-black">
+              keyboard_arrow_right
+            </span>
+          </div>
+        </ng-container>
+
       </div>
 
 

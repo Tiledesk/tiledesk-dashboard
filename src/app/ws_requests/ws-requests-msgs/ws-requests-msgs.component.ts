@@ -47,7 +47,11 @@ import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
-import { removeEmojis } from 'app/utils/utils-message';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RoleService } from 'app/services/role.service';
+import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
+import { NavigationService } from 'app/services/navigation.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -82,13 +86,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @ViewChild('sendMessageTexarea', { static: false }) sendMessageTexarea: ElementRef;
 
   @ViewChild('Selecter', { static: false }) ngselect: NgSelectComponent;
+  
   @ViewChild('selecttagcombobox', { static: false }) selecttagcombobox: NgSelectComponent;
-  @ViewChild(NgSelectComponent, { static: false }) ngSelect: NgSelectComponent
+  // @ViewChild(NgSelectComponent, { static: false }) ngSelect: NgSelectComponent
+  @ViewChild('ngSelect') ngSelect!: any;
 
 
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
 
   @ViewChild('editFullnameDropdown', { static: false }) editFullnameDropdown: ElementRef;
+
 
   SERVER_BASE_PATH: string;
   CHAT_BASE_URL: string;
@@ -96,7 +103,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // messagesList: WsMessage[] = [];
   messagesList: any;
   showSpinner = true;
-  showViewedPages: boolean = false
+  showViewedPages: boolean = false;
+  showTicketAdvanced: boolean = false;
   ipAddress: string;
   // showSpinner = false;
   showSpinner_inModalUserList = true;
@@ -278,6 +286,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   calling_page: string = "conv_details"
 
   projectTeammates: any
+  allProjectUsers: any
   hasClickedFollow: boolean = false;
   selected: any
   selectedFollowers: any
@@ -325,6 +334,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   otherTabs: boolean = false
   mainTabs: boolean = true
+
+  // Assign/Reassign modal tabs
+  assignTab0: boolean = true; // HumanTeammates
+  assignTab1: boolean = false; // Chatbots
+  assignTab2: boolean = false; // Departments
+  @ViewChild('assignReassignTabsContainer', { static: false }) assignReassignTabsContainer: ElementRef;
+  assignTabsCanScrollLeft: boolean = false;
+  assignTabsCanScrollRight: boolean = false;
+  isManuallyScrollingTabs: boolean = false; // Flag to prevent auto-scroll during manual scroll
 
   tagContainerElementHeight: any;
   convTagContainerElementHeight: any
@@ -382,9 +400,40 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   panelOpenState = false;
 
+  isDropdownOpen: boolean = false;
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
+
+  private observer!: MutationObserver;
+  @ViewChild('tagsContainer') tagsContainer!: ElementRef;
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_SEND_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_REOPEN: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_STATUS: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_PRIORITY: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS: boolean;
+  PERMISSION_TO_UPDATE_SMART_ASSIGNMENT: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_TAGS: boolean;
+  PERMISSION_TO_READ_TAGS: boolean;
+  PERMISSION_TO_UPDATE_REQUEST_NOTES: boolean;
+  PERMISSION_TO_REASSIGN_REQUEST: boolean;
+  PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST: boolean;
+  PERMISSION_TO_LEFT_REQUEST: boolean;
+  PERMISSION_TO_SEND_TRANSCRIPT: boolean;
+  PERMISSION_TO_BAN_VISITOR: boolean;
+  PERMISSION_TO_UPDATE_LEAD: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
+  PERMISSION_TO_VIEW_RATING_SECTION: boolean;
+  PERMISSION_TO_VIEW_CONTACT_SECTION: boolean;
+  PERMISSION_TO_VIEW_TICKET_ID: boolean;
+  PERMISSION_TO_VIEW_ALL_TAGS: boolean;
+
+  private backSub?: Subscription;
   /**
    * Constructor
    * @param router 
@@ -433,7 +482,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService: AllProjectsCacheService
+    public rolesService: RolesService,
+    private roleService: RoleService,
+    private cacheService: AllProjectsCacheService,
+    private navSvc: NavigationService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -494,6 +546,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
 
     this.getTagContainerElementHeight()
+    
+    // Check assign/reassign tabs scroll on resize
+    this.checkAssignTabsScroll();
   }
 
   getTagContainerElementHeight() {
@@ -504,24 +559,48 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.requestInfoListElementHeight = requestInfoListElement.offsetHeight + 59
     }
 
-    const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
-    this.logger.log('tagContainerElement ', tagContainerElement)
-    if (tagContainerElement) {
-      this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
+    // const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
+    // console.log('tagContainerElement ', tagContainerElement)
+    // if (tagContainerElement) {
+    //   this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
 
-      this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
-      this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+    //   this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
+    //   console.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
 
-      this.convTagContainerElementHeight = tagContainerElement.offsetHeight + 20 + 'px';
-      this.logger.log('this.tagContainerElementHeight ', this.convTagContainerElementHeight)
-    }
+    //   this.convTagContainerElementHeight = tagContainerElement.offsetHeight + 20 + 'px';
+    //   this.logger.log('this.tagContainerElementHeight ', this.convTagContainerElementHeight)
+    // }
+     if (!this.tagsContainer) return;
+
+  // Iniziale
+  this.updateTagContainerHeight();
+
+  // Osserva i cambiamenti nel DOM delle tag
+  this.observer = new MutationObserver(() => {
+    this.updateTagContainerHeight();
+  });
+
+  this.observer.observe(this.tagsContainer.nativeElement, {
+    childList: true, // osserva aggiunte/rimozioni di elementi
+    subtree: false
+  });
   }
+
+
+updateTagContainerHeight() {
+  const element = this.tagsContainer.nativeElement as HTMLElement;
+  const height = element.offsetHeight;
+
+  // Piccolo margine extra per estetica
+  this.convTagContainerElementHeight = height + 20 + 'px';
+  // console.log('[TAG HEIGHT] Altezza aggiornata:', this.convTagContainerElementHeight);
+}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
   ngOnInit() {
-
+    // this.roleService.checkRoleForCurrentProject('wsrequest-detail') moved in getWsRequestById$
     this.getParamRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -545,9 +624,456 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getRouteParams();
     this.getQueryParams();
     this.getProjectPlan();
+    this.listenToProjectUser()
 
     this.fileUploadAccept = this.appConfigService.getConfig().fileUploadAccept
     // this.getClickOutEditContactFullname()
+    this.listenToGoBack()
+  }
+  
+
+   ngAfterViewInit() {
+    // -----------------------------------
+    // Right sidebar width after view init
+    // -----------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
+    if (rightSidebar) {
+      this.rightSidebarWidth = rightSidebar.offsetWidth;
+    }
+
+    if (this.request) {
+      this.getfromStorageIsOpenAppSidebar()
+    }
+
+    // this.getAppsInstalledApps() // moved in get getProjectUserRole()
+
+
+    this.getTagContainerElementHeight()
+  }
+
+
+  ngOnDestroy() {
+    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    this.unsuscribeRequesterPresence(this.requester_id);
+    if (this.id_request) {
+      console.log('[WS-REQUESTS-MSGS] - sub flow ngOnDestroy 2 this.id_request run unsubscribe', this.id_request)
+      this.unsuscribeRequestById(this.id_request);
+      this.unsuscribeMessages(this.id_request);
+    }
+
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[WS-REQUESTS-MSGS] - Role:', status.role);
+        console.log('[WS-REQUESTS-MSGS] - Permissions:', status.matchedPermissions);
+
+        // ---------------------------
+        // PERMISSION_TO_UPDATE_LEAD 
+        // --------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
+
+            this.PERMISSION_TO_UPDATE_LEAD = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          } else {
+            this.PERMISSION_TO_UPDATE_LEAD = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_LEAD = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+        }
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_SEND_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_SEND)) {
+            // Enable update action
+            this.PERMISSION_TO_SEND_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_REQUEST 1 ', this.PERMISSION_TO_SEND_REQUEST);
+          } else {
+            this.PERMISSION_TO_SEND_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_REQUEST 2', this.PERMISSION_TO_SEND_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_SEND_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_SEND_REQUEST ', this.PERMISSION_TO_SEND_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // PERMISSION_TO_REOPEN
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
+            console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
+
+            this.PERMISSION_TO_REOPEN = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
+          } else {
+            this.PERMISSION_TO_REOPEN = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REOPEN 2', this.PERMISSION_TO_REOPEN);
+          }
+        } else {
+          this.PERMISSION_TO_REOPEN = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
+        }
+
+
+        // PERMISSION_TO_UPDATE_REQUEST_STATUS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_STATUS)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_STATUS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_STATUS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_STATUS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_STATUS 2', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_STATUS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_STATUS ', this.PERMISSION_TO_UPDATE_REQUEST_STATUS);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_PRIORITY
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_PRIORITY)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_PRIORITY 1 ', this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_PRIORITY 2', this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_PRIORITY ', this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_FOLLOWERS)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS 2', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS ', this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS);
+        }
+
+        // PERMISSION_TO_UPDATE_SMART_ASSIGNMENT
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_SMART_ASSIGNMENT)) {
+
+            this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_SMART_ASSIGNMENT 1 ', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
+          } else {
+            this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_SMART_ASSIGNMENT 2', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_SMART_ASSIGNMENT ', this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_TAGS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_TAGS)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_TAGS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_TAGS 1 ', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_TAGS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_TAGS 2', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_TAGS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_TAGS ', this.PERMISSION_TO_UPDATE_REQUEST_TAGS);
+        }
+
+        // PERMISSION_TO_UPDATE_REQUEST_NOTES
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE_NOTES)) {
+
+            this.PERMISSION_TO_UPDATE_REQUEST_NOTES = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_NOTES 1 ', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST_NOTES = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST_NOTES 2', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST_NOTES = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST_NOTES ', this.PERMISSION_TO_UPDATE_REQUEST_NOTES);
+        }
+
+        // PERMISSION_TO_REASSIGN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REASSIGN)) {
+
+            this.PERMISSION_TO_REASSIGN_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REASSIGN_REQUEST 1 ', this.PERMISSION_TO_REASSIGN_REQUEST);
+          } else {
+            this.PERMISSION_TO_REASSIGN_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_REASSIGN_REQUEST 2', this.PERMISSION_TO_REASSIGN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_REASSIGN_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_REASSIGN_REQUEST ', this.PERMISSION_TO_REASSIGN_REQUEST);
+        }
+
+        // PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_ADD)) {
+
+            this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST 1 ', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
+          } else {
+            this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST 2', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST ', this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST);
+        }
+
+        // PERMISSION_TO_LEFT_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_LEFT)) {
+
+            this.PERMISSION_TO_LEFT_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_LEFT_REQUEST 1 ', this.PERMISSION_TO_LEFT_REQUEST);
+          } else {
+            this.PERMISSION_TO_LEFT_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_LEFT_REQUEST 2', this.PERMISSION_TO_LEFT_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_LEFT_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_LEFT_REQUEST ', this.PERMISSION_TO_LEFT_REQUEST);
+        }
+
+        // PERMISSION_TO_SEND_TRANSCRIPT
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_TRANSCRIPT_SEND)) {
+
+            this.PERMISSION_TO_SEND_TRANSCRIPT = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_TRANSCRIPT 1 ', this.PERMISSION_TO_SEND_TRANSCRIPT);
+          } else {
+            this.PERMISSION_TO_SEND_TRANSCRIPT = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_TRANSCRIPT 2', this.PERMISSION_TO_SEND_TRANSCRIPT);
+          }
+        } else {
+          this.PERMISSION_TO_SEND_TRANSCRIPT = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_SEND_TRANSCRIPT ', this.PERMISSION_TO_SEND_TRANSCRIPT);
+        }
+
+        // PERMISSION_TO_READ_TAGS (IN TAGS SECTION )
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ)) {
+
+            this.PERMISSION_TO_READ_TAGS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TAGS 1 ', this.PERMISSION_TO_READ_TAGS);
+          } else {
+            this.PERMISSION_TO_READ_TAGS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TAGS 2', this.PERMISSION_TO_READ_TAGS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TAGS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TAGS ', this.PERMISSION_TO_READ_TAGS);
+        }
+
+
+        // PERMISSION_TO_BAN_VISITOR
+        if (status.role === 'owner') {
+          // Owner always has permission
+          this.PERMISSION_TO_BAN_VISITOR = true;
+          console.log('[WS-REQUESTS-MSGS] - Project user is owner (1)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+
+        } else if (status.role === 'admin' || status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_BAN_VISITOR = false;
+          console.log('[WS-REQUESTS-MSGS] - Project user is admin or agent (2)', 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_BAN_VISITOR = status.matchedPermissions.includes(PERMISSIONS.LEAD_BAN);
+          console.log('[WS-REQUESTS-MSGS] - Custom role (3)', status.role, 'PERMISSION_TO_BAN_VISITOR:', this.PERMISSION_TO_BAN_VISITOR);
+        }
+
+        // ---------------------------------
+        // PERMISSION_TO_EDIT_FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[WS-REQUESTS-MSGS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[WS-REQUESTS-MSGS] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+        // PERMISSION_TO_VIEW_ALL_TAGS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ_ALL)) {
+
+            this.PERMISSION_TO_VIEW_ALL_TAGS = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+          } else {
+            this.PERMISSION_TO_VIEW_ALL_TAGS = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_ALL_TAGS = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_ALL_TAGS ', this.PERMISSION_TO_VIEW_ALL_TAGS);
+        }
+
+        
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[WS-REQUESTS-MSGS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[WS-REQUESTS-MSGS] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[WS-REQUESTS-MSGS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+
+        // PERMISSION_TO_VIEW_RATING_SECTION
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.RATING_READ)) {
+
+            this.PERMISSION_TO_VIEW_RATING_SECTION = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_SECTION ', this.PERMISSION_TO_VIEW_RATING_SECTION);
+          } else {
+            this.PERMISSION_TO_VIEW_RATING_SECTION = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_RATING_SECTION ', this.PERMISSION_TO_VIEW_RATING_SECTION);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_RATING_SECTION = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_RATING_SECTION ', this.PERMISSION_TO_VIEW_RATING_SECTION);
+        }
+
+        // PERMISSION_TO_VIEW_TICKET_ID
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TICKET_ID_READ)) {
+
+            this.PERMISSION_TO_VIEW_TICKET_ID = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_TICKET_ID ', this.PERMISSION_TO_VIEW_TICKET_ID);
+          } else {
+            this.PERMISSION_TO_VIEW_TICKET_ID = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_VIEW_TICKET_ID ', this.PERMISSION_TO_VIEW_TICKET_ID);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_TICKET_ID = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TICKET_ID ', this.PERMISSION_TO_VIEW_TICKET_ID);
+        }
+
+        
+
+        // -----------------------------------
+        // PERMISSION_TO_VIEW_CONTACT_SECTION
+        // -----------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.LEADS_READ)) {
+            this.PERMISSION_TO_VIEW_CONTACT_SECTION = true
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_CONTACT_SECTION ', this.PERMISSION_TO_VIEW_CONTACT_SECTION);
+          } else {
+            this.PERMISSION_TO_VIEW_CONTACT_SECTION = false
+
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_CONTACT_SECTION ', this.PERMISSION_TO_VIEW_CONTACT_SECTION);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_CONTACT_SECTION = true
+          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_CONTACT_SECTION ', this.PERMISSION_TO_VIEW_CONTACT_SECTION);
+        }
+
+
+
+        // You can also check status.role === 'owner' if needed
+      });
+
   }
 
 
@@ -709,18 +1235,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
-        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
       }
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+          console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+          console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
         this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
@@ -740,31 +1266,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       } else if (this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
       }
-      // && this.hasSearchedBy
-
-      // Called by history with advanced search options opened 
-      // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
-
-      //   // Called by history with advanced search options closed 
-      // } else if (this.previousUrl === 'history' && !this.isOpenedAdvancedSearch) {
-
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-      //   // && this.hasSearchedBy
-
-      // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch && this.selectedDept) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
-
-      // Called by all-conversations with advanced search options opened 
-      // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
-
-      // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch && this.selectedDept) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
-
-      //   // Called by all-conversations with advanced search options closed
-      // } else if (this.previousUrl === 'all-conversations' && !this.isOpenedAdvancedSearch) {
-      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
     }
 
     if (this.previousUrl === 'all-conversations' && this.queryParams) {
@@ -778,14 +1279,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.previousUrl === undefined) {
       this._location.back();
     }
-
-
-    // } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // }
-
 
   }
 
@@ -821,21 +1314,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   addFollower(event) {
-    this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
-    this.wsRequestsService.addFollower(event.value, this.request.request_id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((res) => {
-        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+    if (this.PERMISSION_TO_UPDATE_REQUEST_FOLLOWERS) {
 
-      }, (error) => {
+      this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
+      this.wsRequestsService.addFollower(event.value, this.request.request_id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((res) => {
+          console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
 
-        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
+        }, (error) => {
 
-      }, () => {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ThereWasProblemUpdatingTheConversation"), 4, 'report_problem');
+          this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
 
-        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
+        }, () => {
 
-      });
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.ConversationUpdatedSuccessfully"), 2, 'done');
+          this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
+
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   removeFollower(event) {
@@ -945,14 +1445,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (prjctteammates) {
           // this.projectTeammates = prjctteammates
           this.projectTeammates = []
+          this.allProjectUsers = []
 
 
           prjctteammates.forEach(teammate => {
             this.logger.log('[WS-REQUESTS-MSGS] teammate', teammate)
             teammate['fullname'] = teammate['id_user']['firstname'] + ' ' + teammate['id_user']['lastname']
             this.projectTeammates.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
+            this.allProjectUsers.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
           });
-          this.logger.log('[WS-REQUESTS-MSGS] TEAMMATES ARRAY ', this.projectTeammates)
+          console.log('[WS-REQUESTS-MSGS] ---> TEAMMATES ARRAY ', this.projectTeammates)
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] GET TEAMMATES - ERROR  ', error);
@@ -1025,28 +1527,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
   }
 
-  ngAfterViewInit() {
-    // -----------------------------------
-    // Right sidebar width after view init
-    // -----------------------------------
-    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
-    if (rightSidebar) {
-      this.rightSidebarWidth = rightSidebar.offsetWidth;
-    }
-
-    if (this.request) {
-      this.getfromStorageIsOpenAppSidebar()
-    }
-
-    this.getAppsInstalledApps()
-
-  }
+ 
 
   getAppsInstalledApps() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallationWithApp(this.id_project).then((installations: any) => {
-        // this.logger.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
+        console.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
 
         this.dashboardApps = []
         this.webchatApps = []
@@ -1129,18 +1615,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  ngOnDestroy() {
-    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
 
-    this.unsuscribeRequesterPresence(this.requester_id);
-    if (this.id_request) {
-      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
-      this.unsuscribeRequestById(this.id_request);
-      this.unsuscribeMessages(this.id_request);
-    }
-  }
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
@@ -1344,9 +1819,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+        console.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.CURRENT_USER_ROLE = userRole;
+        if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
+            this.getAppsInstalledApps();
+        }
       })
   }
 
@@ -1380,10 +1858,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      if (this.current_selected_prjct && 
-          this.current_selected_prjct.id_project &&
-          this.current_selected_prjct.id_project.settings) {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.settings) {
+        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
         if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
 
           this.HIDE_CHATBOT_ATTRIBUTES = this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden;
@@ -1399,36 +1877,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (allowSendEmoji !== undefined) {
           this.ALLOW_TO_SEND_EMOJI = allowSendEmoji;
-          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
         } else {
           this.ALLOW_TO_SEND_EMOJI = true;
-          this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
         }
 
         // Is Enabled URLs Whitelist
         const isEnabledURLsWhitelist = this.current_selected_prjct.id_project.settings.allowed_urls;
         if (isEnabledURLsWhitelist !== undefined) {
           this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
-          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
+          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
             const urlsWitheList = this.current_selected_prjct.id_project.settings.allowed_urls_list
             if (urlsWitheList !== undefined) {
               this.URLS_WITHELIST = urlsWitheList;
-              this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+              console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
             }
-            this.logger.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
+            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
-          this.logger.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
+          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
         }
 
+
+        // if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.allow_send_emoji) {
+
+        //   this.ALLOW_TO_SEND_EMOJI = this.current_selected_prjct.id_project.settings.allow_send_emoji;
+        //   console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+
+        // } else {
+        //   this.ALLOW_TO_SEND_EMOJI = true;
+        //  console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
+        // }
       } else {
         this.HIDE_CHATBOT_ATTRIBUTES = false;
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
 
         this.ALLOW_TO_SEND_EMOJI = true
-        this.logger.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 3', this.ALLOW_TO_SEND_EMOJI)
+        console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 3', this.ALLOW_TO_SEND_EMOJI)
       }
 
 
@@ -1472,13 +1960,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      console.log('[WS-REQUESTS-MSGS] - sub flow getParamRequestId  ', params);
       if (params.requestid) {
         this.getRequesByIdRest(params.requestid)
       }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
-        // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId - id_request ', this.id_request);
+        console.log('[WS-REQUESTS-MSGS] - sub flow getParamRequestId - id_request ', this.id_request , 'here run unsuscribe from reuqest by id and message ');
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -1604,7 +2092,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    console.log('[WS-REQUESTS-MSGS] - sub flow CALLING SUBSCRIBE to Request-By-Id: ', id_request)
     let _id_request = ''
     if (id_request.includes('%2B')) {
       // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
@@ -1750,8 +2238,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe(async (wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - sub flow getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
+
+        console.log('[WS-REQUESTS-MSGS] wsrequest status this.request ', this.request.status)
+
+        if (this.request.status !== 1000) {
+          this.roleService.checkRoleForCurrentProject('wsrequest-detail')
+        } else {
+          this.roleService.checkRoleForCurrentProject('wsrequest-detail-history')
+        }
 
 
         if (this.request) {
@@ -1827,7 +2323,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               const storedTeammate = this.usersLocalDbService.getMemberFromStorage(this.request['closed_by']) //  localStorage.getItem('dshbrd----' + this.request['closed_by'] )
 
               if (storedTeammate) {
-                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
+                console.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammateObjct ', storedTeammate)
                 this.request['closed_by_label'] = this.translate.instant('By') + ' ' + storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by label ', this.request['closed_by_label'])
@@ -1975,7 +2471,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.members_array = this.request.participants;
           this.logger.log('[WS-REQUESTS-MSGS] - *** PARTICIPANTS_ARRAY ', this.members_array)
           this.logger.log('[WS-REQUESTS-MSGS] - *** currentUserID ', this.currentUserID)
-          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
           this.logger.log('[WS-REQUESTS-MSGS] - *** id_project ', this.request.id_project);
 
 
@@ -1986,43 +2482,44 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // }
           if (!this.CURRENT_USER_ROLE) {
             this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project)
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+            console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
           }
 
-        //  this.members_array.forEach(member => {
-        //    this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
-        //
-        //    // ----------------------------------------------------------------------------------------------
-        //    // disable notes and tags if the current user has agent role and is not among the participants
-        //    // ----------------------------------------------------------------------------------------------
-        //    
-        //    this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
-        //    this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
-        //    
-        //    if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-        //      this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
-        //      this.DISABLE_ADD_NOTE_AND_TAGS = true;
-        //      this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
-        //      this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
-        //    } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
-        //      this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
-        //      this.DISABLE_ADD_NOTE_AND_TAGS = false;
-        //      this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
-        //      this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
-        //    }
-        //    
-        //    this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member ', member);
-        //    this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member is bot?', member.includes('bot_'));
-        //    
-        //    
-        //    if (member.includes('bot_')) {
-        //      this.bot_participant_id = member.substr(4);
-        //      this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
-        //      
-        //    } else {
-        //      this.bot_participant_id = ''
-        //    }
-        //  });
+          // this.members_array.forEach(member => {
+          //   this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
+
+          //   // ----------------------------------------------------------------------------------------------
+          //   // disable notes and tags if the current user has agent role and is not among the participants
+          //   // ----------------------------------------------------------------------------------------------
+
+          //   this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+          //   this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
+
+          //   if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
+          //     console.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID, ' CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          //     this.DISABLE_ADD_NOTE_AND_TAGS = true;
+          //     this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+          //     this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
+          //   } else 
+          //   if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
+          //     console.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          //     this.DISABLE_ADD_NOTE_AND_TAGS = false;
+          //     this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+          //     this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
+          //   }
+
+          //   this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member ', member);
+          //   this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById member is bot?', member.includes('bot_'));
+
+
+          //   if (member.includes('bot_')) {
+          //     this.bot_participant_id = member.substr(4);
+          //     this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
+
+          //   } else {
+          //     this.bot_participant_id = ''
+          //   }
+          // });
 
           // ----------------------------------------------------------------------------------------------
           // check bot participants
@@ -2047,20 +2544,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
 
           if (this.CURRENT_USER_ROLE === 'agent') {
+          // if (this.CURRENT_USER_ROLE !== 'owner' && this.CURRENT_USER_ROLE !== 'admin') {
             const isCurrentUserParticipant = this.members_array.includes(this.currentUserID);
 
             if (isCurrentUserParticipant) {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANTS AND IS AGENT');
+              console.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANTS AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
             } else {
-              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANTS AND IS AGENT');
+              console.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANTS AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
             }
 
             this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
           }
+
 
           // ---------------------------------------------------------
           // @ Tags
@@ -2151,14 +2650,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           // Contact
           // ---------------------------------------------------------
-
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
 
             if (this.request.lead.email && !isValidEmail(this.request.lead.email)) {
               this.request.lead.email = null; // Or 'N/A', depending on what you want to display
             }
-
             this.contact_details = this.request.lead;
             this.logger.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
@@ -2496,8 +2993,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
- 
-
   onChangeContactEmail(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event)
     this.contactNewEmail = event;
@@ -2590,7 +3085,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
 
-    //  this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    console.log('[WS-REQUESTS-MSGS] - sub flow subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
@@ -2615,6 +3110,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   toggleViewedPages() {
     this.showViewedPages = !this.showViewedPages;
   }
+
+  toggleTicketAdvanced() {
+    this.showTicketAdvanced = !this.showTicketAdvanced;
+  }
+
 
   getWsMsgs$() {
     this.wsMsgsService.wsMsgsList$
@@ -2653,7 +3153,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.showSpinner = false;
 
         if (this.messagesList && this.messagesList.length !== this.ALL_MSG_LENGTH) {
-          this.scrollCardContetToBottom();
+          this.scrollCardContentToBottom();
         }
 
       }, error => {
@@ -2667,8 +3167,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -------------------------------------------------------------------------
   // Scroll
   // -------------------------------------------------------------------------
-  scrollCardContetToBottom() {
+  scrollCardContentToBottom() {
     setTimeout(() => {
+     this.logger.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ')
       // CHECK THIS
       const initialScrollPosition = this.myScrollContainer.nativeElement;
       // this.logger.log('[WS-REQUESTS-MSGS] SCROLL CONTAINER ', initialScrollPosition)
@@ -2760,14 +3261,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ---------------------------------------------------------------------------------------
   // @ Tags
   // ---------------------------------------------------------------------------------------
-  toggleAddTagInputAndGetTags() {
-    const elem_add_tag_btn = <HTMLElement>document.querySelector('.add_tag_btn');
-    this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
-    elem_add_tag_btn.blur();
-    this.getTag();
-    this.diplayAddTagInput = !this.diplayAddTagInput
-    this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
-  }
+  // toggleAddTagInputAndGetTags() {
+  //   const elem_add_tag_btn = <HTMLElement>document.querySelector('.add_tag_btn');
+  //   this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
+  //   elem_add_tag_btn.blur();
+  //   this.getTag();
+  //   this.diplayAddTagInput = !this.diplayAddTagInput
+  //   this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
+  // }
 
   addTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
@@ -2775,6 +3276,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       return obj._id === this.tag;
     });
 
+    this.ngSelect.close()
+    this.ngSelect.blur()
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
 
     // No more used
@@ -2822,56 +3325,123 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
-  // No more used - replace with manageRequestTags
-  // updateRequestTags(id_request, tagsArray, fromaction) {
-  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
-  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
-  //   this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
-  //     .subscribe((data: any) => {
-  //       this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
-  //     }, (err) => {
-  //       this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
-  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
-  //     }, () => {
-  //       this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
-  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
-  //       this.getTagContainerElementHeight()
-  //     });
-  // }
 
-  getTag() {
-    this.loadingTags = true
-    this.tagsService.getTags().subscribe((tags: any) => {
-      if (tags) {
-        // tagsList are the available tags that the administrator has set on the tag management page
-        // and that are displayed in the combo box 'Add tag' of this template
-        this.tagsList = tags
-        this.tagsList = this.tagsList.slice(0)
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.tagsList ', this.tagsList);
+  async getTag() {
+  this.loadingTags = true;
 
-        // "tagArray" are the tags present in the "this.request" object
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsList length', this.tagsList.length);
+  try {
+    const tags: any[] = await this.tagsService.getTags().toPromise();
+    console.log('[WS-REQUESTS-MSGS] - GET TAGS - tags ', tags);
+    
+    if (!tags) {
+      this.loadingTags = false;
+      return;
+    }
 
-        // if (this.tagsList.length > 0) {
-        this.typeALabelAndPressEnter = this.translate.instant('SelectATagOrCreateANewOne');
-        // } else {
-        //   this.typeALabelAndPressEnter = this.translate.instant('Tags.YouHaveNotAddedAnyTags');
+    this.tagsList = tags;
+
+    // Assicurati che allProjectUsers sia inizializzato
+    if (!this.allProjectUsers) {
+      this.allProjectUsers = [];
+    }
+    // console.log('[WS-REQUESTS-MSGS] - GET TAGS - allProjectUsers', this.allProjectUsers);
+
+
+    // Creo un array di Promesse per recuperare utenti remoti
+    const userPromises = this.tagsList.map(async (tag) => {
+
+      //  console.log('[WS-REQUESTS-MSGS] - GET TAGS  - CONFRONTO:', {
+      //   createdBy: tag.createdBy,
+      //   allProjectUsers_ids: this.allProjectUsers.map(u => u.userid)
+      // });
+      // Controlla se l'utente è già in allProjectUsers
+      let user = this.allProjectUsers.find(u => u.userid === tag.createdBy);
+      // console.log('[WS-REQUESTS-MSGS] - GET TAGS - user ', user);
+      
+      if (!user) {
+        // Controlla nello storage locale
+        const localUser = this.usersLocalDbService.getMemberFromStorage(tag.createdBy);
+        // console.log('[WS-REQUESTS-MSGS] - GET TAGS - user from storage', localUser);
+      
+
+        if (localUser) {
+          localUser['fullname'] = localUser['id_user']['firstname'] + ' ' + localUser['id_user']['lastname']
+          user = { 
+            label:  localUser['fullname'], 
+            value: localUser['_id'], 
+            userid: localUser['id_user']['_id']
+          };
+          // Aggiungi a allProjectUsers
+          this.allProjectUsers.push(user);
+        } 
+        
+        // else {
+        //   // Recupero l'utente da remoto
+        //   const remoteUser = await this.getMemberFromRemoteForTag(tag.createdBy);
+        //   if (remoteUser) {
+        //     user = { 
+        //       label: remoteUser['id_user']['firstname'] + ' ' + remoteUser['id_user']['lastname'], 
+        //       value: remoteUser._id, 
+        //       userid: remoteUser['id_user']['_id']
+        //     };
+        //     // Aggiorno l'array allProjectUsers
+        //     this.allProjectUsers.push(user);
+        //     // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Added user to allProjectUsers:', user);
+        //   }
         // }
-        // -----------------------------------------------------------------------------------
-        // Splice tags from the tagslist the tags already present in the "this.request" object
-        // ------------------------------------------------------------------------------------
-        // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
       }
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-MSGS] - GET TAGS - ERROR  ', error);
-      this.loadingTags = false
-    }, () => {
-      this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray)
-      this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS * COMPLETE *');
-      this.loadingTags = false
+      
+      return user;
     });
+
+    // Aspetto che tutte le promesse siano completate
+    await Promise.all(userPromises);
+
+    // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Final allProjectUsers ', this.allProjectUsers);
+
+    // Filtro le tag solo se NON ho il permesso di vedere tutte
+    if (!this.PERMISSION_TO_VIEW_ALL_TAGS) {
+      const validUserIds = this.allProjectUsers.map(u => u.userid);
+      this.tagsList = this.tagsList.filter(tag => validUserIds.includes(tag.createdBy));
+      // console.log('[WS-REQUESTS-MSGS] - GET TAGS - Filtered tagsList ', this.tagsList);
+    }
+
+    // Copia array per trigger change detection
+    this.tagsList = [...this.tagsList];
+
+    this.typeALabelAndPressEnter = this.translate.instant('AddTagToConversation');
+    this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+
+  } catch (error) {
+    this.logger.error('[TAGS] - GET TAGS - ERROR', error);
+  } finally {
+    this.loadingTags = false;
   }
+}
+
+getMemberFromRemoteForTag(userid: string): Promise<any> {
+  // console.log('[TAGS] - GET TAGS - getMemberFromRemoteForTag', userid);
+  return new Promise((resolve, reject) => {
+    this.usersService.getProjectUserById(userid).subscribe(
+      (projectUser: any) => {
+        if (projectUser && projectUser.length > 0) {
+          const user = projectUser[0];
+          // console.log('[TAGS] - GET TAGS - Found remote user:', user);
+          resolve(user);
+        } else {
+          // console.log('[TAGS] - GET TAGS - User not found:', userid);
+          resolve(null);
+        }
+      },
+      (error) => {
+        this.logger.warn('[TAGS] - getMemberFromRemoteForTag - ERROR', error);
+        // console.log('[TAGS] - GET TAGS - Error fetching user, resolving null');
+        resolve(null);
+      }
+    );
+  });
+}
+
 
   // tag_name: string;
   // tag_selected_color = '#43B1F2';
@@ -2925,9 +3495,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       let self = this;
       this.logger.log(' this.ngSelect', this.ngSelect)
-      if (this.ngSelect) {
-        this.ngSelect.close()
-        this.ngSelect.blur()
+      if (self.ngSelect) {
+        self.ngSelect.close()
+        self.ngSelect.blur()
       }
       this.getTagContainerElementHeight()
 
@@ -2974,8 +3544,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   removeTag(tag: string) {
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_TAGS) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return;
+    }
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
-      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
+      console.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
       this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag id TO REMOVE: ', tag['_id']);
       // ----------------------------
       // NO MORE USED
@@ -3155,8 +3729,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
+
+
+
   addNote() {
     // this.disableMainPanelScroll();
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_NOTES) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
       this.showSpinnerInAddNoteBtn = true;
       this.wsRequestsService.createNote(this.new_note, this.id_request)
@@ -3179,10 +3760,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         });
     }
+
   }
 
 
   deleteNote(note_id) {
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_NOTES) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return
+    }
     this.notify.operationinprogress(this.translationMap.get('Processing'));
 
     this.wsRequestsService.deleteNote(this.id_request, note_id)
@@ -3230,27 +3816,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // elMainPanel.scrollTo(0,scrollpos)
   }
 
-  // ---------------------------------------------------------------------------------------
-  // @ Priority
-  // ---------------------------------------------------------------------------------------
+
+  handleBlockedSelectClick(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+  }
+
+
   onChangeSelectedPriority(selectedPriority) {
-    this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
-    this.selectedPriority = selectedPriority;
+    if (this.PERMISSION_TO_UPDATE_REQUEST_PRIORITY) {
+      this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
+      this.selectedPriority = selectedPriority;
 
-    this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
-      .subscribe((res: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
+      this.wsRequestsService.updatePriority(this.id_request, selectedPriority)
+        .subscribe((res: any) => {
+          console.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY - RES ', res);
 
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorOccurredWhileUpdatingTheCnversationPriority'), 4, 'report_problem');
-      }, () => {
-        // panel.scrollTop = panel.scrollHeight;
-        this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('TheConversationPriorityHasBeenSuccessfullyUpdated'), 2, 'done');
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorOccurredWhileUpdatingTheCnversationPriority'), 4, 'report_problem');
+        }, () => {
+          // panel.scrollTop = panel.scrollHeight;
+          console.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('TheConversationPriorityHasBeenSuccessfullyUpdated'), 2, 'done');
 
-      });
-
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+    }
   }
 
   // ---------------------------------------------------------------------------------------
@@ -3535,7 +4129,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
-    this.logger.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+    if (this.actionInModal === 'reassign') {
+
+      if (!this.PERMISSION_TO_REASSIGN_REQUEST) {
+        this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+        return;
+      }
+    }
+
+    if (this.actionInModal === 'invite') {
+      if (!this.PERMISSION_TO_ADD_TEAMMATE_TO_REQUEST) {
+        this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+        return;
+      }
+    }
+
+    console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
     this.closeMoreOptionDropdown();
 
 
@@ -3568,7 +4177,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getProjectUsersAndBots();
     this.getDepartments();
     this.displayUsersListModal = 'block'
+    // Initialize assign/reassign tabs - select first tab (HumanTeammates)
+    this.assignTab0 = true;
+    this.assignTab1 = false;
+    this.assignTab2 = false;
     this.logger.log('[WS-REQUESTS-MSGS] - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
+    // Check scroll after modal opens
+    setTimeout(() => {
+      this.checkAssignTabsScroll();
+    }, 200);
     const actualHeight = window.innerHeight;
     this.logger.log('[WS-REQUESTS-MSGS] - ON OPEN USER LIST MODAL -> ACTUAL WINDOW HEIGHT  ', actualHeight);
     const actualWidth = window.innerWidth;
@@ -3895,7 +4512,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
-    this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
+
+    console.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
     Swal.fire({
       title: this.translationMap.get('VisitorsPage.AddAgent'),
       text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', { user: userfirstname + ' ' + userlastname }),
@@ -3954,6 +4572,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
         }
       });
+
   }
 
 
@@ -4062,11 +4681,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   sendMessage(block) {
     let message = '/' + block;
     this.selectedResponseTypeID = 3
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', message);
+    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', message);
     this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
       .subscribe((msg) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
@@ -4233,7 +4852,54 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
- resolveRequest(requestid) {
+  handleDropdownClick(event: MouseEvent, request?: any): void {
+    console.log('[WS-REQUESTS-MSGS] - handleDropdownClick ');
+    
+    // Check if request is archived for more than 10 days
+    if (request && this.checkIfReopenIsDisabled(request)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.presentModalReopenConvIsNotPossible();
+      return;
+    }
+    
+    if (!this.PERMISSION_TO_UPDATE_REQUEST_STATUS) {
+      event.preventDefault(); // Prevent dropdown from opening
+      // event.stopPropagation();
+      event.stopImmediatePropagation();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return;
+    }
+
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  // Check if reopening is disabled for a specific request (archived for more than 10 days)
+  checkIfReopenIsDisabled(request: any): boolean {
+    if (!request || !request.closed_at) {
+      return false;
+    }
+    const requestclosedAt = moment(request.closed_at);
+    const currentTime = moment();
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    return daysDiff > 10;
+  }
+
+  // Handle click on dropdown menu panel
+  handleDropdownMenuClick(event: MouseEvent, request?: any): void {
+    // Check if request is archived for more than 10 days
+    if (request && this.checkIfReopenIsDisabled(request)) {
+      // Only show modal if clicking on the menu itself, not on items
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'UL' || target.classList.contains('dropdown-menu')) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.presentModalReopenConvIsNotPossible();
+      }
+    }
+  }
+
+  resolveRequest(requestid) {
     if (this.CHAT_PANEL_MODE) {
       this.archiveRequestWithConfimationDialog(requestid)
     } else {
@@ -4243,7 +4909,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-   archiveRequestWithConfimationDialog(requestid) {
+  archiveRequestWithConfimationDialog(requestid) {
+    if (!this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return
+    }
 
     Swal.fire({
       title: this.translationMap.get('AreYouSure') + "?",
@@ -4297,40 +4967,47 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-
   archiveRequest(requestid) {
-    this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
-    this.wsRequestsService.closeSupportGroup(requestid)
-      .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+      this.wsRequestsService.closeSupportGroup(requestid)
+        .subscribe((data: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
 
-        this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
 
-        if (requestid === this.storedRequestId) {
-          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
-          this.usersLocalDbService.removeFromStorage('last-selection-id')
-        }
-      },
-        (err) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
+          if (requestid === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+        },
+          (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
 
-          //  NOTIFY ERROR 
-          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
-        }, () => {
+            //  NOTIFY ERROR 
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
+          }, () => {
 
-          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
-          //  NOTIFY SUCCESS
-          this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+            //  NOTIFY SUCCESS
+            this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
 
-          let convWokingStatus = ''
-          this.updateRequestWorkingStatus(convWokingStatus)
-        });
+            let convWokingStatus = ''
+            this.updateRequestWorkingStatus(convWokingStatus)
+          });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   reopenArchivedRequest(request, request_id) {
+    if (!this.PERMISSION_TO_REOPEN) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
     this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
     this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
     // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
@@ -4369,6 +5046,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
+
   }
 
   presentModalReopenConvIsNotPossible() {
@@ -4401,8 +5079,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     })
   }
 
+
+  getJoinTooltipMessage(): string {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      return this.translate.instant('YonDontHavePermissionsToPerformThisAction');
+    }
+
+    if (this.request?.status !== 1000) {
+      return this.translate.instant('ThisConversationIsNotAssignedToYou');
+    }
+
+    return this.translate.instant('ThisConversationIsClosedReopenItToJoin');
+  }
+
+
   // JOIN TO CHAT GROUP
   onJoinHandled() {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
       if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
         this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array ', this.agents_array)
@@ -4422,6 +5118,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
       this.joinChat()
     }
+
   }
 
 
@@ -4457,7 +5154,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - addParticipant TO CHAT GROUP * COMPLETE *');
 
-        this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RequestMsgsPage.YouHaveBeenSuccessfullyAddedToTheChat"), 2, 'done');
         this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
         this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
       });
@@ -4465,6 +5162,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   openleaveChatModal() {
+    if (!this.PERMISSION_TO_LEFT_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
+
     if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
 
       if (this.agents_array.length === 1) {
@@ -4499,8 +5201,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalLeaveTheChat() {
     Swal.fire({
-      title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
-      // text: this.translationMap.get('Done'),
+      // title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
+      title: this.translationMap.get('AreYouSure') + "?",
+      text: this.translate.instant('YouAreAboutToLeaveTheConversation'),
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
@@ -4734,6 +5437,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   displayModalDownloadTranscript() {
+    console.log('[WS-REQUESTS-MSGS] displayModalDownloadTranscript PERMISSION_TO_SEND_TRANSCRIPT ', this.PERMISSION_TO_SEND_TRANSCRIPT)
+    if (!this.PERMISSION_TO_SEND_TRANSCRIPT) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return
+    }
+
     if (!this.overridePay) {
       if (this.isVisiblePaymentTab) {
 
@@ -4933,7 +5642,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
 
 
-    if (this.CURRENT_USER_ROLE === 'owner') {
+    if (this.CURRENT_USER_ROLE === 'owner' || this.PERMISSION_TO_BAN_VISITOR === true) {
       if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.logger.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
@@ -4956,8 +5665,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
-      // this.presentModalAgentCannotManageAvancedSettings()
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings();
+      // this.presentModalOnlyOwnerCanManageAdvancedProjectSettings();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
     }
 
   }
@@ -5312,8 +6021,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openContactDetailsInNewWindow() {
-    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
-    window.open(url, '_blank');
+    if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
+      window.open(url, '_blank');
+    } else {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
+       window.open(url, '_top');
+    }
   }
 
   goToMemberProfile(member, member_id: any) {
@@ -5338,24 +6052,43 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         } else if (bot.type === 'tilebot') {
           botType = 'tilebot'
+
+          if (!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
           if (this.CURRENT_USER_ROLE !== 'agent') {
             // this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
             goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
           }
         } else if (bot.type === 'tiledesk-ai') {
           botType = 'tiledesk-ai'
+
+          if (!this.PERMISSION_TO_EDIT_FLOWS) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
           if (this.CURRENT_USER_ROLE !== 'agent') {
             goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
           }
         } else {
+
+          if (!this.PERMISSION_TO_UPDATE_APP) {
+            this.notify.presentDialogNoPermissionToPermomfAction()
+            return;
+          }
+
           if (this.CURRENT_USER_ROLE !== 'agent') {
             this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
           }
           botType = bot.type
         }
 
-
       } else {
+        if (!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+          this.notify.presentDialogNoPermissionToPermomfAction()
+          return;
+        }
         // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
         this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
       }
@@ -5704,8 +6437,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  // removeEmojis(text: string): string {
+  //   // Remove all emoji characters including ZWJ sequences and modifiers
+  //   return text.replace(
+  //     /([\u231A-\u231B]|\u23E9|\u23EA|\u23EB|\u23EC|\u23F0|\u23F3|\u25FD|\u25FE|\u2614|\u2615|\u2648-\u2653|\u267F|\u2693|\u26A1|\u26AA|\u26AB|\u26BD|\u26BE|\u26C4|\u26C5|\u26CE|\u26D4|\u26EA|\u26F2|\u26F3|\u26F5|\u26FA|\u26FD|\u2705|\u270A|\u270B|\u2728|\u274C|\u274E|\u2753|\u2754|\u2755|\u2757|\u2795|\u2796|\u2797|\u27B0|\u27BF|\u2B1B|\u2B1C|\u2B50|\u2B55|\u3030|\u303D|\u3297|\u3299|\uD83C[\uDC04-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDFFF]|\uFE0F|\u200D)+/gu,
+  //     ''
+  //   );
+  // }
+
+  // not used - used the check availble in utils-message
+  removeEmojis(text: string): string {
+    const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Emoji}\u200d]+/gu;
+    return text.replace(emojiRegex, '');
+  }
+
   onMessageChange(msg: string) {
-    this.logger.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
+    // console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg)
     // if (!this.ALLOW_TO_SEND_EMOJI) {
     //   this.chat_message = removeEmojis(msg);
     // }
@@ -5716,19 +6463,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
       const messageWithoutEmojis = removeEmojis(message).trim();
       this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
-       if ( this.showEmojiWarning === true) { 
+      if (this.showEmojiWarning === true) {
         this.triggerEmojiWarning();
-       }
-      
+      }
     } else {
       this.showEmojiWarning = false;
     }
   }
 
-  extractUrls(text: string): string[] {
-    const urlRegex = /https?:\/\/[^\s]+/g;
-    return text.match(urlRegex) || [];
-  }
+
+
+extractUrls(text: string): string[] {
+  // Rileva URL con o senza protocollo (http/https)
+  const urlRegex = /\b((https?:\/\/)?(www\.)?[a-z0-9.-]+\.[a-z]{2,})(\/[^\s]*)?/gi;
+  const matches = text.match(urlRegex) || [];
+  // Normalizza: aggiunge https:// se manca, così il parsing con new URL() funziona
+  return matches.map((url) => {
+    if (!/^https?:\/\//i.test(url)) {
+      return 'https://' + url;
+    }
+    return url;
+  });
+}
 
 
 
@@ -5741,137 +6497,156 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   triggerEmojiWarning() {
-     this.logger.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning ')
     this.showEmojiWarning = true;
     setTimeout(() => {
       this.showEmojiWarning = false;
     }, 3000); // 3000 =3 seconds
-     this.logger.log('[WS-REQUESTS-MSGS] - triggerEmojiWarning - showEmojiWarning ', this.showEmojiWarning)
   }
 
-
   sendChatMessage() {
-    // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
+    if (this.PERMISSION_TO_SEND_REQUEST) {
+      // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
-    const requestclosedAt = moment(this.request['closed_at']);
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
-    const currentTime = moment();
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime);
+      const requestclosedAt = moment(this.request?.closed_at);
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
+      const currentTime = moment();
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime);
 
-    const daysDiff = currentTime.diff(requestclosedAt, 'd');
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
-    if (this.request.status === 1000 && daysDiff > 10) {
-      this.presenModalMessageCouldNotBeSent();
-    } else {
+      const daysDiff = currentTime.diff(requestclosedAt, 'd');
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
 
-      if (this.selectedResponseTypeID && this.IS_CURRENT_USER_JOINED === false) {
-        this.reopenConversation(this.id_request)
-      }
+       console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - HAS_SELECTED_SEND_AS_SOLVED?', this.HAS_SELECTED_SEND_AS_SOLVED)
 
-      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
-      let _chat_message = ''
-      if (this.type !== 'file') {
-        _chat_message = this.chat_message
-      } else if (this.type === 'file') {
-        // msg = [${metadata.name}](${metadata.src}) + '\n' + msg
-        if (this.chat_message) {
-          _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
-        } else {
-          _chat_message = `[${this.metadata.name}](${this.metadata.src})`
+      if (this.request?.status === 1000 && daysDiff > 10) {
+        this.presenModalMessageCouldNotBeSent();
+      } else {
+
+        if (this.selectedResponseTypeID && this.IS_CURRENT_USER_JOINED === false) {
+          this.reopenConversation(this.id_request)
         }
-      }
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+       
 
-      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
-      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
-        
-      if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
-        this.logger.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
-        this.chat_message = '';
-        return;
-      }
 
-      
-      if (!this.ALLOW_TO_SEND_EMOJI) {
-        if (_chat_message && _chat_message.trim().length > 0) { 
-          const messageWithoutEmojis = removeEmojis(_chat_message).trim();
+        // if (this.HAS_SELECTED_SEND_AS_SOLVED) {
+        //   if (this.CHAT_PANEL_MODE) {
+        //     this.archiveRequestWithConfimationDialog(this.id_request)
+        //   } else {
+        //     this.archiveRequest(this.id_request)
+        //   }
 
-          // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
-          if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message.trim().length) {
-            this.triggerEmojiWarning();
-            return;
+        // } 
+
+        let _chat_message = ''
+        if (this.type !== 'file') {
+          _chat_message = this.chat_message
+        } else if (this.type === 'file') {
+          if (this.chat_message) {
+            _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
+          } else {
+            _chat_message = `[${this.metadata.name}](${this.metadata.src})`
           }
-
-          _chat_message = messageWithoutEmojis;
         }
-      }
 
-      
-      // if (this.IS_ENABLED_URLS_WHITELIST) {
-      //     if (_chat_message && _chat_message.trim().length > 0) { 
-      //       const urlsInMessage = this.extractUrls(_chat_message);
-      //       this.logger.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
-      //       this.logger.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message', _chat_message)
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles ', this.uploadedFiles)
 
-      //       // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
-      //       let internalWhitelist: string[] = [];
-      //       if (this.type === 'file' && this.metadata?.src) {
-      //         try {
-      //           const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
-      //           internalWhitelist = [fileDomain];
-      //           this.logger.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
-      //         } catch (e) {
-      //           this.logger.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
-      //         }
-      //       }
+        if ((_chat_message === '' || !_chat_message?.trim()) && !this.uploadedFiles) {
+          console.log('[WS-REQUESTS-MSGS] - Messaggio vuoto senza file');
+          this.chat_message = '';
+          return;
+        }
 
-      //       const nonWhitelistedDomains = urlsInMessage.filter((url) => {
-      //         try {
-      //           const domain = new URL(url).hostname.toLowerCase();
+        if (!this.ALLOW_TO_SEND_EMOJI) {
+          if (_chat_message && _chat_message.trim().length > 0) {
+            const messageWithoutEmojis = removeEmojis(_chat_message).trim();
+            console.log('[WS-REQUESTS-MSGS] messageWithoutEmojis - SEND CHAT MESSAGE ', messageWithoutEmojis)
+            // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
+            if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message?.trim()?.length) {
+              this.triggerEmojiWarning();
+              return;
+            }
+            _chat_message = messageWithoutEmojis;
+          }
+        }
 
-      //           // unisci whitelist configurata e interna
-      //           const combinedWhitelist = [...this.URLS_WITHELIST, ...internalWhitelist];
 
-      //           // Check if domain matches any whitelist rule
-      //           const isWhitelisted = combinedWhitelist.some(whitelisted => {
-      //             whitelisted = whitelisted.toLowerCase().trim();
+        // if (_chat_message === '' && !this.uploadedFiles) {
+        //    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message 2', _chat_message)
+        //    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - _chat_message 2 uploadedFiles', this.uploadedFiles)
 
-      //             // Match exact domain
-      //             if (whitelisted === domain) return true;
+        //   //  this.chat_message = _chat_message
+        //   this.chat_message = ''
+        //   return;
+        // }
 
-      //             // Match wildcard domain (*.example.com)
-      //             if (whitelisted.startsWith('*.')) {
-      //               const baseDomain = whitelisted.substring(2); // remove '*.'
-      //               return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
-      //             }
 
-      //             return false;
-      //           });
+        // const normalizedMessage = _chat_message?.trim() || '';
 
-      //           return !isWhitelisted;
-      //         } catch (e) {
-      //           // Invalid URL - consider it not allowed
-      //           return true;
-      //         }
-      //       });
+        // if (normalizedMessage === '' && (!this.uploadedFiles)) {
+        //   console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - messaggio vuoto', _chat_message);
+        //   console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - uploadedFiles', this.uploadedFiles);
 
-      //       if (nonWhitelistedDomains.length > 0) {
-      //         this.logger.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
-      //         this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
-      //         return;
-      //       }
-      //     }
-      //   }
+        //   // reset textarea
+        //   this.chat_message = '';
+        //   return;
+        // }
 
-      if (this.IS_ENABLED_URLS_WHITELIST) {
-          if (_chat_message && _chat_message.trim().length > 0) { 
+        // // Se arrivi qui, il messaggio o i file sono validi
+        // _chat_message = normalizedMessage;
+
+        // if (this.IS_ENABLED_URLS_WHITELIST) {
+        //   if (_chat_message && _chat_message?.length > 0) { 
+        //     const urlsInMessage = this.extractUrls(_chat_message);
+        //     console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+        //     console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+
+
+        //     const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+        //       try {
+        //         const domain = new URL(url).hostname.toLowerCase();
+
+        //         // Check if domain matches any whitelist rule
+        //         const isWhitelisted = this.URLS_WITHELIST.some(whitelisted => {
+        //           whitelisted = whitelisted.toLowerCase().trim();
+
+        //           // Match exact domain
+        //           if (whitelisted === domain) return true;
+
+        //           // Match wildcard domain (*.example.com)
+        //           if (whitelisted.startsWith('*.')) {
+        //             const baseDomain = whitelisted.substring(2); // remove '*.'
+        //             return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+        //           }
+
+        //           return false;
+        //         });
+
+        //         return !isWhitelisted;
+        //       } catch (e) {
+        //         // Invalid URL - consider it not allowed
+        //         return true;
+        //       }
+        //     });
+
+        //     if (nonWhitelistedDomains.length > 0) {
+        //       console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+        //       this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
+        //       return;
+        //     }
+        //   }
+        // }
+
+        if (this.IS_ENABLED_URLS_WHITELIST) {
+          if (_chat_message && _chat_message.trim().length > 0) {
             const urlsInMessage = this.extractUrls(_chat_message);
-            this.logger.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
-            this.logger.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
+            console.log('[WS-REQUESTS-MSGS] urlsInMessage ++++ :', urlsInMessage);
+            console.log('[WS-REQUESTS-MSGS] URLS_WITHELIST ++++ :', this.URLS_WITHELIST);
 
             // INTERNAL WHITELIST dinamica basata sull'URL del file (se presente)
             let internalWhitelist: string[] = [];
@@ -5879,9 +6654,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               try {
                 const fileDomain = new URL(this.metadata.src).hostname.toLowerCase();
                 internalWhitelist = [fileDomain];
-                this.logger.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
+                console.log('[WS-REQUESTS-MSGS] INTERNAL_WHITELIST ++++ :', internalWhitelist);
               } catch (e) {
-                this.logger.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
+                console.error('[WS-REQUESTS-MSGS] Errore parsing dominio da metadata.src', e);
               }
             }
 
@@ -5916,53 +6691,63 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             });
 
             if (nonWhitelistedDomains.length > 0) {
-              this.logger.log('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+              console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
               this.triggerWarning(this.translate.instant('ThisMessageContainsURLFromDomainNotAllowed'));
               return;
             }
           }
         }
 
-      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
 
-      this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
-        .subscribe((msg) => {
+        this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
+          .subscribe((msg) => {
 
-          this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
-        }, (error) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+            console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE RESP ', msg);
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
-        }, () => {
-          this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
-          this.chat_message = undefined;
-          this.uploadedFiles = undefined;
-          this.metadata = undefined;
-          this.type = undefined;
-          this.existAnAttacment = false;
-          this.sendMessageTexarea.nativeElement.style.height = null;
-
-          let convWokingStatus = ""
-          if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
-            convWokingStatus = 'open'
-            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
-          } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
-            convWokingStatus = 'pending'
-            this.updateRequestWorkingStatusAndReopen(convWokingStatus)
-          } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
-            convWokingStatus = ''
-            if (this.CHAT_PANEL_MODE) {
+          }, () => {
+            this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
+            this.chat_message = undefined;
+            this.uploadedFiles = undefined;
+            this.metadata = undefined;
+            this.type = undefined;
+            this.existAnAttacment = false;
+            this.sendMessageTexarea.nativeElement.style.height = null;
+            let convWokingStatus = ""
+            if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+              convWokingStatus = 'open'
+              
+              this.updateRequestWorkingStatusAndReopen(convWokingStatus)
+              
+            } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+              convWokingStatus = 'pending'
+             
+              this.updateRequestWorkingStatusAndReopen(convWokingStatus)
+             
+            } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+              convWokingStatus = ''
+              if (this.CHAT_PANEL_MODE) {
                 this.archiveRequestWithConfimationDialog(this.id_request)
               } else {
                 this.archiveRequest(this.id_request)
               }
 
-          }
+            }
 
-          //this.updateRequestWorkingStatus(convWokingStatus)
+            
 
-        });
+          });
+      }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+
+      this.chat_message = undefined;
+      this.uploadedFiles = undefined;
+      this.metadata = undefined;
+      this.type = undefined;
+      this.existAnAttacment = false;
+      this.sendMessageTexarea.nativeElement.style.height = null
     }
   }
 
@@ -5980,12 +6765,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.reopenConversation(this.id_request)
       })
   }
+  
 
   updateRequestWorkingStatus(convWokingStatus) {
+    console.log('-----> convWokingStatus ', convWokingStatus)
     this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
       .subscribe((request) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+        console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
 
@@ -6036,22 +6823,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedSolved(calledby) {
-    // this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;
     if (calledby === 'updatedWorkingStatus') {
       let convWokingStatus = ''
       this.updateRequestWorkingStatus(convWokingStatus)
+    
 
-       if (this.CHAT_PANEL_MODE) {
+      if (this.CHAT_PANEL_MODE) {
         this.archiveRequestWithConfimationDialog(this.id_request)
       } else {
         this.archiveRequest(this.id_request)
       }
 
     }
-   // this.archiveRequest(this.id_request)
+
+
 
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -6059,7 +6848,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   isOpenDropdown(_is0penDropDown) {
-    this.is0penDropDown = _is0penDropDown
+    if (this.PERMISSION_TO_UPDATE_REQUEST_STATUS) {
+      this.is0penDropDown = _is0penDropDown
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
+
     // this.logger.log('[WS-REQUESTS-MSGS] this.is0penDropDown ',this.is0penDropDown)  
   }
 
@@ -6158,6 +6952,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Attachments
   // -------------------------------------------
   onPasteInSendMsg(event: ClipboardEvent) {
+
+    //  if (!this.ALLOW_TO_SEND_EMOJI) {
+    //   this.chat_message = removeEmojis(this.chat_message);
+    // }
 
     const items = event.clipboardData?.items;
     // const items = (event.clipboardData || event.originalEvent.clipboardData).items;
@@ -6287,8 +7085,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
       if (result) {
+        this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
         const file = result.file
         const image = result.imagePreview
 
@@ -6432,6 +7230,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onFileSelected($event) {
+    if (!this.PERMISSION_TO_SEND_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
     const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
@@ -6439,7 +7241,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
-    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files[0]', $event.target.files[0]);
     // this.uploadedFiles = $event.target.files[0];
     // this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
@@ -6557,130 +7359,137 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOff() {
-    Swal.fire({
-      title: this.translationMap.get('AreYouSure') + '?',
-      text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.translate.instant('ConvertToOffline'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: true,
-      reverseButtons: true,
-      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    if (this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT) {
+      Swal.fire({
+        title: this.translationMap.get('AreYouSure') + '?',
+        text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.translate.instant('ConvertToOffline'),
+        cancelButtonText: this.translate.instant('Cancel'),
+        confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
+        customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
 
-      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
-      // dangerMode: true,
-      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
+        // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
+        // dangerMode: true,
+        // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
 
-          this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
+            this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
 
-          }, (error) => {
-            this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
+            }, (error) => {
+              this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            Swal.fire({
-              title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
-              icon: "error",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
+                icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              });
+
+            }, () => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
+
+              Swal.fire({
+                title: this.translationMap.get('Done') + "!",
+                icon: "success",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+
+              });
+
             });
-
-          }, () => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
-
-            Swal.fire({
-              title: this.translationMap.get('Done') + "!",
-              icon: "success",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
-              confirmButtonText: this.translate.instant('Ok'),
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-
-            });
-
-          });
-        } else {
-          // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-          // swal("Your imaginary file is safe!");
-        }
-      });
+          } else {
+            // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   smartAssignmentOn() {
-    Swal.fire({
-      title: this.translationMap.get('AreYouSure') + '?',
-      text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.translate.instant('ConvertToOnline'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: true,
-      reverseButtons: true,
-      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    if (this.PERMISSION_TO_UPDATE_SMART_ASSIGNMENT) {
+      Swal.fire({
+        title: this.translationMap.get('AreYouSure') + '?',
+        text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.translate.instant('ConvertToOnline'),
+        cancelButtonText: this.translate.instant('Cancel'),
+        confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
+        customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
-      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
-      // dangerMode: true,
-      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
+        // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
+        // dangerMode: true,
+        // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
 
-          this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
+            this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
 
-          }, (error) => {
-            this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
+            }, (error) => {
+              this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
 
-            Swal.fire({
-              title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
-              icon: "error",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
+                icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              });
+
+            }, () => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
+
+              Swal.fire({
+                title: this.translationMap.get('Done') + "!",
+                icon: "success",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+
+                // button: "OK",
+                // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+
+              });
+
             });
-
-          }, () => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
-
-            Swal.fire({
-              title: this.translationMap.get('Done') + "!",
-              icon: "success",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
-              confirmButtonText: this.translate.instant('Ok'),
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-
-              // button: "OK",
-              // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-
-            });
-
-          });
-        } else {
-          // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-          // swal("Your imaginary file is safe!");
-        }
-      });
-
+          } else {
+            // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   // --------------------------------------------------
@@ -6688,11 +7497,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // --------------------------------------------------
 
   openAddContactNameForm($event) {
+    console.log('[WS-REQUESTS-MSGS] - openAddContactNameForm PERMISSION_TO_UPDATE_LEAD', this.PERMISSION_TO_UPDATE_LEAD)
+    if (this.PERMISSION_TO_UPDATE_LEAD === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     $event.stopPropagation();
     this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
-    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
+    this.logger.log('[WS-REQUESTS-MSGS] - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-    this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+    this.logger.log('[WS-REQUESTS-MSGS] elemDropDown EDIT CONTACT NAME ', elemDropDown)
     if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
 
       elemDropDown.classList.add("dropdown__menu-form--active");
@@ -6831,10 +7645,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.tab3 = false;
     this.tab4 = false;
     this.logger.log('haSelectedTab1 ', this.tab1)
-    this.getTag();
-    setTimeout(() => {
-      this.getTagContainerElementHeight()
-    }, 1000);
+    // this.getTag();
+    // setTimeout(() => {
+    //   this.getTagContainerElementHeight()
+    // }, 1000);
   }
 
   hasSelectedTab2() {
@@ -6885,12 +7699,245 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.tab4 = false;
   }
 
+  // Assign/Reassign modal tab methods
+  hasSelectedAssignTab0() {
+    this.assignTab0 = true;
+    this.assignTab1 = false;
+    this.assignTab2 = false;
+    this.logger.log('hasSelectedAssignTab0', this.assignTab0);
+    this.checkAssignTabsScroll(true); // Allow auto-scroll when tab is selected
+  }
+
+  hasSelectedAssignTab1() {
+    this.assignTab0 = false;
+    this.assignTab1 = true;
+    this.assignTab2 = false;
+    this.logger.log('hasSelectedAssignTab1', this.assignTab1);
+    this.checkAssignTabsScroll(true); // Allow auto-scroll when tab is selected
+  }
+
+  hasSelectedAssignTab2() {
+    this.assignTab0 = false;
+    this.assignTab1 = false;
+    this.assignTab2 = true;
+    this.logger.log('hasSelectedAssignTab2', this.assignTab2);
+    this.checkAssignTabsScroll(true); // Allow auto-scroll when tab is selected
+  }
+
+  // Check if tabs can scroll and update arrow visibility
+  checkAssignTabsScroll(shouldScrollToSelected: boolean = false) {
+    if (this.CHAT_PANEL_MODE === true && this.assignReassignTabsContainer) {
+      setTimeout(() => {
+        const container = this.assignReassignTabsContainer.nativeElement;
+        const tabsContainer = container.querySelector('.assign-reassign-tabs');
+        if (tabsContainer) {
+          let scrollLeft = tabsContainer.scrollLeft;
+          const scrollWidth = tabsContainer.scrollWidth;
+          const clientWidth = tabsContainer.clientWidth;
+          
+          // If we're very close to the start (within 5px), snap to exactly 0
+          // This ensures the first tab is completely visible
+          if (scrollLeft > 0 && scrollLeft < 5) {
+            tabsContainer.scrollLeft = 0;
+            scrollLeft = 0;
+            this.logger.log('[ASSIGN-TABS] Snapped scroll to 0 to show first tab completely');
+          }
+          
+          // Use a tolerance (5px) to account for rounding errors and sub-pixel rendering
+          const tolerance = 5;
+          const maxScrollLeft = scrollWidth - clientWidth;
+          
+          this.assignTabsCanScrollLeft = scrollLeft > tolerance;
+          // Check if we can still scroll right (if there's more content to the right)
+          this.assignTabsCanScrollRight = maxScrollLeft > tolerance && scrollLeft < (maxScrollLeft - tolerance);
+          
+          this.logger.log('[ASSIGN-TABS] scrollLeft:', scrollLeft, 'scrollWidth:', scrollWidth, 'clientWidth:', clientWidth, 'maxScrollLeft:', maxScrollLeft, 'canScrollRight:', this.assignTabsCanScrollRight);
+          
+          // Only scroll to selected tab if explicitly requested and not manually scrolling
+          if (shouldScrollToSelected && !this.isManuallyScrollingTabs) {
+            this.scrollToSelectedTab();
+          }
+        }
+      }, 100);
+    }
+  }
+
+  // Scroll to make selected tab visible
+  scrollToSelectedTab() {
+    if (this.CHAT_PANEL_MODE === true && this.assignReassignTabsContainer && !this.isManuallyScrollingTabs) {
+      setTimeout(() => {
+        const container = this.assignReassignTabsContainer.nativeElement;
+        const tabsContainer = container.querySelector('.assign-reassign-tabs');
+        const tabs = tabsContainer ? tabsContainer.querySelectorAll('.assign-reassign-tab') : [];
+        let selectedTabIndex = -1;
+        
+        if (this.assignTab0) selectedTabIndex = 0;
+        else if (this.assignTab1) selectedTabIndex = 1;
+        else if (this.assignTab2) selectedTabIndex = 2;
+        
+        if (selectedTabIndex >= 0 && tabs[selectedTabIndex] && tabsContainer) {
+          const selectedTab = tabs[selectedTabIndex] as HTMLElement;
+          
+          // Calculate position relative to the scrollable container
+          const containerScrollLeft = tabsContainer.scrollLeft;
+          const containerWidth = tabsContainer.clientWidth;
+          const tabOffsetLeft = selectedTab.offsetLeft;
+          const tabWidth = selectedTab.offsetWidth;
+          
+          // Account for arrow padding (matches CSS padding-left: 50px)
+          const paddingTolerance = 50;
+          // When scrollLeft = 0, the first tab starts at offsetLeft = 0, but visible content starts at padding (45px)
+          // So we need to account for this in our visibility calculation
+          const visibleLeft = containerScrollLeft + paddingTolerance;
+          const visibleRight = containerScrollLeft + containerWidth - paddingTolerance;
+          // tabOffsetLeft is relative to the scrollable container, so for first tab it's 0
+          const tabLeft = tabOffsetLeft;
+          const tabRight = tabOffsetLeft + tabWidth;
+          
+          // Check if tab is fully visible (considering padding)
+          // For first tab, when scrollLeft = 0, tabLeft = 0, but visibleLeft = 45, so it's not fully visible
+          const isTabFullyVisible = tabLeft >= visibleLeft && tabRight <= visibleRight;
+          
+          this.logger.log('[ASSIGN-TABS] scrollToSelectedTab - Tab index:', selectedTabIndex, 
+            'containerScrollLeft:', containerScrollLeft, 'tabOffsetLeft:', tabOffsetLeft,
+            'visibleLeft:', visibleLeft, 'visibleRight:', visibleRight,
+            'tabLeft:', tabLeft, 'tabRight:', tabRight, 'isTabFullyVisible:', isTabFullyVisible);
+          
+          // Only scroll if tab is not fully visible
+          if (!isTabFullyVisible) {
+            let targetScrollLeft: number;
+            
+            if (tabLeft < visibleLeft) {
+              // Tab is to the left, scroll to show it from the left edge (with padding)
+              // For the first tab (index 0), when scrollLeft = 0, tabLeft = 0 but visibleLeft = 45
+              // So we need to scroll to a negative value to show the first tab completely
+              // But we can't scroll to negative, so we need to ensure padding is sufficient
+              if (selectedTabIndex === 0) {
+                // For first tab, ensure it's fully visible by scrolling to 0
+                // The padding-left should make the tab visible, but if not, we need to adjust
+                targetScrollLeft = 0; // Scroll completely to the left for first tab
+              } else {
+                targetScrollLeft = tabOffsetLeft - paddingTolerance;
+              }
+            } else if (tabRight > visibleRight) {
+              // Tab is to the right, scroll to show it from the right edge (with padding)
+              targetScrollLeft = tabOffsetLeft + tabWidth - containerWidth + paddingTolerance;
+            } else {
+              // Tab is partially visible, ensure it's fully visible
+              if (tabLeft < visibleLeft) {
+                // For the first tab, scroll all the way to the left
+                if (selectedTabIndex === 0) {
+                  targetScrollLeft = 0;
+                } else {
+                  targetScrollLeft = tabOffsetLeft - paddingTolerance;
+                }
+              } else {
+                targetScrollLeft = tabOffsetLeft + tabWidth - containerWidth + paddingTolerance;
+              }
+            }
+            
+            // Ensure we don't scroll beyond bounds
+            const maxScrollLeft = tabsContainer.scrollWidth - containerWidth;
+            targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft));
+            
+            // Scroll to target position
+            const scrollAmount = targetScrollLeft - containerScrollLeft;
+            if (Math.abs(scrollAmount) > 1) { // Only scroll if there's a meaningful difference
+              tabsContainer.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+              this.logger.log('[ASSIGN-TABS] Scrolling to show tab - targetScrollLeft:', targetScrollLeft, 'scrollAmount:', scrollAmount);
+            }
+          } else {
+            // Even if tab is visible, if it's the first tab and we're not at the start, scroll to start
+            if (selectedTabIndex === 0 && containerScrollLeft > 0) {
+              tabsContainer.scrollTo({ left: 0, behavior: 'smooth' });
+              this.logger.log('[ASSIGN-TABS] First tab selected, scrolling to start');
+            } else {
+              this.logger.log('[ASSIGN-TABS] Tab is already fully visible, no scroll needed');
+            }
+          }
+        }
+      }, 50); // Small delay to ensure DOM is updated
+    }
+  }
+
+  // Scroll assign/reassign tabs left
+  scrollAssignTabsLeft() {
+    if (this.assignReassignTabsContainer && this.CHAT_PANEL_MODE === true) {
+      this.isManuallyScrollingTabs = true;
+      const container = this.assignReassignTabsContainer.nativeElement;
+      const tabsContainer = container.querySelector('.assign-reassign-tabs') as HTMLElement;
+      if (tabsContainer) {
+        const currentScrollLeft = tabsContainer.scrollLeft;
+        const scrollAmount = -100;
+        let newScrollLeft = Math.max(0, currentScrollLeft + scrollAmount);
+        
+        // If we're scrolling left and getting close to the start, scroll all the way to the start
+        // to ensure the first tab is completely visible
+        if (newScrollLeft < 50) {
+          newScrollLeft = 0; // Scroll completely to the left
+        }
+        
+        this.logger.log('[ASSIGN-TABS] scrollAssignTabsLeft - currentScrollLeft:', currentScrollLeft, 'scrollAmount:', scrollAmount, 'newScrollLeft:', newScrollLeft);
+        
+        tabsContainer.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+        setTimeout(() => {
+          // Ensure we're exactly at 0 if we're close
+          if (tabsContainer.scrollLeft < 5) {
+            tabsContainer.scrollLeft = 0;
+          }
+          this.checkAssignTabsScroll(false); // Don't auto-scroll to selected tab
+          // Reset flag after scroll animation completes
+          setTimeout(() => {
+            this.isManuallyScrollingTabs = false;
+          }, 400);
+        }, 300);
+      } else {
+        this.logger.error('[ASSIGN-TABS] scrollAssignTabsLeft - tabsContainer not found');
+      }
+    }
+  }
+
+  // Scroll assign/reassign tabs right
+  scrollAssignTabsRight() {
+    if (this.assignReassignTabsContainer && this.CHAT_PANEL_MODE === true) {
+      this.isManuallyScrollingTabs = true;
+      const container = this.assignReassignTabsContainer.nativeElement;
+      const tabsContainer = container.querySelector('.assign-reassign-tabs') as HTMLElement;
+      if (tabsContainer) {
+        const currentScrollLeft = tabsContainer.scrollLeft;
+        const scrollAmount = 100;
+        const maxScrollLeft = tabsContainer.scrollWidth - tabsContainer.clientWidth;
+        const newScrollLeft = Math.min(maxScrollLeft, currentScrollLeft + scrollAmount);
+        
+        this.logger.log('[ASSIGN-TABS] scrollAssignTabsRight - currentScrollLeft:', currentScrollLeft, 'scrollAmount:', scrollAmount, 'maxScrollLeft:', maxScrollLeft, 'newScrollLeft:', newScrollLeft);
+        
+        tabsContainer.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+        setTimeout(() => {
+          this.checkAssignTabsScroll(false); // Don't auto-scroll to selected tab
+          // Reset flag after scroll animation completes
+          setTimeout(() => {
+            this.isManuallyScrollingTabs = false;
+          }, 400);
+        }, 300);
+      } else {
+        this.logger.error('[ASSIGN-TABS] scrollAssignTabsRight - tabsContainer not found');
+      }
+    }
+  }
+
   goToRequestMsgs(request_recipient: string) {
+    const calledFromIframe = (window.self !== window.top);
+   console.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", calledFromIframe);
     if (this.CHAT_PANEL_MODE === false) {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
     } else if (this.CHAT_PANEL_MODE === true) {
-      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-      window.open(url, '_blank');
+     if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
+        const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+        window.open(url, '_blank');
+      } else {
+        const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+        window.open(url, '_top');
+      }
     }
   }
 

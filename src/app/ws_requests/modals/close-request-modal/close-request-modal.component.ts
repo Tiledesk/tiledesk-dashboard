@@ -102,7 +102,7 @@ export class CloseRequestModalComponent implements OnInit {
 
         this.ARCHIVE_REQUEST_ERROR = true;
         //  NOTIFY ERROR 
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
    
         this.logger.log('[WS-REQUEST][CLOSE-REQUEST-MODAL] - CLOSE SUPPORT GROUP * COMPLETE *');

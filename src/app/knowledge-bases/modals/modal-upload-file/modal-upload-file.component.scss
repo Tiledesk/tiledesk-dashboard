@@ -53,6 +53,7 @@
 .drag-text {
     color: var(--text-color);
     font-weight: 400;
+    font-size: 14px;
 }
 
 .browse--btn {
@@ -81,6 +82,7 @@
     color: #787f86;
     text-align: center;
     margin-bottom: 12px;
+    font-size: 12px;
 }
 
 .file-size-exceeds {
@@ -124,6 +126,7 @@
     text-align: center;
     font-family: var(--header-font-family);
     font-weight: 400;
+     font-size: 14px;
 }
 
 .file-preview-uploading {
@@ -137,6 +140,7 @@
 
 .successfully-uploaded {
     color: #3ecf8e;
+    font-size: 14px;
 }
 
 .uploading {

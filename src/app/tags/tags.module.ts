@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { TagsDeleteComponent } from './tags-delete/tags-delete.component';
 import { TagsEditComponent } from './tags-edit/tags-edit.component';
 import { MomentModule } from 'ngx-moment';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: TagsComponent},
@@ -28,6 +29,7 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     MomentModule,
+    UnauthorizedForSettingsModule
     // NgSelectModule
   ]
 })

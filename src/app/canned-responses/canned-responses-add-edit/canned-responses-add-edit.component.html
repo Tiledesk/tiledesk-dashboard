@@ -6,41 +6,35 @@
     <div class="modal-content custom--modal-content">
 
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="closeModal_AddEditResponse()">
-
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModal_AddEditResponse()">
           <span aria-hidden="true">
-            
             <svg class="tide-icon" width="18" height="18" viewBox="0 0 24 24">
               <path
                 d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
               </path>
             </svg>
-
           </span>
-        </button>
-        <h4 class="modal-title">
-          <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
-
-          <!-- 
-          // ------------------------------------------------------------------
-          // title 'Add response' (if modalMode is = add )
-          // ------------------------------------------------------------------ -->
+        </button> -->
+        <h4 class="modal-title" style="font-size: 14px;">
+          <!-- ------------------------------------------------------------------ -->
+          <!-- title 'Add response' (if modalMode is = add ) -->
+          <!-- ------------------------------------------------------------------ -->
           <section *ngIf="modalMode === 'add'">
             <span >
               {{ "CannedResponses.AddResponses" | translate }}
             </span>
           </section>
 
-          <!-- 
-          // ------------------------------------------------------------------
-          // title 'Edit response' (if modalMode is = edit )
-          // ------------------------------------------------------------------ -->
+          <!-- ------------------------------------------------------------------ -->
+          <!-- title 'Edit response' (if modalMode is = edit ) -->
+          <!-- ------------------------------------------------------------------ -->
           <section *ngIf="modalMode === 'edit'">
             <span >
               {{ "CannedResponses.EditResponses" | translate }}
             </span>
           </section>
         </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal_AddEditResponse()"></button>
       </div>
       <!-- *ngIf="displayAddcustomizationView === false" -->
       <div class="modal-body" [ngClass]="{'hidden_elem' : displayAddcustomizationView === true}"
@@ -60,7 +54,7 @@
         
           <div class="row" >
     
-            <div class="col-xs-12">
+            <div class="col-12">
 
               <!-- 
               // ------------------------------------------------------------------
@@ -105,7 +99,7 @@
               </button>
             </div> -->
 
-            <div class="col-xs-12">
+            <div class="col-12">
               <!-- 
               // ------------------------------------------------------------------
               // Skeleton for the 'message' texarea (only edit mode)
@@ -134,9 +128,9 @@
             </div>
 
 
-            <div class="col-xs-12">
-              <button _ngcontent-c2="" class="btn btn-white add_custom_field_in_msg_btn"
-                style="float: right; margin-bottom:5px; box-shadow:none" (click)="hasClickedAddCustomization()">
+            <div class="col-12">
+              <button _ngcontent-c2="" class="btn btn-white add_custom_field_in_msg_btn pull-right"
+                style="margin-bottom:5px; box-shadow:none" (click)="hasClickedAddCustomization()">
                 {{ "CannedResponses.AddCustomization" | translate }}
               </button>
             </div>
@@ -153,14 +147,14 @@
 
         <div class="add-field-to-texarea_view" style="height:100%;">
           <div class="row" style="height:100%;">
-            <div class="col-xs-5" style="padding: 0px;height:100%;border-right: 1px solid #d9d9d9">
+            <div class="col-5" style="padding: 0px;height:100%;border-right: 1px solid #d9d9d9; font-size: 14px;line-height: 1.2;color: #333;">
               <!-- border-top: 1px solid #d9d9d9 !important; border-bottom: 1px solid #d9d9d9 !important; -->
 
 
               <div *ngFor="let field of customFields; let first = first" class="left_field_container">
                 <!-- margin-bottom: 3px; [class.first-item]="first" -->
                 <div (mouseenter)="mouseEnter(field?.field_value)" (mouseleave)="mouseLeave()" style="padding: 15px 25px;
-                  border-bottom: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; font-weight: 400;"
+                  border-bottom: 1px solid #d9d9d9;  font-weight: 400;"
                   (click)="insertCustomField(field?.field_value)">
 
                   <div class="canned-res-name">
@@ -171,13 +165,13 @@
             </div>
 
             <!-- background-color: aliceblue; -->
-            <div class="col-xs-7" style="height:100%;">
+            <div class="col-7" style="height:100%;">
 
 
               <div *ngIf="hovered_value.length === 0"
                 style="display: flex; margin-bottom: 0px; color:#7695a5; padding:30px; text-align: center">
                 <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info </i> -->
-                <span style="font-size:16px;">
+                <span style="font-size:16px;line-height: 1.3;">
                   {{ 'CannedResponses.SelectACustomizationToAddToYourMessage' | translate }}.
                 </span>
                 <!-- Create a more engaging experience for your customers by using personalization. -->
@@ -185,7 +179,7 @@
 
               <div *ngFor="let field of customFields">
                 <div *ngIf="field.field_value === hovered_value" style="padding: 30px;">
-                  <span style="color:#7695a5">
+                  <span style="color:#7695a5;font-size:14px;line-height: 1.3;">
                     {{  field?.field_desc | translate }}
                   </span>
                 </div>
@@ -221,7 +215,7 @@
         </section>
 
         <button *ngIf="displayAddcustomizationView === true" class="btn btn-gray-no-boxshadow"
-          (click)="closeAddcustomizationView()" style="padding:12px 36px;">
+          (click)="closeAddcustomizationView()">
           {{ "Cancel" | translate }}
         </button>
       </div>

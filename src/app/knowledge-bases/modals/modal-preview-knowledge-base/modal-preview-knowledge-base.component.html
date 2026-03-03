@@ -25,11 +25,10 @@
 
   <div class="form--container">
     <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
-    <!-- <div class="fake-input"> -->
+
       <textarea (input)="onTextareaInput(questionTextarea)" #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
          (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
-      <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
-    <!-- </div> -->
+   
   </div>
 
   <div *ngIf="searching" class="search-placeholder">
@@ -94,8 +93,8 @@
     <p *ngIf="qa && qa.source" class="answer-title">{{ 'KbPage.Source' | translate }}</p>
     <div *ngIf="qa && qa.source" id="answer" class="answer">
       <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
-        <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
-        <span *ngIf="!source_url">{{ qa.source }}</span>
+        <a *ngIf="source_url" href="{{source_url}}" target="_blank" style="font-size: 12px;">{{ source_url }}</a>
+        <span *ngIf="!source_url" style="font-size: 12px;line-height: 1.3;">{{ qa.source }}</span>
       </span>
 
     </div>
@@ -127,6 +126,10 @@
     {{"KbPage.ReUseLastQuestion" | translate }}
   </button>
   <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
+  <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
+        {{ "Send" | translate }}
+  </button>
+
   <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
         {{ "Send" | translate }}
   </button>

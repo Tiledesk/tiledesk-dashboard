@@ -12,13 +12,17 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 
 import 'moment/locale/it.js';
 import 'moment/locale/en-gb.js';
-import { Subscription } from 'rxjs'
+import { Subject, Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { ActivitiesService } from './activities-service/activities.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { RoleService } from 'app/services/role.service';
+import { takeUntil } from 'rxjs/operators';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NotifyService } from 'app/core/notify.service';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -80,6 +84,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   projectUsersArray: any;
   objectKeys = Object.keys;
   isChromeVerGreaterThan100: boolean;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
+
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
@@ -90,7 +101,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private activitiesService: ActivitiesService,
     public appConfigService: AppConfigService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public rolesService: RolesService,
+    public notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -105,14 +118,98 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getAllProjectUsers();
     this.buildActivitiesOptions();
     this.getBrowserVersion();
+    this.listenToProjectUser()
+    // this.getProjectUser()
   }
 
+  // getProjectUser() {
+  //   this.usersService.getProjectUsersById('683f1d279228c9002de74e25')
+  //     .subscribe((projectUser: any) => {
+  //       console.log('[ActivitiesComponent] projectUser ', projectUser)
+
+        
+  //     }, (error) => {
+  //       this.logger.error('[ActivitiesComponent] GET projectUser by USER-ID - ERROR ', error);
+  //     }, () => {
+  //       this.logger.log('[ActivitiesComponent] GET projectUser by USER-ID * COMPLETE *');
+  //     });
+  // }
   
 
   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
+
+   listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          this.logger.log('[ActivitiesComponent] - Role:', status.role);
+          this.logger.log('[ActivitiesComponent] - Permissions:', status.matchedPermissions);
+  
+          // ---------------------------------
+          // PERMISSION_TO_VIEW_FLOWS
+          // ---------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_EDIT_FLOWS = true;
+            this.logger.log('[ActivitiesComponent] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_EDIT_FLOWS = false;
+            this.logger.log('[ActivitiesComponent] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+            this.logger.log('[ActivitiesComponent] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          }
+  
+          // PERMISSION_TO_READ_TEAMMATE_DETAILS
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+  
+              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+              this.logger.log('[ActivitiesComponent] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            } else {
+              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+              this.logger.log('[ActivitiesComponent] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            }
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            this.logger.log('[ActivitiesComponent] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+
+          // PERMISSION TO UPDATE APP
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_UPDATE_APP = true;
+            this.logger.log('[ActivitiesComponent] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_UPDATE_APP = false;
+            this.logger.log('[ActivitiesComponent] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+            this.logger.log('[ActivitiesComponent] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          }
+  
+  
+  
+          // You can also check status.role === 'owner' if needed
+        });
+  
+    }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -393,6 +490,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     } else {
                       this.usersService.getProjectUserByUserId(activity.actor.id)
                         .subscribe((projectUser: any) => {
+                          this.logger.log('[ActivitiesComponent] projectUser ', projectUser)
 
                           if (projectUser && projectUser[0] && projectUser[0].id_user) {
                             this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'activities');
@@ -609,18 +707,34 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
       } else if (bot.type === 'tilebot') {
         botType = 'tilebot'
+        if(!this.PERMISSION_TO_EDIT_FLOWS) {
+          this.notify.presentDialogNoPermissionToPermomfAction()
+          return;
+        }
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
 
       } else if (bot.type === 'tiledesk-ai') {
         botType = 'tiledesk-ai'
+        if(!this.PERMISSION_TO_EDIT_FLOWS) {
+          this.notify.presentDialogNoPermissionToPermomfAction()
+          return;
+        }
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
 
       } else {
+        if(!this.PERMISSION_TO_UPDATE_APP) {
+          this.notify.presentDialogNoPermissionToPermomfAction()
+          return;
+        }
         botType = bot.type
         this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
-      
+
     } else {
+        if(!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+          this.notify.presentDialogNoPermissionToPermomfAction()
+          return;
+        }
 
       this.logger.log('[ActivitiesComponent] has clicked GO To MEMBER ', participantId);
       // this.router.navigate(['project/' + this.projectId + '/member/' + participantId]);

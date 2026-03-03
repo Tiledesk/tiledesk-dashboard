@@ -291,14 +291,6 @@ export class ProjectPlanService {
     });
   }
 
-  // public getProjectUserByUserId(userId, prjct_id): Promise<string> {
-  //   return new Promise<string>((resolve, reject) => {
-  //     console.log('[PROJECT-PLAN-SERV] - _GET PROJECT USER BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', userId);
-  //     this.usersService.getProjectUserByUserIdPassingProjectId(userId, prjct_id).subscribe((pu: any) => {
-  //       resolve(pu[0]['role']);
-  //     })
-  //   });
-  // }
 
 
 

@@ -24,7 +24,7 @@ export class VLLMComponent implements OnInit {
    ) { }
  
    ngOnInit(): void {
-     this.logger.log("[INT-vLLM] integration ", this.integration)
+     console.log("[INT-vLLM] integration ", this.integration)
      this.translateparams = { intname: 'vLLM' };
    }
  

@@ -32,6 +32,7 @@ import {
   URL_dialogflow_connector
 } from '../../utils/util';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NavigationService } from 'app/services/navigation.service';
 
 
 const swal = require('sweetalert');
@@ -178,6 +179,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   fileUploadAccept: string;
   translationsMap: Map<string, string> = new Map();
+  private backSub?: Subscription;
 
   @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
   isChromeVerGreaterThan100: boolean;
@@ -198,7 +200,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     public brandService: BrandService,
     private departmentService: DepartmentService,
     private logger: LoggerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private navSvc: NavigationService
   ) {
     super();
 
@@ -236,7 +239,19 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getBrowserVersion();
 
     this.fileUploadAccept = 'image/jpg, image/jpeg, image/png'
-    
+    this.listenToGoBack()
+  }
+
+  ngOnDestroy(): void {
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getBrowserVersion() {
