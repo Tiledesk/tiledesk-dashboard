@@ -850,6 +850,12 @@
     "ContactCreatedSuccessfully": "Contatto creato con successo",
     "None": "Nessuno",
     "StartASearchToSeeConversations": "Avvia una ricerca per vedere le conversazioni",
+    "AddsTagsAndPressEnter": "Aggiungi tag e premi invio",
+    "CopyScrapingRulesToPasteThemWebContentType": "Copia le regole di scraping per incollarle in nuovi contenuti di tipo URL o in nuovi contenuti di tipo sitemap",
+    "HtmlTags": "HTML Tag",
+    "AssignOneOrMoreTagsToThisContent": "Assegna uno o più tag a questo contenuto",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Verrà preso in considerazione solo il contenuto che include tutti i tag selezionati",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "I risultati includeranno solo i contenuti che corrispondono a tutti i tag selezionati",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

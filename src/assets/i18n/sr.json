@@ -851,6 +851,12 @@
     "ContactCreatedSuccessfully": "Контакт је успешно креиран",
     "None": "Ништа",
     "StartASearchToSeeConversations": "Започните претрагу да видите разговоре",
+    "AddsTagsAndPressEnter": "Додајте ознаке и притисните ентер",
+    "CopyScrapingRulesToPasteThemWebContentType": "Копирајте правила скрапинга да их налепите у нови садржај типа URL или у нови садржај типа sitemap",
+    "HtmlTags": "HTML ознаке",
+    "AssignOneOrMoreTagsToThisContent": "Доделите једну или више ознака овом садржају",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "У обзир ће се узети само садржај који укључује све изабране ознаке",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Резултати ће укључивати само садржаје који одговарају свим изабраним ознакама",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

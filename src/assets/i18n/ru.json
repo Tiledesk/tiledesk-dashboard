@@ -851,6 +851,12 @@
     "ContactCreatedSuccessfully": "Контакт успешно создан",
     "None": "Ничего",
     "StartASearchToSeeConversations": "Начните поиск, чтобы увидеть разговоры",
+    "AddsTagsAndPressEnter": "Добавьте теги и нажмите Enter",
+    "CopyScrapingRulesToPasteThemWebContentType": "Скопируйте правила скрапинга, чтобы вставить их в новый контент типа URL или в новый контент типа sitemap",
+    "HtmlTags": "HTML-теги",
+    "AssignOneOrMoreTagsToThisContent": "Назначьте один или несколько тегов для этого контента",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Во внимание будет приниматься только контент, содержащий все выбранные теги",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Результаты будут включать только содержимое, соответствующее всем выбранным тегам",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

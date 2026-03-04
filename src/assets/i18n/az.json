@@ -851,6 +851,12 @@
     "ContactCreatedSuccessfully": "Əlaqə uğurla yaradıldı",
     "None": "Heç biri",
     "StartASearchToSeeConversations": "Söhbətləri görmək üçün axtarışa başlayın",
+    "AddsTagsAndPressEnter": "Teqlər əlavə edin və Enter düyməsini basın",
+    "CopyScrapingRulesToPasteThemWebContentType": "Kazıma qaydalarını yeni URL tipli məzmuna və ya yeni sitemap tipli məzmuna yapışdırmaq üçün kopyalayın",
+    "HtmlTags": "HTML teqləri",
+    "AssignOneOrMoreTagsToThisContent": "Bu məzmuna bir və ya daha çox teq təyin edin",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Yalnız seçilmiş bütün teqləri ehtiva edən məzmun nəzərə alınacaq",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Nəticələr yalnız seçilmiş bütün teqlərə uyğun gələn məzmunları ehtiva edəcək",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
