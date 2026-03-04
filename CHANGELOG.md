@@ -1,6 +1,9 @@
 # tiledesk-dashboard
 
- ### 2.7.175-stage 
+### 2.7.176-stage 
+- Improves tag management for Knowledge Bases contents
+
+### 2.7.175-stage 
 - Improves the search for phone numbers in the history page
 
  ### 2.7.174-stage 
