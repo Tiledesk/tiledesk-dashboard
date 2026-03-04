@@ -862,6 +862,12 @@
     "StartASearchToSeeConversations": "Почніть пошук, щоб побачити розмови",
     "SelectTheDateRangeToSearch": "Виберіть діапазон дат для продовження пошуку",
     "PleaseSelectBothDates": "Будь ласка, виберіть обидві дати",
+    "AddsTagsAndPressEnter": "Додайте теги та натисніть Enter",
+    "CopyScrapingRulesToPasteThemWebContentType": "Скопіюйте правила скрапінгу, щоб вставити їх у новий вміст типу URL або у новий вміст типу sitemap",
+    "HtmlTags": "HTML-теги",
+    "AssignOneOrMoreTagsToThisContent": "Призначте один або декілька тегів для цього вмісту",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "До уваги братиметься лише вміст, що містить усі вибрані теги",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Результати включатимуть лише вмісти, які відповідають всім вибраним тегам",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

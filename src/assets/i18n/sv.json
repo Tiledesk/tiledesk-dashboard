@@ -862,6 +862,12 @@
     "StartASearchToSeeConversations": "Starta en sökning för att se konversationer",
     "SelectTheDateRangeToSearch": "Välj ett datumintervall för att fortsätta sökningen",
     "PleaseSelectBothDates": "Vänligen välj båda datumen",
+    "AddsTagsAndPressEnter": "Lägg till taggar och tryck på enter",
+    "CopyScrapingRulesToPasteThemWebContentType": "Kopiera scrapingregler för att klistra in dem i nytt URL-typ innehåll eller nytt sitemap-typ innehåll",
+    "HtmlTags": "HTML-taggar",
+    "AssignOneOrMoreTagsToThisContent": "Tilldela en eller flera taggar till detta innehåll",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Endast innehåll som innehåller alla valda taggar kommer att beaktas",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Resultaten kommer endast att innehålla innehåll som matchar alla valda taggar",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

@@ -862,6 +862,12 @@
     "StartASearchToSeeConversations": "Suhbatlarni ko'rish uchun qidiruvni boshlang",
     "SelectTheDateRangeToSearch": "Qidiruvni davom ettirish uchun sana oralig'ini tanlang",
     "PleaseSelectBothDates": "Iltimos, ikkala sanani ham tanlang",
+    "AddsTagsAndPressEnter": "Teglarni qo'shing va Enter tugmasini bosing",
+    "CopyScrapingRulesToPasteThemWebContentType": "Scraping qoidalarini yangi URL tipidagi tarkibga yoki yangi sitemap tipidagi tarkibga joylashtirish uchun nusxalang",
+    "HtmlTags": "HTML teglari",
+    "AssignOneOrMoreTagsToThisContent": "Ushbu tarkibga bir yoki bir nechta tegni tayinlang",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Faqat barcha tanlangan teglarni o'z ichiga olgan tarkib hisobga olinadi",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Natijalar faqat barcha tanlangan teglarga mos keladigan tarkiblarni o'z ichiga oladi",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

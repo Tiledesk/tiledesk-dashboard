@@ -863,6 +863,12 @@
     "StartASearchToSeeConversations": "Görüşmeleri görmek için arama başlatın",
     "SelectTheDateRangeToSearch": "Aramaya devam etmek için bir tarih aralığı seçin",
     "PleaseSelectBothDates": "Lütfen her iki tarihi de seçin",
+    "AddsTagsAndPressEnter": "Etiket ekleyin ve enter tuşuna basın",
+    "CopyScrapingRulesToPasteThemWebContentType": "Scraping kurallarını yeni URL türü içeriğe veya yeni sitemap türü içeriğe yapıştırmak için kopyalayın",
+    "HtmlTags": "HTML etiketleri",
+    "AssignOneOrMoreTagsToThisContent": "Bu içeriğe bir veya daha fazla etiket atayın",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Yalnızca seçilen tüm etiketleri içeren içerik dikkate alınacaktır",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Sonuçlar yalnızca seçilen tüm etiketlerle eşleşen içerikleri içerecektir",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

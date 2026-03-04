@@ -860,6 +860,12 @@
     "None": "Nessuno",
     "StartASearchToSeeConversations": "Avvia una ricerca per vedere le conversazioni",
     "SelectTheDateRangeToSearch": "Seleziona un intervallo di date per procedere con la ricerca",
+    "AddsTagsAndPressEnter": "Aggiungi tag e premi invio",
+    "CopyScrapingRulesToPasteThemWebContentType": "Copia le regole di scraping per incollarle in nuovi contenuti di tipo URL o in nuovi contenuti di tipo sitemap",
+    "HtmlTags": "HTML Tag",
+    "AssignOneOrMoreTagsToThisContent": "Assegna uno o più tag a questo contenuto",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Verrà preso in considerazione solo il contenuto che include tutti i tag selezionati",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "I risultati includeranno solo i contenuti che corrispondono a tutti i tag selezionati",
     "PleaseSelectBothDates": "Seleziona entrambe le date",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},

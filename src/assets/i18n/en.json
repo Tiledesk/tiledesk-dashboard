@@ -861,6 +861,12 @@
     "StartASearchToSeeConversations": "Start a search to see conversations",
     "SelectTheDateRangeToSearch": "Select a date range to proceed with the search",
     "PleaseSelectBothDates": "Please select both dates",
+    "AddsTagsAndPressEnter": "Adds tags and press enter",
+    "CopyScrapingRulesToPasteThemWebContentType": "Copy scraping rules to paste them into new URL-type content or new sitemap-type content",
+    "HtmlTags": "HTML tags",
+    "AssignOneOrMoreTagsToThisContent": "Assign one or more tags to this content",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Only content that includes all selected tags will be taken into consideration",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Results will include only contents that match all selected tags",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

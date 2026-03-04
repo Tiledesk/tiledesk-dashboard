@@ -861,6 +861,12 @@
     "StartASearchToSeeConversations": "Өтініштерді көру үшін іздеуді бастаңыз",
     "SelectTheDateRangeToSearch": "Іздеуді жалғастыру үшін күн аралығын таңдаңыз",
     "PleaseSelectBothDates": "Екі күнді де таңдаңыз",
+    "AddsTagsAndPressEnter": "Тегтерді қосып, Enter пернесін басыңыз",
+    "CopyScrapingRulesToPasteThemWebContentType": "Scraping ережелерін жаңа URL типті мазмұнға немесе жаңа sitemap типті мазмұнға қою үшін көшіріңіз",
+    "HtmlTags": "HTML тегтері",
+    "AssignOneOrMoreTagsToThisContent": "Осы мазмұнға бір немесе бірнеше тег тағайындаңыз",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Тек барлық таңдалған тегтерді қамтитын мазмұн ғана ескерілетін болады",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Нәтижелер тек барлық таңдалған тегтерге сәйкес келетін мазмұндарды қамтиды",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
