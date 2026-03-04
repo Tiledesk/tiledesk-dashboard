@@ -1,12 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import { KB_LIMIT_CONTENT } from 'app/utils/util';
+import { KB_LIMIT_CONTENT, URL_kb_contents_tags } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'modal-site-map',
@@ -82,6 +83,20 @@ export class ModalSiteMapComponent implements OnInit {
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
   private observer!: MutationObserver;
   tagContainerElementHeight: any;
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -114,6 +129,7 @@ export class ModalSiteMapComponent implements OnInit {
     }
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
@@ -132,6 +148,22 @@ export class ModalSiteMapComponent implements OnInit {
     if (this.observer) {
       this.observer.disconnect();
     }
+  }
+
+   // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   listenToOnSenSitemapSiteListEvent() {
@@ -500,6 +532,11 @@ export class ModalSiteMapComponent implements OnInit {
     
     // Usa solo l'altezza naturale del contenuto
     this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+
+goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
   }
 
 }

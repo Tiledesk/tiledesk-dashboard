@@ -2,6 +2,9 @@ import { Component, Inject, OnInit, ElementRef, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { BrandService } from 'app/services/brand.service';
+import { URL_kb_contents_tags} from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-modal-upload-file',
@@ -36,13 +39,30 @@ export class ModalUploadFileComponent implements OnInit {
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
   private observer!: MutationObserver;
   tagContainerElementHeight: any;
+  public hideHelpLink: boolean;
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUploadFileComponent>,
     private uploadImageNativeService: UploadImageNativeService,
-    private logger: LoggerService
-  ) { }
+    private logger: LoggerService,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit(): void {
 
@@ -58,6 +78,22 @@ export class ModalUploadFileComponent implements OnInit {
     if (this.observer) {
       this.observer.disconnect();
     }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   // listenToUploadingStatus() {
@@ -358,4 +394,8 @@ export class ModalUploadFileComponent implements OnInit {
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
+   goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
+  }
 }

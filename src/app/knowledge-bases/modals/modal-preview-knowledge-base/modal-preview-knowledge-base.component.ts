@@ -11,13 +11,17 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { NavigationEnd, Router } from '@angular/router';
-
+import { BrandService } from 'app/services/brand.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { URL_kb_contents_tags } from 'app/utils/util';
 
 @Component({
   selector: 'modal-preview-knowledge-base',
   templateUrl: './modal-preview-knowledge-base.component.html',
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
+
+
 
 export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
   // @Input() selectedNamespace: any;
@@ -49,6 +53,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   hasStoredQuestion: boolean;
   private dialogRefAiSettings: MatDialogRef<any>;
   @ViewChild('questionTextarea', { static: false }) questionTextarea: ElementRef<HTMLTextAreaElement>;
+
 
   // models_list = [
   //   { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -86,6 +91,20 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
   private observer!: MutationObserver;
   tagContainerElementHeight: any;
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -98,9 +117,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private kbService: KnowledgeBaseService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
-    private router: Router
+    private router: Router,
+    private brandService: BrandService
   ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
@@ -167,6 +189,34 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.checkStoredQuestion();
   }
 
+  ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+  ngOnDestroy() { 
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
+  }
+
   /**
    * Helper method per controllare e parsare la question salvata
    * Gestisce sia il formato JSON che il formato vecchio
@@ -199,17 +249,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   }
 
-  ngAfterViewInit() {
-    this.initTagContainerObserver();
-  }
 
-  ngOnDestroy() { 
-    this.logger.log('[MODALS-URLS] ngOnDestroy called');
-    // Disconnettere l'observer per evitare memory leaks
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-  }
 
   listenToCurrentURL() {
     this.router.events.subscribe((event) => {
@@ -743,6 +783,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
+ 
 
+ goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
+  }
 
 }

@@ -45,7 +45,7 @@ import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-c
 import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-questions/modal-unanswered-questions.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
-
+import { OverlayModule } from '@angular/cdk/overlay';
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
 ];
@@ -100,7 +100,8 @@ const routes: Routes = [
     SatPopoverModule,
     MatChipsModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    OverlayModule
   ]
   // ,
   // providers: [

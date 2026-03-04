@@ -332,7 +332,7 @@
     color: #000000de;
     font-family: var(--header-font-family);
     font-weight: 400;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .content-tags-container {
@@ -440,3 +440,66 @@
         transform: translateY(-5px);
     }
 }
+
+
+.html-tags--expansion-panel {
+    //background-color: transparent !important;
+    // margin-top: 12px;
+    box-shadow: none;
+    margin-bottom: 16px;
+    // background-color: transparent;
+    // box-shadow: none;
+    //color: white;
+}
+
+
+// .expansion-panel-content {
+//     display: flex;
+// }
+
+::ng-deep.html-tags--expansion-panel:not(.mat-expanded) {
+    // background: rgba(0, 0, 0, .04) !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    border: 1px solid #ccc !important;
+}
+
+::ng-deep.html-tags--expansion-panel.mat-expanded {
+    // background: rgba(0, 0, 0, .04) !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    border: 1px solid #ccc !important;
+    margin-bottom: 12px !important;
+}
+
+// ::ng-deep.html-tags--expansion-panel.mat-expanded {
+//     // background: rgba(0, 0, 0, .04) !important;
+//     background: #fff !important;
+//     border-radius: 12px !important;
+//     border: 1px solid #ccc !important;
+// }
+
+.html-tags--expansion-panel ::ng-deep {
+
+    .mat-expansion-panel-header {
+        padding: 0 10px !important;
+    }
+
+     .mat-expansion-panel-header.mat-expanded {
+       height: 48px;
+    }
+
+    .mat-expansion-panel-header-title {
+        color: #000000de !important;
+        font-weight: 500 !important;
+    }
+
+    .mat-expansion-indicator::after {
+        color: #000000de !important;
+    }
+}
+
+::ng-deep.html-tags--expansion-panel {
+    padding: 0px 0px !important;
+}
+

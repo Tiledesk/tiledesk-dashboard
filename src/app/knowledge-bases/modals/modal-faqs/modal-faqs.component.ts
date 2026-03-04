@@ -4,6 +4,9 @@ import { KB } from 'app/models/kbsettings-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { BrandService } from 'app/services/brand.service';
+import { URL_kb_contents_tags } from 'app/utils/util';
 // import { FaqService } from 'app/services/faq.service';
 
 @Component({
@@ -39,6 +42,20 @@ export class ModalFaqsComponent implements OnInit {
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
   private observer!: MutationObserver;
   tagContainerElementHeight: string = '20px';
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,7 +63,7 @@ export class ModalFaqsComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalFaqsComponent>,
     private logger: LoggerService,
     private kbService: KnowledgeBaseService,
-
+    private brandService: BrandService
   ) {
     this.logger.log('[MODAL-FAQS] data', data)
     if (data && data.selectedNamespace) {
@@ -58,6 +75,9 @@ export class ModalFaqsComponent implements OnInit {
       this.displayAddManuallySection = true;
       this.showBackButton = false;
     }
+
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
@@ -74,6 +94,22 @@ export class ModalFaqsComponent implements OnInit {
     if (this.observer) {
       this.observer.disconnect();
     }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   createConditionGroup(): FormGroup {
@@ -297,6 +333,11 @@ export class ModalFaqsComponent implements OnInit {
     
     // Usa solo l'altezza naturale del contenuto
     this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+
+  goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
   }
 
 }
