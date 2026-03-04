@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.160
+- Adds the ability to add tags to knowledge base contents
+
 ### 2.7.159
 - Improves the search for phone numbers in the history page
 
