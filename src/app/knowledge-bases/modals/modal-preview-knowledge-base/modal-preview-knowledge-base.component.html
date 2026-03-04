@@ -26,8 +26,8 @@
   <div class="form--container">
     <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
     <!-- <div class="fake-input"> -->
-      <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      <textarea (input)="onTextareaInput(questionTextarea)" #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+         (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
       <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
     <!-- </div> -->
   </div>

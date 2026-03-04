@@ -144,7 +144,7 @@
 .question-textarea {
   width: 100%;
   min-height: 37px;
-  max-height: 52px; /* 2 righe */
+  max-height: 132px; /* 6 righe */
   resize: none;
   overflow-y: hidden;
 
@@ -210,7 +210,7 @@
     padding: 6px 12px 6px;
     cursor: text;
     // overflow: hidden;
-    overflow: scroll; // nk
+     overflow: auto; // dd
     transition: max-height 0.5s ease-out;
 }
 
