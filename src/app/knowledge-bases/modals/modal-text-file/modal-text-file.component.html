@@ -84,7 +84,7 @@
     <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
         <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
         <p weight="400" class="kb-tag">{{kbtag}}</p>
-        <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-tag-btn" (click)="removeKbTag(kbtag)">
+        <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
             class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
             <path

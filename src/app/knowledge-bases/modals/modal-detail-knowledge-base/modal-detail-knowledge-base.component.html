@@ -194,7 +194,7 @@
     </ng-container> -->
 
     <ng-container *ngIf="!showSpinner">
-        <div class="content-tags-wpr" *ngIf="kb?.tags">
+        <div class="content-tags-wpr" *ngIf="kb?.tags &&  kb?.tags?.length > 0">
             <div class="content-tags-title">
                 {{'Tags.Tags' | translate}}
             </div>

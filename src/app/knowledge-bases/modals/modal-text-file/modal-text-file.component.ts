@@ -75,6 +75,23 @@ export class ModalTextFileComponent implements OnInit {
     }
   }
 
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
+  }
+
+
   createConditionGroup(): FormGroup {
     const contentPattern = /^[^&<>]{3,}$/;
     // const namePattern = /^[^&<>]{3,}$/;
