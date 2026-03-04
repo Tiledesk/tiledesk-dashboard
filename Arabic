@@ -491,7 +491,7 @@
     "MultiLanguagePreview": "قم بتغيير لغة المعاينة",
     "RequiredField": "يتطلب حقلا",
     "Text": "نص",
-    "Alignment": "انتقام",
+    "Alignment": "محاذاة",
     "UserRole": "دور المستخدم",
     "BotType": "نوع البوت",
     "Language": "لغة",
@@ -3215,7 +3215,7 @@
         "LABEL_OFFLINE": "غير متصل على الانترنت",
         "LABEL_NO_MSG_HERE": "لا توجد رسالة هنا حتى الآن ...",
         "LABEL_TODAY": "اليوم",
-        "LABEL_TOMORROW": "في الامس",
+        "LABEL_TOMORROW": "غداً",
         "LABEL_LAST_ACCESS": "آخر ولوج",
         "LABEL_TO": "في",
         "ARRAY_DAYS": [
@@ -3590,7 +3590,7 @@
         "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "أنا موافق",
         "PRECHAT_REQUIRED_ERROR": "هذه الخانة مطلوبه",
         "LABEL_TODAY": "اليوم",
-        "LABEL_TOMORROW": "أمس",
+        "LABEL_TOMORROW": "غداً",
         "LABEL_LAST_ACCESS": "آخر ولوج",
         "LABEL_TO": "في",
         "ARRAY_DAYS": [
