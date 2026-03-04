@@ -2,6 +2,9 @@ import { Component, OnInit, Output, EventEmitter, Inject, ViewChild, ElementRef 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { BrandService } from 'app/services/brand.service';
+import { URL_kb_contents_tags } from 'app/utils/util';
 
 @Component({
   selector: 'modal-text-file',
@@ -31,11 +34,30 @@ export class ModalTextFileComponent implements OnInit {
   private observer!: MutationObserver;
   tagContainerElementHeight: any;
 
+   public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalTextFileComponent>,
-  ) { }
+    public brandService: BrandService,
+  ) { 
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit(): void {
     this.kbForm = this.createConditionGroup();
@@ -172,5 +194,11 @@ export class ModalTextFileComponent implements OnInit {
     // Usa solo l'altezza naturale del contenuto
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
+
+ goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
+  }
+
 
 }

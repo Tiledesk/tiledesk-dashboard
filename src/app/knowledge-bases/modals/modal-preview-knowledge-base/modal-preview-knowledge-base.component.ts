@@ -11,6 +11,9 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { BrandService } from 'app/services/brand.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { URL_kb_contents_tags } from 'app/utils/util';
 
 
 @Component({
@@ -86,6 +89,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   private observer!: MutationObserver;
   tagContainerElementHeight: any;
 
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewKnowledgeBaseComponent>,
@@ -97,9 +115,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private kbService: KnowledgeBaseService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
-    private router: Router
+    private router: Router,
+    private brandService: BrandService
   ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
     console.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
@@ -211,6 +232,22 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (this.observer) {
       this.observer.disconnect();
     }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   presentDialogAiSettings(isopenasetting) {
@@ -743,6 +780,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
+   goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
+  }
 }
 
 

@@ -37,10 +37,49 @@
     </form>
     
     <!-- KB Tags -->
-    <input id="kb-tags" class="adds-kb-input" name="kb-tags"
-        [placeholder]="('Tags.AddTags' | translate) + '...'" type="text"
+      <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;"> 
+      <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+        [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
         style="padding-top: 6px;">
+
+        <div class="kb-tags-help"
+        style="position: relative;top: 7px;"
+        #trigger="cdkOverlayOrigin"
+        cdkOverlayOrigin
+        (mouseenter)="open()"
+        (mouseleave)="scheduleClose()">
+
+        <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
+          help_outline
+        </span>
+      </div>
+    </div>
+
+    <ng-template
+      cdk-connected-overlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isOpen"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayHasBackdrop]="false"
+      (detach)="isOpen = false">
+      <div class="cdk-popover"
+      (mouseenter)="cancelClose()"
+      (mouseleave)="scheduleClose()">
+
+          <div class="cdk-popover-arrow"></div>
+
+          <div class="cdk-popover-content">
+            {{'AssignOneOrMoreTagsToThisContent' | translate}}
+          </div>
+
+          <div *ngIf="hideHelpLink" class="cdk-learn-more"
+              (click)="goToKbTagsDoc()">
+            {{ 'LearnMore' | translate }}
+          </div>
+
+      </div>
+    </ng-template>
 
     <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
         <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
