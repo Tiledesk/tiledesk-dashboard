@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.161
+- Fixes the bug: unanswered questions are duplicated
+
 ### 2.7.160
 - Adds the ability to add tags to knowledge base contents
 
