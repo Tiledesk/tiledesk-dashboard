@@ -3940,10 +3940,12 @@ _presentDialogImportContents() {
     }
     
     this.unansweredQuestionsService.getUnansweredQuestions(
-      this.id_project, 
+      this.id_project,
       this.selectedNamespace.id,
       KB_DEFAULT_PARAMS.LIMIT,
-      page
+      page,
+      'createdAt',
+      -1
     )
       .subscribe(
         (res) => {
