@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.177-stage 
+- Adds the ability to update HTML tags, urls sync frequency, and content tags from the content details
+- Adds the ability to filter conversations for the only rated on the History page
+
 ### 2.7.176-stage 
 - Improves tag management for Knowledge Bases contents
 
