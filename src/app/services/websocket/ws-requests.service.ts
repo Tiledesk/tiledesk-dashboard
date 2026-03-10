@@ -1274,14 +1274,15 @@ export class WsRequestsService implements OnDestroy {
   // ------------------------------------------------------
   // @ Download history request as CSV
   // ------------------------------------------------------
-  public downloadHistoryRequestsAsCsv(requests_status: any, querystring: string, preflight: boolean, pagenumber: number) {
+  public downloadHistoryRequestsAsCsv(requests_status: any, querystring: string, preflight: boolean, pagenumber: number,rated?: boolean) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV requests_status ', requests_status);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV preflight ', preflight);
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=' + requests_status + _querystring + '&preflight=' + preflight + '&page=' + pagenumber;
+    const ratedParam = (rated === true || rated === false) ? '&rated=' + rated : '';
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=' + requests_status + _querystring + '&preflight=' + preflight + '&page=' + pagenumber + ratedParam;
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV URL ', url);
 
     const httpOptions = {
@@ -1298,13 +1299,14 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   // WS Requests NO-RT & HISTORY
   // -------------------------------------------------------------
-  public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number) {
+  public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number, rated?: boolean) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses  ', statuses);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses length ', statuses?.length);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
+    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - rated  ', rated);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
     
     if (Array.isArray(status)) {
@@ -1353,13 +1355,14 @@ export class WsRequestsService implements OnDestroy {
       this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 4');
     }
 
+    const ratedParam = (rated === true || rated === false) ? '&rated=' + rated : '';
     let url = '';
     if (status !== 'all') {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight=' + _preflight;
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight=' + _preflight + ratedParam;
       this.logger.log('url status != all ', url)
 
     } else {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight=' + _preflight;
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight=' + _preflight + ratedParam;
       this.logger.log('url status all ', url)
     }
 

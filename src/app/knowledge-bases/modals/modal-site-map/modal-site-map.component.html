@@ -2,9 +2,9 @@
 <h1 mat-dialog-title>{{ 'KbPage.TitleSitemap' | translate }} </h1>
 
 
-<div  mat-dialog-content >
+<div mat-dialog-content>
 
-    <div class="info-container">
+    <div class="info-container" style="margin-bottom: 12px;">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
             <!-- <span>{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span> -->
@@ -14,33 +14,14 @@
 
 
     <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="custom--expansion-panel">
+        <!-- custom--expansion-panel -->
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="html-tags--expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'KbPage.AdvancedOptions' | translate}} </mat-panel-title>
+                <mat-panel-title> {{'HtmlTags' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
-                <!-- SCRAPE TYPE -->
-                <!-- <div class="option-box">
-                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                        <span class="input-label">
-                            {{'KbPage.IndexingType' | translate}}
-                        </span>
-                       
-                        <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px;" 
-                            appendTo="body" 
-                            [items]="scrape_types | selectOptionsTranslate" 
-                            bindLabel="name" 
-                            bindValue="value"
-                            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
-                            [clearable]="false"
-                            [searchable]="false" 
-                            [(ngModel)]="selectedScrapeType" 
-                            (change)="onSelectScrapeType(selectedScrapeType)">
-                            
-                        </ng-select>
-                    </div>
-                </div> -->
-                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; margin-left: 12px;">
+            
+                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; padding: 0px 10px 10px 15px;">
 
                     <!-- COPY/PASTE OPTIONS -->
                     <!-- <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;"> -->
@@ -72,18 +53,7 @@
                             [ngClass]="{'no-scrape-option-to-paste': !stored_scrape_option}">
                             <mat-icon>content_paste</mat-icon>
                          </div>
-                        <!-- <button type="button" 
-                            [disabled]="!stored_scrape_option"
-                            class="btn paste-scrape-options-btn" 
-                            (click)="pasteAllScrapeOptions()"
-                            matTooltipClass="kb-custom-mat-tooltip"
-                            [matTooltip]="'PasteScrapeOptions' | translate"
-                            #pasteTooltip="matTooltip"
-                            matTooltipPosition="above"
-                            matTooltipHideDelay="100">
-                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">content_paste</mat-icon>
-                            <span>{{'Paste' | translate}}</span> 
-                        </button> -->
+    
                     </div>
 
                     <div class="scrape-options-subtitle">
@@ -295,6 +265,13 @@
             <span class="input-label">
                
                 {{'KbPage.RefreshRate' | translate}}
+                <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
+                    matTooltipPosition="above"
+                    matTooltipHideDelay="100">
+                    help_outline
+                </span>
             </span>
 
             <ng-select class="scrape-types-select" style="min-width: 200px; margin-top: -4px; max-width: 250px;"
@@ -308,9 +285,9 @@
                 [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
             </ng-select>
 
-            <span class="input-label input-label-on-bottom">
+           <!-- <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
-            </span>
+            </span> -->
         </div>
 
 

@@ -478,6 +478,44 @@
                 </div>
               </div>
 
+              <!-- ------------------------------------- -->
+              <!-- Checkbox rated conversation -->
+              <!-- ------------------------------------- -->
+               <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-top: 8px;">
+                <div class="col-sm-12 col-md-4 filter-col" *ngIf="IS_HERE_FOR_HISTORY">
+
+                  <!-- ------------------------------------- -->
+                  <!-- Checkbox rated conversation -->
+                  <!-- ------------------------------------- -->
+                  <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-top: 16px;">
+                      <div class="col-12 col-md-4">
+                        <div class="rated-convs-checkbox">
+                          <div class="checkbox">
+                            <label class="checkbox--label">
+                              <input type="checkbox" [(ngModel)]="rated" class="form-check-input" id="rated-convs"
+                                (change)="onChangeRated($event)">
+                                <div class="checkbox--label-text" style="line-height: 17px;">
+                                  {{'OnlyRatedConversations' | translate}}
+                                </div>
+                            </label>
+                            
+                          </div>
+                          <div class="help-icon-wpr">
+                            <i  class="material-icons" 
+                              matTooltipClass="mat-white-tooltip"
+                              matTooltip="{{'DisplayOnlyConversationsWhereUsersHaveLeftRating' | translate}}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below' 
+                              matTooltipHideDelay="100"> 
+                              help_outline 
+                            </i>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               </div>
+
 
                 <!-- ------------------------------------------ -->
                 <!-- BTNS SEARCH & CLEAR SEARCH -->
@@ -562,7 +600,7 @@
   <!-- requests_statuses {{ requests_statuses }} -->
   <!-- requests_status_temp  {{requests_status_temp}} -->
 
-  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;" *ngIf="
+  <!-- <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;" *ngIf="
     fullText_applied_filter || 
     startDateFormatted || 
     selectedAgentFirstname || 
@@ -573,16 +611,9 @@
     selecteTagColor  || 
     conversationTypeValue || 
     selectedDeptName">
-    <!-- requests_status_temp === '50' || 
-    requests_status_temp === '1000' ||  -->
-    <!-- conversation_type {{ conversation_type }} - conversationTypeValue {{conversationTypeValue}} -->
     <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
-
-   <!-- <div id="full-text" *ngIf="fullText_applied_filter" class="applied-filter">
-      {{fullText_applied_filter}}
-    </div> -->
     <div id="email-filter" *ngIf="fullText_applied_filter && SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX" class="applied-filter">
       Email: {{fullText_applied_filter}}
     </div>
@@ -625,10 +656,6 @@
     </div>
    </ng-container>
 
-    <!-- <div id="served-1000" *ngIf="requests_status === '1000'" class="applied-filter">
-      {{'Closed' | translate}}
-    </div> -->
-
     <div id="tag" *ngIf="selecteTagColor" class="applied-filter">
       <div class="tag--color" [ngStyle]="{'background-color': selecteTagColor }"> </div>
       {{selecteTagNameValue}}
@@ -641,9 +668,7 @@
     </div>
 
     <div class="requests-statuses-wpr" style="display: flex;" *ngIf="has_searched && requests_statuses?.length > 0">
-      <!-- {{requests_statuses}} -->
       <div class="requests-statuses" *ngFor="let status of requests_statuses">
-        <!-- status {{status}} -->
         <div *ngIf="status === '1000'" class="applied-filter">
           {{'Closed' | translate}}
         </div>
@@ -656,11 +681,196 @@
          <div *ngIf="status === '150'" class="applied-filter">
             {{'Abandoned' | translate}}
         </div>
-        <!-- <div *ngIf="status === '50'" class="applied-filter">
-          Temporary
-        </div> -->
-
       </div>
+    </div>
+
+    <div id="conversation-type" *ngIf="
+          conversationTypeValue === CHANNELS_NAME.CHAT21 ||
+          conversationTypeValue === CHANNELS_NAME.FORM ||
+          conversationTypeValue === CHANNELS_NAME.MESSANGER ||
+          conversationTypeValue === CHANNELS_NAME.TELEGRAM || 
+          conversationTypeValue === CHANNELS_NAME.WHATSAPP || 
+          conversationTypeValue === CHANNELS_NAME.EMAIL ||
+          conversationTypeValue === CHANNELS_NAME.VOICE_VXML || 
+          conversationTypeValue === CHANNELS_NAME.VOICE_TWILIO || 
+          conversationTypeValue === CHANNELS_NAME.SMS_TWILIO" class="applied-filter">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.CHAT21 ">
+        Chat
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.FORM ">
+        Ticket
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.MESSANGER">
+        Facebook messenger
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.TELEGRAM">
+        Telegram
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.WHATSAPP">
+        WhatsApp
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.EMAIL">
+        Email
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.VOICE_VXML">
+        Voice
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.VOICE_TWILIO">
+        Voice
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.SMS_TWILIO">
+        SMS
+      </span>
+    </div>
+
+
+  </div>
+
+  <div class="row" *ngIf="!IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px ">
+    <div class="col-xs-12 conversations-count">
+      <span
+        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor && !conversation_type">
+        {{ 'TotalConversations' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
+      </span>
+
+      <span
+        *ngIf="!IS_HERE_FOR_HISTORY && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type)">
+        {{ 'ConversationsFound' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px">
+    <div class="col-xs-12 conversations-count">
+      <span
+        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor  && !conversation_type">
+        {{ 'TotalConversations' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
+      </span>
+
+      <span
+       *ngIf="has_searched && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type)">
+        {{ 'ConversationsFound' | translate }}:
+        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
+        <span *ngIf="!showSpinner">
+          {{requestsCount}}
+        </span>
+      </span>
+    </div>
+  </div> -->
+
+  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px; align-items: center; justify-content: flex-start; flex-wrap: wrap;">
+    <!-- Conversations found: sempre visibile all'inizio -->
+    <div class="conversations-count" style="margin-right: 16px;">
+      {{ 'ConversationsFound' | translate }}:
+      <span *ngIf="showSpinner" class="loading">{{'Processing' | translate}} </span>
+      <span *ngIf="!showSpinner">
+        {{requestsCount || 0}}
+      </span>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center;" *ngIf="has_searched">
+      <div class="applied-filter-title">
+        {{'AppliedFilters' | translate}}
+      </div>
+
+      <div id="email-filter" *ngIf="fullText_applied_filter && SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX" class="applied-filter">
+        Email: {{fullText_applied_filter}}
+      </div>
+      <div id="requester-email-filter" *ngIf="requester_email_applied_filter" class="applied-filter">
+        Email: {{requester_email_applied_filter}}
+      </div>
+      <div id="ticket-id-filter" *ngIf="fullText_applied_filter && SEARCH_FOR_TICKET_ID" class="applied-filter">
+        Ticket ID: {{fullText_applied_filter}}
+      </div>
+
+      <div id="date-range" *ngIf="startDateFormatted" class="applied-filter">
+        <span *ngIf="startDateFormatted && !endDateFormatted">
+          after
+        </span>
+        {{startDateFormatted}}
+        <span *ngIf="endDateFormatted">
+          - {{endDateFormatted}}
+        </span>
+      </div>
+
+      <div id="rated-filter" *ngIf="rated_applied" class="applied-filter">
+        {{ 'RatedConversations' | translate }}
+      </div>
+
+      <div id="phone-filter" *ngIf="phone_applied" class="applied-filter">
+        {{ 'Phone' | translate }}: {{phone_applied}}
+      </div>
+
+      <div id="teammate" *ngIf="selectedAgentFirstname" class="applied-filter">
+        {{selectedAgentFirstname}} {{ selectedAgentLastname }}
+      </div>
+
+      <div id="dept" *ngIf="selectedDeptName" class="applied-filter">
+        {{selectedDeptName}}
+      </div>
+    
+      <ng-container *ngIf="!IS_HERE_FOR_HISTORY"> 
+        <div id="served-200" *ngIf="requests_status === '200'" class="applied-filter">
+          {{'Served' | translate}}
+        </div>
+
+        <div id="served-100" *ngIf="requests_status === '100'" class="applied-filter">
+          {{'Unserved' | translate}}
+        </div>
+
+        <div id="served-150" *ngIf="requests_status === '150'" class="applied-filter">
+          {{'Abandoned' | translate}}
+        </div>
+      </ng-container>
+
+      <!-- <div id="served-1000" *ngIf="requests_status === '1000'" class="applied-filter">
+        {{'Closed' | translate}}
+      </div> -->
+
+      <div id="tag" *ngIf="selecteTagColor" class="applied-filter" style="display: flex; align-items: center;gap: 2px">
+        <div class="tag--color" [ngStyle]="{'background-color': selecteTagColor }"> </div>
+        {{selecteTagNameValue}}
+      </div>
+
+      <div class="requests-statuses-wpr" style="display: flex;" *ngIf="!has_searched">
+        <div class="applied-filter">
+          {{'None' | translate}}
+        </div>
+      </div>
+
+      <div class="requests-statuses-wpr" style="display: flex;" *ngIf="has_searched && requests_statuses?.length > 0">
+        <!-- {{requests_statuses}} -->
+        <div class="requests-statuses" *ngFor="let status of requests_statuses">
+          <!-- status {{status}} -->
+          <div *ngIf="status === '1000'" class="applied-filter">
+            {{'Closed' | translate}}
+          </div>
+          <div *ngIf="status === '100'" class="applied-filter">
+            {{'Unserved' | translate}}
+          </div>
+          <div *ngIf="status === '200'" class="applied-filter">
+            {{'Served' | translate}}
+          </div>
+          <div *ngIf="status === '150'" class="applied-filter">
+              {{'Abandoned' | translate}}
+          </div>
+          <!-- <div *ngIf="status === '50'" class="applied-filter">
+            Temporary
+          </div> -->
+
+        </div>
     </div>
 
     <!-- || conversation_type  === 'chat21'  && conversation_type !== 'all'-->
@@ -712,91 +922,9 @@
     </div>
 
 
-    <!-- <div class="applied-filter">
-      <span
-        *ngIf="!fullText_applied_filter || !startDateFormatted || !selectedAgentFirstname || !selectedDeptName || !requests_status === '200' || !requests_status === '100' || !selecteTagColor">
-        {{ 'TotalConversations' | translate }}: {{requestsCount}}
-      </span>
-      <span
-      *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
-      {{ 'ConversationsFound' | translate }}: {{requestsCount}}
-    </span>
-    </div> -->
-
-  </div>
-  <!-- style="display: flex; position: relative; float: right;top: 51px;z-index: 99; " -->
-  <div class="row" *ngIf="!IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px ">
-    <div class="col-xs-12 conversations-count">
-      <span
-        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor && !conversation_type">
-        {{ 'TotalConversations' | translate }}:
-        <!-- https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations -->
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
-
-      <span
-        *ngIf="!IS_HERE_FOR_HISTORY && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type)">
-        {{ 'ConversationsFound' | translate }}:
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
-    </div>
-  </div>
-  <!-- style="display: flex; position: relative; float: right;top: 51px;z-index: 99; " -->
-  <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px">
-    <div class="col-xs-12 conversations-count">
-      <span
-        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor  && !conversation_type">
-        {{ 'TotalConversations' | translate }}:
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
-
-      <span
-       *ngIf="has_searched && (fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type)">
-        {{ 'ConversationsFound' | translate }}:
-        <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
-        <span *ngIf="!showSpinner">
-          {{requestsCount}}
-        </span>
-      </span>
     </div>
   </div>
 
-
-  <!-- <div
-    style="width: 96%; height: 40px; background-color: #b5bdc0; border-radius: 0px 30px 30px 0px; margin-left: -15px;">
-
-    <div class="row" style="padding-top: 7px">
-      <div class="col-sm-1" style="margin-left: 8vh;">
-        <div class="checkbox" style="margin: auto !important; margin-left: 5vh; width: auto;">
-          <label>
-            <input [disabled]="project_user?.is_group_member" [checked]="project_user?.is_group_member" type="checkbox"
-              class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}"
-              (click)="change(project_user?.id_user?._id)">
-          </label>
-        </div>
-      </div>
-
-      <div class="col-sm-1" style="width: 6%;">
-        <span class="material-icons" style="vertical-align:middle; color: #000000; cursor: pointer;">
-          refresh
-        </span>
-      </div>
-    </div>
-  </div> -->
-  <!-- <div style="margin-left: auto;" *ngIf="request_selected.length > 0">
-    <button type="button" class="btn btn-danger">
-      Elimina Selezionati
-    </button>
-  </div> -->
 
   <div class="row">
     <div class="col-md-12 table-wrapper-col">
