@@ -158,7 +158,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
   fetchSiteMap() {
     this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
-    const body = {sitemap: this.siteMap}
+    const body = {sitemap: this.siteMap,  tags: this.kbTagsArray}
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("[MODALS-URLS] addSitemap:", resp);
       this.logger.log("[MODALS-URLS] addSitemap sites:", resp.sites);

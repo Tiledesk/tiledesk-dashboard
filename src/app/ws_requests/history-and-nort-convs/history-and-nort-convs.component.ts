@@ -141,6 +141,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   _preflight: boolean;
   preflightValue: boolean;
 
+  rated: boolean = false;
+  _rated: boolean = false;
+  rated_applied: boolean = false;
+  phone_applied: string = null;
+
   showAdvancedSearchOption: boolean // = true; // false;
   hasFocused = false;
   departments: any;
@@ -700,6 +705,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.preflight = this._preflight;
           this.logger.log('[HISTORY & NORT-CONVS]  queryParams _preflight:', this._preflight);
         }
+        if (this.queryParams && this.queryParams._rated !== undefined) {
+          const ratedValue = this.queryParams._rated;
+          this._rated = ratedValue === 'true' || ratedValue === true;
+          this.rated = this._rated;
+          this.rated_applied = this._rated;
+          this.logger.log('[HISTORY & NORT-CONVS]  queryParams _rated:', this._rated);
+        }
 
         // Read pageNo from query params to restore pagination
         let restoredPageNo: number | null = null;
@@ -717,6 +729,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
           const searchedForArray = qsString.split('&');
           this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
+          this.rated_applied = false;
+          this.phone_applied = null;
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
             this.logger.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
@@ -846,6 +860,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               this.call_id = paramArray[1]
             }
 
+            // Only restore rated from qs when _rated is not already in URL (avoid overwriting after search)
+            if (paramArray[0] === 'rated' && paramArray[1] !== undefined && (this.queryParams._rated === undefined)) {
+              this._rated = paramArray[1] === 'true';
+              this.rated = this._rated;
+              this.rated_applied = this._rated;
+              this.logger.log('[HISTORY & NORT-CONVS] queryParams qsString > _rated restored:', this._rated);
+            }
 
             if (paramArray[0] === 'rstatus' && paramArray[1] !== '') {
               const requetStatusValue = paramArray[1]
@@ -997,6 +1018,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.requests_status = 'all'
       if (!hasRelevantQueryParams && this.areDatesComplete) {
         this._preflight = false;
+        this._rated = false;
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
       }
@@ -1020,6 +1042,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       } else {
         this._preflight = false; // Default value for history page
         this.preflight = false;
+      }
+
+      const ratedParam = queryParams.get('_rated');
+      if (ratedParam !== null) {
+        this._rated = ratedParam === 'true';
+        this.rated = this._rated;
+      } else {
+        this._rated = false;
+        this.rated = false;
       }
       
       // Read pageNo from query params to restore pagination
@@ -1070,6 +1101,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       if (this.has_searched === true) {
         const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
           qs: JSON.stringify(this.queryString),
+           _rated: this._rated.toString(),
           _preflight: this._preflight.toString(),
           pageNo: this.pageNo.toString() 
         });
@@ -1077,6 +1109,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       } else if (this.has_searched === false) {
         const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
           _preflight: this._preflight.toString(),
+          _rated: this._rated.toString(),
           pageNo: this.pageNo.toString()
         });
         const navigationExtras = Object.keys(queryParams).length > 0 ? { queryParams } : undefined;
@@ -1572,6 +1605,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
+  onChangeRated($event) {
+    this.rated = $event.target.checked;
+    this._rated = this.rated;
+    this.logger.log('[HISTORY & NORT-CONVS] - onChangeRated - this._rated', this._rated);
+  }
+
   requestsStatusSelectFromAdvancedOption(request_status) {
 
     // this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusSelectFromAdvancedOption', this.showAdvancedSearchOption);
@@ -1781,7 +1820,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
-      this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
+       const ratedValue = this.IS_HERE_FOR_HISTORY ? this._rated : false;
+      this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo, ratedValue).subscribe((requests: any) => {
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
@@ -2911,6 +2951,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._preflight 2', this._preflight);
     }
 
+    if (this.rated === undefined) {
+      this._rated = this.IS_HERE_FOR_HISTORY ? this._rated : false;
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._rated', this._rated);
+    }
+    this.rated_applied = this.IS_HERE_FOR_HISTORY && this._rated;
+    this.phone_applied = this.phone ? this.phone : null;
+
     // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
     // tslint:disable-next-line:max-line-length
     let variable_parameter = 'full_text='
@@ -2971,6 +3018,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.IS_HERE_FOR_HISTORY) {
       const queryParams = this.getQueryParamsWithTiledeskLogOut({ 
         _preflight: this._preflight.toString(),
+        _rated: this._rated.toString(),
         pageNo: this.pageNo.toString()
       });
       this.router.navigate([], { 
@@ -3049,6 +3097,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.fullText = '';
     this.fullText_applied_filter = null;
     this.requester_email_applied_filter = null;
+    this.rated_applied = false;
+    this.rated = false;
+    this._rated = false;
+    this.phone_applied = null;
 
     if (this.selectedDeptId) {
       this.deptIdValue = this.selectedDeptId;
@@ -3200,6 +3252,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.called_phone = '';
     this.call_id = "";
 
+    this.rated = false;
+    this._rated = false;
+
 
     if (!this.IS_HERE_FOR_HISTORY) {
       this.requests_status = 'all'
@@ -3227,6 +3282,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.endDateFormatted = null;
     this.fullText_applied_filter = null;
     this.requester_email_applied_filter = null;
+    this.rated_applied = false;
+    this.phone_applied = null;
     this.selecteTagName = null
     this.selecteTagColor = null
     this.conversationTypeValue = 'all'
@@ -3404,7 +3461,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   dwnldCSV() {
-    this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight, 0).subscribe((requests: any) => {
+    const ratedValue = this.IS_HERE_FOR_HISTORY ? this._rated : false;
+    this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight, 0, ratedValue).subscribe((requests: any) => {
       if (requests) {
         this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
 

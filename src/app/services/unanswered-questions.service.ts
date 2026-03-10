@@ -52,16 +52,28 @@ export class UnansweredQuestionsService {
     return this._httpClient.get<UnansweredQuestion[]>(url, httpOptions);
   }
 
-  getUnansweredQuestions(id_project: string, namespace_id: string, limit?: number, page?: number): Observable<UnansweredQuestion[]> {
+  getUnansweredQuestions(
+    id_project: string,
+    namespace_id: string,
+    limit?: number,
+    page?: number,
+    sortField?: string,
+    direction?: number
+  ): Observable<UnansweredQuestion[]> {
     let url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
-    
-    // Add pagination parameters if provided
+
     const params: string[] = [];
     if (limit !== undefined) {
       params.push(`limit=${limit}`);
     }
     if (page !== undefined) {
       params.push(`page=${page}`);
+    }
+    if (sortField !== undefined) {
+      params.push(`sortField=${encodeURIComponent(sortField)}`);
+    }
+    if (direction !== undefined) {
+      params.push(`direction=${direction}`);
     }
     if (params.length > 0) {
       url += '?' + params.join('&');

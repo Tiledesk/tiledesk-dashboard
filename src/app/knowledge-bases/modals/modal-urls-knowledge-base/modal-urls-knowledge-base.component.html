@@ -1,11 +1,11 @@
-<h1 mat-dialog-title style="font-family: 'Poppins';"> 
+<h1 mat-dialog-title style="font-family: var(--header-font-family);"> 
     <!-- {{ 'KbPage.titleUrls' | translate }}  -->
       {{ 'KbPage.ImportFromWebsites' | translate }}
 </h1>
 
-<div mat-dialog-content style="font-family: 'Poppins';">
+<div mat-dialog-content style="font-family: var(--header-font-family);">
 
-    <div class="info-container">
+    <div class="info-container" style="margin-bottom:12px">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
             <!-- <p>Enter web pages from public URLs into the text area below, separated by a carriage return, or import them from a sitemap.</p> -->
@@ -16,38 +16,15 @@
     </div>
 
     <mat-accordion>
+        <!-- custom--expansion-panel -->
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
-            class="custom--expansion-panel">
+            class="html-tags--expansion-panel" style="margin-bottom: 21px;">
             <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'ImportURLsFromSitemap' | translate}} </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="expansion-panel-content">
-
-                <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
-
-                    <input matInput type="url" [(ngModel)]="siteMap">
-                </mat-form-field>
-
-                 <button class="fetch-button" (click)="fetchSiteMap()">
-                    {{'Fetch' | translate }}
-                </button>
-                
-
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-
-
-
-    <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
-            class="custom--expansion-panel">
-            <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'KbPage.AdvancedOptions' | translate}} </mat-panel-title>
+                <mat-panel-title> {{'HtmlTags' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
                 <!-- SCRAPE TYPE -->
-               <!-- <div class="option-box">
+                <!-- <div class="option-box">
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">
                             {{'KbPage.IndexingType' | translate}}
@@ -58,11 +35,10 @@
                             bindValue="value" placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
                             [clearable]="false" [searchable]="false" [(ngModel)]="selectedScrapeType"
                             (change)="onSelectScrapeType(selectedScrapeType)">
-
                         </ng-select>
                     </div>
                 </div> -->
-                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%;">
+                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; padding: 0px 10px 10px 15px;">
 
                     <!-- COPY/PASTE OPTIONS -->
                     <!-- <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;"> -->
@@ -79,6 +55,8 @@
                                
                             </span>
                         </div>
+
+                       
 
                         <!-- *ngIf="hasStoredScrapeOptions()" -->
                          <div class="mat-icon-wpr"
@@ -104,6 +82,9 @@
                             <span>{{'Paste' | translate}}</span> 
                         </button> -->
                     </div>
+                     <div class="scrape-options-subtitle">
+                        {{'KbPage.ScrapingRulesSubtitle' | translate}}
+                     </div>
 
                     <!-- TAGS TO EXTRACT -->
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
@@ -180,9 +161,33 @@
         </mat-expansion-panel>
     </mat-accordion>
 
-    <div class="form-container" style="margin-bottom: 8px;">
+    <mat-accordion>
+        <!-- custom--expansion-panel  -->
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            class="html-tags--expansion-panel" style="margin-bottom: 8px;">
+            <mat-expansion-panel-header class="disable_ripple">
+                <mat-panel-title> {{'ImportURLsFromSitemap' | translate}} </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="expansion-panel-content">
+                <div class="expansion-panel-wpr-input-btn" style=" padding: 0px 10px 10px 15px; display: flex;"> 
+                    <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                        <input matInput type="url" [(ngModel)]="siteMap">
+                    </mat-form-field>
+
+                    <button class="fetch-button" (click)="fetchSiteMap()">
+                        {{'Fetch' | translate }}
+                    </button>
+                </div>
+                
+
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+
+    <div class="form-container" style="margin-bottom: 6px;">
         <!-- <form [formGroup]="kbForm"> -->
-        <div class="input-container" style="margin-bottom: 6px;">
+        <div class="input-container">
             <span class="textarea-label" style="font-size: 14px;font-weight: 400;">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
             <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
@@ -271,6 +276,14 @@
             <span class="input-label">
                
                 {{'KbPage.RefreshRate' | translate}}
+                 <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
+                        matTooltipPosition="above"
+                        matTooltipHideDelay="100">
+                        help_outline
+                    </span>
+                </span>
             </span>
 
             <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
@@ -284,9 +297,9 @@
                 [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
             </ng-select>
 
-            <span class="input-label input-label-on-bottom">
+           <!--  <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
-            </span>
+            </span> -->
         </div>
 
 

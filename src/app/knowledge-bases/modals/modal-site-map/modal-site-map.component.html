@@ -51,32 +51,14 @@
 
 
     <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="custom--expansion-panel">
+       <!--  custom--expansion-panel -->
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="html-tags--expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'KbPage.AdvancedOptions' | translate}} </mat-panel-title>
+                <mat-panel-title> {{'HtmlTags' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
-                <!-- SCRAPE TYPE -->
-                <!-- <div class="option-box">
-                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                        <span class="input-label">
-                            {{'KbPage.IndexingType' | translate}}
-                        </span>
-                       
-                        <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px;" 
-                            appendTo="body" 
-                            [items]="scrape_types | selectOptionsTranslate" 
-                            bindLabel="name" 
-                            bindValue="value"
-                            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
-                            [clearable]="false"
-                            [searchable]="false" 
-                            [(ngModel)]="selectedScrapeType" 
-                            (change)="onSelectScrapeType(selectedScrapeType)">                
-                        </ng-select>
-                    </div>
-                </div> -->
-                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%">
+               
+                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%;padding: 0px 10px 10px 15px;">
 
                     <!-- COPY/PASTE OPTIONS -->
                     <!-- <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;"> -->
@@ -195,35 +177,8 @@
         </mat-expansion-panel>
     </mat-accordion> 
 
-    <!-- <div class="form-container">
-        <div class="input-container">
-        <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
-        <textarea type="text" class="custom-textarea" 
-            [(ngModel)]="listOfUrls" 
-            (input)="onChangeList($event)"
-            [ngClass]="{'invalid':errorLimit }"
-            placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}"  rows="4"
-        ></textarea>
-        <span *ngIf="!errorLimit && listSitesOfSitemap?.length <= KB_LIMIT_CONTENT"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
-        <span *ngIf="errorLimit || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" class="input-label-error">
-            {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
-        </span>
-        </div>
-    </div> -->
 
-   
-    <!-- <div class="form-container">
-        <form [formGroup]="kbForm">
-            <div class="input-container">
-                <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
-                <input type="url" name="url" class="custom-input" [(ngModel)]="kb.url" formControlName="url"
-                    placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)"
-                    [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
-            </div>
-        </form>
-    </div> -->
-
-    <div class="form--container" style="margin-bottom:8px;">
+    <div class="form--container" style="margin-bottom:4px;">
       
         <div class="input-container">
             <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
@@ -233,7 +188,7 @@
         </div>
 
          <!-- KB Tags -->
-              <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
+        <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
                 [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
@@ -333,6 +288,13 @@
             <span class="input-label">
                
                 {{'KbPage.RefreshRate' | translate}}
+                <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
+                    matTooltipPosition="above"
+                    matTooltipHideDelay="100">
+                    help_outline
+                </span>
             </span>
 
             <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
@@ -346,9 +308,9 @@
                 [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
             </ng-select>
 
-            <span class="input-label input-label-on-bottom">
+           <!-- <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
-            </span>
+            </span>  -->
 
         </div>
 

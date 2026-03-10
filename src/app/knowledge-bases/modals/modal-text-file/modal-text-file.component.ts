@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BrandService } from 'app/services/brand.service';
 import { URL_kb_contents_tags } from 'app/utils/util';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'modal-text-file',
@@ -54,6 +55,7 @@ export class ModalTextFileComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalTextFileComponent>,
     public brandService: BrandService,
+    private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];

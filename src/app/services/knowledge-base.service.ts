@@ -318,6 +318,18 @@ export class KnowledgeBaseService {
     this.previewKbClosed$.next(true)
   }
 
+  updateKbContent(kb) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb._id;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - updateKbContent URL ", url);
+    return this.httpClient.put(url, kb, httpOptions);
+  }
+
 
   // DEPRECATED FUNCTIONS - START
 

@@ -2161,7 +2161,10 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       data: {
-        kb: kb
+        kb: kb,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        payIsVisible: this.payIsVisible
       },
     });
     dialogRef.afterClosed().subscribe(res => {
@@ -2172,7 +2175,8 @@ _presentDialogImportContents() {
           //  let kb = res.kb.kb
           console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
           console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
-          this.onUpdateKb(res.kb)
+          // this.onUpdateKb(res.kb)
+          this.updateKbContent(res.kb)
         } else if (res.method === 'delete') {
           
           console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
@@ -2181,6 +2185,18 @@ _presentDialogImportContents() {
         }
       }
     
+    });
+  }
+
+   updateKbContent(kb) {
+    this.logger.log('[Modal KB DETAILS] updateKbContent kb:', kb);
+    this.kbService.updateKbContent(kb).subscribe((response: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] updateKbContent response', response);
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
+      const paramsDefault = '?limit=' + KB_DEFAULT_PARAMS.LIMIT + '&page=' + KB_DEFAULT_PARAMS.NUMBER_PAGE + '&sortField=' + KB_DEFAULT_PARAMS.SORT_FIELD + '&direction=' + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'after-update');
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] updateKbContent error', error);
     });
   }
 
@@ -2346,6 +2362,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2376,6 +2393,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -3938,7 +3956,9 @@ loadUnansweredQuestions(page: number = 0, append: boolean = false) {
       this.id_project, 
       this.selectedNamespace.id,
       KB_DEFAULT_PARAMS.LIMIT,
-      page
+      page,
+      'createdAt',
+      -1
     )
       .subscribe(
         (res) => {

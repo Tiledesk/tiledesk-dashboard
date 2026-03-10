@@ -383,9 +383,8 @@
               </div>
 
               <!-- ------------------------------------- -->
-              <!-- Caller Phone and call id -->
+              <!-- Caller Phone -->
               <!-- ------------------------------------- -->
-
               <!-- // SEARCH FOR Caller style="margin-bottom: 8px;" -->
               <div class="row" *ngIf="IS_HERE_FOR_HISTORY">
                 <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
@@ -464,13 +463,28 @@
 
                 <!-- // SEARCH FOR Call id -->
                 <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
-                  <!-- <label class="col-sm-12 label-7695a5">
-                    Call ID
-                  </label>
-                  <div class="col-sm-12">
-                    <input name="call_id" type="text" [(ngModel)]="call_id" class="" autocomplete="off"
-                    placeholder="Call ID" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
-                  </div>-->
+                   <div class="rated-convs-checkbox">
+                      <div class="checkbox">
+                        <label class="checkbox--label">
+                          <input type="checkbox" [(ngModel)]="rated" class="form-check-input" id="rated-convs"
+                            (change)="onChangeRated($event)">
+                            <div class="checkbox--label-text" style="line-height: 17px;">
+                              {{'OnlyRatedConversations' | translate}}
+                            </div>
+                        </label>
+                        
+                      </div>
+                      <div class="help-icon-wpr">
+                        <i  class="material-icons" 
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{'DisplayOnlyConversationsWhereUsersHaveLeftRating' | translate}}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='below' 
+                          matTooltipHideDelay="100"> 
+                          help_outline 
+                        </i>
+                      </div>
+                  </div>
                 </div>
               </div>
 

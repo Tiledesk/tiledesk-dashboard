@@ -20,9 +20,9 @@ export interface KB {
     updatedAt?: Date;
     status?: number;
     deleting?: boolean;
-    extract_tags?: string[];
-    unwanted_tags?: string[];
-    unwanted_classnames?: string[];
+    refresh_rate?: string;
+    tags?: string[];
+    sitemap_origin?: string;
     scrape_options?: {
         tags_to_extract?: string[];
         unwanted_tags?: string[];

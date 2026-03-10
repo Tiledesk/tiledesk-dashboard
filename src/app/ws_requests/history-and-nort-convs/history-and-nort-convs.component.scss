@@ -1027,6 +1027,20 @@ p.member:hover {
   vertical-align: middle;
 }
 
+.rated-convs-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.rated-convs-checkbox>.help-icon-wpr>i {
+  font-size: 18px;
+  color: #7695a5;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
 
 // .request-statuses-select {
 //   margin-right: 15px;
