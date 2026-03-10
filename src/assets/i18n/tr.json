@@ -2216,6 +2216,7 @@
          "ExtractTagsNoMandatory": "Etiketleri Çıkar",
          "NoScrapingRulesConfigured": "Scraping kuralı yapılandırılmamış",
          "ScrapingRulesDesc": "Sayfayı scraping yaparken hangi HTML öğelerinin çıkarılacağını veya hariç tutulacağını tanımlayın",
+        "ScrapingRulesSubtitle": "Sayfalar, metin çıkarılmadan önce headless Chromium örneğinde tamamen oluşturulur ve yürütülür",
          "PasteScrapingRules": "Scraping kurallarını yapıştır",
          "NoScrapingRulesToPaste": "Yapıştırılacak scraping kuralı yok",
          "AdvancedContext":"Gelişmiş bağlam",

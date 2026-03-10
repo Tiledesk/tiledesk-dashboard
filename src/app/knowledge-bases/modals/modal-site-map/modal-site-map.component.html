@@ -40,7 +40,7 @@
         </div>
     </div> -->
 
-     <div class="info-container">
+     <div class="info-container"  style="margin-bottom:12px">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
           <p>{{ 'KbPage.InfoSitemap' | translate }}</p>
@@ -51,14 +51,14 @@
 
 
     <mat-accordion>
-       <!--  custom--expansion-panel -->
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="html-tags--expansion-panel">
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" 
+            class="html-tags--expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'HtmlTags' | translate}} </mat-panel-title>
+                <mat-panel-title> {{'HtmlTags' | translate}}</mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
-               
-                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%;padding: 0px 10px 10px 15px;">
+           
+                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; padding: 0px 10px 10px 15px;">
 
                     <!-- COPY/PASTE OPTIONS -->
                     <!-- <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;"> -->
@@ -76,6 +76,8 @@
                             </span>
                         </div>
 
+                      
+
                         <!-- *ngIf="hasStoredScrapeOptions()" -->
                          <div class="mat-icon-wpr"
                             (click)="pasteAllScrapeOptions()"
@@ -84,21 +86,15 @@
                             #pasteTooltip="matTooltip"
                             matTooltipPosition="above"
                             matTooltipHideDelay="100"
-                            [ngStyle]="{'cursor':stored_scrape_option ? 'pointer' : 'not-allowed' }">
+                            [ngStyle]="{'cursor':stored_scrape_option ? 'pointer' : 'not-allowed' }"
+                            [ngClass]="{'no-scrape-option-to-paste': !stored_scrape_option}">
                             <mat-icon>content_paste</mat-icon>
                          </div>
-                        <!-- <button type="button" 
-                            [disabled]="!stored_scrape_option"
-                            class="btn paste-scrape-options-btn" 
-                            (click)="pasteAllScrapeOptions()"
-                            matTooltipClass="kb-custom-mat-tooltip"
-                            [matTooltip]="'PasteScrapeOptions' | translate"
-                            #pasteTooltip="matTooltip"
-                            matTooltipPosition="above"
-                            matTooltipHideDelay="100">
-                            <mat-icon style="font-size: 16px; width: 16px; height: 16px;">content_paste</mat-icon>
-                            <span>{{'Paste' | translate}}</span> 
-                        </button> -->
+                       
+                    </div>
+
+                    <div class="scrape-options-subtitle">
+                        {{'KbPage.ScrapingRulesSubtitle' | translate}}
                     </div>
 
                     <!-- TAGS TO EXTRACT -->
@@ -177,17 +173,45 @@
         </mat-expansion-panel>
     </mat-accordion> 
 
+    <!-- <div class="form-container">
+        <div class="input-container">
+        <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
+        <textarea type="text" class="custom-textarea" 
+            [(ngModel)]="listOfUrls" 
+            (input)="onChangeList($event)"
+            [ngClass]="{'invalid':errorLimit }"
+            placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}"  rows="4"
+        ></textarea>
+        <span *ngIf="!errorLimit && listSitesOfSitemap?.length <= KB_LIMIT_CONTENT"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
+        <span *ngIf="errorLimit || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" class="input-label-error">
+            {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
+        </span>
+        </div>
+    </div> -->
 
-    <div class="form--container" style="margin-bottom:4px;">
+   
+    <!-- <div class="form-container">
+        <form [formGroup]="kbForm">
+            <div class="input-container">
+                <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
+                <input type="url" name="url" class="custom-input" [(ngModel)]="kb.url" formControlName="url"
+                    placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)"
+                    [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+            </div>
+        </form>
+    </div> -->
+
+    <div class="form--container" style="margin-bottom:8px;">
       
         <div class="input-container">
             <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
             <input type="url" name="url" class="custom-input" [(ngModel)]="siteMap"
-                placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)" [disabled]="!refreshRateIsEnabled"
-                style="margin-top: 3px;">
+                placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" 
+                (input)="onChangeInput($event)" 
+                [disabled]="!refreshRateIsEnabled" style="margin-top: 3px;">
         </div>
 
-         <!-- KB Tags -->
+           <!-- KB Tags -->
         <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
@@ -288,16 +312,16 @@
             <span class="input-label">
                
                 {{'KbPage.RefreshRate' | translate}}
-                <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: 5px;cursor: pointer; color: #566787;"
-                    matTooltipClass="kb-custom-mat-tooltip"
-                    matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
-                    matTooltipPosition="above"
-                    matTooltipHideDelay="100">
-                    help_outline
+                 <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
+                        matTooltipPosition="above"
+                        matTooltipHideDelay="100">
+                        help_outline
                 </span>
             </span>
 
-            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px; font-size: 14px;"
                 appendTo="body" 
                 [items]="refresh_rate | selectOptionsTranslate" 
                 bindLabel="name" bindValue="value" 
@@ -308,9 +332,9 @@
                 [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
             </ng-select>
 
-           <!-- <span class="input-label input-label-on-bottom">
+            <!-- <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}
-            </span>  -->
+            </span> -->
 
         </div>
 

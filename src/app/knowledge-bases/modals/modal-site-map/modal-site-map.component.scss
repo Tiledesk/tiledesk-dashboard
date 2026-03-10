@@ -264,7 +264,9 @@
 
 
 
-
+.mat-icon-wpr:hover:not(.no-scrape-option-to-paste) > mat-icon {
+    color: var(--blue-20);
+}
 
 .scrape-options-header {
     display: flex;
@@ -286,6 +288,15 @@
     cursor: pointer;
 }
 
+.scrape-options-subtitle {
+    color: var(--secondary-text-color);
+    line-height: 17px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    margin-top: -6px;
+    font-family: var(--header-font-family);
+}
+
 .mat-icon-wpr>mat-icon {
     font-size: 16px;
     width: 16px;
@@ -293,9 +304,9 @@
     vertical-align: middle;
 }
 
-.mat-icon-wpr:hover>mat-icon {
-    color: var(--blue-20);
-}
+// .mat-icon-wpr:hover>mat-icon {
+//     color: var(--blue-20);
+// }
 
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {

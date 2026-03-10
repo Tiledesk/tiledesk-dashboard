@@ -486,14 +486,14 @@
 ::ng-deep.html-tags--expansion-panel:not(.mat-expanded) {
     // background: rgba(0, 0, 0, .04) !important;
     background: #fff !important;
-    border-radius: 12px !important;
+    border-radius: 5px !important;
     border: 1px solid #ccc !important;
 }
 
 ::ng-deep.html-tags--expansion-panel.mat-expanded {
     // background: rgba(0, 0, 0, .04) !important;
     background: #fff !important;
-    border-radius: 12px !important;
+    border-radius: 5px !important;
     border: 1px solid #ccc !important;
     margin-bottom: 12px !important;
 }
