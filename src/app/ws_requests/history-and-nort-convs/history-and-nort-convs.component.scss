@@ -890,7 +890,7 @@ p.member:hover {
   margin-left: 9px;
   // background: #e4e6eb;
   // margin-bottom: 16px;
-  margin-top: 8px;
+  // margin-top: 8px;
 }
 
 // applied in the div of the ng-select 'Tag'
@@ -1035,6 +1035,7 @@ p.member:hover {
   flex-direction: row;
   align-items: center;
   gap: 6px;
+  margin-left: 15px;
 }
 
 .rated-convs-checkbox>.help-icon-wpr>i {

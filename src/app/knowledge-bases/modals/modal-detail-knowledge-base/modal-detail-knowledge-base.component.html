@@ -89,6 +89,10 @@
                                     <span *ngIf="showCopiedMessage" class="copied-message">{{'Copied' | translate}}!</span>
                                 </div>
                             </div>
+
+                    <div class="scrape-options-subtitle">
+                        {{'KbPage.ScrapingRulesSubtitle' | translate}}
+                    </div>
                           
                         <!-- TAGS TO EXTRACT -->
                         <div style="display: flex; flex-direction: column; align-items: flex-start;">
@@ -161,6 +165,7 @@
                     </span>
  
                     <ng-select class="scrape-types-select refresh-rate-select-ng"
+                        style="max-width: 250px;min-width: 200px;"
                         appendTo="body"
                         [items]="refresh_rate | selectOptionsTranslate"
                         bindLabel="name" bindValue="value"
@@ -187,11 +192,10 @@
         <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
-                [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-                style="padding-top: 8px;">
+                [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)">
 
             <div class="kb-tags-help"
-                style="position: relative;top: 5px;"
+                style="position: relative;top: 6px;"
                 #trigger="cdkOverlayOrigin"
                 cdkOverlayOrigin
                 (mouseenter)="open()"
@@ -230,7 +234,7 @@
             <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
 
                 <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
-                    <p  style="line-height: 1em;" class="kb-tag">{{kbtag}}</p>
+                    <p  class="kb-tag">{{kbtag}}</p>
                     <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                         class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;cursor:pointer">
