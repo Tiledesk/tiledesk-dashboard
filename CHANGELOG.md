@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.170-AR
+- Fixes the bug: unanswered questions are duplicated
+
 ### 2.7.169-AR
 - Improves the search for phone numbers in the history page
 
