@@ -31,7 +31,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   getChunksError: boolean = false;
   showCopiedMessage: boolean = false;
 
-    panelOpenState = true;
+  panelOpenState = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   extract_tags: string[] = [];
   unwanted_tags: string[] = [];

@@ -6,9 +6,20 @@
     <div class="kb-details-form-container">
 
         <div class="input-container">
-            <span class="input-label" *ngIf="kb.type !== 'faq'">{{ 'Name' | translate }}</span>
+            <!-- <span class="input-label" *ngIf="kb.type !== 'faq'">{{ 'Name' | translate }}</span>
             <span class="input-label" *ngIf="kb.type === 'faq'">{{ 'FaqPage.Question' | translate }}</span>
-            <input [(ngModel)]="name" type="text" name="name" class="custom-input">
+            <input [(ngModel)]="name" type="text" name="name" class="custom-input"> -->
+
+            <span class="input-label" *ngIf="kb.type !== 'faq' && !kb.sitemap_origin">{{ 'Name' | translate }}</span>
+            <span class="input-label" *ngIf="kb.type !== 'faq' && kb.sitemap_origin">{{ 'KbPage.Url' | translate }}</span>
+            <span class="input-label" *ngIf="kb.type === 'faq'">{{ 'FaqPage.Question' | translate }}</span>
+
+            <a *ngIf="kb.sitemap_origin" class="input-label link-page" [href]="name" target="_blank" style="text-decoration: none;">
+                <span class="material-icons-outlined">
+                    open_in_new
+                </span>
+            </a>
+            <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin">
 
             <!-- ------------------------------------ -->
             <!-- Use cese URL -->
