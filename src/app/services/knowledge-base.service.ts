@@ -112,7 +112,10 @@ export class KnowledgeBaseService {
     return this.httpClient.put(url, body, httpOptions);
   }
 
-  public uploadFaqCsv(formData: any, namespaceid) {
+  public uploadFaqCsv(formData: any, namespaceid, kbTagsArray) {
+    if (kbTagsArray && kbTagsArray.length > 0) {
+      formData.set('tags', JSON.stringify(kbTagsArray));
+    }
     const options = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -313,6 +316,18 @@ export class KnowledgeBaseService {
   modalPreviewKbHasBeenClosed() {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - modalPreviewKbHasBeenClosed (clicking backdrop)");
     this.previewKbClosed$.next(true)
+  }
+
+  updateKbContent(kb) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb._id;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - updateKbContent URL ", url);
+    return this.httpClient.put(url, kb, httpOptions);
   }
 
 

@@ -308,7 +308,7 @@
         </div>
     </div>
 
-    <div class="card contents-card">
+    <div class="card contents-card" style="margin: 16px 0;">
         <div class="card-header card-header-custom-bkgrnd" style="    padding-top: 10px !important;padding-left: 15px;padding-right: 15px;padding-bottom: 3px !important;">
             <div class="form-group preview-count-n">
                 <div class="preview-count-left">
@@ -592,32 +592,32 @@
 
 
                         <td class="kb-name-col" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                            <!-- <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0; width: 100%;"> -->
-                                <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                    class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
-                                    matTooltipClass="kb-custom-mat-tooltip" 
-                                    [matTooltip]="'URLAutomaticallySynchronized' | translate" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='above' 
-                                    matTooltipHideDelay="100"
-                                    [matTooltipDisabled]="!kb.sitemap_origin">
-                                    {{ kb.name }}
-                                </div>
 
-                                <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
-                                    style="min-width: 0; width: 100%; display: block;">
+                            <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && kb?.tags?.length > 0}"
+                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
+                                matTooltipClass="kb-custom-mat-tooltip" 
+                                [matTooltip]="'URLAutomaticallySynchronized' | translate" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"
+                                [matTooltipDisabled]="!kb.sitemap_origin">
+                                {{ kb.name }}
+                            </div>
 
-                                    {{kb.content | slice:0:500 }}
+                            <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
+                                style="min-width: 0; width: 100%; display: block;">
 
-                                </div>
-                                <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="min-width: 0; width: 100%; display: block;">
+                                {{kb.content | slice:0:500 }}
 
-                                  <span *ngIf="!kb.sitemap_origin"> 
-                                   {{kb.source }}
-                                 </span>  
-                                 <!-- || kb.type === 'sitemap' -->
-                                 <span *ngIf="kb.sitemap_origin"> 
-                                   <span style="background: #ff6154;
+                            </div>
+                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="min-width: 0; width: 100%; display: block;">
+
+                                <span *ngIf="!kb.sitemap_origin"> 
+                                {{kb.source }}
+                                </span>  
+                                <!-- || kb.type === 'sitemap' -->
+                                <span *ngIf="kb.sitemap_origin"> 
+                                    <span style="background: #ff6154;
                                         color: #fff;
                                         border-radius: 9999px;
                                         padding: 0 5px;
@@ -629,10 +629,28 @@
                                     {{kb.sitemap_origin }}
                                     <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
                                     <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
-                                 </span>
+                                </span>
 
+                            </div>
+                            <div class="kb-tags-wpr" *ngIf="kb?.tags?.length > 0" style="display: flex;gap: 2px;">
+                                <div *ngFor="let tag of kb?.tags">
+                                    <div class="kb-tag-wpr" style="display: flex;align-items: center;gap:1px;margin-right: 3px;">
+                                        <svg style="width: 9px; height: auto;min-width: 9px;" aria-hidden="true" focusable="false" data-prefix="fas"
+                                            data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                            <path fill="#7695a5" class="tag_icon_in_ws_msgs"
+                                            d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                            </path>
+                                        </svg>
+
+                                        <div style="font-size: 11px; color: #7695a5;right: 2px;margin-right: 2px;white-space: nowrap;">
+                                            {{ tag}}
+                                        </div>
+                                    </div>
                                 </div>
-                            <!-- </div> -->
+
+                            </div>
                         </td>
 
                         <td style="max-width: 40px; text-align: end;">

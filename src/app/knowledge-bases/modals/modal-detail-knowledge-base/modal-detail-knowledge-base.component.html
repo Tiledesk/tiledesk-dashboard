@@ -6,9 +6,20 @@
     <div class="kb-details-form-container">
 
         <div class="input-container">
-            <span class="input-label" *ngIf="kb.type !== 'faq'">{{ 'Name' | translate }}</span>
+            <!-- <span class="input-label" *ngIf="kb.type !== 'faq'">{{ 'Name' | translate }}</span>
             <span class="input-label" *ngIf="kb.type === 'faq'">{{ 'FaqPage.Question' | translate }}</span>
-            <input [(ngModel)]="name" type="text" name="name" class="custom-input">
+            <input [(ngModel)]="name" type="text" name="name" class="custom-input"> -->
+
+            <span class="input-label" *ngIf="kb.type !== 'faq' && !kb.sitemap_origin">{{ 'Name' | translate }}</span>
+            <span class="input-label" *ngIf="kb.type !== 'faq' && kb.sitemap_origin">{{ 'KbPage.Url' | translate }}</span>
+            <span class="input-label" *ngIf="kb.type === 'faq'">{{ 'FaqPage.Question' | translate }}</span>
+
+            <a *ngIf="kb.sitemap_origin" class="input-label link-page" [href]="name" target="_blank" style="text-decoration: none;">
+                <span class="material-icons-outlined">
+                    open_in_new
+                </span>
+            </a>
+            <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin">
 
             <!-- ------------------------------------ -->
             <!-- Use cese URL -->
@@ -16,14 +27,14 @@
             <div *ngIf="kb.type === 'url'">
                 <span *ngIf="!kb.sitemap_origin" class="input-label">{{ 'KbPage.Url' | translate }}</span>
                 <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span>
-                <a class="input-label link-page" [href]="source" target="_blank" style="text-decoration: none;">
+                <a class="input-label link-page" [href]="kb.sitemap_origin" target="_blank" style="text-decoration: none;">
                     <span class="material-icons-outlined">
                         open_in_new
                     </span>
                 </a>
 
-                <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input">
-                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input">
+                <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input" disabled>
+                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input" disabled>
 
 
             </div>
@@ -38,7 +49,7 @@
                     </span>
                 </a>
 
-                <input  [(ngModel)]="source" type="url" name="url" class="custom-input">
+                <input  [(ngModel)]="source" type="url" name="url" class="custom-input" disabled>
 
             </div>
             
@@ -51,7 +62,7 @@
             </div>
 
             <!-- ------------------------------------ -->
-            <!-- Use case text -->
+            <!-- Use case faq -->
             <!-- ------------------------------------ -->
             <div *ngIf="kb.type === 'faq'">
                 <span class="input-label">{{ 'FaqPage.Answer' | translate }}</span>
@@ -65,80 +76,189 @@
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
     
     <ng-container *ngIf="!showSpinner">
-        <div class="scrape-options-wpr" *ngIf="kb.type === 'url' || kb.type === 'sitemap'">
-            <div class="scrape-options-header">
-                <div class="scrape-options-title">
-                   {{'KbPage.ScrapingRules' | translate}}
+        <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
+        <div class="scrape-options-wpr" *ngIf="kb.type === 'url'">
+            <mat-accordion class="scrape-options-accordion">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="html-tags--expansion-panel">
+                    <mat-expansion-panel-header class="disable_ripple">
+                        <mat-panel-title>{{'HtmlTags' | translate}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="expansion-panel-content">
+                        <div class="option-box" style="padding: 0px 10px 10px 15px;">
+                            <div class="scrape-options-header">
+                                <div class="scrape-options-title">
+                                    {{'KbPage.ScrapingRules' | translate}}
+                                </div>
+                                <div class="mat-icon-wpr" style="position: relative;">
+                                    <div class="mat-icon-wpr"
+                                         (click)="copyAllScrapeOptions(); $event.stopPropagation()"
+                                         matTooltipClass="kb-custom-mat-tooltip"
+                                         matTooltip="{{'CopyScrapingRulesToPasteThemWebContentType' | translate}}"
+                                         matTooltipPosition="above"
+                                         matTooltipHideDelay="100">
+                                        <mat-icon>content_copy</mat-icon>
+                                    </div>
+                                    <span *ngIf="showCopiedMessage" class="copied-message">{{'Copied' | translate}}!</span>
+                                </div>
+
+                            </div>
+                            <div class="scrape-options-subtitle">
+                                {{'KbPage.ScrapingRulesSubtitle' | translate}}
+                            </div>
+                          
+                        <!-- TAGS TO EXTRACT -->
+                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <span class="input-label">{{'KbPage.ExtractTags' | translate}}</span>
+                            <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
+                                <mat-chip-list #extractTags aria-label="Tag selection">
+                                    <mat-chip *ngFor="let tag of extract_tags" (removed)="removeTag('extract_tags', tag)">
+                                        {{ tag }}
+                                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                                    </mat-chip>
+                                    <input style="font-size: 13px; background-color: white; border: none;"
+                                        [matChipInputFor]="extractTags"
+                                        placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        (matChipInputTokenEnd)="addTag('extract_tags', $event)">
+                                </mat-chip-list>
+                            </mat-form-field>
+                        </div>
+                        <!-- UNWANTED TAGS -->
+                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <span class="input-label">{{'KbPage.UnwantedTags' | translate}}</span>
+                            <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
+                                <mat-chip-list #unwantedTags aria-label="Tag selection">
+                                    <mat-chip *ngFor="let tag of unwanted_tags" (removed)="removeTag('unwanted_tags', tag)">
+                                        {{ tag }}
+                                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                                    </mat-chip>
+                                    <input style="font-size: 13px; background-color: white; border: none;"
+                                        [matChipInputFor]="unwantedTags"
+                                        placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        (matChipInputTokenEnd)="addTag('unwanted_tags', $event)">
+                                </mat-chip-list>
+                            </mat-form-field>
+                        </div>
+                         <!-- UNWANTED CLASSNAMES -->
+                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <span class="input-label">{{'KbPage.UnwantedClassnames' | translate}}</span>
+                            <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
+                                <mat-chip-list #unwantedClassnames aria-label="Tag selection">
+                                    <mat-chip *ngFor="let tag of unwanted_classnames" (removed)="removeTag('unwanted_classnames', tag)">
+                                        {{ tag }}
+                                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                                    </mat-chip>
+                                    <input style="font-size: 13px; background-color: white; border: none;"
+                                        [matChipInputFor]="unwantedClassnames"
+                                        placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        (matChipInputTokenEnd)="addTag('unwanted_classnames', $event)">
+                                </mat-chip-list>
+                            </mat-form-field>
+                        </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
+            <div class="refresh-rate-wpr" *ngIf="(kb.type === 'url' )" style="margin-bottom: 0px;">
+                <div class="refresh-rate-select">
+                    <!-- <div class="refresh-rate-label-wpr"> </div> -->
+                    <span class="input-label" style="font-weight: 400;font-size: 14px;margin-bottom: 3px;">{{'KbPage.RefreshRate' | translate}}
+                        <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 5px;cursor: pointer;"
+                                matTooltipClass="kb-custom-mat-tooltip"
+                                matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
+                                matTooltipPosition="above"
+                                matTooltipHideDelay="100">
+                                help_outline
+                        </span>
+                    </span>
+ 
+                    <ng-select class="scrape-types-select refresh-rate-select-ng"
+                        appendTo="body"
+                        [items]="refresh_rate | selectOptionsTranslate"
+                        bindLabel="name" bindValue="value"
+                        placeholder="Refresh rate"
+                        [clearable]="false" [searchable]="false"
+                        [(ngModel)]="selectedRefreshRate"
+                        (change)="onSelectRefreshRate(selectedRefreshRate)"
+                        [disabled]="((!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible) || kb.sitemap_origin">
+                    </ng-select>
+                    <span *ngIf="kb.sitemap_origin" class="input-label input-label-on-bottom">{{'URLAutomaticallySynchronized' | translate}}</span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    
+    <ng-container *ngIf="!showSpinner" >
+        <!-- TODO: remove condition sitemap -->
+        <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
+            <div class="content-tags-title">
+                {{'Tags.Tags' | translate}}
+            </div>
+   
+
+        <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
+            <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+                [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
+                [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)">
+
+            <div class="kb-tags-help"
+                style="position: relative;top: 3px;"
+                #trigger="cdkOverlayOrigin"
+                cdkOverlayOrigin
+                (mouseenter)="open()"
+                (mouseleave)="scheduleClose()">
+
+                <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
+                help_outline
+                </span>
+            </div>
+        </div>
+        <ng-template
+            cdk-connected-overlay
+            [cdkConnectedOverlayOrigin]="trigger"
+            [cdkConnectedOverlayOpen]="isOpen"
+            [cdkConnectedOverlayPositions]="positions"
+            [cdkConnectedOverlayHasBackdrop]="false"
+            (detach)="isOpen = false">
+            <div class="cdk-popover"
+            (mouseenter)="cancelClose()"
+            (mouseleave)="scheduleClose()">
+
+                <div class="cdk-popover-arrow"></div>
+
+                <div class="cdk-popover-content">
+                    {{'AssignOneOrMoreTagsToThisContent' | translate}}
                 </div>
 
-               <div class="mat-icon-wpr" style="position: relative;">
-                    <div class="mat-icon-wpr"
-                         (click)="copyAllScrapeOptions(); $event.stopPropagation()"
-                         matTooltipClass="kb-custom-mat-tooltip"
-                         matTooltip="{{'KbPage.CopyScrapingRules' | translate}}"
-                         #copyTooltip="matTooltip"
-                         matTooltipPosition="above"
-                         matTooltipHideDelay="100">
-                        <mat-icon>content_copy</mat-icon>
-                    </div>
-                    <span *ngIf="showCopiedMessage" class="copied-message">{{'Copied' | translate}}!</span>
+                <div *ngIf="hideHelpLink" class="cdk-learn-more"
+                    (click)="goToKbTagsDoc()">
+                    {{ 'LearnMore' | translate }}
                 </div>
-                <!-- <button type="button" 
-                    *ngIf="hasScrapeOptions()"
-                    class="btn copy-scrape-options-btn" 
-                    (click)="copyAllScrapeOptions(); $event.stopPropagation()"
-                    matTooltipClass="kb-custom-mat-tooltip"
-                    [matTooltip]="'CopyScrapeOptions' | translate"
-                    #copyTooltip="matTooltip"
-                    matTooltipPosition="above"
-                    matTooltipHideDelay="100">
-                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">content_copy</mat-icon>
-                    <span>{{'Copy' | translate}}</span>
-                </button> -->
+
             </div>
-            <div *ngIf="hasScrapeOptions()" style="font-size: 12px; color: #666; margin-bottom: 8px;">
-                <div style="margin-bottom: 8px;">
-                    <strong style="display: block; margin-bottom: 4px;">{{'KbPage.ExtractTagsNoMandatory' | translate}}:</strong>
-                    <mat-chip-list *ngIf="(kb.scrape_options?.tags_to_extract && kb.scrape_options.tags_to_extract.length > 0)">
-                        <mat-chip *ngFor="let tag of (kb.extract_tags || kb.scrape_options?.tags_to_extract || [])" class="scrape-option-chip">
-                            {{ tag }}
-                        </mat-chip>
-                    </mat-chip-list>
-                    <div *ngIf="(!kb.scrape_options?.tags_to_extract || kb.scrape_options.tags_to_extract.length === 0)"
-                        style="font-style: italic;">
-                         {{'KbPage.NoScrapingRulesConfigured' | translate}}
-                    </div>
-                </div>
-                <div  style="margin-bottom: 8px;">
-                    <strong style="display: block; margin-bottom: 4px;">{{'KbPage.UnwantedTags' | translate}}:</strong>
-                    <mat-chip-list *ngIf="(kb.scrape_options?.unwanted_tags && kb.scrape_options.unwanted_tags.length > 0)">
-                        <mat-chip *ngFor="let tag of (kb.unwanted_tags || kb.scrape_options?.unwanted_tags || [])" class="scrape-option-chip">
-                            {{ tag }}
-                        </mat-chip>
-                    </mat-chip-list>
-                    <div *ngIf="(!kb.scrape_options?.unwanted_tags || kb.scrape_options.unwanted_tags.length === 0)"
-                        style="font-style: italic;">
-                        {{'KbPage.NoScrapingRulesConfigured' | translate}}
-                    </div>
-                </div>
-                <div style="margin-bottom: 8px;">
-                    <strong style="display: block; margin-bottom: 4px;">{{'KbPage.UnwantedClassnames' | translate}}:</strong>
-                    <mat-chip-list *ngIf="(kb.scrape_options?.unwanted_classnames && kb.scrape_options.unwanted_classnames.length > 0)">
-                        <mat-chip *ngFor="let tag of (kb.scrape_options?.unwanted_classnames || [])" class="scrape-option-chip">
-                            {{ tag }}
-                        </mat-chip>
-                    </mat-chip-list>
-                    <div *ngIf="(!kb.scrape_options?.unwanted_classnames || kb.scrape_options.unwanted_classnames.length === 0)"
-                        style="font-style: italic;"> 
-                         {{'KbPage.NoScrapingRulesConfigured' | translate}}
-                    </div>
-                </div>
+        </ng-template>
+
+            <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }" [ngClass]="{'kb-tags-container-with-tags': kbTagsArray?.length > 0 }">
+
+                <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
+                    <p  style="line-height: 1em;" class="kb-tag">{{kbtag}}</p>
+                    <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                        class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;cursor:pointer">
+                        <path
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                        </path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg>
+                    </button>
+                </span>
+
             </div>
-            <div *ngIf="!hasScrapeOptions()" style="font-size: 12px; color: #999; font-style: italic;">
-                <!-- No extraction rules configured -->
-               {{'KbPage.NoScrapingRulesConfigured' | translate}}
-                
-            </div>
+            
         </div>
     </ng-container>
 
@@ -183,8 +303,6 @@
             </div>
             
             <div class="sitemap-refresh-rate-value">
-                <!-- {{kb.refresh_rate}} -->
-
                 <span *ngIf="kb.refresh_rate === 'never' ">
                     {{'Never' | translate}}
                 </span>
@@ -202,7 +320,7 @@
             </div>
         </div>
 
-    </ng-container>
+    </ng-container> 
 
 
 </div>
@@ -217,12 +335,13 @@
         {{ "Update" | translate }}
     </button>
     <!-- || kb._id && kb.type === 'sitemap' -->
-    <!-- <button *ngIf="kb._id && kb.type === 'url' " class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
-        mat-button (click)="onUpdateKnowledgeBase()">
+    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
+        mat-button (click)="onUpdateKnowledgeBase()" [disabled]="extract_tags.length === 0">
         {{ "Update" | translate }}
-    </button> -->
+    </button>
 
-     <button *ngIf="kb._id && (kb.type === 'sitemap' || kb.type === 'url')" class="btn btn-red btn-red-custom"
+    <!-- || kb.type === 'url' -->
+     <button *ngIf="kb._id && (kb.type === 'sitemap' )" class="btn btn-red btn-red-custom"
         mat-button (click)="onDeleteKnowledgeBase()" style="height: 36px; line-height: 20px;">
         {{ "Delete" | translate }}
     </button>

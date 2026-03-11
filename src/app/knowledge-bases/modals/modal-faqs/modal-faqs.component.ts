@@ -1,9 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KB } from 'app/models/kbsettings-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { BrandService } from 'app/services/brand.service';
+import { URL_kb_contents_tags } from 'app/utils/util';
 // import { FaqService } from 'app/services/faq.service';
 
 @Component({
@@ -33,13 +36,34 @@ export class ModalFaqsComponent implements OnInit {
     content: ''
   }
 
+  // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: string = '20px';
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalFaqsComponent>,
     private logger: LoggerService,
     private kbService: KnowledgeBaseService,
-
+    private brandService: BrandService
   ) {
     this.logger.log('[MODAL-FAQS] data', data)
     if (data && data.selectedNamespace) {
@@ -51,10 +75,42 @@ export class ModalFaqsComponent implements OnInit {
       this.displayAddManuallySection = true;
       this.showBackButton = false;
     }
+
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
     this.kbForm = this.createConditionGroup();
+  }
+
+
+  ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+  ngOnDestroy() { 
+    this.logger.log('[MODAL-FAQS] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   createConditionGroup(): FormGroup {
@@ -74,6 +130,29 @@ export class ModalFaqsComponent implements OnInit {
     }
   }
 
+  // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        this.logger.log("[MODAL-FAQS] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    this.logger.log("[MODAL-FAQS] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    this.logger.log("[MODAL-FAQS] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   onSaveKnowledgeBase(isSingle) {
     this.logger.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb, 'isSingle ', isSingle )
     const content = this.kb.name + "\n" + this.kb.content
@@ -81,7 +160,8 @@ export class ModalFaqsComponent implements OnInit {
       'name': this.kb.name,
       'source': this.kb.name,
       'content': content, // this.kb.content,
-      'type': 'faq'
+      'type': 'faq',
+      'tags': this.kbTagsArray
     }
     this.dialogRef.close({'body': body, 'isSingle': isSingle});
 
@@ -172,7 +252,7 @@ export class ModalFaqsComponent implements OnInit {
       formData.append('uploadFile', file, file.name);
       this.logger.log('FORM DATA ', formData)
 
-      this.kbService.uploadFaqCsv(formData, this.namespaceid)
+      this.kbService.uploadFaqCsv(formData, this.namespaceid, this.kbTagsArray)
 
         .subscribe(data => {
           this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
@@ -193,6 +273,69 @@ export class ModalFaqsComponent implements OnInit {
         });
 
     }
+  }
+
+  /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
+
+
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+
+  goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
   }
 
 }

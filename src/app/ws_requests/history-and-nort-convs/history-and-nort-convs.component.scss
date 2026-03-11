@@ -937,7 +937,7 @@ p.member:hover {
   border-radius: 50%;
   display: inline-block;
   position: relative;
-  top: 3px;
+  // top: 3px;
 }
 
 .email-wpr {
@@ -1068,6 +1068,23 @@ p.member:hover {
 }
 
 
+.rated-convs-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.rated-convs-checkbox>.help-icon-wpr>i {
+  font-size: 18px;
+  color: #7695a5;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+
+
+
 // .request-statuses-select {
 //   margin-right: 15px;
 // }
@@ -1165,4 +1182,15 @@ p.member:hover {
 
 .no-agent>span>svg>g>path {
   fill: var(--svg-icon-gray) // #8796af 
+}
+
+/* Export CSV button: wrapper receives hover so tooltip works when button is disabled */
+.export-csv-btn-wrapper {
+  display: inline-block;
+  cursor: default;
+}
+
+/* Riduce la distanza del tooltip dal pulsante Export CSV (position="below" nel template) */
+::ng-deep .mat-white-tooltip.export-csv-tooltip {
+  transform: translateY(16px) !important;
 }

@@ -237,10 +237,10 @@
 //     color: #fff;
 // }
 
-// .mat-dialog-ok-btn {
-//     background-color: var(--blue-light);
-//     color: #fff;
-// }
+.mat-dialog-ok-btn {
+    background-color: var(--blue-light);
+    color: #fff;
+}
 
 
 .mat-dialog-traspatent-btn {
@@ -402,7 +402,7 @@
     text-align: center;
     // margin: 20px 0 60px;
     margin: 20px 0 40px;
-    font-size: 1.25em;
+    font-size: 14px;
 
     &.processing {
         color: var( --secondary-text-color);

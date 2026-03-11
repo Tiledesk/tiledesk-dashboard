@@ -810,6 +810,7 @@
     "WhatsAppNotConfigured": "WhatsApp inte konfigurerad",
     "UnableToCreateBroadcastWAIsNotInstalled": "Kan inte skapa sändning eftersom WhatsApp Business inte är installerat för detta projekt",
     "HelpsURLs": "Ange webbsidor från offentliga URL:er i textområdet nedan, separerade med radbrytning, eller importera dem från en webbplatskarta.",
+    "HelpsURLsInfoMsg": "Ange webbsidor från offentliga webbadresser i textområdet för URL-lista separerade med en vagnretur, eller importera dem från en webbplatskarta.",
     "URLAutomaticallySynchronized": "Denna URL synkroniseras automatiskt från webbplatskartan",
     "ImportURLsFromSitemap": "Importera URL:er från webbplatskarta",
     "Fetch": "Hämta",
@@ -866,6 +867,13 @@
     "StartASearchToSeeConversations": "Starta en sökning för att se konversationer",
     "SelectTheDateRangeToSearch": "Välj ett datumintervall för att fortsätta sökningen",
     "PleaseSelectBothDates": "Vänligen välj båda datumen",
+    "NoResultsToExport": "Inga resultat att exportera",
+    "AddsTagsAndPressEnter": "Lägg till taggar och tryck på enter",
+    "CopyScrapingRulesToPasteThemWebContentType": "Kopiera scrapingregler för att klistra in dem i nytt URL-typ innehåll eller nytt sitemap-typ innehåll",
+    "HtmlTags": "HTML-taggar",
+    "AssignOneOrMoreTagsToThisContent": "Tilldela en eller flera taggar till detta innehåll",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Endast innehåll som innehåller alla valda taggar kommer att beaktas",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Resultaten kommer endast att innehålla innehåll som matchar alla valda taggar",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2411,6 +2419,10 @@
     "NotInRealTime": "inte i realtid",
     "ResetFilters": "Återställ filter",
     "AppliedFilters": "Tillämpade filter",
+    "OnlyRatedConversations": "Endast betygsatta konversationer",
+    "RatedConversations": "Betygsatta konversationer",
+    "DisplayOnlyConversationsWhereUsersHaveLeftRating": "Visa endast konversationer där användare har lämnat ett betyg",
+    "Phone": "Telefon",
     "Ticket": "Intern förfrågan",
     "EnableDisable": "Aktivera / Inaktivera",
     "Enable": "Aktivera",

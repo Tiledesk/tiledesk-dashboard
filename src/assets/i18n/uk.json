@@ -810,6 +810,7 @@
     "WhatsAppNotConfigured": "WhatsApp не налаштовано",
     "UnableToCreateBroadcastWAIsNotInstalled": "Неможливо створити розсилку, оскільки WhatsApp Business не встановлено для цього проекту",
     "HelpsURLs": "Введіть веб-сторінки з публічних URL-адрес у текстове поле нижче, розділені знаком нового рядка, або імпортуйте їх з карти сайту.",
+    "HelpsURLsInfoMsg": "Введіть веб-сторінки з публічних URL-адрес у текстову область Списку URL-адрес, розділені символом повернення каретки, або імпортуйте їх з sitemap.",
     "URLAutomaticallySynchronized": "Ця URL-адреса автоматично синхронізується з карти сайту",
     "ImportURLsFromSitemap": "Імпортувати URL-адреси з карти сайту",
     "Fetch": "Отримати",
@@ -866,6 +867,13 @@
     "StartASearchToSeeConversations": "Почніть пошук, щоб побачити розмови",
     "SelectTheDateRangeToSearch": "Виберіть діапазон дат для продовження пошуку",
     "PleaseSelectBothDates": "Будь ласка, виберіть обидві дати",
+    "NoResultsToExport": "Немає результатів для експорту",
+    "AddsTagsAndPressEnter": "Додайте теги та натисніть Enter",
+    "CopyScrapingRulesToPasteThemWebContentType": "Скопіюйте правила скрапінгу, щоб вставити їх у новий вміст типу URL або у новий вміст типу sitemap",
+    "HtmlTags": "HTML-теги",
+    "AssignOneOrMoreTagsToThisContent": "Призначте один або декілька тегів для цього вмісту",
+    "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "До уваги братиметься лише вміст, що містить усі вибрані теги",
+    "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Результати включатимуть лише вмісти, які відповідають всім вибраним тегам",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2411,6 +2419,10 @@
     "NotInRealTime": "не в реальному часі",
     "ResetFilters": "Скидання фільтрів",
     "AppliedFilters": "Застосовані фільтри",
+    "OnlyRatedConversations": "Тільки оцінені розмови",
+    "RatedConversations": "Оцінені розмови",
+    "DisplayOnlyConversationsWhereUsersHaveLeftRating": "Показувати лише розмови, в яких користувачі залишили оцінку",
+    "Phone": "Телефон",
     "Ticket": "Внутрішній запит",
     "EnableDisable": "Увімкнути / вимкнути",
     "Enable": "Увімкнути",
