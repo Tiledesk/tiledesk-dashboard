@@ -33,8 +33,8 @@
                     </span>
                 </a>
 
-                <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input">
-                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input">
+                <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input" disabled>
+                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input" disabled>
 
 
             </div>
