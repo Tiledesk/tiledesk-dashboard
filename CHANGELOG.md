@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.171-AR
+- Adds the ability to update HTML tags, urls sync frequency, and content tags from the content details
+- Adds the ability to filter conversations for the only rated on the History page (ITDELSDAM-5093)
+
 ### 2.7.170-AR
 - Fixes the bug: unanswered questions are duplicated
 
