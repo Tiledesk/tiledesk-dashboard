@@ -336,7 +336,11 @@
     vertical-align: middle;
 }
 
-.mat-icon-wpr:hover>mat-icon {
+// .mat-icon-wpr:hover>mat-icon {
+//     color: var(--blue-20);
+// }
+
+.mat-icon-wpr:hover:not(.no-scrape-option-to-paste) > mat-icon {
     color: var(--blue-20);
 }
 
