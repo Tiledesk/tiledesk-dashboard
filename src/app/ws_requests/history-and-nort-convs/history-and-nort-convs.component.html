@@ -174,13 +174,21 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - right section [ngStyle]="{'opacity':payIsVisible === true ? '1' : '0' }" -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-right">
-            <button *ngIf="PERMISSION_TO_EXPORT_REQUESTS" class="btn pull-right export-to-csv-btn btn-outlined" (click)="exportRequestsToCSV()">
-              <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
-                save_alt
-              </span>
-              {{ 'ExportToCSV' | translate }}
-            </button>
+           <div  class="filters-on-right">
+            <span *ngIf="PERMISSION_TO_EXPORT_REQUESTS" style="display: inline-block;"
+                [matTooltip]="(!areDatesComplete || (has_searched && (requestsCount === 0 || !requestList?.length))) ? (!areDatesComplete ? ('PleaseSelectBothDates' | translate) : ('NoResultsToExport' | translate)) : ''"
+                matTooltipClass="mat-white-tooltip"
+                #tooltip="matTooltip"
+                matTooltipPosition='below' 
+                matTooltipHideDelay="100">
+              <button class="btn pull-right export-to-csv-btn btn-outlined" (click)="exportRequestsToCSV()"
+                [disabled]="!areDatesComplete || (has_searched && (requestsCount === 0 || !requestList?.length))">
+                <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+                  save_alt
+                </span>
+                {{ 'ExportToCSV' | translate }}
+              </button>
+            </span>
           </div>
 
         </div>
