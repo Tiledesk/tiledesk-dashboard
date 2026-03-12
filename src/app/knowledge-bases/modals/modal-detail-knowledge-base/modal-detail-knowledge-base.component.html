@@ -49,7 +49,7 @@
                     </span>
                 </a>
 
-                <input [(ngModel)]="source" type="url" name="url" class="custom-input">
+                <input [(ngModel)]="source" type="url" name="url" class="custom-input" disabled>
 
             </div>
             <!-- ------------------------------------ -->
@@ -184,9 +184,9 @@
                         [clearable]="false" [searchable]="false"
                         [(ngModel)]="selectedRefreshRate"
                         (change)="onSelectRefreshRate(selectedRefreshRate)"
-                        [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible">
+                       [disabled]="((!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible) || kb.sitemap_origin">
                     </ng-select>
-                    <!-- <span class="input-label input-label-on-bottom">{{'KbPage.URLsSyncFrequency' | translate}}</span> -->
+                  <span *ngIf="kb.sitemap_origin" class="input-label input-label-on-bottom">{{'URLAutomaticallySynchronized' | translate}}</span>
                 </div>
             </div>
         </div>
@@ -242,7 +242,8 @@
             </div>
         </ng-template>
 
-            <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
+            <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }"
+                [ngClass]="{'kb-tags-container-with-tags': kbTagsArray?.length > 0}">
 
                 <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
                     <p  class="kb-tag">{{kbtag}}</p>
