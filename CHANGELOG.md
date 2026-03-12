@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.162
+- Adds the ability to update HTML tags, URLs sync frequency, and content tags from the content details
+- Adds the ability to filter conversations for the only rated on the History page 
+
 ### 2.7.161
 - Fixes the bug: unanswered questions are duplicated
 
