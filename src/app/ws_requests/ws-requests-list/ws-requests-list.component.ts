@@ -423,15 +423,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   openChat() {
-    // const url = this.CHAT_BASE_URL;
-    // this.openWindow('Tiledesk - Open Source Live Chat', url)
-    // this.focusWin('Tiledesk - Open Source Live Chat')
-    // --- new 
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl
-    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    myWindow.focus();
+    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct));
+
+    if (this.projectId) {
+      this.router.navigate(['project', this.projectId, 'conversation-detail']);
+    } else {
+      this.router.navigate(['conversation-detail']);
+    }
+
+    // --- vecchio codice (window.open)
+    // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    // let url = baseUrl
+    // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+    // myWindow.focus();
   }
 
   getProjectPlan() {

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 import { ConversationDetailIframeService } from '../services/conversation-detail-iframe.service';
 import { filter } from 'rxjs/operators';
 
@@ -28,7 +28,8 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     private iframeService: ConversationDetailIframeService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     ConversationDetailIframeComponent.instanceCounter++;
     this.componentInstanceId = ConversationDetailIframeComponent.instanceCounter;
@@ -66,8 +67,16 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.logger.log('[CONVERSATION-DETAIL-IFRAME] Componente inizializzato');
     
-    // Mostra iframe globale (gestito dal service)
-    this.iframeService.show();
+    // Leggi parametri di route (IDConv, Convtype, FullNameConv) e passali al service
+    this.route.params.subscribe(params => {
+      const routeParams = {
+        IDConv: params['IDConv'] || undefined,
+        Convtype: params['Convtype'] || undefined,
+        FullNameConv: params['FullNameConv'] || undefined
+      };
+      this.logger.log('[CONVERSATION-DETAIL-IFRAME] Route params:', routeParams);
+      this.iframeService.show(routeParams);
+    });
     
     // Aggiorna contatore per badge debug
     this.iframeLoadCount = this.iframeService.getLoadCount();

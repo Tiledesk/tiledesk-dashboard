@@ -5922,7 +5922,7 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
   openChatAtSelectedConversation() {
     this.openChatBtn.nativeElement.blur();
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
+    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname, this.id_project)
   }
 
   // openChatInNewWindow() {

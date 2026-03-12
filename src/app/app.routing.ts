@@ -1583,8 +1583,13 @@ const routes: Routes = [
     
   // Conversation detail iframe
   { path: 'conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'conversation-detail/:IDConv', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'conversation-detail/:IDConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'conversation-detail/:IDConv/:FullNameConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-
+  { path: 'project/:projectid/conversation-detail/:IDConv', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/conversation-detail/:IDConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/conversation-detail/:IDConv/:FullNameConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
 
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
