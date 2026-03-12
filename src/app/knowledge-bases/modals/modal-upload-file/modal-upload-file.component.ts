@@ -1,7 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { BrandService } from 'app/services/brand.service';
+import { URL_kb_contents_tags} from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-modal-upload-file',
@@ -29,16 +32,68 @@ export class ModalUploadFileComponent implements OnInit {
   fileSupported: boolean = true;
   body: any;
   tparams = { "file_size_limit": "10" }
+
+   // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: any;
+  public hideHelpLink: boolean;
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUploadFileComponent>,
     private uploadImageNativeService: UploadImageNativeService,
-    private logger: LoggerService
-  ) { }
+    private logger: LoggerService,
+    public brandService: BrandService
+  ) {    
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit(): void {
 
+  }
+
+   ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+  ngOnDestroy() { 
+    this.logger.log('[MODAL-UPLOAD-FILE] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   // listenToUploadingStatus() {
@@ -56,7 +111,7 @@ export class ModalUploadFileComponent implements OnInit {
 
       if (fileList.length > 0) { }
       const file: File = fileList[0];
-      this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
+      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
 
       this.uploadedFile = file;
 
@@ -93,7 +148,7 @@ export class ModalUploadFileComponent implements OnInit {
       // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
       // || mimeType === "application/json"
       // || mimeType === "text/plain"
-      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || mimeType === "text/plain") {
+      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"  || mimeType === "text/plain") {
 
         this.fileSupported = true;
 
@@ -115,7 +170,7 @@ export class ModalUploadFileComponent implements OnInit {
         }
         // this.doFormData(file)
         // && mimeType !==  "text/plain"
-      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType === "text/plain") {
+      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType !==  "text/plain") {
         // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
         
         this.fileSupported = false;
@@ -149,6 +204,29 @@ export class ModalUploadFileComponent implements OnInit {
     this.isHovering = false;
   }
 
+    // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        this.logger.log("[MODAL-UPLOAD-FILE] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    this.logger.log("[MODAL-UPLOAD-FILE] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    this.logger.log("[MODAL-UPLOAD-FILE] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   handleFileUploading(file: any) {
     if (this.hasAlreadyUploadAfile === false) {
       this.hideProgressBar = false;
@@ -178,6 +256,7 @@ export class ModalUploadFileComponent implements OnInit {
               source: downloadURL,
               content: "",
               name: this.uploadedFileName,
+              tags: this.kbTagsArray
             }
           }
         })
@@ -256,6 +335,69 @@ export class ModalUploadFileComponent implements OnInit {
     this.dialogRef.close(this.body);
     
     // this.logger.log('[MODAL-UPLOAD-FILE] onOkPresssed')
+  }
+
+        /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
+
+
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+
+   goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
   }
 
 }

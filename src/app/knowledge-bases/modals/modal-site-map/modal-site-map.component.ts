@@ -1,13 +1,13 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import { KB_LIMIT_CONTENT } from 'app/utils/util';
+import { KB_LIMIT_CONTENT, URL_kb_contents_tags } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
-import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'modal-site-map',
@@ -78,18 +78,37 @@ export class ModalSiteMapComponent implements OnInit {
     content: ''
   }
 
+  // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: any;
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
     public brandService: BrandService,
-    private kbService: KnowledgeBaseService,
     private cdr: ChangeDetectorRef
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-SITEMAP] data: ", data);
-
    
     this.selectedRefreshRate = this.refresh_rate[2].value
     this.logger.log("[MODALS-SITEMAP] this.refresh_rate[2]: ", this.refresh_rate[2].value);
@@ -112,11 +131,41 @@ export class ModalSiteMapComponent implements OnInit {
     }
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
-    this.listenToOnSenSitemapSiteListEvent();
-    this.hasStoredScrapeOptions();
+    // this.kbForm = this.createConditionGroup();
+    this.listenToOnSenSitemapSiteListEvent()
+    this.hasStoredScrapeOptions()
+  }
+
+  ngAfterViewInit() {
+    this.initTagContainerObserver();
+  }
+
+  ngOnDestroy() { 
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   listenToOnSenSitemapSiteListEvent() {
@@ -228,6 +277,29 @@ export class ModalSiteMapComponent implements OnInit {
     this.logger.log("[MODALS-SITEMAP] onSelectRefreshRate: ", refreshRateSelected);
   }
 
+  // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        this.logger.log("[MODALS-SITEMAP] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    this.logger.log("[MODALS-SITEMAP] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    this.logger.log("[MODALS-SITEMAP] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   onSaveKnowledgeBase(){
    if(!this.refreshRateIsEnabled) {
     return
@@ -252,7 +324,8 @@ export class ModalSiteMapComponent implements OnInit {
         "type": "sitemap",
         "namespace": this.selectedNamespace['id'],
         "refresh_rate": this.selectedRefreshRate,
-        "scrape_type": this.selectedScrapeType
+        "scrape_type": this.selectedScrapeType,
+        "tags": this.kbTagsArray
       }
 
       if (this.selectedScrapeType === 4) {
@@ -264,7 +337,6 @@ export class ModalSiteMapComponent implements OnInit {
       }
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);
-   // }
     // }
     
   }
@@ -324,7 +396,6 @@ export class ModalSiteMapComponent implements OnInit {
     window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 
-    /**
   /**
    * Copy all scrape options to localStorage
    */
@@ -360,7 +431,8 @@ export class ModalSiteMapComponent implements OnInit {
    */
   hasStoredScrapeOptions(): boolean {
     try {
-      this.stored_scrape_option = localStorage.getItem('scrape_options') !== null;
+      this.stored_scrape_option =
+        localStorage.getItem('scrape_options') !== null;
 
       return this.stored_scrape_option;
     } catch (error) {
@@ -410,6 +482,69 @@ export class ModalSiteMapComponent implements OnInit {
     } catch (error) {
       this.logger.error('[MODALS-SITEMAP] Error reading scrape options from storage:', error);
     }
+  }
+
+  /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
+
+
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+
+  goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
   }
 
 

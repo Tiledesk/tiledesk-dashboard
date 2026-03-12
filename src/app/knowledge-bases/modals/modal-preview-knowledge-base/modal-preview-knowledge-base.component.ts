@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -11,6 +11,9 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { BrandService } from 'app/services/brand.service';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { URL_kb_contents_tags } from 'app/utils/util';
 
 
 @Component({
@@ -19,7 +22,7 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
+export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit {
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -32,9 +35,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
-    chunkOnly: null,
-    reRanking: null,
-    reRankingMultipler: null,
   }]
   panelOpenState = false; 
   selectedNamespace: any;
@@ -73,12 +73,31 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   storedQuestionNoDoubleQuote: string;
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number;
-  public chunkOnly: boolean;
-  public reRanking: boolean;
-  public reRankingMultipler: number
+  public chunkOnly: boolean
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
+
+  // KB Tags
+  kbTag: string = '';
+  kbTagsArray = []
+  @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  private observer!: MutationObserver;
+  tagContainerElementHeight: any;
+  public hideHelpLink: boolean;
+
+  isOpen = false;
+  private closeTimeout: any;
+
+  positions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -8
+    }
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -91,10 +110,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private kbService: KnowledgeBaseService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
-    private router: Router
+    private router: Router,
+    private brandService: BrandService
   ) {
     super(prjctPlanService, notify);
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
@@ -104,7 +126,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
-      this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
@@ -115,15 +136,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
       }
-
-      if (!this.selectedNamespace.preview_settings.reranking) {
-        this.reRanking = false
-        this.selectedNamespace.preview_settings.reranking = this.reRanking
-      } else {
-        this.reRanking = this.selectedNamespace.preview_settings.reranking
-        this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
-      }
-
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
         this.advancedPrompt = false
@@ -154,8 +166,38 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.listenToCurrentURL()
   }
 
+  ngOnInit(): void {
+    this.listenPreviewKbHasBeenCloseBackdropClicking()
+    this.listenToAiSettingsChanges()
+    this.checkStoredQuestion();
+  }
+
   ngAfterViewInit() {
-  
+    this.initTagContainerObserver();
+  }
+
+   ngOnDestroy() { 
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
+    // Disconnettere l'observer per evitare memory leaks
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  // CDK methods
+  open() {
+    clearTimeout(this.closeTimeout);
+    this.isOpen = true;
+  }
+
+  scheduleClose() {
+    this.closeTimeout = setTimeout(() => {
+      this.isOpen = false;
+    }, 150);
+  }
+
+  cancelClose() {
+    clearTimeout(this.closeTimeout);
   }
 
   listenToCurrentURL() {
@@ -177,11 +219,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     })
   }
 
-  ngOnInit(): void {
-    this.listenPreviewKbHasBeenCloseBackdropClicking()
-    this.listenToAiSettingsChanges()
-    this.checkStoredQuestion();
-  }
+
 
   /**
    * Helper method per controllare e parsare la question salvata
@@ -258,7 +296,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       width: '300px',
       position: { left: 'calc(50% + 215px)', top: '138px' },
       hasBackdrop: false,
-      autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
         calledBy: "modal-preview-kb"
@@ -302,10 +339,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
     this.question = this.storedQuestionNoDoubleQuote;
     // this.submitQuestion()
-    // this.onInputPreviewChange()
+    this.onInputPreviewChange()
   }
-
-
 
    reuseLastQuestion() {
     const textarea = this.questionTextarea.nativeElement;
@@ -391,14 +426,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.topK = this.selectedNamespace.preview_settings.top_k
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
         }
-        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
-          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
-        } else {
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 2', editedAiSettings[0]['reRankingMultipler'])
-          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
-        }
 
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
@@ -414,21 +441,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
         } else if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === false) {
           this.chunkOnly = editedAiSettings[0]['chunkOnly']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 2', this.chunkOnly)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
         } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
-          this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
-        }
-
-        if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
-          this.reRanking = editedAiSettings[0]['reRanking']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
-        } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
-          this.reRanking = editedAiSettings[0]['reRanking']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
-        } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
-          this.reRanking = this.selectedNamespace.preview_settings.reranking
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
+          this.chunkOnly = this.selectedNamespace.preview_settings.chunkOnly
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -468,6 +484,29 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   //    this.logger.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
   // }
 
+  // KB TAGS
+  addsKbTag(kbTag) {
+    if (kbTag && kbTag.trim() !== '') {
+      const trimmedTag = kbTag.trim();
+      // Verifica che il tag non sia già presente
+      if (!this.kbTagsArray.includes(trimmedTag)) {
+        this.kbTagsArray.push(trimmedTag);
+        this.logger.log("[MODAL-PREVIEW-KB] addsKbTags kbTagsArray: ", this.kbTagsArray);
+      }
+      // Svuota l'input dopo aver aggiunto il tag
+      this.kbTag = '';
+    }
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
+  removeKbTag(kbTagName){
+    const index =  this.kbTagsArray.findIndex((tag) => tag === kbTagName);
+    this.logger.log("[MODAL-PREVIEW-KB] removeKbTags index: ", index);
+    this.kbTagsArray.splice(index, 1)
+    this.logger.log("[MMODAL-PREVIEW-KB] removeKbTags kbTagsArray: ", this.kbTagsArray);
+    // L'observer gestirà automaticamente l'aggiornamento dell'altezza
+  }
+
   submitQuestion() {
     this.body = {
       "question": this.question,
@@ -478,12 +517,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
-      "reranking": this.reRanking,
-      "reranking_multiplier":  this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
-      'llm': this.selectedNamespace.preview_settings.llm
+      'llm': this.selectedNamespace.preview_settings.llm,
+      'tags':this.kbTagsArray
     }
     // this.error_answer = false;
 
@@ -507,7 +545,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   askAI(body, startTime) {
     this.openaiService.askGpt(body).subscribe((response: any) => {
-      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", body)
+
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       response['ai_model'] = this.selectedModel
       this.prompt_token_size = response.prompt_token_size;
@@ -517,16 +555,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.responseTime = response.duration
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
-     
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
-      this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
-      this.logger.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
-      if (this.qa?.content_chunks) {
-        this.contentChunks = this.qa?.content_chunks 
-      } else if (this.qa?.chunks)  {
-        this.contentChunks = this.qa?.chunks
-      }
-     
+      this.contentChunks = this.qa?.content_chunks
+      // this.contentChunks =   [
+      // "This site uses cookies from Google to deliver its services and to analyze traffic. More details Ok, Got it Skip to main content Material Components CDK Guides 14.2.7 arrow_drop_down format_color_fill GitHub Components CDK Guides menu Expansion Panel Autocomplete Badge Bottom Sheet Button Button toggle Card Checkbox Chips Core Datepicker Dialog Divider Expansion Panel Form field Grid list Icon Input List Menu Paginator Progress bar Progress spinner Radio button Ripples Select Sidenav Slide toggle Slider Snackbar Sort header Stepper Table Tabs Toolbar Tooltip Tree overview (/components/expansion/overview) api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link",
+      // "> This is the expansion title </ mat-expansion-panel-header >  < ng-template  matExpansionPanelContent > Some deferred content </ ng-template >  </ mat-expansion-panel >    link Accessibility  MatExpansionPanel imitates the experience of the native <details> and <summary> elements. The expansion panel header applies role=\"button\" and the aria-controls attribute with the content element's ID.  Because expansion panel headers are buttons, avoid adding interactive controls as children of <mat-expansion-panel-header> , including buttons and anchors.  Overview Content Expansion-panel content (/components/expansion/overview#expansion-panel-content) Header (/components/expansion/overview#header) Action bar (/components/expansion/overview#action-bar) Disabling a panel (/components/expansion/overview#disabling-a-panel) Accordion (/components/expansion/overview#accordion) Lazy rendering (/components/expansion/overview#lazy-rendering) Accessibility (/components/expansion/overview#accessibility)",
+      // "api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link Expansion-panel content   link Header  The <mat-expansion-panel-header> shows a summary of the panel content and acts as the control for expanding and collapsing. This header may optionally contain an <mat-panel-title> and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  <",
+      // "and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  < p > This is the primary content of the panel. </ p >  </ mat-expansion-panel >  By default, the expansion-panel header includes a toggle icon at the end of the header to indicate the expansion state. This icon can be hidden via the hideToggle property.  content_copy < mat-expansion-panel  hideToggle >   link Action bar  Actions may optionally be included at the bottom of the panel, visible only when the expansion is in its expanded state.  content_copy < mat-action-row >  < button  mat-button  color = \"primary\" ( click )= \"nextStep()\" > Next </ button >  </ mat-action-row >   link Disabling a panel"
+      // ]
       this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
@@ -641,7 +677,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   onTextareaInput(textarea: HTMLTextAreaElement): void { 
     // console.log('[MODAL-PREVIEW-KB] textarea', textarea ) 
     const minHeight = 37;
-    const maxHeight = 132;
+    const maxHeight = 52;
 
     // Reset per ricalcolare correttamente lo scrollHeight
     textarea.style.height = minHeight + 'px';
@@ -651,49 +687,23 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
     textarea.style.overflowY =
     textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
- }
-
-
-  // onInputPreviewChange() {
-  //   let element = document.getElementById('enter-button')
-  //   if (this.question !== "") {
-  //     element.style.display = 'inline-block';
-  //   } else {
-  //     element.style.display = 'none';
-  //   }
-    
-  //   // Auto-resize textarea
-  //   this.adjustTextareaHeight();
-  // }
-
-  // adjustTextareaHeight() {
-  //   if (this.questionTextarea && this.questionTextarea.nativeElement) {
-  //     const textarea = this.questionTextarea.nativeElement;
-  //     // Reset height to calculate scrollHeight
-  //     textarea.style.height = 'auto';
-  //     const lineHeight = parseInt(getComputedStyle(textarea).lineHeight) || 20;
-  //     // Initial height: 37px (container has padding: 0px 12px, so no vertical padding)
-  //     const minHeight = 37; // Initial height to match container
-  //     const maxHeight = lineHeight * 3; // 3 rows max
-  //     const scrollHeight = textarea.scrollHeight;
-      
-  //     if (scrollHeight <= maxHeight) {
-  //       // Ensure minimum height of initial size (37px)
-  //       const newHeight = Math.max(scrollHeight, minHeight);
-  //       textarea.style.height = newHeight + 'px';
-  //       textarea.style.overflowY = 'hidden';
-  //     } else {
-  //       textarea.style.height = maxHeight + 'px';
-  //       textarea.style.overflowY = 'auto';
-  //     }
-  //   }
-  // }
+  }
 
   onEnterKeyDown(event: KeyboardEvent) {
     // Submit on Enter (without Shift), otherwise allow new line
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       this.submitQuestion();
+    }
+  }
+
+
+  onInputPreviewChange() {
+    let element = document.getElementById('enter-button')
+    if (this.question !== "") {
+      element.style.display = 'inline-block';
+    } else {
+      element.style.display = 'none';
     }
   }
 
@@ -733,7 +743,68 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     // element.style.display = 'none';
     this.dialogRef.close({ action: 'open-settings-modal', data: this.body });
   }
+  
+  /**
+   * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
+   * L'observer viene creato una sola volta in ngAfterViewInit
+   */
+  private initTagContainerObserver() {
+    if (!this.kbTagsContainer) return;
+
+    // Calcola l'altezza iniziale
+    this.updateTagContainerHeight();
+
+    // Crea l'observer solo se non esiste già
+    if (!this.observer) {
+      this.observer = new MutationObserver(() => {
+        this.updateTagContainerHeight();
+      });
+
+      this.observer.observe(this.kbTagsContainer.nativeElement, {
+        childList: true, // osserva aggiunte/rimozioni di elementi
+        subtree: false
+      });
+    }
+  }
 
 
+  /**
+   * Aggiorna l'altezza del container delle tag
+   * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
+   */
+  private updateTagContainerHeight() {
+    if (!this.kbTagsContainer) return;
+
+    // Se non ci sono tag, mantieni un'altezza minima fissa
+    if (this.kbTagsArray.length === 0) {
+      this.tagContainerElementHeight = '20px';
+      return;
+    }
+
+    const element = this.kbTagsContainer.nativeElement as HTMLElement;
+    
+    // Salva l'altezza corrente se presente
+    const currentHeight = element.style.height;
+    
+    // Rimuovi temporaneamente l'altezza forzata per misurare l'altezza naturale del contenuto
+    element.style.height = 'auto';
+    
+    // Forza il reflow per assicurarsi che il browser calcoli l'altezza naturale
+    void element.offsetHeight;
+    
+    // Misura l'altezza naturale del contenuto
+    const naturalHeight = element.offsetHeight;
+    
+    // Ripristina l'altezza forzata (verrà aggiornata subito dopo)
+    element.style.height = currentHeight;
+    
+    // Usa solo l'altezza naturale del contenuto
+    this.tagContainerElementHeight = naturalHeight + 'px';
+  }
+
+  goToKbTagsDoc() {
+    const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
+  } 
 
 }

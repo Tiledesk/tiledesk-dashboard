@@ -1145,5 +1145,5 @@ export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment
 export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
 export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-to-send-whatsapp-messages-to-contacts';
 export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/if-operating-hours#how-to-configure-the-action'
-
+export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 
