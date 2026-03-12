@@ -245,6 +245,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // Sync internal sorting state when parent changes sort params (e.g., after adding content)
     if (changes.currentSortParams) {
       if (this.currentSortParams && this.currentSortParams.sortField && this.currentSortParams.direction !== undefined) {
+        if (!this.searchParams) {
+          this.resetFilter();
+        }
         const previousDirection = this.directionDesc;
         this.searchParams.sortField = this.currentSortParams.sortField;
         this.searchParams.direction = this.currentSortParams.direction;
