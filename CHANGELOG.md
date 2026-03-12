@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.179-stage
+- Adds new conversation-detail routes with optional params: IDConv, Convtype, FullNameConv (with and without project prefix)
+- Conversation-detail iframe component now reads route params and builds iframe URL dynamically
+- Replaces window.open with internal router navigation for opening chat/conversation-detail in: ws-shared, ws-requests-served, ws-requests-msgs, history-and-nort-convs, contact-details, home-go-to-chat, ws-requests-list
+
+### 2.7.178-stage
+
 ### 2.7.177-stage 
 - Adds the ability to update HTML tags, urls sync frequency, and content tags from the content details
 - Adds the ability to filter conversations for the only rated on the History page
