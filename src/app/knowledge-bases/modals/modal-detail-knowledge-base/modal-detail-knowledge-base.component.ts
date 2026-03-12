@@ -83,13 +83,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
       this.logger.log('[MODAL-DETAIL-KB] source ', this.source)
       this.content = this.kb.content;
-      console.log('[MODAL-DETAIL-KB] content ', this.content)
+      this.logger.log('[MODAL-DETAIL-KB] content ', this.content)
 
       if (this.kb.type === 'faq') {
        this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
@@ -367,7 +367,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       if (type === 'unwanted_tags') this.unwanted_tags.push(value);
       if (type === 'unwanted_classnames') this.unwanted_classnames.push(value);
       this.syncScrapeOptionsToKb();
-      console.log('[MODAL-DETAIL-KB] kb ', this.kb);
+      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
     }
     if (event.input) event.input.value = '';
   }
@@ -386,13 +386,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       if (i !== -1) this.unwanted_classnames.splice(i, 1);
     }
     this.syncScrapeOptionsToKb();
-    console.log('[MODAL-DETAIL-KB] kb ', this.kb);
+    this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
   }
 
   onSelectRefreshRate(value: string): void {
     this.selectedRefreshRate = value;
     this.kb.refresh_rate = value;
-    console.log('[MODAL-DETAIL-KB] kb ', this.kb);
+    this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
   }
 
   /** Aggiorna this.kb.scrape_options con i valori correnti delle tag. */
