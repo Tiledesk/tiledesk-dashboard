@@ -104,7 +104,7 @@ export class WsSharedComponent implements OnInit {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
   //   return index
   // }
-  openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
+  openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string, projectId?: string) {
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
     let _requester_fullanme = ""
@@ -116,15 +116,15 @@ export class WsSharedComponent implements OnInit {
       this.logger.log("String does not contain #");
       _requester_fullanme = requester_fullanme
     }
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
-    const chatTabCount = localStorage.getItem('tabCount')
-    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
+    const fullname = _requester_fullanme.trim();
 
-    let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + requestid + '/' + _requester_fullanme.trim() + '/active'
-    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
-    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    myWindow.focus();
+    if (projectId) {
+      this.router.navigate(['project', projectId, 'conversation-detail', requestid, fullname, 'active']);
+      this.logger.log('[WS-SHARED] openChatToTheSelectedConversation - navigazione interna a project/' + projectId + '/conversation-detail/' + requestid + '/' + fullname + '/active');
+    } else {
+      this.router.navigate(['conversation-detail', requestid, fullname, 'active']);
+      this.logger.log('[WS-SHARED] openChatToTheSelectedConversation - navigazione interna a conversation-detail/' + requestid + '/' + fullname + '/active');
+    }
 
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {

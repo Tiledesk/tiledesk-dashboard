@@ -594,9 +594,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     } else {
       agentFullname = agentFirstname
     }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
-    this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url)
-    window.open(url, '_blank')
+      // const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+      // this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url)
+      // window.open(url, '_blank')
+
+      this.router.navigate(['project', this.id_project, 'conversation-detail', agentId, agentFullname, 'new']);
+      this.logger.log('[USERS] - navigazione a conversation-detail ', agentId, agentFullname, 'new');
   }
 
   getBrowserLanguage() {

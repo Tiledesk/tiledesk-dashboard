@@ -38,6 +38,11 @@ export class ConversationDetailIframeService {
   ) {}
 
   /**
+   * Parametri opzionali per l'URL dell'iframe (da route: IDConv, Convtype, FullNameConv)
+   */
+  private routeParams: { IDConv?: string; Convtype?: string; FullNameConv?: string } = {};
+
+  /**
    * Inizializza il container globale e l'iframe
    * Chiamato automaticamente alla prima show()
    */
@@ -47,12 +52,47 @@ export class ConversationDetailIframeService {
     }
     
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    this.IFRAME_URL = this.CHAT_BASE_URL + '#/conversation-detail/?tiledesk_supportMode=true';
+    this.IFRAME_URL = this.buildIframeUrl();
     
     this.createGlobalContainer();
     this.createGlobalIframe();
     
     this.isInitialized = true;
+  }
+
+  /**
+   * Costruisce l'URL dell'iframe in base ai parametri di route
+   */
+  private buildIframeUrl(): string {
+    const base = this.CHAT_BASE_URL + '#/conversation-detail/';
+    const { IDConv, FullNameConv, Convtype } = this.routeParams;
+
+    if (!IDConv) {
+      return base + '?tiledesk_supportMode=true';
+    }
+
+    // Formato: #/conversation-detail/:IDConv/:FullNameConv/:Convtype
+    const pathParts: string[] = [IDConv];
+    if (FullNameConv) {
+      pathParts.push(encodeURIComponent(FullNameConv));
+    }
+    if (Convtype) {
+      pathParts.push(Convtype);
+    }
+
+    const path = pathParts.join('/');
+    const separator = path.includes('?') ? '&' : '?';
+    return base + path + separator + 'tiledesk_supportMode=true';
+  }
+
+  /**
+   * Aggiorna l'URL dell'iframe (e il src se già creato)
+   */
+  private updateIframeUrl(): void {
+    this.IFRAME_URL = this.buildIframeUrl();
+    if (this.iframeElement) {
+      this.iframeElement.src = this.IFRAME_URL;
+    }
   }
 
   /**
@@ -121,9 +161,22 @@ export class ConversationDetailIframeService {
   }
 
   /**
+   * Imposta i parametri di route e aggiorna l'URL dell'iframe
+   */
+  public setRouteParams(params: { IDConv?: string; Convtype?: string; FullNameConv?: string }): void {
+    this.routeParams = { ...params };
+    if (this.isInitialized) {
+      this.updateIframeUrl();
+    }
+  }
+
+  /**
    * Mostra iframe
    */
-  public show(): void {
+  public show(params?: { IDConv?: string; Convtype?: string; FullNameConv?: string }): void {
+    if (params) {
+      this.setRouteParams(params);
+    }
     if (!this.isInitialized) {
       this.initialize();
     }

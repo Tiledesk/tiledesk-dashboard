@@ -1495,7 +1495,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
+    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme, this.projectId)
   }
 
   // openChatInNewWindow(requestid: string, requester_fullanme: string) {
