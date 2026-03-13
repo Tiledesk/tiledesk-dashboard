@@ -12,7 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 export interface UnansweredQuestion {
   id: string;
   text: string;
-  _id?: string; // opzionale per compatibilità con backend
+  _id?: string; 
+  createdAt?: any;
 }
 
 /**
