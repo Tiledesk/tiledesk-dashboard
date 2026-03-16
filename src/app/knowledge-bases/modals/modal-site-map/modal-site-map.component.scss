@@ -475,6 +475,16 @@
     padding: 0px 0px !important;
 }
 
+.link-to-doc {
+    color: var(--blue-light); // #0f62ff;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.link-to-doc:hover {
+    text-decoration: underline;
+ }
 
 // mat-expansion-panel ::ng-deep {
 //     background-color: transparent !important;

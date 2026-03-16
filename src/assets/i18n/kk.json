@@ -2259,9 +2259,12 @@
         "ThisIsTheDefaultKB": "Бұл әдепкі білім қоры",
         "SynchronizedSitemap":"Синхрондалған сайт картасы",
         "SynchronizedSitemapAvailableFromThe": "Синхрондалған сайт картасы функциясы {{plan_name}} жоспарынан қолжетімді",
+        "LearnMoreAboutSynchronizedSitemap": "Синхрондалған sitemap туралы көбірек біліңіз",
         "AddsURLSAndSitemapDescription": "Білім Базаңызға нақты веб-беттерді, блог мақалаларын немесе sitemap қосады",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Бұл жаңа мүмкіндікті сынап көргіңіз келе ме?",
+        "WantToTryTheSynchronizedSitemapFeature": "Синхрондалған sitemap мүмкіндігін қолданып көргіңіз келе ме?",
+        "ContactUsToEnableIt": "Оны іске қосу үшін бізге хабарласыңыз",
         "ImportFromWebsites": "Websites-тен импорттау",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"

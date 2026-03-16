@@ -136,6 +136,7 @@
     <input id="kb-tags" class="adds-kb-input" name="kb-tags"
         [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
         style="margin-top: 4px;">
 
         <div class="kb-tags-help"
@@ -239,6 +240,7 @@
         <input id="kb-tags" class="adds-kb-input" name="kb-tags"
           [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
           [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+          [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
           style="margin-top: 16px;">
 
         <div class="kb-tags-help"

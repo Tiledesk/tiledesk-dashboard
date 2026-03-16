@@ -2260,9 +2260,12 @@
         "ThisIsTheDefaultKB": "Detta är standardkunskapsbasen",
         "SynchronizedSitemap":"Synkroniserad webbplatskarta",
         "SynchronizedSitemapAvailableFromThe": "Synkroniserad webbplatskart-funktion är tillgänglig från {{plan_name}}-planen",
+        "LearnMoreAboutSynchronizedSitemap": "Läs mer om synkroniserade webbplatskartor",
         "AddsURLSAndSitemapDescription": "Lägger till specifika webbsidor, bloggartiklar eller sitemap till din Kunskapsbas",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Vill du prova den här nya funktionen?",
+        "WantToTryTheSynchronizedSitemapFeature": "Vill du prova den synkroniserade webbplatskartfunktionen?",
+        "ContactUsToEnableIt": "Kontakta oss för att aktivera den",
         "ImportFromWebsites": "Importera från Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"

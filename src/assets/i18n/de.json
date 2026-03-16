@@ -2243,9 +2243,12 @@
         "ThisIsTheDefaultKB": "Dies ist die Standard-Wissensdatenbank",
 		"SynchronizedSitemap":"Synchronisierte Sitemap",
 		"SynchronizedSitemapAvailableFromThe": "Synchronisierte Sitemap-Funktion ist ab dem {{plan_name}}-Tarif verfügbar",
+		"LearnMoreAboutSynchronizedSitemap": "Erfahren Sie mehr über synchronisierte Sitemaps",
 		"AddsURLSAndSitemapDescription": "Fügt Ihrer Wissensdatenbank spezifische Webseiten, Blog-Artikel oder Sitemap hinzu",
 		"Websites": "Websites",
 		"WantToTryThisNewFeature": "Möchten Sie diese neue Funktion ausprobieren?",
+		"WantToTryTheSynchronizedSitemapFeature": "Möchten Sie die synchronisierte Sitemap-Funktion testen?",
+    	"ContactUsToEnableIt": "Kontaktieren Sie uns, um sie zu aktivieren",
 		"ImportFromWebsites": "Import von Websites",
 		"-----------------------------": "-----------------------------",
         "ThatsIsAll": "Das ist alles"

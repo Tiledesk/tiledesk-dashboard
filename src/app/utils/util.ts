@@ -1142,5 +1142,6 @@ export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/a
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"
 export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
-export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
+export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
+export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
 

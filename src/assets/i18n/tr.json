@@ -2244,9 +2244,12 @@
         "ThisIsTheDefaultKB": "Bu, varsayılan Bilgi Tabanıdır",
         "SynchronizedSitemap":"Senkronize site haritası",
         "SynchronizedSitemapAvailableFromThe": "Senkronize site haritası özelliği {{plan_name}} planından itibaren kullanılabilir",
+        "LearnMoreAboutSynchronizedSitemap": "Senkronize sitemaps hakkında daha fazla bilgi edinin",
         "AddsURLSAndSitemapDescription": "Bilgi Bankanıza specific web sayfaları, blog yazıları veya sitemap ekler",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Bu yeni özelliği denemek ister misiniz?",
+        "WantToTryTheSynchronizedSitemapFeature": "Senkronize sitemap özelliğini denemek ister misiniz?",
+        "ContactUsToEnableIt": "Etkinleştirmek için bizimle iletişime geçin",
         "ImportFromWebsites": "Websites'tan içe aktar",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hepsi bu kadar"
