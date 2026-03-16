@@ -272,7 +272,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       unwanted_tags: [...unwanted_tags],
       unwanted_classnames: [...unwanted_classnames]
     };
-    console.log('[MODAL-DETAIL-KB] Scrape options object to save:', scrapeOptions);
+    this.logger.log('[MODAL-DETAIL-KB] Scrape options object to save:', scrapeOptions);
     
     try {
       const jsonString = JSON.stringify(scrapeOptions);
@@ -313,7 +313,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       
       // Verify it was saved
       const saved = localStorage.getItem('scrape_options');
-      console.log('[MODAL-DETAIL-KB] Verified saved value:', saved);
+      this.logger.log('[MODAL-DETAIL-KB] Verified saved value:', saved);
       this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to storage successfully');
     } catch (error) {
       this.logger.error('[MODAL-DETAIL-KB] Error saving scrape options to storage:', error);
