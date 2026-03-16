@@ -93,7 +93,7 @@
                         <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                             <mat-chip-list #extractTags aria-label="Tag selection">
                                 <mat-chip *ngFor="let tag of extract_tags" (removed)="removeTag('extract_tags', tag)">
-                                    {{ tag }}
+                                    {{ tag | htmlTag }}
                                     <button matChipRemove>
                                         <mat-icon>cancel</mat-icon>
                                     </button>
@@ -117,7 +117,7 @@
                         <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                             <mat-chip-list #unwantedTags aria-label="Tag selection">
                                 <mat-chip *ngFor="let tag of unwanted_tags" (removed)="removeTag('unwanted_tags', tag)">
-                                    {{ tag }}
+                                    {{ tag  | htmlTag }}
                                     <button matChipRemove>
                                         <mat-icon>cancel</mat-icon>
                                     </button>
@@ -202,11 +202,12 @@
         </div>
         <!-- </form> -->
          
-         <!-- KB Tags -->
+        <!-- KB Tags -->
         <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
                 [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+                [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
                 style="margin-top: 10px;">
 
             <div class="kb-tags-help"
@@ -216,7 +217,7 @@
                 (mouseenter)="open()"
                 (mouseleave)="scheduleClose()">
 
-                <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
+                <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
                 help_outline
                 </span>
             </div>
@@ -273,7 +274,7 @@
             <span class="input-label">
                
                 {{'KbPage.RefreshRate' | translate}}
-                 <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                 <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 5px;cursor: pointer; color: #566787;"
                     matTooltipClass="kb-custom-mat-tooltip"
                     matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
                     matTooltipPosition="above"

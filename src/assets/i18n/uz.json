@@ -2221,9 +2221,12 @@
          "ThisIsTheDefaultKB": "Bu standart bilimlar bazasi",
          "SynchronizedSitemap":"Sinxronlashtirilgan sayt xaritasi",
         "SynchronizedSitemapAvailableFromThe": "Sinxronlashtirilgan sayt xaritasi funksiyasi {{plan_name}} rejasidan mavjud",
+        "LearnMoreAboutSynchronizedSitemap": "Sinxronlashtirilgan sitemaps haqida ko'proq bilib oling",
         "AddsURLSAndSitemapDescription": "Bilim Bazangizga specific veb-sahifalar, blog maqolalari yoki sitemap qo'shadi",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Ushbu yangi funksiyani sinab ko'rmoqchimisiz?",
+        "WantToTryTheSynchronizedSitemapFeature": "Sinxronlashtirilgan sitemap funksiyasini sinab ko'rishni xohlaysizmi?",
+        "ContactUsToEnableIt": "Uni yoqish uchun biz bilan bog'laning",
         "ImportFromWebsites": "Websites-dan import qilish",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"

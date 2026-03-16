@@ -1967,6 +1967,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
       data: {
         kb: kb,
         refreshRateIsEnabled: this.refreshRateIsEnabled,

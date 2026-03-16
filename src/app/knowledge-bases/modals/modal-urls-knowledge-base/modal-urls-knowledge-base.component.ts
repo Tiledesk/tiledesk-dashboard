@@ -447,7 +447,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
     // Se non ci sono tag, mantieni un'altezza minima fissa
     if (this.kbTagsArray.length === 0) {
-      this.tagContainerElementHeight = '20px';
+      this.tagContainerElementHeight = '8px';
       return;
     }
 

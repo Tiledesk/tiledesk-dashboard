@@ -403,7 +403,9 @@
     display: flex;
     justify-content: center;
     margin-top: 14px;
-   
+    text-align: center;
+    margin-bottom: 16px;
+
     // padding: 0 40px;
     // align-items: flex-end;
     // margin-top: 10px;
@@ -426,8 +428,9 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 6px;
     margin-top: 14px;
+    margin-bottom: 16px;
 }
 
 .html-tags--expansion-panel {
@@ -474,6 +477,22 @@
 ::ng-deep.html-tags--expansion-panel {
     padding: 0px 0px !important;
 }
+
+.kb-tags-container.kb-tags-container-with-tags {
+    margin-bottom: 8px;
+}
+
+.link-to-doc {
+    color: var(--blue-light); // #0f62ff;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.link-to-doc:hover {
+    text-decoration: underline;
+ }
+
 
 
 // mat-expansion-panel ::ng-deep {

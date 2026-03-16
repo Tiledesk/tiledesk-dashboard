@@ -2221,9 +2221,12 @@
         "ThisIsTheDefaultKB": "Это база знаний по умолчанию",
         "SynchronizedSitemap":"Синхронизированная карта сайта",
         "SynchronizedSitemapAvailableFromThe": "Функция синхронизированной карты сайта доступна с тарифа {{plan_name}}",
+        "LearnMoreAboutSynchronizedSitemap": "Узнайте больше о синхронизированных sitemap",
         "AddsURLSAndSitemapDescription": "Добавляет specific веб-страницы, статьи блога или sitemap в вашу Базу Знаний",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Хотите попробовать эту новую функцию?",
+        "WantToTryTheSynchronizedSitemapFeature": "Хотите попробовать функцию синхронизированной sitemap?",
+        "ContactUsToEnableIt": "Свяжитесь с нами, чтобы включить её",
         "ImportFromWebsites": "Импорт с Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Вот и все"

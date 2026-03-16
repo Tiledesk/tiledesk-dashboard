@@ -2221,9 +2221,12 @@
         "ThisIsTheDefaultKB": "Esta é a Base de Conhecimentos padrão",
         "SynchronizedSitemap": "Sitemap sincronizado",
         "SynchronizedSitemapAvailableFromThe": "A funcionalidade de sitemap sincronizado está disponível a partir do plano {{plan_name}}",
+        "LearnMoreAboutSynchronizedSitemap": "Saiba mais sobre sitemaps sincronizados",
         "AddsURLSAndSitemapDescription": "Adiciona páginas web específicas, artigos de blog ou sitemap à sua Base de Conhecimento",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Quer experimentar esta nova funcionalidade?",
+        "WantToTryTheSynchronizedSitemapFeature": "Quer experimentar o recurso de sitemap sincronizado?",
+        "ContactUsToEnableIt": "Contacte-nos para o ativar",
         "ImportFromWebsites": "Importar de Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Isso é tudo"

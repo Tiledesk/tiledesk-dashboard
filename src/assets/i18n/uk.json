@@ -2222,9 +2222,12 @@
         "ThisIsTheDefaultKB": "Це база знань за замовчуванням",
         "SynchronizedSitemap":"Синхронізована карта сайту",
         "SynchronizedSitemapAvailableFromThe": "Функція синхронізованої карти сайту доступна з тарифу {{plan_name}}",
+        "LearnMoreAboutSynchronizedSitemap": "Дізнайтеся більше про синхронізовані sitemap",
         "AddsURLSAndSitemapDescription": "Додає specific веб-сторінки, статті блогу або sitemap до вашої Бази Знань",
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Хочете спробувати цю нову функцію?",
+        "WantToTryTheSynchronizedSitemapFeature": "Хочете спробувати функцію синхронізованої sitemap?",
+        "ContactUsToEnableIt": "Зв'яжіться з нами, щоб увімкнути її",
         "ImportFromWebsites": "Імпорт з Websites",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ось і все"

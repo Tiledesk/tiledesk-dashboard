@@ -41,6 +41,7 @@
       <input id="kb-tags" class="adds-kb-input" name="kb-tags"
         [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
         style="padding-top: 6px;">
 
         <div class="kb-tags-help"

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import { KB_LIMIT_CONTENT, URL_kb_contents_tags } from 'app/utils/util';
+import { KB_LIMIT_CONTENT, URL_kb_contents_tags, URL_kb_synced_Sitemap } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -509,7 +509,7 @@ export class ModalSiteMapComponent implements OnInit {
 
     // Se non ci sono tag, mantieni un'altezza minima fissa
     if (this.kbTagsArray.length === 0) {
-      this.tagContainerElementHeight = '20px';
+      this.tagContainerElementHeight = '15px';
       return;
     }
 
@@ -534,8 +534,13 @@ export class ModalSiteMapComponent implements OnInit {
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
-goToKbTagsDoc() {
+  goToKbTagsDoc() {
     const docsUrl = URL_kb_contents_tags;
+    window.open(docsUrl, '_blank');
+  }
+
+  goToDocs() {
+    const docsUrl = URL_kb_synced_Sitemap;
     window.open(docsUrl, '_blank');
   }
 
