@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.163
+- Improves the user interface of dialogs for adding content to the knowledge base
+
 ### 2.7.162
 - Adds the ability to update HTML tags, URLs sync frequency, and content tags from the content details
 - Adds the ability to filter conversations for the only rated on the History page 
