@@ -677,7 +677,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   onTextareaInput(textarea: HTMLTextAreaElement): void { 
     // console.log('[MODAL-PREVIEW-KB] textarea', textarea ) 
     const minHeight = 37;
-    const maxHeight = 52;
+    const maxHeight = 132;
 
     // Reset per ricalcolare correttamente lo scrollHeight
     textarea.style.height = minHeight + 'px';
