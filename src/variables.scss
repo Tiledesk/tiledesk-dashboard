@@ -10,13 +10,25 @@
  // https://color.adobe.com/color-palette-free-download-color-theme-14037012/ intessant linkfor the new color  5b72a7
  
  body {
-     --sidebar-bckgrnd-bottom-section-drk: #2d323e;
-     --sidebar-bckgrnd-item-hover: rgba(248, 248, 248, 0.251);
-     --sidebar-bckgrnd-item-border-radius:12px;
-     --sidebar-inactive-icon: #647491;
-     --sidebar-icon-color:#fff; // #647491;
-     --sidebar-hover-icon-color: #a9afbb;
-     --sidebar-active-icon: var(--blue-light); //defined in sidebar.component.ts
+    // ***** Sidebar: start ***** //
+    --sidebar-background-color: #1e2129;
+    --sidebar-header-background: #2d323e;
+    --sidebar-color: #fff;
+    --sidebar-icon-color: #fff;
+    --sidebar-hover-icon-color: #a9afbb;
+    --sidebar-background-item-hover : rgba(248, 248, 248, 0.251);
+    --sidebar-background-item-border-radius: 12px;
+    --sidebar-active-icon: #3ea9f5;
+    --sidebar-inactive-icon: #647491;
+    --sidebar-user-detail-color: #a9afbb;
+    --sidebar-user-detail-profile-color: #00d5ff;
+    --sidebar-user-detail-select-background: #2d323e;
+    --sidebar-user-profile-select-background: #2d323e;
+    --sidebar-user-detail-select-hover-background: rgba(255, 255, 255, .05);
+    --sidebar-user-detail-select-color: #fff;
+    --tooltip-bckground: #2d323e;
+    --tooltip-color: white;
+    // ***** Sidebar: end ***** //
      --primary-btn-background: #3ea9f5;
      --primary-btn-color: #fff;
      --primary-btn-hover-background: #399ce2;
@@ -288,14 +300,25 @@
  }
 
  body.dark {
-    --sidebar-bckgrnd-bottom-section-drk: #2d323e;
-     --sidebar-bckgrnd-item-hover: rgba(248, 248, 248, 0.251);
-     --sidebar-bckgrnd-item-border-radius:12px;
-     --sidebar-inactive-icon: #647491;
-     --sidebar-icon-color:#fff; // #647491;
-     --sidebar-hover-icon-color: #a9afbb;
-     --sidebar-active-icon: var(--blue-light);
-    //  --sidebar-active-icon: #fff;
+    // ***** Sidebar: start ***** //
+    --sidebar-background-color: #1e2129;
+    --sidebar-header-background: #2d323e;
+    --sidebar-color: #fff;
+    --sidebar-icon-color: #fff;
+    --sidebar-hover-icon-color: #a9afbb;
+    --sidebar-background-item-hover : rgba(248, 248, 248, 0.251);
+    --sidebar-background-item-border-radius: 12px;
+    --sidebar-active-icon: #3ea9f5;
+    --sidebar-inactive-icon: #647491;
+    --sidebar-user-detail-color: #a9afbb;
+    --sidebar-user-detail-profile-color: #00d5ff;
+    --sidebar-user-detail-select-background: #2d323e;
+    --sidebar-user-profile-select-background: #2d323e;
+    --sidebar-user-detail-select-hover-background: rgba(255, 255, 255, .05);
+    --sidebar-user-detail-select-color: #fff;
+    --tooltip-bckground: #2d323e;
+    --tooltip-color: white;
+    // ***** Sidebar: end ***** //
      --primary-btn-background: #3ea9f5;
      --primary-btn-color: #fff;
      --primary-btn-hover-background: #399ce2;
