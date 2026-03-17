@@ -32,7 +32,7 @@
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
   transition-timing-function: linear, linear, ease;
-  background-color: var(--sidebar-bckgrnd-bottom-section-drk) !important;
+  background-color: var(--sidebar-header-background) !important;
   // background-color: var(--sidebar-bckgrnd-bottom-section-lgt) !important;
   // border-right: 1px solid rgb(226, 232, 239); // for light sidebar
 }

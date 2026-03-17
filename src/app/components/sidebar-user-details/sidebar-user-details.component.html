@@ -87,8 +87,9 @@
     <section class="availability-section">
        
         <!--  -->
-        <ng-select style="text-align: left;width: 100%;" 
-            (change)="changeAvailabilityState(selectedStatus)"
+        <ng-container *ngIf="!isVisibleMPA" id="availability_dropdown_container">
+            <ng-select style="text-align: left;width: 100%;" 
+            (change)="changeAvailabilityStateInUserDetailsSidebar(selectedStatus)"
             [(ngModel)]="selectedStatus" 
             class="teammate-status-in-drawer"
             [items]="teammateStatus" 
@@ -96,21 +97,49 @@
             bindValue="id" 
             [clearable]="false" 
             [searchable]="false">
-            <ng-template ng-label-tmp let-item="item">
-                <img style="width: 15px;height: 15px; position: relative; top: -1px;" height="15" width="15"
-                    [src]="item.avatar" />
-                <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;margin-left: 8px;">
-                    {{item.name | translate}}
-                </span>
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item" let-index="index">
-                <img style="width: 15px;height: 15px; position: relative; top: -2px;" height="15" width="15"
-                    [src]="item.avatar" />
-                <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;margin-left: 8px;">
-                    {{item.name | translate }}
-                </span>
-            </ng-template>
-        </ng-select>
+                <ng-template ng-label-tmp let-item="item">
+                    <img style="width: 15px;height: 15px; position: relative; top: -1px;" height="15" width="15"
+                        [src]="item.avatar" />
+                    <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;margin-left: 8px;">
+                        {{item.name | translate}}
+                    </span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <img style="width: 15px;height: 15px; position: relative; top: -2px;" height="15" width="15"
+                        [src]="item.avatar" />
+                    <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;margin-left: 8px;">
+                        {{item.name | translate }}
+                    </span>
+                </ng-template>
+            </ng-select>
+        </ng-container>
+
+        <ng-container *ngIf="isVisibleMPA && projects?.length > 0" id="projects_dropdown_container">
+            <div class="projects-dropdown-wrapper">
+                <button class="btn projects-dropdown-toggle" (click)="toggleProjectsDropdown()">
+                    <span class="projects-dropdown-toggle-label">
+                        {{ project?.name || 'Progetti' }}
+                        <img style="width: 15px; height: 15px; position: relative; top: 1px; cursor: pointer;" height="15" width="15" [src]="project?.teammateStatus?.avatar" />
+                    </span>
+                    <i class="material-icons" style="margin-left: 4px; font-size: 18px;">arrow_drop_down</i>
+                </button>
+                <div id="projects_dropdown" class="dropdown-menu" [ngClass]="{'open': openDropdownProjects}">
+                    <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
+                        <a [ngClass]="{'li-selected' : prjct?.id_project?._id === project?.id_project?.id }"
+                          class="project-item-row">
+                          <span class="project-item-name">{{ prjct?.id_project?.name }}</span>
+                          <span class="project-item-status project-item-status-wrapper"
+                            [attr.title]="prjct?.teammateStatus?.name"
+                            (click)="toggleStatusDropdown($event, prjct)">
+                            <span class="project-item-status-name">{{prjct?.teammateStatus?.name}}</span>
+                            <img style="width: 15px; height: 15px; position: relative; top: 1px; cursor: pointer;" height="15" width="15" [src]="prjct?.teammateStatus?.avatar" />
+                          </span>
+                        </a>
+                      </li>
+                </div>
+            </div>
+        </ng-container>
+        
     </section>
 
 
@@ -195,13 +224,15 @@
             </div>
         </section>
     <!-- </ng-container> -->
- 
-
-
-
 
 </div>
 
-
-<!-- </div>
-</div> -->
+<!-- Status dropdown fuori da #user-details per evitare clipping da overflow -->
+<div class="status-dropdown status-dropdown-fixed status-dropdown-outside" *ngIf="openStatusDropdownProjectId && selectedProjectForStatus" (click)="$event.stopPropagation()"
+  [style.top.px]="statusDropdownPosition.top" [style.right.px]="statusDropdownPosition.right">
+  <div class="status-dropdown-option" *ngFor="let status of TEAMMATE_STATUS"
+    (click)="$event.stopPropagation(); onChangeProjectStatus(selectedProjectForStatus, status.id)">
+    <img style="width: 15px; height: 15px; margin-right: 6px;" [src]="status.avatar" />
+    <span>{{ status.name }}</span>
+  </div>
+</div>
