@@ -24,6 +24,8 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
   // Contatore reload iframe per badge
   public iframeLoadCount = 0;
   
+  private messageHandler: (event: MessageEvent) => void;
+  
   constructor(
     public appConfigService: AppConfigService,
     private logger: LoggerService,
@@ -37,6 +39,44 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
     this.componentCreatedAtFormatted = this.componentCreatedAt.toLocaleTimeString('it-IT');
     
     this.setupNavigationListener();
+    this.setupPostMessageListener();
+  }
+
+  /**
+   * Sottoscrizione a postMessage per event onConversationChanged
+   */
+  private setupPostMessageListener(): void {
+    this.messageHandler = (event: MessageEvent) => {
+      const type = event?.data?.type
+      const conversation = event?.data?.data;
+      this.logger.log('[CONVERSATION-DETAIL-IFRAME] onConversationChanged:', event);
+      if (type === 'onConversationChanged' && conversation) {
+        this.logger.log('[CONVERSATION-DETAIL-IFRAME] onConversationChanged:', conversation);
+        this.updateRouteFromConversation(conversation);
+      }
+    };
+    window.addEventListener('message', this.messageHandler);
+  }
+
+  /**
+   * Aggiorna i parametri della route corrente in base alla conversation ricevuta
+   */
+  private updateRouteFromConversation(conversation: any): void {
+    const idConv = conversation.uid ?? conversation.request_id ?? conversation.id;
+    const fullNameConv = conversation.conversation_with_fullname ?? conversation.lead?.fullname ?? '';
+    const convType = conversation.archived === false ? 'active' : 'archived';
+
+    if (!idConv) {
+      this.logger.warn('[CONVERSATION-DETAIL-IFRAME] onConversationChanged: id conversation non trovato');
+      return;
+    }
+
+    const projectId = this.route.snapshot.params['projectid'] ?? this.route.parent?.snapshot?.params['projectid'];
+    const navCommands = projectId
+      ? ['project', projectId, 'conversation-detail', idConv, fullNameConv, convType]
+      : ['conversation-detail', idConv, fullNameConv, convType];
+
+    this.router.navigate(navCommands, { replaceUrl: true });
   }
 
   /**
@@ -89,6 +129,7 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.logger.log('[CONVERSATION-DETAIL-IFRAME] Componente distrutto');
+    window.removeEventListener('message', this.messageHandler);
     // Nascondi iframe (gestito dal service)
     this.iframeService.hide();
   }

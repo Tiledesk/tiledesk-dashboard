@@ -660,13 +660,12 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.logger.log('[NAVBAR] - PROJECT-USER UPDATED ', projectUser)
         this.projects.find(p => p.id_project._id === projectUser.id_project._id).teammateStatus = getUserStatusFromProjectUser(projectUserUpdated as any);
 
+        this.project.teammateStatus = this.projects.find(p => p.id_project._id === projectUser.id_project._id).teammateStatus;
       }, (error) => {
         this.logger.error('[NAVBAR] - PROJECT-USER UPDATED - ERROR  ', error);
-
       }, () => {
         this.logger.log('[NAVBAR] - PROJECT-USER UPDATED  * COMPLETE *');
-
-      });
+    });
   }
 
   changeAvailabilityStateInUserDetailsSidebar(selectedStatusID) {
