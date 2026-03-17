@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.180-stage
+- Refactors sidebar styles and user details component
+- Updates sidebar variables for improved theming and consistency
+- Implements project status dropdown functionality in user details, enhancing user interaction
+- Introduces utility function (getUserStatusFromProjectUser) for determining user status based on project data
+
 ### 2.7.179-stage
 - Adds new conversation-detail routes with optional params: IDConv, Convtype, FullNameConv (with and without project prefix)
 - Conversation-detail iframe component now reads route params and builds iframe URL dynamically
