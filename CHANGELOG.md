@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.181-stage
+### 2.7.182-stage
 - Implements postMessage listener in conversation-detail iframe for onConversationChanged event
 - Updates route params (IDConv, FullNameConv, Convtype) when conversation changes from iframe
 - Cleans up event listener on component destruction to prevent memory leaks
