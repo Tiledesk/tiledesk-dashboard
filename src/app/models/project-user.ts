@@ -3,7 +3,7 @@ export interface ProjectUser {
     createdAt?: string;
     createdBy?: string;
     id?:string;
-    id_project?: string;
+    id_project?: any;
     id_user?: any;
     isAuthenticated?: boolean;
     isBusy?: boolean;
@@ -22,4 +22,5 @@ export interface ProjectUser {
     is_group_member?: boolean;
     __v?: any;
     _id?: string;
+    teammateStatus?: any;
 }

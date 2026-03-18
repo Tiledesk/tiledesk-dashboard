@@ -32,7 +32,7 @@
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
   transition-timing-function: linear, linear, ease;
-  background-color: var(--sidebar-bckgrnd-bottom-section-drk) !important;
+  background-color: var(--sidebar-header-background) !important;
   // background-color: var(--sidebar-bckgrnd-bottom-section-lgt) !important;
   // border-right: 1px solid rgb(226, 232, 239); // for light sidebar
 }
@@ -45,7 +45,7 @@
 
   > div {
     // &:hover {
-    //   background-color: var(--sidebar-bckgrnd-item-hover); 
+    //   background-color: var(--sidebar-background-item-hover); 
     // }
     // height: 50px;
     // width: 50px;
@@ -57,11 +57,11 @@
     
     > a {
       &:hover {
-        background-color: var(--sidebar-bckgrnd-item-hover); 
+        background-color: var(--sidebar-background-item-hover); 
       }
       height: 50px;
       width: 50px;
-      border-radius: var(--sidebar-bckgrnd-item-border-radius);
+      border-radius: var(--sidebar-background-item-border-radius);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -115,11 +115,11 @@
 
 
 div.item-active > a  {
-  background-color: var(--sidebar-bckgrnd-item-hover);
+  background-color: var(--sidebar-background-item-hover);
 }
 
 div.is-active > a  {
-  background-color: var(--sidebar-bckgrnd-item-hover);
+  background-color: var(--sidebar-background-item-hover);
 }
 
 div.is-active a span svg path {

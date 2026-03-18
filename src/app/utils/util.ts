@@ -5,6 +5,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { TooltipOptions } from 'ng2-tooltip-directive';
 import { concat, from, isObservable, Observable, of } from 'rxjs';
 import { concatMap, first, last, takeWhile } from 'rxjs/operators';
+import { TEAMMATE_STATUS } from './constants';
 
 export const CutomTooltipOptions: TooltipOptions = {
     'show-delay': 0,
@@ -914,6 +915,42 @@ export const CHANNELS = [
     { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
 
 ]
+
+/**
+ * Restituisce lo status dell'utente nel contesto di un project.
+ * Basato su user_available e profileStatus dell'oggetto projectUser.
+ *
+ * @param projectUser - Oggetto con user_available e profileStatus (es. ProjectUser dal websocket)
+ * @returns Oggetto da TEAMMATE_STATUS (Available, Unavailable, Inactive) o null se i dati non sono sufficienti
+ */
+export function getUserStatusFromProjectUser(projectUser: {
+    user_available?: boolean;
+    profileStatus?: string;
+  }): typeof TEAMMATE_STATUS[number] | null {
+    if (!projectUser) {
+      return null;
+    }
+  
+    if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
+      return TEAMMATE_STATUS[2]; // Inactive
+    }
+    if (projectUser.user_available === false && (!projectUser.profileStatus || projectUser.profileStatus === '')) {
+      return TEAMMATE_STATUS[1]; // Unavailable
+    }
+    if (projectUser.user_available === true && (!projectUser.profileStatus || projectUser.profileStatus === '')) {
+      return TEAMMATE_STATUS[0]; // Available
+    }
+  
+    // Fallback per casi non esplicitamente gestiti
+    if (projectUser.user_available === true) {
+      return TEAMMATE_STATUS[0];
+    }
+    if (projectUser.user_available === false) {
+      return TEAMMATE_STATUS[1];
+    }
+  
+    return null;
+  }
 
 export function checkAcceptedFile(fileType, fileUploadAccept): boolean {
 
