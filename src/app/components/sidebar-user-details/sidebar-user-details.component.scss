@@ -257,7 +257,6 @@ button.user-details-btn-close {
         color: var(--sidebar-user-detail-select-color);
         border: 1px solid var(--sidebar-user-detail-select-background);
         border-radius: 4px;
-        cursor: pointer;
         display: flex;
         align-items: center;
         text-align: left;
@@ -348,16 +347,6 @@ button.user-details-btn-close {
             background-color: var(--sidebar-user-detail-select-hover-background);
         }
     
-        &.all-projects,
-        &.add-project{
-            color: var(--sidebar-user-detail-select-color);
-            i{
-                padding-right: 5px; 
-                margin-bottom: 2px; 
-                font-size: 20px
-            }
-        }
-    
         &.section-title{
             padding-left: 24px;
             font-size: 12px; 
@@ -366,13 +355,6 @@ button.user-details-btn-close {
         }
     }
     
-    .dropdown-menu .divider{
-        background-color: rgba(255, 255, 255, 0.2);
-        margin: 5px 0;
-    
-        height: 1px;
-        overflow: hidden;
-    }
     
     .dropdown-menu li>a{
         font-size: 13px;
@@ -388,8 +370,14 @@ button.user-details-btn-close {
         white-space: nowrap;
         text-decoration: none;
         margin: 0px;
-        cursor: pointer;
+        cursor: auto;
     
+        img {
+            width: 15px;
+            height: 15px;
+            position: relative;
+            top: 1px;
+        }
         .material-icons {
             vertical-align: middle;
         }
@@ -415,6 +403,7 @@ button.user-details-btn-close {
             }
     
             .project-item-status {
+                cursor: pointer;
                 flex: 0 0 10%;
                 display: flex;
                 justify-content: flex-end;
