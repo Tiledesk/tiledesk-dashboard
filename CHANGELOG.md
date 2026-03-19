@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+
+### 2.7.183-stage
+- Fixes project status dropdown positioning: opens on the right of the clicked icon instead of the left
+- Fixes project teammate status assignment in sidebar user details (correct projectId reference)
+- Improves project item display with corrected class bindings and image handling
+- Cleans up unused styles in sidebar user details SCSS
+
 ### 2.7.182-stage
 - Implements postMessage listener in conversation-detail iframe for onConversationChanged event
 - Updates route params (IDConv, FullNameConv, Convtype) when conversation changes from iframe
