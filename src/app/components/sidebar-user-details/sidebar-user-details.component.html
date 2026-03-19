@@ -125,17 +125,17 @@
                 </button>
                 <div id="projects_dropdown" class="dropdown-menu" [ngClass]="{'open': openDropdownProjects}">
                     <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-                        <a [ngClass]="{'li-selected' : prjct?.id_project?._id === project?.id_project?.id }"
+                        <a [ngClass]="{'li-selected' : prjct?.id_project?._id === openStatusDropdownProjectId }"
                           class="project-item-row">
                           <span class="project-item-name">{{ prjct?.id_project?.name }}</span>
                           <span class="project-item-status project-item-status-wrapper"
                             [attr.title]="prjct?.teammateStatus?.name"
                             (click)="toggleStatusDropdown($event, prjct)">
                             <span class="project-item-status-name">{{prjct?.teammateStatus?.name}}</span>
-                            <img style="width: 15px; height: 15px; position: relative; top: 1px; cursor: pointer;" height="15" width="15" [src]="prjct?.teammateStatus?.avatar" />
+                            <img [src]="prjct?.teammateStatus?.avatar" />
                           </span>
                         </a>
-                      </li>
+                    </li>
                 </div>
             </div>
         </ng-container>
@@ -229,7 +229,7 @@
 
 <!-- Status dropdown fuori da #user-details per evitare clipping da overflow -->
 <div class="status-dropdown status-dropdown-fixed status-dropdown-outside" *ngIf="openStatusDropdownProjectId && selectedProjectForStatus" (click)="$event.stopPropagation()"
-  [style.top.px]="statusDropdownPosition.top" [style.right.px]="statusDropdownPosition.right">
+  [style.top.px]="statusDropdownPosition.top" [style.left.px]="statusDropdownPosition.left">
   <div class="status-dropdown-option" *ngFor="let status of TEAMMATE_STATUS"
     (click)="$event.stopPropagation(); onChangeProjectStatus(selectedProjectForStatus, status.id)">
     <img style="width: 15px; height: 15px; margin-right: 6px;" [src]="status.avatar" />
