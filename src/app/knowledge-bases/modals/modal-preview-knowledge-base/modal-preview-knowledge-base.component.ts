@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -111,7 +111,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
     private router: Router,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private cdr: ChangeDetectorRef
   ) {
     super(prjctPlanService, notify);
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
@@ -541,6 +542,97 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     this.askAI(this.body, startTime)
+    // this.askAIStream(this.body, startTime);
+  }
+
+  /**
+   * Gestisce la risposta a stream dal server: aggiorna this.answer man mano che arrivano i chunk.
+   */
+  askAIStream(body: any, startTime: number) {
+    let lastResponse: any = null;
+    this.openaiService.askGptStream(body).subscribe({
+      next: (chunk: { text?: string; done?: boolean; response?: any }) => {
+        if (chunk.text) {
+          this.answer = (this.answer || '') + chunk.text;
+          this.cdr.detectChanges();
+        }
+        if (chunk.response) lastResponse = chunk.response;
+        if (chunk.done) {
+          this.finalizeStreamResponse(lastResponse, startTime);
+        }
+      },
+      error: (err: any) => {
+        this.searching = false;
+        this.show_answer = true;
+        this.handleAskAIError(err);
+      },
+      complete: () => {
+        if (this.searching) {
+          this.finalizeStreamResponse(lastResponse, startTime);
+        }
+      }
+    });
+  }
+
+  private finalizeStreamResponse(response: any, _startTime: number) {
+    if (!this.searching) return;
+    if (response) {
+      response['ai_model'] = this.selectedModel;
+      this.prompt_token_size = response.prompt_token_size;
+      this.responseTime = response.duration;
+      this.translateparam = { respTime: this.responseTime };
+      this.qa = response;
+      this.contentChunks = this.qa?.content_chunks ?? [];
+      this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentChunks: ', this.contentChunks);
+      if (response.source && this.isValidURL(response.source)) this.source_url = response.source;
+      if (response.answer && !this.answer) this.answer = response.answer;
+    }
+    this.show_answer = true;
+    this.searching = false;
+    this.aiQuotaExceeded = false;
+    this.logger.log('ask gpt *COMPLETE*');
+    this.checkStoredQuestion();
+    this.cdr.detectChanges();
+    this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
+  }
+
+  private handleAskAIError(err: any) {
+    this.logger.log('ask gpt preview response error: ', err);
+    if (err && err.error && err.error.error_message) {
+      try {
+        const errorMessage = err.error.error_message;
+        const jsonMatch = errorMessage.match(/\{.*\}/);
+        if (jsonMatch) {
+          let jsonString = jsonMatch[0].replace(/'/g, '"');
+          const parsedError = JSON.parse(jsonString);
+          if (parsedError.error?.message) this.answer = parsedError.error.message;
+          else if (parsedError.message) this.answer = parsedError.message;
+          else this.answer = errorMessage;
+        } else {
+          const match = errorMessage.match(/'message':\s*'([^']+)'/);
+          this.answer = match ? match[1] : errorMessage;
+        }
+      } catch {
+        const match = err.error?.error_message?.match(/'message':\s*'([^']+)'/);
+        this.answer = match ? match[1] : err.error?.error_message;
+      }
+    } else if (err?.error?.error_code === 13001) {
+      this.answer = this.translate.instant('KbPage.AiQuotaExceeded');
+      this.aiQuotaExceeded = true;
+    } else if (err?.error?.message) {
+      this.answer = err.error.message;
+    } else if (err?.error?.error?.answer) {
+      this.answer = err.error.error.answer;
+      const msg = err.error.error.error_message?.match(/'message':\s*'([^']+)'/)?.[1];
+      if (msg) this.answer = this.answer + ' (' + msg + ')';
+    } else if (err?.error?.error) {
+      this.answer = err.error.error;
+    } else if (err?.message) {
+      this.answer = err.message;
+    } else {
+      this.answer = 'An error occurred while processing your request.';
+    }
+    this.cdr.detectChanges();
   }
 
   askAI(body, startTime) {
@@ -677,7 +769,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   onTextareaInput(textarea: HTMLTextAreaElement): void { 
     // console.log('[MODAL-PREVIEW-KB] textarea', textarea ) 
     const minHeight = 37;
-    const maxHeight = 52;
+    const maxHeight = 132;
 
     // Reset per ricalcolare correttamente lo scrollHeight
     textarea.style.height = minHeight + 'px';

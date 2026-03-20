@@ -529,8 +529,8 @@
                           help_outline 
                         </i>
                       </div>
+                    </div>
                   </div>
-                </div>
               </div>
 
 
@@ -666,6 +666,10 @@
 
       <div id="rated-filter" *ngIf="rated_applied" class="applied-filter">
         {{ 'RatedConversations' | translate }}
+      </div>
+
+      <div id="preflight-filter" *ngIf="preflight_applied && IS_HERE_FOR_HISTORY" class="applied-filter">
+        {{ 'IncludeChatbotsOnlyConversations' | translate }}
       </div>
 
       <div id="phone-filter" *ngIf="phone_applied" class="applied-filter">

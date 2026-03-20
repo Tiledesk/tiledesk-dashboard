@@ -83,7 +83,7 @@
                         <!-- ------------------------------------------------------------------- -->
                         <!-- Dept description -->
                         <!-- ------------------------------------------------------------------- -->
-                        <div class="row">
+                        <div class="row" *ngIf="IS_DEFAULT_DEPT !== true">
                           <label class="col-12 custom-label">
                             {{ "DeptsAddEditPage.Description" | translate}}
                           </label>

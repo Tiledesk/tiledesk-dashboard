@@ -131,9 +131,9 @@
     display: inline-block;
     width: 100%;
 
-    .input-container {
-        margin-bottom: 14px;
-    }
+    // .input-container {
+    //     margin-bottom: 14px;
+    // }
 
     .input-label {
         font-weight: 400;
@@ -505,6 +505,23 @@
 
 ::ng-deep.html-tags--expansion-panel {
     padding: 0px 0px !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: .25em 0;
+    padding-bottom: 4px;
+}
+
+
+::ng-deep .mat-chip-list-wrapper {
+    max-height: 100px;
+    overflow: scroll;
+
+    .mat-standard-chip {
+        border-radius: 10px;
+        background-color: transparent;
+        border: solid 1px #b9b9b9;
+    }
 }
 
 

@@ -1099,6 +1099,21 @@ p.member:hover {
   vertical-align: middle;
 }
 
+.rated-convs-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  // margin-left: 15px;
+}
+
+.rated-convs-checkbox>.help-icon-wpr>i {
+  font-size: 18px;
+  color: #7695a5;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
 
 // .request-statuses-select {
 //   margin-right: 15px;
@@ -1130,7 +1145,7 @@ p.member:hover {
 
 .search-btn {
   padding: 9px 30px;
-  margin-right: 15px;
+  // margin-right: 15px;
 }
 
 .search-btn>span {

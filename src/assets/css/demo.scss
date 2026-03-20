@@ -4650,7 +4650,7 @@ li.li-active a {
   color: #000000de;
   padding: 3px 0px;
   font-weight: 300;
-  width: 100%;
+  // width: 100%;
 }
 
 .kb-tags-container {
@@ -4691,6 +4691,7 @@ li.li-active a {
   background: transparent;
   border-radius: 0px 4px 4px 0px;
   /* padding: 0px 4px 3px 3px; */
+  padding-bottom: 4px;
   cursor: pointer;
 }
 

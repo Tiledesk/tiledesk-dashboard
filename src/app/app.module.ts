@@ -408,7 +408,7 @@ import { SleekplanApiService } from './services/sleekplan-api.service';
 import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { RolesService } from './services/roles.service';
-import { KeycloakService } from './services/keycloak.service';
+// import { KeycloakService } from './services/keycloak.service';
 import { HttpStatsService } from './services/http-stats.service';
 import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
@@ -865,7 +865,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SleekplanService,
     SleekplanApiService,
     RolesService,
-    KeycloakService,
+    // KeycloakService,
     HttpStatsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],

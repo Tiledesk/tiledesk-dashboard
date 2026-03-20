@@ -39,7 +39,7 @@ import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
-import { KeycloakService } from './services/keycloak.service';
+// import { KeycloakService } from './services/keycloak.service';¶
 
 // import { UsersService } from './services/users.service';
 
@@ -110,7 +110,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private sleekplanSsoService: SleekplanSsoService,
         private sleekplanService: SleekplanService,
         private sleekplanApiService: SleekplanApiService,
-        private keycloakService: KeycloakService,
+        // private keycloakService: KeycloakService,
         private localDbService: LocalDbService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
@@ -583,13 +583,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.getCurrentProject()
     }
 
-    keycloakInit() {
-        this.keycloakService.init().then(authenticated => {
-            if (!authenticated) {
-                this.logger.log('[APP-COMPONENT] 🔑 Login required');
-            }
-        });
-    }
+    // keycloakInit() {
+    //     this.keycloakService.init().then(authenticated => {
+    //         if (!authenticated) {
+    //             this.logger.log('[APP-COMPONENT] 🔑 Login required');
+    //         }
+    //     });
+    // }
 
 
 
