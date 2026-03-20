@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.184-stage
+- Closes status-dropdown and projects-dropdown when user details panel is closed (X button, click outside, or avatar toggle)
+- Adds MutationObserver to detect panel close and close dropdowns accordingly
+- Implements ngOnDestroy with MutationObserver cleanup to prevent memory leaks
 
 ### 2.7.183-stage
 - Fixes project status dropdown positioning: opens on the right of the clicked icon instead of the left
