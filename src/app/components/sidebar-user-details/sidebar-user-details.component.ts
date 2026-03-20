@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
@@ -37,7 +37,7 @@ import { TEAMMATE_STATUS } from 'app/utils/constants';
   styleUrls: ['./sidebar-user-details.component.scss'],
 
 })
-export class SidebarUserDetailsComponent implements OnInit {
+export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
   public version: string = environment.VERSION;
   PLAN_NAME = PLAN_NAME
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
@@ -97,6 +97,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   public openStatusDropdownProjectId: string | null = null
   statusDropdownPosition = { top: 0, left: 0 };
   public isVisibleMPA = false;
+  private userDetailsMutationObserver: MutationObserver | null = null;
 
   constructor(
     public auth: AuthService,
@@ -158,13 +159,42 @@ export class SidebarUserDetailsComponent implements OnInit {
     // this.setNotificationSound();
     // this.listenToProjectUser()
     // this.checkLogoutVisibility();
-    this.getQueryParams()
-
+    this.getQueryParams();
+    this.setupUserDetailsCloseObserver();
   }
 
-  
+  /**
+   * Osserva la rimozione della classe 'active' da #user-details (es. chiusura via click avatar nel sidebar)
+   * per chiudere i dropdown aperti
+   */
+  private setupUserDetailsCloseObserver(): void {
+    setTimeout(() => {
+      const el = document.getElementById('user-details');
+      if (!el) return;
+    this.userDetailsMutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target as HTMLElement;
+          if (!target.classList.contains('active')) {
+            this.closeDropdowns();
+          }
+        }
+      });
+    });
+    this.userDetailsMutationObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+    }, 0);
+  }
 
-  
+  private closeDropdowns(): void {
+    this.openDropdownProjects = false;
+    this.openStatusDropdownProjectId = null;
+    this.selectedProjectForStatus = null;
+  }
+
+  ngOnDestroy(): void {
+    this.userDetailsMutationObserver?.disconnect();
+    this.userDetailsMutationObserver = null;
+  }
 
    listenToProjectUser() {
       this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
@@ -994,8 +1024,11 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   closeUserDetailSidePanel() {
+    this.closeDropdowns();
     var element = document.getElementById('user-details');
-    element.classList.remove("active");
+    if (element) {
+      element.classList.remove("active");
+    }
     this.logger.log('[SIDEBAR-USER-DETAILS] element', element)
     // this.onCloseUserDetailsSidebar.emit(false);
   }
