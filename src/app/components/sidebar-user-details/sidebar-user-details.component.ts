@@ -362,6 +362,12 @@ export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
         this.logger.log('[SIDEBAR-USER-DETAILS] project from $ubscription', this.project);
         this.destructureProjectAndBuildProjectPlanName(this.project)
 
+        if(this.projects){
+          this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
+          console.log('[SIDEBAR-USER-DETAILS] project.teammateStatus ', this.project.teammateStatus);
+        }
+
+        console.log('[SIDEBAR-USER-DETAILS] project.teammateStatus ', this.project);
         // this.findCurrentProjectAmongAll(this.projectId)
         // this.projectName = project.name;
       }
@@ -378,7 +384,7 @@ export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
           prj.teammateStatus = getUserStatusFromProjectUser(prj as any);
         });
         this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
-        this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.projects ', this.projects);
+        this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.projects ', this.project);
       }
     }, (error) => {
       this.logger.error('[SIDEBAR-USER-DETAILS] getProjects - ERROR ', error);
