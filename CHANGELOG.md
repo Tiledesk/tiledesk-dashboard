@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.185-stage
+- Improves sidebar user details: status dropdown opens on hover over entire project row, aligned with item
+- Adds arrow indicator (triangle) on left side of status dropdown
+- Fixes project status assignment logic for accurate teammate status retrieval
+
 ### 2.7.184-stage
 - Closes status-dropdown and projects-dropdown when user details panel is closed (X button, click outside, or avatar toggle)
 - Adds MutationObserver to detect panel close and close dropdowns accordingly
