@@ -1,0 +1,1123 @@
+
+> @tiledesk/tiledesk-dashboard@2.7.163 build
+> ng build --output-path=dist --base-href ./
+
+- Generating browser application bundles (phase: setup)...
+DEPRECATION DEPRECATION DEPRECATION DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43  @import
+    src/app/hours/hours.component.scss 1:9     root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37  @import
+    src/app/hours/hours.component.scss 1:9     root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31  @import
+    src/app/hours/hours.component.scss 1:9      root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29  @import
+    src/app/hours/hours.component.scss 1:9      root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                           @import
+    src/app/create-project-wizard/configure-widget/configure-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                           @import
+    src/app/create-project-wizard/configure-widget/configure-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                          @import
+    src/app/create-project-wizard/configure-widget/configure-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                          @import
+    src/app/create-project-wizard/configure-widget/configure-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                             @import
+    src/app/create-project-wizard/onboarding-widget/onboarding-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                             @import
+    src/app/create-project-wizard/onboarding-widget/onboarding-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                            @import
+    src/app/create-project-wizard/onboarding-widget/onboarding-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                            @import
+    src/app/create-project-wizard/onboarding-widget/onboarding-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                      @import
+    src/app/create-new-project/loading-section/loading-section.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                      @import
+    src/app/create-new-project/loading-section/loading-section.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                     @import
+    src/app/create-new-project/loading-section/loading-section.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                     @import
+    src/app/create-new-project/loading-section/loading-section.component.scss 1:9  root stylesheet
+
+WARNING: $saturation: Passing a number without unit % (100) is deprecated.
+
+To preserve current behavior: $saturation * 1%
+
+   ╷
+13 │     stroke: hsl(210, 100, 75);
+   │             ^^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 13:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (75) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+13 │     stroke: hsl(210, 100, 75);
+   │             ^^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 13:13  root stylesheet
+
+DEPRECATION WARNING: $saturation: Passing a number without unit % (100) is deprecated.
+
+To preserve current behavior: $saturation * 1%
+
+   ╷
+42 │     stroke: hsl(0, 100, 50);
+   │             ^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 42:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (50) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+42 │     stroke: hsl(0, 100, 50);
+   │             ^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 42:13  root stylesheet
+
+DEPRECATION WARNING: $saturation: Passing a number without unit % (100) is deprecated.
+
+To preserve current behavior: $saturation * 1%
+
+   ╷
+45 │     stroke: hsl(0, 100, 50);
+   │             ^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 45:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (50) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+45 │     stroke: hsl(0, 100, 50);
+   │             ^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 45:13  root stylesheet
+
+DEPRECATION WARNING: $saturation: Passing a number without unit % (100) is deprecated.
+
+To preserve current behavior: $saturation * 1%
+
+   ╷
+48 │     stroke: hsl(50, 100, 45);
+   │             ^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 48:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (45) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+48 │     stroke: hsl(50, 100, 45);
+   │             ^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 48:13  root stylesheet
+
+DEPRECATION WARNING: $saturation: Passing a number without unit % (100) is deprecated.
+
+To preserve current behavior: $saturation * 1%
+
+   ╷
+51 │     stroke: hsl(50, 100, 45);
+   │             ^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 51:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (45) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+51 │     stroke: hsl(50, 100, 45);
+   │             ^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 51:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (30) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+54 │     stroke: hsl(100, 100, 30);
+   │             ^^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 54:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (30) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+57 │     stroke: hsl(100, 100, 30);
+   │             ^^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 57:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (37) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+60 │     stroke: hsl(190, 100, 37);
+   │             ^^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 60:13  root stylesheet
+
+DEPRECATION WARNING: $lightness: Passing a number without unit % (37) is deprecated.
+
+To preserve current behavior: $lightness * 1%
+
+   ╷
+63 │     stroke: hsl(190, 100, 37);
+   │             ^^^^^^^^^^^^^^^^^
+   ╵
+    src/app/auth/handle-invitation/handle-invitation.component.scss 63:13  root stylesheet
+
+WARNING: 4 repetitive deprecation warnings omitted.
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                       @import
+    src/app/create-project-wizard/install-widget/install-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                       @import
+    src/app/create-project-wizard/install-widget/install-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                      @import
+    src/app/create-project-wizard/install-widget/install-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                      @import
+    src/app/create-project-wizard/install-widget/install-widget.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                           @import
+    src/app/create-project-wizard/install-template/install-template.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                           @import
+    src/app/create-project-wizard/install-template/install-template.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                          @import
+    src/app/create-project-wizard/install-template/install-template.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                          @import
+    src/app/create-project-wizard/install-template/install-template.component.scss 1:9  root stylesheet
+
+WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43           @import
+    src/app/automations/automations.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37           @import
+    src/app/automations/automations.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31          @import
+    src/app/automations/automations.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29          @import
+    src/app/automations/automations.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                     @import
+    src/app/knowledge-bases-previous/knowledge-bases-previous.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                     @import
+    src/app/knowledge-bases-previous/knowledge-bases-previous.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                    @import
+    src/app/knowledge-bases-previous/knowledge-bases-previous.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                    @import
+    src/app/knowledge-bases-previous/knowledge-bases-previous.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                   @import
+    src/app/knowledge-bases/knowledge-bases.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                   @import
+    src/app/knowledge-bases/knowledge-bases.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                  @import
+    src/app/knowledge-bases/knowledge-bases.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                  @import
+    src/app/knowledge-bases/knowledge-bases.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                                           @import
+    src/app/create-project-wizard/activate-appsumo-product/activate-appsumo-product.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                                           @import
+    src/app/create-project-wizard/activate-appsumo-product/activate-appsumo-product.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                                          @import
+    src/app/create-project-wizard/activate-appsumo-product/activate-appsumo-product.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                                          @import
+    src/app/create-project-wizard/activate-appsumo-product/activate-appsumo-product.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                                       @import
+    src/app/create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                                       @import
+    src/app/create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                                      @import
+    src/app/create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                                      @import
+    src/app/create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component.scss 1:9  root stylesheet
+
+WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43     @import
+    src/assets/sass/material-dashboard.scss 19:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37     @import
+    src/assets/sass/material-dashboard.scss 19:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31    @import
+    src/assets/sass/material-dashboard.scss 19:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29    @import
+    src/assets/sass/material-dashboard.scss 19:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(15, 16) or calc(15 / 16)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+  ╷
+2 │ $ct-scales: ((1), (15/16), (8/9), (5/6), (4/5), (3/4), (2/3), (5/8), (1/1.618), (3/5), (9/16), (8/15), (1/2), (2/5), (3/8), (1/3), (1/4)) !default;
+  │                    ^^^^^
+  ╵
+    src/assets/sass/md/mixins/_chartist.scss 2:20  @import
+    src/assets/sass/md/_mixins.scss 5:9            @import
+    src/assets/sass/material-dashboard.scss 20:9   root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(8, 9) or calc(8 / 9)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+  ╷
+2 │ $ct-scales: ((1), (15/16), (8/9), (5/6), (4/5), (3/4), (2/3), (5/8), (1/1.618), (3/5), (9/16), (8/15), (1/2), (2/5), (3/8), (1/3), (1/4)) !default;
+  │                             ^^^
+  ╵
+    src/assets/sass/md/mixins/_chartist.scss 2:29  @import
+    src/assets/sass/md/_mixins.scss 5:9            @import
+    src/assets/sass/material-dashboard.scss 20:9   root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(5, 6) or calc(5 / 6)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+  ╷
+2 │ $ct-scales: ((1), (15/16), (8/9), (5/6), (4/5), (3/4), (2/3), (5/8), (1/1.618), (3/5), (9/16), (8/15), (1/2), (2/5), (3/8), (1/3), (1/4)) !default;
+  │                                    ^^^
+  ╵
+    src/assets/sass/md/mixins/_chartist.scss 2:36  @import
+    src/assets/sass/md/_mixins.scss 5:9            @import
+    src/assets/sass/material-dashboard.scss 20:9   root stylesheet
+
+WARNING: 20 repetitive deprecation warnings omitted.
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                       @import
+    src/app/create-project-wizard/create-project/create-project.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                       @import
+    src/app/create-project-wizard/create-project/create-project.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                      @import
+    src/app/create-project-wizard/create-project/create-project.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                      @import
+    src/app/create-project-wizard/create-project/create-project.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                  @import
+    src/app/create-new-project/cnp-templates/cnp-templates.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                  @import
+    src/app/create-new-project/cnp-templates/cnp-templates.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                 @import
+    src/app/create-new-project/cnp-templates/cnp-templates.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                 @import
+    src/app/create-new-project/cnp-templates/cnp-templates.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                            @import
+    src/app/create-new-project/onboarding-content/onboarding-content.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                            @import
+    src/app/create-new-project/onboarding-content/onboarding-content.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                           @import
+    src/app/create-new-project/onboarding-content/onboarding-content.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                           @import
+    src/app/create-new-project/onboarding-content/onboarding-content.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter-width, 2) or calc($grid-gutter-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+530 │ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+    │                                           ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 530:43                                        @import
+    src/app/create-new-project/cnp-project-name/cnp-project-name.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($navbar-height - $line-height-computed, 2) or calc(($navbar-height - $line-height-computed) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+531 │ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+    │                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src/assets/sass/md/_variables.scss 531:37                                        @import
+    src/app/create-new-project/cnp-project-name/cnp-project-name.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1063 │ $mdb-label-static-size-ratio: 75 / 100 !default;
+     │                               ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1063:31                                       @import
+    src/app/create-new-project/cnp-project-name/cnp-project-name.component.scss 1:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(75, 100)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+     ╷
+1064 │ $mdb-help-block-size-ratio: 75 / 100 !default;
+     │                             ^^^^^^^^
+     ╵
+    src/assets/sass/md/_variables.scss 1064:29                                       @import
+    src/app/create-new-project/cnp-project-name/cnp-project-name.component.scss 1:9  root stylesheet
+
+✔ Browser application bundle generation complete.
+✔ Browser application bundle generation complete.
+- Copying assets...
+✔ Copying assets complete.
+- Generating index html...
+✔ Index html generation complete.
+
+Initial Chunk Files | Names                                                                                          |  Raw Size | Estimated Transfer Size
+main.js             | main                                                                                           |   4.62 MB |               893.65 kB
+scripts.js          | scripts                                                                                        | 816.18 kB |               196.40 kB
+styles.css          | styles                                                                                         | 424.90 kB |                50.47 kB
+polyfills.js        | polyfills                                                                                      | 172.55 kB |                51.41 kB
+runtime.js          | runtime                                                                                        |   3.24 kB |                 1.48 kB
+
+| Initial Total                                                                                  |   6.00 MB |                 1.17 MB
+
+Lazy Chunk Files    | Names                                                                                          |  Raw Size | Estimated Transfer Size
+7431.js             | app-chatbot-design-studio-chatbot-design-studio-module                                         |   1.10 MB |               164.30 kB
+1158.js             | app-analytics-analytics-module                                                                 | 758.16 kB |                25.53 kB
+4300.js             | app-knowledge-bases-knowledge-bases-module                                                     | 521.02 kB |                68.46 kB
+9962.js             | app-ws_requests-ws-requests-msgs-ws-requests-msgs-module                                       | 498.69 kB |                69.49 kB
+4389.js             | app-widget_components-widget-set-up-widget-set-up-module                                       | 327.52 kB |                52.83 kB
+1932.js             | app-home-home-module                                                                           | 320.62 kB |                49.47 kB
+8734.js             | app-ws_requests-ws-requests-list-ws-requests-list-module                                       | 290.96 kB |                38.40 kB
+9128.js             | app-integrations-integrations-module                                                           | 202.73 kB |                19.32 kB
+7006.js             | app-project-edit-add-project-edit-add-module                                                   | 201.82 kB |                30.92 kB
+5809.js             | app-ws_requests-history-and-nort-convs-history-and-nort-convs-module                           | 197.16 kB |                31.81 kB
+1548.js             | app-analytics-analytics-module                                                                 | 188.09 kB |                23.59 kB
+8332.js             | app-home-home-module                                                                           | 168.62 kB |                45.55 kB
+7877.js             | app-contacts-contacts-module                                                                   | 152.95 kB |                31.87 kB
+5043.js             | app-contacts-contacts-module                                                                   | 138.02 kB |                27.81 kB
+1151.js             | app-department-edit-add-department-edit-add-module                                             |  95.13 kB |                18.34 kB
+2107.js             | app-bots-bots-list-bots-list-module                                                            |  95.02 kB |                19.36 kB
+5541.js             | app-ws_requests-for-panel-ws-requests-unserved-for-panel-ws-requests-unserved-for-panel-module |  93.93 kB |                16.75 kB
+5521.js             | app-contact-details-contact-details-module                                                     |  88.98 kB |                14.80 kB
+4742.js             | app-contact-details-contact-details-module                                                     |  86.12 kB |                17.60 kB
+863.js              | app-users-users-module                                                                         |  75.48 kB |                14.52 kB
+8564.js             | app-bots-templates-templates-module                                                            |  75.03 kB |                14.34 kB
+9842.js             | app-widget-installation-widget-installation-module                                             |  70.70 kB |                14.36 kB
+8999.js             | app-pricing-pricing-module                                                                     |  66.84 kB |                12.74 kB
+351.js              | app-home-home-module                                                                           |  65.71 kB |                11.49 kB
+4268.js             | app-projects-projects-module                                                                   |  61.53 kB |                12.99 kB
+4216.js             | app-user-edit-add-user-edit-add-module                                                         |  59.80 kB |                12.38 kB
+4532.js             | app-hours-hours-module                                                                         |  50.42 kB |                10.08 kB
+7929.js             | app-automation-create-automation-create-module                                                 |  48.68 kB |                12.25 kB
+common.js           | common                                                                                         |  47.53 kB |                10.30 kB
+5495.js             | app-chatbot-design-studio-chatbot-design-studio-module                                         |  42.35 kB |                 9.44 kB
+1618.js             | app-auth-signup-signup-module                                                                  |  41.84 kB |                10.85 kB
+6447.js             | app-group-edit-add-group-edit-add-module                                                       |  39.25 kB |                 8.08 kB
+6371.js             | app-app-store-app-store-module                                                                 |  38.50 kB |                 8.36 kB
+7420.js             | app-canned-responses-canned-responses-list-module                                              |  38.12 kB |                 8.55 kB
+5329.js             | app-departments-departments-module                                                             |  38.03 kB |                 7.93 kB
+917.js              | app-knowledge-bases-previous-knowledge-bases-previous-module                                   |  35.61 kB |                 8.34 kB
+8455.js             | app-app-store-app-store-module                                                                 |  34.77 kB |                 6.10 kB
+3991.js             | app-bots-flow-webhooks-logs-flow-webhooks-logs-module                                          |  34.38 kB |                 8.55 kB
+6838.js             | app-ws_requests-ws-requests-msgs-ws-requests-msgs-module                                       |  34.22 kB |                10.31 kB
+3965.js             | app-groups-groups-module                                                                       |  32.56 kB |                 7.62 kB
+333.js              | app-webhook-webhook-module                                                                     |  28.15 kB |                 6.56 kB
+6501.js             | app-widget_components-widget-multilanguage-widget-multilanguage-module                         |  26.57 kB |                 5.62 kB
+1104.js             | app-tags-tags-module                                                                           |  24.82 kB |                 6.55 kB
+6120.js             | app-analytics-analytics-module                                                                 |  23.02 kB |                 4.00 kB
+560.js              | app-automations-automations-module                                                             |  22.67 kB |                 5.16 kB
+4782.js             | app-auth-signin-signin-module                                                                  |  21.79 kB |                 6.16 kB
+8532.js             | app-user-profile-change-password-change-password-module                                        |  21.64 kB |                 5.46 kB
+319.js              | app-reset-psw-reset-psw-module                                                                 |  21.52 kB |                 5.31 kB
+6766.js             | app-bots-bots-list-bots-list-module                                                            |  21.00 kB |                 5.38 kB
+3692.js             | app-app-store-app-create-app-create-module                                                     |  17.79 kB |                 4.40 kB
+42.js               | app-bots-flow-webhooks-flow-webhooks-module                                                    |  17.79 kB |                 4.99 kB
+4449.js             | app-chatbot-design-studio-chatbot-design-studio-module                                         |  17.46 kB |                 2.71 kB
+1421.js             | app-pricing-payments-list-payments-list-module                                                 |  16.33 kB |                 3.72 kB
+1157.js             | app-static-pages-activities-static-activities-static-module                                    |  16.09 kB |                 4.34 kB
+3205.js             | app-project-edit-add-smtp-settings-smtp-settings-module                                        |  14.75 kB |                 3.72 kB
+4604.js             | app-contact-edit-contact-edit-module                                                           |  12.78 kB |                 3.31 kB
+2450.js             | app-bots-bots-list-bots-list-module                                                            |  11.91 kB |                 3.28 kB
+5781.js             | app-users-users-module                                                                         |  11.68 kB |                 3.58 kB
+9547.js             | app-static-pages-analytics-static-analytics-static-module                                      |  11.59 kB |                 3.46 kB
+5900.js             | app-project-edit-add-notification-email-notification-email-module                              |  11.54 kB |                 3.14 kB
+5647.js             | app-static-pages-email-ticketing-static-email-ticketing-static-module                          |  10.92 kB |                 3.27 kB
+8853.js             | app-email-ticketing-email-ticketing-module                                                     |  10.37 kB |                 3.41 kB
+1678.js             | app-static-pages-wsrequests-static-wsrequests-static-module                                    |  10.02 kB |                 3.04 kB
+4178.js             | app-static-pages-departments-static-departments-static-module                                  |   9.39 kB |                 2.98 kB
+7534.js             | app-static-pages-groups-static-groups-static-module                                            |   9.16 kB |                 2.89 kB
+597.js              | app-static-pages-trigger-static-trigger-static-module                                          |   8.13 kB |                 2.47 kB
+8975.js             | app-static-pages-canned-responses-static-canned-responses-static-module                        |   8.09 kB |                 2.63 kB
+991.js              | app-static-pages-hours-static-hours-static-module                                              |   8.02 kB |                 2.60 kB
+3795.js             | app-support-support-module                                                                     |   7.96 kB |                 2.45 kB
+131.js              | app-static-pages-automation-static-automation-static-module                                    |   7.68 kB |                 2.52 kB
+5702.js             | app-pricing-payment-success-page-payment-success-module                                        |   7.65 kB |                 2.52 kB
+7323.js             | app-static-pages-contacts-static-contacts-static-module                                        |   7.29 kB |                 2.44 kB
+4469.js             | app-app-store-app-store-install-app-store-install-module                                       |   6.66 kB |                 2.23 kB
+2942.js             | app-static-pages-bots-static-bots-static-module                                                |   5.66 kB |                 2.02 kB
+6237.js             | app-pricing-payment-canceled-page-payment-canceled-module                                      |   4.88 kB |                 1.79 kB
+481.js              | app-auth-unauthorized-token-unauthorized-token-module                                          |   4.28 kB |                 1.65 kB
+
+Build at: 2026-03-21T21:50:45.236Z - Hash: 3bfb8e9cc6def205 - Time: 119837ms
+
+Warning: /app/src/app/analytics/analytics.component.ts depends on 'chart.js'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+

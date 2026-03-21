@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
-    "build": "ng build -- --output-path=dist --base-href ./",
+    "build": "ng build --output-path=dist --base-href ./",
     "build2": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",

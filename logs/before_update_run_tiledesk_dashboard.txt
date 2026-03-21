@@ -1,0 +1,43 @@
+npm warn deprecated whatwg-encoding@2.0.0: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+Starting up http-server, serving dist
+
+http-server version: 14.1.1
+
+http-server settings: 
+CORS: disabled
+Cache: 3600 seconds
+Connection Timeout: 120 seconds
+Directory Listings: visible
+AutoIndex: visible
+Serve GZIP Files: false
+Serve Brotli Files: false
+Default File Extension: none
+
+Available on:
+  http://127.0.0.1:4500
+  http://172.17.0.2:4500
+Hit CTRL-C to stop the server
+
+[2026-03-21T21:51:33.461Z]  "GET /" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+(node:211) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-03-21T21:51:33.499Z]  "GET /main.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.511Z]  "GET /polyfills.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.516Z]  "GET /runtime.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.518Z]  "GET /scripts.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.527Z]  "GET /styles.css" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.575Z]  "GET /Roboto-Light.woff2" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.952Z]  "GET /dashboard-config.json" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.977Z]  "GET /favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.979Z]  "GET /favicon.ico" Error (404): "Not found"
+[2026-03-21T21:51:33.985Z]  "GET /$%7BBRAND_SRC%7D" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:33.986Z]  "GET /$%7BBRAND_SRC%7D" Error (404): "Not found"
+[2026-03-21T21:51:34.005Z]  "GET /Roboto-Regular.woff2" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:34.006Z]  "GET /Roboto-Bold.woff2" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:34.057Z]  "GET /$%7BREMOTE_JS_SRC%7D" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:34.059Z]  "GET /$%7BREMOTE_JS_SRC%7D" Error (404): "Not found"
+[2026-03-21T21:51:41.859Z]  "GET /" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:42.039Z]  "GET /$%7BBRAND_SRC%7D" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:42.040Z]  "GET /$%7BBRAND_SRC%7D" Error (404): "Not found"
+[2026-03-21T21:51:42.060Z]  "GET /$%7BREMOTE_JS_SRC%7D" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+[2026-03-21T21:51:42.061Z]  "GET /$%7BREMOTE_JS_SRC%7D" Error (404): "Not found"
