@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.186-stage
+- Adds streaming responses to the knowledge base preview 
+- Updates LLM models
+
 ### 2.7.185-stage
 - Improves sidebar user details: status dropdown opens on hover over entire project row, aligned with item
 - Adds arrow indicator (triangle) on left side of status dropdown
