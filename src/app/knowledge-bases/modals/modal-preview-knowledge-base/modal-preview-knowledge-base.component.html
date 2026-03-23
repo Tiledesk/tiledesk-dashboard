@@ -98,10 +98,15 @@
 
   </div>
 
-  <div *ngIf="searching" class="search-placeholder">
+  <div *ngIf="searching && !answer" class="search-placeholder">
     <div class="fake-input">
-      <loading-spinner class="custom-spinner"></loading-spinner>
-      <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span>
+      <!-- <loading-spinner class="custom-spinner"></loading-spinner> -->
+      <!-- <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span> -->
+       <div class="typing-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </div>
 
@@ -120,7 +125,7 @@
       <!-- <span *ngIf="aiQuotaExceeded">
        -> {{ answer }}
        </span> -->
-      <span *ngIf="qa && (!qa.answer || qa.answer == '')">
+      <span *ngIf="qa && (!answer || answer === '') && (!qa.answer || qa.answer === '')">
         {{ 'KbPage.NoAnswerFound' | translate }}
       </span>
       <!-- <hr *ngIf="qa && qa.source">

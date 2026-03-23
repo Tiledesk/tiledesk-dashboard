@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -116,7 +116,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
     private router: Router,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private cdr: ChangeDetectorRef
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -250,6 +251,61 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     clearTimeout(this.closeTimeout);
   }
 
+   /**
+   * Helper method per controllare e parsare la question salvata
+   * Gestisce sia il formato JSON che il formato vecchio
+   * Non considera stringhe vuote come question valide
+   */
+  private checkStoredQuestion(): void {
+    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+    if (storedQuestion) {
+      try {
+        // Try to parse as JSON first (for new format)
+        let parsed = JSON.parse(storedQuestion);
+        // Even after JSON.parse, if the original string had literal \n, they might still be literal
+        // Replace any remaining literal \n with real newlines
+        const parsedQuestion = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+        
+        // Verifica che la question non sia vuota o solo spazi
+        if (parsedQuestion && parsedQuestion.trim() !== '') {
+          this.storedQuestionNoDoubleQuote = parsedQuestion;
+          this.hasStoredQuestion = true;
+          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion storedQuestion: ", storedQuestion);
+          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion parsed question: ", parsedQuestion);
+        } else {
+          // La question è vuota, rimuovila dallo storage
+          this.localDbService.removeFromStorage(`last_question-${this.namespaceid}`);
+          this.hasStoredQuestion = false;
+          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion: stored question is empty, removed from storage");
+        }
+      } catch (e) {
+        // If parsing fails, it might be an old format or already a string with literal \n
+        // Replace literal \n with real newlines
+        let cleaned = storedQuestion.replace(/\\n/g, '\n');
+        // Remove surrounding quotes if present
+        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+          cleaned = cleaned.substring(1, cleaned.length - 1);
+        }
+        
+        // Verifica che la question non sia vuota o solo spazi
+        if (cleaned && cleaned.trim() !== '') {
+          this.storedQuestionNoDoubleQuote = cleaned;
+          this.hasStoredQuestion = true;
+          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion (fallback) hasStoredQuestion: ", this.hasStoredQuestion);
+        } else {
+          // La question è vuota, rimuovila dallo storage
+          this.localDbService.removeFromStorage(`last_question-${this.namespaceid}`);
+          this.hasStoredQuestion = false;
+          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion (fallback): stored question is empty, removed from storage");
+        }
+      }
+    } else {
+      this.hasStoredQuestion = false;
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    }
+  }
+
   presentDialogAiSettings(isopenasetting) {
 
     this.logger.log('[MODAL-PREVIEW-KB] window.innerWidth', window.innerWidth);
@@ -267,8 +323,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
     this.isopenasetting = isopenasetting
     this.dialogRefAiSettings = this.dialog.open(ModalPreviewSettingsComponent, {
-      width: '300px',
-      position: { left: 'calc(50% + 215px)', top: '138px' },
+      width: '320px',
+      position: { left: 'calc(50% + 230px)', top: '138px' },
       hasBackdrop: false,
       autoFocus: false,
       data: {
@@ -535,8 +591,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.source_url = '';
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
-    this.askAI(this.body, startTime)
-
+    // this.askAI(this.body, startTime)
+    this.askAIStream(this.body, startTime);
    
   }
 
@@ -645,6 +701,99 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.logger.log("[MODAL-PREVIEW-KB] askAI complete hasStoredQuestion: ", this.hasStoredQuestion);
       }
     })
+  }
+
+  /**
+   * Gestisce la risposta a stream dal server: aggiorna this.answer man mano che arrivano i chunk.
+   */
+  askAIStream(body: any, startTime: number) {
+    let lastResponse: any = null;
+    this.openaiService.askGptStream(body).subscribe({
+      next: (chunk: { text?: string; done?: boolean; response?: any }) => {
+        if (chunk.text) {
+          this.answer = (this.answer || '') + chunk.text;
+          this.show_answer = true; // mostra la risposta in streaming dal primo chunk
+          this.cdr.detectChanges();
+        }
+        if (chunk.response) lastResponse = chunk.response;
+        if (chunk.done) {
+          this.finalizeStreamResponse(lastResponse, startTime);
+        }
+      },
+      error: (err: any) => {
+        this.searching = false;
+        this.show_answer = true;
+        this.handleAskAIError(err);
+      },
+      complete: () => {
+        if (this.searching) {
+          this.finalizeStreamResponse(lastResponse, startTime);
+        }
+      }
+    });
+  }
+
+  private finalizeStreamResponse(response: any, _startTime: number) {
+    if (!this.searching) return;
+    if (response) {
+      response['ai_model'] = this.selectedModel;
+      this.prompt_token_size = response.prompt_token_size;
+      this.responseTime = response.duration;
+      this.translateparam = { respTime: this.responseTime };
+      this.qa = response;
+      this.contentChunks = this.qa?.content_chunks ?? [];
+      this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentChunks: ', this.contentChunks);
+      if (response.source && this.isValidURL(response.source)) this.source_url = response.source;
+      if (response.answer && !this.answer) this.answer = response.answer;
+    }
+    this.show_answer = true;
+    this.searching = false;
+    this.aiQuotaExceeded = false;
+    this.logger.log('ask gpt *COMPLETE*');
+    this.checkStoredQuestion();
+    this.cdr.detectChanges();
+    this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
+  }
+
+  private handleAskAIError(err: any) {
+    this.logger.log('ask gpt preview response error: ', err);
+    if (err?.error && typeof err.error === 'string') {
+      this.answer = err.error;
+    } else if (err && err.error && err.error.error_message) {
+      try {
+        const errorMessage = err.error.error_message;
+        const jsonMatch = errorMessage.match(/\{.*\}/);
+        if (jsonMatch) {
+          let jsonString = jsonMatch[0].replace(/'/g, '"');
+          const parsedError = JSON.parse(jsonString);
+          if (parsedError.error?.message) this.answer = parsedError.error.message;
+          else if (parsedError.message) this.answer = parsedError.message;
+          else this.answer = errorMessage;
+        } else {
+          const match = errorMessage.match(/'message':\s*'([^']+)'/);
+          this.answer = match ? match[1] : errorMessage;
+        }
+      } catch {
+        const match = err.error?.error_message?.match(/'message':\s*'([^']+)'/);
+        this.answer = match ? match[1] : err.error?.error_message;
+      }
+    } else if (err?.error?.error_code === 13001) {
+      this.answer = this.translate.instant('KbPage.AiQuotaExceeded');
+      this.aiQuotaExceeded = true;
+    } else if (err?.error?.message) {
+      this.answer = err.error.message;
+    } else if (err?.error?.error?.answer) {
+      this.answer = err.error.error.answer;
+      const msg = err.error.error.error_message?.match(/'message':\s*'([^']+)'/)?.[1];
+      if (msg) this.answer = this.answer + ' (' + msg + ')';
+    } else if (err?.error?.error) {
+      this.answer = err.error.error;
+    } else if (err?.message) {
+      this.answer = err.message;
+    } else {
+      this.answer = 'An error occurred while processing your request.';
+    }
+    this.cdr.detectChanges();
   }
 
   private isValidURL(url) {
