@@ -1846,7 +1846,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       disableClose: true,
-      width: '400px',
+      width: '450px',
       id: 'kb-test',
       data: {
         selectedNamespace: this.selectedNamespace,
