@@ -210,10 +210,10 @@
           <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
             {{ 'Analytics.Metrics.ResponseTime' | translate }}
           </div>
-          <div *ngIf="responseTime" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
+          <div *ngIf="responseTime != null" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
             {{ 'KbPage.AIResponseTime' | translate: translateparam }}
           </div>
-          <div *ngIf="!responseTime" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
+          <div *ngIf="responseTime == null && searching" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
             {{ 'Processing' | translate }}
           </div>
 
@@ -230,10 +230,10 @@
           <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
             {{ 'KbPage.PromptSize' | translate }}
           </div>
-          <div *ngIf="prompt_token_size" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
+          <div *ngIf="prompt_token_size != null" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
             {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: formattedPromptTokenSize } }}
           </div>
-          <div *ngIf="!prompt_token_size" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
+          <div *ngIf="prompt_token_size == null && searching" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
             {{ 'Processing' | translate }}
           </div>
 

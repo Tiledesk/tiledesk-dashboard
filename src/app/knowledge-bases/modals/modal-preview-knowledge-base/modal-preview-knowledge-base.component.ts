@@ -622,6 +622,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.error("ERROR ask gpt: ", err.message);
 
       // this.error_answer = true;
+      this.responseTime = 0;
+      this.prompt_token_size = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
       this.show_answer = true;
       this.searching = false;
     }, () => {
@@ -726,6 +729,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     } else {
       this.answer = 'An error occurred while processing your request.';
     }
+    this.responseTime = 0;
+    this.prompt_token_size = 0;
+    this.translateparam = { respTime: this.formatNumberUS(0, true) };
     this.cdr.detectChanges();
   }
 
