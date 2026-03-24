@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.188-stage
+- Improves the knowledge bases preview dialog
+
 ### 2.7.187-stage
 - Improve the position of the knowledge bases preview dialog
 
