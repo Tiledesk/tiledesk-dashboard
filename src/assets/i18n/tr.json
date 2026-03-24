@@ -2025,6 +2025,7 @@
         "SearchingAnswer": "Uygun bir cevap aranıyor...",
         "Answer": "Cevap",
         "NoAnswerFound": "İlgili bir cevap bulunamadı",
+        "Sources": "Kaynaklar",
         "Source": "Kaynak",
         "TypeKbNamePlaceholder": "Bilgi Bankasının Adı",
         "TypeKbUrlPlaceholder": "Bilgi Bankası URL'sini yazın",

@@ -2025,6 +2025,7 @@
         "SearchingAnswer": "Cerco una risposta appropriata...",
         "Answer": "Risposta",
         "NoAnswerFound": "Non è stato possibile trovare una risposta pertinente",
+        "Sources": "Fonti",
         "Source": "Sorgente",
         "TypeKbNamePlaceholder": "Nome della Knowledge Base",
         "TypeKbUrlPlaceholder": "Digita l'URL della Knowledge Base",

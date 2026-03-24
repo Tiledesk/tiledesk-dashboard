@@ -2025,6 +2025,7 @@
         "SearchingAnswer": "Тражење одговарајућег одговора...",
         "Answer": "Одговор",
         "NoAnswerFound": "Није могуће пронаћи релевантан одговор",
+        "Sources": "Извори",
         "Source": "Извор",
         "TypeKbNamePlaceholder": "Назив базе знања",
         "TypeKbUrlPlaceholder": "Унесите УРЛ базе знања",

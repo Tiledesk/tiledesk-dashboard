@@ -137,51 +137,113 @@
     <!-- ----------------------------- -->
     <!-- Chunks Accordion -->
     <!-- ----------------------------- -->
-  <div class="mat-accordion--wpr" style="margin-top: 3px;">
-    <mat-accordion>
-      <mat-expansion-panel  class="custom-expansion-panel" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-           {{ 'KbPage.ChunksUsedForTheAnswer' | translate }} ({{contentChunks?.length}})
-          </mat-panel-title>
-          <!-- <mat-panel-description>
-        Currently I am {{panelOpenState ? 'open' : 'closed'}}
-      </mat-panel-description> -->
-        </mat-expansion-panel-header>
-        <div class="chunk--wpr" *ngFor="let chunk of contentChunks">
-        
-          <article class="chunk">
-            {{ chunk}}
-          </article>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+     <div class="mat-accordion--wpr" style="margin-top: 3px;">
+      <mat-accordion>
+        <mat-expansion-panel class="custom-expansion-panel" (opened)="chunksPanelOpen = true; panelOpenState = true" (closed)="chunksPanelOpen = false; panelOpenState = sourcesPanelOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title style="display: flex; align-items: center;    flex-wrap: nowrap;    flex-direction: row;justify-content: space-between;">
+              <div class="chunck-panel-title">
+                {{ 'KbPage.ChunksUsedForTheAnswer' | translate }} 
+              </div>
+              <div class="chunck-panel-count">
+                {{contentChunks?.length}}
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="chunk--wpr" *ngFor="let chunk of contentChunks">
+          
+            <article class="chunk">
+              {{ chunk}}
+            </article>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
 
-    <hr class="horizontal-line" *ngIf="qa && qa.source">
+    <!-- ----------------------------- -->
+    <!-- Source Accordion -->
+    <!-- ----------------------------- -->
+    <div  class="mat-accordion--wpr" style="margin-top: 3px;">
+      <mat-accordion>
+        <mat-expansion-panel class="custom-expansion-panel" (opened)="sourcesPanelOpen = true; panelOpenState = true" (closed)="sourcesPanelOpen = false; panelOpenState = chunksPanelOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title style="display: flex; align-items: center; flex-wrap: nowrap; flex-direction: row; justify-content: space-between;">
+              <div class="chunck-panel-title">{{ 'KbPage.Sources' | translate }}</div>
+              <div class="chunck-panel-count">{{ contentSources?.length }}</div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="source--wpr">
 
-    <p *ngIf="qa && qa.source" class="answer-title">{{ 'KbPage.Source' | translate }}</p>
-    <div *ngIf="qa && qa.source" id="answer" class="answer">
-      <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
-        <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
-        <span *ngIf="!source_url">{{ qa.source }}</span>
-      </span>
+            <div class="sources">
+              <span class="source-item" *ngFor="let src of contentSources">
 
+                <a *ngIf="src.isUrl"
+                  [href]="src.value"
+                  target="_blank"
+                  class="source-link">
+
+                  <span class="material-icons-outlined icon">
+                    arrow_outward
+                  </span>
+
+                  <span class="text">{{ src.value }}</span>
+
+                </a>
+
+                <span *ngIf="!src.isUrl" class="source-text">
+                  {{ src.value }}
+                </span>
+
+              </span>
+            </div>
+
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
-    <label *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
-      <!-- {{ 'KbPage.LabelResponseTime' | translate: translateparam }} -->
-      <span *ngIf="responseTime">
+
+    <hr class="horizontal-line" [class.accordion-open]="panelOpenState">
+
+     <!-- Response time -->
+    <div *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
+       <div class="kb-preview-footer-wpr" style="display: flex; justify-content: space-between;">
+          <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
+            {{ 'Analytics.Metrics.ResponseTime' | translate }}
+          </div>
+          <div *ngIf="responseTime" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
+            {{ 'KbPage.AIResponseTime' | translate: translateparam }}
+          </div>
+          <div *ngIf="!responseTime" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
+            {{ 'Processing' | translate }}
+          </div>
+
+       </div> 
+      <!-- <span *ngIf="responseTime">
         {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate:
           translateparam }} </span>
-      </span>
-    </label>
-    <label *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
-      <!-- {{ 'KbPage.TotalTokensUsage' | translate: {prompt_token_size: prompt_token_size } }} -->
-      <span *ngIf="prompt_token_size">
+      </span> -->
+    </div>
+
+    <!-- Prompt size -->
+    <div *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
+      <div class="kb-preview-footer-wpr" style="display: flex; justify-content: space-between;">
+          <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
+            {{ 'KbPage.PromptSize' | translate }}
+          </div>
+          <div *ngIf="prompt_token_size" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
+            {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: formattedPromptTokenSize } }}
+          </div>
+          <div *ngIf="!prompt_token_size" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
+            {{ 'Processing' | translate }}
+          </div>
+
+       </div>
+     
+      <!-- <span *ngIf="prompt_token_size">
         {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size:
           prompt_token_size } }} </span>
-      </span>
-    </label>
+      </span> -->
+    </div>
   </div>
 
 

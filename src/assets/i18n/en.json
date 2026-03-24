@@ -2026,6 +2026,7 @@
         "SearchingAnswer": "Searching a suitable answer...",
         "Answer": "Answer",
         "NoAnswerFound": "Unable to find a relevant answer",
+        "Sources": "Sources",
         "Source": "Source",
         "TypeKbNamePlaceholder": "Name of Knowledge Base",
         "TypeKbUrlPlaceholder": "Type Knowledge Base URL",

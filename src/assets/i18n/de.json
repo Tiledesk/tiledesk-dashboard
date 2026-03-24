@@ -2025,6 +2025,7 @@
 		"SearchingAnswer": "Suche nach einer passenden Antwort...",
 		"Answer": "Antwort",
 		"NoAnswerFound": "Es konnte keine relevante Antwort gefunden werden",
+		"Sources": "Quellen",
 		"Source": "Quelle",
 		"TypeKbNamePlaceholder": "Name der Wissensdatenbank",
 		"TypeKbUrlPlaceholder": "Geben Sie die URL der Wissensdatenbank ein",

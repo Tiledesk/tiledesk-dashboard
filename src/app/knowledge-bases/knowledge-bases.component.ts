@@ -1847,6 +1847,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '450px',
+      position: { top: '60px' },
       id: 'kb-test',
       data: {
         selectedNamespace: this.selectedNamespace,
