@@ -562,6 +562,42 @@ mat-expansion-panel ::ng-deep {
 }
 
 
+.ai-thinking {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 0;
+}
+
+/* il pallino */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #9aa0a6;
+
+  animation: aiPulse 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* animazione molto smooth */
+@keyframes aiPulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0.7);
+    opacity: 0.3;
+  }
+}
+
+
+
+
 
 
 
