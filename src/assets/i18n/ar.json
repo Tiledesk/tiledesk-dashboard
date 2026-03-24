@@ -2047,6 +2047,7 @@
         "SearchingAnswer": "جاري البحث عن إجابة مناسبة...",
         "Answer": "إجابة",
         "NoAnswerFound": "غير قادر على العثور على إجابة ذات صلة",
+        "Sources": "المصادر",
         "Source": "مصدر",
         "TypeKbNamePlaceholder": "اسم قاعدة المعرفة",
         "TypeKbUrlPlaceholder": "اكتب عنوان URL لقاعدة المعرفة",

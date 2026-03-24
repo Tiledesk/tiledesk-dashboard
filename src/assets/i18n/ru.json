@@ -2047,6 +2047,7 @@
         "SearchingAnswer": "Ищем подходящий ответ...",
         "Answer": "Отвечать",
         "NoAnswerFound": "He удалось найти соответствующий ответ",
+        "Sources": "Источники",
         "Source": "Источник",
         "TypeKbNamePlaceholder": "Название базы знаний",
         "TypeKbUrlPlaceholder": "Введите URL-адрес базы знаний",

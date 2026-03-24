@@ -39,7 +39,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     reRanking: null,
     reRankingMultipler: null,
   }]
-  panelOpenState = false; 
+  panelOpenState = false;
+  chunksPanelOpen = false;
+  sourcesPanelOpen = false; 
   selectedNamespace: any;
   namespaceid: string;
   selectedModel: string;
@@ -65,7 +67,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   question: string = "";
   answer: string = "";
   source_url: any;
-  responseTime: number = 0;
+  responseTime: number | null = null;
 
   searching: boolean = false;
   show_answer: boolean = false;
@@ -81,6 +83,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
+  contentSources: { value: string; isUrl: boolean }[] = [];
 
   // KB Tags
   kbTag: string = '';
@@ -589,6 +592,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.show_answer = false;
     this.answer = '';
     this.source_url = '';
+    this.contentSources = [];
+    this.responseTime = null;
+    this.prompt_token_size = null;
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     // this.askAI(this.body, startTime)
@@ -605,8 +611,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
       // this.responseTime = Math.round((endTime - startTime) / 1000);
-      this.responseTime = response.duration
-      this.translateparam = { respTime: this.responseTime };
+      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
+      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       // this.contentChunks = this.qa?.content_chunks
@@ -615,8 +621,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else if (this.qa?.chunks)  {
         this.contentChunks = this.qa?.chunks
       }
-   
+      this.contentSources = this.extractAllSources(response);
       this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
+      this.logger.log("ask gpt preview contentSources: ", this.contentSources);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
         this.answer = response.answer;
@@ -631,6 +638,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         //this.answer = response.answer;
       }
+      this.applyZeroMetricsWhenNoAnswer();
       this.show_answer = true;
       this.searching = false;
     }, (err) => {
@@ -675,6 +683,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // console.log("ERROR ask gpt message ",  message);
 
       // this.error_answer = true;
+      this.responseTime = 0;
+      this.prompt_token_size = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
       this.show_answer = true;
       this.searching = false;
     }, () => {
@@ -738,17 +749,20 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (response) {
       response['ai_model'] = this.selectedModel;
       this.prompt_token_size = response.prompt_token_size;
-      this.responseTime = response.duration;
-      this.translateparam = { respTime: this.responseTime };
+      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
+      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
       this.qa = response;
       this.contentChunks = this.qa?.content_chunks ?? [];
+      this.contentSources = this.extractAllSources(response);
       this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentChunks: ', this.contentChunks);
+      this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentSources: ', this.contentSources);
       if (response.source && this.isValidURL(response.source)) this.source_url = response.source;
       if (response.answer && !this.answer) this.answer = response.answer;
     }
     this.show_answer = true;
     this.searching = false;
     this.aiQuotaExceeded = false;
+    this.applyZeroMetricsWhenNoAnswer();
     this.logger.log('ask gpt *COMPLETE*');
     this.checkStoredQuestion();
     this.cdr.detectChanges();
@@ -793,12 +807,63 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     } else {
       this.answer = 'An error occurred while processing your request.';
     }
+    this.responseTime = 0;
+    this.prompt_token_size = 0;
+    this.translateparam = { respTime: this.formatNumberUS(0, true) };
     this.cdr.detectChanges();
   }
 
   private isValidURL(url) {
     var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
     return urlPattern.test(url);
+  }
+
+  /** Formatta numero in US: virgola migliaia, punto decimali */
+  private formatNumberUS(value: number | null | undefined, decimals = false): string {
+    if (value == null) return '';
+    return decimals
+      ? value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : value.toLocaleString('en-US');
+  }
+
+  get formattedPromptTokenSize(): string {
+    return this.formatNumberUS(this.prompt_token_size);
+  }
+
+  /** Stessa condizione di KbPage.NoAnswerFound: metriche a zero se non c'è risposta. */
+  private applyZeroMetricsWhenNoAnswer(): void {
+    if (
+      this.qa &&
+      (!this.answer || this.answer === '') &&
+      (!this.qa.answer || this.qa.answer === '')
+    ) {
+      this.responseTime = 0;
+      this.prompt_token_size = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
+    }
+  }
+
+  /**
+   * Estrae tutte le fonti da response.sources (array) o response.source (stringa).
+   * Supporta items come stringa o oggetto con .url, .href, .source.
+   */
+  private extractAllSources(response: any): { value: string; isUrl: boolean }[] {
+    const out: { value: string; isUrl: boolean }[] = [];
+    if (!response) return out;
+    if (response.sources && Array.isArray(response.sources)) {
+      for (const item of response.sources) {
+        const value = typeof item === 'string' ? item : String(item?.url ?? item?.href ?? item?.source ?? item ?? '');
+        if (value && value.trim()) {
+          out.push({ value: value.trim(), isUrl: this.isValidURL(value.trim()) });
+        }
+      }
+    } else if (response.source != null) {
+      const value = typeof response.source === 'string' ? response.source : String(response.source);
+      if (value && value.trim()) {
+        out.push({ value: value.trim(), isUrl: this.isValidURL(value.trim()) });
+      }
+    }
+    return out;
   }
 
   onTextareaInput(textarea: HTMLTextAreaElement): void { 
@@ -839,6 +904,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.question = "";
     this.answer = "";
     this.source_url = null;
+    this.contentSources = [];
     this.searching = false;
     this.show_answer = false;
    // let element = document.getElementById('enter-button')

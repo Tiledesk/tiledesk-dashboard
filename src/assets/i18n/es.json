@@ -2019,6 +2019,7 @@
         "SearchingAnswer": "Buscando una respuesta adecuada...",
         "Answer": "Respuesta",
         "NoAnswerFound": "No se puede encontrar una respuesta relevante",
+        "Sources": "Fuentes",
         "Source": "Fuente",
         "TypeKbNamePlaceholder": "Nombre de la base de conocimientos",
         "TypeKbUrlPlaceholder": "Escriba la URL de la base de conocimientos",

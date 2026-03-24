@@ -2063,6 +2063,7 @@
         "SearchingAnswer": "Söker efter ett passande svar...",
         "Answer": "Svar",
         "NoAnswerFound": "Kan inte hitta ett relevant svar",
+        "Sources": "Källor",
         "Source": "Källa",
         "TypeKbNamePlaceholder": "Kunskapsbasens namn",
         "TypeKbUrlPlaceholder": "Skriv Knowledge Base URL",

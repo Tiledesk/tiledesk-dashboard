@@ -2063,6 +2063,7 @@
         "SearchingAnswer": "Пошук відповідної відповіді...",
         "Answer": "Відповідь",
         "NoAnswerFound": "Неможливо знайти відповідну відповідь",
+        "Sources": "Джерела",
         "Source": "Джерело",
         "TypeKbNamePlaceholder": "Назва бази знань",
         "TypeKbUrlPlaceholder": "Введіть URL-адресу бази знань",

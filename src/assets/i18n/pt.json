@@ -2046,6 +2046,7 @@
         "SearchingAnswer": "Procurando uma resposta adequada...",
         "Answer": "Responder",
         "NoAnswerFound": "Não foi possível encontrar uma resposta relevante",
+        "Sources": "Fontes",
         "Source": "Fonte",
         "TypeKbNamePlaceholder": "Nome da Base de Conhecimento",
         "TypeKbUrlPlaceholder": "Digite o URL da base de conhecimento",
