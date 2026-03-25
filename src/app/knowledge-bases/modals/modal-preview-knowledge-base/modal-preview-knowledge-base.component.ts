@@ -109,6 +109,16 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   ];
 
+  //positions: ConnectedPosition[] = [
+  //  {
+  //    originX: 'center',
+  //    originY: 'bottom',
+  //    overlayX: 'center',
+  //    overlayY: 'top',
+  //    offsetY: 6
+  //  }
+  //];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewKnowledgeBaseComponent>,
