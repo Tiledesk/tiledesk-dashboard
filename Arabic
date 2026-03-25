@@ -857,6 +857,7 @@
     "PleaseSelectBothDates": "Please select both dates",
     "NoResultsToExport": "No results to export",
     "AddsTagsAndPressEnter": "Adds tags and press enter",
+    "AddTagsToSearchBy": "Add tags to search by",
     "CopyScrapingRulesToPasteThemWebContentType": "Copy scraping rules to paste them into new URL-type content or new sitemap-type content",
     "HtmlTags": "HTML tags",
     "AssignOneOrMoreTagsToThisContent": "Assign one or more tags to this content",
