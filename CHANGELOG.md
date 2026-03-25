@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.189-stage
+- Improves the "Add Tags" input in the knowledge preview dialog
+
 ### 2.7.188-stage
 - Improves the knowledge bases preview dialog
 
