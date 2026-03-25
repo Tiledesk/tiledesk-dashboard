@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.164
+- Adds streaming responses to the knowledge base preview 
+- Updates LLM models
+
 ### 2.7.163
 - Improves the user interface of dialogs for adding content to the knowledge base
 
