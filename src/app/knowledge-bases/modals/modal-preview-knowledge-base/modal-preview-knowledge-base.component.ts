@@ -105,19 +105,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -30
+      offsetX: -8
     }
   ];
-
-  //positions: ConnectedPosition[] = [
-  //  {
-  //    originX: 'center',
-  //    originY: 'bottom',
-  //    overlayX: 'center',
-  //    overlayY: 'top',
-  //    offsetY: 6
-  //  }
-  //];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -596,7 +586,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         //this.answer = response.answer;
       }
-      this.applyZeroMetricsWhenNoAnswer();
       this.show_answer = true;
       this.searching = false;
     }, (err) => {
@@ -696,7 +685,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.show_answer = true;
     this.searching = false;
     this.aiQuotaExceeded = false;
-    this.applyZeroMetricsWhenNoAnswer();
     this.logger.log('ask gpt *COMPLETE*');
     this.checkStoredQuestion();
     this.cdr.detectChanges();
@@ -762,18 +750,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   get formattedPromptTokenSize(): string {
     return this.formatNumberUS(this.prompt_token_size);
-  }
-
-  private applyZeroMetricsWhenNoAnswer(): void {
-    if (
-      this.qa &&
-      (!this.answer || this.answer === '') &&
-      (!this.qa.answer || this.qa.answer === '')
-    ) {
-      this.responseTime = 0;
-      this.prompt_token_size = 0;
-      this.translateparam = { respTime: this.formatNumberUS(0, true) };
-    }
   }
 
   /**

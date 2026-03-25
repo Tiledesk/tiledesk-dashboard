@@ -33,11 +33,19 @@
     <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
         [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
-        #trigger="cdkOverlayOrigin"
-        cdkOverlayOrigin
-        (mouseenter)="open()"
-        (mouseleave)="scheduleClose()">
+        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
+
+        <div class="kb-tags-help"
+          style="position: relative;top: 6px;"
+          #trigger="cdkOverlayOrigin"
+          cdkOverlayOrigin
+          (mouseenter)="open()"
+          (mouseleave)="scheduleClose()">
+
+          <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
+          help_outline
+          </span>
+        </div>
     
   </div>
 
