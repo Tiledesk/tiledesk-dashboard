@@ -837,6 +837,7 @@
     "SelectTheDateRangeToSearch": "Selecciona un rango de fechas para proceder con la búsqueda",
     "PleaseSelectBothDates": "Por favor, selecciona ambas fechas",
     "AddsTagsAndPressEnter": "Añade etiquetas y pulsa enter",
+    "AddTagsToSearchBy": "Añade etiquetas para buscar",
     "CopyScrapingRulesToPasteThemWebContentType": "Copia las reglas de scraping para pegarlas en contenido nuevo de tipo URL o en contenido nuevo de tipo sitemap",
     "HtmlTags": "Etiquetas HTML",
     "AssignOneOrMoreTagsToThisContent": "Asigna una o más etiquetas a este contenido",

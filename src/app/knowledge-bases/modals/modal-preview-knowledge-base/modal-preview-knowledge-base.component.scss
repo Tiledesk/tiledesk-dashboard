@@ -587,3 +587,29 @@ mat-expansion-panel ::ng-deep {
   }
 }
 
+.content-tags-title {
+    font-size: 14px !important;
+    line-height: 17px;
+    color: #000000de;
+    font-family: var(--header-font-family);
+    font-weight: 400;
+    // margin-bottom: 4px;
+}
+
+/* Popover help tags: freccia in alto al centro (classe dedicata: overlay può essere nel body) */
+::ng-deep .kb-preview-tags-help-popover {
+  position: relative;
+
+  .cdk-popover--arrow {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #2d323e;
+  }
+}
+

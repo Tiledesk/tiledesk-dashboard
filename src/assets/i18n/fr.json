@@ -862,6 +862,7 @@
     "SelectTheDateRangeToSearch": "Sélectionnez une plage de dates pour poursuivre la recherche",
     "PleaseSelectBothDates": "Veuillez sélectionner les deux dates",
     "AddsTagsAndPressEnter": "Ajoutez des balises et appuyez sur Entrée",
+    "AddTagsToSearchBy": "Ajoutez des balises pour effectuer une recherche",
     "CopyScrapingRulesToPasteThemWebContentType": "Copiez les règles de scraping pour les coller dans du nouveau contenu de type URL ou dans du nouveau contenu de type sitemap",
     "HtmlTags": "Balises HTML",
     "AssignOneOrMoreTagsToThisContent": "Attribuez une ou plusieurs balises à ce contenu",

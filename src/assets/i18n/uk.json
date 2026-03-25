@@ -863,6 +863,7 @@
     "SelectTheDateRangeToSearch": "Виберіть діапазон дат для продовження пошуку",
     "PleaseSelectBothDates": "Будь ласка, виберіть обидві дати",
     "AddsTagsAndPressEnter": "Додайте теги та натисніть Enter",
+    "AddTagsToSearchBy": "Додайте теги для пошуку",
     "CopyScrapingRulesToPasteThemWebContentType": "Скопіюйте правила скрапінгу, щоб вставити їх у новий вміст типу URL або у новий вміст типу sitemap",
     "HtmlTags": "HTML-теги",
     "AssignOneOrMoreTagsToThisContent": "Призначте один або декілька тегів для цього вмісту",

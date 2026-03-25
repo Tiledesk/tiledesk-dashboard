@@ -47,6 +47,7 @@ import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-que
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { AutoWidthInputDirective } from '../_directives/auto-width-input.directive';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -54,6 +55,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    AutoWidthInputDirective,
     KnowledgeBasesComponent,
     AddContentMenuComponent,
     KnowledgeBaseTableComponent,

@@ -862,6 +862,7 @@
     "SelectTheDateRangeToSearch": "حدد نطاقًا زمنيًا للمتابعة في البحث",
     "PleaseSelectBothDates": "يرجى تحديد كلا التاريخين",
     "AddsTagsAndPressEnter": "أضف علامات ثم اضغط إنتر",
+    "AddTagsToSearchBy": "أضف علامات للبحث بها",
     "CopyScrapingRulesToPasteThemWebContentType": "انسخ قواعد الاستخراج للصقها في محتوى جديد من نوع URL أو في محتوى جديد من نوع sitemap",
     "HtmlTags": "علامات HTML",
     "AssignOneOrMoreTagsToThisContent": "قم بتعيين علامة واحدة أو أكثر لهذا المحتوى",

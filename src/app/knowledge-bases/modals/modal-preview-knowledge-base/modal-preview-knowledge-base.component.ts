@@ -99,11 +99,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   positions: ConnectedPosition[] = [
     {
-      originX: 'start',
-      originY: 'center',
-      overlayX: 'end',
-      overlayY: 'center',
-      offsetX: -8
+      originX: 'center',
+      originY: 'bottom',
+      overlayX: 'center',
+      overlayY: 'top',
+      offsetY: 6
     }
   ];
 
