@@ -256,7 +256,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     { name: "24Months", value: 730}
   ]
   
-  selectedRetention: string;
+  selectedRetention: number;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -2714,10 +2714,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (project.settings.retentionDays !== undefined) {
             console.log('[PRJCT-EDIT-ADD] retentionDays  project.settings.retentionDays', project.settings.retentionDays) 
-            this.selectedRetention = project.settings.retentionDays
+            this.selectedRetention = Number(project.settings.retentionDays)
              console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention ', this.selectedRetention) 
           } else {
-            this.selectedRetention = this.messages_retention[1].value;
+            this.selectedRetention =  90; // this.messages_retention[1].value;
             console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention (else) ', this.selectedRetention) 
           }
 
