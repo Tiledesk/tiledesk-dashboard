@@ -879,6 +879,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Ange hur länge meddelanden ska behållas innan de raderas automatiskt",
     "DeleteMessagesAfter": "Ta bort meddelanden efter",
     "1Month": "1 månad",
+    "2Months": "2 månader",
     "3Months": "3 månader",
     "6Months": "6 månader",
     "12Months": "12 månader",

@@ -878,6 +878,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Définissez la durée de conservation des messages avant leur suppression automatique",
     "DeleteMessagesAfter": "Supprimer les messages après",
     "1Month": "1 mois",
+    "2Months": "2 mois",
     "3Months": "3 mois",
     "6Months": "6 mois",
     "12Months": "12 mois",

@@ -879,6 +879,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Avtomatik silinmədən əvvəl mesajların nə qədər saxlanılacağını təyin edin",
     "DeleteMessagesAfter": "Mesajları silmə müddəti",
     "1Month": "1 ay",
+    "2Months": "2 ay",
     "3Months": "3 ay",
     "6Months": "6 ay",
     "12Months": "12 ay",

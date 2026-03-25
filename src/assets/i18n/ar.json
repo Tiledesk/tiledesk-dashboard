@@ -878,6 +878,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "تعيين المدة الزمنية للاحتفاظ بالرسائل قبل الحذف التلقائي",
     "DeleteMessagesAfter": "حذف الرسائل بعد",
     "1Month": "شهر واحد",
+    "2Months": "شهران",
     "3Months": "3 أشهر",
     "6Months": "6 أشهر",
     "12Months": "12 شهرًا",
