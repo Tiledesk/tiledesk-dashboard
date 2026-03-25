@@ -25,80 +25,34 @@
 
   <div class="form--container">
     <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
-    <!-- <div class="fake-input"> -->
-      <textarea (input)="onTextareaInput(questionTextarea)" #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-         (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
-      <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
-    <!-- </div> -->
+    <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
   </div>
 
-
-  <!-- KB Tags new -->
- <!-- <div class="content-tags-title-wpr" style="display: flex;vertical-align: middle; margin-bottom: -3px;">
-              
-      <div class="content-tags-title" >
-          {{'Tags.Tags' | translate}}
-      </div>
-    
-      <div class="kb-tags-help"
-          style="display: grid;
-            place-items: center;
-            height: 18px;
-            width: 18px;
-            flex: 0 0 18px;
-            box-shadow: rgba(136, 148, 171, 0.56) 0px 1px 3px 0px;
-            border-radius: 4px;
-            margin-left: 4px;
-            padding: 1px;
-            background-color: rgb(255, 255, 255);"
-          #trigger="cdkOverlayOrigin"
-          cdkOverlayOrigin
-          (mouseenter)="open()"
-          (mouseleave)="scheduleClose()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 18 18" class="css-0 e11k6mr30" fill="#647491"><path fill="none" d="M0-3h24v24H0z"></path><path d="M8.2 12h1.5v1.5H8.2zM9 4.5c-1.6 0-3 1.4-3 3h1.5C7.5 6.7 8.2 6 9 6s1.5.7 1.5 1.5c0 1.5-2.2 1.4-2.2 3.8h1.5c0-1.6 2.2-1.9 2.2-3.8 0-1.6-1.4-3-3-3"></path></svg>
-      </div>
-  </div>
   <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;margin-top: 4px;">
     <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
         [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
+        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
+        #trigger="cdkOverlayOrigin"
+        cdkOverlayOrigin
+        (mouseenter)="open()"
+        (mouseleave)="scheduleClose()">
     
-  </div> -->
+  </div>
 
-  <!-- KB Tags 
-   (click)="tagsPopover.toggle()" (click)="tagsPopover.close()"--> 
-   <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
-      <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
-          [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
-          [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-          [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
-     
-          <div class="kb-tags-help"
-            style="position: relative;top: 4px;"
-            #trigger="cdkOverlayOrigin"
-            cdkOverlayOrigin
-            (mouseenter)="open()"
-            (mouseleave)="scheduleClose()">
-
-            <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
-              help_outline
-            </span>
-          </div>
-    </div>
-
-    <ng-template
-      cdk-connected-overlay
-      [cdkConnectedOverlayOrigin]="trigger"
-      [cdkConnectedOverlayOpen]="isOpen"
-      [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayHasBackdrop]="false"
-      (detach)="isOpen = false">
-      <div class="cdk-popover"
+  <ng-template
+    cdk-connected-overlay
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="isOpen"
+    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayHasBackdrop]="false"
+    (detach)="isOpen = false">
+      <div class="cdk-popover kb-preview-tags-help-popover"
       (mouseenter)="cancelClose()"
       (mouseleave)="scheduleClose()">
 
-          <div class="cdk-popover-arrow"></div>
+          <div class="cdk-popover-arrow" aria-hidden="true"></div>
 
           <div class="cdk-popover-content">
             {{'ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags'  | translate}}
@@ -110,8 +64,7 @@
           </div>
 
       </div>
-    </ng-template>
- 
+  </ng-template>
 
   <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
 
@@ -130,24 +83,8 @@
 
   </div>
 
-  <div *ngIf="searching" class="search-placeholder">
-    <div class="fake-input">
-      <!-- <loading-spinner class="custom-spinner"></loading-spinner> -->
-      <!-- <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span> -->
-      <!--   <div class="typing-loader">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div> -->
-
-      <div class="ai-thinking">
-        <div class="dot"></div>
-      </div>
-    </div>
-  </div>
-
   <div *ngIf="show_answer" class="form--container" style="margin-bottom: 0px;">
-    <p *ngIf="answer" class="answer-title">
+    <p class="answer-title">
       {{ 'KbPage.Answer' | translate }}
 
    
@@ -155,6 +92,14 @@
     </p>
     <div id="answer" class="answer">
 
+      <ng-container *ngIf="searching && !answer; else answerBody">
+        <div class="answer-loading">
+          <div class="ai-thinking">
+            <div class="dot"></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #answerBody>
       <!-- <span *ngIf="!aiQuotaExceeded">  -->
       {{ answer }}
       <!-- </span>  -->
@@ -164,6 +109,7 @@
       <span *ngIf="qa && (!answer || answer === '') && (!qa.answer || qa.answer === '')">
         {{ 'KbPage.NoAnswerFound' | translate }}
       </span>
+      </ng-template>
       <!-- <hr *ngIf="qa && qa.source">
       
       <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
@@ -175,7 +121,7 @@
     <!-- ----------------------------- -->
     <!-- Chunks Accordion -->
     <!-- ----------------------------- -->
-     <div class="mat-accordion--wpr" style="margin-top: 3px;">
+    <div class="mat-accordion--wpr" style="margin-top: 3px;">
       <mat-accordion>
         <mat-expansion-panel class="custom-expansion-panel" (opened)="chunksPanelOpen = true; panelOpenState = true" (closed)="chunksPanelOpen = false; panelOpenState = sourcesPanelOpen">
           <mat-expansion-panel-header>
@@ -241,8 +187,7 @@
     </div>
 
     <hr class="horizontal-line" [class.accordion-open]="panelOpenState">
-
-     <!-- Response time -->
+    <!-- Response time -->
     <div *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
        <div class="kb-preview-footer-wpr" style="display: flex; justify-content: space-between;">
           <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
@@ -294,10 +239,11 @@
     [disabled]="!hasStoredQuestion">
     <!-- Re-use last question -->
     {{"KbPage.ReUseLastQuestion" | translate }}
+
   </button>
-  <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div> -->
+
   <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
-        {{ "Send" | translate }}
+     {{ "Send" | translate }}
   </button>
 
 </div>

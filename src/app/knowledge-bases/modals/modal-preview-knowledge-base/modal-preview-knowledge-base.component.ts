@@ -105,7 +105,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -8
+      offsetX: -30
     }
   ];
 

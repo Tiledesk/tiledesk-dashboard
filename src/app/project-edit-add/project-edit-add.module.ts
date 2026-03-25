@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { SatPopoverModule } from '@ncstate/sat-popover';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: "", component: ProjectEditAddComponent},
@@ -42,7 +43,8 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    SatPopoverModule
+    SatPopoverModule,
+    NgSelectModule
   ]
 })
 export class ProjectEditAddModule { }

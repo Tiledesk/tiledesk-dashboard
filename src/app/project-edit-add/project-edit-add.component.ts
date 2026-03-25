@@ -247,7 +247,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   public hideHelpLink: boolean;
   public displayExtremeMeasures: boolean;
 
-
+  messages_retention: Array<any> = [ 
+    { name: "1Month", value: 30 },
+    { name: "3Months", value: 90 },
+    { name: "6Months", value: 180},
+    { name: "12Months", value: 365},
+    { name: "18Months", value: 545},
+    { name: "24Months", value: 730}
+  ]
+  
+  selectedRetention: string;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -2703,6 +2712,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
           }
 
+          if (project.settings.retentionDays !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] retentionDays  project.settings.retentionDays', project.settings.retentionDays) 
+            this.selectedRetention = project.settings.retentionDays
+             console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention ', this.selectedRetention) 
+          } else {
+            this.selectedRetention = this.messages_retention[1].value;
+            console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention (else) ', this.selectedRetention) 
+          }
+
 
           // Automatic unavailable status
           if (project.settings.automatic_idle_chats) {
@@ -2943,6 +2961,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.cacheService.clearAllProjectsCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  onSelectRetention(value: any): void {
+    this.selectedRetention = value;
+
+    console.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
+    this.projectService.saveRetentionDays(this.selectedRetention).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ", result)
+
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearAllProjectsCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] -  SAVE RETENTION DAYS ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
