@@ -73,6 +73,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   responseTime: number | null = null;
 
   searching: boolean = false;
+  /** Evita doppio finalize; sostituisce il guard su searching (stream vuoto può lasciare stati incoerenti). */
+  private kbStreamFinalized = false;
   show_answer: boolean = false;
   // error_answer: boolean = false;
   translateparam: any;
@@ -535,8 +537,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] Saved last question: ", this.question);
     }
     this.searching = true;
+    this.kbStreamFinalized = false;
     this.show_answer = true;
     this.answer = '';
+    this.qa = null;
     this.source_url = '';
     this.contentSources = [];
     this.responseTime = null;
@@ -650,18 +654,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.show_answer = true; // mostra la risposta in streaming dal primo chunk
           this.cdr.detectChanges();
         }
-        if (chunk.response) lastResponse = chunk.response;
+        if (chunk.response) {
+          lastResponse = chunk.response;
+        }
         if (chunk.done) {
           this.finalizeStreamResponse(lastResponse, startTime);
         }
       },
       error: (err: any) => {
+        this.kbStreamFinalized = true;
         this.searching = false;
         this.show_answer = true;
         this.handleAskAIError(err);
       },
       complete: () => {
-        if (this.searching) {
+        if (!this.kbStreamFinalized) {
           this.finalizeStreamResponse(lastResponse, startTime);
         }
       }
@@ -669,7 +676,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   }
 
    private finalizeStreamResponse(response: any, _startTime: number) {
-    if (!this.searching) return;
+    if (this.kbStreamFinalized) {
+      return;
+    }
+    this.kbStreamFinalized = true;
     if (response) {
       response['ai_model'] = this.selectedModel;
       this.prompt_token_size = response.prompt_token_size;
@@ -682,6 +692,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentSources: ', this.contentSources);
       if (response.source && this.isValidURL(response.source)) this.source_url = response.source;
       if (response.answer && !this.answer) this.answer = response.answer;
+    } else {
+      this.qa = {
+        answer: '',
+        ai_model: this.selectedModel,
+        content_chunks: [],
+      };
+      this.contentChunks = [];
+      this.contentSources = [];
     }
     this.show_answer = true;
     this.searching = false;

@@ -138,6 +138,8 @@ export class OpenaiService {
         }
         const decoder = new TextDecoder();
         let buffer = '';
+        /** Ultimo payload JSON utile (metadati QA anche senza testo) */
+        let lastStreamMeta: any = null;
 
         const read = (): Promise<void> => {
           return reader.read().then(({ done, value }) => {
@@ -149,13 +151,14 @@ export class OpenaiService {
                     observer.error({ error: parsed.error, success: false });
                     return;
                   }
+                  lastStreamMeta = parsed;
                   if (parsed.answer !== undefined) observer.next({ text: parsed.answer, response: parsed });
                   else if (parsed.delta !== undefined) observer.next({ text: parsed.delta, response: parsed });
                   else if (parsed.content !== undefined) observer.next({ text: parsed.content, response: parsed });
                   else observer.next({ response: parsed });
                 } catch (_) {}
               }
-              observer.next({ done: true });
+              observer.next({ done: true, response: lastStreamMeta });
               observer.complete();
               return;
             }
@@ -174,6 +177,7 @@ export class OpenaiService {
                     observer.error({ error: parsed.error, success: false });
                     return;
                   }
+                  lastStreamMeta = parsed;
                   if (parsed.answer !== undefined) observer.next({ text: parsed.answer, response: parsed });
                   else if (parsed.delta !== undefined) observer.next({ text: parsed.delta, response: parsed });
                   else if (parsed.content !== undefined) observer.next({ text: parsed.content, response: parsed });
@@ -187,6 +191,7 @@ export class OpenaiService {
                     observer.error({ error: parsed.error, success: false });
                     return;
                   }
+                  lastStreamMeta = parsed;
                   if (parsed.answer !== undefined) observer.next({ text: parsed.answer, response: parsed });
                   else if (parsed.delta !== undefined) observer.next({ text: parsed.delta, response: parsed });
                   else if (parsed.content !== undefined) observer.next({ text: parsed.content, response: parsed });

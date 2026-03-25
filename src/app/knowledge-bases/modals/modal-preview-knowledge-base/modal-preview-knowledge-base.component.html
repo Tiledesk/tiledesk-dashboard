@@ -114,7 +114,7 @@
       <!-- <span *ngIf="aiQuotaExceeded">
        -> {{ answer }}
        </span> -->
-      <span *ngIf="qa && (!answer || answer === '') && (!qa.answer || qa.answer === '')">
+      <span *ngIf="!searching && (!answer || answer === '') && (!qa?.answer || qa.answer === '')">
         {{ 'KbPage.NoAnswerFound' | translate }}
       </span>
       </ng-template>
