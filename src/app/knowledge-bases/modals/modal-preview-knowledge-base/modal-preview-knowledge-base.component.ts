@@ -535,7 +535,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] Saved last question: ", this.question);
     }
     this.searching = true;
-    this.show_answer = false;
+    this.show_answer = true;
     this.answer = '';
     this.source_url = '';
     this.contentSources = [];
@@ -543,8 +543,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.prompt_token_size = null;
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
-    this.askAI(this.body, startTime)
-   // this.askAIStream(this.body, startTime);
+    // this.askAI(this.body, startTime)
+   this.askAIStream(this.body, startTime);
   }
 
   askAI(body, startTime) {
