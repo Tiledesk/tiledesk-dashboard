@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.190-stage
+- Adds the ability to select a retention period for automatic message deletion
+
 ### 2.7.189-stage
 - Improves the "Add Tags" input in the knowledge preview dialog
 
