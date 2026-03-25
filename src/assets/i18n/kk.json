@@ -868,11 +868,21 @@
     "PleaseSelectBothDates": "Екі күнді де таңдаңыз",
     "NoResultsToExport": "Экспорттау үшін нәтижелер жоқ",
     "AddsTagsAndPressEnter": "Тегтерді қосып, Enter пернесін басыңыз",
+    "AddTagsToSearchBy": "Іздеу үшін тегтер қосыңыз",
     "CopyScrapingRulesToPasteThemWebContentType": "Scraping ережелерін жаңа URL типті мазмұнға немесе жаңа sitemap типті мазмұнға қою үшін көшіріңіз",
     "HtmlTags": "HTML тегтері",
     "AssignOneOrMoreTagsToThisContent": "Осы мазмұнға бір немесе бірнеше тег тағайындаңыз",
     "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "Тек барлық таңдалған тегтерді қамтитын мазмұн ғана ескерілетін болады",
     "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Нәтижелер тек барлық таңдалған тегтерге сәйкес келетін мазмұндарды қамтиды",
+    "RetentionPolicy": "Сақтау саясаты",
+    "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Автоматты жоюға дейін хабарламаларды қанша уақыт сақтау керектігін орнатыңыз",
+    "DeleteMessagesAfter": "Хабарламаларды жою мерзімі",
+    "1Month": "1 ай",
+    "3Months": "3 ай",
+    "6Months": "6 ай",
+    "12Months": "12 ай",
+    "18Months": "18 ай",
+    "24Months": "24 ай",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
