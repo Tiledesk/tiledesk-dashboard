@@ -3107,7 +3107,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.selectedRetention = Number(project.settings.retentionDays)
              console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention ', this.selectedRetention) 
           } else {
-            this.selectedRetention = this.messages_retention[1].value;
+            this.selectedRetention = 90 // this.messages_retention[1].value;
             console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention (else) ', this.selectedRetention) 
           }
 
