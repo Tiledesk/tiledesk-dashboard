@@ -856,6 +856,7 @@
     "PleaseSelectBothDates": "Пожалуйста, выберите обе даты",
     "NoResultsToExport": "Нет результатов для экспорта",
     "AddsTagsAndPressEnter": "Добавьте теги и нажмите Enter",
+    "AddTagsToSearchBy": "Добавьте теги для поиска",
     "CopyScrapingRulesToPasteThemWebContentType": "Скопируйте правила скрапинга, чтобы вставить их в новый контент типа URL или в новый контент типа sitemap",
     "HtmlTags": "HTML-теги",
     "AssignOneOrMoreTagsToThisContent": "Назначьте один или несколько тегов для этого контента",

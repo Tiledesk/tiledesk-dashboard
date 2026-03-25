@@ -856,6 +856,7 @@
     "PleaseSelectBothDates": "Молимо изаберите оба датума",
     "NoResultsToExport": "Нема резултата за извоз",
     "AddsTagsAndPressEnter": "Додајте ознаке и притисните ентер",
+    "AddTagsToSearchBy": "Додајте ознаке за претрагу",
     "CopyScrapingRulesToPasteThemWebContentType": "Копирајте правила скрапинга да их налепите у нови садржај типа URL или у нови садржај типа sitemap",
     "HtmlTags": "HTML ознаке",
     "AssignOneOrMoreTagsToThisContent": "Доделите једну или више ознака овом садржају",

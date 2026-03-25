@@ -856,6 +856,7 @@
     "PleaseSelectBothDates": "Iltimos, ikkala sanani ham tanlang",
     "NoResultsToExport": "Eksport qilish uchun natijalar yo'q",
     "AddsTagsAndPressEnter": "Teglarni qo'shing va Enter tugmasini bosing",
+    "AddTagsToSearchBy": "Додайте теги для пошуку",
     "CopyScrapingRulesToPasteThemWebContentType": "Scraping qoidalarini yangi URL tipidagi tarkibga yoki yangi sitemap tipidagi tarkibga joylashtirish uchun nusxalang",
     "HtmlTags": "HTML teglari",
     "AssignOneOrMoreTagsToThisContent": "Ushbu tarkibga bir yoki bir nechta tegni tayinlang",

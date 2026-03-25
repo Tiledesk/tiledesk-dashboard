@@ -857,6 +857,7 @@
     "PleaseSelectBothDates": "Lütfen her iki tarihi de seçin",
     "NoResultsToExport": "Dışa aktarılacak sonuç yok",
     "AddsTagsAndPressEnter": "Etiket ekleyin ve enter tuşuna basın",
+    "AddTagsToSearchBy": "Arama yapmak için etiket ekleyin",
     "CopyScrapingRulesToPasteThemWebContentType": "Scraping kurallarını yeni URL türü içeriğe veya yeni sitemap türü içeriğe yapıştırmak için kopyalayın",
     "HtmlTags": "HTML etiketleri",
     "AssignOneOrMoreTagsToThisContent": "Bu içeriğe bir veya daha fazla etiket atayın",
