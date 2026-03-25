@@ -873,6 +873,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Avtomatik o'chirishdan oldin xabarlarni qancha vaqt saqlash kerakligini belgilang",
     "DeleteMessagesAfter": "Xabarlarni o'chirish muddati",
     "1Month": "1 oy",
+    "2Months": "2 oy",
     "3Months": "3 oy",
     "6Months": "6 oy",
     "12Months": "12 oy",

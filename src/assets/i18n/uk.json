@@ -873,6 +873,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Встановіть, як довго зберігати повідомлення перед автоматичним видаленням",
     "DeleteMessagesAfter": "Видаляти повідомлення через",
     "1Month": "1 місяць",
+    "2Months": "2 місяці",
     "3Months": "3 місяці",
     "6Months": "6 місяців",
     "12Months": "12 місяців",

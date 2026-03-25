@@ -872,6 +872,7 @@
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Автоматты жоюға дейін хабарламаларды қанша уақыт сақтау керектігін орнатыңыз",
     "DeleteMessagesAfter": "Хабарламаларды жою мерзімі",
     "1Month": "1 ай",
+    "2Months": "2 ай",
     "3Months": "3 ай",
     "6Months": "6 ай",
     "12Months": "12 ай",
