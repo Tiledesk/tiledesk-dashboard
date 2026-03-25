@@ -166,6 +166,16 @@
     margin-bottom: 6px;
 }
 
+.answer-loading {
+    display: flex;
+    align-items: center;
+    min-height: 22px;
+
+    .ai-thinking {
+        padding: 0;
+    }
+}
+
 .answer-title {
     margin-bottom: 3px;
     font-size: 14px;
@@ -593,23 +603,8 @@ mat-expansion-panel ::ng-deep {
     color: #000000de;
     font-family: var(--header-font-family);
     font-weight: 400;
+    cursor: pointer;
     // margin-bottom: 4px;
 }
 
-/* Popover help tags: freccia in alto al centro (classe dedicata: overlay può essere nel body) */
-::ng-deep .kb-preview-tags-help-popover {
-  position: relative;
-
-  .cdk-popover--arrow {
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    margin-left: -5px;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid #2d323e;
-  }
-}
 

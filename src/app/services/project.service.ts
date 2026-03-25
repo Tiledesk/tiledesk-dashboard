@@ -956,6 +956,27 @@ export class ProjectService {
     return promise;
   }
 
+  // --------------------------------------------------------------------------------------
+  // SAVE RETENTION DAYS
+  // --------------------------------------------------------------------------------------
+  saveRetentionDays(retentionDays) {
+    let promise = new Promise((resolve, reject) => {
+      console.log("[PROJECT-SERV] SAVE retention Days", retentionDays)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.retentionDays": retentionDays }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
 
   // -------------------------------------
   // New home service

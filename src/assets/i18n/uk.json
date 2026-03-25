@@ -869,6 +869,15 @@
     "AssignOneOrMoreTagsToThisContent": "Призначте один або декілька тегів для цього вмісту",
     "OnlyContentThatIncludesAllSelectedTagsWillBeTakenIntoConsideration": "До уваги братиметься лише вміст, що містить усі вибрані теги",
     "ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags": "Результати включатимуть лише вмісти, які відповідають всім вибраним тегам",
+    "RetentionPolicy": "Політика зберігання",
+    "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Встановіть, як довго зберігати повідомлення перед автоматичним видаленням",
+    "DeleteMessagesAfter": "Видаляти повідомлення через",
+    "1Month": "1 місяць",
+    "3Months": "3 місяці",
+    "6Months": "6 місяців",
+    "12Months": "12 місяців",
+    "18Months": "18 місяців",
+    "24Months": "24 місяці",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

@@ -97,13 +97,23 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   isOpen = false;
   private closeTimeout: any;
 
-  positions: ConnectedPosition[] = [
+  // positions: ConnectedPosition[] = [
+  //   {
+  //     originX: 'center',
+  //     originY: 'bottom',
+  //     overlayX: 'center',
+  //     overlayY: 'top',
+  //     offsetY: 6
+  //   }
+  // ];
+
+   positions: ConnectedPosition[] = [
     {
-      originX: 'center',
-      originY: 'bottom',
-      overlayX: 'center',
-      overlayY: 'top',
-      offsetY: 6
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -30
     }
   ];
 
@@ -589,7 +599,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] Saved last question: ", this.question);
     }
     this.searching = true;
-    this.show_answer = false;
+    this.show_answer = true;
     this.answer = '';
     this.source_url = '';
     this.contentSources = [];
