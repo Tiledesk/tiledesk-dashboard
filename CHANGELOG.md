@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.191-stage
+- Adds the ability, in the Import File dialog, to import documents into the knowledge base via URL
+
 ### 2.7.190-stage
 - Adds the ability to select a retention period for automatic message deletion
 
