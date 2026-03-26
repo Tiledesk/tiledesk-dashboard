@@ -2428,7 +2428,8 @@ _presentDialogImportContents() {
   presentModalUploadFile() {
     this.logger.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
     const dialogRef = this.dialog.open(ModalUploadFileComponent, {
-      width: '360px',
+      autoFocus: false,
+      width: '400px',
       // data: {
       //   calledBy: 'step1'
       // },

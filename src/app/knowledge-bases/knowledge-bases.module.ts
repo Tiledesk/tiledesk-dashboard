@@ -48,6 +48,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AutoWidthInputDirective } from '../_directives/auto-width-input.directive';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -106,7 +107,8 @@ const routes: Routes = [
     MatSelectModule,
     MatRippleModule,
     MatProgressSpinnerModule,
-    OverlayModule
+    OverlayModule,
+    MatTabsModule
   ]
   // ,
   // providers: [
