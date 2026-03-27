@@ -898,6 +898,13 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
 
+  {
+    path: 'project/:projectid/project-settings/retention',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
   // Project edit / add - Advanced
   {
     path: 'project/:projectid/project-settings/advanced',

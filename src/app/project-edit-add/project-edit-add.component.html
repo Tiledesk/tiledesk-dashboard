@@ -27,58 +27,82 @@
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
-      <div class="teplate-content" style="flex: 1 1 auto;">
+      <div class="teplate-content" style="flex: 1 1 auto; min-width: 0;">
         <div class="row">
           <div class="col-xs-12" style="padding-right: 0px;">
-            <!-- box-shadow: unset -->
-            <ul class="bottom-nav" style="top:-9px; ">
-              <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
-                <a> {{ "General" | translate }} </a>
-              </li>
+            <div class="bottom-nav-scroll-outer">
+              <button type="button"
+                class="bottom-nav-scroll-arrow bottom-nav-scroll-arrow--left"
+                *ngIf="navScrollShowLeft"
+                (click)="scrollProjectNavStep(-1)"
+                [attr.aria-label]="'ProjectEditPage.NavScrollLeft' | translate">
+                <span class="material-icons" aria-hidden="true">keyboard_arrow_left</span>
+              </button>
+              <div #bottomNavScroll class="bottom-nav-scroll" (scroll)="onProjectNavScroll()">
+                <ul class="bottom-nav" style="top:-9px; ">
+                  <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
+                    <a> {{ "General" | translate }} </a>
+                  </li>
 
-              <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
-                <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
-              </li>
+                  <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
+                    <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
+                  </li>
 
-              <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
-                <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
-              </li>
-
-
-              <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent'"
-                (click)="goToProjectSettings_SmartAssignment()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === false }">
-                <a> {{ "SmartAssign" | translate }}</a>
-              </li>
-
-              <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()"
-                class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
-                <a> {{ "Notification" | translate }}</a>
-              </li>
-
-              <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-                <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
+                  <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
+                    <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
+                  </li>
 
 
-              </li>
+                  <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent'"
+                    (click)="goToProjectSettings_SmartAssignment()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === false }">
+                    <a> {{ "SmartAssign" | translate }}</a>
+                  </li>
 
-              <li *ngIf="isVisibleBannedVisitor" (click)="goToProjectSettings_BannedVisitors()"
-                class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
-                <a> {{'BannedVisitors' | translate }} </a>
-              </li>
+                  <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()"
+                    class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
+                    <a> {{ "Notification" | translate }}</a>
+                  </li>
 
-              <li (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
-                <a> {{'ProjectEditPage.Advanced' | translate }} </a>
-              </li>
+                  <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
+                    <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
 
-            </ul>
+
+                  </li>
+
+                  <li *ngIf="isVisibleBannedVisitor" (click)="goToProjectSettings_BannedVisitors()"
+                    class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
+                    <a> {{'BannedVisitors' | translate }} </a>
+                  </li>
+
+                  <li (click)="goToProjectSettings_RetentionPolicy()"
+                    class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
+                    <a> {{'RetentionPolicy' | translate }} </a>
+                  </li>
+
+                  <li (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
+                    <a> {{'ProjectEditPage.Advanced' | translate }} </a>
+                  </li>
+
+                </ul>
+              </div>
+
+              <button type="button"
+                class="bottom-nav-scroll-arrow bottom-nav-scroll-arrow--right"
+                *ngIf="navScrollShowRight"
+                (click)="scrollProjectNavStep(1)"
+                [attr.aria-label]="'ProjectEditPage.NavScrollRight' | translate">
+                <span class="material-icons" aria-hidden="true">keyboard_arrow_right</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1929,6 +1953,71 @@
                   </div>
                 </span> <!-- /. Smart Assignmen ROUTE -->
 
+
+                <!-- -------------------------------------------------------- -->
+                <!-- Retention -->
+                <!-- -------------------------------------------------------- -->
+              
+                <span *ngIf="PROJECT_SETTINGS_RETENTION">
+              
+                <div class="row" style="margin-top: 24px;">
+                  <div class="col-md-6">
+                    <h3 class="card_title__underlined">
+                      <span class="card_title__underline">
+
+                        {{'RetentionPolicy' | translate}}
+                      </span>
+                    </h3>
+                  </div>
+
+                  <!-- SUBTITLE -->
+                  <div class="col-md-12">
+                    <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                    <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                      {{'SetHowLongToRetainMessagesBeforeAutomaticDeletion' | translate }}
+                    </p>
+                  </div>
+
+
+                  <div class="col-md-6">
+
+                    <span class="span-6"></span>
+
+                    <div class="messages-retention-select-wpr"> 
+
+                      <div class="retention-select-title" style="font-weight: 400;">
+                        {{'DeleteMessagesAfter' | translate}}:
+                      </div>
+                      <!-- appendTo="body" -->
+                      <ng-select class="messages-retention" style="max-width: 250px;"
+                      
+                        [items]="messages_retention_items | selectOptionsTranslate"
+                        bindLabel="name" 
+                        bindValue="value"
+                        placeholder="Retention period"
+                        [clearable]="false" 
+                        [searchable]="false"
+                        [(ngModel)]="selectedRetention"
+                        (change)="onSelectRetention(selectedRetention)">
+                      </ng-select>
+                    </div>
+
+                    <ng-container *ngIf="isVisiblePaymentTab">
+                      <div class="upsell-for-retention-wpr" *ngIf="!isAvailableRetention">
+                        <div class="upsell-for-retention-text">
+                          {{'UpgradePlanForRetention' | translate: retention_t_params}}
+                        </div>
+                        <div class="upsell-for-retention" (click)="goToPricing('business')">
+                          {{ 'Pricing.UpgradeYourPlan' | translate }}!
+                        </div>
+                      </div>
+                    </ng-container>
+
+                  </div>
+
+                </span> <!-- /. Retention ROUTE -->
+
+
                 <!-- -------------------------------------------------------- -->
                 <!-- Advanced -->
                 <!-- -------------------------------------------------------- -->
@@ -2225,54 +2314,6 @@
                     </div>
                   </div>
 
-                  <!-- ----------------------------------- -->
-                  <!-- Retention -->
-                  <!-- ----------------------------------- -->
-                  <div class="row" style="margin-top: 24px;" style="display: none;">
-                    <div class="col-md-6">
-                      <h3 class="card_title__underlined">
-                        <span class="card_title__underline">
-
-                          {{'RetentionPolicy' | translate}}
-                        </span>
-                      </h3>
-                    </div>
-
-                    <!-- SUBTITLE -->
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
-                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
-                        {{'SetHowLongToRetainMessagesBeforeAutomaticDeletion' | translate }}
-                      </p>
-                    </div>
-
-
-                    <div class="col-md-6">
-
-                      <span class="span-6"></span>
-
-                      <div class="messages-retention-select-wpr"> 
-
-                        <div class="retention-select-title" style="font-weight: 400;">
-                          {{'DeleteMessagesAfter' | translate}}:
-                        </div>
-                        <!-- appendTo="body" -->
-                        <ng-select class="messages-retention" style="max-width: 150px;"
-                        
-                          [items]="messages_retention | selectOptionsTranslate"
-                          bindLabel="name" 
-                          bindValue="value"
-                          placeholder="Retention period"
-                          [clearable]="false" 
-                          [searchable]="false"
-                          [(ngModel)]="selectedRetention"
-                          (change)="onSelectRetention(selectedRetention)">
-                        </ng-select>
-                      </div>
-                    </div>
-
-
-                  </div>
 
 
                 </span> <!-- /. Advanced ROUTE -->

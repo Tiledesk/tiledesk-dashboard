@@ -389,6 +389,155 @@ button.close {
   }
 }
 
+}
+
+// Scrollable project settings tabs + edge arrows when overflow
+// Flex items default to min-width:auto and grow to fit children — the bar never scrolls.
+// Force a shrinkable track so .bottom-nav-scroll can overflow horizontally.
+.teplate-content {
+  min-width: 0;
+}
+
+.teplate-content > .row:first-child {
+  min-width: 0;
+}
+
+.teplate-content > .row:first-child > [class*="col-"] {
+  min-width: 0;
+}
+
+// Full-width shadow under the visible tab strip: box-shadow on the wrapper was uneven (overflow/stacking).
+// A 1px ::after spans the whole outer width so the shadow matches demo.scss under the entire bar.
+.bottom-nav-scroll-outer {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  background-color: #fff;
+  overflow: visible;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    z-index: 4;
+    pointer-events: none;
+    height: 1px;
+    background: transparent;
+    box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  }
+}
+
+.bottom-nav-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  // Compromise: keep scrollbar hint without looking heavy (Firefox)
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.14) transparent;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  background-color: #fff;
+
+  // WebKit: thin track + light thumb
+  &::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.14);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.22);
+  }
+
+  // Override global demo.scss .bottom-nav { width:100%; float:left } so tabs extend past viewport
+  .bottom-nav {
+    float: none !important;
+    display: inline-flex !important;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    box-shadow: none !important;
+    background-color: transparent;
+  }
+
+  .bottom-nav li {
+    float: none !important;
+    flex: 0 0 auto;
+  }
+}
+
+.bottom-nav-scroll-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 36px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #566787;
+
+  .material-icons {
+    font-size: 28px;
+    line-height: 1;
+    position: relative;
+    top: -6px;
+  }
+
+  &:hover {
+    color: var(--blue-20, #5754a3);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--blue-20, #5754a3);
+    outline-offset: -2px;
+  }
+
+  &--left {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+  }
+
+  &--right {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+  }
+}
+
+.upsell-for-retention-wpr {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  width: fit-content;
+}
+
+.upsell-for-retention {
+  color: var(--btn-get-feature-color);
+  cursor: pointer;
+}
+
 .tab-active {
   color: $brand-primary;
   border-bottom: 3px solid $brand-primary;
