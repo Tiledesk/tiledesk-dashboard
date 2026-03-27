@@ -872,6 +872,7 @@
     "RetentionPolicy": "Политика хранения",
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Установите, как долго хранить сообщения перед автоматическим удалением",
     "DeleteMessagesAfter": "Удалять сообщения через",
+    "NoRetention": "Без хранения",
     "1Month": "1 месяц",
     "2Months": "2 месяца",
     "3Months": "3 месяца",
@@ -879,6 +880,8 @@
     "12Months": "12 месяцев",
     "18Months": "18 месяцев",
     "24Months": "24 месяца",
+    "UpgradePlanForRetention": "Хранение сообщений можно настроить, начиная с тарифа {{plan_name}}.",
+    "MessageRetention": "Хранение сообщений",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -871,6 +871,7 @@
     "RetentionPolicy": "Política de retenção",
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Defina por quanto tempo reter mensagens antes da eliminação automática",
     "DeleteMessagesAfter": "Eliminar mensagens após",
+    "NoRetention": "Sem retenção",
     "1Month": "1 mês",
     "2Months": "2 meses",
     "3Months": "3 meses",
@@ -878,6 +879,8 @@
     "12Months": "12 meses",
     "18Months": "18 meses",
     "24Months": "24 meses",
+    "UpgradePlanForRetention": "A retenção de mensagens pode ser personalizada a partir do plano {{plan_name}}.",
+    "MessageRetention": "Retenção de mensagens",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

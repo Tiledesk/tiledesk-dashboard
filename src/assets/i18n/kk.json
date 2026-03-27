@@ -871,6 +871,7 @@
     "RetentionPolicy": "Сақтау саясаты",
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Автоматты жоюға дейін хабарламаларды қанша уақыт сақтау керектігін орнатыңыз",
     "DeleteMessagesAfter": "Хабарламаларды жою мерзімі",
+    "NoRetention": "Сақтау жоқ",
     "1Month": "1 ай",
     "2Months": "2 ай",
     "3Months": "3 ай",
@@ -878,6 +879,8 @@
     "12Months": "12 ай",
     "18Months": "18 ай",
     "24Months": "24 ай",
+    "UpgradePlanForRetention": "Хабарламаларды сақтау {{plan_name}} жоспарынан бастап реттелуі мүмкін.",
+    "MessageRetention": "Хабарламаларды сақтау",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

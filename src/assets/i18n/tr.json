@@ -873,6 +873,7 @@
     "RetentionPolicy": "Saklama politikası",
     "SetHowLongToRetainMessagesBeforeAutomaticDeletion": "Otomatik silinmeden önce mesajların ne kadar süreyle saklanacağını belirleyin",
     "DeleteMessagesAfter": "Mesajları silme süresi",
+    "NoRetention": "Saklama yok",
     "1Month": "1 ay",
     "2Months": "2 ay",
     "3Months": "3 ay",
@@ -880,6 +881,8 @@
     "12Months": "12 ay",
     "18Months": "18 ay",
     "24Months": "24 ay",
+    "UpgradePlanForRetention": "Mesaj saklama, {{plan_name}} planından itibaren özelleştirilebilir.",
+    "MessageRetention": "Mesaj Saklama",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
