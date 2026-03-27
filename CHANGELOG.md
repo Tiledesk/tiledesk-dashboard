@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.192-stage
+- Improves retention policy
+
 ### 2.7.191-stage
 - Adds the ability, in the Import File dialog, to import documents into the knowledge base via URL
 
