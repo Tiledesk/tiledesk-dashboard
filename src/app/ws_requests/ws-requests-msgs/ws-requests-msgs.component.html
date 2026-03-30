@@ -149,7 +149,9 @@
                         <p *ngIf="message?.type === 'text'" class="type-info-msg-text">
                           {{ message?.text }}
                           <span style=" color: rgba(43 ,43,43, .8);font-size: 11px;">
-                            ({{ message?.createdAt | amDateFormat: 'LLL'}})
+                             <!-- ({{ message?.createdAt | amDateFormat: 'LLL'}}) -->
+                            ({{ message?.createdAt | amDateFormat: 'LL HH:mm:ss' }})
+
                           </span>
                         </p>
 
