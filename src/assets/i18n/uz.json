@@ -872,6 +872,9 @@
     "12Months": "12 oy",
     "18Months": "18 oy",
     "24Months": "24 oy",
+    "3Years": "3 yil",
+    "4Years": "4 yil",
+    "5Years": "5 yil",
     "UpgradePlanForRetention": "Xabarlarni saqlash {{plan_name}} rejasidan boshlab sozlanishi mumkin.",
     "MessageRetention": "Xabarlarni saqlash",
     "TYPE_GPT_MODEL": {

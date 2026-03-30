@@ -871,6 +871,9 @@
     "12Months": "12 ай",
     "18Months": "18 ай",
     "24Months": "24 ай",
+    "3Years": "3 жыл",
+    "4Years": "4 жыл",
+    "5Years": "5 жыл",
     "UpgradePlanForRetention": "Хабарламаларды сақтау {{plan_name}} жоспарынан бастап реттелуі мүмкін.",
     "MessageRetention": "Хабарламаларды сақтау",
     "TYPE_GPT_MODEL": {

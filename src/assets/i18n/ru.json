@@ -872,6 +872,9 @@
     "12Months": "12 месяцев",
     "18Months": "18 месяцев",
     "24Months": "24 месяца",
+    "3Years": "3 года",
+    "4Years": "4 года",
+    "5Years": "5 лет",
     "UpgradePlanForRetention": "Хранение сообщений можно настроить, начиная с тарифа {{plan_name}}.",
     "MessageRetention": "Хранение сообщений",
     "TYPE_GPT_MODEL": {

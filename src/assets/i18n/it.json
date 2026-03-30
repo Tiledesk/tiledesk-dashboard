@@ -871,6 +871,9 @@
     "12Months": "12 mesi",
     "18Months": "18 mesi",
     "24Months": "24 mesi",
+    "3Years": "3 anni",
+    "4Years": "4 anni",
+    "5Years": "5 anni",
     "UpgradePlanForRetention": "La conservazione dei messaggi può essere personalizzata a partire dal piano {{plan_name}}.",
     "MessageRetention": "Conservazione dei messaggi",
     "TYPE_GPT_MODEL": {

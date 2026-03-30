@@ -265,7 +265,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     { name: "6Months", value: 180},
     { name: "12Months", value: 365},
     { name: "18Months", value: 545},
-    { name: "24Months", value: 730}
+    { name: "24Months", value: 730},
+    { name: "3Years", value: 1095 },
+    { name: "4Years", value: 1460 },
+    { name: "5Years", value: 1825 }
   ]
   
   //selectedRetention: number;

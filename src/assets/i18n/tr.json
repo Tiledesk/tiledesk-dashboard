@@ -873,6 +873,9 @@
     "12Months": "12 ay",
     "18Months": "18 ay",
     "24Months": "24 ay",
+     "3Years": "3 yıl",
+    "4Years": "4 yıl",
+    "5Years": "5 yıl",
     "UpgradePlanForRetention": "Mesaj saklama, {{plan_name}} planından itibaren özelleştirilebilir.",
     "MessageRetention": "Mesaj Saklama",
     "TYPE_GPT_MODEL": {

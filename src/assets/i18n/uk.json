@@ -872,6 +872,9 @@
     "12Months": "12 місяців",
     "18Months": "18 місяців",
     "24Months": "24 місяці",
+    "3Years": "3 роки",
+    "4Years": "4 роки",
+    "5Years": "5 років",
     "UpgradePlanForRetention": "Зберігання повідомлень можна налаштувати, починаючи з плану {{plan_name}}.",
     "MessageRetention": "Зберігання повідомлень",
     "TYPE_GPT_MODEL": {
