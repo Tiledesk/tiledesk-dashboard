@@ -291,7 +291,7 @@
                 [clearable]="false" [searchable]="false" 
                 [(ngModel)]="selectedRefreshRate"
                 (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
+                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
             </ng-select>
 
             <!-- <span class="input-label input-label-on-bottom">
@@ -299,20 +299,21 @@
             </span> -->
         </div>
 
-
-        <div class="refresh-rate-upgrade-plan">
-            <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
-                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
-                matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
-                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                <span class="material-icons-outlined get--feature-upgrade-plan-icon">
-                    upgrade
-                </span>
-                <span>
-                    {{ 'Pricing.UpgradePlan' | translate }}
-                </span>
-            </button>
-        </div>
+        <ng-container *ngIf="payIsVisible">
+            <div class="refresh-rate-upgrade-plan">
+                <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: -23px;"
+                    *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
+                    #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                    <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                        upgrade
+                    </span>
+                    <span>
+                        {{ 'Pricing.UpgradePlan' | translate }}
+                    </span>
+                </button>
+            </div>
+        </ng-container>
 
         <ng-container *ngIf="payIsVisible">
             <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
