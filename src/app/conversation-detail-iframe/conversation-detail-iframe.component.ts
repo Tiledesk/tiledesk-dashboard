@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 import { ConversationDetailIframeService } from '../services/conversation-detail-iframe.service';
 import { filter } from 'rxjs/operators';
 
@@ -23,12 +23,15 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
   
   // Contatore reload iframe per badge
   public iframeLoadCount = 0;
+
+  private messageHandler: (event: MessageEvent) => void;
   
   constructor(
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     private iframeService: ConversationDetailIframeService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     ConversationDetailIframeComponent.instanceCounter++;
     this.componentInstanceId = ConversationDetailIframeComponent.instanceCounter;
@@ -36,6 +39,44 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
     this.componentCreatedAtFormatted = this.componentCreatedAt.toLocaleTimeString('it-IT');
     
     this.setupNavigationListener();
+    this.setupPostMessageListener();
+  }
+
+  /**
+   * Sottoscrizione a postMessage per event onConversationChanged
+   */
+  private setupPostMessageListener(): void {
+    this.messageHandler = (event: MessageEvent) => {
+      const type = event?.data?.type
+      const conversation = event?.data?.data;
+      this.logger.log('[CONVERSATION-DETAIL-IFRAME] onConversationChanged:', event);
+      if (type === 'onConversationChanged' && conversation) {
+        this.logger.log('[CONVERSATION-DETAIL-IFRAME] onConversationChanged:', conversation);
+        this.updateRouteFromConversation(conversation);
+      }
+    };
+    window.addEventListener('message', this.messageHandler);
+  }
+
+  /**
+   * Aggiorna i parametri della route corrente in base alla conversation ricevuta
+   */
+  private updateRouteFromConversation(conversation: any): void {
+    const idConv = conversation.uid ?? conversation.request_id ?? conversation.id;
+    const fullNameConv = conversation.conversation_with_fullname ?? conversation.lead?.fullname ?? '';
+    const convType = conversation.archived === false ? 'active' : 'archived';
+
+    if (!idConv) {
+      this.logger.warn('[CONVERSATION-DETAIL-IFRAME] onConversationChanged: id conversation non trovato');
+      return;
+    }
+
+    const projectId = this.route.snapshot.params['projectid'] ?? this.route.parent?.snapshot?.params['projectid'];
+    const navCommands = projectId
+      ? ['project', projectId, 'conversation-detail', idConv, fullNameConv, convType]
+      : ['conversation-detail', idConv, fullNameConv, convType];
+
+    this.router.navigate(navCommands, { replaceUrl: true });
   }
 
   /**
@@ -66,8 +107,16 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.logger.log('[CONVERSATION-DETAIL-IFRAME] Componente inizializzato');
     
-    // Mostra iframe globale (gestito dal service)
-    this.iframeService.show();
+    // Leggi parametri di route (IDConv, Convtype, FullNameConv) e passali al service
+    this.route.params.subscribe(params => {
+      const routeParams = {
+        IDConv: params['IDConv'] || undefined,
+        Convtype: params['Convtype'] || undefined,
+        FullNameConv: params['FullNameConv'] || undefined
+      };
+      this.logger.log('[CONVERSATION-DETAIL-IFRAME] Route params:', routeParams);
+      this.iframeService.show(routeParams);
+    });
     
     // Aggiorna contatore per badge debug
     this.iframeLoadCount = this.iframeService.getLoadCount();

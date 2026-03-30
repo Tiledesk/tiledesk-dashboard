@@ -1474,10 +1474,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT > CONTACT : ", contact);
 
 
-    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + contact._id + '&recipientFullname=' + contact.fullname;
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + contact._id + '/' + contact.fullname + '/active'
-    this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT -> CHAT URL ", url);
-    window.open(url, '_blank');
+    const fullname = (contact.fullname || '').replace(/#/g, '%23').trim();
+    this.router.navigate(['project', this.projectId, 'conversation-detail', contact._id, fullname, 'active']);
+    this.logger.log("[CONTACTS-COMP] - navigazione a conversation-detail ", contact._id, fullname, 'active');
   }
 
   goToContactDetails(requester_id) {

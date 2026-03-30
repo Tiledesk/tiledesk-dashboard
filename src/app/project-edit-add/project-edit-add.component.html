@@ -2158,8 +2158,52 @@
                         </div>
                       </div>
 
+                      <!-- ----------------------------------- -->
+                      <!-- Retention -->
+                      <!-- ----------------------------------- -->
+                      <div class="row" style="margin-top: 24px; display: none;">
+                        <div class="col-md-6">
+                          <h3 class="card_title__underlined">
+                            <span class="card_title__underline">
+
+                              {{'RetentionPolicy' | translate}}
+                            </span>
+                          </h3>
+                        </div>
+
+                        <!-- SUBTITLE -->
+                        <div class="col-md-12">
+                          <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                          <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                            {{'SetHowLongToRetainMessagesBeforeAutomaticDeletion' | translate }}
+                          </p>
+                        </div>
 
 
+                        <div class="col-md-6">
+
+                          <span class="span-6"></span>
+
+                          <div class="messages-retention-select-wpr"> 
+
+                            <div class="retention-select-title" style="font-weight: 400;">
+                              {{'DeleteMessagesAfter' | translate}}:
+                            </div>
+                            <!-- appendTo="body" -->
+                            <ng-select class="messages-retention" style="max-width: 150px;"
+                            
+                              [items]="messages_retention | selectOptionsTranslate"
+                              bindLabel="name" 
+                              bindValue="value"
+                              placeholder="Retention period"
+                              [clearable]="false" 
+                              [searchable]="false"
+                              [(ngModel)]="selectedRetention"
+                              (change)="onSelectRetention(selectedRetention)">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
 
                     </ng-container>
                     <ng-template #unauthorizedTplAdvanced>

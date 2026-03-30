@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from 'app/services/project.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, getUserStatusFromProjectUser, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -28,6 +28,8 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 
 import { environment } from 'environments/environment';
 import { CachePuService } from 'app/services/cache/cache-pu.service';
+import { ProjectUser } from 'app/models/project-user';
+import { TEAMMATE_STATUS } from 'app/utils/constants';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -35,7 +37,7 @@ import { CachePuService } from 'app/services/cache/cache-pu.service';
   styleUrls: ['./sidebar-user-details.component.scss'],
 
 })
-export class SidebarUserDetailsComponent implements OnInit {
+export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
   public version: string = environment.VERSION;
   PLAN_NAME = PLAN_NAME
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
@@ -81,17 +83,22 @@ export class SidebarUserDetailsComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   NOTIFICATION_SOUND: string;
   storedValuePrefix = 'dshbrd----'
-  teammateStatus = [
-    { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
-    { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
-    { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
-  ];
+  TEAMMATE_STATUS = TEAMMATE_STATUS
 
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
   public logoutBtnVisible: boolean;
   public editProfileBtnVisible: boolean;
   PERMISSION_TO_LOGOUT: boolean;
+
+  projects: ProjectUser[] = [];
+  selectedProjectForStatus: ProjectUser | null = null;
+  public openDropdownProjects: boolean = false
+  public openStatusDropdownProjectId: string | null = null
+  statusDropdownPosition = { top: 0, left: 0 };
+  public isVisibleMPA = false;
+  private userDetailsMutationObserver: MutationObserver | null = null;
+  private statusDropdownCloseTimeout: any = null;
 
   constructor(
     public auth: AuthService,
@@ -153,13 +160,43 @@ export class SidebarUserDetailsComponent implements OnInit {
     // this.setNotificationSound();
     // this.listenToProjectUser()
     // this.checkLogoutVisibility();
-    this.getQueryParams()
-
+    this.getQueryParams();
+    this.setupUserDetailsCloseObserver();
   }
 
-  
+  /**
+   * Osserva la rimozione della classe 'active' da #user-details (es. chiusura via click avatar nel sidebar)
+   * per chiudere i dropdown aperti
+   */
+  private setupUserDetailsCloseObserver(): void {
+    setTimeout(() => {
+      const el = document.getElementById('user-details');
+      if (!el) return;
+    this.userDetailsMutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target as HTMLElement;
+          if (!target.classList.contains('active')) {
+            this.closeDropdowns();
+          }
+        }
+      });
+    });
+    this.userDetailsMutationObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+    }, 0);
+  }
 
-  
+  private closeDropdowns(): void {
+    this.openDropdownProjects = false;
+    this.openStatusDropdownProjectId = null;
+    this.selectedProjectForStatus = null;
+  }
+
+  ngOnDestroy(): void {
+    this.cancelStatusDropdownClose();
+    this.userDetailsMutationObserver?.disconnect();
+    this.userDetailsMutationObserver = null;
+  }
 
    listenToProjectUser() {
       this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
@@ -298,9 +335,20 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.isVisiblePAY = true;
         }
       }
+      if (key.includes("MPA")) {
+        let pay = key.split(":");
+        if (pay[1] === "F") {
+          this.isVisibleMPA = false;
+        } else {
+          this.isVisibleMPA = true;
+        }
+      }
     });
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePAY = false;
+    }
+    if (!this.public_Key.includes("MPA")) {
+      this.isVisibleMPA = false;
     }
   }
 
@@ -314,12 +362,36 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.logger.log('[SIDEBAR-USER-DETAILS] project from $ubscription', this.project);
         this.destructureProjectAndBuildProjectPlanName(this.project)
 
+        if(this.projects){
+          this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
+          console.log('[SIDEBAR-USER-DETAILS] project.teammateStatus ', this.project.teammateStatus);
+        }
+
+        console.log('[SIDEBAR-USER-DETAILS] project.teammateStatus ', this.project);
         // this.findCurrentProjectAmongAll(this.projectId)
         // this.projectName = project.name;
       }
     });
   }
 
+  getProjects() {
+    this.logger.log('[SIDEBAR-USER-DETAILS] calling getProjects ... ');
+    this.projectService.getProjects().subscribe((projects: ProjectUser[]) => {
+      this.logger.log('[SIDEBAR-USER-DETAILS] getProjects PROJECTS ', projects);
+      if (projects) {
+        this.projects = projects.filter((prj: ProjectUser) => prj?.id_project?.status === 100);
+        this.projects.forEach((prj: ProjectUser) => {
+          prj.teammateStatus = getUserStatusFromProjectUser(prj as any);
+        });
+        this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
+        this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.projects ', this.project);
+      }
+    }, (error) => {
+      this.logger.error('[SIDEBAR-USER-DETAILS] getProjects - ERROR ', error);
+    }, () => {
+      this.logger.log('[SIDEBAR-USER-DETAILS] getProjects - COMPLETE');
+    });
+  }
 
   destructureProjectAndBuildProjectPlanName(project: Project) {
     this.is_active_subscription = project.isActiveSubscription;
@@ -506,19 +578,11 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.logger.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
 
       if (projectUser_bs) {
-        if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
-          this.logger.log('teammateStatus ', this.teammateStatus) 
-          this.selectedStatus = this.teammateStatus[2].id;
-          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
-          this.teammateStatus = this.teammateStatus.slice(0)
-        } else if (projectUser_bs.user_available === false && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
-          this.selectedStatus = this.teammateStatus[1].id;
-          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
-          this.teammateStatus = this.teammateStatus.slice(0)
-        } else if (projectUser_bs.user_available === true && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
-          this.selectedStatus = this.teammateStatus[0].id
-          this.teammateStatus = this.teammateStatus.slice(0)
-          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+        const statusOption = getUserStatusFromProjectUser(projectUser_bs);
+        if (statusOption) {
+          this.selectedStatus = statusOption.id;
+          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', statusOption.name);
+          this.TEAMMATE_STATUS = this.TEAMMATE_STATUS.slice(0);
         }
       }
       //  this.teammateStatus = this.teammateStatus.slice(0)
@@ -584,46 +648,100 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-  changeAvailabilityState(selecedstatusID) {
-  this.logger.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
+  toggleProjectsDropdown() {
+    this.openDropdownProjects = !this.openDropdownProjects;
+    if (!this.openDropdownProjects) {
+      this.openStatusDropdownProjectId = null;
+      this.selectedProjectForStatus = null;
+    }
+  }
+
+  openStatusDropdownOnHover(event: Event, prjct: any) {
+    this.cancelStatusDropdownClose();
+    const projectId = prjct?.id_project?._id;
+    const el = event.currentTarget as HTMLElement;
+    const rect = el.getBoundingClientRect();
+    this.statusDropdownPosition = {
+      top: rect.top,
+      left: rect.right + 10
+    };
+    this.selectedProjectForStatus = prjct;
+    this.openStatusDropdownProjectId = projectId;
+  }
+
+  closeStatusDropdownOnLeave() {
+    this.cancelStatusDropdownClose();
+    this.statusDropdownCloseTimeout = setTimeout(() => {
+      this.closeDropdowns();
+      this.statusDropdownCloseTimeout = null;
+    }, 150);
+  }
+
+  cancelStatusDropdownClose() {
+    if (this.statusDropdownCloseTimeout) {
+      clearTimeout(this.statusDropdownCloseTimeout);
+      this.statusDropdownCloseTimeout = null;
+    }
+  }
+
+  onChangeProjectStatus(projectUser: ProjectUser, selectedStatusID: any) {
+    this.logger.log('[SIDEBAR-USER-DETAILS] onChangeProjectStatus', projectUser, selectedStatusID)
+    this.openStatusDropdownProjectId = null
+    this.selectedProjectForStatus = null
 
     let IS_AVAILABLE = null
     let profilestatus = ''
-    if (selecedstatusID === 1) {
+    if (selectedStatusID === 1) {
       IS_AVAILABLE = true
-    } else if (selecedstatusID === 2) {
+    } else if (selectedStatusID === 2) {
       IS_AVAILABLE = false
-    } else if (selecedstatusID === 3) {
+    } else if (selectedStatusID === 3) {
       IS_AVAILABLE = false
       profilestatus = 'inactive'
     }
 
+    this.usersService.updateCurrentUserAvailability(projectUser.id_project._id, IS_AVAILABLE, profilestatus).subscribe((projectUserUpdated: any) => {
 
-    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus)
-      .subscribe((projectUser: any) => {
+        this.logger.log('[NAVBAR] - PROJECT-USER UPDATED ', projectUser)
+        this.projects.find(p => p.id_project._id === projectUser.id_project._id).teammateStatus = getUserStatusFromProjectUser(projectUserUpdated as any);
+
+        this.project.teammateStatus = this.projects.find(p => p.id_project._id === this.projectId).teammateStatus;
+      }, (error) => {
+        this.logger.error('[NAVBAR] - PROJECT-USER UPDATED - ERROR  ', error);
+      }, () => {
+        this.logger.log('[NAVBAR] - PROJECT-USER UPDATED  * COMPLETE *');
+    });
+  }
+
+  changeAvailabilityStateInUserDetailsSidebar(selectedStatusID) {
+    this.logger.log('[SIDEBAR-USER-DETAILS] - changeAvailabilityState projectid', this.project._id, ' available 1: ', selectedStatusID);
+    
+    let IS_AVAILABLE = null
+    let profilestatus = ''
+    if (selectedStatusID === 1) {
+      IS_AVAILABLE = true
+    } else if (selectedStatusID === 2) {
+      IS_AVAILABLE = false
+    } else if (selectedStatusID === 3) {
+      IS_AVAILABLE = false
+      profilestatus = 'inactive'
+    }
+
+    this.usersService.updateCurrentUserAvailability(this.project._id, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => {
 
 
-       console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+        this.logger.log('[SIDEBAR-USER-DETAILS] - PROJECT-USER UPDATED ', projectUser)
 
-        // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
-        this.usersService.availability_btn_clicked(true)
+
+
 
       }, (error) => {
-        this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notifyService.showNotification('An error occurred while updating status', 4, 'report_problem');
-        // this.notifyService.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+        this.logger.error('[SIDEBAR-USER-DETAILS] - PROJECT-USER UPDATED - ERROR  ', error);
 
       }, () => {
-        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
-
-        // =========== NOTIFY SUCCESS===========
-        // this.notifyService.showNotification('status successfully updated', 2, 'done');
-        // this.notifyService.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
-        this.cachePuService.clearPuCache()
+        this.logger.log('[SIDEBAR-USER-DETAILS] - PROJECT-USER UPDATED  * COMPLETE *');
 
 
-        // this.getProjectUser();
       });
   }
 
@@ -682,22 +800,13 @@ export class SidebarUserDetailsComponent implements OnInit {
       )
       .subscribe((projectUser) => {
         this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - projectUser ', projectUser);
-        if (projectUser) {
-          if (projectUser['user_available'] === false && projectUser['profileStatus'] === 'inactive') {
-            // this.logger..log('teammateStatus ', this.teammateStatus) 
-            this.selectedStatus = this.teammateStatus[2].id;
-            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
-            this.teammateStatus = this.teammateStatus.slice(0)
-          } else if (projectUser['user_available'] === false && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
-            this.selectedStatus = this.teammateStatus[1].id;
-            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
-            this.teammateStatus = this.teammateStatus.slice(0)
-          } else if (projectUser['user_available'] === true && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
-            this.selectedStatus = this.teammateStatus[0].id
-            this.teammateStatus = this.teammateStatus.slice(0)
-            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+        if (projectUser && typeof projectUser === 'object') {
+          const statusOption = getUserStatusFromProjectUser(projectUser);
+          if (statusOption) {
+            this.selectedStatus = statusOption.id;
+            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', statusOption.name);
+            this.TEAMMATE_STATUS = this.TEAMMATE_STATUS.slice(0);
           }
-
         }
       }, error => {
         this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
@@ -859,6 +968,8 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         this.createUserAvatar(user);
 
+        this.getProjects();
+
         const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
         if (stored_preferred_lang) {
@@ -930,8 +1041,11 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   closeUserDetailSidePanel() {
+    this.closeDropdowns();
     var element = document.getElementById('user-details');
-    element.classList.remove("active");
+    if (element) {
+      element.classList.remove("active");
+    }
     this.logger.log('[SIDEBAR-USER-DETAILS] element', element)
     // this.onCloseUserDetailsSidebar.emit(false);
   }
