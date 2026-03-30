@@ -33,6 +33,9 @@ export class ModalUploadFileComponent implements OnInit {
   body: any;
   tparams = { "file_size_limit": "10" }
 
+  fileUrlInput = '';
+  urlImportInvalid = false;
+
   // KB Tags
   kbTag: string = '';
   kbTagsArray = []
@@ -103,6 +106,7 @@ export class ModalUploadFileComponent implements OnInit {
   // }
 
   onFileChange(event: any) {
+    this.clearUrlImportFields();
     // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - event.target.files ', event.target.files);
     // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - event.target.files.length ', event.target.files.length);
     if (event.target.files && event.target.files.length) {
@@ -142,6 +146,7 @@ export class ModalUploadFileComponent implements OnInit {
 
     if (fileList.length > 0) {
       const file: File = fileList[0];
+      this.clearUrlImportFields();
       // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - DROP file ', file);
 
       var mimeType = fileList[0].type;
@@ -228,40 +233,22 @@ export class ModalUploadFileComponent implements OnInit {
   }
 
   handleFileUploading(file: any) {
+    this.uploadCompleted = false;
+    this.body = null;
+
     if (this.hasAlreadyUploadAfile === false) {
       this.hideProgressBar = false;
       this.hideDropZone = true;
 
-      // this.logger.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file ', file);
-      this.uploadedFileName = file.name
-      // this.logger.log('[MODAL-UPLOAD-FILE]  - handleFileUploading > uploadedFileName ', this.uploadedFileName);
-      this.file_extension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name
-      // this.logger.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file_extension ', this.file_extension)
-
+      this.uploadedFile = file;
+      this.uploadedFileName = file.name;
+      this.file_extension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name;
       this.file_size_in_mb = (file.size / (1024 * 1024)).toFixed(2);
-      // this.logger.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file_size_in_mb ', this.file_size_in_mb)
+      this.file_name_ellipsis_the_middle = this.start_and_end(file.name);
 
-      this.file_name_ellipsis_the_middle = this.start_and_end(file.name)
-
-      this.uploadImageNativeService.uploadAssetFile(this.uploadedFile, 86400)
-        .then(downloadURL => {
-          // this.logger.log(`[MODAL-UPLOAD-FILE] - upload native downloadURL `, downloadURL);
-          if (downloadURL) {
-            this.uploadCompleted = true;
-            // this.logger.log(`[MODAL-UPLOAD-FILE] - upload native uploadCompleted `, this.uploadCompleted);
-
-            this.body = {
-              type: this.file_extension,
-              source: downloadURL,
-              content: "",
-              name: this.uploadedFileName,
-              tags: this.kbTagsArray
-            }
-          }
-        })
-        .catch((error) => {
-          this.logger.error(`[MODAL-UPLOAD-FILE] - upload native error `, error);
-        });
+      this.uploadFileToStorage(file).catch((error) => {
+        this.logger.error(`[MODAL-UPLOAD-FILE] - upload native error `, error);
+      });
     }
 
 
@@ -316,9 +303,28 @@ export class ModalUploadFileComponent implements OnInit {
     // };
   }
 
+  private uploadFileToStorage(file: File): Promise<boolean> {
+    this.uploadedFile = file;
+    return this.uploadImageNativeService.uploadAssetFile(file, 86400).then((downloadURL) => {
+      if (downloadURL) {
+        this.uploadCompleted = true;
+        this.body = {
+          type: this.file_extension,
+          source: downloadURL,
+          content: '',
+          name: this.uploadedFileName,
+          tags: [...this.kbTagsArray]
+        };
+        return true;
+      }
+      return false;
+    });
+  }
 
-  start_and_end(str) {
-
+  start_and_end(str: string) {
+    if (!str) {
+      return '';
+    }
     if (str.length > 40) {
       return str.substr(0, 20) + '...' + str.substr(str.length - 10, str.length)
     }
@@ -330,13 +336,120 @@ export class ModalUploadFileComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onOkPresssed() {
-    this.dialogRef.close(this.body);
-    
-    // this.logger.log('[MODAL-UPLOAD-FILE] onOkPresssed')
+  get importDisabled(): boolean {
+    const raw = (this.fileUrlInput || '').trim();
+    /** URL field has priority: Import only when it is a valid http(s) link to .pdf / .docx / .txt */
+    if (raw) {
+      return this.parseUrlImportSpec(raw) === null;
+    }
+    if (this.body) {
+      return false;
+    }
+    if (this.hideDropZone && !this.uploadCompleted) {
+      return true;
+    }
+    return true;
   }
 
-      /**
+  onUrlInput(): void {
+    this.scheduleValidateUrlImportState();
+  }
+
+  /** Paste runs before ngModel updates; defer so validation reads the full URL. */
+  onUrlPaste(_event: ClipboardEvent): void {
+    this.scheduleValidateUrlImportState();
+  }
+
+  private scheduleValidateUrlImportState(): void {
+    setTimeout(() => this.validateUrlImportState(), 0);
+  }
+
+  /** Any non-empty text that is not a valid import URL shows KbPage.ImportFileUrlInvalid (incl. garbage like "tesr"). */
+  validateUrlImportState(): void {
+    const raw = (this.fileUrlInput || '').trim();
+    if (!raw) {
+      this.urlImportInvalid = false;
+      return;
+    }
+    this.urlImportInvalid = this.parseUrlImportSpec(raw) === null;
+  }
+
+  onOkPresssed(): void {
+    const raw = (this.fileUrlInput || '').trim();
+    /** URL field wins over a prior browse upload so wrong extension (e.g. .png) is validated and shown. */
+    if (raw) {
+      if (!this.tryBuildBodyFromUrl(raw)) {
+        return;
+      }
+      this.body.tags = [...this.kbTagsArray];
+      this.dialogRef.close(this.body);
+      return;
+    }
+    if (this.body) {
+      this.body.tags = [...this.kbTagsArray];
+      this.dialogRef.close(this.body);
+      return;
+    }
+  }
+
+  /** Validates URL in UI (scheme, path extension); backend receives `source` as the URL. */
+  private tryBuildBodyFromUrl(raw: string): boolean {
+    this.urlImportInvalid = false;
+    const spec = this.parseUrlImportSpec(raw);
+    if (!spec) {
+      this.urlImportInvalid = true;
+      return false;
+    }
+    this.body = {
+      type: spec.ext,
+      source: spec.url.href,
+      content: '',
+      name: spec.name,
+      tags: [...this.kbTagsArray]
+    };
+    return true;
+  }
+
+  private parseUrlImportSpec(raw: string): { url: URL; ext: string; name: string } | null {
+    let u: URL;
+    try {
+      u = new URL(raw);
+    } catch {
+      return null;
+    }
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+      return null;
+    }
+    let pathname: string;
+    try {
+      pathname = decodeURIComponent(u.pathname);
+    } catch {
+      pathname = u.pathname;
+    }
+    /** Trailing slash breaks .endsWith('.pdf'); use last path segment. */
+    const pathNorm = pathname.replace(/\/+$/, '') || '/';
+    const lower = pathNorm.toLowerCase();
+    let ext: string;
+    if (lower.endsWith('.pdf')) {
+      ext = 'pdf';
+    } else if (lower.endsWith('.docx')) {
+      ext = 'docx';
+    } else if (lower.endsWith('.txt')) {
+      ext = 'txt';
+    } else {
+      return null;
+    }
+    const segment = pathNorm.substring(pathNorm.lastIndexOf('/') + 1);
+    const name = segment || 'document';
+    return { url: u, ext, name };
+  }
+
+  private clearUrlImportFields(): void {
+    this.fileUrlInput = '';
+    this.urlImportInvalid = false;
+  }
+
+  /**
    * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
    * L'observer viene creato una sola volta in ngAfterViewInit
    */
