@@ -2006,10 +2006,11 @@
                       <div class="upsell-for-retention-wpr" *ngIf="!isAvailableRetention">
                         <div class="upsell-for-retention-text">
                           {{'UpgradePlanForRetention' | translate: retention_t_params}}
+                           <span class="upsell-for-retention" (click)="goToPricing('business')">
+                            {{ 'Pricing.UpgradeYourPlan' | translate }}!
+                           </span>
                         </div>
-                        <div class="upsell-for-retention" (click)="goToPricing('business')">
-                          {{ 'Pricing.UpgradeYourPlan' | translate }}!
-                        </div>
+                       
                       </div>
                     </ng-container>
 
