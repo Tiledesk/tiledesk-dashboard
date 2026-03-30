@@ -1182,8 +1182,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.id_project + '/project-settings/retention'])
+      }  else {
+        // this.logger.log('goToProjectSettings_Security HERE 5 ')
+        this.presentModalAgentCannotManageAvancedSettings()
       }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
+    
   }
 
   goToProjectSettings_Advanced() {
