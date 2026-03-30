@@ -50,7 +50,7 @@
     
 
 
-    <mat-accordion>
+    <mat-accordion *ngIf="refreshRateIsEnabled">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" 
             class="html-tags--expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
@@ -211,49 +211,51 @@
                 [disabled]="!refreshRateIsEnabled" style="margin-top: 3px;">
         </div>
 
-           <!-- KB Tags -->
-        <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
-            <input id="kb-tags" class="adds-kb-input" name="kb-tags"
-                [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
-                [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-                style="padding-top: 16px;">
+        <!-- KB Tags -->
+        <ng-container *ngIf="refreshRateIsEnabled">
+            <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
+                <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+                    [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
+                    [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+                    style="padding-top: 16px;">
 
-            <div class="kb-tags-help"
-                style="position: relative;top: 15px;"
-                #trigger="cdkOverlayOrigin"
-                cdkOverlayOrigin
-                (mouseenter)="open()"
+                <div class="kb-tags-help"
+                    style="position: relative;top: 15px;"
+                    #trigger="cdkOverlayOrigin"
+                    cdkOverlayOrigin
+                    (mouseenter)="open()"
+                    (mouseleave)="scheduleClose()">
+
+                    <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
+                    help_outline
+                    </span>
+                </div>
+            </div>
+            <ng-template
+                cdk-connected-overlay
+                [cdkConnectedOverlayOrigin]="trigger"
+                [cdkConnectedOverlayOpen]="isOpen"
+                [cdkConnectedOverlayPositions]="positions"
+                [cdkConnectedOverlayHasBackdrop]="false"
+                (detach)="isOpen = false">
+                <div class="cdk-popover"
+                (mouseenter)="cancelClose()"
                 (mouseleave)="scheduleClose()">
 
-                <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
-                help_outline
-                </span>
-            </div>
-        </div>
-        <ng-template
-            cdk-connected-overlay
-            [cdkConnectedOverlayOrigin]="trigger"
-            [cdkConnectedOverlayOpen]="isOpen"
-            [cdkConnectedOverlayPositions]="positions"
-            [cdkConnectedOverlayHasBackdrop]="false"
-            (detach)="isOpen = false">
-            <div class="cdk-popover"
-            (mouseenter)="cancelClose()"
-            (mouseleave)="scheduleClose()">
+                    <div class="cdk-popover-arrow"></div>
 
-                <div class="cdk-popover-arrow"></div>
+                    <div class="cdk-popover-content">
+                        {{'AssignOneOrMoreTagsToThisContent' | translate}}
+                    </div>
 
-                <div class="cdk-popover-content">
-                    {{'AssignOneOrMoreTagsToThisContent' | translate}}
+                    <div *ngIf="hideHelpLink" class="cdk-learn-more"
+                        (click)="goToKbTagsDoc()">
+                    {{ 'LearnMore' | translate }}
+                    </div>
+
                 </div>
-
-                <div *ngIf="hideHelpLink" class="cdk-learn-more"
-                    (click)="goToKbTagsDoc()">
-                {{ 'LearnMore' | translate }}
-                </div>
-
-            </div>
-        </ng-template>
+            </ng-template>
+        </ng-container>
 
         <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
 
@@ -329,7 +331,7 @@
                 [clearable]="false" [searchable]="false" 
                 [(ngModel)]="selectedRefreshRate"
                 (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
+                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
             </ng-select>
 
             <!-- <span class="input-label input-label-on-bottom">

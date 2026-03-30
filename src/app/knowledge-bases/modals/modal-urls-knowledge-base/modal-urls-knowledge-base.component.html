@@ -284,7 +284,7 @@
                 [clearable]="false" [searchable]="false" 
                 [(ngModel)]="selectedRefreshRate"
                 (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
+                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
             </ng-select>
 
            <!--  <span class="input-label input-label-on-bottom">
