@@ -880,6 +880,9 @@
     "12Months": "12 månader",
     "18Months": "18 månader",
     "24Months": "24 månader",
+    "3Years": "3 år",
+    "4Years": "4 år",
+    "5Years": "5 år",
     "UpgradePlanForRetention": "Lagring av meddelanden kan anpassas från {{plan_name}}-planen.",
     "MessageRetention": "Lagring av meddelanden",
     "TYPE_GPT_MODEL": {

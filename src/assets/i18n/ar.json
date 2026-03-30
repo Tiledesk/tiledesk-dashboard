@@ -879,6 +879,9 @@
     "12Months": "12 شهرًا",
     "18Months": "18 شهرًا",
     "24Months": "24 شهرًا",
+    "3Years": "3 سنوات",
+    "4Years": "4 سنوات",
+    "5Years": "5 سنوات",
     "UpgradePlanForRetention": "يمكن تخصيص الاحتفاظ بالرسائل من خطة {{plan_name}}.",
     "MessageRetention": "الاحتفاظ بالرسائل",
     "TYPE_GPT_MODEL": {

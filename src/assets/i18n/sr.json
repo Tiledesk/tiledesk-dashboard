@@ -880,6 +880,9 @@
     "12Months": "12 месеци",
     "18Months": "18 месеци",
     "24Months": "24 месеца",
+    "3Years": "3 године",
+    "4Years": "4 године",
+    "5Years": "5 година",
     "UpgradePlanForRetention": "Чување порука може да се прилагоди од плана {{plan_name}}.",
     "MessageRetention": "Чување порука",
     "TYPE_GPT_MODEL": {

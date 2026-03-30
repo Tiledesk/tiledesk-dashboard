@@ -84,7 +84,7 @@
                   <li (click)="goToProjectSettings_RetentionPolicy()"
                     class="btn-with-border-effect"
                     [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
-                    <a> {{'RetentionPolicy' | translate }} </a>
+                    <a> {{'MessageRetention' | translate }} </a>
                   </li>
 
                   <li *ngIf="PERMISSION_TO_VIEW_ADVANCED" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
@@ -1958,10 +1958,13 @@
                             <div class="upsell-for-retention-wpr" *ngIf="!isAvailableRetention">
                               <div class="upsell-for-retention-text">
                                 {{'UpgradePlanForRetention' | translate: retention_t_params}}
+                                <span class="upsell-for-retention" (click)="goToPricing('business')"> 
+                                     {{ 'Pricing.UpgradeYourPlan' | translate }}!
+                                </span>
                               </div>
-                              <div class="upsell-for-retention" (click)="goToPricing('business')">
+                              <!-- <div class="upsell-for-retention" (click)="goToPricing('business')">
                                 {{ 'Pricing.UpgradeYourPlan' | translate }}!
-                              </div>
+                              </div> -->
                             </div>
                           </ng-container>
 

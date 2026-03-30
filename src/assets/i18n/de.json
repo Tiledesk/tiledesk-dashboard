@@ -879,6 +879,9 @@
     "12Months": "12 Monate",
     "18Months": "18 Monate",
     "24Months": "24 Monate",
+	"3Years": "3 Jahre",
+    "4Years": "4 Jahre",
+    "5Years": "5 Jahre",
 	"UpgradePlanForRetention": "Die Nachrichtenaufbewahrung kann ab dem {{plan_name}}-Tarif angepasst werden.",
     "MessageRetention": "Nachrichtenaufbewahrung",
 	"TYPE_GPT_MODEL": {
