@@ -5,7 +5,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { TooltipOptions } from 'ng2-tooltip-directive';
 import { concat, from, isObservable, Observable, of } from 'rxjs';
 import { concatMap, first, last, takeWhile } from 'rxjs/operators';
-
+import { TEAMMATE_STATUS } from './constants';
 export const CutomTooltipOptions: TooltipOptions = {
     'show-delay': 0,
     'tooltip-class': 'custom-ng2-tooltip',
@@ -1034,6 +1034,35 @@ export const CHANNELS = [
 
 ]
 
+export function getUserStatusFromProjectUser(projectUser: {
+    user_available?: boolean;
+    profileStatus?: string;
+  }): typeof TEAMMATE_STATUS[number] | null {
+    if (!projectUser) {
+      return null;
+    }
+  
+    if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
+      return TEAMMATE_STATUS[2]; // Inactive
+    }
+    if (projectUser.user_available === false && (!projectUser.profileStatus || projectUser.profileStatus === '')) {
+      return TEAMMATE_STATUS[1]; // Unavailable
+    }
+    if (projectUser.user_available === true && (!projectUser.profileStatus || projectUser.profileStatus === '')) {
+      return TEAMMATE_STATUS[0]; // Available
+    }
+  
+    // Fallback per casi non esplicitamente gestiti
+    if (projectUser.user_available === true) {
+      return TEAMMATE_STATUS[0];
+    }
+    if (projectUser.user_available === false) {
+      return TEAMMATE_STATUS[1];
+    }
+  
+    return null;
+  }
+
 export function checkAcceptedFile(fileType, fileUploadAccept): boolean {
 
     if (fileUploadAccept === '*/*') {
@@ -1174,6 +1203,35 @@ export function isMaliciousHTML(input) {
     return false; // No XSS detected
 }
 
+export const BLOCKED_DOMAINS = [
+  // DOMINI MALEVOLI NOTI
+ 'attacker.me', 'evil.com', 'malicious.site', 'hacker.com', 'phishing.com',
+ 'malware.com', 'ransomware.com', 'trojan.com', 'virus.com', 'spyware.com',
+ 
+ // DOMINI DI PHISHING
+ 'phish.com', 'stealer.com', 'credential-thief.com', 'login-stealer.com',
+ 'password-stealer.com', 'banking-phish.com', 'paypal-phish.com',
+ 
+ // DOMINI DI SPAM
+ 'spam.com', 'spammer.com', 'bulk-email.com', 'unsolicited.com',
+ 
+ // DOMINI TRUFFA
+ 'scam.com', 'fraud.com', 'fake.com', 'counterfeit.com', 'hoax.com',
+ 
+ // DOMINI EXPLOIT
+ 'exploit.com', 'vulnerability.com', 'zero-day.com', 'payload.com',
+ 'shellcode.com', 'backdoor.com', 'rootkit.com',
+ 
+ // DOMINI BOTNET
+ 'botnet.com', 'zombie-pc.com', 'command-control.com', 'c2-server.com',
+ 
+ // DOMINI ADWARE/MALVERTISING
+ 'adware.com', 'malvertising.com', 'popup-ads.com', 'unwanted-ads.com',
+ 
+ // DOMINI GENERICI PERICOLOSI
+ 'danger.com', 'unsafe.com', 'insecure.com', 'threat.com', 'risk.com',
+]
+
 // Projects created after this date will no longer be able to use the free plan when the trial expires.
 // export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
 export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
@@ -1234,4 +1292,5 @@ export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrat
 export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/if-operating-hours#how-to-configure-the-action'
 export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
 export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
-
+export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"
+export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
