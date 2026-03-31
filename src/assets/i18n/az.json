@@ -2098,6 +2098,8 @@
         "PromptSize":"Tələb ölçüsü",
         "PromptSizeUsage":"{{ prompt_token_size }} token",
         "GeneratedByModel": "{{ai_model_name}} tərəfindən yaradılıb",
+        "Indexing": "İndeksləşdirmə",
+        "GeneratingUsing": "{{ai_model_name}} istifadə edərək yaradılır",
         "TotalTokensUsage": "{{ prompt_token_size }} tokens ümumi istifadə",
         "PlaceholderSelectEngine": "Element seçin",
         "TypeKbContentPlaceholder": "Bilik bazasının mətn məzmunu",

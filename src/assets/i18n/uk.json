@@ -2114,6 +2114,8 @@
         "PromptSize": "Підкажіть розмір",
         "PromptSizeUsage": "{{ prompt_token_size }} токенів",
         "GeneratedByModel": "створено {{ai_model_name}}",
+        "Indexing": "Індексування",
+        "GeneratingUsing": "створення за допомогою {{ai_model_name}}",
         "TotalTokensUsage": "Загальне використання токенів: {{ prompt_token_size }}",
         "PlaceholderSelectEngine": "Виберіть елемент",
         "TypeKbContentPlaceholder": "Текстове наповнення Бази знань",

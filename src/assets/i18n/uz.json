@@ -2097,6 +2097,8 @@
         "PromptSize":"Tezkor o'lcham",
         "PromptSizeUsage":"{{ prompt_token_size }} token",
         "GeneratedByModel": "{{ai_model_name}} tomonidan yaratilgan",
+        "Indexing": "Indekslash",
+        "GeneratingUsing": "{{ai_model_name}} yordamida yaratilmoqda",
         "TotalTokensUsage": "{{ prompt_token_size }} umumiy foydalanish tokeni",
         "PlaceholderSelectEngine": "Elementni tanlang",
         "TypeKbContentPlaceholder": "Bilimlar bazasining matn mazmuni",

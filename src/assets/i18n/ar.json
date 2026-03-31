@@ -2099,6 +2099,8 @@
         "PromptSize": "حجم المطالبة",
         "PromptSizeUsage": "{{ prompt_token_size }} رمز",
         "GeneratedByModel": "تم إنشاؤه بواسطة {{ai_model_name}}",
+        "Indexing": "الفهرسة",
+        "GeneratingUsing": "جارٍ الإنشاء باستخدام {{ai_model_name}}",
         "PlaceholderSelectEngine": "حدد عنصرا",
         "TypeKbContentPlaceholder": "المحتوى النصي لقاعدة المعرفة",
         "AddKbInfoTextContentMsg1": "انتبه، الحد الأقصى لعدد الأحرف المسموح به لكل محتوى نصي هو 32768.",

@@ -2098,6 +2098,8 @@
         "PromptSize":"Промпт сизе",
         "PromptSizeUsage":"{{ prompt_token_size }} токени",
         "GeneratedByModel": "генерисао {{ai_model_name}}",
+        "Indexing": "Индексирање",
+        "GeneratingUsing": "генериши користећи {{ai_model_name}}",
         "TotalTokensUsage": "Укупна употреба токена: {{ prompt_token_size }}",
         "PlaceholderSelectEngine": "Изаберите елемент",
         "TypeKbContentPlaceholder": "Текстуални садржај Базе знања",

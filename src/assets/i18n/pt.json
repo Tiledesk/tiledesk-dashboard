@@ -2097,6 +2097,8 @@
         "PromptSize": "Tamanho do prompt",
         "PromptSizeUsage": "{{ prompt_token_size }} tokens",
         "GeneratedByModel": "gerado por {{ai_model_name}}",
+        "Indexing": "Indexação",
+        "GeneratingUsing": "a gerar com {{ai_model_name}}",
         "TotalTokensUsage": "Utilização total de {{ prompt_token_size }} tokens",
         "PlaceholderSelectEngine": "Selecione um elemento",
         "TypeKbContentPlaceholder": "Conteúdo de texto da Base de Conhecimento",

@@ -2113,6 +2113,8 @@
         "PromptSize": "Шақыру мөлшері",
         "PromptSizeUsage": "{{ prompt_token_size }} таңбалауыш",
         "GeneratedByModel": "жасаған {{ai_model_name}}",
+        "Indexing": "Индекстеу",
+        "GeneratingUsing": "{{ai_model_name}} арқылы жасалуда",
         "TotalTokensUsage": "{{ prompt_token_size }} таңбалауыштың жалпы пайдалануы",
         "PlaceholderSelectEngine": "Элементті таңдаңыз",
         "TypeKbContentPlaceholder": "Білім қорының мәтіндік мазмұны",

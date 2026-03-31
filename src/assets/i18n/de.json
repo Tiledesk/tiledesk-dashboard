@@ -2097,6 +2097,8 @@
 		"PromptSize": "Prompte Größe",
 		"PromptSizeUsage": "{{ prompt_token_size }} Token",
 		"GeneratedByModel": "generiert von {{ai_model_name}}",
+		"Indexing": "Indizierung",
+    	"GeneratingUsing": "generierung mit {{ai_model_name}}",
 		"TotalTokensUsage": "{{ prompt_token_size }} Token Gesamtnutzung",
 		"PlaceholderSelectEngine": "Wählen Sie ein Element aus",
 		"TypeKbContentPlaceholder": "Textinhalt der Wissensdatenbank",

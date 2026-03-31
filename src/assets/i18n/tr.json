@@ -2098,6 +2098,8 @@
         "PromptSize":"Bilgi istemi boyutu",
         "PromptSizeUsage":"{{ prompt_token_size }} belirteç",
         "GeneratedByModel": "{{ai_model_name}} tarafından oluşturuldu",
+        "Indexing": "İndeksleme",
+        "GeneratingUsing": "{{ai_model_name}} kullanılarak oluşturuluyor",
         "TotalTokensUsage": "{{ prompt_token_size }} token toplam kullanım",
         "PlaceholderSelectEngine": "Bir öğe seçin",
         "TypeKbContentPlaceholder": "Bilgi Bankasının metin içeriği",

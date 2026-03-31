@@ -2098,6 +2098,8 @@
         "PromptSize":"Dimensione della richiesta",
         "PromptSizeUsage":"{{ prompt_token_size }} token",
         "GeneratedByModel": "generato da {{ai_model_name}}",
+        "Indexing": "Indicizzazione",
+        "GeneratingUsing": "generazione con {{ai_model_name}}",
         "TotalTokensUsage": "{{ prompt_token_size }} token utilizzati in totale",
         "PlaceholderSelectEngine": "Seleziona un elemento",
         "TypeKbContentPlaceholder": "Contenuto testuale della Knowledge Base",

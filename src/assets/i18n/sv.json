@@ -2114,6 +2114,8 @@
         "PromptSize": "Snabb storlek",
         "PromptSizeUsage": "{{ prompt_token_size }} tokens",
         "GeneratedByModel": "genererad av {{ai_model_name}}",
+        "Indexing": "Indexering",
+        "GeneratingUsing": "genererar med {{ai_model_name}}",
         "TotalTokensUsage": "{{ prompt_token_size }} tokens total användning",
         "PlaceholderSelectEngine": "Välj ett element",
         "TypeKbContentPlaceholder": "Textinnehållet i Kunskapsbasen",

@@ -2097,6 +2097,8 @@
         "PromptSize": "Taille de l'invite",
         "PromptSizeUsage": "Jetons {{ prompt_token_size }}",
         "GeneratedByModel": "généré par {{ai_model_name}}",
+        "Indexing": "Indexation",
+        "GeneratingUsing": "génération avec {{ai_model_name}}",
         "TotalTokensUsage": "Utilisation totale des jetons {{ prompt_token_size }}",
         "PlaceholderSelectEngine": "Sélectionnez un élément",
         "TypeKbContentPlaceholder": "Contenu textuel de la base de connaissances",
