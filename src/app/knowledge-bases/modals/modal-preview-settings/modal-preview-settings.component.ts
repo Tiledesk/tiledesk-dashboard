@@ -2,7 +2,21 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { LLM_MODEL, OPENAI_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_reranking_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
+import {
+  LLM_MODEL,
+  URL_AI_model_doc,
+  URL_advanced_context_doc,
+  URL_chunk_Limit_doc,
+  URL_contents_sources_doc,
+  URL_max_tokens_doc,
+  URL_reranking_doc,
+  URL_system_context_doc,
+  URL_temperature_doc,
+  loadTokenMultiplier,
+  getLlmModelTokenBounds,
+  getLlmModelDefaultMaxTokens,
+  LLM_MAX_TOKENS_SLIDER_UI_CAP
+} from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -25,6 +39,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   @ViewChild('contentsSources') contentsSources: SatPopover;
   @ViewChild('chunkonly') chunkonly: SatPopover;
   @ViewChild('rerank') rerank: SatPopover;
+  
+  private savedScrollData: { scrollTop: number, selector: string, activeElementId?: string } | null = null;
 
 
 
@@ -47,8 +63,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   public selectedModel: any // = this.models_list[0].value;
   public max_tokens: number;
-  public max_tokens_min: number;
-  public max_tokens_max: number;
+  public max_tokens_min = 10;
+  /** Tetto effettivo dello slider (può essere < catalogo, es. 100k vs 128k in util). */
+  public max_tokens_max = LLM_MAX_TOKENS_SLIDER_UI_CAP;
+  /** Massimo da catalogo util (max_output_tokens) — solo per etichetta, es. "128k". */
+  public max_tokens_catalog_max = LLM_MAX_TOKENS_SLIDER_UI_CAP;
   public temperature: number; // 0.7
   public alpha: number; // 0.7
   public topK: number;
@@ -72,6 +91,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private citationsDefaultValue = false
   private chunksOnlyDefaultValue = false
   private reRankigDefaultValue = false
+  private reRankigMultiplerDefaultValue = 2
 
   public countOfOverrides = 0
 
@@ -84,7 +104,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private hasAlreadyOverrideAdvancedContex: boolean;
   private hasAlreadyOverrideChunckOnly: boolean;
   private hasAlreadyOverrideReRanking: boolean;
-   private hasAlreadyOverrideReRankingMultipler: boolean;
+  private hasAlreadyOverrideReRankingMultipler: boolean;
   private hasAlreadyOverrideCitations: boolean;
 
   public hideHelpLink: boolean;
@@ -92,6 +112,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   temperature_slider_disabled: boolean;
   modelGroups: any[] = [];
   flattenedModels: any[] = [];
+
 
   aiSettingsObject = [{
     model: null,
@@ -107,6 +128,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     citations: null,
   }]
 
+  pineconeReranking: boolean
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewSettingsComponent>,
@@ -120,7 +143,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // this.logger.log("[MODAL PREVIEW SETTINGS] data ", data)
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
-    if (data && data.selectedNamespace) {
+
+    if (data) {
       this.selectedNamespace = data.selectedNamespace
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
@@ -136,11 +160,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }
 
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
-
-      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
+      this.pineconeReranking = data.pineconeReranking
+      console.log("[MODAL PREVIEW SETTINGS] pineconeReranking ", this.pineconeReranking)
 
       this.selectedNamespace.preview_settings
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
       this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject 1", this.aiSettingsObject)
 
       // new
@@ -170,14 +194,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }
 
 
-      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
-        this.temperature_slider_disabled = true;
-        console.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
-      } else { 
-        // this.temperature = this.selectedNamespace.preview_settings.temperature
-        this.temperature_slider_disabled = false;
-      }
-
       this.temperature = this.selectedNamespace.preview_settings.temperature
       // this.logger.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
 
@@ -192,7 +208,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }
 
 
-      this.context = this.selectedNamespace.preview_settings.context
+       this.context = this.selectedNamespace.preview_settings.context
 
        if (!this.selectedNamespace.preview_settings.chunks_only) {
         this.chunkOnly = false
@@ -215,6 +231,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       } else {
         this.reRankingMultipler = 2
       }
+      
+      
 
       this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.advancedPrompt)
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
@@ -231,15 +249,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       if (!this.selectedNamespace.preview_settings.citations) {
         this.citations = false
         this.selectedNamespace.preview_settings.citations = this.citations
-        this.max_tokens_min = 10
-        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       } else {
         this.citations = this.selectedNamespace.preview_settings.citations;
-        this.max_tokens_min = 1024;
-        // this.max_tokens = 1024;
-        // this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
-        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       }
 
 
@@ -344,7 +356,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.loadModelGroups();
 
     // const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    // console.log('LLM_MODEL' , LLM_MODEL)
+    // this.logger.log('LLM_MODEL' , LLM_MODEL)
     // const orderedProviders = [
     //   ...LLM_MODEL.filter(p => p.value === 'openai'),
     //   ...LLM_MODEL.filter(p => p.value !== 'openai')
@@ -362,7 +374,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //     }))
     // }));
 
-    // console.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
+    // this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups' , this.modelGroups)
 
     // this.flattenedModels = this.modelGroups.flatMap(group => {
     //   // trova il provider corrispondente in LLM_MODEL
@@ -376,7 +388,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //   }));
     // });
 
-    // console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
     // // eventualmente seleziona il modello corrente
     // const selectedProvider = this.modelGroups.find(g =>
     //   g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
@@ -388,15 +400,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //   this.selectedModel = selectedModelObj?.value;
     // }
 
-    // console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
-    // console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    // console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
 
     // this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    // console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
     // const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    // console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     // this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
 
 
@@ -412,7 +424,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     const integrationName = 'vllm';
     this.integrationService.getIntegrationByName(integrationName).subscribe({
       next: (res: any) => {
-        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
 
         const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
         if (vllmProvider && res?.value?.models?.length) {
@@ -422,19 +434,19 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
             status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
           }));
 
-          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
         } else {
-          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
         }
 
         // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
         this.loadModelGroups();
       },
       error: (err) => {
-        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+         this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
       },
       complete: () => {
-        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+         this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
       }
     });
   }
@@ -443,7 +455,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     const integrationName = 'ollama';
     this.integrationService.getIntegrationByName(integrationName).subscribe({
       next: (res: any) => {
-        console.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
 
         const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
         if (ollamaProvider && res?.value?.models?.length) {
@@ -453,19 +465,19 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
             status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
           }));
 
-          console.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
         } else {
-          console.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
         }
 
         // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
         this.loadModelGroups();
       },
       error: (err) => {
-        console.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
       },
       complete: () => {
-        console.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+        this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
       }
     });
   }
@@ -473,7 +485,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   loadModelGroups() {
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    console.log('LLM_MODEL', LLM_MODEL)
+    this.logger.log('LLM_MODEL', LLM_MODEL)
     const orderedProviders = [
       ...LLM_MODEL.filter(p => p.value === 'openai'),
       ...LLM_MODEL.filter(p => p.value !== 'openai')
@@ -491,7 +503,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         }))
     }));
 
-    console.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
+    this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
 
     this.flattenedModels = this.modelGroups.flatMap(group => {
       // trova il provider corrispondente in LLM_MODEL
@@ -505,7 +517,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }));
     });
 
-    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
     // eventualmente seleziona il modello corrente
     const selectedProvider = this.modelGroups.find(g =>
       g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
@@ -517,18 +529,26 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedModel = selectedModelObj?.value;
     }
 
-    console.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
-    console.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    console.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
+    this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
+    this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
+    this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
 
 
 
-    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
-    console.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+    const modelRow = this.flattenedModels.find(
+      (el) => el.value === this.selectedNamespace.preview_settings.model
+    );
+    this.selectedModel = modelRow?.value ?? this.selectedNamespace.preview_settings.model;
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
     const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    console.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
+
+    const mv = this.selectedNamespace?.preview_settings?.model;
+    if (mv) {
+      this.applyMaxTokenSliderFromUtil(mv, { resetMaxTokensToDefault: false });
+    }
   }
 
   async getIntegrationByName() {
@@ -541,10 +561,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
         resolve(res)
       }, err => {
-        console.error(err);
+        this.logger.error(err);
         reject([])
       }, () => {
-        console.log('POST REQUEST * COMPLETE *');
+        this.logger.log('POST REQUEST * COMPLETE *');
       });
     })
 
@@ -554,7 +574,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     LLM_MODEL.forEach(async (model) => {
       if (model.value === "ollama") {
         const NEW_MODELS = await this.getIntegrationByName();
-        console.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS);
+        this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS);
 
         if (NEW_MODELS['value']?.models) {
           this.logger.log('[ACTION AI_PROMPT] - NEW_MODELS:', NEW_MODELS['value'].models);
@@ -589,15 +609,53 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.namespaceid = this.selectedNamespace.id
   }
 
+  /**
+   * Limiti slider max tokens da util.ts (min_tokens, max_output_tokens).
+   * Default preimpostato: min(max_output_tokens, 10000) tramite getLlmModelDefaultMaxTokens.
+   * Etichetta destra: max_output_tokens di catalogo (es. 128k); slider max = min(catalogo, tetto UI).
+   */
+  private applyMaxTokenSliderFromUtil(
+    modelValue: string,
+    options?: { resetMaxTokensToDefault?: boolean }
+  ): void {
+    if (!modelValue) {
+      return;
+    }
+    const bounds = getLlmModelTokenBounds(modelValue);
+    const utilMin = bounds?.min_tokens ?? 1;
+    // min_tokens da util.ts; con citations il minimo effettivo non scende sotto 1024
+    this.max_tokens_min = this.citations ? Math.max(utilMin, 1024) : utilMin;
+    const catalogMax = bounds?.max_output_tokens ?? LLM_MAX_TOKENS_SLIDER_UI_CAP;
+    this.max_tokens_catalog_max = catalogMax;
+    this.max_tokens_max = Math.min(catalogMax, LLM_MAX_TOKENS_SLIDER_UI_CAP);
+    if (this.max_tokens_min > this.max_tokens_max) {
+      this.max_tokens_max = this.max_tokens_min;
+    }
+
+    const clamp = (v: number) => Math.min(Math.max(v, this.max_tokens_min), this.max_tokens_max);
+
+    if (options?.resetMaxTokensToDefault) {
+      this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    } else if (this.max_tokens != null && !Number.isNaN(this.max_tokens as number)) {
+      this.max_tokens = clamp(this.max_tokens);
+    } else {
+      this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    }
+
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens;
+    }
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
+  }
 
   onSelectModel(selectedModel) {
-    console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
 
     const selected = this.flattenedModels.find(m => m.value === selectedModel);
     if (selected) {
-      console.log('Modello selezionato:', selected.name);
-      console.log('LLM Provider:', selected.llmValue);
-      console.log('Icona provider:', selected.llmSrc);
+      this.logger.log('Modello selezionato:', selected.name);
+      this.logger.log('LLM Provider:', selected.llmValue);
+      this.logger.log('Icona provider:', selected.llmSrc);
       this.selectedNamespace.preview_settings.llm = selected.llmValue
     }
 
@@ -640,6 +698,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     } else {
       this.countOfOverrides = this.countOfOverrides - 1;
     }
+
+    this.applyMaxTokenSliderFromUtil(selectedModel, { resetMaxTokensToDefault: true });
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject);
   }
 
   updateSliderValue(value, type) {
@@ -729,7 +790,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
-
     if (type === "re_ranking_multipler") {
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.reranking_multiplier = value;
@@ -744,16 +804,17 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         this.countOfOverrides = this.countOfOverrides - 1;
       }
 
-      // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
-      this.aiSettingsObject[0].reRankingMultipler = value
-      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
-      this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-    }
+    // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
+    this.aiSettingsObject[0].reRankingMultipler = value
+    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+  }
 
     // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
   }
 
 
+  
 
 
   onChangeTextInContex(event) {
@@ -781,6 +842,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   changeChunkOnly(event) {
+    this.saveDialogScrollPosition();
     this.logger.log("[MODAL PREVIEW SETTINGS] changeChunkOnly event ", event.target.checked)
     this.chunkOnly = event.target.checked
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -801,9 +863,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.countOfOverrides = this.countOfOverrides - 1;
       this.hasAlreadyOverrideChunckOnly = false
     }
+     this.restoreDialogScrollPosition();
   }
+ 
+
 
   changeReranking(event) {
+    this.saveDialogScrollPosition();
     this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking event ", event.target.checked)
     this.reRanking = event.target.checked
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -824,7 +890,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.countOfOverrides = this.countOfOverrides - 1;
       this.hasAlreadyOverrideReRanking = false
     }
-
+    this.restoreDialogScrollPosition();
   }
 
   changeAdvancePrompt(event) {
@@ -855,16 +921,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   changeCitations(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations event ", event.target.checked)
     this.citations = event.target.checked;
+    const modelValue = this.selectedNamespace.preview_settings.model || this.selectedModel;
+
     if (this.citations === true) {
-      this.max_tokens_min = 1024
-      this.max_tokens = 1024
-      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
+      this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: false });
+      this.max_tokens = Math.max(1024, this.max_tokens_min);
     } else {
-      this.max_tokens_min = 10;
-      this.max_tokens = 256
-      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
+      this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: false });
+      this.max_tokens = getLlmModelDefaultMaxTokens(modelValue);
     }
 
+    const clamp = (v: number) => Math.min(Math.max(v, this.max_tokens_min), this.max_tokens_max);
+    this.max_tokens = clamp(this.max_tokens);
+    this.selectedNamespace.preview_settings.max_tokens = this.max_tokens;
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.citations = this.citations
@@ -896,9 +966,100 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.logger.log('here y hasAlreadyOverrideCitations', this.hasAlreadyOverrideCitations)
       this.countOfOverrides = this.countOfOverrides - 1;
     }
+  }
 
+  /**
+ * Salva la posizione corrente dello scroll del dialog
+ */
+private saveDialogScrollPosition(): void {
+    // Prova vari selettori comuni per dialog di Angular Material
+    const dialogSelectors = [
+        '.mat-dialog-container',
+        '.cdk-global-overlay-wrapper',
+        '.mat-dialog-content',
+        '.cdk-overlay-pane'
+    ];
+    
+    for (const selector of dialogSelectors) {
+        const element = document.querySelector(selector) as HTMLElement;
+        if (element) {
+            // Salva sia scrollTop che l'elemento attivo
+            this.savedScrollData = {
+                scrollTop: element.scrollTop,
+                selector: selector,
+                activeElementId: document.activeElement?.id
+            };
+            this.logger.log('[DIALOG SCROLL] Saved position:', this.savedScrollData);
+            break;
+        }
+    }
+}
 
+/**
+ * Ripristina la posizione dello scroll del dialog
+ */
+private restoreDialogScrollPosition(): void {
+    if (!this.savedScrollData) return;
+    
+    // Usa setTimeout per assicurarti dopo il change detection
+    setTimeout(() => {
+        const element = document.querySelector(this.savedScrollData.selector) as HTMLElement;
+        if (element) {
+            // Ripristina lo scroll
+            element.scrollTop = this.savedScrollData.scrollTop;
+            
+            // Ripristina il focus se necessario
+            if (this.savedScrollData.activeElementId) {
+                const activeElement = document.getElementById(this.savedScrollData.activeElementId);
+                if (activeElement) {
+                    activeElement.focus({ preventScroll: true });
+                }
+            }
+            
+            this.logger.log('[DIALOG SCROLL] Restored position:', this.savedScrollData.scrollTop);
+        }
+        
+        // Pulisci i dati salvati
+        this.savedScrollData = null;
+    }, 10); // 10ms è sufficiente
+}
 
+  // !! Not used
+ onCheckboxClick(event: MouseEvent) {
+    // Prevenire la propagazione per evitare che il click arrivi al label
+    event.stopPropagation();
+    
+    // Salvare le posizioni di scroll sia del dialog content che della window
+    const dialogContent = document.querySelector('.mat-dialog-content') as HTMLElement;
+    const windowScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const dialogScrollTop = dialogContent?.scrollTop || 0;
+    
+    this.logger.log('[MODAL PREVIEW SETTINGS] onCheckboxClick windowScrollY:', windowScrollY, 'dialogScrollTop:', dialogScrollTop);
+    
+    // Usare doppio requestAnimationFrame per assicurarsi che lo scroll sia completato
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Ripristinare lo scroll della window
+        if (windowScrollY !== 0) {
+          window.scrollTo(0, windowScrollY);
+        }
+        
+        // Ripristinare lo scroll del dialog content se esiste
+        if (dialogContent) {
+          dialogContent.scrollTop = dialogScrollTop;
+        }
+      });
+    });
+    
+    // Anche setTimeout come fallback
+    setTimeout(() => {
+      if (windowScrollY !== 0) {
+        window.scrollTo(0, windowScrollY);
+      }
+      if (dialogContent) {
+        dialogContent.scrollTop = dialogScrollTop;
+      }
+    }, 10);
   }
 
   onSavePreviewSettings() {
@@ -929,6 +1090,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hasAlreadyOverrideCitations = false;
     this.hasAlreadyOverrideChunckOnly = false;
     this.hasAlreadyOverrideReRanking = false;
+    //this.hasAlreadyOverrideReRankingMultipler = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
@@ -967,14 +1129,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
     this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
 
+   this.reRankingMultipler = this.selectedNamespaceClone.preview_settings.reranking_multiplier
+
     this.citations = this.selectedNamespaceClone.preview_settings.citations;
     this.logger.log('Reset this.citations ', this.citations)
-    if (this.citations) {
-      this.max_tokens_min = 1024;
-    } else {
-      this.max_tokens_min = 10;
-    }
-  
+
+    this.applyMaxTokenSliderFromUtil(this.selectedModel, { resetMaxTokensToDefault: false });
 
     this.aiSettingsObject[0].model = this.selectedModel;
     this.aiSettingsObject[0].maxTokens = this.max_tokens
@@ -985,6 +1145,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiSettingsObject[0].citations = this.citations;
     this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
     this.aiSettingsObject[0].reRanking = this.reRanking;
+    this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -995,10 +1156,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
-    this.max_tokens = this.maxTokensDefaultValue;
-    this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
-
-    this.max_tokens_min = 10;
 
     this.temperature = this.temperatureDefaultValue;
     this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
@@ -1024,8 +1181,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.reRanking = this.reRankigDefaultValue
     this.selectedNamespace.preview_settings.reranking = this.reRankigDefaultValue
 
+    this.reRankingMultipler = this.reRankigMultiplerDefaultValue;
+    this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankigMultiplerDefaultValue
+
+    this.applyMaxTokenSliderFromUtil(this.modelDefaultValue, { resetMaxTokensToDefault: true });
+
     this.aiSettingsObject[0].model = this.modelDefaultValue;
-    this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
     this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
     this.aiSettingsObject[0].top_k = this.topkDefaultValue;
     this.aiSettingsObject[0].context = this.contextDefaultValue;
@@ -1055,6 +1217,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
           this.systemContext.close()
           this.advancedContext.close()
           this.contentsSources.close()
+          this.chunkonly.close();
+          this.rerank.close();
         }
       }
     );
@@ -1074,7 +1238,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
           this.chunkLimit.close()
           this.systemContext.close()
           this.advancedContext.close()
-          this.contentsSources.close()
+          this.contentsSources.close();
+          this.chunkonly.close();
+          this.rerank.close();
         }
       }
     );
@@ -1092,7 +1258,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.chunkLimit.close()
     this.systemContext.close()
     this.advancedContext.close()
-    this.contentsSources.close()
+    this.contentsSources.close();
+    this.chunkonly.close();
+    this.rerank.close();
   }
 
   // onMouseEnter(event: MouseEvent): void {
@@ -1157,6 +1325,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.logger.log('[MODAL PREVIEW SETTINGS] contentsSourcesIsOpened')
     this.logger.log("[MODAL PREVIEW SETTINGS] contentsSources sat popover", this.contentsSources)
   }
+  chunkOnlyIsOpened() {
+    this.logger.log('[MODAL PREVIEW SETTINGS] chunkOnlyIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly sat popover", this.chunkonly)
+  }
 
   goToAIModelDoc() {
     const url = URL_AI_model_doc;
@@ -1184,6 +1356,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     
   }
 
+
   goToSystemContextDoc() {
     const url = URL_system_context_doc;
     window.open(url, '_blank');
@@ -1199,11 +1372,40 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     window.open(url, '_blank');
   }
 
-  formatMaxTokens(value: number): string {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
+  /**
+   * Numeri compatti per token: sotto 1000 intero, poi k, da 1.000.000 usa M (evita "1000k" per 1M).
+   */
+  private formatTokenCountCompact(n: number): string {
+    if (n == null || !Number.isFinite(n)) {
+      return '';
     }
-    return value.toString();
+    const v = Math.round(n);
+    if (v < 1000) {
+      return String(v);
+    }
+    if (v >= 1_000_000) {
+      const m = v / 1_000_000;
+      if (m % 1 === 0) {
+        return `${m}M`;
+      }
+      const s = m.toFixed(2).replace(/\.?0+$/, '');
+      return `${s}M`;
+    }
+    const k = v / 1000;
+    if (k % 1 === 0) {
+      return `${k}k`;
+    }
+    return `${k.toFixed(1)}k`.replace(/\.0k$/, 'k');
+  }
+
+  /**
+   * Deve essere arrow function: mat-slider [displayWith] invoca la callback senza bind(this),
+   * altrimenti this.formatTokenCountCompact è undefined e la UI si blocca.
+   */
+  formatMaxTokens = (value: number): string => this.formatTokenCountCompact(value);
+
+  formatMaxTokensRangeLabel(n: number): string {
+    return this.formatTokenCountCompact(n);
   }
 
 }

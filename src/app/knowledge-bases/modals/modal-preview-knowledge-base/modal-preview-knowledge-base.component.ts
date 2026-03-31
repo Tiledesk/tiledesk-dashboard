@@ -70,6 +70,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   responseTime: number | null = null;
 
   searching: boolean = false;
+  private kbStreamFinalized = false;
   show_answer: boolean = false;
   // error_answer: boolean = false;
   translateparam: any;
@@ -574,6 +575,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   }
 
   submitQuestion() {
+     if (!this.question || !this.question.trim()) {
+      return;
+    }
     this.body = {
       "question": this.question,
       "namespace": this.namespaceid,
@@ -602,6 +606,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.show_answer = true;
     this.answer = '';
     this.source_url = '';
+    this.kbStreamFinalized = false;
+    this.contentChunks = [];
     this.contentSources = [];
     this.responseTime = null;
     this.prompt_token_size = null;
@@ -730,32 +736,42 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   askAIStream(body: any, startTime: number) {
     let lastResponse: any = null;
     this.openaiService.askGptStream(body).subscribe({
-      next: (chunk: { text?: string; done?: boolean; response?: any }) => {
-        if (chunk.text) {
+      next: (chunk: { text?: string; fullAnswer?: string; done?: boolean; response?: any }) => {
+        if (chunk.fullAnswer !== undefined) {
+          this.answer = chunk.fullAnswer;
+          this.show_answer = true;
+          this.cdr.detectChanges();
+        } else if (chunk.text) {
           this.answer = (this.answer || '') + chunk.text;
-          this.show_answer = true; // mostra la risposta in streaming dal primo chunk
+          this.show_answer = true;
           this.cdr.detectChanges();
         }
-        if (chunk.response) lastResponse = chunk.response;
+        if (chunk.response) {
+          lastResponse = chunk.response;
+        }
         if (chunk.done) {
           this.finalizeStreamResponse(lastResponse, startTime);
         }
       },
       error: (err: any) => {
+        this.kbStreamFinalized = true;
         this.searching = false;
         this.show_answer = true;
         this.handleAskAIError(err);
       },
       complete: () => {
-        if (this.searching) {
+        if (!this.kbStreamFinalized) {
           this.finalizeStreamResponse(lastResponse, startTime);
         }
       }
     });
   }
 
-  private finalizeStreamResponse(response: any, _startTime: number) {
-    if (!this.searching) return;
+     private finalizeStreamResponse(response: any, _startTime: number) {
+    if (this.kbStreamFinalized) {
+      return;
+    }
+    this.kbStreamFinalized = true;
     if (response) {
       response['ai_model'] = this.selectedModel;
       this.prompt_token_size = response.prompt_token_size;
@@ -767,7 +783,17 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentChunks: ', this.contentChunks);
       this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentSources: ', this.contentSources);
       if (response.source && this.isValidURL(response.source)) this.source_url = response.source;
-      if (response.answer && !this.answer) this.answer = response.answer;
+      if (response.answer != null && String(response.answer).trim().length) {
+        this.answer = response.answer;
+      }
+    } else {
+      this.qa = {
+        answer: '',
+        ai_model: this.selectedModel,
+        content_chunks: [],
+      };
+      this.contentChunks = [];
+      this.contentSources = [];
     }
     this.show_answer = true;
     this.searching = false;
@@ -778,6 +804,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.cdr.detectChanges();
     this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
   }
+  
 
   private handleAskAIError(err: any) {
     this.logger.log('ask gpt preview response error: ', err);
@@ -893,6 +920,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   onEnterKeyDown(event: KeyboardEvent) {
     // Submit on Enter (without Shift), otherwise allow new line
+     if (!this.question?.trim()) {
+        return;
+      }
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       this.submitQuestion();
@@ -914,6 +944,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.question = "";
     this.answer = "";
     this.source_url = null;
+    this.contentChunks = [];
     this.contentSources = [];
     this.searching = false;
     this.show_answer = false;

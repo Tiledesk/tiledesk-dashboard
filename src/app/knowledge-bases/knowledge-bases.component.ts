@@ -230,6 +230,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   unansweredQuestionsCount: number = 0;
   isLoadingMoreUnanswered: boolean = false;
   hasMoreUnansweredQuestions: boolean = false;
+  pineconeReranking: boolean
 
   fakeUnansered = [
       { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
@@ -2078,6 +2079,7 @@ _presentDialogImportContents() {
       autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
+        pineconeReranking:  this.pineconeReranking
       },
     });
     dialogRef.backdropClick().subscribe((event) => {
@@ -2616,7 +2618,7 @@ _presentDialogImportContents() {
   }
 
   getOSCODE() {
-
+    this.pineconeReranking = this.appConfigService.getConfig().pineconeReranking;
     let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let keys = public_Key.split("-");

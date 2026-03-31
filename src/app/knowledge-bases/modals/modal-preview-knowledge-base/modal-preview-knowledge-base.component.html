@@ -88,7 +88,8 @@
       {{ 'KbPage.Answer' | translate }}
 
    
-      <span *ngIf="qa?.ai_model"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      <span *ngIf="qa?.ai_model && !searching"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      <span  *ngIf="searching"> ({{ 'KbPage.GeneratingUsing' | translate: {ai_model_name: selectedModel } }}) </span>
     </p>
     <div id="answer" class="answer">
 
@@ -242,7 +243,8 @@
 
   </button>
 
-  <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
+  <button class="mat-dialog-ok-btn" mat-button type="button" (click)="submitQuestion()"
+   [disabled]="!question?.trim()">
      {{ "Send" | translate }}
   </button>
 

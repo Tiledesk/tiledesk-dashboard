@@ -101,15 +101,44 @@ export class OpenaiService {
     return this.httpClient.post(url, data, httpOptions);
   }
 
-   /**
-   * Chiamata QA che gestisce la risposta a stream (SSE o NDJSON).
-   * Emette chunk con { text?, done?, response? } per aggiornare la UI in tempo reale.
+  /**
+   * Chunk stream KB/QA: `text` = delta da concatenare; `fullAnswer` = risposta completa (sostituisce lo stream).
+   * Il backend può mandare `content` in streaming e poi un evento con `answer` piena: non vanno concatenate.
    */
-  askGptStream(data: any): Observable<{ text?: string; done?: boolean; response?: any }> {
+    askGptStream(data: any): Observable<{
+    text?: string;
+    fullAnswer?: string;
+    done?: boolean;
+    response?: any;
+  }> {
     this.logger.log('[OPENAI.SERVICE] askGptStream', data);
     const url = this.SERVER_BASE_PATH + this.project_id + '/kb/qa';
     this.logger.debug('[OPENAI.SERVICE] - ask gpt stream URL: ', url);
     const body = { ...data, stream: true };
+
+    const emitParsed = (
+      parsed: any,
+      lastStreamMeta: { value: any },
+      observer: { next: (v: any) => void; error: (e: any) => void }
+    ): boolean => {
+      if (parsed.success === false && parsed.error) {
+        observer.error({ error: parsed.error, success: false });
+        return false;
+      }
+      lastStreamMeta.value = parsed;
+      if (parsed.answer !== undefined) {
+        observer.next({ fullAnswer: String(parsed.answer), response: parsed });
+      } else if (parsed.delta !== undefined) {
+        observer.next({ text: String(parsed.delta), response: parsed });
+      } else if (parsed.content !== undefined) {
+        observer.next({ text: String(parsed.content), response: parsed });
+      } else if (parsed.choices?.[0]?.delta?.content) {
+        observer.next({ text: String(parsed.choices[0].delta.content), response: parsed });
+      } else {
+        observer.next({ response: parsed });
+      }
+      return true;
+    };
 
     return new Observable((observer) => {
       fetch(url, {
@@ -138,6 +167,7 @@ export class OpenaiService {
         }
         const decoder = new TextDecoder();
         let buffer = '';
+        const lastStreamMeta = { value: null as any };
 
         const read = (): Promise<void> => {
           return reader.read().then(({ done, value }) => {
@@ -145,17 +175,12 @@ export class OpenaiService {
               if (buffer.trim()) {
                 try {
                   const parsed = JSON.parse(buffer);
-                  if (parsed.success === false && parsed.error) {
-                    observer.error({ error: parsed.error, success: false });
+                  if (!emitParsed(parsed, lastStreamMeta, observer)) {
                     return;
                   }
-                  if (parsed.answer !== undefined) observer.next({ text: parsed.answer, response: parsed });
-                  else if (parsed.delta !== undefined) observer.next({ text: parsed.delta, response: parsed });
-                  else if (parsed.content !== undefined) observer.next({ text: parsed.content, response: parsed });
-                  else observer.next({ response: parsed });
                 } catch (_) {}
               }
-              observer.next({ done: true });
+              observer.next({ done: true, response: lastStreamMeta.value });
               observer.complete();
               return;
             }
@@ -170,27 +195,16 @@ export class OpenaiService {
                 if (dataStr === '[DONE]') continue;
                 try {
                   const parsed = JSON.parse(dataStr);
-                  if (parsed.success === false && parsed.error) {
-                    observer.error({ error: parsed.error, success: false });
+                  if (!emitParsed(parsed, lastStreamMeta, observer)) {
                     return;
                   }
-                  if (parsed.answer !== undefined) observer.next({ text: parsed.answer, response: parsed });
-                  else if (parsed.delta !== undefined) observer.next({ text: parsed.delta, response: parsed });
-                  else if (parsed.content !== undefined) observer.next({ text: parsed.content, response: parsed });
-                  else if (parsed.choices?.[0]?.delta?.content) observer.next({ text: parsed.choices[0].delta.content, response: parsed });
-                  else observer.next({ response: parsed });
                 } catch (_) {}
               } else if (trimmed) {
                 try {
                   const parsed = JSON.parse(trimmed);
-                  if (parsed.success === false && parsed.error) {
-                    observer.error({ error: parsed.error, success: false });
+                  if (!emitParsed(parsed, lastStreamMeta, observer)) {
                     return;
                   }
-                  if (parsed.answer !== undefined) observer.next({ text: parsed.answer, response: parsed });
-                  else if (parsed.delta !== undefined) observer.next({ text: parsed.delta, response: parsed });
-                  else if (parsed.content !== undefined) observer.next({ text: parsed.content, response: parsed });
-                  else observer.next({ response: parsed });
                 } catch (_) {}
               }
             }

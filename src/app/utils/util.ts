@@ -5,7 +5,6 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { TooltipOptions } from 'ng2-tooltip-directive';
 import { concat, from, isObservable, Observable, of } from 'rxjs';
 import { concatMap, first, last, takeWhile } from 'rxjs/operators';
-import { TEAMMATE_STATUS } from './constants';
 
 export const CutomTooltipOptions: TooltipOptions = {
     'show-delay': 0,
@@ -109,12 +108,12 @@ export function getColorBck(requester_fullname) {
     return arrayBckColor[num];
 }
 
+
 export function isValidEmail(email: string): boolean {
   if (!email) return false;
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
-
 
 
 export function htmlEntities(str) {
@@ -123,7 +122,6 @@ export function htmlEntities(str) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
     // .replace(/\n/g, '<br>')
 }
 
@@ -739,7 +737,7 @@ export function getIndexOfdialogflowLanguage(langcode: string): number {
 
 
 export function loadTokenMultiplier(ai_models) {
-    console.log('loadTokenMultiplier ai_models ',ai_models) 
+    // console.log('loadTokenMultiplier ai_models ',ai_models) 
     let models_string = ai_models.replace(/ /g, '');
 
     let models = {};
@@ -808,100 +806,137 @@ export function loadTokenMultiplier(ai_models) {
 //     { name: "GPT-5-nano",                       value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    }
 // ]
 
-export const COHERE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
-  { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Command A (03-2025)",              value: "command-a-03-2025",            description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Command R7B (12-2024)",            value: "command-r7b-12-2024",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Command A Vision (07-2025)",       value: "command-a-vision-07-2025",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Command R+ (08-2024)",             value: "command-r-plus-08-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+export const COHERE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Command A (03-2025)",              value: "command-a-03-2025",            description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 512000,  reasoning: false  },
+  { name: "Command R7B (12-2024)",            value: "command-r7b-12-2024",          description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 4096,    reasoning: true   },
+  { name: "Command A Vision (07-2025)",       value: "command-a-vision-07-2025",     description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 512000,  reasoning: false  },
+  { name: "Command R+ (08-2024)",             value: "command-r-plus-08-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
+  { name: "Command A Reasoning (08-2025)",    value: "command-a-reasoning-08-2025",  description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 512000,  reasoning: true   },
+
+  { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 4096,    reasoning: false  },
+  { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
+  { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
 ]
 
-export const GOOGLE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
-  { name: "Gemini-pro",               value: "gemini-pro",              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Gemini 1.5 Flash",         value: "gemini-1.5-flash",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Gemini 2.0 Flash",         value: "gemini-2.0-flash",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Gemini 2.0 Flash Lite",    value: "gemini-2.0-flash-lite",   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Gemini 2.5 Flash",         value: "gemini-2.5-flash",        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
-  { name: "Gemini 2.5 Flash Lite",    value: "gemini-2.5-flash-lite",   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active" },
+export const GOOGLE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Gemini 2.0 Flash",         value: "gemini-2.0-flash",        description: "TYPE_GPT_MODEL.text-davinci-003.description",   status: "active", min_tokens: 1,  max_output_tokens: 1000000, reasoning: false },
+  { name: "Gemini 2.0 Flash Lite",    value: "gemini-2.0-flash-lite",   description: "TYPE_GPT_MODEL.text-davinci-003.description",   status: "active", min_tokens: 1,  max_output_tokens: 1000000, reasoning: false },
+  { name: "Gemini 2.5 Flash",         value: "gemini-2.5-flash",        description: "TYPE_GPT_MODEL.text-davinci-003.description",   status: "active", min_tokens: 1,  max_output_tokens: 1000000, reasoning: true  },
+  { name: "Gemini 2.5 Flash Lite",    value: "gemini-2.5-flash-lite",   description: "TYPE_GPT_MODEL.text-davinci-003.description",   status: "active", min_tokens: 1,  max_output_tokens: 1000000,  reasoning: false},
+
+  { name: "Gemini-pro",               value: "gemini-pro",              description: "TYPE_GPT_MODEL.text-davinci-003.description",     status: "inactive",  min_tokens: 1, max_output_tokens: 1000000, reasoning: false},
+  { name: "Gemini 1.5 Flash",         value: "gemini-1.5-flash",        description: "TYPE_GPT_MODEL.text-davinci-003.description",     status: "inactive", min_tokens: 1,  max_output_tokens: 1000000,  reasoning: false},
+  { name: "Gemini 3 pro preview",     value: "gemini-3-pro-preview",    description: "TYPE_GPT_MODEL.gemini-3-pro-preview.description", status: "inactive", min_tokens: 1, max_output_tokens: 65536, reasoning: true },
+
 ]
 
-export const ANTHROPIC_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
-  { name: "Claude 4 Opus",                  value: "claude-opus-4-0",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4.1 Opus",                value: "claude-opus-4-1",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4.5 Opus",                value: "claude-opus-4-5",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4.6 Opus",                value: "claude-opus-4-6",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4 Sonnet",                value: "claude-sonnet-4-0",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4.5 Sonnet",              value: "claude-sonnet-4-5",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4.6 Sonnet",              value: "claude-sonnet-4-6",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
-  { name: "Claude 4.5 Haiku",               value: "claude-haiku-4-5",                  description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active" },
+export const ANTHROPIC_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Claude 4 Opus",                  value: "claude-opus-4-0",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1,  max_output_tokens: 200000, reasoning: true},
+  { name: "Claude 4.1 Opus",                value: "claude-opus-4-1",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1, max_output_tokens: 65536,   reasoning: true},
+  { name: "Claude 4.5 Opus",                value: "claude-opus-4-5",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1,  max_output_tokens: 65536,  reasoning: true},
+  { name: "Claude 4.6 Opus",                value: "claude-opus-4-6",                   description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1, max_output_tokens: 200000,  reasoning: true},
+  { name: "Claude 4 Sonnet",                value: "claude-sonnet-4-0",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1, max_output_tokens: 200000,  reasoning: false},
+  { name: "Claude 4.5 Sonnet",              value: "claude-sonnet-4-5",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1, max_output_tokens: 200000,  reasoning: false },
+  { name: "Claude 4.6 Sonnet",              value: "claude-sonnet-4-6",                 description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1,  max_output_tokens: 200000,  reasoning: true},
+  { name: "Claude 4.5 Haiku",               value: "claude-haiku-4-5",                  description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "active",  min_tokens: 1,  max_output_tokens: 65536,   reasoning: true},
   
-  { name: "Claude 4 Sonnet",                value: "claude-sonnet-4-20250514",          description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive" },
-  { name: "Claude 4 Opus",                  value: "claude-opus-4-20250514",            description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive" },
-  { name: "Claude-3.5 Sonnet",              value: "claude-3-5-sonnet-20240620",        description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive" },
-  { name: "Claude 3.5 Haiku",               value: "claude-3-5-haiku-latest",           description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive" },
-  { name: "Claude 3.7 Sonnet",              value: "claude-3-7-sonnet-latest",          description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive" },
-  { name: "Claude-3.7 Sonnet",              value: "claude-3-7-sonnet-20250219",        description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive" },
+  { name: "Claude 4 Sonnet",                value: "claude-sonnet-4-20250514",          description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive", min_tokens: 1, max_output_tokens: 200000, reasoning: false},
+  { name: "Claude 4 Opus",                  value: "claude-opus-4-20250514",            description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive", min_tokens: 1, max_output_tokens: 200000, reasoning: false},
+  { name: "Claude-3.5 Sonnet",              value: "claude-3-5-sonnet-20240620",        description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive", min_tokens: 1, max_output_tokens: 200000, reasoning: false},
+  { name: "Claude 3.5 Haiku",               value: "claude-3-5-haiku-latest",           description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive", min_tokens: 1, max_output_tokens: 200000, reasoning: false},
+  { name: "Claude 3.7 Sonnet",              value: "claude-3-7-sonnet-latest",          description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive", min_tokens: 1, max_output_tokens: 200000, reasoning: true},
+  { name: "Claude-3.7 Sonnet",              value: "claude-3-7-sonnet-20250219",        description: "TYPE_GPT_MODEL.text-davinci-003.description",        status: "inactive", min_tokens: 1, max_output_tokens: 200000, reasoning: true},
 ]
 
-export const GROQ_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
-  { name: "Llama 3.1 8B – Instant/Low-latency",               value: "llama-3.1-8b-instant",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Llama 3.3 70B – Versatile",                        value: "llama-3.3-70b-versatile",                           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Allam 2 – 7B",                                     value: "allam-2-7b",                                        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Llama 4 Scout – 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Kimi K2 Instruct (Moonshot AI)",                   value: "moonshotai/kimi-k2-instruct",                       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Qwen 3 – 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Groq Compound",                                    value: "groq/compound",                                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "Groq Compound Mini",                               value: "groq/compound-mini",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "OpenAI GPT-OSS 120B",                              value: "openai/gpt-oss-120b",                               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
-  { name: "OpenAI GPT-OSS 20B",                               value: "openai/gpt-oss-20b",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active"   },
+export const GROQ_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Llama 3.1 8B – Instant/Low-latency",               value: "llama-3.1-8b-instant",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
+  { name: "Llama 3.3 70B – Versatile",                        value: "llama-3.3-70b-versatile",                           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "Allam 2 – 7B",                                     value: "allam-2-7b",                                        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false   },
+  { name: "Llama 4 Scout – 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false    },
+  { name: "Kimi K2 Instruct (Moonshot AI)",                   value: "moonshotai/kimi-k2-instruct",                       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
+  { name: "Qwen 3 – 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false    },
+  { name: "Groq Compound",                                    value: "groq/compound",                                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
+  { name: "Groq Compound Mini",                               value: "groq/compound-mini",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "OpenAI GPT-OSS 120B",                              value: "openai/gpt-oss-120b",                               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "OpenAI GPT-OSS 20B",                               value: "openai/gpt-oss-20b",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: true  },
 
-  { name: "Llama 3 70B – 8K context",                         value: "llama3-70b-8192",                                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama Guard 4 – 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"   },
-  { name: "DeepSeek R1 Distilled Llama 70B",                  value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"   },
-  { name: "Gemma 2 – 9B Instruct (Italian tuned)",            value: "gemma2-9b-it",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Mixtral-8x7b-32768",                               value: "mixtral-8x7b-32768",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama-3.2-11b-vision-preview",                     value: "llama-3.2-11b-vision-preview",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama-3.2-3b-preview",                             value: "llama-3.2-3b-preview",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama-3.2-90b-vision-preview",                     value: "llama-3.2-90b-vision-preview",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama-guard-3-8b",                                 value: "llama-guard-3-8b",                                  description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama-3.2-1b-preview",                             value: "llama-3.2-1b-preview",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama3-70b-8192",                                  value: "llama3-70b-8192",                                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Llama-3.3-70b-specdec",                            value: "llama-3.3-70b-specdec",                             description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Deepseek-r1-distill-qwen-32b",                     value: "deepseek-r1-distill-qwen-32b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Deepseek-r1-distill-llama-70b",                    value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
-  { name: "Qwen-2.5-32b",                                     value: "qwen-2.5-32b",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive" },
+  { name: "Llama Guard 4 – 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
+  { name: "DeepSeek R1 Distilled Llama 70B",                  value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
+  { name: "Gemma 2 – 9B Instruct (Italian tuned)",            value: "gemma2-9b-it",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false },
+  { name: "Mixtral-8x7b-32768",                               value: "mixtral-8x7b-32768",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "Llama-3.2-11b-vision-preview",                     value: "llama-3.2-11b-vision-preview",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false},
+  { name: "Llama-3.2-3b-preview",                             value: "llama-3.2-3b-preview",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false },
+  { name: "Llama-3.2-90b-vision-preview",                     value: "llama-3.2-90b-vision-preview",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false},
+  { name: "Llama-guard-3-8b",                                 value: "llama-guard-3-8b",                                  description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
+  { name: "Llama-3.2-1b-preview",                             value: "llama-3.2-1b-preview",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 4096, reasoning: false },
+  { name: "Llama3-70b-8192",                                  value: "llama3-70b-8192",                                   description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false },
+  { name: "Llama-3.3-70b-specdec",                            value: "llama-3.3-70b-specdec",                             description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false},
+  { name: "Deepseek-r1-distill-qwen-32b",                     value: "deepseek-r1-distill-qwen-32b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false },
+  { name: "Deepseek-r1-distill-llama-70b",                    value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false },
+  { name: "Qwen-2.5-32b",                                     value: "qwen-2.5-32b",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false }, 
 ]
 
-export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
-  { name: "Deepseek-chat",                value: "deepseek-chat",                    description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active" },
+export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Deepseek-chat",      value: "deepseek-chat",   description: "TYPE_GPT_MODEL.deepseek-chat.description", status: "active",min_tokens: 1, max_output_tokens: 128000, reasoning: true },
 ]
 
-export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string}> = [
-  { name: "Gpt-5.4",              value: "gpt-5.4",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
-  { name: "Gpt-5.4 mini",         value: "gpt-5.4-mini",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },  
-  { name: "Gpt-5.4 nano",         value: "gpt-5.4-nano",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
-  { name: "Gpt-5.3",              value: "gpt-5.3-chat-latest",   description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    }, 
-  { name: "Gpt-5.2",              value: "gpt-5.2",               description: "TYPE_GPT_MODEL.deepseek-chat.description",       status: "active"    },  
-  { name: "Gpt-5.1",              value: "gpt-5.1",               description: "TYPE_GPT_MODEL.deepseek-chat.description",       status: "active"    },
-  { name: "Gpt-5",                value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
-  { name: "Gpt-5-mini",           value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
-  { name: "Gpt-5-nano",           value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active"    },
-  { name: "GPT-4.1",              value: "gpt-4.1",               description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive"  },
-  { name: "GPT-4.1 mini",         value: "gpt-4.1-mini",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive"  },
-  { name: "GPT-4.1 nano",         value: "gpt-4.1-nano",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive"  },
-  { name: "GPT-4o",               value: "gpt-4o",                description: "TYPE_GPT_MODEL.gpt-4o.description",                status: "active"    },
-  { name: "GPT-4o mini",          value: "gpt-4o-mini",           description: "TYPE_GPT_MODEL.gpt-4o-mini.description",           status: "active"    },
-  { name: "GPT-4 (Legacy)",       value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                 status: "active"    },
-  { name: "GPT-4 Turbo Preview",  value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",   status: "active"    },
-  { name: "GPT-3 (DaVinci)",      value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive"  },
-  { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "active"    },
-  { name: "OpenAI o1-mini",       value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",               status: "active"    },
-  { name: "OpenAI o1-preview",    value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",            status: "active"    }
+export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string,  min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Gpt-5.4",              value: "gpt-5.4",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
+  { name: "Gpt-5.4 mini",         value: "gpt-5.4-mini",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },  
+  { name: "Gpt-5.4 nano",         value: "gpt-5.4-nano",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
+  { name: "Gpt-5.3",              value: "gpt-5.3-chat-latest",   description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },   
+  { name: "Gpt-5.2",              value: "gpt-5.2",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },  
+  { name: "Gpt-5.1",              value: "gpt-5.1",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
+  { name: "Gpt-5",                value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
+  { name: "Gpt-5-mini",           value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
+  { name: "Gpt-5-nano",           value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
+  { name: "GPT-4.1",              value: "gpt-4.1",               description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "GPT-4.1 mini",         value: "gpt-4.1-mini",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "GPT-4.1 nano",         value: "gpt-4.1-nano",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "GPT-4o",               value: "gpt-4o",                description: "TYPE_GPT_MODEL.gpt-4o.description",                status: "active", min_tokens: 1, max_output_tokens: 16384, reasoning: false  },
+  { name: "GPT-4o mini",          value: "gpt-4o-mini",           description: "TYPE_GPT_MODEL.gpt-4o-mini.description",           status: "active", min_tokens: 1, max_output_tokens: 16384, reasoning: false  },
+  { name: "GPT-4 (Legacy)",       value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                 status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false   },
+  { name: "GPT-4 Turbo Preview",  value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",   status: "active", min_tokens: 1, max_output_tokens: 4096, reasoning: false   },
+ { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "active", min_tokens: 1, max_output_tokens: 4096,  reasoning: false    },
+
+  { name: "GPT-3 (DaVinci)",      value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", min_tokens: 1, max_output_tokens: 4096,  reasoning: false   },
+  { name: "OpenAI o1-mini",       value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",               status: "inactive", min_tokens: 1, max_output_tokens: 65536,  reasoning: false  },
+  { name: "OpenAI o1-preview",    value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",            status: "inactive", min_tokens: 1, max_output_tokens: 32768,  reasoning: false  }
 
 ]
+
+/** Tetto massimo per lo slider "max tokens" nella UI (preview KB). */
+export const LLM_MAX_TOKENS_SLIDER_UI_CAP = 100000;
+
+/**
+ * Default suggerito per max tokens: min(max_output_tokens del modello, 10000).
+ * Modelli non in catalogo (es. Ollama): fallback 10000 (poi clampato allo slider).
+ */
+export const LLM_DEFAULT_MAX_TOKENS_CAP = 10000;
+
+export type LlmModelTokenBounds = { min_tokens: number; max_output_tokens: number };
+
+/** Lookup sui cataloghi in util (OpenAI, Anthropic, Google, …). */
+export function getLlmModelTokenBounds(modelValue: string): LlmModelTokenBounds | null {
+  const lists = [COHERE_MODEL, GOOGLE_MODEL, ANTHROPIC_MODEL, GROQ_MODEL, DEEPSEEK_MODEL, OPENAI_MODEL];
+  for (const list of lists) {
+    const found = list.find((m) => m.value === modelValue);
+    if (found) {
+      return { min_tokens: found.min_tokens, max_output_tokens: found.max_output_tokens };
+    }
+  }
+  return null;
+}
+
+export function getLlmModelDefaultMaxTokens(modelValue: string): number {
+  const b = getLlmModelTokenBounds(modelValue);
+  if (!b) {
+    return LLM_DEFAULT_MAX_TOKENS_CAP;
+  }
+  return Math.min(b.max_output_tokens, LLM_DEFAULT_MAX_TOKENS_CAP);
+}
+
 // export const OPENAI_MODEL = [
 //   { name: "Gpt-5",                value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active",   maxTokens: 256000 },
 //   { name: "Gpt-5-mini",           value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active",   maxTokens: 128000 },
@@ -982,7 +1017,6 @@ export const CHANNELS_NAME = {
     MESSANGER: 'messenger',
     WHATSAPP: 'whatsapp',
     VOICE_VXML: 'voice-vxml',
-    VOICE_VXML_ENGHOUSE: 'voice-vxml-enghouse',
     VOICE_TWILIO: 'voice_twilio',
     SMS_TWILIO: 'sms-twilio',
 }
@@ -996,46 +1030,9 @@ export const CHANNELS = [
     { id: CHANNELS_NAME.WHATSAPP, name: 'WhatsApp' },
     { id: CHANNELS_NAME.VOICE_VXML, name: 'Voice' },
     { id: CHANNELS_NAME.VOICE_TWILIO, name: 'Voice' },
-    { id: CHANNELS_NAME.VOICE_VXML_ENGHOUSE, name: 'Voice' },
     { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
 
 ]
-
-/**
- * Restituisce lo status dell'utente nel contesto di un project.
- * Basato su user_available e profileStatus dell'oggetto projectUser.
- *
- * @param projectUser - Oggetto con user_available e profileStatus (es. ProjectUser dal websocket)
- * @returns Oggetto da TEAMMATE_STATUS (Available, Unavailable, Inactive) o null se i dati non sono sufficienti
- */
-export function getUserStatusFromProjectUser(projectUser: {
-    user_available?: boolean;
-    profileStatus?: string;
-  }): typeof TEAMMATE_STATUS[number] | null {
-    if (!projectUser) {
-      return null;
-    }
-  
-    if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
-      return TEAMMATE_STATUS[2]; // Inactive
-    }
-    if (projectUser.user_available === false && (!projectUser.profileStatus || projectUser.profileStatus === '')) {
-      return TEAMMATE_STATUS[1]; // Unavailable
-    }
-    if (projectUser.user_available === true && (!projectUser.profileStatus || projectUser.profileStatus === '')) {
-      return TEAMMATE_STATUS[0]; // Available
-    }
-  
-    // Fallback per casi non esplicitamente gestiti
-    if (projectUser.user_available === true) {
-      return TEAMMATE_STATUS[0];
-    }
-    if (projectUser.user_available === false) {
-      return TEAMMATE_STATUS[1];
-    }
-  
-    return null;
-}
 
 export function checkAcceptedFile(fileType, fileUploadAccept): boolean {
 
@@ -1177,35 +1174,6 @@ export function isMaliciousHTML(input) {
     return false; // No XSS detected
 }
 
-export const BLOCKED_DOMAINS = [
-  // DOMINI MALEVOLI NOTI
- 'attacker.me', 'evil.com', 'malicious.site', 'hacker.com', 'phishing.com',
- 'malware.com', 'ransomware.com', 'trojan.com', 'virus.com', 'spyware.com',
- 
- // DOMINI DI PHISHING
- 'phish.com', 'stealer.com', 'credential-thief.com', 'login-stealer.com',
- 'password-stealer.com', 'banking-phish.com', 'paypal-phish.com',
- 
- // DOMINI DI SPAM
- 'spam.com', 'spammer.com', 'bulk-email.com', 'unsolicited.com',
- 
- // DOMINI TRUFFA
- 'scam.com', 'fraud.com', 'fake.com', 'counterfeit.com', 'hoax.com',
- 
- // DOMINI EXPLOIT
- 'exploit.com', 'vulnerability.com', 'zero-day.com', 'payload.com',
- 'shellcode.com', 'backdoor.com', 'rootkit.com',
- 
- // DOMINI BOTNET
- 'botnet.com', 'zombie-pc.com', 'command-control.com', 'c2-server.com',
- 
- // DOMINI ADWARE/MALVERTISING
- 'adware.com', 'malvertising.com', 'popup-ads.com', 'unwanted-ads.com',
- 
- // DOMINI GENERICI PERICOLOSI
- 'danger.com', 'unsafe.com', 'insecure.com', 'threat.com', 'risk.com',
-]
-
 // Projects created after this date will no longer be able to use the free plan when the trial expires.
 // export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
 export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
@@ -1214,9 +1182,7 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 // Links to documentation
 export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
 export const URL_hybrid_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/hybrid-search'
-export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
-export const URL_understanding_default_roles = 'https://guide.tiledesk.com/understanding-default-roles' // 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-// export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
+export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
 export const URL_getting_started_with_email_ticketing = "https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
@@ -1263,6 +1229,9 @@ export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/a
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
-export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"
-export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
+export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
+export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-to-send-whatsapp-messages-to-contacts';
+export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/if-operating-hours#how-to-configure-the-action'
+export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
+export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
 
