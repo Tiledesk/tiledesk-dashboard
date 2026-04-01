@@ -14,6 +14,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { URL_kb_contents_tags } from 'app/utils/util';
+import { AppConfigService } from 'app/services/app-config.service';
 
 
 @Component({
@@ -131,7 +132,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     public notify: NotifyService,
     private router: Router,
     private brandService: BrandService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private appConfigService: AppConfigService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -343,8 +345,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
-        calledBy: "modal-preview-kb"
-
+        calledBy: "modal-preview-kb",
+        pineconeReranking: this.appConfigService.getConfig().pineconeReranking
       },
     })
     this.dialogRefAiSettings.afterClosed().subscribe(result => {
