@@ -2069,6 +2069,7 @@
         "TypeKbNamePlaceholder": "Bilimlar bazasi nomi",
         "TypeKbKeyPlaceholder": "GPT kalitingizni kiriting",
         "AskQuestionPlaceholder": "Savol bering",
+        "PreviewStream": "Oqim",
         "GptKeyInfo": "Ma'lumotlar bazasidan foydalanish uchun GPT kalitingizni kiriting",
         "YouHaveNotIncludedYourGPTKeyYet":"Siz hali GPT kalitini kiritmaganga o'xshaysiz.",
         "AGPTKeyIsNecessary": "Bilimlar bazasini muvaffaqiyatli ulash uchun GPT-kalit zarur.",

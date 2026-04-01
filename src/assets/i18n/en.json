@@ -2071,6 +2071,7 @@
         "TypeKbUrlPlaceholder": "Type Knowledge Base URL",
         "TypeKbKeyPlaceholder": "Type your GPT-Key",
         "AskQuestionPlaceholder": "Ask a question",
+        "PreviewStream": "Streaming",
         "DeleteNamespaceInfoFirstText": "You will no longer be able to use AI on this knowledge base",
         "GptKeyInfo": "Enter your GPT-Key to use your Knowledge Bases",
         "YouHaveNotIncludedYourGPTKeyYet":"It seems like you haven't included your GPT-Key yet.",

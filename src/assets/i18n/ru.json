@@ -2070,6 +2070,7 @@
         "TypeKbUrlPlaceholder": "Введите URL-адрес базы знаний",
         "TypeKbKeyPlaceholder": "Введите ключ GPT",
         "AskQuestionPlaceholder": "Задайте вопрос",
+        "PreviewStream": "Потоковый режим",
         "GptKeyInfo": "Введите свой ключ GPT, чтобы использовать свои базы знаний.",
         "YouHaveNotIncludedYourGPTKeyYet":"Кажется, вы еще не добавили свой GPT-ключ.",
         "AGPTKeyIsNecessary": "Для успешного подключения вашей базы знаний необходим GPT-ключ.",

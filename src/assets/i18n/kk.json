@@ -2085,6 +2085,7 @@
         "TypeKbUrlPlaceholder": "Білім қорының URL мекенжайын теріңіз",
         "TypeKbKeyPlaceholder": "GPT кілтін теріңіз",
         "AskQuestionPlaceholder": "Сұрақ қою",
+        "PreviewStream": "Ағындық",
         "GptKeyInfo": "Білім қорын пайдалану үшін GPT кілтін енгізіңіз",
         "YouHaveNotIncludedYourGPTKeyYet": "GPT кілтін әлі қоспаған сияқтысыз.",
         "AGPTKeyIsNecessary": "GPT кілті білім қорын сәтті қосу үшін қажет.",

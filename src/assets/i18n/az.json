@@ -2070,6 +2070,7 @@
         "TypeKbUrlPlaceholder": "Bilik Bazasının URL-ni yazın",
         "TypeKbKeyPlaceholder": "GPT açarınızı yazın",
         "AskQuestionPlaceholder": "Sual ver",
+        "PreviewStream": "Axın",
         "GptKeyInfo": "Bilik Bazalarınızdan istifadə etmək üçün GPT Açarınızı daxil edin",
         "YouHaveNotIncludedYourGPTKeyYet":"Deyəsən, GPT-Açarınızı hələ daxil etməmisiniz.",
         "AGPTKeyIsNecessary":"Bilik Bazanızı uğurla birləşdirmək üçün GPT-Açarı lazımdır.",

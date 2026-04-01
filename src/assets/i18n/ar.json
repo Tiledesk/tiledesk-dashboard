@@ -2070,6 +2070,7 @@
         "TypeKbUrlPlaceholder": "اكتب عنوان URL لقاعدة المعرفة",
         "TypeKbKeyPlaceholder": "اكتب مفتاح GPT الخاص بك",
         "AskQuestionPlaceholder": "طرح سؤال",
+        "PreviewStream": "بث مباشر",
         "GptKeyInfo": "أدخل مفتاح GPT الخاص بك لاستخدام قواعد المعرفة الخاصة بك",
         "YouHaveNotIncludedYourGPTKeyYet": "يبدو أنك لم تقم بتضمين مفتاح GPT الخاص بك بعد.",
         "AGPTKeyIsNecessary": "يعد مفتاح GPT ضروريًا لتوصيل قاعدة المعرفة الخاصة بك بنجاح.",

@@ -2069,6 +2069,7 @@
         "TypeKbUrlPlaceholder": "Saisissez l'URL de la base de connaissances",
         "TypeKbKeyPlaceholder": "Tapez votre clé GPT",
         "AskQuestionPlaceholder": "poser une question",
+        "PreviewStream": "Streaming",
         "GptKeyInfo": "Entrez votre clé GPT pour utiliser vos bases de connaissances",
         "YouHaveNotIncludedYourGPTKeyYet": "Il semble que vous n'ayez pas encore inclus votre clé GPT.",
         "AGPTKeyIsNecessary": "Une clé GPT est nécessaire pour connecter avec succès votre base de connaissances.",
