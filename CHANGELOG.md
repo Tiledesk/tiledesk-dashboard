@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.194-stage
+- Fixes the bug: if the AI ​​Settings dialog is opened from the Knowledge Base preview dialog the re-ranking is not visible
+
 ### 2.7.193-stage
 - Adds options to messages retention policy
 - Adds the environment variable PINECONE_RERANKING
