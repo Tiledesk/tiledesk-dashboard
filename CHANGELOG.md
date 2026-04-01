@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.193-stage
+- Adds options to messages retention policy
+- Adds the environment variable PINECONE_RERANKING
+
 ### 2.7.192-stage
 - Improves retention policy
 
