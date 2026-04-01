@@ -24,7 +24,12 @@
 <div mat-dialog-content (click)="handleClickInside($event)">
 
   <div class="form--container">
-    <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+    <div class="question-header-row">
+      <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+      <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle">
+        {{ 'KbPage.PreviewStream' | translate }}
+      </mat-slide-toggle>
+    </div>
     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
         (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
   </div>

@@ -13,7 +13,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { URL_kb_contents_tags } from 'app/utils/util';
+import { getLlmModelDefaultMaxTokens, getLlmModelTokenBounds, LLM_MAX_TOKENS_SLIDER_UI_CAP, URL_kb_contents_tags } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 
 
@@ -66,6 +66,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   qa: any;
 
   question: string = "";
+  /** Preview: risposta in streaming (default) vs risposta completa in un’unica richiesta. */
+  previewUseStream = true;
   answer: string = "";
   source_url: any;
   responseTime: number | null = null;
@@ -189,6 +191,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
+
+    // Stessi limiti dello slider in modal-preview-settings: evita payload con max_tokens fuori range (es. valore vecchio sul namespace).
+    this.applyPreviewMaxTokensClamp();
+
     if (data && data.askBody) {
       this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
       // this.question = data.askBody.question
@@ -265,6 +271,32 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   cancelClose() {
     clearTimeout(this.closeTimeout);
+  }
+
+   /**
+   * Stessi limiti dello slider in modal-preview-settings (`applyMaxTokenSliderFromUtil`), senza reset al default del modello.
+   */
+  private applyPreviewMaxTokensClamp(): void {
+    if (!this.selectedNamespace?.preview_settings || !this.selectedModel) {
+      return;
+    }
+    const modelValue = this.selectedModel;
+    const bounds = getLlmModelTokenBounds(modelValue);
+    const utilMin = bounds?.min_tokens ?? 1;
+    const max_tokens_min = this.citations ? Math.max(utilMin, 1024) : utilMin;
+    const catalogMax = bounds?.max_output_tokens ?? LLM_MAX_TOKENS_SLIDER_UI_CAP;
+    let max_tokens_max = Math.min(catalogMax, LLM_MAX_TOKENS_SLIDER_UI_CAP);
+    if (max_tokens_min > max_tokens_max) {
+      max_tokens_max = max_tokens_min;
+    }
+    const clamp = (v: number) => Math.min(Math.max(v, max_tokens_min), max_tokens_max);
+    const raw = this.maxTokens;
+    if (raw != null && !Number.isNaN(Number(raw))) {
+      this.maxTokens = clamp(Number(raw));
+    } else {
+      this.maxTokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    }
+    this.selectedNamespace.preview_settings.max_tokens = this.maxTokens;
   }
 
    /**
@@ -441,8 +473,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.selectedModel = this.selectedNamespace.preview_settings.model
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from selectedNamespace ', this.selectedModel)
         }
-        if (editedAiSettings && editedAiSettings[0]['maxTokens']) {
-          this.maxTokens = editedAiSettings[0]['maxTokens']
+       // if (editedAiSettings && editedAiSettings[0]['maxTokens']) {
+       //   this.maxTokens = editedAiSettings[0]['maxTokens']
+        const incomingMax = editedAiSettings[0]['maxTokens'];
+        if (incomingMax != null && typeof incomingMax === 'number' && !Number.isNaN(incomingMax)) {
+          this.maxTokens = incomingMax;
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from editedAiSettings 1', this.maxTokens)
         } else {
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from editedAiSettings 2', editedAiSettings[0]['maxTokens'])
@@ -616,8 +651,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     // this.askAI(this.body, startTime)
-    this.askAIStream(this.body, startTime);
-   
+    // this.askAIStream(this.body, startTime);
+    if (this.previewUseStream) {
+      this.askAIStream(this.body, startTime);
+    } else {
+      this.askAI(this.body, startTime);
+    }
   }
 
   askAI(body, startTime) {
@@ -962,6 +1001,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   closeDialogAiSettings(isopenasetting) {
     this.logger.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
+    this.aiSettingsObject[0].maxTokens = this.maxTokens;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     this.dialogRefAiSettings.close()
   }
