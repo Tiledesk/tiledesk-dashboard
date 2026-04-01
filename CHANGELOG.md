@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.195-stage
+- Adds the ability to view the response as a stream or static to the knowledge preview dialog
+
 ### 2.7.194-stage
 - Fixes the bug: if the AI ​​Settings dialog is opened from the Knowledge Base preview dialog the re-ranking is not visible
 
