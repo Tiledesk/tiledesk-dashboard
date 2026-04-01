@@ -12,6 +12,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
+import { AppConfigService } from 'app/services/app-config.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { URL_kb_contents_tags } from 'app/utils/util';
 
@@ -35,6 +36,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
+    chunkOnly: null,
+    reRanking: null,
+    reRankingMultipler: null,
   }]
   panelOpenState = false; 
   selectedNamespace: any;
@@ -74,6 +78,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number;
   public chunkOnly: boolean
+  public reRanking: boolean;
+  public reRankingMultipler: number
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
@@ -111,7 +117,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
     private router: Router,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private appConfigService: AppConfigService
   ) {
     super(prjctPlanService, notify);
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
@@ -126,6 +133,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
+      this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
@@ -135,6 +143,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
+      }
+
+      if (!this.selectedNamespace.preview_settings.reranking) {
+        this.reRanking = false
+        this.selectedNamespace.preview_settings.reranking = this.reRanking
+      } else {
+        this.reRanking = this.selectedNamespace.preview_settings.reranking
+        this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
       }
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
@@ -298,8 +314,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       hasBackdrop: false,
       data: {
         selectedNamespace: this.selectedNamespace,
-        calledBy: "modal-preview-kb"
-
+        calledBy: "modal-preview-kb",
+        pineconeReranking: this.appConfigService.getConfig().pineconeReranking
       },
     })
     this.dialogRefAiSettings.afterClosed().subscribe(result => {
@@ -427,6 +443,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
         }
 
+        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
+          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 2', editedAiSettings[0]['reRankingMultipler'])
+          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
+        }
+
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from editedAiSettings 1', this.context)
@@ -445,6 +470,17 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
           this.chunkOnly = this.selectedNamespace.preview_settings.chunkOnly
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
+        } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
+        } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
+          this.reRanking = this.selectedNamespace.preview_settings.reranking
+          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -517,6 +553,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
+      "reranking": this.reRanking,
+      "reranking_multiplier":  this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,

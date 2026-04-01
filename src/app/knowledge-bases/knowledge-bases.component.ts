@@ -229,6 +229,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isLoadingMoreUnanswered: boolean = false;
   hasMoreUnansweredQuestions: boolean = false;
   isLoadingNamespaces = true;
+  pineconeReranking: boolean
 
 
   fakeUnansered = [
@@ -2076,6 +2077,7 @@ _presentDialogImportContents() {
       width: '360px',
       data: {
         selectedNamespace: this.selectedNamespace,
+        pineconeReranking: this.pineconeReranking
       },
     });
     dialogRef.backdropClick().subscribe((event) => {
@@ -2623,7 +2625,7 @@ _presentDialogImportContents() {
   }
 
   getOSCODE() {
-
+    this.pineconeReranking = this.appConfigService.getConfig().pineconeReranking;
     let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let keys = public_Key.split("-");
