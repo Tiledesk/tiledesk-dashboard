@@ -68,7 +68,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -8
+      offsetX: -30
     }
   ];
 

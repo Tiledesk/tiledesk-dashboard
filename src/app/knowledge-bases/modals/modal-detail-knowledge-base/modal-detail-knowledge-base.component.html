@@ -181,18 +181,23 @@
     <ng-container *ngIf="!showSpinner" >
         <!-- TODO: remove condition sitemap -->
         <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
-            <div class="content-tags-title">
+            <!-- <div class="content-tags-title">
                 {{'Tags.Tags' | translate}}
-            </div>
+            </div> -->
    
 
         <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
                 [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-                style="padding-top: 8px;">
+                style="padding-top: 8px;"
+                [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
+                #trigger="cdkOverlayOrigin"
+                cdkOverlayOrigin
+                (mouseenter)="open()"
+                (mouseleave)="scheduleClose()">
 
-            <div class="kb-tags-help"
+            <!-- <div class="kb-tags-help"
                 style="position: relative;top: 5px;"
                 #trigger="cdkOverlayOrigin"
                 cdkOverlayOrigin
@@ -202,7 +207,7 @@
                 <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
                 help_outline
                 </span>
-            </div>
+            </div> -->
         </div>
         <ng-template
             cdk-connected-overlay
