@@ -18,6 +18,7 @@ import { FeatureToggleService } from 'app/core/feature-toggle.service';
 import { PermissionsService } from 'app/core/permissions.service';
 import { QuotasStateService } from 'app/services/quotas-state.service';
 import { OnboardingPreferencesService, DashletConfig } from 'app/services/onboarding-preferences.service';
+import { ProjectInitializerService } from 'app/core/project-initializer.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
@@ -42,7 +43,6 @@ import { FaqKb } from 'app/models/faq_kb-model';
 
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 
 const swal = require('sweetalert');
@@ -295,12 +295,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     public localDbService: LocalDbService,
-    private quotesService: QuotesService,
     public rolesService: RolesService,
     private featureToggleService: FeatureToggleService,
     private permissionsService: PermissionsService,
     private quotasStateService: QuotasStateService,
-    private onboardingService: OnboardingPreferencesService
+    private onboardingService: OnboardingPreferencesService,
+    private projectInitializerService: ProjectInitializerService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -326,9 +326,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
     this.getProjectUser();
-
-    // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-    this.usersService.getBotsByProjectIdAndSaveInStorage();
 
     this.getUserRole();
     this.isVisiblePay = this.featureToggleService.isVisiblePay;
@@ -405,10 +402,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.displayQuotaSkeleton = true;
             this.quotasStateService.setProjectId(this.projectId);
             this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 1:", this.displayQuotaSkeleton);
-            // ----------------------------------------
-            // Notify Navbar to fetch quotas
-            // ----------------------------------------
-            this.quotesService.requestQuotasUpdate();
+            this.projectInitializerService.initialize(this.projectId);
           }
 
           this.prjct_name = this.project.name
@@ -1189,9 +1183,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
           // !!!! NO MORE USED - MOVED IN USER SERVICE
-          // this.getAllUsersOfCurrentProject();
-          this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
-          this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+          // this.getAllUsersOfCurrentProject()
 
         }
       });

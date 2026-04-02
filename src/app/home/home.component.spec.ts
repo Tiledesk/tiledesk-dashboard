@@ -37,6 +37,7 @@ import { PermissionsService } from 'app/core/permissions.service';
 import { FeatureToggleService } from 'app/core/feature-toggle.service';
 import { QuotasStateService } from 'app/services/quotas-state.service';
 import { OnboardingPreferencesService } from 'app/services/onboarding-preferences.service';
+import { ProjectInitializerService } from 'app/core/project-initializer.service';
 
 import { AuthServiceStub }      from 'app/testing/stubs/auth.stub';
 import { UsersServiceStub }     from 'app/testing/stubs/users.stub';
@@ -56,7 +57,8 @@ import {
   DepartmentServiceStub,
   PermissionsServiceStub,
   QuotasStateServiceStub,
-  OnboardingPreferencesServiceStub
+  OnboardingPreferencesServiceStub,
+  ProjectInitializerServiceStub
 } from 'app/testing/stubs/misc.stubs';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -102,7 +104,8 @@ function buildProviders() {
     { provide: RolesService,         useValue: rolesStub                     },
     { provide: PermissionsService,   useValue: new PermissionsServiceStub()   },
     { provide: QuotasStateService,   useValue: new QuotasStateServiceStub()   },
-    { provide: OnboardingPreferencesService, useValue: new OnboardingPreferencesServiceStub() },
+    { provide: OnboardingPreferencesService,  useValue: new OnboardingPreferencesServiceStub()  },
+    { provide: ProjectInitializerService,    useValue: new ProjectInitializerServiceStub()     },
     { provide: FeatureToggleService, useValue: { isVisiblePay: false, isVisibleANA: false, isVisibleAPP: false, isVisibleOPH: false, isVisibleHomeBanner: false, projectPlanBadge: false, isVisibleKNB: false, isVisibleQIN: false } },
   ];
 }

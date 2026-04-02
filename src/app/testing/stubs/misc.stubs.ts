@@ -121,3 +121,8 @@ export class OnboardingPreferencesServiceStub {
     return { ...DEFAULT_DASHLET_CONFIG, childListOrder: [...DEFAULT_DASHLET_CONFIG.childListOrder] };
   }
 }
+
+// ── ProjectInitializerService ──────────────────────────────────────────────────
+export class ProjectInitializerServiceStub {
+  initialize(_projectId: string): void {}
+}
