@@ -23,13 +23,13 @@
 
       <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
         <!-- Sidebar sinistra -->
-        <div class="kb-sidebar">
+        <div *ngIf="kbPageConfig.sidebar" class="kb-sidebar">
           <div class="sidebar-title" >
          
             {{ 'KbPage.YourKnowledgeBases' | translate }}
           </div>
 
-          <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
+          <button *ngIf="PERMISSION_TO_ADD_KB && kbPageConfig.sidebarNewNamespaceButton" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
             <mat-icon style="vertical-align: middle;">add</mat-icon>
             <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
           </button>
@@ -146,7 +146,7 @@
                       <div class="selected-namespace-content">
                         <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
                           (mouseout)="onMouseOut()">
-                          <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+                          <div *ngIf="kbPageConfig.namespaceRename && !namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
                             style="padding: 0px;" (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
                             matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='after'
                             matTooltipHideDelay="100">
@@ -155,7 +155,11 @@
                             </div>
                           </div>
 
-                          <input *ngIf="namespaceIsEditable" id="namespace-name-input"
+                          <div *ngIf="!kbPageConfig.namespaceRename" class="selected-namespace" style="padding: 0px;">
+                            {{selectedNamespace?.name}}
+                          </div>
+
+                          <input *ngIf="kbPageConfig.namespaceRename && namespaceIsEditable" id="namespace-name-input"
                             class="namespace-name-input"
                             type="text"
                             style="min-width: 220px; width: 300px; max-width: 450;"
@@ -168,8 +172,8 @@
             
       
                       </div>
-                      <div class="kb-bottom-badge-wpr"> 
-                        <div *ngIf="selectedNamespace?.default" 
+                      <div *ngIf="kbPageConfig.bottomBadges" class="kb-bottom-badge-wpr">
+                        <div *ngIf="selectedNamespace?.default && kbPageConfig.defaultBadge"
                           class="kb-default-badge"
                           matTooltipClass="kb-custom-mat-tooltip"
                           matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}" 
@@ -202,7 +206,7 @@
                     <div class="buttons-div">
       
                       <!-- Export Button  -->
-                      <button *ngIf="PERMISSION_TO_EXPORT_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
+                      <button *ngIf="PERMISSION_TO_EXPORT_CONTENTS && kbPageConfig.exportButton && kbsListCount" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
                         matTooltip="{{'KbPage.ExportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100" (click)="presentDialogExportContents()">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -212,7 +216,7 @@
                       </button>
       
                       <!-- Import Button -->
-                      <button *ngIf="PERMISSION_TO_ADD_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
+                      <button *ngIf="PERMISSION_TO_ADD_CONTENTS && kbPageConfig.importButton" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
                         matTooltip="{{'KbPage.ImportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100" (click)="presentDialogImportContents()">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -222,7 +226,7 @@
                       </button>
       
                       <!-- Delete Button -->
-                      <button id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
+                      <button *ngIf="kbPageConfig.deleteButton && kbsListCount" id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
                         style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
                         <span *ngIf="selectedNamespace.default === false">
                           {{ 'Delete' | translate }}
@@ -238,7 +242,7 @@
                   <!-- --------------------------------------- -->
                   <!-- Chatbots that used current KB -->
                   <!-- --------------------------------------- -->
-                  <div class="chatbot-using-current-namespace-wpr">
+                  <div *ngIf="kbPageConfig.chatbotsSection" class="chatbot-using-current-namespace-wpr">
                     <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
                       class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:
@@ -301,7 +305,7 @@
                     <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
     
-                      <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="font-size: 12px;"
+                      <button *ngIf="PERMISSION_TO_ADD_FLOWS && kbPageConfig.createChatbotButton" class="custom-button xs" style="font-size: 12px;"
                         (click)="createChatbotfromKbOfficialResponderTemplate()">
       
                         <span *ngIf="!esportingKBChatBotTemplate">
@@ -316,15 +320,17 @@
                   </div>
       
                   <!-- TAB SWITCHER START -->
-                  <div class="kb-switch-field">
+                  <div *ngIf="kbPageConfig.tabSwitcher" class="kb-switch-field">
                     <input type="radio" id="tab-contents" name="kb-tab-switch" [checked]="selectedTab === 'contents'" (change)="switchTab('contents')">
                     <label for="tab-contents">
                       <span>{{'KbPage.Contents' | translate }}</span>
                     </label>
-                    <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
-                    <label for="tab-unanswered">
-                      <span>{{'KbPage.UnansweredQuestions' | translate }}</span>
-                    </label>
+                    <ng-container *ngIf="kbPageConfig.unansweredQuestionsTab">
+                      <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
+                      <label for="tab-unanswered">
+                        <span>{{'KbPage.UnansweredQuestions' | translate }}</span>
+                      </label>
+                    </ng-container>
                   </div>
                   <!-- TAB SWITCHER END -->
       

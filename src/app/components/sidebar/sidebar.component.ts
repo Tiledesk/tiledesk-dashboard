@@ -332,6 +332,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_PROJECT_SETTING_ADVANCED: boolean;
   PERMISSION_TO_VIEW_HOME: boolean;
 
+  private static readonly DEFAULT_SIDEBAR_ITEMS = {
+    chat: true, home: true, knowledgeBases: true, flows: true, monitor: true,
+    waBroadcasts: true, contacts: true, analytics: true, activities: true,
+    history: true, settings: true, support: true,
+  };
+
+  get sidebarItems() {
+    return { ...SidebarComponent.DEFAULT_SIDEBAR_ITEMS, ...(this.appConfigService.getConfig().sidebarItems ?? {}) };
+  }
+
   constructor(
     private router: Router,
     public location: Location,

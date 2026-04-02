@@ -239,6 +239,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       { _id: '68b92286f81418001303bfcf', question: 'Where can I find my invoices?' }
     ]
 
+  private static readonly DEFAULT_KB_PAGE_CONFIG = {
+    sidebar: true,
+    sidebarNewNamespaceButton: true,
+    namespaceRename: true,
+    defaultBadge: true,
+    exportButton: true,
+    importButton: true,
+    deleteButton: true,
+    chatbotsSection: true,
+    createChatbotButton: true,
+    unansweredQuestionsTab: true,
+    tabSwitcher: true,
+    bottomBadges: true,
+  };
+
+  get kbPageConfig() {
+    return { ...KnowledgeBasesComponent.DEFAULT_KB_PAGE_CONFIG, ...(this.appConfigService.getConfig().knowledgeBasesPage ?? {}) };
+  }
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
