@@ -886,6 +886,8 @@
     "5Years": "5 yıl",
     "UpgradePlanForRetention": "Mesaj saklama, {{plan_name}} planından itibaren özelleştirilebilir.",
     "MessageRetention": "Mesaj Saklama",
+    "ResponseInStreaming": "Akış etkinleştirildiğinde, yanıt oluşturulurken gerçek zamanlı olarak göreceksiniz",
+    "QuestionIsRequired": "Soru zorunludur",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -884,6 +884,8 @@
     "5Years": "5 anni",
     "UpgradePlanForRetention": "La conservazione dei messaggi può essere personalizzata a partire dal piano {{plan_name}}.",
     "MessageRetention": "Conservazione dei messaggi",
+     "ResponseInStreaming": "Quando lo streaming è abilitato, vedrai la risposta in tempo reale mentre viene generata",
+    "QuestionIsRequired": "La domanda è obbligatoria",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

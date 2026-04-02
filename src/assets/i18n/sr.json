@@ -885,6 +885,8 @@
     "5Years": "5 година",
     "UpgradePlanForRetention": "Чување порука може да се прилагоди од плана {{plan_name}}.",
     "MessageRetention": "Чување порука",
+    "ResponseInStreaming": "Када је стриминг омогућен, видећете одговор у реалном времену док се генерише",
+    "QuestionIsRequired": "Питање је обавезно",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

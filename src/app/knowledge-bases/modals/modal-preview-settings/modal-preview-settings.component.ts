@@ -30,16 +30,28 @@ import { IntegrationService } from 'app/services/integration.service';
 
 export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   @ViewChild('aiModel') aiModel: SatPopover;
+  @ViewChild('aiModelDx') aiModelDx: SatPopover;
   @ViewChild('maxTokens') maxTokens: SatPopover;
+  @ViewChild('maxTokensDx') maxTokensDx: SatPopover;
   @ViewChild('aiModeltemperature') aiModeltemperature: SatPopover;
+  @ViewChild('aiModeltemperatureDx') aiModeltemperatureDx: SatPopover;
   @ViewChild('aiSearchType') aiSearchType: SatPopover;
+  @ViewChild('aiSearchTypeDx') aiSearchTypeDx: SatPopover;
   @ViewChild('chunkLimit') chunkLimit: SatPopover;
+  @ViewChild('chunkLimitDx') chunkLimitDx: SatPopover;
   @ViewChild('systemContext') systemContext: SatPopover;
+  @ViewChild('systemContextDx') systemContextDx: SatPopover;
   @ViewChild('advancedContext') advancedContext: SatPopover;
+  @ViewChild('advancedContextDx') advancedContextDx: SatPopover;
   @ViewChild('contentsSources') contentsSources: SatPopover;
+  @ViewChild('contentsSourcesDx') contentsSourcesDx: SatPopover;
   @ViewChild('chunkonly') chunkonly: SatPopover;
+  @ViewChild('chunkonlyDx') chunkonlyDx: SatPopover;
   @ViewChild('rerank') rerank: SatPopover;
-  
+  @ViewChild('rerankdx') rerankdx: SatPopover;
+  @ViewChild('rerankingMultiplier') rerankingMultiplier: SatPopover;
+  @ViewChild('rerankingMultiplierDx') rerankingMultiplierDx: SatPopover;
+
   private savedScrollData: { scrollTop: number, selector: string, activeElementId?: string } | null = null;
 
 
@@ -1209,16 +1221,7 @@ private restoreDialogScrollPosition(): void {
         //  this.logger.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e:", e);
         //  this.logger.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e.detail:", e.detail);
         if (e.detail && e.detail === true) {
-          this.aiModel.close()
-          this.maxTokens.close()
-          this.aiModeltemperature.close()
-          this.aiSearchType.close();
-          this.chunkLimit.close()
-          this.systemContext.close()
-          this.advancedContext.close()
-          this.contentsSources.close()
-          this.chunkonly.close();
-          this.rerank.close();
+          this.closeAllSettingsPopovers();
         }
       }
     );
@@ -1231,16 +1234,7 @@ private restoreDialogScrollPosition(): void {
         //  this.logger.log("[MODAL PREVIEW SETTINGS] has-clicked-inside-modal-preview-kb e:", e);
         //  this.logger.log("[MODAL PREVIEW SETTINGS] has-clicked-inside-modal-preview-kb e.detail:", e.detail);
         if (e.detail && e.detail === true) {
-          this.aiModel.close()
-          this.maxTokens.close()
-          this.aiModeltemperature.close()
-          this.aiSearchType.close()
-          this.chunkLimit.close()
-          this.systemContext.close()
-          this.advancedContext.close()
-          this.contentsSources.close();
-          this.chunkonly.close();
-          this.rerank.close();
+          this.closeAllSettingsPopovers();
         }
       }
     );
@@ -1251,16 +1245,33 @@ private restoreDialogScrollPosition(): void {
     // this.clickedInside = true;
     // this.clickedOutside = false;
     // this.logger.log('Clicked inside the div');
-    this.aiModel.close()
-    this.maxTokens.close()
-    this.aiModeltemperature.close()
-    this.aiSearchType.close()
-    this.chunkLimit.close()
-    this.systemContext.close()
-    this.advancedContext.close()
-    this.contentsSources.close();
-    this.chunkonly.close();
-    this.rerank.close();
+    this.closeAllSettingsPopovers();
+  }
+
+  /** Chiude tutte le varianti popover (sinistra + destra per preview KB). */
+  closeAllSettingsPopovers(): void {
+    this.aiModel?.close();
+    this.aiModelDx?.close();
+    this.maxTokens?.close();
+    this.maxTokensDx?.close();
+    this.aiModeltemperature?.close();
+    this.aiModeltemperatureDx?.close();
+    this.aiSearchType?.close();
+    this.aiSearchTypeDx?.close();
+    this.chunkLimit?.close();
+    this.chunkLimitDx?.close();
+    this.rerank?.close();
+    this.rerankdx?.close();
+    this.rerankingMultiplier?.close();
+    this.rerankingMultiplierDx?.close();
+    this.systemContext?.close();
+    this.systemContextDx?.close();
+    this.advancedContext?.close();
+    this.advancedContextDx?.close();
+    this.contentsSources?.close();
+    this.contentsSourcesDx?.close();
+    this.chunkonly?.close();
+    this.chunkonlyDx?.close();
   }
 
   // onMouseEnter(event: MouseEvent): void {

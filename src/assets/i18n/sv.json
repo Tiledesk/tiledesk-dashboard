@@ -885,6 +885,8 @@
     "5Years": "5 år",
     "UpgradePlanForRetention": "Lagring av meddelanden kan anpassas från {{plan_name}}-planen.",
     "MessageRetention": "Lagring av meddelanden",
+    "ResponseInStreaming": "När strömning är aktiverad ser du svaret i realtid medan det genereras",
+    "QuestionIsRequired": "Fråga krävs",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

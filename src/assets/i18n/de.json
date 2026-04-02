@@ -884,6 +884,8 @@
     "5Years": "5 Jahre",
 	"UpgradePlanForRetention": "Die Nachrichtenaufbewahrung kann ab dem {{plan_name}}-Tarif angepasst werden.",
     "MessageRetention": "Nachrichtenaufbewahrung",
+	"ResponseInStreaming": "Wenn Streaming aktiviert ist, sehen Sie die Antwort in Echtzeit, während sie generiert wird",
+    "QuestionIsRequired": "Frage ist erforderlich",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

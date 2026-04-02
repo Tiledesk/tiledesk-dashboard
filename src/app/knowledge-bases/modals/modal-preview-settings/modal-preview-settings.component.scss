@@ -256,6 +256,55 @@
     }
 }
 
+/** Popover a destra dell’anchor (es. rerank preview): stesso stile di .cb-details-popover, freccia sul lato sinistro verso l’etichetta. */
+::ng-deep .cb-details-popover-dx {
+    position: relative;
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 4px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding: 8px !important;
+    color: #fff !important;
+    text-align: center;
+    max-width: 200px;
+    box-shadow: 0 11px 15px -7px #0003, 0 24px 38px 3px #00000024, 0 9px 46px 8px #0000001f;
+    margin-left: 30px;
+
+    .sat-popover-content-wpr {
+        position: relative;
+    }
+
+    /* Freccia non dentro content-wpr: centrata sull’altezza totale del pannello (testo + Learn more). */
+    .sat-popover-arrow {
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-right: 5px solid #2d323e;
+        margin-right: 8px;
+    }
+
+    .sat-popover-content {
+        font-weight: 300;
+        line-height: 1.3;
+    }
+
+    .sat-popover-content-learn-more {
+        background: #525963;
+        border-radius: 4px;
+        padding: 6px 6px;
+        margin-top: 6px;
+        cursor: pointer;
+    }
+    .sat-popover-content-learn-more:hover {
+        background: rgba(82, 89, 99, .8);
+    }
+}
+
 .help--link {
     color: var(--blue-20);
     font-weight: 400;

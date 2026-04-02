@@ -884,6 +884,8 @@
     "5Years": "5 жыл",
     "UpgradePlanForRetention": "Хабарламаларды сақтау {{plan_name}} жоспарынан бастап реттелуі мүмкін.",
     "MessageRetention": "Хабарламаларды сақтау",
+    "ResponseInStreaming": "Стриминг қосылғанда, жауап генерацияланып жатқанда оны нақты уақыт режимінде көресіз",
+    "QuestionIsRequired": "Сұрақ міндетті",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
