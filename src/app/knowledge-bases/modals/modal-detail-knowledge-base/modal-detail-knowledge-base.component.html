@@ -77,11 +77,11 @@
     <ng-container *ngIf="!showSpinner">
         <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
         <div class="scrape-options-wpr" *ngIf="kb.type === 'url'">
-            <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
+            <!-- <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
                 <mat-slide-toggle [(ngModel)]="automaticContentExtraction" color="primary">
                     {{ 'KbPage.AutomaticContentExtraction' | translate }}
                 </mat-slide-toggle>
-            </div>
+            </div> -->
             <mat-accordion class="scrape-options-accordion">
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
                     [disabled]="automaticContentExtraction"
