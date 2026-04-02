@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { RouterModule ,Routes} from '@angular/router';
+import { ProjectResolver } from 'app/core/project.resolver';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,7 +25,7 @@ import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.componen
 import { HomeGoToChatComponent } from 'app/home-components/home-go-to-chat/home-go-to-chat.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 const routes: Routes = [
-  { path: "", component: HomeComponent},
+  { path: "", component: HomeComponent, resolve: { project: ProjectResolver } },
 ];
 
 @NgModule({
