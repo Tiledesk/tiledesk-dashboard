@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.197-stage
+- Adds the ability to select the Automatic content extraction option in the "Import from Website", "Import from Sitemap", and "Details" knowledge base dialogs
+
 ### 2.7.196-stage
 - Adds tooltips to the "AI Settings" dialog even when opened from the "Knowledge Base Preview" dialog.
 
