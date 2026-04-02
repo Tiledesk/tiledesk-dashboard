@@ -17,6 +17,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { FeatureToggleService } from 'app/core/feature-toggle.service';
 import { PermissionsService } from 'app/core/permissions.service';
 import { QuotasStateService } from 'app/services/quotas-state.service';
+import { OnboardingPreferencesService, DashletConfig } from 'app/services/onboarding-preferences.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
@@ -193,7 +194,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   userHasClickedDisplayWAWizard: boolean = false
-  PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
   showskeletonForKbHero: boolean = true;
   showsNewsFeedSkeleton: boolean = true;
@@ -299,7 +299,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public rolesService: RolesService,
     private featureToggleService: FeatureToggleService,
     private permissionsService: PermissionsService,
-    private quotasStateService: QuotasStateService
+    private quotasStateService: QuotasStateService,
+    private onboardingService: OnboardingPreferencesService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -469,19 +470,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
       if (project) {
         this.project = project
-        if (project.attributes && project.attributes.dashlets) {
-          this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getDashlet(this.PROJECT_ATTRIBUTES)
-        }
-
-        if (project.attributes && project.attributes.userPreferences) {
-          this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
-
-        } else {
-          this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES > USER PREFERENCES UNDEFINED - SET DEFAULT', this.PROJECT_ATTRIBUTES)
-          this.setDefaultPreferences()
-        }
+        const cfg: DashletConfig = this.onboardingService.resolveConfig(project.attributes);
+        this.displayAnalyticsConvsGraph   = cfg.displayAnalyticsConvsGraph;
+        this.displayAnalyticsIndicators   = cfg.displayAnalyticsIndicators;
+        this.displayConnectWhatsApp       = cfg.displayConnectWhatsApp;
+        this.displayWhatsappAccountWizard = cfg.displayWhatsappAccountWizard;
+        this.displayCreateChatbot         = cfg.displayCreateChatbot;
+        this.displayInviteTeammate        = cfg.displayInviteTeammate;
+        this.displayKnowledgeBase         = cfg.displayKnowledgeBase;
+        this.displayCustomizeWidget       = cfg.displayCustomizeWidget;
+        this.displayNewsFeed              = cfg.displayNewsFeed;
+        this.displayKbHeroSection         = cfg.displayKbHeroSection;
+        this.child_list_order             = cfg.childListOrder;
+        this.solution                     = cfg.solution;
+        this.solution_channel             = cfg.solutionChannel;
+        this.use_case                     = cfg.useCase;
+        this.solution_for_child           = cfg.solution;
+        this.solution_channel_for_child   = cfg.solutionChannel;
+        this.use_case_for_child           = cfg.useCase;
 
 
 
@@ -867,61 +873,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.editOperatingHoursBtn.nativeElement.blur();
   }
 
-  getDashlet(project_attributes) {
-    // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
-    if (project_attributes && project_attributes.dashlets) {
-      this.logger.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
-      const dashlets = project_attributes.dashlets;
-
-      this.displayAnalyticsConvsGraph = dashlets.convsGraph
-      this.displayAnalyticsIndicators = dashlets.analyticsIndicators
-      this.displayConnectWhatsApp = dashlets.connectWhatsApp
-      this.displayCreateChatbot = dashlets.createChatbot
-      this.displayKnowledgeBase = dashlets.knowledgeBase
-      this.displayInviteTeammate = dashlets.inviteTeammate
-      this.displayCustomizeWidget = dashlets.customizeWidget
-      this.displayNewsFeed = dashlets.newsFeed
-    }
-  }
-
-  async setDefaultPreferences() {
-    this.child_list_order = [
-      { pos: 1, type: 'child1' },
-      { pos: 2, type: 'child2' },
-      { pos: 3, type: 'child5' },
-      { pos: 4, type: 'child7' },
-      { pos: 5, type: 'child6' },
-      { pos: 6, type: 'child8' },
-      { pos: 7, type: 'child3' },
-      { pos: 8, type: 'child4' }
-    ]
-
-    // this.displayAnalyticsConvsGraph = false;
-    // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-    // this.displayAnalyticsIndicators = false;
-    // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
-    this.displayWhatsappAccountWizard = false;
-    this.displayConnectWhatsApp = false;
-    // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-    this.displayCreateChatbot = true;
-    // await this.switchCreateChatbot(this.displayCreateChatbot)
-
-    this.displayInviteTeammate = true;
-    // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-    this.displayCustomizeWidget = false;
-    // await this.switchCustomizeWidget(this.displayCustomizeWidget);
-
-    this.displayKnowledgeBase = true;
-    // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-  }
-
-
-
-
   trackUserAction(event) {
     let userFullname = ''
     if (this.user.firstname && this.user.lastname) {
@@ -1006,408 +957,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-  async getOnbordingPreferences(project_attributes) {
-
-    this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PROJECT ATTRIBUTES ', project_attributes);
-    this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PROJECT ATTRIBUTES > USER PREFERENCE', project_attributes.userPreferences);
-    // if (this.current_prjct &&
-    //   this.current_prjct.id_project &&
-    //   this.current_prjct.id_project.attributes &&
-    //   this.current_prjct.id_project.attributes.userPreferences) {
-
-    if (project_attributes && project_attributes.userPreferences.onboarding_type) {
-      if (project_attributes.userPreferences.onboarding_type === "kb") {
-        this.displayKbHeroSection = true
-      } else {
-        this.displayKbHeroSection = false
-      }
-      this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PREFERENCES ---> displayKbHeroSection', this.displayKbHeroSection);
-    } else {
-      this.displayKbHeroSection = false
-    }
-
-    this.solution = project_attributes.userPreferences.solution
-    this.solution_channel = project_attributes.userPreferences.solution_channel
-    this.use_case = project_attributes.userPreferences.use_case
-
-    this.logger.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution_channel', this.solution_channel);
-    this.logger.log('[HOME] - USER PREFERENCES getOnbordingPreferences use_case', this.use_case);
-    this.logger.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution', this.solution);
-
-    this.solution_for_child = this.solution;
-    this.solution_channel_for_child = this.solution_channel;
-    this.use_case_for_child = this.use_case;
-
-    if (this.solution === undefined && this.solution_channel === undefined && this.use_case === undefined) {
-      this.logger.log('[HOME] - USECASE USER PREFERENCES getOnbordingPreferences solution', this.solution, 'solution_channel ', this.solution_channel, ' use_case ', this.use_case);
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child5' },
-        { pos: 4, type: 'child7' },
-        { pos: 5, type: 'child6' },
-        { pos: 6, type: 'child8' },
-        { pos: 7, type: 'child3' },
-        { pos: 8, type: 'child4' }
-      ]
-
-
-      this.displayWhatsappAccountWizard = false;
-      this.displayConnectWhatsApp = false;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot)
-
-      this.displayInviteTeammate = true;
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayCustomizeWidget = false;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget);
-
-      this.displayKnowledgeBase = true;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.logger.log('[HOME] - YES ATTRIBUTES - NO USER PREFERENCES');
-    }
-
-
-    // ----------------------------------------------
-    // USECASE 1
-    // ----------------------------------------------
-    if (this.solution === 'want_to_automate_conversations' &&
-      this.solution_channel === 'web_mobile' &&
-      this.use_case === "solve_customer_problems") {
-
-      this.logger.log('[HOME] USECASE 1')
-      // , show: false
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child5' },
-        { pos: 4, type: 'child7' },
-        { pos: 5, type: 'child6' },
-        { pos: 6, type: 'child8' },
-        { pos: 7, type: 'child3' },
-        { pos: 8, type: 'child4' }
-      ]
-
-
-      this.displayWhatsappAccountWizard = false;
-
-      this.displayConnectWhatsApp = false;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot)
-
-      this.displayInviteTeammate = true
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayKnowledgeBase = true;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = true;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-    }
-
-    // ----------------------------------------------
-    // USECASE 2
-    // ----------------------------------------------
-    if (this.solution === 'want_to_automate_conversations' &&
-      this.solution_channel === 'web_mobile' &&
-      this.use_case === "increase_online_sales") {
-      this.logger.log('[HOME] USECASE 2')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child5' },
-        { pos: 4, type: 'child7' },
-        { pos: 5, type: 'child6' },
-        { pos: 6, type: 'child8' },
-        { pos: 7, type: 'child3' },
-        { pos: 8, type: 'child4' }
-      ]
-
-
-      this.displayWhatsappAccountWizard = false;
-
-      this.displayConnectWhatsApp = false;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot);
-
-      this.displayInviteTeammate = true
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayKnowledgeBase = false;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = true;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-
-    }
-
-    // ----------------------------------------------
-    // USECASE 3
-    // ----------------------------------------------
-    if (this.solution === 'want_to_automate_conversations' &&
-      this.solution_channel === 'whatsapp_fb_messenger' &&
-      this.use_case === 'solve_customer_problems') {
-      this.logger.log('[HOME] USECASE 3')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child3' },
-        { pos: 4, type: 'child4' },
-        { pos: 5, type: 'child5' },
-        { pos: 6, type: 'child7' },
-        { pos: 7, type: 'child6' },
-        { pos: 8, type: 'child8' }
-      ]
-
-      this.displayWhatsappAccountWizard = true;
-
-      this.displayConnectWhatsApp = true;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot);
-
-      this.displayInviteTeammate = true
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayKnowledgeBase = true;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = false;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-    }
-
-    // ----------------------------------------------
-    // USECASE 4
-    // ----------------------------------------------
-    if (this.solution === 'want_to_automate_conversations' &&
-      this.solution_channel === 'whatsapp_fb_messenger' &&
-      this.use_case === 'increase_online_sales') {
-      this.logger.log('[HOME] USECASE 4')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child3' },
-        { pos: 4, type: 'child4' },
-        { pos: 5, type: 'child5' },
-        { pos: 6, type: 'child6' },
-        { pos: 7, type: 'child7' },
-        { pos: 8, type: 'child8' }
-      ]
-
-
-      // this.displayAnalyticsConvsGraph = false;
-      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
-      this.displayWhatsappAccountWizard = true;
-
-      this.displayConnectWhatsApp = true;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot);
-
-      this.displayInviteTeammate = true;
-      // await this.switchInviteTeammate(this.displayInviteTeammate);
-
-      this.displayKnowledgeBase = false;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = false;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-
-    }
-
-    // ----------------------------------------------
-    // USECASE 5
-    // ----------------------------------------------
-    if (this.solution === 'want_to_talk_to_customers' &&
-      this.solution_channel === 'web_mobile' &&
-      this.use_case === 'solve_customer_problems') {
-      this.logger.log('[HOME] USECASE 5')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child6' },
-        { pos: 4, type: 'child8' },
-        { pos: 5, type: 'child5' },
-        { pos: 6, type: 'child7' },
-        { pos: 7, type: 'child3' },
-        { pos: 8, type: 'child4' }
-      ]
-
-      // this.displayAnalyticsConvsGraph = false;
-      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
-      this.displayWhatsappAccountWizard = false;
-      this.displayConnectWhatsApp = false;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot);
-
-      this.displayInviteTeammate = true;
-      // await this.switchInviteTeammate(this.displayInviteTeammate);
-
-      this.displayKnowledgeBase = true;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = true;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-    }
-
-    // ----------------------------------------------
-    // USECASE 6
-    // ----------------------------------------------
-    if (this.solution === 'want_to_talk_to_customers' &&
-      this.solution_channel === 'web_mobile' &&
-      this.use_case === 'increase_online_sales') {
-      this.logger.log('[HOME] USECASE 6')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child6' },
-        { pos: 4, type: 'child8' },
-        { pos: 5, type: 'child5' },
-        { pos: 6, type: 'child7' },
-        { pos: 7, type: 'child3' },
-        { pos: 8, type: 'child4' }
-      ]
-
-      // this.displayAnalyticsConvsGraph = false;
-      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
-      this.displayWhatsappAccountWizard = false;
-      this.displayConnectWhatsApp = false;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true;
-      // await this.switchCreateChatbot(this.displayCreateChatbot);
-
-      this.displayInviteTeammate = true;
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayKnowledgeBase = false;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = true;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-    }
-
-    // ----------------------------------------------
-    // USECASE 7
-    // ----------------------------------------------
-    if (this.solution === 'want_to_talk_to_customers' &&
-      this.solution_channel === 'whatsapp_fb_messenger' &&
-      this.use_case === 'solve_customer_problems') {
-      this.logger.log('[HOME] USECASE 7')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child3' },
-        { pos: 4, type: 'child4' },
-        { pos: 5, type: 'child6' },
-        { pos: 6, type: 'child5' },
-        { pos: 7, type: 'child7' },
-        { pos: 8, type: 'child8' }
-      ]
-
-      // this.displayAnalyticsConvsGraph = false;
-      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
-      this.displayWhatsappAccountWizard = true;
-
-      this.displayConnectWhatsApp = true;
-      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
-
-      this.displayCreateChatbot = true
-      // await this.switchCreateChatbot(this.displayCreateChatbot)
-
-      this.displayInviteTeammate = true
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayKnowledgeBase = true;
-      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-
-      this.displayCustomizeWidget = false;
-      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-    }
-
-
-    // ----------------------------------------------
-    // USECASE 8
-    // ----------------------------------------------
-    if (this.solution === 'want_to_talk_to_customers' &&
-      this.solution_channel === 'whatsapp_fb_messenger' &&
-      this.use_case === 'increase_online_sales') {
-      this.logger.log('[HOME] USECASE 8')
-
-      this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child3' },
-        { pos: 4, type: 'child4' },
-        { pos: 5, type: 'child6' },
-        { pos: 6, type: 'child5' },
-        { pos: 7, type: 'child7' },
-        { pos: 8, type: 'child8' }
-      ]
-
-      this.displayWhatsappAccountWizard = true;
-
-      this.displayConnectWhatsApp = true;
-      // await this.switchConnectWhatsApp(true);
-
-      this.displayCreateChatbot = true
-      // await this.switchCreateChatbot(this.displayCreateChatbot)
-
-      this.displayInviteTeammate = true
-      // await this.switchInviteTeammate(this.displayInviteTeammate)
-
-      this.displayKnowledgeBase = false;
-      // await this.switchyKnowledgeBase(false);
-
-      this.displayCustomizeWidget = false;
-      // await this.switchCustomizeWidget(false)
-
-
-
-    }
-  }
 
   checkPlan(appTitle) {
     if (

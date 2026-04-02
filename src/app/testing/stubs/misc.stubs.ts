@@ -6,6 +6,7 @@
 import { BehaviorSubject, of } from 'rxjs';
 import { ProjectPermissions } from 'app/core/permissions.service';
 import { QuotaState } from 'app/services/quotas-state.service';
+import { DashletConfig } from 'app/services/onboarding-preferences.service';
 
 // ── NotifyService ──────────────────────────────────────────────────────────────
 export class NotifyServiceStub {
@@ -96,5 +97,27 @@ export class PermissionsServiceStub {
   setPermissions(overrides: Partial<ProjectPermissions>): void {
     this._snapshot = { ...ALL_FALSE, ...overrides };
     this.permissions$.next(this._snapshot);
+  }
+}
+
+// ── OnboardingPreferencesService ───────────────────────────────────────────────
+const DEFAULT_DASHLET_CONFIG: DashletConfig = {
+  displayAnalyticsConvsGraph: false, displayAnalyticsIndicators: false,
+  displayConnectWhatsApp: false,     displayWhatsappAccountWizard: false,
+  displayCreateChatbot: true,        displayInviteTeammate: true,
+  displayKnowledgeBase: true,        displayCustomizeWidget: false,
+  displayNewsFeed: true,             displayKbHeroSection: false,
+  childListOrder: [
+    { pos: 1, type: 'child1' }, { pos: 2, type: 'child2' },
+    { pos: 3, type: 'child5' }, { pos: 4, type: 'child7' },
+    { pos: 5, type: 'child6' }, { pos: 6, type: 'child8' },
+    { pos: 7, type: 'child3' }, { pos: 8, type: 'child4' },
+  ],
+  solution: undefined, solutionChannel: undefined, useCase: undefined,
+};
+
+export class OnboardingPreferencesServiceStub {
+  resolveConfig(_attributes: any): DashletConfig {
+    return { ...DEFAULT_DASHLET_CONFIG, childListOrder: [...DEFAULT_DASHLET_CONFIG.childListOrder] };
   }
 }
