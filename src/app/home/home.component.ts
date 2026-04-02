@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { FeatureToggleService } from 'app/core/feature-toggle.service';
 import { PermissionsService } from 'app/core/permissions.service';
+import { QuotasStateService } from 'app/services/quotas-state.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
@@ -95,7 +96,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   showSpinner = true;
 
   subscription: Subscription;
-  quotasSubscription: Subscription;
 
   installWidgetText: string;
 
@@ -228,43 +228,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleQuoteSection: boolean;
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
-  requests_count = 0;
-  requests_perc = 0;
-  requests_limit = 0;
-
-  messages_count = 0;
-  messages_perc = 0;
-  messages_limit = 0;
-
-  email_count = 0;
-  email_perc = 0;
-  email_limit = 0;
-
-  tokens_count = 0;
-  tokens_perc = 0;
-  tokens_limit = 0;
-
-  voice_count = 0;
-  voice_perc = 0;
-  voice_limit = 0;
-  voice_limit_in_sec = 0;
-  voice_count_min_sec: any;
-
-  conversationsRunnedOut: boolean = false;
-  emailsRunnedOut: boolean = false;
-  tokensRunnedOut: boolean = false;
-  voiceRunnedOut: boolean = false;
   diplayVXMLVoiceQuota: boolean;
-
-
-  // ---------------------------------------
-  // For test 
-  // ---------------------------------------
-  // conversationsRunnedOut: boolean = true;
-  // emailsRunnedOut: boolean = true;
-  // tokensRunnedOut: boolean = true;
-
   displayQuotaSkeleton: boolean;
+
+  get requests_count(): number  { return this.quotasStateService.snapshot.requests.count; }
+  get requests_perc(): number   { return this.quotasStateService.snapshot.requests.perc; }
+  get requests_limit(): number  { return this.quotasStateService.snapshot.requests.limit; }
+
+  get messages_count(): number  { return this.quotasStateService.snapshot.messages.count; }
+  get messages_perc(): number   { return this.quotasStateService.snapshot.messages.perc; }
+  get messages_limit(): number  { return this.quotasStateService.snapshot.messages.limit; }
+
+  get email_count(): number     { return this.quotasStateService.snapshot.email.count; }
+  get email_perc(): number      { return this.quotasStateService.snapshot.email.perc; }
+  get email_limit(): number     { return this.quotasStateService.snapshot.email.limit; }
+
+  get tokens_count(): number    { return this.quotasStateService.snapshot.tokens.count; }
+  get tokens_perc(): number     { return this.quotasStateService.snapshot.tokens.perc; }
+  get tokens_limit(): number    { return this.quotasStateService.snapshot.tokens.limit; }
+
+  get voice_count(): number         { return this.quotasStateService.snapshot.voice.count; }
+  get voice_perc(): number          { return this.quotasStateService.snapshot.voice.perc; }
+  get voice_limit(): number         { return this.quotasStateService.snapshot.voice.limit; }
+  get voice_limit_in_sec(): number  { return this.quotasStateService.snapshot.voice.limitInSec; }
+  get voice_count_min_sec(): string { return this.quotasStateService.snapshot.voice.countMinSec; }
+
+  get conversationsRunnedOut(): boolean { return this.quotasStateService.snapshot.requests.runnedOut; }
+  get emailsRunnedOut(): boolean        { return this.quotasStateService.snapshot.email.runnedOut; }
+  get tokensRunnedOut(): boolean        { return this.quotasStateService.snapshot.tokens.runnedOut; }
+  get voiceRunnedOut(): boolean         { return this.quotasStateService.snapshot.voice.runnedOut; }
 
   salesEmail: string
 
@@ -274,9 +266,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   endSlot: string;
 
 
-  // refactoring quotas
-  quotasLimits
-  allQuotas
 
   get PERMISSION_TO_VIEW_FLOWS(): boolean          { return this.permissionsService.snapshot.FLOWS; }
   get PERMISSION_TO_VIEW_KB(): boolean             { return this.permissionsService.snapshot.KB; }
@@ -309,7 +298,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private quotesService: QuotesService,
     public rolesService: RolesService,
     private featureToggleService: FeatureToggleService,
-    private permissionsService: PermissionsService
+    private permissionsService: PermissionsService,
+    private quotasStateService: QuotasStateService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -362,7 +352,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.localDbService.removeFromStorage('swg')
     }
 
-    this.listenToQuotas()
+    this.quotasStateService.state$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => { this.displayQuotaSkeleton = false; });
   }
 
   ngAfterViewInit() {
@@ -381,10 +373,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-
-    if (this.quotasSubscription) {
-      this.quotasSubscription.unsubscribe();
-    }
   }
 
   listenHasChangedProjectFroList() {
@@ -413,8 +401,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectName = this.project.name
 
           if (this.projectId) {
-            this.displayQuotaSkeleton = true
-
+            this.displayQuotaSkeleton = true;
+            this.quotasStateService.setProjectId(this.projectId);
             this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 1:", this.displayQuotaSkeleton);
             // ----------------------------------------
             // Notify Navbar to fetch quotas
@@ -467,154 +455,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  listenToQuotas() {
-    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ------------> ", this.projectId);
-    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectChangedFromList :", this.projectChangedFromList);
-    this.quotasSubscription = this.quotesService.quotesData$
-      .subscribe((data) => {
-
-        if (data) {
-          if (data['projectId'] === this.projectId) {
-            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
-            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
-            this.quotasLimits = data.projectLimits;
-            this.allQuotas = data.allQuotes;
-            this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
-            this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
-
-            if (this.quotasLimits) {
-              this.messages_limit = this.quotasLimits.messages;
-              this.requests_limit = this.quotasLimits.requests;
-              this.email_limit = this.quotasLimits.email;
-              this.tokens_limit = this.quotasLimits.tokens;
-
-              // if (this.quotasLimits.voice_duration)  {
-              this.voice_limit_in_sec = this.quotasLimits.voice_duration;
-              this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
-              // } else {
-              //   this.voice_limit = 0
-              // }
-
-
-              this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
-              this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
-              this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
-              this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
-              this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
-              this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
-              this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
-            }
-
-            // -----------------------------
-            // For test
-            // -----------------------------
-            // this.requests_limit = 1;
-            // this.email_limit = 1;
-            // this.tokens_limit = 1;
-
-            this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
-            this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
-            this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
-            this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
-            if (this.allQuotas.requests.quote === null) {
-              this.allQuotas.requests.quote = 0;
-            }
-            if (this.allQuotas.messages.quote === null) {
-              this.allQuotas.messages.quote = 0;
-            }
-            if (this.allQuotas.email.quote === null) {
-              this.allQuotas.email.quote = 0;
-            }
-            if (this.allQuotas.tokens.quote === null) {
-              this.allQuotas.tokens.quote = 0;
-            }
-            if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
-              this.allQuotas.voice_duration.quote = 0;
-              this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
-            }
-
-
-            if (this.allQuotas.requests.quote >= this.requests_limit) {
-              this.conversationsRunnedOut = true;
-              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-            } else {
-              this.conversationsRunnedOut = false;
-              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-            }
-
-            if (this.allQuotas.email.quote >= this.email_limit) {
-              this.emailsRunnedOut = true;
-              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-            } else {
-              this.emailsRunnedOut = false;
-              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-            }
-
-            if (this.allQuotas.tokens.quote >= this.tokens_limit) {
-              this.tokensRunnedOut = true;
-              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-            } else {
-              this.tokensRunnedOut = false;
-              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-            }
-
-            if (this.diplayVXMLVoiceQuota) {
-              if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
-                // if (3342 >= this.voice_limit_in_sec) {   
-                this.voiceRunnedOut = true;
-                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-              } else {
-                this.voiceRunnedOut = false;
-                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-              }
-            }
-
-
-            this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
-            this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
-            this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
-            this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
-            this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
-
-            this.requests_count = this.allQuotas.requests.quote;
-            this.messages_count = this.allQuotas.messages.quote;
-            this.email_count = this.allQuotas.email.quote;
-            this.tokens_count = this.allQuotas.tokens.quote;
-            this.voice_count = this.allQuotas.voice_duration?.quote
-            this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
-
-            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
-            this.displayQuotaSkeleton = false
-            // if (this.projectChangedFromList) {
-            //   setTimeout(() => {
-            //     this.displayQuotaSkeleton = false
-            //   }, 1000);
-
-            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
-            // } 
-            // else {
-            //   this.displayQuotaSkeleton = false
-            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
-            // }
-          }
-        }
-      },
-        (error) => {
-          // Handle error
-          this.displayQuotaSkeleton = false
-        },
-        () => {
-          // This complete callback will be called if/when the observable completes
-          this.logger.log('[QUOTA-DEBUG][HOME] Subscription completed');
-        }
-      )
-  }
-
-  secondsToMinutes_seconds(seconds) {
-    let minutes = Math.floor(seconds / 60);
-    let remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  }
 
   contacUsViaEmail() {
     window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
@@ -907,6 +747,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.diplayVXMLVoiceQuota = false
     }
 
+    this.quotasStateService.setVoiceEnabled(this.diplayVXMLVoiceQuota);
   }
 
 

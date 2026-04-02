@@ -5,6 +5,7 @@
 
 import { BehaviorSubject, of } from 'rxjs';
 import { ProjectPermissions } from 'app/core/permissions.service';
+import { QuotaState } from 'app/services/quotas-state.service';
 
 // ── NotifyService ──────────────────────────────────────────────────────────────
 export class NotifyServiceStub {
@@ -49,6 +50,33 @@ export class AppStoreServiceStub {}
 // ── DepartmentService ──────────────────────────────────────────────────────────
 export class DepartmentServiceStub {
   getVisitorCounter() { return of([]); }
+}
+
+// ── QuotasStateService ─────────────────────────────────────────────────────────
+const DEFAULT_QUOTA_STATE: QuotaState = {
+  requests: { count: 0, limit: 0, perc: 0, runnedOut: false },
+  messages: { count: 0, limit: 0, perc: 0 },
+  email:    { count: 0, limit: 0, perc: 0, runnedOut: false },
+  tokens:   { count: 0, limit: 0, perc: 0, runnedOut: false },
+  voice:    { count: 0, countMinSec: '0m 0s', limit: 0, limitInSec: 0, perc: 0, runnedOut: false },
+};
+
+export class QuotasStateServiceStub {
+  private _snapshot: QuotaState = { ...DEFAULT_QUOTA_STATE };
+  readonly state$ = new BehaviorSubject<QuotaState>(this._snapshot);
+
+  get snapshot(): QuotaState { return this._snapshot; }
+
+  setProjectId(_id: string): void {}
+  setVoiceEnabled(_enabled: boolean): void {}
+  secondsToMinutes_seconds(seconds: number): string {
+    return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+  }
+
+  setState(overrides: Partial<QuotaState>): void {
+    this._snapshot = { ...DEFAULT_QUOTA_STATE, ...overrides } as QuotaState;
+    this.state$.next(this._snapshot);
+  }
 }
 
 // ── PermissionsService ─────────────────────────────────────────────────────────

@@ -35,6 +35,7 @@ import { QuotesService }      from 'app/services/quotes.service';
 import { RolesService }       from 'app/services/roles.service';
 import { PermissionsService } from 'app/core/permissions.service';
 import { FeatureToggleService } from 'app/core/feature-toggle.service';
+import { QuotasStateService } from 'app/services/quotas-state.service';
 
 import { AuthServiceStub }      from 'app/testing/stubs/auth.stub';
 import { UsersServiceStub }     from 'app/testing/stubs/users.stub';
@@ -52,7 +53,8 @@ import {
   LoggerServiceStub,
   AppStoreServiceStub,
   DepartmentServiceStub,
-  PermissionsServiceStub
+  PermissionsServiceStub,
+  QuotasStateServiceStub
 } from 'app/testing/stubs/misc.stubs';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -96,7 +98,8 @@ function buildProviders() {
     { provide: DepartmentService,  useValue: new DepartmentServiceStub()  },
     { provide: QuotesService,        useValue: quotesStub                    },
     { provide: RolesService,         useValue: rolesStub                     },
-    { provide: PermissionsService,   useValue: new PermissionsServiceStub()  },
+    { provide: PermissionsService,   useValue: new PermissionsServiceStub()   },
+    { provide: QuotasStateService,   useValue: new QuotasStateServiceStub()   },
     { provide: FeatureToggleService, useValue: { isVisiblePay: false, isVisibleANA: false, isVisibleAPP: false, isVisibleOPH: false, isVisibleHomeBanner: false, projectPlanBadge: false, isVisibleKNB: false, isVisibleQIN: false } },
   ];
 }
