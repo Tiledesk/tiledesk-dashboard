@@ -33,6 +33,8 @@ import { AppStoreService }    from 'app/services/app-store.service';
 import { DepartmentService }  from 'app/services/department.service';
 import { QuotesService }      from 'app/services/quotes.service';
 import { RolesService }       from 'app/services/roles.service';
+import { PermissionsService } from 'app/core/permissions.service';
+import { FeatureToggleService } from 'app/core/feature-toggle.service';
 
 import { AuthServiceStub }      from 'app/testing/stubs/auth.stub';
 import { UsersServiceStub }     from 'app/testing/stubs/users.stub';
@@ -49,7 +51,8 @@ import {
   FaqKbServiceStub,
   LoggerServiceStub,
   AppStoreServiceStub,
-  DepartmentServiceStub
+  DepartmentServiceStub,
+  PermissionsServiceStub
 } from 'app/testing/stubs/misc.stubs';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -91,8 +94,10 @@ function buildProviders() {
     { provide: ProjectService,     useValue: projectStub     },
     { provide: AppStoreService,    useValue: new AppStoreServiceStub()    },
     { provide: DepartmentService,  useValue: new DepartmentServiceStub()  },
-    { provide: QuotesService,      useValue: quotesStub      },
-    { provide: RolesService,       useValue: rolesStub       },
+    { provide: QuotesService,        useValue: quotesStub                    },
+    { provide: RolesService,         useValue: rolesStub                     },
+    { provide: PermissionsService,   useValue: new PermissionsServiceStub()  },
+    { provide: FeatureToggleService, useValue: { isVisiblePay: false, isVisibleANA: false, isVisibleAPP: false, isVisibleOPH: false, isVisibleHomeBanner: false, projectPlanBadge: false, isVisibleKNB: false, isVisibleQIN: false } },
   ];
 }
 

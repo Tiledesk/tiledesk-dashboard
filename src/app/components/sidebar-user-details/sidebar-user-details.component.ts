@@ -383,8 +383,10 @@ export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
         this.projects.forEach((prj: ProjectUser) => {
           prj.teammateStatus = getUserStatusFromProjectUser(prj as any);
         });
-        this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
-        this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.projects ', this.project);
+        if (this.project) {
+          this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
+          this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.projects ', this.project);
+        }
       }
     }, (error) => {
       this.logger.error('[SIDEBAR-USER-DETAILS] getProjects - ERROR ', error);
