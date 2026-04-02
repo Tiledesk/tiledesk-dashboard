@@ -208,9 +208,13 @@
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
                 [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
                 [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
-                style="margin-top: 10px;">
+                style="margin-top: 10px;"  
+                #trigger="cdkOverlayOrigin"
+                cdkOverlayOrigin
+                (mouseenter)="open()"
+                (mouseleave)="scheduleClose()">
 
-            <div class="kb-tags-help"
+            <!-- <div class="kb-tags-help"
                 style="position: relative;top: 14px;"
                 #trigger="cdkOverlayOrigin"
                 cdkOverlayOrigin
@@ -220,7 +224,7 @@
                 <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
                 help_outline
                 </span>
-            </div>
+            </div> -->
         </div>
 
         <ng-template

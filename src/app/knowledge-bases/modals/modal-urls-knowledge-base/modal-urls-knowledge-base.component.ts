@@ -81,7 +81,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -8
+      offsetX: -30
     }
   ];
 

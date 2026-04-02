@@ -2,7 +2,21 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { LLM_MODEL, OPENAI_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_reranking_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
+import {
+  LLM_MODEL,
+  URL_AI_model_doc,
+  URL_advanced_context_doc,
+  URL_chunk_Limit_doc,
+  URL_contents_sources_doc,
+  URL_max_tokens_doc,
+  URL_reranking_doc,
+  URL_system_context_doc,
+  URL_temperature_doc,
+  loadTokenMultiplier,
+  getLlmModelTokenBounds,
+  getLlmModelDefaultMaxTokens,
+  LLM_MAX_TOKENS_SLIDER_UI_CAP
+} from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -49,8 +63,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   public selectedModel: any // = this.models_list[0].value;
   public max_tokens: number;
-  public max_tokens_min: number;
-  public max_tokens_max: number;
+  public max_tokens_min = 10;
+  /** Tetto effettivo dello slider (può essere < catalogo, es. 100k vs 128k in util). */
+  public max_tokens_max = LLM_MAX_TOKENS_SLIDER_UI_CAP;
+  /** Massimo da catalogo util (max_output_tokens) — solo per etichetta, es. "128k". */
+  public max_tokens_catalog_max = LLM_MAX_TOKENS_SLIDER_UI_CAP;
   public temperature: number; // 0.7
   public alpha: number; // 0.7
   public topK: number;
@@ -96,6 +113,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   modelGroups: any[] = [];
   flattenedModels: any[] = [];
 
+
   aiSettingsObject = [{
     model: null,
     maxTokens: null,
@@ -110,6 +128,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     citations: null,
   }]
 
+  pineconeReranking: boolean
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewSettingsComponent>,
@@ -123,7 +143,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // this.logger.log("[MODAL PREVIEW SETTINGS] data ", data)
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
-    if (data && data.selectedNamespace) {
+
+    if (data) {
       this.selectedNamespace = data.selectedNamespace
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
@@ -139,8 +160,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }
 
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
-
-      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
+      this.pineconeReranking = data.pineconeReranking
+      console.log("[MODAL PREVIEW SETTINGS] pineconeReranking ", this.pineconeReranking)
 
       this.selectedNamespace.preview_settings
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
@@ -228,15 +249,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       if (!this.selectedNamespace.preview_settings.citations) {
         this.citations = false
         this.selectedNamespace.preview_settings.citations = this.citations
-        this.max_tokens_min = 10
-        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       } else {
         this.citations = this.selectedNamespace.preview_settings.citations;
-        this.max_tokens_min = 1024;
-        // this.max_tokens = 1024;
-        // this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
-        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       }
 
 
@@ -520,12 +535,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
 
-    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    const modelRow = this.flattenedModels.find(
+      (el) => el.value === this.selectedNamespace.preview_settings.model
+    );
+    this.selectedModel = modelRow?.value ?? this.selectedNamespace.preview_settings.model;
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
     const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
+
+    const mv = this.selectedNamespace?.preview_settings?.model;
+    if (mv) {
+      this.applyMaxTokenSliderFromUtil(mv, { resetMaxTokensToDefault: false });
+    }
   }
 
   async getIntegrationByName() {
@@ -586,6 +609,43 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.namespaceid = this.selectedNamespace.id
   }
 
+  /**
+   * Limiti slider max tokens da util.ts (min_tokens, max_output_tokens).
+   * Default preimpostato: min(max_output_tokens, 10000) tramite getLlmModelDefaultMaxTokens.
+   * Etichetta destra: max_output_tokens di catalogo (es. 128k); slider max = min(catalogo, tetto UI).
+   */
+  private applyMaxTokenSliderFromUtil(
+    modelValue: string,
+    options?: { resetMaxTokensToDefault?: boolean }
+  ): void {
+    if (!modelValue) {
+      return;
+    }
+    const bounds = getLlmModelTokenBounds(modelValue);
+    const utilMin = bounds?.min_tokens ?? 1;
+    // min_tokens da util.ts; con citations il minimo effettivo non scende sotto 1024
+    this.max_tokens_min = this.citations ? Math.max(utilMin, 1024) : utilMin;
+    const catalogMax = bounds?.max_output_tokens ?? LLM_MAX_TOKENS_SLIDER_UI_CAP;
+    this.max_tokens_catalog_max = catalogMax;
+    this.max_tokens_max = Math.min(catalogMax, LLM_MAX_TOKENS_SLIDER_UI_CAP);
+    if (this.max_tokens_min > this.max_tokens_max) {
+      this.max_tokens_max = this.max_tokens_min;
+    }
+
+    const clamp = (v: number) => Math.min(Math.max(v, this.max_tokens_min), this.max_tokens_max);
+
+    if (options?.resetMaxTokensToDefault) {
+      this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    } else if (this.max_tokens != null && !Number.isNaN(this.max_tokens as number)) {
+      this.max_tokens = clamp(this.max_tokens);
+    } else {
+      this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    }
+
+    // Sempre allinea il namespace in memoria (anche da preview KB), così il fallback nel listener del preview non ripristina un max_tokens obsoleto.
+    this.selectedNamespace.preview_settings.max_tokens = this.max_tokens;
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
+  }
 
   onSelectModel(selectedModel) {
     this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
@@ -637,17 +697,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     } else {
       this.countOfOverrides = this.countOfOverrides - 1;
     }
+
+    this.applyMaxTokenSliderFromUtil(selectedModel, { resetMaxTokensToDefault: true });
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject);
   }
 
   updateSliderValue(value, type) {
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
-      if (!this.wasOpenedFromThePreviewKBModal) {
-        this.selectedNamespace.preview_settings.max_tokens = value
-      }
+      const previousMaxTokens = this.selectedNamespace.preview_settings.max_tokens;
+      // Sempre aggiorna preview_settings (anche da modal preview), per coerenza con ask e con listenToAiSettingsChanges sul preview KB.
+      this.selectedNamespace.preview_settings.max_tokens = value;
 
       // if (value !== this.maxTokensDefaultValue) {
-      if (value !== this.selectedNamespace.preview_settings.max_tokens) {
+      if (value !== previousMaxTokens) {
         if (this.hasAlreadyOverridedMaxTokens !== true) {
           this.countOfOverrides = this.countOfOverrides + 1;
         }
@@ -857,16 +920,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   changeCitations(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations event ", event.target.checked)
     this.citations = event.target.checked;
+    const modelValue = this.selectedNamespace.preview_settings.model || this.selectedModel;
+
     if (this.citations === true) {
-      this.max_tokens_min = 1024
-      this.max_tokens = 1024
-      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
+      this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: false });
+      this.max_tokens = Math.max(1024, this.max_tokens_min);
     } else {
-      this.max_tokens_min = 10;
-      this.max_tokens = 256
-      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
+      this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: false });
+      this.max_tokens = getLlmModelDefaultMaxTokens(modelValue);
     }
 
+    const clamp = (v: number) => Math.min(Math.max(v, this.max_tokens_min), this.max_tokens_max);
+    this.max_tokens = clamp(this.max_tokens);
+    this.selectedNamespace.preview_settings.max_tokens = this.max_tokens;
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.citations = this.citations
@@ -1065,11 +1132,8 @@ private restoreDialogScrollPosition(): void {
 
     this.citations = this.selectedNamespaceClone.preview_settings.citations;
     this.logger.log('Reset this.citations ', this.citations)
-    if (this.citations) {
-      this.max_tokens_min = 1024;
-    } else {
-      this.max_tokens_min = 10;
-    }
+
+    this.applyMaxTokenSliderFromUtil(this.selectedModel, { resetMaxTokensToDefault: false });
 
     this.aiSettingsObject[0].model = this.selectedModel;
     this.aiSettingsObject[0].maxTokens = this.max_tokens
@@ -1091,10 +1155,6 @@ private restoreDialogScrollPosition(): void {
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
-    this.max_tokens = this.maxTokensDefaultValue;
-    this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
-
-    this.max_tokens_min = 10;
 
     this.temperature = this.temperatureDefaultValue;
     this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
@@ -1123,8 +1183,10 @@ private restoreDialogScrollPosition(): void {
     this.reRankingMultipler = this.reRankigMultiplerDefaultValue;
     this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankigMultiplerDefaultValue
 
+    this.applyMaxTokenSliderFromUtil(this.modelDefaultValue, { resetMaxTokensToDefault: true });
+
     this.aiSettingsObject[0].model = this.modelDefaultValue;
-    this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
     this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
     this.aiSettingsObject[0].top_k = this.topkDefaultValue;
     this.aiSettingsObject[0].context = this.contextDefaultValue;
@@ -1309,25 +1371,40 @@ private restoreDialogScrollPosition(): void {
     window.open(url, '_blank');
   }
 
-  _formatMaxTokens(value: number): string {
-    if (value < 1000) {
-      return value.toString();
+  /**
+   * Numeri compatti per token: sotto 1000 intero, poi k, da 1.000.000 usa M (evita "1000k" per 1M).
+   */
+  private formatTokenCountCompact(n: number): string {
+    if (n == null || !Number.isFinite(n)) {
+      return '';
     }
-    // Convert to thousands with one decimal place if needed
-    const thousands = value / 1000;
-    // If it's a whole number, show without decimal
-    if (thousands % 1 === 0) {
-      return `${thousands}K`;
+    const v = Math.round(n);
+    if (v < 1000) {
+      return String(v);
     }
-    // Otherwise show one decimal place
-    return `${thousands.toFixed(1)}K`;
+    if (v >= 1_000_000) {
+      const m = v / 1_000_000;
+      if (m % 1 === 0) {
+        return `${m}M`;
+      }
+      const s = m.toFixed(2).replace(/\.?0+$/, '');
+      return `${s}M`;
+    }
+    const k = v / 1000;
+    if (k % 1 === 0) {
+      return `${k}k`;
+    }
+    return `${k.toFixed(1)}k`.replace(/\.0k$/, 'k');
   }
 
-  formatMaxTokens(value: number): string {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-    return value.toString();
+  /**
+   * Deve essere arrow function: mat-slider [displayWith] invoca la callback senza bind(this),
+   * altrimenti this.formatTokenCountCompact è undefined e la UI si blocca.
+   */
+  formatMaxTokens = (value: number): string => this.formatTokenCountCompact(value);
+
+  formatMaxTokensRangeLabel(n: number): string {
+    return this.formatTokenCountCompact(n);
   }
 
 }

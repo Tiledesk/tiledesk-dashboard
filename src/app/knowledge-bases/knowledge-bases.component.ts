@@ -210,6 +210,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isLoadingMoreUnanswered: boolean = false;
   hasMoreUnansweredQuestions: boolean = false;
   isLoadingNamespaces = true;
+  pineconeReranking: boolean
 
   constructor(
     private auth: AuthService,
@@ -1889,6 +1890,8 @@ _presentDialogImportContents() {
       autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
+        pineconeReranking:  this.pineconeReranking
+        
       },
     });
     dialogRef.backdropClick().subscribe((event) => {
@@ -2132,6 +2135,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalTextFileComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
+      position: { top: '60px' },
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(body => {
@@ -2148,6 +2152,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
       },
@@ -2173,6 +2178,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2204,6 +2210,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2239,6 +2246,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalUploadFileComponent, {
       autoFocus: false,
       width: '400px',
+      position: { top: '60px' },
       // data: {
       //   calledBy: 'step1'
       // },
@@ -2427,7 +2435,7 @@ _presentDialogImportContents() {
   }
 
   getOSCODE() {
-
+    this.pineconeReranking = this.appConfigService.getConfig().pineconeReranking;
     let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let keys = public_Key.split("-");

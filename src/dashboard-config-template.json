@@ -26,6 +26,7 @@
   "ticketingEmail": "${TICKETING_EMAIL}", 
   "aiModels":"${AI_MODELS}",
   "oauth2SigninEnabled": "${OAUTH2_SIGNIN_ENABLED}",
+  "pineconeReranking":"${PINECONE_RERANKING}",
   "firebase": {
     "apiKey": "${FIREBASE_APIKEY}",
     "authDomain": "${FIREBASE_AUTHDOMAIN}",

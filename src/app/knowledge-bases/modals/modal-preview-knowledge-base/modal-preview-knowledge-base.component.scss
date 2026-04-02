@@ -176,6 +176,24 @@
     }
 }
 
+.question-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 3px;
+
+    .answer-title {
+        margin-bottom: 0;
+    }
+}
+
+.preview-stream-toggle {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
 .answer-title {
     margin-bottom: 3px;
     font-size: 14px;
@@ -607,4 +625,7 @@ mat-expansion-panel ::ng-deep {
     // margin-bottom: 4px;
 }
 
-
+// class="mat-slide-toggle preview-stream-toggle mat-primary ng-pristine ng-valid mat-checked ng-touched"
+//  ::ng-deep .preview-stream-toggle.mat-checked > .mat-slide-toggle-bar {
+//     background-color: rgba(33,150,243,.54) !important;
+// }

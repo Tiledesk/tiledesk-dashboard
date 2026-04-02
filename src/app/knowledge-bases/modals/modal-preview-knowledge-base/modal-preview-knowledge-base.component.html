@@ -24,7 +24,12 @@
 <div mat-dialog-content (click)="handleClickInside($event)">
 
   <div class="form--container">
-    <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+    <div class="question-header-row">
+      <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+      <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle">
+        {{ 'KbPage.PreviewStream' | translate }}
+      </mat-slide-toggle>
+    </div>
     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
         (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
   </div>
@@ -33,9 +38,13 @@
     <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
         [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
+        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
+          #trigger="cdkOverlayOrigin"
+          cdkOverlayOrigin
+          (mouseenter)="open()"
+          (mouseleave)="scheduleClose()">
 
-        <div class="kb-tags-help"
+        <!-- <div class="kb-tags-help"
           style="position: relative;top: 6px;"
           #trigger="cdkOverlayOrigin"
           cdkOverlayOrigin
@@ -45,7 +54,7 @@
           <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
           help_outline
           </span>
-        </div>
+        </div> -->
     
   </div>
 
@@ -96,7 +105,9 @@
       {{ 'KbPage.Answer' | translate }}
 
    
-      <span *ngIf="qa?.ai_model"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      <span *ngIf="qa?.ai_model && !searching"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      <span  *ngIf="searching"> ({{ 'KbPage.GeneratingUsing' | translate: {ai_model_name: selectedModel } }}) </span>
+      
     </p>
     <div id="answer" class="answer">
 
@@ -250,7 +261,8 @@
 
   </button>
 
-  <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
+  <button class="mat-dialog-ok-btn" mat-button type="button" (click)="submitQuestion()"
+    [disabled]="!question?.trim()">
      {{ "Send" | translate }}
   </button>
 
