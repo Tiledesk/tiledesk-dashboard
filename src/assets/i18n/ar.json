@@ -876,6 +876,8 @@
     "5Years": "5 سنوات",
     "UpgradePlanForRetention": "يمكن تخصيص الاحتفاظ بالرسائل من خطة {{plan_name}}.",
     "MessageRetention": "الاحتفاظ بالرسائل",
+    "ResponseInStreaming": "عند تمكين البث المباشر، سترى الرد في الوقت الفعلي أثناء إنشائه",
+    "QuestionIsRequired": "السؤال مطلوب",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2264,6 +2266,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "هل تريد تجربة ميزة خريطة الموقع المتزامنة؟",
         "ContactUsToEnableIt": "اتصل بنا لتفعيلها",
         "ImportFromWebsites": "استيراد من Websites",
+        "AutomaticContentExtraction": "استخراج المحتوى تلقائياً",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "هذا كل شئ"
     },

@@ -877,6 +877,8 @@
     "5Years": "5 років",
     "UpgradePlanForRetention": "Зберігання повідомлень можна налаштувати, починаючи з плану {{plan_name}}.",
     "MessageRetention": "Зберігання повідомлень",
+    "ResponseInStreaming": "Коли стрімінг увімкнено, ви побачите відповідь у реальному часі під час її генерації",
+    "QuestionIsRequired": "Питання є обов'язковим",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2264,6 +2266,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Хочете спробувати функцію синхронізованої sitemap?",
         "ContactUsToEnableIt": "Зв'яжіться з нами, щоб увімкнути її",
         "ImportFromWebsites": "Імпорт з Websites",
+        "AutomaticContentExtraction": "Автоматичне витягнення контенту",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ось і все"
     },

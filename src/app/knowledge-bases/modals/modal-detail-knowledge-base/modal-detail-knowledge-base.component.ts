@@ -32,8 +32,11 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   showCopiedMessage: boolean = false;
 
   panelOpenState = true;
+  /** URL only: when true, `scrape_type` 0 and no custom HTML tag rules. */
+  automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  extract_tags: string[] = [];
+  /** Default when il KB non ha ancora `tags_to_extract` (il costruttore non deve sovrascriverlo con []). */
+  extract_tags: string[] = ['body'];
   unwanted_tags: string[] = [];
   unwanted_classnames: string[] = [];
   refresh_rate: Array<{ name: string; value: string }> = [
@@ -69,7 +72,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -8
+      offsetX: -30
     }
   ];
 
@@ -83,7 +86,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      // console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
@@ -100,9 +103,18 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       }
 
       if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
-        this.extract_tags = [...(this.kb.scrape_options?.tags_to_extract || [])];
+        const tagsFromKb = this.kb.scrape_options?.tags_to_extract;
+        this.extract_tags = tagsFromKb?.length ? [...tagsFromKb] : ['body'];
         this.unwanted_tags = [...(this.kb.scrape_options?.unwanted_tags || [])];
         this.unwanted_classnames = [...(this.kb.scrape_options?.unwanted_classnames || [])];
+        // Preferenza utente dall’API: salvataggio automatico → scrape_type 0 senza scrape_options;
+        // manuale → di solito scrape_type 4/2 con regole in scrape_options.
+        if (this.kb.type === 'url') {
+          const st = this.kb.scrape_type;
+          this.automaticContentExtraction =
+            Number(st) === 0 &&
+            !ModalDetailKnowledgeBaseComponent.hasScrapeRulesFromApi(this.kb.scrape_options);
+        }
         const savedRate = this.kb.refresh_rate;
         const validRate = this.refresh_rate.some(r => r.value === savedRate);
         this.selectedRefreshRate = validRate ? savedRate : (this.refresh_rate[1]?.value || 'weekly');
@@ -236,10 +248,18 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.kb.tags = [...this.kbTagsArray];
 
     if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
-      this.kb.scrape_options = this.kb.scrape_options || {};
-      this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
-      this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
-      this.kb.scrape_options.unwanted_classnames = [...this.unwanted_classnames];
+      if (this.kb.type === 'url' && this.automaticContentExtraction) {
+        this.kb.scrape_type = 0;
+        delete this.kb.scrape_options;
+      } else {
+        this.kb.scrape_options = this.kb.scrape_options || {};
+        this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
+        this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
+        this.kb.scrape_options.unwanted_classnames = [...this.unwanted_classnames];
+        if (this.kb.type === 'url') {
+          this.kb.scrape_type = 4;
+        }
+      }
       this.kb.refresh_rate = this.selectedRefreshRate;
     }
 
@@ -398,6 +418,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   /** Aggiorna this.kb.scrape_options con i valori correnti delle tag. */
   private syncScrapeOptionsToKb(): void {
     if (!this.kb || (this.kb.type !== 'url' && this.kb.type !== 'sitemap')) return;
+    if (this.kb.type === 'url' && this.automaticContentExtraction) return;
     this.kb.scrape_options = this.kb.scrape_options || {};
     this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
     this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
@@ -455,6 +476,14 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     window.open(docsUrl, '_blank');
   }
 
-
+  /** Regole manuali presenti in `scrape_options` (come restituite dall’API). */
+  private static hasScrapeRulesFromApi(so: KB['scrape_options'] | undefined): boolean {
+    if (!so) return false;
+    return (
+      (so.tags_to_extract?.length ?? 0) > 0 ||
+      (so.unwanted_tags?.length ?? 0) > 0 ||
+      (so.unwanted_classnames?.length ?? 0) > 0
+    );
+  }
 
 }

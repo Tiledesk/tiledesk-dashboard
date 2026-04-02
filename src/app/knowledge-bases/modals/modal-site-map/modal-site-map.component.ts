@@ -31,6 +31,8 @@ export class ModalSiteMapComponent implements OnInit {
   selectedNamespace: string;
 
   panelOpenState = true;
+  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
+  automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // scrape_types: Array<any> = [
   //   { name: "Full HTML page", value: 1 },
@@ -310,6 +312,7 @@ export class ModalSiteMapComponent implements OnInit {
     //     scrape_type: this.selectedScrapeType,
     //     refresh_rate: this.selectedRefreshRate
     //   }
+      const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
       let body  = {
           "name":   this.siteMap,
           "source": this.siteMap,
@@ -317,11 +320,11 @@ export class ModalSiteMapComponent implements OnInit {
           "type": "sitemap",
           "namespace": this.selectedNamespace['id'],
           "refresh_rate": this.selectedRefreshRate,
-          "scrape_type": this.selectedScrapeType,
+          "scrape_type": scrapeType,
           "tags": this.kbTagsArray
         }
 
-      if (this.selectedScrapeType === 4) {
+      if (!this.automaticContentExtraction && this.selectedScrapeType === 4) {
         body['scrape_options'] = {
           tags_to_extract: this.extract_tags,
           unwanted_tags: this.unwanted_tags,

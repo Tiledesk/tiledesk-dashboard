@@ -876,6 +876,8 @@
     "5Years": "5 anos",
     "UpgradePlanForRetention": "A retenção de mensagens pode ser personalizada a partir do plano {{plan_name}}.",
     "MessageRetention": "Retenção de mensagens",
+    "ResponseInStreaming": "Quando a transmissão contínua estiver ativada, verá a resposta em tempo real enquanto está a ser gerada",
+    "QuestionIsRequired": "A pergunta é obrigatória",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2263,6 +2265,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Quer experimentar o recurso de sitemap sincronizado?",
         "ContactUsToEnableIt": "Contacte-nos para o ativar",
         "ImportFromWebsites": "Importar de Websites",
+        "AutomaticContentExtraction": "Extração automática de conteúdo",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Isso é tudo"
     },

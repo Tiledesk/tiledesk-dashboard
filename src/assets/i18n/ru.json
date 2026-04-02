@@ -877,6 +877,8 @@
     "5Years": "5 лет",
     "UpgradePlanForRetention": "Хранение сообщений можно настроить, начиная с тарифа {{plan_name}}.",
     "MessageRetention": "Хранение сообщений",
+    "ResponseInStreaming": "Когда стриминг включен, вы увидите ответ в реальном времени по мере его генерации",
+    "QuestionIsRequired": "Вопрос обязателен",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2263,6 +2265,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Хотите попробовать функцию синхронизированной sitemap?",
         "ContactUsToEnableIt": "Свяжитесь с нами, чтобы включить её",
         "ImportFromWebsites": "Импорт с Websites",
+        "AutomaticContentExtraction": "Автоматическое извлечение контента",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Вот и все"
     },

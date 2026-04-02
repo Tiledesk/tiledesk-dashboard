@@ -876,6 +876,8 @@
     "5Years": "5 жыл",
     "UpgradePlanForRetention": "Хабарламаларды сақтау {{plan_name}} жоспарынан бастап реттелуі мүмкін.",
     "MessageRetention": "Хабарламаларды сақтау",
+    "ResponseInStreaming": "Стриминг қосылғанда, жауап генерацияланып жатқанда оны нақты уақыт режимінде көресіз",
+    "QuestionIsRequired": "Сұрақ міндетті",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2263,6 +2265,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Синхрондалған sitemap мүмкіндігін қолданып көргіңіз келе ме?",
         "ContactUsToEnableIt": "Оны іске қосу үшін бізге хабарласыңыз",
         "ImportFromWebsites": "Websites-тен импорттау",
+        "AutomaticContentExtraction": "Контентті автоматты алу",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"
     },

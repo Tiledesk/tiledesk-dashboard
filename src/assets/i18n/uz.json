@@ -877,6 +877,8 @@
     "5Years": "5 yil",
     "UpgradePlanForRetention": "Xabarlarni saqlash {{plan_name}} rejasidan boshlab sozlanishi mumkin.",
     "MessageRetention": "Xabarlarni saqlash",
+    "ResponseInStreaming": "Oqim yoqilganda, javob yaratilayotganda uni real vaqt rejimida ko'rasiz",
+    "QuestionIsRequired": "Savol majburiy",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2263,7 +2265,8 @@
         "WantToTryTheSynchronizedSitemapFeature": "Sinxronlashtirilgan sitemap funksiyasini sinab ko'rishni xohlaysizmi?",
         "ContactUsToEnableIt": "Uni yoqish uchun biz bilan bog'laning",
         "ImportFromWebsites": "Websites-dan import qilish",
-         "-----------------------------": "-----------------------------",
+        "AutomaticContentExtraction": "Kontentni avtomatik ajratish",
+        "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },
     "Never":" Hech qachon",

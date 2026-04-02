@@ -30,14 +30,14 @@
     <div class="row-container" style="margin-top: 0px;">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-            (click)="aiModel.close()">
+            (mouseenter)="closeAllSettingsPopovers(); aiModel.open()"
+            (click)="closeAllSettingsPopovers()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-            [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();  chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-            (click)="aiModel.close()">
+            [satPopoverAnchor]="aiModelDx"
+            (mouseenter)="closeAllSettingsPopovers(); aiModelDx.open()"
+            (click)="closeAllSettingsPopovers()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
      
@@ -82,6 +82,19 @@
         </div>
     </sat-popover>
 
+    <sat-popover id="ai-settings-label-ai-model-dx" #aiModelDx horizontalAlign="after" verticalAlign="center"
+        panelClass="cb-details-popover-dx" (opened)="aiModelPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                 {{'KbPage.TheLLMYourAgentWillUse' | translate }}
+            </div>
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToAIModelDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
+
     <!-- ----------------------------------------------- -->
     <!-- Max Tokens -->
     <!-- ----------------------------------------------- -->
@@ -91,15 +104,15 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="maxTokens.close()">
+                    (mouseenter)="closeAllSettingsPopovers(); maxTokens.open()"
+                    (click)="closeAllSettingsPopovers()">
                    
                     {{ 'KbPage.MaxTokens'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="maxTokens.close()">
+                    [satPopoverAnchor]="maxTokensDx"
+                    (mouseenter)="closeAllSettingsPopovers(); maxTokensDx.open()"
+                    (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.MaxTokens'| translate}}
                 </label>
             </div>
@@ -138,6 +151,19 @@
         </div>
     </sat-popover>
 
+    <sat-popover #maxTokensDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
+        (opened)="maxTokenPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                {{'KbPage.TheMaxTokensThatCanBeUsedToGenerateSingleResponse' | translate }}
+            </div>
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToMaxTokenDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
+
 
     <!-- ----------------------------------------------- -->
     <!-- Temperature -->
@@ -148,15 +174,15 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="aiModeltemperature.close()">
+                    (mouseenter)="closeAllSettingsPopovers(); aiModeltemperature.open()"
+                    (click)="closeAllSettingsPopovers()">
                    
                     {{ 'KbPage.Temperature'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); aiSearchType.close(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="aiModeltemperature.close()">
+                    [satPopoverAnchor]="aiModeltemperatureDx"
+                    (mouseenter)="closeAllSettingsPopovers(); aiModeltemperatureDx.open()"
+                    (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.Temperature'| translate}}
                 </label>
             </div>
@@ -203,6 +229,19 @@
         </div>
     </sat-popover>
 
+    <sat-popover #aiModeltemperatureDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
+        (opened)="temperaturePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                {{'KbPage.ControlTheRandomnessOfTheAnswer' | translate }}
+            </div>
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
+
 
     <!-- ----------------------------------------------- -->
     <!-- Search type -->
@@ -213,16 +252,16 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiSearchType"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="aiSearchType.close()">
+                    (mouseenter)="closeAllSettingsPopovers(); aiSearchType.open()"
+                    (click)="closeAllSettingsPopovers()">
                    
                     {{ 'KbPage.HybridSearch'| translate}}
                       <!-- Search type -->
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="aiSearchType"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.close(); aiSearchType.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="aiSearchType.close()">
+                    [satPopoverAnchor]="aiSearchTypeDx"
+                    (mouseenter)="closeAllSettingsPopovers(); aiSearchTypeDx.open()"
+                    (click)="closeAllSettingsPopovers()">
                    {{ 'KbPage.HybridSearch'| translate}}
                     <!-- Search type -->
                 </label>
@@ -270,6 +309,16 @@
         </div>
     </sat-popover>
 
+    <sat-popover #aiSearchTypeDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
+        (opened)="searchTypePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+            {{'KbPage.HybridSearchDescr' | translate }}
+            </div>
+        </div>
+    </sat-popover>
+
     <!-- ----------------------------------------------- -->
     <!-- Chunk Limit -->
     <!-- ----------------------------------------------- -->
@@ -280,14 +329,14 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="chunkLimit.close()">
+                    (mouseenter)="closeAllSettingsPopovers(); chunkLimit.open()"
+                    (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                    (click)="chunkLimit.close()">
+                    [satPopoverAnchor]="chunkLimitDx"
+                    (mouseenter)="closeAllSettingsPopovers(); chunkLimitDx.open()"
+                    (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
             </div>
@@ -326,14 +375,28 @@
         </div>
     </sat-popover>
 
+    <sat-popover #chunkLimitDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
+        (opened)="chunkLimitPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+               {{'KbPage.DeterminesHowManyChunksWillBePassedToTheLLM' | translate }} 
+               <span style="display: block;font-weight:500">  {{'KbPage.TheMaximumSupportedChunksNumberDependsByTheModel' | translate}} </span>
+            </div>
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToChunkLimitDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
+
     <!-- ----------------------------- -->
     <!-- Re ranking -->
     <!-- ----------------------------- -->
     <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider || pineconeReranking">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="rerank"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open(); rerankingMultiplier.close()"
-            (click)="rerank.close(); onCheckboxClick($event)">
+            (mouseenter)="closeAllSettingsPopovers(); rerank.open()"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
             <!-- (click)="onCheckboxClick($event)" -->
             <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
             <span class="setting-label">
@@ -342,9 +405,9 @@
         </label>
 
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-            [satPopoverAnchor]="rerank"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close();chunkonly.close(); rerank.open(); rerankingMultiplier.close()"
-            (click)="rerank.close(); onCheckboxClick($event)">
+            [satPopoverAnchor]="rerankdx"
+            (mouseenter)="closeAllSettingsPopovers(); rerankdx.open()"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
             <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
             <span class="setting-label">
                 {{'KbPage.ReRanking' | translate}}
@@ -367,6 +430,22 @@
         </div>
     </sat-popover>
 
+    <sat-popover id="ai-settings-label-rerank-preview"
+        #rerankdx
+        horizontalAlign="after"
+        verticalAlign="center"
+        panelClass="cb-details-popover-dx"  closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                {{'KbPage.ReRankingDesc' | translate}}
+            </div>
+        </div>
+        <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
+            {{'LearnMore' | translate}}
+        </div>
+    </sat-popover>
+
     <!-- ----------------------------------------------- -->
     <!-- Reranking multiplier -->
     <!-- ----------------------------------------------- -->
@@ -377,14 +456,14 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="rerankingMultiplier"
-                    (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.open()"
-                    (click)="rerankingMultiplier.close()">
+                    (mouseenter)="closeAllSettingsPopovers(); rerankingMultiplier.open()"
+                    (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.RerankingMultiplier'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="rerankingMultiplier"
-                    (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.open()"
-                    (click)="rerankingMultiplier.close()">
+                    [satPopoverAnchor]="rerankingMultiplierDx"
+                    (mouseenter)="closeAllSettingsPopovers(); rerankingMultiplierDx.open()"
+                    (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.RerankingMultiplier'| translate}}
                 </label>
             </div>
@@ -427,6 +506,19 @@
             {{'LearnMore' | translate}}
         </div> -->
     </sat-popover>
+
+    <sat-popover id="ai-settings-label-rerank-multiplier-dx"
+        #rerankingMultiplierDx
+        horizontalAlign="after"
+        verticalAlign="center"
+        panelClass="cb-details-popover-dx"  closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                 {{'KbPage.ReRankingMultiplierDesc' | translate}}
+            </div>
+        </div>
+    </sat-popover>
     
 
     <!-- ------------------------- -->
@@ -437,15 +529,15 @@
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                (click)="systemContext.close()">
+                (mouseenter)="closeAllSettingsPopovers(); systemContext.open()"
+                (click)="closeAllSettingsPopovers()">
                
                 {{ 'KbPage.SystemContext'| translate}}
             </label>
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-                (click)="systemContext.close()">
+                [satPopoverAnchor]="systemContextDx"
+                (mouseenter)="closeAllSettingsPopovers(); systemContextDx.open()"
+                (click)="closeAllSettingsPopovers()">
                 {{ 'KbPage.SystemContext'| translate}}
             </label>
         </div>
@@ -473,6 +565,19 @@
         </div>
     </sat-popover>
 
+    <sat-popover id="ai-settings-label-system-context-dx" #systemContextDx horizontalAlign="after" verticalAlign="center"
+        panelClass="cb-details-popover-dx" (opened)="systemContextPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                {{'KbPage.GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers' | translate }}
+            </div>
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToSystemContextDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
+
     <div class="checkbox-container">
      
 
@@ -483,26 +588,22 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContext"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-            (click)="advancedContext.close()">
+            (mouseenter)="closeAllSettingsPopovers(); advancedContext.open()"
+            (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.AdvancedContext' | translate}}
                 </span> 
             </label>
 
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}">
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
+            [satPopoverAnchor]="advancedContextDx"
+            (mouseenter)="closeAllSettingsPopovers(); advancedContextDx.open()"
+            (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.AdvancedContext' | translate}}
                 </span> 
-                 <span *ngIf="hideHelpLink" class="material-icons-outlined help-icon" (click)="goToAdvancedContextDoc(); $event.stopPropagation(); $event.preventDefault()"
-                    matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'LearnMore' | translate }}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='above' matTooltipHideDelay="100">
-                 help_outline
-                </span>
             </label>
             <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToAdvancedContextDoc()">
                 {{'LearnMore' | translate}}
@@ -528,6 +629,23 @@
         </div>
         </sat-popover>
 
+        <sat-popover id="ai-settings-label-advanced-dx"
+            #advancedContextDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-arrow"></div>
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-content">
+                {{'KbPage.AdvancedContextDesc1' | translate}} <br>
+                {{'KbPage.AdvancedContextDesc2' | translate}}
+            </div>
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToAdvancedContextDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+        </sat-popover>
+
         <!-- --------------------- -->
         <!-- Get Contents Sources -->
         <!-- --------------------- -->
@@ -536,8 +654,8 @@
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="contentsSources"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open(); chunkonly.close(); rerank.close(); rerankingMultiplier.close()"
-            (click)="contentsSources.close()">
+            (mouseenter)="closeAllSettingsPopovers(); contentsSources.open()"
+            (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     
@@ -545,17 +663,13 @@
                 </span>   
             </label>
 
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}">
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
+                [satPopoverAnchor]="contentsSourcesDx"
+                (mouseenter)="closeAllSettingsPopovers(); contentsSourcesDx.open()"
+                (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.GetContentsSources' | translate}}
-                </span>
-                <span *ngIf="hideHelpLink" class="material-icons-outlined help-icon" (click)="goToContentsSourcesDoc(); $event.stopPropagation(); $event.preventDefault()"
-                    matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'LearnMore' | translate }}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='above' matTooltipHideDelay="100">
-                 help_outline
                 </span>
             </label>
             <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
@@ -583,14 +697,32 @@
             </div>
         </sat-popover>
 
+        <sat-popover id="ai-settings-label-contents-dx"
+            #contentsSourcesDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-content">
+                    {{'KbPage.GetContentsSourcesDesc1' | translate}} <br>
+                    {{'KbPage.GetContentsSourcesDesc2' | translate}} <br>
+                    {{'KbPage.GetContentsSourcesDesc3' | translate}} <br>
+                </div>
+                <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToContentsSourcesDoc()">
+                    {{'LearnMore' | translate}}
+                </div>
+            </div>
+        </sat-popover>
+
         <!-- ----------------------------- -->
         <!-- Chunk only -->
         <!-- ----------------------------- -->
         <div id="chunk-only" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal === false ? '0px' : '0px' }">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="chunkonly"
-            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); aiSearchType.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close(); chunkonly.open(); rerank.close(); rerankingMultiplier.close()"
-            (click)="chunkonly.close(); onCheckboxClick($event)">
+            (mouseenter)="closeAllSettingsPopovers(); chunkonly.open()"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
                 <!-- (click)="onCheckboxClick($event)" -->
                 <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)" >
                 <span class="setting-label">
@@ -598,7 +730,10 @@
                 </span> 
             </label>
 
-            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
+             [satPopoverAnchor]="chunkonlyDx"
+            (mouseenter)="closeAllSettingsPopovers(); chunkonlyDx.open()"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
                 <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
                 <span class="setting-label">
                     {{'KbPage.ChunksOnly' | translate}}
@@ -612,6 +747,19 @@
             panelClass="cb-details-popover" (opened)="chunkOnlyIsOpened()" closeTransition="1ms ease-in">
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    {{'KbPage.ChunksOnlyDesc' | translate}}
+                </div>
+            </div>
+        </sat-popover>
+
+        <sat-popover id="ai-settings-label-chunkonly-dx"
+            #chunkonlyDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" (opened)="chunkOnlyIsOpened()" closeTransition="1ms ease-in">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
                 <div class="sat-popover-content">
                     {{'KbPage.ChunksOnlyDesc' | translate}}
                 </div>

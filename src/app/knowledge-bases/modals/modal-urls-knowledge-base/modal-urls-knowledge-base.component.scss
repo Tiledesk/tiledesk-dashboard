@@ -484,6 +484,7 @@
     margin-bottom: 12px !important;
 }
 
+
 .html-tags--expansion-panel ::ng-deep {
 
     .mat-expansion-panel-header {
@@ -502,6 +503,14 @@
 
     .mat-expansion-indicator::after {
         color: #000000de !important;
+    }
+}
+
+.html-tags--expansion-panel.expansion-panel-disabled ::ng-deep {
+
+    .mat-expansion-panel-header-title {
+        color: #ddd !important;
+        cursor: not-allowed !important;
     }
 }
 
