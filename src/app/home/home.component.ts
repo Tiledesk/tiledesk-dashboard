@@ -14,6 +14,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../services/app-config.service';
+import { FeatureToggleService } from 'app/core/feature-toggle.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
@@ -117,7 +118,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
 
-  public_Key: string;
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
   isVisibleOPH: boolean;
@@ -307,7 +307,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public appStoreService: AppStoreService,
     public localDbService: LocalDbService,
     private quotesService: QuotesService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private featureToggleService: FeatureToggleService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -338,7 +339,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.usersService.getBotsByProjectIdAndSaveInStorage();
 
     this.getUserRole();
-    this.getOSCODE();
+    this.isVisiblePay = this.featureToggleService.isVisiblePay;
+    this.isVisibleANA = this.featureToggleService.isVisibleANA;
+    this.isVisibleAPP = this.featureToggleService.isVisibleAPP;
+    this.isVisibleOPH = this.featureToggleService.isVisibleOPH;
+    this.isVisibleHomeBanner = this.featureToggleService.isVisibleHomeBanner;
+    this.project_plan_badge = this.featureToggleService.projectPlanBadge;
+    this.isVisibleKNB = this.featureToggleService.isVisibleKNB;
+    if (this.isVisibleKNB) {
+      this.getProjectPlan();
+    }
+    this.isVisibleQuoteSection = this.featureToggleService.isVisibleQIN;
     this.checkPromoURL()
     this.getChatUrl();
     this.getHasOpenBlogKey()
@@ -2077,161 +2088,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // this.logger.log('[HOME] AppConfigService getAppConfig public_Key', this.public_Key);
-    let keys = this.public_Key.split("-");
-    // this.logger.log('[HOME] PUBLIC-KEY keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('[HOME] public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let pay = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisiblePay = false;
-          //  this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
-        } else {
-          this.isVisiblePay = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
-        }
-      }
-      if (key.includes("ANA")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let ana = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - ana key&value', ana);
-
-        if (ana[1] === "F") {
-          this.isVisibleANA = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
-        } else {
-          this.isVisibleANA = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
-        }
-      }
-
-      if (key.includes("APP")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let lbs = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - app key&value', lbs);
-
-        if (lbs[1] === "F") {
-          this.isVisibleAPP = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
-        } else {
-          this.isVisibleAPP = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
-        }
-      }
-
-      if (key.includes("OPH")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let oph = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
-
-        if (oph[1] === "F") {
-          this.isVisibleOPH = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        } else {
-          this.isVisibleOPH = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        }
-      }
-
-      if (key.includes("HPB")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let hpb = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
-
-        if (hpb[1] === "F") {
-          this.isVisibleHomeBanner = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        } else {
-          this.isVisibleHomeBanner = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        }
-      }
-
-      if (key.includes("PPB")) {
-        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
-        let ppb = key.split(":");
-        // this.logger.log('PUBLIC-KEY (HOME) - ppb key&value', ppb);
-
-        if (ppb[1] === "F") {
-          this.project_plan_badge = false;
-          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
-        } else {
-          this.project_plan_badge = true;
-          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
-        }
-      }
-
-      if (key.includes('KNB')) {
-        let knb = key.split(':')
-        if (knb[1] === 'F') {
-          this.isVisibleKNB = false;
-        } else {
-          this.isVisibleKNB = true;
-          this.getProjectPlan()
-        }
-      }
-
-      if (key.includes("QIN")) {
-        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
-        let qt = key.split(":");
-        // this.logger.log('PUBLIC-KEY (HOME) - mt key&value', mt);
-        if (qt[1] === "F") {
-          this.isVisibleQuoteSection = false;
-          // this.logger.log('PUBLIC-KEY (HOME) - isVisibleQuoteSection ', this.isVisibleQuoteSection);
-        } else {
-          this.isVisibleQuoteSection = true;
-          // this.logger.log('PUBLIC-KEY (HOME) - isVisibleQuoteSection ', this.isVisibleQuoteSection);
-        }
-      }
-
-
-    });
-
-    if (!this.public_Key.includes("ANA")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("V1L")', this.public_Key.includes("ANA"));
-      this.isVisibleANA = false;
-    }
-
-    if (!this.public_Key.includes("APP")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("APP")', this.public_Key.includes("APP"));
-      this.isVisibleAPP = false;
-    }
-
-    if (!this.public_Key.includes("OPH")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
-      this.isVisibleOPH = false;
-    }
-
-    if (!this.public_Key.includes("HPB")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
-      this.isVisibleHomeBanner = false;
-    }
-
-    if (!this.public_Key.includes("PPB")) {
-      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
-      this.project_plan_badge = false;
-    }
-
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
-      this.isVisiblePay = false;
-    }
-
-    if (!this.public_Key.includes('KNB')) {
-      this.isVisibleKNB = false
-    }
-
-    if (!this.public_Key.includes("QIN")) {
-      this.isVisibleQuoteSection = false;
-      // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteSection', this.isVisibleQuoteSection);
-    }
-  }
-
   getProjectPlan() {
     this.prjctPlanService.projectPlan$
       .pipe(
@@ -2248,7 +2104,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   manageknowledgeBasesVisibility(projectProfileData) {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     if (projectProfileData['customization']) {
       this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE EXIST customization > knowledgeBases (1)', projectProfileData['customization']['knowledgeBases'])
     }
@@ -2260,50 +2115,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isVisibleKNB = true;
         this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE A isVisibleKNB', this.isVisibleKNB)
       } else if (projectProfileData['customization']['knowledgeBases'] === false) {
-
         this.isVisibleKNB = false;
         this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE A isVisibleKNB', this.isVisibleKNB)
       }
 
-
     } else if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] === undefined) {
       this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT knowledgeBases IS', projectProfileData['customization']['knowledgeBases'])
-
-      // if (this.public_Key.includes("KNB")) {
-      this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
-
-      this.isVisibleKNB = this.getKnbValue()
+      this.isVisibleKNB = this.featureToggleService.isVisibleKNB;
       this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
-
 
     } else if (projectProfileData['customization'] === undefined) {
       this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE C customization is  ', projectProfileData['customization'], 'get value from FT')
-      this.isVisibleKNB = this.getKnbValue()
+      this.isVisibleKNB = this.featureToggleService.isVisibleKNB;
       this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
     }
-  }
-
-  getKnbValue() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // this.logger.log('[HOME] getAppConfig  public_Key', this.public_Key);
-    // this.logger.log('[HOME] getAppConfig  public_Key type of', typeof this.public_Key);
-    // this.logger.log('[HOME] getAppConfig  this.public_Key.includes("KNB") ', this.public_Key.includes("KNB"));
-    // let substring = this.public_Key.substring(this.public_Key.indexOf('KNB'));
-    let parts = this.public_Key.split('-');
-    // this.logger.log('[HOME] getAppConfig  parts ', parts);
-
-    let kbn = parts.find((part) => part.startsWith('KNB'));
-    this.logger.log('[HOME] manageknowledgeBasesVisibility  kbn ', kbn);
-    let kbnParts = kbn.split(':');
-    this.logger.log('[HOME] manageknowledgeBasesVisibility  kbnParts ', kbnParts);
-    let kbnValue = kbnParts[1]
-    this.logger.log('[HOME] manageknowledgeBasesVisibility  kbnValue ', kbnValue);
-    if (kbnValue === 'T') {
-      return true
-    } else if (kbnValue === 'F') {
-      return false
-    }
-
   }
 
 

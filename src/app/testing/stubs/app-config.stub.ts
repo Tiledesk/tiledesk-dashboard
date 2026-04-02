@@ -9,7 +9,13 @@ export const MOCK_APP_CONFIG = {
 };
 
 export class AppConfigServiceStub {
+  private oscode: string;
+
+  constructor(oscode: string = MOCK_OSCODE) {
+    this.oscode = oscode;
+  }
+
   getConfig() {
-    return { ...MOCK_APP_CONFIG };
+    return { ...MOCK_APP_CONFIG, t2y12PruGU9wUtEGzBJfolMIgK: this.oscode };
   }
 }
