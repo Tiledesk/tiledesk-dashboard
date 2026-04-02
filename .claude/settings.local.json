@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ng test:*)"
+      "Bash(ng test:*)",
+      "Bash(sed -i '' '3108,3175d' src/app/home/home.component.ts)",
+      "Bash(sed -i '' '3085,3106d' src/app/home/home.component.ts)",
+      "Bash(sed -i '' '2961,3083d' src/app/home/home.component.ts)",
+      "Bash(sed -i '' '2612,2634d' src/app/home/home.component.ts)",
+      "Bash(sed -i '' '2564,2610d' src/app/home/home.component.ts)",
+      "Bash(ng build:*)"
     ]
   }
 }

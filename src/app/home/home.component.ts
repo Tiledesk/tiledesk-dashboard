@@ -34,7 +34,6 @@ import {
 } from '../utils/util';
 
 import { AppStoreService } from 'app/services/app-store.service';
-import { DepartmentService } from 'app/services/department.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 
 import { ThemePalette } from '@angular/material/core';
@@ -251,10 +250,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   voice_limit_in_sec = 0;
   voice_count_min_sec: any;
 
-  project_limits: any;
-  quotes: any;
-  all_quotes: any;
-
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
@@ -310,7 +305,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private logger: LoggerService,
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
-    private departmentService: DepartmentService,
     public localDbService: LocalDbService,
     private quotesService: QuotesService,
     public rolesService: RolesService
@@ -343,29 +337,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
     this.usersService.getBotsByProjectIdAndSaveInStorage();
 
-    // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
-    // this.getAvailableProjectUsersByProjectId();
-
     this.getUserRole();
-    // this.getProjectPlan(); 
-    // this.getVisitorCounter();
     this.getOSCODE();
     this.checkPromoURL()
     this.getChatUrl();
     this.getHasOpenBlogKey()
     this.diplayPopup();
 
-    // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
-    // this.getPromoBanner()
-
     // get if user has used Signin with Google
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
-
-    // this.listeHasOpenedNavbarQuotasMenu()
 
     this.listenToQuotas()
     this.listenToProjectUser()
@@ -627,7 +610,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             // Notify Navbar to fetch quotas
             // ----------------------------------------
             this.quotesService.requestQuotasUpdate();
-            // this.getProjectQuotes();
           }
 
           this.prjct_name = this.project.name
@@ -638,10 +620,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.OPERATING_HOURS_ACTIVE = this.project.activeOperatingHours
           this.logger.log('[HOME] - getCurrentProjectAndInit OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
-          // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
           this.getProjectBots();
-          // this.init()
         }
       }, (error) => {
         this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
@@ -1935,57 +1915,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // No more used - replaced by presentModalFeautureAvailableFromTier2Plan
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // this.logger.log('featureAvailableFromPlanC value', value)
-        // this.logger.log('[HOME] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[HOME] subscription_is_active', this.subscription_is_active)
-        // this.logger.log('[HOME] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[HOME] trial_expired', this.trial_expired)
-        // this.logger.log('[HOME] isVisiblePAY', this.isVisiblePAY)
-        if (this.isVisiblePay) {
-          // this.logger.log('[HOME] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // this.logger.log('[HOME] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // this.logger.log('[HOME] HERE 3')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // this.logger.log('[HOME] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
-            }
-          } else {
-            // this.logger.log('[HOME] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
-          }
-        } else {
-          // this.logger.log('[HOME] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-    });
-  }
-
-
   presentModalAppSumoFeautureAvailableFromBPlan() {
     // const el = document.createElement('div')
     // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
@@ -2475,33 +2404,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // Not used
-  goToSubscriptionOrOpenModalSubsExpired() {
-    this.logger.log('[HOME] goToSubscriptionOrOpenModalSubsExpired')
-
-    if (this.USER_ROLE === 'owner') {
-      if (this.prjct_profile_type === 'free') {
-
-        // this.router.navigate(['project/' + this.projectId + '/pricing']);
-        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-
-      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
-        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
-          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-
-        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        }
-      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-      }
-
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    }
-  }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
@@ -2533,105 +2435,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       })
   }
 
-  // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
-  getAvailableProjectUsersByProjectId() {
-    this.logger.log('[HOME] ... CALLING GET AVAILABLE PROJECT USERS')
-    this.usersService.getAvailableProjectUsersByProjectId().subscribe((available_project) => {
-      this.logger.log('[HOME]  »»»»»»» AVAILABLE PROJECT USERS ', available_project)
-    })
-  }
 
-  // test link
-  goToAnalyticsStaticPage() {
-    this.router.navigate(['project/' + this.projectId + '/analytics-demo']);
-  }
 
-  // test link
-  goToActivitiesStaticPage() {
-    this.router.navigate(['project/' + this.projectId + '/activities-demo']);
-  }
-
-  // test link
-  goToHoursStaticPage() {
-    this.router.navigate(['project/' + this.projectId + '/hours-demo']);
-  }
-
-  // test link
-  goToPricing() {
-    this.router.navigate(['project/' + this.projectId + '/pricing']);
-  }
-
-  // openChat() {
-  //   // const url = this.CHAT_BASE_URL;
-  //   this.notify.publishHasClickedChat(true);
-  //   // window.open(url, '_blank');
-
-  //   // --- new
-  //   localStorage.setItem('last_project', JSON.stringify(this.current_prjct))
-  //   let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-  //   let url = baseUrl
-  //   const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-  //   myWindow.focus();
-  //   // const chatTabCount = localStorage.getItem('tabCount');
-  //   // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
-  //   // if (chatTabCount) {
-  //   //   if (+chatTabCount > 0) {
-  //   //     this.logger.log('[HOME] openChat chatTabCount > 0 ')
-
-  //   //     this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
-  //   //     // this.focusWin('Tiledesk - Open Source Live Chat')
-  //   //     // window.open('Tiledesk - Open Source Live Chat', url).focus();
-  //   //   } else if (chatTabCount && +chatTabCount === 0) {
-  //   //     this.openWindow('Tiledesk - Open Source Live Chat', url);
-  //   //   }
-  //   // } else {
-  //   //   this.openWindow('Tiledesk - Open Source Live Chat', url);
-  //   // }
-
-  // }
-
-  openWindow(winName: any, winURL: any) {
-    const myWindows = new Array();
-    if (myWindows[winName] && !myWindows[winName].closed) {
-      alert('window already exists');
-    } else {
-      myWindows[winName] = window.open(winURL, winName);
-    }
-  }
-
-  focusWin(winName: any) {
-    const myWindows = new Array();
-    if (myWindows[winName] && !myWindows[winName].closed) {
-      myWindows[winName].focus();
-    } else {
-      // alert('cannot focus closed or nonexistant window');
-      this.logger.log('[HOME] - cannot focus closed or nonexistant window');
-    }
-  }
-
-  // loads an URL into the popup without reloading it
-  // openChatWindow(chatUrl: any, chatWindowName: any) {
-  //   // open the window with blank url
-  //   const chatwin = window.open('', chatWindowName);
-  //   try {
-  //     // if we just opened the window
-  //     // this.logger.log('1) mywin ', chatwin)
-  //     // this.logger.log('1) mywin.document ', chatwin.document)
-  //     if (chatwin.closed || (!chatwin.document.URL) || (chatwin.document.URL.indexOf('about') === 0)) {
-  //       // this.logger.log('2) mywin ', chatwin)
-  //       // this.logger.log('2) mywin.document ', chatwin.document)
-  //       chatwin.location.href = chatUrl;
-  //     } else {
-  //       // this.logger.log('3) mywin ', chatwin)
-  //       // this.logger.log('3) mywin.document ', chatwin.document)
-  //       chatwin.focus();
-  //     }
-  //   } catch (err) {
-  //     this.logger.log('err ', err)
-  //   }
-  //   // return the window
-  //   return chatwin;
-  // }
 
   getHasOpenBlogKey() {
     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
@@ -2959,219 +2764,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  // -------------------------
-  // No more used
-  // -------------------------
-  getProjectQuotes() {
-    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-      this.logger.log("[HOME] getProjectQuotes response: ", response);
-      this.project_limits = response;
-      if (this.project_limits) {
-        this.getQuotes()
-      }
-    }).catch((err) => {
-      this.logger.error("[HOME] getProjectQuotes error: ", err);
-      this.displayQuotaSkeleton = false
-    })
-  }
-
-  // -------------------------
-  // No more used
-  // -------------------------
-  getQuotes() {
-    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[HOME] getAllQuotes response: ", resp)
-      this.quotes = resp
-
-      this.logger.log("[HOME] project_limits: ", this.project_limits)
-      this.logger.log("[HOME] resp.quotes: ", resp.quotes)
-      if (this.project_limits) {
-        this.messages_limit = this.project_limits.messages;
-        this.requests_limit = this.project_limits.requests;
-        this.email_limit = this.project_limits.email;
-        this.tokens_limit = this.project_limits.tokens;
-      }
-      // -----------------------------
-      // For test
-      // -----------------------------
-      // this.requests_limit = 1;
-      // this.email_limit = 1;
-      // this.tokens_limit = 1;
-
-      if (resp.quotes.requests.quote === null) {
-        resp.quotes.requests.quote = 0;
-      }
-      if (resp.quotes.messages.quote === null) {
-        resp.quotes.messages.quote = 0;
-      }
-      if (resp.quotes.email.quote === null) {
-        resp.quotes.email.quote = 0;
-      }
-      if (resp.quotes.tokens.quote === null) {
-        resp.quotes.tokens.quote = 0;
-      }
-
-      this.logger.log('[HOME] used requests', resp.quotes.requests.quote)
-      this.logger.log('[HOME] requests_limit', this.requests_limit)
-
-      this.logger.log('[HOME] used email', resp.quotes.email.quote)
-      this.logger.log('[HOME] email_limit', this.email_limit)
-
-      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
-      this.logger.log('[HOME] tokens_limit', this.tokens_limit)
-
-
-
-      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
-      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
-      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
-      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
-
-      this.requests_count = resp.quotes.requests.quote;
-      this.logger.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
-      this.messages_count = resp.quotes.messages.quote;
-      this.email_count = resp.quotes.email.quote;
-      this.tokens_count = resp.quotes.tokens.quote;
-
-    }, (error) => {
-      this.logger.error("[HOME] get all quotes error: ", error)
-      this.displayQuotaSkeleton = false
-
-
-    }, () => {
-      this.logger.log("[HOME] get all quotes *COMPLETE*");
-      setTimeout(() => {
-        this.displayQuotaSkeleton = false
-        this.getRunnedOutQuotes(this.quotes)
-      }, 1500);
-
-    })
-  }
-
-  getRunnedOutQuotes(resp) {
-    if (this.project_limits) {
-      if (resp.quotes.requests.quote >= this.project_limits.requests) {
-        this.conversationsRunnedOut = true;
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
-      } else {
-        this.conversationsRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-      }
-
-      if (resp.quotes.email.quote >= this.project_limits.email) {
-        this.emailsRunnedOut = true;
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
-      } else {
-        this.emailsRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-      }
-
-      if (resp.quotes.tokens.quote >= this.project_limits.tokens) {
-        this.tokensRunnedOut = true;
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
-      } else {
-        this.tokensRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-      }
-    }
-  }
-
-
-
-  // -------------------------
-  // No more used
-  // -------------------------
-  listeHasOpenedNavbarQuotasMenu() {
-    //  this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
-    this.quotesService.hasOpenNavbarQuotasMenu$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((hasOpen) => {
-
-        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
-
-        if (this.projectId) {
-          if (hasOpen !== null) {
-            // this.getQuotes()
-          }
-        }
-      })
-  }
-
-  // NOT YET USED
-  // superUserAuth() {
-  //   if (!this.auth.superUserAuth(this.currentUserEmailgetFromStorage)) {
-  //     this.logger.log('[HOME] +++ CURRENT U IS NOT SUPER USER ', this.currentUserEmailgetFromStorage);
-  //     this.IS_SUPER_USER = false;
-  //   } else {
-  //     this.logger.log('[HOME] +++ !! CURRENT U IS SUPER USER ', this.currentUserEmailgetFromStorage);
-  //     this.IS_SUPER_USER = true;
-
-  //   }
-  // }
-
-  // displayCheckListModal() {
-  //   this.notify.showCheckListModal(true);
-  // }
-
-
-  // OLD - NOW NOT WORKS
-  // getVisitorCounter() {
-  //   this.departmentService.getVisitorCounter()
-  //     .subscribe((visitorCounter: any) => {
-  //       this.logger.log('[HOME] getVisitorCounter : ', visitorCounter);
-
-  //       // x test
-  //       // const visitorCounter = [{ "_id": "5cd2ff0492424372bfa33574", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://www.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T16:08:36.085Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-12T16:24:50.764Z", "totalViews": 12564 }, { "_id": "5cd313cc92424372bfa6fad2", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:37:16.872Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-08T03:14:10.802Z", "totalViews": 108 }, { "_id": "5cd317e492424372bfa7baad", "id_project": "5ad5bd52c975820014ba900a", "origin": null, "__v": 0, "createdAt": "2019-05-08T17:54:44.273Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T23:04:26.285Z", "totalViews": 567 }, { "_id": "5cd3187492424372bfa7d4b4", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://testwidget.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:57:08.426Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:43:27.804Z", "totalViews": 47 }, { "_id": "5cd3188292424372bfa7d694", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://support.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:57:22.763Z", "path": "/5ad5bd52c975820014ba900a/departments/allstatus", "updatedAt": "2019-10-18T10:24:28.260Z", "totalViews": 608 }, { "_id": "5cd37ce592424372bfb4f18c", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://tiledesk.com", "__v": 0, "createdAt": "2019-05-09T01:05:41.918Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-31T15:29:55.687Z", "totalViews": 8 }, { "_id": "5cd5a42392424372bffcf279", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://codingpark.com", "__v": 0, "createdAt": "2019-05-10T16:17:39.561Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-12T04:30:49.985Z", "totalViews": 7 }, { "_id": "5cda868492424372bfa41f87", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://edit.tiledesk.com", "__v": 0, "createdAt": "2019-05-14T09:12:36.334Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:34:01.768Z", "totalViews": 627 }, { "_id": "5cdbdc5092424372bfd446ed", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:4200", "__v": 0, "createdAt": "2019-05-15T09:30:56.291Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-08T15:18:49.783Z", "totalViews": 669 }, { "_id": "5ce3d37e92424372bff07234", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://s3.eu-west-1.amazonaws.com", "__v": 0, "createdAt": "2019-05-21T10:31:26.193Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-21T11:41:47.565Z", "totalViews": 4 }, { "_id": "5ce3ee6692424372bff47a01", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://support-pre.tiledesk.com", "__v": 0, "createdAt": "2019-05-21T12:26:14.830Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-09-03T09:52:03.442Z", "totalViews": 29 }, { "_id": "5ce5532492424372bf26422f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:8000", "__v": 0, "createdAt": "2019-05-22T13:48:20.153Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-22T15:10:52.097Z", "totalViews": 4 }, { "_id": "5cea371792424372bfcdf00f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://evil.com/", "__v": 0, "createdAt": "2019-05-26T06:49:59.238Z", "path": "/5ad5bd52c975820014ba900a/departments/allstatus", "updatedAt": "2019-07-20T06:11:47.539Z", "totalViews": 4 }, { "_id": "5cee342c92424372bf5f5ea3", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://testwidget.tiledesk.it", "__v": 0, "createdAt": "2019-05-29T07:26:36.984Z", "path": "/5ad5bd52c975820014ba900a/departments/5b8eb4955ca4d300141fb2cc/operators", "updatedAt": "2019-05-29T07:27:10.327Z", "totalViews": 3 }, { "_id": "5cf072d392424372bfb993d7", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://importchinaproducts.com", "__v": 0, "createdAt": "2019-05-31T00:18:27.503Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-03T22:52:21.678Z", "totalViews": 27 }, { "_id": "5cf0892292424372bfbbfcc7", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://importchinaproducts.com", "__v": 0, "createdAt": "2019-05-31T01:53:38.809Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-09T14:02:29.505Z", "totalViews": 18 }, { "_id": "5cf64fdf92424372bf9137d0", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://54.37.234.246:1111", "__v": 0, "createdAt": "2019-06-04T11:02:55.936Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-14T18:49:33.847Z", "totalViews": 49 }, { "_id": "5cf8d08b1caa8022ad5248e2", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.importchinaproducts.com", "__v": 0, "createdAt": "2019-06-06T08:36:27.328Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-28T08:37:36.711Z", "totalViews": 7 }, { "_id": "5cfa4eff1caa8022ad8fbc5f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://54.37.225.206:4300", "__v": 0, "createdAt": "2019-06-07T11:48:15.191Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T05:58:55.933Z", "totalViews": 26 }, { "_id": "5cfa9c7d1caa8022ad9e40e1", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://vps695843.ovh.net:4300", "__v": 0, "createdAt": "2019-06-07T17:18:53.536Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-07T17:18:53.536Z", "totalViews": 1 }, { "_id": "5cfe93281caa8022ad2bbebf", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://widget.kobs.pl", "__v": 0, "createdAt": "2019-06-10T17:28:08.213Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T17:46:51.521Z", "totalViews": 6 }, { "_id": "5cfe96c91caa8022ad2c850a", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://panel.kobs.pl", "__v": 0, "createdAt": "2019-06-10T17:43:37.206Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-17T05:51:44.478Z", "totalViews": 189 }, { "_id": "5cfed7fc1caa8022ad37ff73", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:8080", "__v": 0, "createdAt": "2019-06-10T22:21:48.300Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T22:21:50.845Z", "totalViews": 2 }, { "_id": "5d14ead832da4a99f4209603", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://translate.googleusercontent.com", "__v": 0, "createdAt": "2019-06-27T16:12:08.146Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-27T16:12:52.926Z", "totalViews": 3 }, { "_id": "5d1ed5de32da4a99f4bdc056", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost", "__v": 0, "createdAt": "2019-07-05T04:45:18.031Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-11T08:25:47.008Z", "totalViews": 168 }, { "_id": "5d1f030932da4a99f4c3bc4b", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://192.168.1.137", "__v": 0, "createdAt": "2019-07-05T07:58:01.426Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-05T07:58:01.426Z", "totalViews": 1 }, { "_id": "5db2e17b6b2dfaad7c1f1962", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:3000", "__v": 0, "createdAt": "2019-10-25T11:50:19.452Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-30T12:17:18.155Z", "totalViews": 15 }, { "_id": "5db30c036b2dfaad7c269761", "id_project": "5ad5bd52c975820014ba900a", "origin": "null", "__v": 0, "createdAt": "2019-10-25T14:51:47.062Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-25T14:52:03.462Z", "totalViews": 2 }, { "_id": "5db314186b2dfaad7c281712", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.frontiere21.it", "__v": 0, "createdAt": "2019-10-25T15:26:16.834Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-25T15:51:49.450Z", "totalViews": 11 }, { "_id": "5dc92fb73b1c8559fb6c3cc6", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://egov2-dev.comune.bari.it:3000", "__v": 0, "createdAt": "2019-11-11T09:53:59.339Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T09:53:59.339Z", "totalViews": 1 }, { "_id": "5dc9714e3b1c8559fb79445a", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://baribot.herokuapp.com", "__v": 0, "createdAt": "2019-11-11T14:33:50.123Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:34:18.612Z", "totalViews": 2 }]
-  //       this.logger.log('[HOME] getVisitorCounter length : ', visitorCounter.length);
-  //       if (visitorCounter && visitorCounter.length > 0) {
-  //         let count = 0;
-  //         visitorCounter.forEach(visitor => {
-  //           this.logger.log('[HOME] getVisitorCounter visitor origin ', visitor.origin);
-  //           if (
-  //             visitor.origin !== "https://s3.eu-west-1.amazonaws.com" &&
-  //             visitor.origin !== "http://testwidget.tiledesk.it" &&
-  //             visitor.origin !== "http://testwidget.tiledesk.com" &&
-  //             visitor.origin !== "https://support.tiledesk.com" &&
-  //             visitor.origin !== null &&
-  //             visitor.origin !== 'null' &&
-  //             visitor.origin !== "http://evil.com/"
-  //           ) {
-
-  //             count = count + 1;
-  //             this.logger.log('[HOME] getVisitorCounter the origin ', visitor.origin, ' is != of test-site and is != of support-tiledesk and is != of null ', count);
-  //             // this.logger.log('getVisitorCounter ORIGIN != TEST-SITE AND != SUPPORT-TILEDESK »» HAS INSTALLED');
-  //           } else {
-  //             this.logger.log('[HOME] getVisitorCounter the origin ', visitor.origin, ' is = of test-site or is = support-tiledesk or is = null');
-  //           }
-  //         });
-
-  //         if (count === 0) {
-  //           // this.notify.presentModalInstallTiledeskModal()
-  //           this.logger.log('[HOME] getVisitorCounter count', count, '!!!');
-
-  //         }
-
-  //       } else {
-  //         this.logger.log('[HOME] getVisitorCounter length : ', visitorCounter.length);
-  //         this.logger.log('[HOME] getVisitorCounter VISITOR COUNTER IS O »» HAS NOT INSTALLED');
-  //         // this.notify.presentModalInstallTiledeskModal() 
-  //         //  this.notify.showNotificationInstallWidget(`${this.installWidgetText} <span style="color:#ffffff; display: inline-block; max-width: 100%;"> Nicola </span>`, 0, 'info');
-
-  //       }
-  //     }, (error) => {
-  //       this.logger.error('[HOME] getVisitorCounter ERROR ', error);
-  //     }, () => {
-  //       this.logger.log('[HOME] getVisitorCounter * COMPLETE *');
-  //     });
-  // }
 
 
 }
