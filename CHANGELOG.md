@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.165
+- Adds the ability, in the Import File dialog, to import documents into the knowledge base via URL
+- Adds the ability to view the response as a stream or static to the knowledge preview dialog
+- Adds tooltips to the "AI Settings" dialog even when opened from the "Knowledge Base Preview" dialog
+- Adds the ability to select a retention period for automatic message deletion
+
 ### 2.7.164
 - Adds streaming responses to the knowledge base preview 
 - Adds new LLM models
