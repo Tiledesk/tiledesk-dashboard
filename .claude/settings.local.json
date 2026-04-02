@@ -7,7 +7,8 @@
       "Bash(sed -i '' '2961,3083d' src/app/home/home.component.ts)",
       "Bash(sed -i '' '2612,2634d' src/app/home/home.component.ts)",
       "Bash(sed -i '' '2564,2610d' src/app/home/home.component.ts)",
-      "Bash(ng build:*)"
+      "Bash(ng build:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); scripts=d.get\\('scripts',{}\\); [print\\(f'{k}: {v}'\\) for k,v in scripts.items\\(\\) if any\\(x in k.lower\\(\\) or x in v.lower\\(\\) for x in ['test','e2e','karma','jest','spec']\\)]\")"
     ]
   }
 }

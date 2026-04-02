@@ -12,6 +12,7 @@ import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
+import { ProjectResolver } from './core/project.resolver';
 
 // import { HomeComponent } from './home/home.component'; // now lazy
 
@@ -1241,7 +1242,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/knowledge-bases',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { project: ProjectResolver }
   },
 
   // Check moved in RoleService
@@ -1254,7 +1256,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/knowledge-bases/:namespaceid',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { project: ProjectResolver }
   },
 
   // Check moved in RoleService
@@ -1269,6 +1272,7 @@ const routes: Routes = [
     path: 'project/:projectid/knowledge-bases/:calledby',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
     canActivate: [AuthGuard],
+    resolve: { project: ProjectResolver }
   },
   // { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy // when called from home
 

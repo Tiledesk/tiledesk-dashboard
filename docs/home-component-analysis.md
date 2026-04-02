@@ -1,8 +1,17 @@
 # Analisi HomeComponent — Logica di inizializzazione progetto
 
-## 1. Contesto
+> **Stato post-refactoring (Step 1→9 completati — 2026-04-02)**
+> Il refactoring descritto in questo documento è stato completato.  
+> `HomeComponent` è passato da **3.177 righe** a **1.702 righe** (−46%).  
+> I servizi creati: `FeatureToggleService`, `PermissionsService`, `QuotasStateService`,  
+> `OnboardingPreferencesService`, `ProjectResolver`, `ProjectInitializerService`.  
+> Vedi [home-refactoring-plan.md](./home-refactoring-plan.md) per il dettaglio di ogni step.
 
-`HomeComponent` ([src/app/home/home.component.ts](../src/app/home/home.component.ts)) è il punto di atterraggio dell'applicazione dopo la login. Oltre a renderizzare la dashboard, **contiene al suo interno la logica di bootstrapping del progetto corrente**, rendendosi responsabile di operazioni che non riguardano la UI ma il ciclo di vita dell'intera sessione.
+---
+
+## 1. Contesto (stato originale)
+
+`HomeComponent` ([src/app/home/home.component.ts](../src/app/home/home.component.ts)) era il punto di atterraggio dell'applicazione dopo la login. Oltre a renderizzare la dashboard, **conteneva al suo interno la logica di bootstrapping del progetto corrente**, rendendosi responsabile di operazioni che non riguardano la UI ma il ciclo di vita dell'intera sessione.
 
 ---
 

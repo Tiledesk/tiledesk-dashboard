@@ -2031,7 +2031,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     if (id_project !== this.projectId) {
 
       this.auth.projectSelected(project, 'navbar')
-      this.router.navigate([`/project/${id_project}/home`]);
+      this.router.navigate([`/project/${id_project}/knowledge-bases`]);
       // this.logger.log('[NAVBAR] goToHome prjct ', project )
       this.quotesService.resetFetchStatus()
     }
