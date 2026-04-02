@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.196-stage
+- Adds tooltips to the "AI Settings" dialog even when opened from the "Knowledge Base Preview" dialog.
+
 ### 2.7.195-stage
 - Adds the ability to view the response as a stream or static to the knowledge preview dialog
 
