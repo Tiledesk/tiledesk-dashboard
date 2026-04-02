@@ -15,10 +15,18 @@
         </div>
     </div>
 
+    <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom:8px;">
+        <mat-slide-toggle [(ngModel)]="automaticContentExtraction"  color="primary">
+            {{ 'KbPage.AutomaticContentExtraction' | translate }}
+        </mat-slide-toggle>
+    </div>
+
     <mat-accordion>
         <!-- custom--expansion-panel -->
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
-            class="html-tags--expansion-panel" style="margin-bottom: 21px;">
+            class="html-tags--expansion-panel" style="margin-bottom: 21px;"
+            [disabled]="automaticContentExtraction"
+            [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">
             <mat-expansion-panel-header class="disable_ripple">
                 <mat-panel-title> {{'HtmlTags' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>

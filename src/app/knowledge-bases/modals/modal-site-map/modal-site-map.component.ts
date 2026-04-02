@@ -33,6 +33,8 @@ export class ModalSiteMapComponent implements OnInit {
   selectedNamespace: string;
 
   panelOpenState = true;
+  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
+  automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // scrape_types: Array<any> = [
   //   { name: "Full HTML page", value: 1 },
@@ -304,10 +306,10 @@ export class ModalSiteMapComponent implements OnInit {
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 
-  onSaveKnowledgeBase(){
-   if(!this.refreshRateIsEnabled) {
-    return
-   } 
+   onSaveKnowledgeBase(){
+    if(!this.refreshRateIsEnabled) {
+      return
+    }
     // if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
     //   this.errorLimit = true;
     // } else {
@@ -315,25 +317,25 @@ export class ModalSiteMapComponent implements OnInit {
     //   const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
     //     return row.trim() !== '';
     //   });
-      // let body = {
-      //   'list': arrayURLS,
-      //   scrape_type: this.selectedScrapeType,
-      //   refresh_rate: this.selectedRefreshRate
-      // }
+    //   let body = {
+    //     'list': arrayURLS,
+    //     scrape_type: this.selectedScrapeType,
+    //     refresh_rate: this.selectedRefreshRate
+    //   }
+      const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
+      let body  = {
+          "name":   this.siteMap,
+          "source": this.siteMap,
+          "content": "",
+          "type": "sitemap",
+          "namespace": this.selectedNamespace['id'],
+          "refresh_rate": this.selectedRefreshRate,
+          "scrape_type": scrapeType,
+          "tags": this.kbTagsArray
+        }
 
-       let body  = {
-        "name":   this.siteMap,
-        "source": this.siteMap,
-        "content": "",
-        "type": "sitemap",
-        "namespace": this.selectedNamespace['id'],
-        "refresh_rate": this.selectedRefreshRate,
-        "scrape_type": this.selectedScrapeType,
-        "tags": this.kbTagsArray
-      }
-
-      if (this.selectedScrapeType === 4) {
-        body['scrape_options'] = {
+      if (!this.automaticContentExtraction && this.selectedScrapeType === 4) {
+          body['scrape_options'] = {
           tags_to_extract: this.extract_tags,
           unwanted_tags: this.unwanted_tags,
           unwanted_classnames: this.unwanted_classnames
@@ -341,7 +343,7 @@ export class ModalSiteMapComponent implements OnInit {
       }
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);
-    // }
+   // }
     
   }
 

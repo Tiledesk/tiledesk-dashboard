@@ -27,6 +27,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   errorLimit: boolean = false;
 
   panelOpenState = true;
+  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
+  automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   scrape_types: Array<any> = [
     // { name: "Full HTML page", value: 1 },
@@ -252,14 +254,15 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
       return row.trim() !== '';
     });
+    const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
     let body: any = {
       list: arrayURLS,
-      scrape_type: this.selectedScrapeType,
+      scrape_type: scrapeType,
       refresh_rate: this.selectedRefreshRate,
       tags: this.kbTagsArray
     }
 
-    if (this.selectedScrapeType === 4) {
+    if (!this.automaticContentExtraction && this.selectedScrapeType === 4) {
       body.scrape_options = {
         tags_to_extract: this.extract_tags,
         unwanted_tags: this.unwanted_tags,

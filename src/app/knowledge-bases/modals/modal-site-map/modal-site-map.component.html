@@ -48,11 +48,19 @@
     </div>
 
     
+    <div class="automatic-content-extraction-row" *ngIf="refreshRateIsEnabled"
+        style="display: flex; align-items: center; margin-bottom: 8px;">
+        <mat-slide-toggle [(ngModel)]="automaticContentExtraction" color="primary">
+            {{ 'KbPage.AutomaticContentExtraction' | translate }}
+        </mat-slide-toggle>
+    </div>
 
 
     <mat-accordion *ngIf="refreshRateIsEnabled">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" 
-            class="html-tags--expansion-panel">
+            class="html-tags--expansion-panel"
+            [disabled]="automaticContentExtraction"
+            [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">
             <mat-expansion-panel-header class="disable_ripple">
                 <mat-panel-title> {{'HtmlTags' | translate}}</mat-panel-title>
             </mat-expansion-panel-header>

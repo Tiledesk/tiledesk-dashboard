@@ -884,7 +884,7 @@
     "5Years": "5 ans",
     "UpgradePlanForRetention": "La conservation des messages peut être personnalisée à partir du forfait {{plan_name}}.",
     "MessageRetention": "Conservation des messages",
-     "ResponseInStreaming": "Lorsque le streaming est activé, vous verrez la réponse en temps réel pendant sa génération",
+    "ResponseInStreaming": "Lorsque le streaming est activé, vous verrez la réponse en temps réel pendant sa génération",
     "QuestionIsRequired": "La question est requise",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
@@ -2284,6 +2284,7 @@
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Voulez-vous essayer cette nouvelle fonctionnalité ?",
         "ImportFromWebsites": "Importer depuis Websites",
+        "AutomaticContentExtraction": "Extraction automatique du contenu",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "C'est tout"
     },
