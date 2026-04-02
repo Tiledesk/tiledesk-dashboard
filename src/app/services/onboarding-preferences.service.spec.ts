@@ -178,4 +178,44 @@ describe('OnboardingPreferencesService', () => {
       });
     });
   });
+
+  // ── T6.11 — resolveChatbotVisibility ─────────────────────────────────────
+  describe('T6.11 — resolveChatbotVisibility', () => {
+    it('dovrebbe restituire true se customization.chatbot è true', () => {
+      const svc = buildService();
+      expect(svc.resolveChatbotVisibility({ customization: { chatbot: true } })).toBe(true);
+    });
+
+    it('dovrebbe restituire false se customization.chatbot è false', () => {
+      const svc = buildService();
+      expect(svc.resolveChatbotVisibility({ customization: { chatbot: false } })).toBe(false);
+    });
+
+    it('dovrebbe restituire true se customization.chatbot è undefined (default permissive)', () => {
+      const svc = buildService();
+      expect(svc.resolveChatbotVisibility({ customization: {} })).toBe(true);
+      expect(svc.resolveChatbotVisibility({})).toBe(true);
+      expect(svc.resolveChatbotVisibility(null)).toBe(true);
+    });
+  });
+
+  // ── T6.12 — resolveVoiceVisibility ───────────────────────────────────────
+  describe('T6.12 — resolveVoiceVisibility', () => {
+    it('dovrebbe restituire true solo se customization.voice è esplicitamente true', () => {
+      const svc = buildService();
+      expect(svc.resolveVoiceVisibility({ customization: { voice: true } })).toBe(true);
+    });
+
+    it('dovrebbe restituire false se customization.voice è false', () => {
+      const svc = buildService();
+      expect(svc.resolveVoiceVisibility({ customization: { voice: false } })).toBe(false);
+    });
+
+    it('dovrebbe restituire false se customization.voice è undefined (default restrictive)', () => {
+      const svc = buildService();
+      expect(svc.resolveVoiceVisibility({ customization: {} })).toBe(false);
+      expect(svc.resolveVoiceVisibility({})).toBe(false);
+      expect(svc.resolveVoiceVisibility(null)).toBe(false);
+    });
+  });
 });

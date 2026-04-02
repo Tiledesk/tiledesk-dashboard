@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode, ViewEncapsulation } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
-import { ActivatedRoute } from '@angular/router';
-
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
@@ -119,12 +117,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
 
-  isVisibleANA: boolean;
-  isVisibleAPP: boolean;
-  isVisibleOPH: boolean;
-  isVisibleHomeBanner: boolean;
-  isVisiblePay: boolean;
-  isVisibleKNB: boolean;
+  isVisibleKNB: boolean;   // mutable: può essere sovrascritto da manageknowledgeBasesVisibility()
+  isVisibleHomeBanner: boolean; // mutable: può essere sovrascritto da checkPromoURL()
+
+  get isVisiblePay(): boolean        { return this.featureToggleService.isVisiblePay; }
+  get isVisibleANA(): boolean        { return this.featureToggleService.isVisibleANA; }
+  get isVisibleAPP(): boolean        { return this.featureToggleService.isVisibleAPP; }
+  get isVisibleOPH(): boolean        { return this.featureToggleService.isVisibleOPH; }
 
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -134,7 +133,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   current_prjct: any;
   popup_visibility: string = 'none';
   appSumoProfile: string;
-  project_plan_badge: boolean;
+  get project_plan_badge(): boolean { return this.featureToggleService.projectPlanBadge; }
   featureAvailableFromBPlan: string;
   featureAvailableFromEPlan: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
@@ -225,7 +224,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // QUOTES
   isVisibleQuoteBtn: boolean;
-  isVisibleQuoteSection: boolean;
+  get isVisibleQuoteSection(): boolean { return this.featureToggleService.isVisibleQIN; }
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
   diplayVXMLVoiceQuota: boolean;
@@ -281,7 +280,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     public auth: AuthService,
-    private route: ActivatedRoute,
     private router: Router,
     private usersService: UsersService,
     private usersLocalDbService: LocalDbService,
@@ -328,17 +326,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectUser();
 
     this.getUserRole();
-    this.isVisiblePay = this.featureToggleService.isVisiblePay;
-    this.isVisibleANA = this.featureToggleService.isVisibleANA;
-    this.isVisibleAPP = this.featureToggleService.isVisibleAPP;
-    this.isVisibleOPH = this.featureToggleService.isVisibleOPH;
     this.isVisibleHomeBanner = this.featureToggleService.isVisibleHomeBanner;
-    this.project_plan_badge = this.featureToggleService.projectPlanBadge;
     this.isVisibleKNB = this.featureToggleService.isVisibleKNB;
     if (this.isVisibleKNB) {
       this.getProjectPlan();
     }
-    this.isVisibleQuoteSection = this.featureToggleService.isVisibleQIN;
     this.checkPromoURL()
     this.getChatUrl();
     this.getHasOpenBlogKey()
@@ -487,8 +479,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const projectProfileData = project.profile
 
-        this.manageChatbotVisibility(projectProfileData)
-        this.manageVoiceQuotaVisibility(projectProfileData)
+        this.areVisibleChatbot      = this.onboardingService.resolveChatbotVisibility(projectProfileData);
+        this.diplayVXMLVoiceQuota   = this.onboardingService.resolveVoiceVisibility(projectProfileData);
+        this.quotasStateService.setVoiceEnabled(this.diplayVXMLVoiceQuota);
 
         this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 
@@ -684,72 +677,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
-
-  manageChatbotVisibility(projectProfileData) {
-    this.logger.log('[HOME] (manageChatbotVisibility) ')
-
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
-    }
-
-    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
-
-      if (projectProfileData['customization']['chatbot'] === true) {
-        this.areVisibleChatbot = true;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      } else if (projectProfileData['customization']['chatbot'] === false) {
-
-        this.areVisibleChatbot = false;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      }
-
-    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
-
-    } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
-
-    }
-  }
-
-  
-
-  manageVoiceQuotaVisibility(projectProfileData) {
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
-    
-      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
-
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-     
-
-        if (projectProfileData['customization']['voice'] === true) {
-          this.diplayVXMLVoiceQuota = true
-        } else if (projectProfileData['customization']['voice'] === false) {
-          this.diplayVXMLVoiceQuota = false
-        } else if (projectProfileData['customization']['voice'] === undefined) {
-          this.diplayVXMLVoiceQuota = false
-        }
-      } else {
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
-        this.diplayVXMLVoiceQuota = false
-      }
-
-    } else {
-
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-      // this.diplayTwilioVoiceQuota = false
-      this.diplayVXMLVoiceQuota = false
-    }
-
-    this.quotasStateService.setVoiceEnabled(this.diplayVXMLVoiceQuota);
-  }
-
 
   trackTrialEnded(project, trialStarDate, trialEndDate) {
     if (!isDevMode()) {

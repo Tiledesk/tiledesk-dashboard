@@ -220,6 +220,25 @@ export class OnboardingPreferencesService {
     };
   }
 
+  /**
+   * Determina se i chatbot sono visibili in base a `profile.customization.chatbot`.
+   * Funzione pura: restituisce `true` se il flag manca (default permissive).
+   */
+  resolveChatbotVisibility(profileData: any): boolean {
+    const chatbot = profileData?.customization?.chatbot;
+    if (chatbot === false) return false;
+    return true; // undefined or true → visible
+  }
+
+  /**
+   * Determina se la quota vocale è visibile in base a `profile.customization.voice`.
+   * Funzione pura: restituisce `false` se il flag manca (default restrictive).
+   */
+  resolveVoiceVisibility(profileData: any): boolean {
+    const voice = profileData?.customization?.voice;
+    return voice === true;
+  }
+
   applyDashletOverrides(config: DashletConfig, dashlets: any): DashletConfig {
     return {
       ...config,
