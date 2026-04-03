@@ -40,7 +40,7 @@ import { MomentModule } from 'ngx-moment';
     MatIconModule,
     MatProgressSpinnerModule,
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
     MatCardModule,
     MatTableModule,
     MatSortModule,
