@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.198-stage
+- Improves the Automatic content extraction
+- Adds the quotas reset date
+
 ### 2.7.197-stage
 - Adds the ability to select the Automatic content extraction option in the "Import from Website", "Import from Sitemap", and "Details" knowledge base dialogs
 
