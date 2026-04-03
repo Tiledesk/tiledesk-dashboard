@@ -50,20 +50,20 @@
     
     <div class="automatic-content-extraction-row" *ngIf="refreshRateIsEnabled"
         style="display: flex; align-items: center; margin-bottom: 8px;">
-        <mat-slide-toggle [(ngModel)]="automaticContentExtraction" color="primary">
+        <mat-slide-toggle [checked]="automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
             {{ 'KbPage.AutomaticContentExtraction' | translate }}
         </mat-slide-toggle>
     </div>
 
 
     <mat-accordion *ngIf="refreshRateIsEnabled">
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" 
+       <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
             class="html-tags--expansion-panel"
             [disabled]="automaticContentExtraction"
             [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">
-            <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'HtmlTags' | translate}}</mat-panel-title>
-            </mat-expansion-panel-header>
+        <mat-expansion-panel-header class="disable_ripple">
+        <mat-panel-title> {{'HtmlTags' | translate}}</mat-panel-title>
+        </mat-expansion-panel-header>
             <div class="expansion-panel-content">
            
                 <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; padding: 0px 10px 10px 15px;">

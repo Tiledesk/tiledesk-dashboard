@@ -739,6 +739,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Takım arkadaşlarının ajan sohbetinden yükleyebileceği dosya türlerini yönetin",
     "AddExtension": "Uzantı ekle",
     "QuotaResetsOn": "Kota {{reset_date}} tarihinde sıfırlanır",
+    "QuotasReset": "Kota sıfırlamaları",
     "AllExtensions": "Tümü",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Aylık kaynak kotanızı artırmak için bizimle iletişime geçin",
     "ThisFeatureIsInBeta":"Bu özellik beta aşamasındadır",

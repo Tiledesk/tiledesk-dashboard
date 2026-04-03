@@ -737,6 +737,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Manage the file types teammates can upload from agent chat",
     "AddExtension": "Add extension",
     "QuotaResetsOn": "Quota resets on {{reset_date}}",
+    "QuotasReset": "Quotas reset",
     "AllExtensions": "All",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Contact us to increase your monthly resources quotas",
     "ThisFeatureIsInBeta":"This feature is in beta",

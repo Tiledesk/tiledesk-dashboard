@@ -737,6 +737,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Gérer les types de fichiers que les coéquipiers peuvent télécharger depuis le chat de l'agent",
     "AddExtension": "Ajouter une extension",
     "QuotaResetsOn": "Le quota se réinitialise le {{reset_date}}",
+    "QuotasReset": "Réinitialisation des quotas",
     "AllExtensions": "Toutes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Contactez-nous pour augmenter vos quotas de ressources mensuels",
     "ThisFeatureIsInBeta":"Cette fonctionnalité est en version bêta",

@@ -737,6 +737,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Gerir os tipos de ficheiros que os colegas de equipa podem carregar a partir do chat do agente",
     "AddExtension": "Adicionar extensão",
     "QuotaResetsOn": "Quota repõe em {{reset_date}}",
+    "QuotasReset": "Reinício das cotas",
     "AllExtensions": "Todas",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contacte-nos para aumentar as suas quotas mensais de recursos",
     "ThisFeatureIsInBeta": "Este recurso está em beta",

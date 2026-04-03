@@ -713,6 +713,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Gestionar los tipos de archivo que los compañeros de equipo pueden subir desde el chat del agente",
     "AddExtension": "Añadir extensión",
     "QuotaResetsOn": "La cuota se reinicia el {{reset_date}}",
+    "QuotasReset": "Reinicio de cuotas",
     "AllExtensions": "Todos",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Contáctanos para aumentar tus cuotas mensuales de recursos",
     "ThisFeatureIsInBeta":"Esta función está en versión beta",

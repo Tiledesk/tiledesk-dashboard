@@ -217,7 +217,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   startSlot: string;
   endSlot: string;
-
+  /** Data fine periodo quota da POST /quotes (`slot.endDate`), formattata per il menu usage. */
+  quotaResetEndDateLabel: string | null = null;
   newChangelogCount: boolean;
   // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
   PERMISSION_TO_CHANGE_PROJECT: boolean;
@@ -538,6 +539,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getProjectQuotes() {
     this.logger.log("[NAVBAR][QUOTA-DEBUG] getProjectQuotes this.projectId -------> : ", this.projectId);
+    this.quotaResetEndDateLabel = null;
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
       this.project_limits = response;
@@ -555,6 +557,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
       this.logger.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("[NAVBAR] resp.quotes: ", resp.quotes)
+      if(resp?.slot?.endDate) {
+        this.quotaResetEndDateLabel = resp?.slot?.endDate
+      }
       if (resp?.quotes) {
 
         this.logger.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE projectId ",projectId)
@@ -562,7 +567,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.quotesService.updateQuotasData({
           projectLimits: project_limits, // Pass fetched project limits
           allQuotes: resp.quotes, // Pass fetched quotes
-          projectId: projectId
+          projectId: projectId,
+          slot: resp.slot ?? null
         });
 
       }
@@ -682,10 +688,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
+      this.quotaResetEndDateLabel = null;
     }, () => {
       this.logger.log("[QUOTA-DEBUG][NAVBAR][DISPLAY-SKELETON] get all quotes *COMPLETE*");
 
     })
+  }
+
+
+   /** ISO `slot.endDate` dalla risposta /quotes → etichetta locale (es. "23 Apr 2026"). */
+  private formatQuotaSlotEndDate(endDate: string | undefined | null): string | null {
+    if (!endDate) return null;
+    const m = moment(endDate);
+    return m.isValid() ? m.format('D MMM YYYY') : null;
   }
 
   secondsToMinutes_seconds(seconds) {

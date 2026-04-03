@@ -8,6 +8,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'modal-urls-knowledge-base',
@@ -27,6 +28,10 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   errorLimit: boolean = false;
 
   panelOpenState = true;
+    /** Stato espansione pannello HTML tags (chiuso di default; si chiude se si attiva l’estrazione automatica). */
+  htmlTagsPanelExpanded = false;
+  /** Stato espansione pannello import da sitemap (accordion separato). */
+  sitemapImportPanelExpanded = false;
   /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
   automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -262,7 +267,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       tags: this.kbTagsArray
     }
 
-    if (!this.automaticContentExtraction && this.selectedScrapeType === 4) {
+    // Con scrape_type 0 il server ignora scrape_options; le inviamo comunque così restano salvate lato client/API per quando l’utente torna in manuale.
+    if (this.selectedScrapeType === 4) {
       body.scrape_options = {
         tags_to_extract: this.extract_tags,
         unwanted_tags: this.unwanted_tags,
@@ -276,6 +282,14 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
   onSelectScrapeType(selectedType) {
     // this.logger.log("onSelectScrapeType: ", selectedType);
+  }
+
+  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
+    const checked = event.checked;
+    if (checked) {
+      this.htmlTagsPanelExpanded = false;
+    }
+    this.automaticContentExtraction = checked;
   }
 
   addTag(type, event: MatChipInputEvent): void {
