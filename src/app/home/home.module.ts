@@ -54,7 +54,8 @@ const routes: Routes = [
     MatCheckboxModule,
     SatPopoverModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MomentModule
   ],
   exports: [
     RouterModule

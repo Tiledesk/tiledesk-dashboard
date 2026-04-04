@@ -23,6 +23,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
+import { MomentModule } from 'ngx-moment';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatCardModule,
     MatTableModule,
     MatSortModule,
-    MatInputModule
+    MatInputModule,
+    MomentModule,
   ],
   declarations: [
     FooterComponent,

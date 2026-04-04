@@ -278,6 +278,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   startSlot: string;
   endSlot: string;
 
+  /** ISO `slot.endDate` da quotes (via subscription), stesso uso della navbar. */
+  quotaResetEndDateLabel: string | null = null;
 
   // refactoring quotas
   quotasLimits
@@ -689,6 +691,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
             this.quotasLimits = data.projectLimits;
             this.allQuotas = data.allQuotes;
+            this.quotaResetEndDateLabel = data.slot?.endDate ?? null;
             this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
             this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
 

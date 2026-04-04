@@ -41,7 +41,12 @@ export class QuotesService {
   // }
 
 
-  private quotasDataSubject = new BehaviorSubject<{ projectLimits: any; allQuotes: any } | null>(null);
+   private quotasDataSubject = new BehaviorSubject<{
+    projectLimits: any;
+    allQuotes: any;
+    projectId: string;
+    slot?: { startDate?: string; endDate?: string } | null;
+  } | null>(null);
   quotesData$ = this.quotasDataSubject.asObservable().pipe(shareReplay(1)); // Expose as Observable
 
   private requestQuotesSubject = new Subject<void>();
@@ -75,7 +80,12 @@ export class QuotesService {
   }
 
   /** Called by NavbarComponent to update the stored quotes */
-  updateQuotasData(data: { projectLimits: any; allQuotes: any; projectId: string }) {
+   updateQuotasData(data: {
+    projectLimits: any;
+    allQuotes: any;
+    projectId: string;
+    slot?: { startDate?: string; endDate?: string } | null;
+  }) {
     this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
     this.hasFetchedData = true; // Mark data as fetched
