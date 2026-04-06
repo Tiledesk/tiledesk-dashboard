@@ -1485,9 +1485,25 @@ export class AuthService {
   }
 
   signinWithOAuth2() {
-    const url = this.SERVER_BASE_PATH + 'auth/oauth2'
+    const cfg = this.appConfigService.getConfig()
+    let absoluteDashboardUrl: string
+    if (cfg.oauth2RedirectUrl) {
+      absoluteDashboardUrl = cfg.oauth2RedirectUrl
+    } else {
+      const path = window.location.pathname.replace(/\/$/, '')
+      const prefix = `${window.location.origin}${path}/`
+      if (cfg.defaultProjectId) {
+        absoluteDashboardUrl = `${prefix}#/project/${cfg.defaultProjectId}/home`
+      } else {
+        absoluteDashboardUrl = `${prefix}#/`
+      }
+    }
+    const url =
+      this.SERVER_BASE_PATH +
+      'auth/oauth2?redirect_url=' +
+      encodeURIComponent(absoluteDashboardUrl)
     this.logger.log('[AUTH-SERV] signinWithOAuth2 url ', url)
-    window.open(url, '_self');
+    window.open(url, '_self')
   }
 
 
