@@ -171,8 +171,9 @@ export class AutologinComponent implements OnInit {
       
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
     
-      this.getProject(projectIDGetFromRoute)
-    
+      if (projectIDGetFromRoute != null && typeof projectIDGetFromRoute === 'string' && projectIDGetFromRoute.trim().length > 0) {
+        this.getProject(projectIDGetFromRoute)
+      }
 
       this.router.navigate([route]);
 
@@ -213,11 +214,13 @@ export class AutologinComponent implements OnInit {
       const project_id = route_part[2]
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
 
-      const storedProjectJson = localStorage.getItem(project_id);
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+      if (project_id != null && typeof project_id === 'string' && project_id.trim().length > 0) {
+        const storedProjectJson = localStorage.getItem(project_id);
+        this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
 
-      if (storedProjectJson === null) {
-        this.getProjectFromRemotePublishAndSaveInStorage(project_id);
+        if (storedProjectJson === null) {
+          this.getProjectFromRemotePublishAndSaveInStorage(project_id);
+        }
       }
     });
   }
