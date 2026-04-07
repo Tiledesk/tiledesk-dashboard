@@ -8,6 +8,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'modal-site-map',
@@ -31,6 +32,10 @@ export class ModalSiteMapComponent implements OnInit {
   selectedNamespace: string;
 
   panelOpenState = true;
+  /** Chiuso di default; si chiude quando si attiva Automatic content extraction. */
+  htmlTagsPanelExpanded = false;
+  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
+  automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // scrape_types: Array<any> = [
   //   { name: "Full HTML page", value: 1 },
@@ -343,6 +348,14 @@ export class ModalSiteMapComponent implements OnInit {
 
   onSelectScrapeType(selectedType) {
     // this.logger.log("onSelectScrapeType: ", selectedType);
+  }
+
+  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
+    const checked = event.checked;
+    if (checked) {
+      this.htmlTagsPanelExpanded = false;
+    }
+    this.automaticContentExtraction = checked;
   }
 
   addTag(type, event: MatChipInputEvent): void {

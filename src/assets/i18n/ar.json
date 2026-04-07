@@ -2290,6 +2290,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "هل تريد تجربة ميزة خريطة الموقع المتزامنة؟",
         "ContactUsToEnableIt": "اتصل بنا لتفعيلها",
         "ImportFromWebsites": "استيراد من Websites",
+        "AutomaticContentExtraction": "استخراج المحتوى تلقائياً",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "هذا كل شئ"
     },

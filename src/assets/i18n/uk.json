@@ -2306,6 +2306,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Хочете спробувати функцію синхронізованої sitemap?",
         "ContactUsToEnableIt": "Зв'яжіться з нами, щоб увімкнути її",
         "ImportFromWebsites": "Імпорт з Websites",
+        "AutomaticContentExtraction": "Автоматичне витягнення контенту",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ось і все"
     },

@@ -2305,6 +2305,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Синхрондалған sitemap мүмкіндігін қолданып көргіңіз келе ме?",
         "ContactUsToEnableIt": "Оны іске қосу үшін бізге хабарласыңыз",
         "ImportFromWebsites": "Websites-тен импорттау",
+        "AutomaticContentExtraction": "Контентті автоматты алу",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"
     },

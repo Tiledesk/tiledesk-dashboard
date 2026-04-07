@@ -2306,6 +2306,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Vill du prova den synkroniserade webbplatskartfunktionen?",
         "ContactUsToEnableIt": "Kontakta oss för att aktivera den",
         "ImportFromWebsites": "Importera från Websites",
+        "AutomaticContentExtraction": "Automatisk innehållsextraktion",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

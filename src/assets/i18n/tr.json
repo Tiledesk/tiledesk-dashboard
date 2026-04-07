@@ -2290,6 +2290,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Senkronize sitemap özelliğini denemek ister misiniz?",
         "ContactUsToEnableIt": "Etkinleştirmek için bizimle iletişime geçin",
         "ImportFromWebsites": "Websites'tan içe aktar",
+        "AutomaticContentExtraction": "Otomatik içerik çıkarma",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hepsi bu kadar"
     },

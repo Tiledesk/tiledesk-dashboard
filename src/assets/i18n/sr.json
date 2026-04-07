@@ -2290,6 +2290,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Желите да испробате функцију синхронизоване мапе сајта?",
         "ContactUsToEnableIt": "Контактирајте нас да је омогућите",
         "ImportFromWebsites": "Увоз са Websites",
+        "AutomaticContentExtraction": "Аутоматска екстракција садржаја",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "То је све"
     },

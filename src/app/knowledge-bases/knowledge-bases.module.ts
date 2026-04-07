@@ -25,6 +25,7 @@ import { MomentModule } from 'ngx-moment';
 import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
@@ -98,6 +99,7 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
+    MatSlideToggleModule,
     MomentModule,
     MatTooltipModule,
     MatDialogModule,

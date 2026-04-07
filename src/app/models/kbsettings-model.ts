@@ -23,6 +23,7 @@ export interface KB {
     refresh_rate?: string;
     tags?: string[];
     sitemap_origin?: string;
+    scrape_type?: number;
     scrape_options?: {
         tags_to_extract?: string[];
         unwanted_tags?: string[];

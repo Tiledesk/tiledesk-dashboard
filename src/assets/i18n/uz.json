@@ -2289,8 +2289,9 @@
         "WantToTryTheSynchronizedSitemapFeature": "Sinxronlashtirilgan sitemap funksiyasini sinab ko'rishni xohlaysizmi?",
         "ContactUsToEnableIt": "Uni yoqish uchun biz bilan bog'laning",
         "ImportFromWebsites": "Websites-dan import qilish",
-         "-----------------------------": "-----------------------------",
-         "ThatsIsAll": "Ana xolos"
+        "AutomaticContentExtraction": "Kontentni avtomatik ajratish",
+        "-----------------------------": "-----------------------------",
+        "ThatsIsAll": "Ana xolos"
     },
     "Never":" Hech qachon",
     "Daily":"har kuni",

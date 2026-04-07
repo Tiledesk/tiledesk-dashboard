@@ -2289,6 +2289,7 @@
         "WantToTryTheSynchronizedSitemapFeature": "Vous voulez essayer la fonction de sitemap synchronisé?",
         "ContactUsToEnableIt": "Contactez-nous pour l'activer",
         "ImportFromWebsites": "Importer depuis Websites",
+        "AutomaticContentExtraction": "Extraction automatique du contenu",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "C'est tout"
     },
