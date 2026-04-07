@@ -242,7 +242,7 @@
                   <!-- --------------------------------------- -->
                   <!-- Chatbots that used current KB -->
                   <!-- --------------------------------------- -->
-                  <div *ngIf="kbPageConfig.chatbotsSection" class="chatbot-using-current-namespace-wpr">
+                  <div *ngIf="kbPageConfig.chatbotsSection && kbPageConfig.cssTheme !== 'new'" class="chatbot-using-current-namespace-wpr">
                     <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
                       class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:

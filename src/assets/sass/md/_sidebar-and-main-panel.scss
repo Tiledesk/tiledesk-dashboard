@@ -271,6 +271,14 @@
 .main-panel {
     //background: rgba(203,203,210,.15);
     position: relative;
+
+// ─── Tema NEW: sfondo background1 ────────────────────────────────────────────
+// Attivato da cssTheme: 'new' in knowledgeBasesPage (environment.ts)
+&.kb-theme-new {
+    --background1: #F5F5F6;
+    background: var(--background1);
+}
+
     // z-index: 2;
     float: right;
     min-height: 100%;

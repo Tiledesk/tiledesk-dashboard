@@ -13,7 +13,7 @@
     <appdashboard-sidebar-user-details> </appdashboard-sidebar-user-details>
   </div>
 
-  <div class="main-panel">
+  <div class="main-panel" [class.kb-theme-new]="appConfigService.getConfig().knowledgeBasesPage?.cssTheme === 'new'">
     <!-- SEND FOREGROUND MSG  -->
      <!-- <button (click)=" sendForegroundMsg()" style="    color: #000;
     position: absolute;
