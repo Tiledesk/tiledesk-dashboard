@@ -358,7 +358,7 @@ td {
 }
 
 #ai-settings {
-    padding: 8px 8px !important;
+    padding: 7px 8px !important;
     max-width: 40px;
 }
 
@@ -508,6 +508,457 @@ td {
 
     .upgrade-subtitle-learn-how:hover {
         text-decoration: underline;
+    }
+}
+
+// Template utility classes (replaces inline styles)
+.kb-full-width {
+    width: 100%;
+}
+
+.kb-icon-rotate--45 {
+    transform: rotate(-45deg);
+}
+
+.kb-icon-va-middle,
+.kb-va-middle {
+    vertical-align: middle;
+}
+
+.contents-card--spaced {
+    margin: 16px 0;
+}
+
+.contents-card__header {
+    padding-top: 10px !important;
+    padding-right: 15px !important;
+    padding-bottom: 3px !important;
+    padding-left: 15px !important;
+}
+
+.kb-refresh-button {
+    color: grey;
+}
+
+.kb-th-label {
+    margin: 0;
+}
+
+.kb-col-type {
+    width: 80px;
+    cursor: default;
+    text-align: center;
+}
+
+.kb-col-status {
+    width: 100px;
+    text-align: center;
+    cursor: default;
+}
+
+.kb-col-refresh-rate {
+    width: 100px;
+    text-align: center;
+    cursor: default;
+    white-space: nowrap;
+}
+
+.kb-col-updated-at {
+    width: 150px;
+    white-space: nowrap;
+}
+
+.kb-col-name {
+    width: auto;
+    white-space: nowrap;
+}
+
+.kb-col-actions {
+    min-width: 40px;
+    width: 40px;
+    cursor: default;
+}
+
+.kb-refresh-rate-help-icon {
+    font-size: 18px;
+    color: #566787;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.custom-panel-sat-popover-content-wpr {
+    padding: 12px;
+}
+
+.kb-table-cell-center {
+    width: 100%;
+    text-align: center;
+}
+
+.kb-table-cell-fullwidth {
+    width: 100%;
+}
+
+.kb-no-results {
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.kb-type-cell {
+    min-width: 50px;
+    width: 50px;
+    text-align: center;
+}
+
+.kb-status-cell {
+    min-width: 50px;
+    width: 50px;
+    text-align: center;
+}
+
+.kb-refresh-rate-cell {
+    min-width: 150px;
+    width: 150px;
+    font-size: small;
+    text-align: center;
+}
+
+.kb-updated-at-cell {
+    min-width: 150px;
+    width: 150px;
+    font-size: small;
+}
+
+.kb-name-cell {
+    max-width: 100%;
+    display: grid;
+}
+
+.kb-name {
+    max-width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.kb-subtitle {
+    min-width: 0;
+    width: 100%;
+    display: block;
+}
+
+.kb-actions-cell {
+    max-width: 40px;
+    text-align: end;
+}
+
+.kb-actions-cell__inner {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.kb-type-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.kb-type-chip__icon {
+    font-size: 16px;
+    color: white;
+}
+
+.kb-type-chip__icon--rotate--90 {
+    transform: rotate(-90deg);
+}
+
+.kb-type-chip__label {
+    font-weight: 500;
+    margin-left: 4px;
+    font-size: 12px;
+}
+
+.kb-type-chip--docx {
+    background-color: #346ca2;
+}
+
+.kb-type-chip--txt {
+    background-color: #00bcd4;
+}
+
+.kb-type-chip--pdf {
+    background-color: #e55254;
+}
+
+.kb-type-chip--text {
+    background-color: #90ADC6;
+}
+
+.kb-type-chip--url {
+    background-color: #333652;
+}
+
+.kb-type-chip--sitemap {
+    background-color: #ff6154;
+}
+
+.kb-type-chip--faq {
+    background-color: #8021ea;
+}
+
+.kb-tags-wpr {
+    display: flex;
+    gap: 2px;
+}
+
+.kb-tag-wpr {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    margin-right: 3px;
+}
+
+.kb-tag-icon {
+    width: 9px;
+    height: auto;
+    min-width: 9px;
+}
+
+.kb-tag-text {
+    font-size: 11px;
+    color: #7695a5;
+    margin-right: 2px;
+    white-space: nowrap;
+}
+
+// Status pill wrapper is currently unused (kept for backward safety)
+// Hide it by default to avoid showing extra labels in classic theme.
+.kb-status-pill-wpr {
+    display: none;
+}
+
+// -----------------------------
+// NEW theme (cssTheme: 'new')
+// Scoped via .main-panel.kb-theme-new (app.component.html)
+// -----------------------------
+:host-context(.kb-theme-new) {
+    --kb-table-row-radius: 18px;
+    --kb-table-row-hover-bg: #FAFAFA;
+
+    // Card/table container look (similar to attached mock)
+    .card.contents-card {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        border-radius: var(--kb-table-row-radius);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+        backdrop-filter: blur(10px);
+    }
+
+    .contents-card__header {
+        background: transparent;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+        padding-top: 14px !important;
+        padding-bottom: 12px !important;
+    }
+
+    // Table layout
+    .table-body {
+        padding: 8px 16px;
+    }
+
+    table.table.table-hover {
+        border-collapse: separate;
+        border-spacing: 0 10px; // allow per-row radius "cards"
+        // Bootstrap table hover variable override (new theme only)
+        --bs-table-hover-bg: var( --hover-background, #FAFAFA);
+    }
+
+    thead th {
+        border-top: none;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        outline: none;
+        box-shadow: none;
+        color: rgba(15, 23, 42, 0.45);
+        font-weight: 500;
+        font-size: 12px;
+        letter-spacing: 0.02em;
+        text-transform: none;
+        padding: 12px 10px;
+    }
+
+    tbody td {
+        background: transparent; // default: same as card
+        border-top: none;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        padding: 14px 10px;
+        vertical-align: middle;
+    }
+
+    // row “card” borders + radius
+    tbody tr td:first-child {
+        border-top-left-radius: var(--kb-table-row-radius);
+        border-bottom-left-radius: var(--kb-table-row-radius);
+    }
+    tbody tr td:last-child {
+        border-top-right-radius: var(--kb-table-row-radius);
+        border-bottom-right-radius: var(--kb-table-row-radius);
+    }
+
+    tbody tr:hover {
+        background: transparent;
+    }
+
+    // ensure hover doesn't change cell bg either
+    tbody tr:hover td {
+        background: var(--kb-table-row-hover-bg);
+    }
+
+    // Row height
+    tbody tr {
+        height: 70px;
+    }
+    tbody tr td {
+        height: 70px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    // Name cell: always 3 rows (name, subtitle, tags)
+    .kb-name-cell {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        align-content: center;
+        row-gap: 2px;
+    }
+
+    .kb-name {
+        line-height: 18px;
+    }
+
+    .kb-subtitle {
+        min-height: 14px;
+        line-height: 14px;
+    }
+
+    .kb-tags-wpr {
+        min-height: 14px;
+        align-items: center;
+    }
+
+    // Status in new theme: icons-only (same as classic)
+    .kb-status-pill-wpr {
+        display: none;
+    }
+    .kb-status-pill {
+        display: none;
+    }
+
+    // Type badge: same "pill" look as status, but icon-only and different colors
+    .kb-type-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+        border: 1px solid transparent;
+        gap: 6px;
+        box-shadow: none;
+        min-width: 36px;
+    }
+
+    .kb-type-chip__label {
+        display: inline; // icon + text in new theme
+    }
+
+    .kb-type-chip__icon {
+        color: currentColor;
+    }
+
+    .kb-type-chip--docx {
+        background: rgba(59, 130, 246, 0.14);
+        color: rgba(37, 99, 235, 0.95);
+        border-color: rgba(59, 130, 246, 0.22);
+    }
+
+    .kb-type-chip--txt {
+        background: rgba(6, 182, 212, 0.14);
+        color: rgba(8, 145, 178, 0.95);
+        border-color: rgba(6, 182, 212, 0.22);
+    }
+
+    .kb-type-chip--pdf {
+        background: rgba(239, 68, 68, 0.14);
+        color: rgba(220, 38, 38, 0.95);
+        border-color: rgba(239, 68, 68, 0.22);
+    }
+
+    .kb-type-chip--text {
+        background: rgba(100, 116, 139, 0.14);
+        color: rgba(71, 85, 105, 0.95);
+        border-color: rgba(100, 116, 139, 0.22);
+    }
+
+    .kb-type-chip--url {
+        background: rgba(99, 102, 241, 0.14);
+        color: rgba(79, 70, 229, 0.95);
+        border-color: rgba(99, 102, 241, 0.22);
+    }
+
+    .kb-type-chip--sitemap {
+        background: rgba(249, 115, 22, 0.14);
+        color: rgba(234, 88, 12, 0.95);
+        border-color: rgba(249, 115, 22, 0.22);
+    }
+
+    .kb-type-chip--faq {
+        background: rgba(168, 85, 247, 0.14);
+        color: rgba(147, 51, 234, 0.95);
+        border-color: rgba(168, 85, 247, 0.22);
+    }
+
+    // Actions button aligns to the right like mock
+    .kb-actions-cell__inner {
+        justify-content: flex-end;
+    }
+
+    // Top-right buttons (AI settings / Preview / Add): icon-only, bg=background1, icon=text-color
+    .btn-preview button,
+    .btn-preview #ai-settings,
+    .btn-preview #kb-preview,
+    .btn-preview #kb-add-content {
+        background: var(--background1, #f5f5f6) !important;
+        color: var(--text-color) !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 !important;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+    }
+
+    // Ensure preview svg inherits currentColor
+    .btn-preview #kb-preview .preview-icon > svg {
+        fill: currentColor !important;
     }
 }
 

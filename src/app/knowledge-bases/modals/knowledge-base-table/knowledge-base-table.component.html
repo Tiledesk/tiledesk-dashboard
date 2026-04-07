@@ -1,7 +1,7 @@
 <div *ngIf="SHOW_TABLE == false" class="card-empty">
     <div class="menu-container">
 
-        <div style="width: 100%;">
+        <div class="kb-full-width">
             <div class="lock-container">
                 <div class="no-bot-msg">
                     
@@ -40,7 +40,7 @@
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px"
                                                 viewBox="0 -960 960 960" width="24px" fill="none"
-                                                style="transform: rotate(-45deg);">
+                                                class="kb-icon-rotate--45">
                                                 <path
                                                     d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z" />
                                             </svg>
@@ -188,28 +188,6 @@
                     </div>
 
 
-                    <!-- ---------------------------------- -->
-
-
-
-
-                    <!-- <div class="link-to-docs-container">
-                        <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
-                            <span>
-
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="none" style="vertical-align: middle;">
-                                    <path
-                                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                                </svg>
-
-                            </span>
-
-                            <span class="kb-link-to-docs" (click)="goToKbDoc()">
-                                {{'KbPage.LearnMoreAboutKB' | translate}}
-                            </span>
-                        </div>
-                    </div> -->
                 </div>
               
             </div>
@@ -301,23 +279,23 @@
                     <!-- <label for="search">{{ 'KbPage.TextSearch' | translate }}</label> -->
                     <!-- <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}"> -->
                     <input (keyup)="onLoadByFilter($event.target.value, 'name')"
-                        placeholder="{{ 'KbPage.SearchByName' | translate }}" style="font-size: 14px;">
+                        placeholder="{{ 'KbPage.SearchByName' | translate }}">
                     <span class="material-icons-outlined">search</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card contents-card" style="margin: 16px 0;">
-        <div class="card-header card-header-custom-bkgrnd" style="    padding-top: 10px !important;padding-left: 15px;padding-right: 15px;padding-bottom: 3px !important;">
+    <div class="card contents-card contents-card--spaced">
+        <div class="card-header card-header-custom-bkgrnd contents-card__header">
             <div class="form-group preview-count-n">
                 <div class="preview-count-left">
                     <div>
-                        <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="onLoadByFilter()">
+                        <button mat-icon-button aria-label="Refresh" class="kb-refresh-button" (click)="onLoadByFilter()">
                             <mat-icon>refresh</mat-icon>
                         </button>
                     </div>
-                    <div class="contents-count" style="font-size: 14px;"> {{ 'KbPage.TotalContents' | translate }}: 
+                    <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: 
                         <span class="contents-count-num">
                             {{ kbsListCount }}
                         </span>
@@ -332,7 +310,7 @@
                         <!-- AI Settings -->
                         <!-- ---------------------------------------- -->
                         <!-- custom--button preview-settings btn-outlined-round-blu-->
-                        <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
+                        <button id="ai-settings" class="btn custom--button preview-settings"
                             [disabled]="!PERMISSION_TO_UPDATE_SETTINGS"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                             matTooltipClass="kb-custom-mat-tooltip" 
@@ -341,7 +319,7 @@
                             matTooltipHideDelay="100">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="#fff" style="vertical-align: middle;">
+                                    width="24px" fill="currentColor" class="kb-icon-va-middle">
                                     <path
                                         d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
                                 </svg>
@@ -361,11 +339,10 @@
                             <!-- <span class="material-icons-round">play_arrow</span> -->
                             <span class="preview-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="none" style="vertical-align: middle;">
+                                    width="24px" fill="none" class="kb-icon-va-middle">
                                     <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
                                 </svg>
                             </span>
-                            <span class="preview-text"> {{'Preview' | translate}} </span>
                         </button>
 
                         <!-- ---------------------------------------- -->
@@ -379,11 +356,10 @@
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="#fff" style="vertical-align: middle;">
+                                    width="24px" fill="currentColor" class="kb-icon-va-middle">
                                     <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
                                 </svg>
                             </span>
-                            <span> {{ 'Add' | translate }} </span> 
                         </button>
                     </div>
                 </div>
@@ -397,19 +373,19 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="column-th-span" style="width:80px; cursor: default; text-align: center;">
+                        <th class="column-th-span kb-col-type">
                             <span>{{ 'KbPage.Type' | translate }}</span>
                         </th>
-                        <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
+                        <th class="column-th-span kb-col-status">
                             <span>{{ 'KbPage.Status' | translate }}</span>
                         </th>
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                         <th class="column-th-span" style="width:100px; text-align:center; cursor: default;white-space: nowrap;">
+                         <th class="column-th-span kb-col-refresh-rate">
                             <span>{{ 'KbPage.RefreshRate' | translate }}
-                                <i *ngIf="isAvailableRefreshRateFeature && !refreshRateIsEnabled && payIsVisible"  class="material-icons" style="font-size: 18px; color: #566787; cursor: pointer; vertical-align: middle;"
+                                <i *ngIf="isAvailableRefreshRateFeature && !refreshRateIsEnabled && payIsVisible"  class="material-icons kb-refresh-rate-help-icon"
                                 [satPopoverAnchor]="refresRate"
                                 (mouseenter)="refresRate.open()"
                                 (click)="refresRate.close()"> help_outline </i>
@@ -419,7 +395,7 @@
                                 panelClass="custom-panel-sat-popover" 
                                 closeTransition="1ms ease-in" forceAlignment="true" hasBackdrop="true" (backdropClick)="refresRate.close()">
   
-                                <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
+                                <div class="custom-panel-sat-popover-content-wpr">
     
                                 <div class="custom-panel-sat-popover--title">
                                     {{'ThisFeatureIsInBeta' | translate}}
@@ -433,30 +409,29 @@
                             </sat-popover>
                         </th> 
 
-                        <th class="column-th-span" style="width:150px;white-space: nowrap;" (click)="onOrderBy('updatedAt')">
-                            <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
-                            <span style="margin: 0px;">{{'LastUpdated' | translate }}</span>
+                        <th class="column-th-span kb-col-updated-at" (click)="onOrderBy('updatedAt')">
+                            <span class="kb-th-label">{{'LastUpdated' | translate }}</span>
                             <span *ngIf="directionDesc === 1" id="expand_more"
                                 class="th-label material-icons-outlined icon-direction">expand_more</span>
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
-                        <th class="column-th-span" style="width:auto;white-space: nowrap;" (click)="onOrderBy('name')">
+                        <th class="column-th-span kb-col-name" (click)="onOrderBy('name')">
                             <div>
-                                <span style="margin: 0px;">{{'Name' | translate }}</span>
+                                <span class="kb-th-label">{{'Name' | translate }}</span>
                                 <span *ngIf="directionDesc === 1" id="expand_more"
                                     class="th-label material-icons-outlined icon-direction">expand_more</span>
                                 <span *ngIf="directionDesc === -1" id="expand_less"
                                     class="th-label material-icons-outlined icon-direction">expand_less</span>
                             </div>
                         </th>
-                        <th class="column-th-span" style="min-width: 40px; width: 40px; cursor: default;">
+                        <th class="column-th-span kb-col-actions">
                         </th>
                     </tr>
                 </thead>
                 <tbody *ngIf="showKBTableSpinner">
                     <tr>
-                        <td colspan="6" style="width: 100%; text-align: center;">
+                        <td colspan="6" class="kb-table-cell-center">
                             <loading-spinner></loading-spinner>
                         </td>
                     </tr>
@@ -464,65 +439,48 @@
 
                 <tbody *ngIf="!showKBTableSpinner">
                     <tr *ngIf="kbsList?.length == 0">
-                        <td colspan="6" style="width: 100%; ">
-                            <div class="ellipsis-text" style="width: 100%;
-                                display: inline-block;
-                                text-align: center;
-                                padding: 10px;font-size: 14px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                        <td colspan="6" class="kb-table-cell-fullwidth">
+                            <div class="ellipsis-text kb-no-results">{{'KbPage.NoKbMatchParams' | translate}}</div>
                         </td>
                     </tr>
 
 
                     <tr *ngFor="let kb of kbsList; trackBy: trackByKbId">
-                        <td style="min-width: 50px; width: 50px; text-align:center;"
-                            (click)="onOpenBaseModalDetail(kb)">
-
-                            <div *ngIf="kb.type == 'docx'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #346ca2; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white">description</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">DOCX</span>
-                            </div>
-                            <div *ngIf="kb.type == 'txt'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white">description</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">TXT</span>
-                            </div>
-                            <div *ngIf="kb.type == 'pdf'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #e55254; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white">description</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">PDF</span>
-                            </div>
-                            <div *ngIf="kb.type == 'text'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white">description</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Text</span>
-                            </div>
-                            <div *ngIf="kb.type == 'url'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #333652; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white;">link</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
-                            </div>
-                             <div *ngIf="kb.type == 'sitemap'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #ff6154; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
-                            </div>
-                            <div *ngIf="kb.type == 'faq'" class="chip"
-                                style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white;">quiz</span>
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">FAQ</span>
-                            </div>
+                        <td class="kb-type-cell" (click)="onOpenBaseModalDetail(kb)">
+                            <ng-container [ngSwitch]="kb.type">
+                                <div *ngSwitchCase="'docx'" class="kb-type-chip kb-type-chip--docx">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon">description</span>
+                                    <span class="kb-type-chip__label">DOCX</span>
+                                </div>
+                                <div *ngSwitchCase="'txt'" class="kb-type-chip kb-type-chip--txt">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon">description</span>
+                                    <span class="kb-type-chip__label">TXT</span>
+                                </div>
+                                <div *ngSwitchCase="'pdf'" class="kb-type-chip kb-type-chip--pdf">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon">description</span>
+                                    <span class="kb-type-chip__label">PDF</span>
+                                </div>
+                                <div *ngSwitchCase="'text'" class="kb-type-chip kb-type-chip--text">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon">description</span>
+                                    <span class="kb-type-chip__label">Text</span>
+                                </div>
+                                <div *ngSwitchCase="'url'" class="kb-type-chip kb-type-chip--url">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon">link</span>
+                                    <span class="kb-type-chip__label">URL</span>
+                                </div>
+                                <div *ngSwitchCase="'sitemap'" class="kb-type-chip kb-type-chip--sitemap">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon kb-type-chip__icon--rotate--90">schema</span>
+                                    <span class="kb-type-chip__label">Sitemap</span>
+                                </div>
+                                <div *ngSwitchCase="'faq'" class="kb-type-chip kb-type-chip--faq">
+                                    <span id="description" class="material-icons-outlined kb-type-chip__icon">quiz</span>
+                                    <span class="kb-type-chip__label">FAQ</span>
+                                </div>
+                            </ng-container>
            
                         </td>
 
-                        <td style="min-width: 50px; width: 50px; text-align:center;"
+                        <td class="kb-status-cell"
                             (click)="onOpenBaseModalDetail(kb)">
                             <!-- <loading-spinner *ngIf="kb.status < -1 || kb.status > 4" class="custom-spinner"></loading-spinner> -->
                             <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
@@ -531,28 +489,43 @@
                             <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
                             <ng-container *ngIf="kb.type !== 'sitemap'"> 
                                 <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
-                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done</span>
+                                    class="material-icons-outlined status-icon kb-va-middle">done</span>
                                 <span *ngIf="kb.status == 100" id="done"
-                                    class="material-icons-outlined status-icon"  style="vertical-align: middle;">done_all</span>
+                                    class="material-icons-outlined status-icon kb-va-middle">done_all</span>
                                 <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
-                                    class="material-icons-outlined status-icon animated-icon"  style="vertical-align: middle;">cached</span>
+                                    class="material-icons-outlined status-icon animated-icon kb-va-middle">cached</span>
                                 <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
-                                    class="material-icons-outlined status-icon status-done"  style="vertical-align: middle;">done_all</span>
+                                    class="material-icons-outlined status-icon status-done kb-va-middle">done_all</span>
                                 <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
-                                    class="material-icons-outlined status-icon status-error"  style="vertical-align: middle;">error</span>
+                                    class="material-icons-outlined status-icon status-error kb-va-middle">error</span>
                             
                             </ng-container>
                             <ng-container *ngIf="kb.type === 'sitemap'"> 
-                                <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                <span class="material-icons-outlined status-icon kb-va-middle">
                                     remove
                                 </span>
+                            </ng-container>
+
+                            <!-- New theme: show text pill status (classic keeps icons) -->
+                            <ng-container [ngSwitch]="kb.type === 'sitemap' ? 'sitemap' : kb.status" class="kb-status-pill-wpr">
+                                <span *ngSwitchCase="'sitemap'" class="kb-status-pill kb-status-pill--void">—</span>
+                                <span *ngSwitchCase="-1" class="kb-status-pill kb-status-pill--not-started">{{ 'KbPage.StatusNotStarted' | translate }}</span>
+                                <span *ngSwitchCase="0" class="kb-status-pill kb-status-pill--not-started">{{ 'KbPage.StatusNotStarted' | translate }}</span>
+                                <span *ngSwitchCase="100" class="kb-status-pill kb-status-pill--queued">{{ 'KbPage.StatusQueued' | translate }}</span>
+                                <span *ngSwitchCase="200" class="kb-status-pill kb-status-pill--in-progress">{{ 'KbPage.StatusStarted' | translate }}</span>
+                                <span *ngSwitchCase="2" class="kb-status-pill kb-status-pill--in-progress">{{ 'KbPage.StatusStarted' | translate }}</span>
+                                <span *ngSwitchCase="300" class="kb-status-pill kb-status-pill--completed">{{ 'KbPage.StatusFinished' | translate }}</span>
+                                <span *ngSwitchCase="3" class="kb-status-pill kb-status-pill--completed">{{ 'KbPage.StatusFinished' | translate }}</span>
+                                <span *ngSwitchCase="400" class="kb-status-pill kb-status-pill--error">{{ 'KbPage.StatusError' | translate }}</span>
+                                <span *ngSwitchCase="4" class="kb-status-pill kb-status-pill--error">{{ 'KbPage.StatusError' | translate }}</span>
+                                <span *ngSwitchDefault class="kb-status-pill kb-status-pill--void">—</span>
                             </ng-container>
                         </td>
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                        <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
+                        <td class="kb-refresh-rate-cell" (click)="onOpenBaseModalDetail(kb)">
                             <span *ngIf="kb.type === 'url' || kb.type === 'sitemap'"
                                 matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
@@ -578,7 +551,7 @@
                             </span>
                             <span *ngIf="kb.type !== 'url' && kb.type !== 'sitemap'">
                                 <!-- — -->
-                                 <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                                 <span class="material-icons-outlined status-icon kb-va-middle">
                                     remove
                                 </span>
                             </span>
@@ -586,15 +559,15 @@
                             
                         </td> 
 
-                        <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
+                        <td class="kb-updated-at-cell" (click)="onOpenBaseModalDetail(kb)">
                             {{ kb.updatedAt | amTimeAgo }}
                         </td>
 
 
-                        <td class="kb-name-col" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
+                        <td class="kb-name-col kb-name-cell" (click)="onOpenBaseModalDetail(kb)">
 
                             <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && kb?.tags?.length > 0}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;"
+                                class="ellipsis-text kb-name"
                                 matTooltipClass="kb-custom-mat-tooltip" 
                                 [matTooltip]="'URLAutomaticallySynchronized' | translate" 
                                 #tooltip="matTooltip"
@@ -604,39 +577,33 @@
                                 {{ kb.name }}
                             </div>
 
-                            <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
-                                style="min-width: 0; width: 100%; display: block;">
-
-                                {{kb.content | slice:0:500 }}
-
+                            <div class="subtitle ellipsis-text kb-subtitle">
+                                <ng-container [ngSwitch]="kb.type">
+                                    <span *ngSwitchCase="'text'">{{ kb.content | slice:0:500 }}</span>
+                                    <span *ngSwitchCase="'faq'">{{ kb.content | slice:0:500 }}</span>
+                                    <ng-container *ngSwitchCase="'url'">
+                                        <span *ngIf="!kb.sitemap_origin">{{ kb.source }}</span>
+                                        <span *ngIf="kb.sitemap_origin">
+                                            <span class="sitemap-badge">{{'KbPage.AddKbSitemap'| translate}}</span>
+                                            {{ kb.sitemap_origin }}
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="'sitemap'">
+                                        <span *ngIf="!kb.sitemap_origin">{{ kb.source }}</span>
+                                        <span *ngIf="kb.sitemap_origin">
+                                            <span class="sitemap-badge">{{'KbPage.AddKbSitemap'| translate}}</span>
+                                            {{ kb.sitemap_origin }}
+                                        </span>
+                                    </ng-container>
+                                    <span *ngSwitchDefault>&nbsp;</span>
+                                </ng-container>
                             </div>
-                            <div *ngIf="kb.type === 'url' || kb.type === 'sitemap'" class="subtitle ellipsis-text" style="min-width: 0; width: 100%; display: block;">
 
-                                <span *ngIf="!kb.sitemap_origin"> 
-                                {{kb.source }}
-                                </span>  
-                                <!-- || kb.type === 'sitemap' -->
-                                <span *ngIf="kb.sitemap_origin"> 
-                                    <span style="background: #ff6154;
-                                        color: #fff;
-                                        border-radius: 9999px;
-                                        padding: 0 5px;
-                                        font-size: 9px;
-                                        font-weight: 400;
-                                        margin-right: 3px;"> 
-                                        {{'KbPage.AddKbSitemap'| translate}}
-                                    </span> 
-                                    {{kb.sitemap_origin }}
-                                    <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
-                                    <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
-                                </span>
-
-                            </div>
-                            <div class="kb-tags-wpr" *ngIf="kb?.tags?.length > 0" style="display: flex;gap: 2px;">
+                            <div class="kb-tags-wpr">
                                 <div *ngFor="let tag of kb?.tags">
-                                    <div class="kb-tag-wpr" style="display: flex;align-items: center;gap:1px;margin-right: 3px;">
-                                        <svg style="width: 9px; height: auto;min-width: 9px;" aria-hidden="true" focusable="false" data-prefix="fas"
-                                            data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                    <div class="kb-tag-wpr">
+                                        <svg class="kb-tag-icon svg-inline--fa-tag-icon fa-tag fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas"
+                                            data-icon="tag" role="img"
                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 
                                             <path fill="#7695a5" class="tag_icon_in_ws_msgs"
@@ -644,18 +611,16 @@
                                             </path>
                                         </svg>
 
-                                        <div style="font-size: 11px; color: #7695a5;right: 2px;margin-right: 2px;white-space: nowrap;">
+                                        <div class="kb-tag-text">
                                             {{ tag}}
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </td>
 
-                        <td style="max-width: 40px; text-align: end;">
-                            <div
-                                style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
+                        <td class="kb-actions-cell">
+                            <div class="kb-actions-cell__inner">
                                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>

@@ -146,7 +146,7 @@
                       <div class="selected-namespace-content">
                         <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
                           (mouseout)="onMouseOut()">
-                          <div *ngIf="kbPageConfig.namespaceRename && !namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+                          <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
                             style="padding: 0px;" (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
                             matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='after'
                             matTooltipHideDelay="100">
@@ -155,11 +155,7 @@
                             </div>
                           </div>
 
-                          <div *ngIf="!kbPageConfig.namespaceRename" class="selected-namespace" style="padding: 0px;">
-                            {{selectedNamespace?.name}}
-                          </div>
-
-                          <input *ngIf="kbPageConfig.namespaceRename && namespaceIsEditable" id="namespace-name-input"
+                          <input *ngIf="namespaceIsEditable" id="namespace-name-input"
                             class="namespace-name-input"
                             type="text"
                             style="min-width: 220px; width: 300px; max-width: 450;"
