@@ -86,7 +86,21 @@ export class AppConfigService {
         // console.log('[APP-CONFIG-SERVICE] loadAppConfig allconfig !!!! does not exist wsUrlRel');
       }
 
-      this.appConfig = allconfig;
+      // Merge remote config over environment defaults.
+      // This prevents optional nested sections (e.g. knowledgeBasesPage.cssTheme) from being lost
+      // when the remote payload doesn't include them.
+      this.appConfig = {
+        ...environment,
+        ...allconfig,
+        knowledgeBasesPage: {
+          ...(environment as any).knowledgeBasesPage,
+          ...(allconfig as any).knowledgeBasesPage,
+        },
+        sidebarItems: {
+          ...(environment as any).sidebarItems,
+          ...(allconfig as any).sidebarItems,
+        },
+      };
       // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! does not exist wsUrlRel');
       // return this.appConfig;
 

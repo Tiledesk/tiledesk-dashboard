@@ -336,6 +336,7 @@ import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-moda
 // import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component'; // now lazy
 // import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component'; // now lazy
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
+import { OnboardingContentNewComponent } from './create-new-project/onboarding-content-new/onboarding-content-new.component';
 import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/cnp-project-name.component';
 import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
 import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
@@ -668,6 +669,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WsrequestsStaticComponent, // now lazy
     // EmailTicketingStaticComponent, // now lazy
     OnboardingContentComponent,
+    OnboardingContentNewComponent,
     CnpProjectNameComponent,
     CnpQuestionSelectComponent,
     CnpQuestionButtonComponent,

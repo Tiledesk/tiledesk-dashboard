@@ -151,6 +151,18 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
           this.getProjectsAndSaveInStorageLastProject(this.id_project)
 
+          // Auto-start onboarding after project creation.
+          // For cssTheme 'new' we run the new onboarding-content clone, otherwise keep the classic wizard flow.
+          setTimeout(() => {
+            if (!this.id_project) return;
+            const cssTheme = this.appConfigService.getConfig()?.knowledgeBasesPage?.cssTheme;
+            if (cssTheme === 'new') {
+              this.router.navigate([`/project/${this.id_project}/onboarding-new`]);
+              return;
+            }
+            this.continueToNextStep();
+          }, 0);
+
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
           // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
           // const newproject: Project = {

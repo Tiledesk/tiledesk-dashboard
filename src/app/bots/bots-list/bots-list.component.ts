@@ -207,6 +207,26 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   PERMISSION_TO_EXPORT_FLOW: boolean;
   PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
+
+  /**
+   * Debug helper: build the full CDS URL that would be opened for a given bot card.
+   * Useful to validate `cdsBaseUrl` and the final navigation target.
+   */
+  getCdsUrlForCard(faqkb: FaqKb): string {
+    if (!faqkb?._id || !this.project?._id) {
+      return '';
+    }
+
+    const redirectBaseUrl: string = this.appConfigService.getConfig()?.cdsBaseUrl;
+    const chatBotDate = new Date((faqkb as any).createdAt);
+    const dateLimit = new Date('2023-10-02T00:00:00');
+    if (chatBotDate > dateLimit) {
+      const base = redirectBaseUrl || '';
+      return `${base}#/project/${this.project._id}/chatbot/${faqkb._id}/blocks`;
+    }
+    // CDS v1 in-app route
+    return `${window.location.origin}/#/project/${this.project._id}/cds/${faqkb._id}/intent/0`;
+  }
   
 
   // editBotName: boolean = false;

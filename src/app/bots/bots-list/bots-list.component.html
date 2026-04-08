@@ -717,6 +717,9 @@
                                 (keypress)="onPressEnterUpdateChatBotName($event);$event.stopPropagation()">
                             </div>
                           </span>
+                          <div class="cl-card-item-info" style="margin-top: 6px; opacity: 0.75; word-break: break-all;">
+                            {{ getCdsUrlForCard(faqkb) }}
+                          </div>
                           <div class="cl-card-item-description-wpr">
                             <!-- <div class="bot-card-bot-no-description" *ngIf="!faqkb.description"> No description provided</div> -->
                             <div class="cl-card-item-description" *ngIf="faqkb.description"> {{ faqkb?.description }}

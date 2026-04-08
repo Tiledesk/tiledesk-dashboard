@@ -609,6 +609,16 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.projectService.newProjectCreated(true);
       this.getProjectsAndSaveLastProject(this.newProject._id)
 
+      // If the dashboard is configured with the new KB theme, always start the new onboarding
+      // after creating a project (even when it's not the first project).
+      const cssTheme = this.appConfigService.getConfig()?.knowledgeBasesPage?.cssTheme;
+      if (cssTheme === 'new' && this.newProject?._id) {
+        this.DISPLAY_SPINNER_SECTION = false;
+        this.DISPLAY_SPINNER = false;
+        this.router.navigate([`/project/${this.newProject._id}/onboarding-new`]);
+        return;
+      }
+
       // this.getProjectsAndSaveInStorage();
       this.callback('createNewProject');
     });

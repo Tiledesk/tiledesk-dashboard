@@ -653,9 +653,15 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')
     if (chatBotDate > dateLimit) {
-        // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
-        let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
-        window.open(urlCDS_v2, '_self')
+        // CDS v2 is hosted on a separate base URL (cdsBaseUrl). If not configured,
+        // fall back to the in-app CDS v1 route to avoid opening "undefined#/..."
+        if (redirectBaseUrl) {
+            // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
+            let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
+            window.open(urlCDS_v2, '_self')
+        } else {
+            router.navigate(['project/' + project_id + '/cds/', chatbot._id, 'intent', '0']);
+        }
     } else {
         router.navigate(['project/' + project_id + '/cds/', chatbot._id, 'intent', '0']);
     }

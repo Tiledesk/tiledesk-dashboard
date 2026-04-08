@@ -107,6 +107,7 @@ import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component
 
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
+import { OnboardingContentNewComponent } from './create-new-project/onboarding-content-new/onboarding-content-new.component';
 
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
@@ -1539,6 +1540,7 @@ const routes: Routes = [
 
   { path: 'onboarding', component: OnboardingWelcomeComponent, canActivate: [AuthGuard] }, // wizard
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'project/:projectid/onboarding-new', component: OnboardingContentNewComponent, canActivate: [AuthGuard] }, // wizard (cssTheme: 'new')
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/desktop--access/:namespaceid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 

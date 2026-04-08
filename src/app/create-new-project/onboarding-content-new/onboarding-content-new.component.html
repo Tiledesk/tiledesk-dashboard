@@ -1,0 +1,107 @@
+<!-- Clone of onboarding-content (new theme variant) -->
+ 
+<div class="main-content css-create-project">
+    <div *ngIf="showSpinner" class="on-bording-spinner"
+        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP  || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB}">
+    </div>
+
+    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+        <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
+        <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
+        <div class="close-wizard-page">
+            <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
+        </div>
+
+        <div *ngIf="arrayOfSteps.length>1 && arrayOfSteps.length>activeTypeStepNumber" class="box-steps">
+            <div class="step-number">
+                <span class="number-label">
+                    {{ "OnboardPage.Pass" | translate }}
+                    <div class="number-list">
+                        <ul [ngStyle]="{'transform': translateY}">
+                            <li *ngFor="let typeStep of arrayOfSteps; index as i">{{i+1}}</li>
+                        </ul>
+                    </div>
+                </span>
+                <span class="number-of"> / {{arrayOfSteps.length}}</span>
+            </div>
+            <div class="step-points">
+                <span *ngFor="let item of arrayOfSteps; index as i" class="point"
+                    [ngClass]="{'active': activeTypeStepNumber >= i}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width':  arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"
+       [ngStyle]="!IS_SAFARI ? { height: 'calc(100vh - 75px)' } : {}">
+
+        <div *ngFor="let nameStep of arrayOfSteps; index as i"
+            class="step-page"
+            [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
+            
+
+
+            <!-- SELECT TEMPLATES / KB -->
+            <!-- <div *ngIf="nameStep === typeStep.SELECT_TEMPLATE_OR_KB"
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB}">
+                <cnp-select-templates-or-kb *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB"
+                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+                    [segmentAttributes]="segmentIdentifyAttributes"
+                    [updatedProject] = "updatedProject"
+                    (nextPage)="goToTemplatesInstallation($event)"
+                    (createProjectFromTemplates)="null"
+                    (goToNext)="null"
+                    (prevPage)="goToPrevStep()"
+                    (userSelection)="userSelection($event)">
+                </cnp-select-templates-or-kb>
+            </div> -->
+
+            <!-- CHATBOT TEMPLATES INSTALLATION -->
+            <div *ngIf="nameStep === typeStep.TEMPLATES_INSTALLATION"
+                class="type-step box-welcome-msg"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION}">
+                <button type="button"
+                    class="btn btn-tdblu-no-boxshadow"
+                    (click)="createPippoChatbot()">
+                    Crea
+                </button>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="row-navigation"
+            [ngClass]="{'row-navigation-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+                <div class="navigation-btn">
+                    <button type="button" class="btn btn-gray-no-boxshadow onboarding-btn back"
+                        [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
+                        [disabled]="DISABLED_PREV_BUTTON"
+                        (click)="goToPrevStep()">
+                        <em class="material-icons">arrow_back</em>
+                        <span class="onbording-btn-back-text">
+                            {{'Back' | translate }}
+                        </span>
+                    </button>
+
+                    <button class="btn btn-tdblu-no-boxshadow onboarding-btn next"
+                        *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
+                        [disabled]="DISABLED_NEXT_BUTTON"
+                        (click)="goToNextStep()">
+                        <span class="onbording-btn-next-text">
+                            {{'OnboardPage.Next' | translate}}
+                        </span>
+                        <em class="material-icons">arrow_forward</em>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bck-loader" *ngIf="DISPLAY_SPINNER_SECTION">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
