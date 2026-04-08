@@ -1703,7 +1703,8 @@
         "DateRange": "Rango de fechas",
         "ClearSearch": "Limpiar búsqueda",
         "HistoryIsOnlyAvailableForThePast14Days": "La historia sólo está disponible durante los últimos 14 días",
-        "ForUnlimitedChatHistory": "para obtener historial de chat ilimitado"
+        "ForUnlimitedChatHistory": "para obtener historial de chat ilimitado",
+        "Rating": "Valoración"
     },
     "Trigger": {
         "Trigger": "Disparadores",

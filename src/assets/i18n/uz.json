@@ -1730,7 +1730,8 @@
         "DateRange": "Sana diapazoni",
         "ClearSearch": "Qidiruvni tozalash",
         "HistoryIsOnlyAvailableForThePast14Days": "Tarix faqat oxirgi 14 kun uchun mavjud",
-        "ForUnlimitedChatHistory": "cheksiz chat tarixini olish uchun"
+        "ForUnlimitedChatHistory": "cheksiz chat tarixini olish uchun",
+        "Rating": "Reyting"
     },
     "Trigger": {
         "Trigger": "Triggerlar",

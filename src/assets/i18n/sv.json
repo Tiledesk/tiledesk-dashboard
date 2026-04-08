@@ -1747,7 +1747,8 @@
         "DateRange": "Datumintervall",
         "ClearSearch": "Rensa sökning",
         "HistoryIsOnlyAvailableForThePast14Days": "Historik är endast tillgänglig för de senaste 14 dagarna",
-        "ForUnlimitedChatHistory": "för att få obegränsad chatthistorik"
+        "ForUnlimitedChatHistory": "för att få obegränsad chatthistorik",
+        "Rating": "Betyg"
     },
     "Trigger": {
         "Trigger": "Utlösare",

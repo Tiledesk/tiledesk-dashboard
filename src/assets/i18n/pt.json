@@ -1730,7 +1730,8 @@
         "DateRange": "Período",
         "ClearSearch": "Limpar pesquisa",
         "HistoryIsOnlyAvailableForThePast14Days": "O histórico só está disponível nos últimos 14 dias",
-        "ForUnlimitedChatHistory": "para obter histórico de bate-papo ilimitado"
+        "ForUnlimitedChatHistory": "para obter histórico de bate-papo ilimitado",
+        "Rating": "Classificação"
     },
     "Trigger": {
         "Trigger": "Gatilhos",

@@ -1731,7 +1731,8 @@
         "DateRange": "Опсег датума",
         "ClearSearch": "Обриши претрагу",
         "HistoryIsOnlyAvailableForThePast14Days": "Историја је доступна само за последњих 14 дана",
-        "ForUnlimitedChatHistory": "да бисте добили неограничену историју ћаскања"
+        "ForUnlimitedChatHistory": "да бисте добили неограничену историју ћаскања",
+        "Rating": "Оцена"
     },
     "Trigger": {
         "Trigger": "Окидачи",

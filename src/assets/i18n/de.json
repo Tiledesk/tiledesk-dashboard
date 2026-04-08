@@ -1731,7 +1731,8 @@
 		"DateRange": "Zeitraum",
 		"ClearSearch": "Suche zurücksetzen",
 		"HistoryIsOnlyAvailableForThePast14Days": "Verlauf ist nur für die letzten 14 Tage verfügbar",
-		"ForUnlimitedChatHistory": "Um unbegrenzten Verlauf zu erhalten"
+		"ForUnlimitedChatHistory": "Um unbegrenzten Verlauf zu erhalten",
+		"Rating": "Bewertung"
 	},
 	"Trigger": {
 		"Trigger": "Trigger",

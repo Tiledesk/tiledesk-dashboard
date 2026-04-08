@@ -1732,7 +1732,8 @@
         "DateRange": "Intervallo date",
         "ClearSearch": "Cancella ricerca",
         "HistoryIsOnlyAvailableForThePast14Days": "La cronologia è disponibile solo per gli ultimi 14 giorni",
-        "ForUnlimitedChatHistory": "per ottenere una cronologia chat illimitata"
+        "ForUnlimitedChatHistory": "per ottenere una cronologia chat illimitata",
+        "Rating": "Valutazione"
     },
     "Trigger": {
         "Trigger": "Triggers",

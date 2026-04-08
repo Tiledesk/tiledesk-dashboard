@@ -1730,7 +1730,8 @@
         "DateRange": "Plage de dates",
         "ClearSearch": "Effacer la recherche",
         "HistoryIsOnlyAvailableForThePast14Days": "L'historique n'est disponible que pour les 14 derniers jours",
-        "ForUnlimitedChatHistory": "pour obtenir un historique de chat illimité"
+        "ForUnlimitedChatHistory": "pour obtenir un historique de chat illimité",
+        "Rating": "Note"
     },
     "Trigger": {
         "Trigger": "Déclencheurs",

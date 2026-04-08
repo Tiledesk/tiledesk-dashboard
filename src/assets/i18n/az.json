@@ -1731,7 +1731,8 @@
         "DateRange": "Tarix Aralığı",
         "ClearSearch": "Axtarışı silin",
         "HistoryIsOnlyAvailableForThePast14Days": "Tarixçə yalnız son 14 gün üçün əlçatandır",
-        "ForUnlimitedChatHistory": "limitsiz söhbət tarixçəsi əldə etmək"
+        "ForUnlimitedChatHistory": "limitsiz söhbət tarixçəsi əldə etmək",
+        "Rating": "Reytinq"
     },
     "Trigger": {
         "Trigger": "Tetikler",

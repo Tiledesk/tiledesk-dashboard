@@ -1731,7 +1731,8 @@
         "DateRange": "Диапазон дат",
         "ClearSearch": "Очистить поиск",
         "HistoryIsOnlyAvailableForThePast14Days": "История доступна только за последние 14 дней",
-        "ForUnlimitedChatHistory": "чтобы получить неограниченную историю чата"
+        "ForUnlimitedChatHistory": "чтобы получить неограниченную историю чата",
+        "Rating": "Оценка"
     },
     "Trigger": {
         "Trigger": "Триггеры",

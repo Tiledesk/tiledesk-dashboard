@@ -1731,7 +1731,8 @@
         "DateRange": "Tarih aralığı",
         "ClearSearch": "Aramayı Temizle",
         "HistoryIsOnlyAvailableForThePast14Days": "Geçmiş yalnızca son 14 gün için kullanılabilir",
-        "ForUnlimitedChatHistory": "sınırsız sohbet geçmişi almak için"
+        "ForUnlimitedChatHistory": "sınırsız sohbet geçmişi almak için",
+        "Rating": "Değerlendirme"
     },
     "Trigger": {
         "Trigger": "Tetikleyiciler",
