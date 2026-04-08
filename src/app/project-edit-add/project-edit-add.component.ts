@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode, NgZone } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart, NavigationEnd } from '@angular/router';
 
 
 // USED FOR go back last page
@@ -18,7 +18,7 @@ import moment from "moment";
 import { environment } from './../../environments/environment';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { filter, takeUntil } from 'rxjs/operators'
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
@@ -62,6 +62,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   @ViewChild('ccNumber', { static: false }) ccNumberField: ElementRef;
   @ViewChild('ccExpdate', { static: false }) ccExpdateField: ElementRef;
+  @ViewChild('bottomNavScroll', { static: false }) bottomNavScroll?: ElementRef<HTMLElement>;
+
+  /** Project settings horizontal tab bar: scroll arrows when tabs overflow */
+  navScrollShowLeft = false;
+  navScrollShowRight = false;
+  private navScrollResizeObserver?: ResizeObserver;
+  private navScrollResizeRafId: number | null = null;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   // tparams = brand;
@@ -207,7 +214,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   onlyOwnerCanManageAdvancedProjectSettings: string;
   onlyOwnerCanManageEmailTempalte: string;
   onlyAvailableWithEnterprisePlan: string;
-  cPlanOnly: string
+  cPlanOnly: string;
+  businessPlan: string;
   learnMoreAboutDefaultRoles: string;
   TESTSITE_BASE_URL: string;
   TEST_WIDGET_API_BASE_URL: string;
@@ -373,6 +381,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private cacheService: AllProjectsCacheService,
     private roleService: RoleService,
     public dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
     // private formGroup: FormGroup
 
   ) {
@@ -411,8 +421,130 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.listenSidebarIsOpened();
     this.buildCreditCardForm()
     this.listenToProjectUser();
+    this.listenToBottomNavScrollOnRoute();
+    this.translateAvailableWithBusinessPlan()
   }
 
+  ngAfterViewInit(): void {
+    this.initProjectNavScrollObservers();
+    setTimeout(() => this.scrollActiveBottomNavTabIntoView(), 0);
+  }
+
+   ngOnDestroy() {
+    if (this.navScrollResizeRafId !== null && typeof cancelAnimationFrame !== 'undefined') {
+      cancelAnimationFrame(this.navScrollResizeRafId);
+    }
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.onNavScrollWindowResizeBound);
+    }
+    this.navScrollResizeObserver?.disconnect();
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+   private initProjectNavScrollObservers(): void {
+    this.scheduleProjectNavScrollUpdate();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', this.onNavScrollWindowResizeBound);
+    }
+    const el = this.bottomNavScroll?.nativeElement;
+    if (el && typeof ResizeObserver !== 'undefined') {
+      this.navScrollResizeObserver = new ResizeObserver(() => {
+        this.scheduleProjectNavScrollUpdate();
+      });
+      this.navScrollResizeObserver.observe(el);
+      const ul = el.querySelector('.bottom-nav');
+      if (ul) {
+        this.navScrollResizeObserver.observe(ul);
+      }
+    }
+  }
+
+  /** ResizeObserver / window.resize often run outside NgZone; coalesce + rAF so layout (scrollWidth) is up to date. */
+  private scheduleProjectNavScrollUpdate(): void {
+    if (typeof requestAnimationFrame === 'undefined') {
+      this.ngZone.run(() => this.updateProjectNavScrollArrows());
+      return;
+    }
+    if (this.navScrollResizeRafId !== null) {
+      cancelAnimationFrame(this.navScrollResizeRafId);
+    }
+    this.navScrollResizeRafId = requestAnimationFrame(() => {
+      this.navScrollResizeRafId = null;
+      this.ngZone.run(() => this.updateProjectNavScrollArrows());
+    });
+  }
+
+  private onNavScrollWindowResizeBound = (): void => {
+    this.scheduleProjectNavScrollUpdate();
+  };
+
+  updateProjectNavScrollArrows(): void {
+    const el = this.bottomNavScroll?.nativeElement;
+    if (!el) {
+      return;
+    }
+    const tol = 2;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    this.navScrollShowLeft = scrollLeft > tol;
+    this.navScrollShowRight = scrollLeft + clientWidth < scrollWidth - tol;
+    this.cdr.detectChanges();
+  }
+
+  onProjectNavScroll(): void {
+    this.updateProjectNavScrollArrows();
+  }
+
+  scrollProjectNavStep(direction: number): void {
+    const el = this.bottomNavScroll?.nativeElement;
+    if (!el) {
+      return;
+    }
+    const step = Math.min(240, Math.floor(el.clientWidth * 0.75)) * direction;
+    el.scrollBy({ left: step, behavior: 'smooth' });
+    setTimeout(() => this.scheduleProjectNavScrollUpdate(), 400);
+  }
+
+  /**
+   * Sync tab active state from URL (getCurrentUrlAndSwitchView was only called in ngOnInit, so flags stayed on General)
+   * and scroll the active tab into the horizontal strip so right-side tabs (e.g. Retention, Advanced) stay visible.
+   */
+  private listenToBottomNavScrollOnRoute(): void {
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(() => {
+      if (!this.router.url.includes('/project-settings/')) {
+        return;
+      }
+      this.getCurrentUrlAndSwitchView();
+      this.cdr.detectChanges();
+      setTimeout(() => this.scrollActiveBottomNavTabIntoView(), 0);
+    });
+  }
+
+  private scrollActiveBottomNavTabIntoView(): void {
+    const scrollEl = this.bottomNavScroll?.nativeElement;
+    if (!scrollEl) {
+      return;
+    }
+    const active = scrollEl.querySelector('.bottom-nav li.li-active') as HTMLElement | null;
+    if (!active) {
+      return;
+    }
+    active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    setTimeout(() => this.scheduleProjectNavScrollUpdate(), 400);
+  }
 
   listenToProjectUser() {
     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
@@ -709,19 +841,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-
-
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+  
 
 
   getCurrentProject() {
@@ -1652,6 +1772,63 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  presentModalFeautureAvailableOnlyWithPlanB() {
+    
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: this.businessPlan,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancel,
+      // confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      icon: "info",
+
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // this.logger.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
+        if (this.isVisiblePaymentTab) {
+          if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
+                // this.logger.log('HERE Y')
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
+                // this.logger.log('HERE Y')
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+              }
+
+            } else if (this.prjct_profile_type === 'free') {
+              this.router.navigate(['project/' + this.id_project + '/pricing']);
+
+            }
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+
+
   presentModalOnlyOwnerCanManageEmailTempalte() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageEmailTempalte, this.learnMoreAboutDefaultRoles)
@@ -1707,6 +1884,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .subscribe((translation: any) => {
         this.logger.log('[PRJCT-EDIT-ADD] AvailableWithThePlan translation ', translation)
         this.cPlanOnly = translation;
+      });
+  }
+
+  translateAvailableWithBusinessPlan() {
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.EE })
+      .subscribe((translation: any) => {
+        this.logger.log('[PRJCT-EDIT-ADD] AvailableWithThePlan translation ', translation)
+        this.businessPlan = translation;
       });
   }
 
@@ -3005,7 +3190,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToPricing() {
+  goToPricing(fromPlan?:string) {
     if (this.isVisiblePaymentTab) {
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
@@ -3029,7 +3214,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         ) {
           this.logger.log('goToManageEmailSettings HERE 4 ')
-          this.presentModalFeautureAvailableOnlyWithPlanC()
+          if(fromPlan === undefined) {
+            this.presentModalFeautureAvailableOnlyWithPlanC()
+          } else if (fromPlan === 'business') {
+            this.presentModalFeautureAvailableOnlyWithPlanB()
+          }
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

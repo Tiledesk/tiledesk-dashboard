@@ -20,65 +20,82 @@
 
      <!-- isVisiblePaymentTab {{isVisiblePaymentTab}} PERMISSION_TO_VIEW_SUB  {{ PERMISSION_TO_VIEW_SUB }} -->
 
-      <div class="teplate-content" style="flex: 1 1 auto;">
+      <div class="teplate-content" style="flex: 1 1 auto;min-width: 0;">
         <div class="row">
           <div class="col-12" style="padding-right: 0px;">
-            <!-- box-shadow: unset -->
-            <ul id="project-settings-bottom-nav" class="bottom-nav" style="top:-9px; ">
-              <li *ngIf="PERMISSION_TO_VIEW_GENERAL" (click)="goToProjectSettings_General()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
-                <a> {{ "General" | translate }} </a>
-              </li>
+          <div class="bottom-nav-scroll-outer">
+              <button type="button"
+                class="bottom-nav-scroll-arrow bottom-nav-scroll-arrow--left"
+                *ngIf="navScrollShowLeft"
+                (click)="scrollProjectNavStep(-1)"
+                [attr.aria-label]="'ProjectEditPage.NavScrollLeft' | translate">
+                <span class="material-icons" aria-hidden="true">keyboard_arrow_left</span>
+              </button>
+              <div #bottomNavScroll class="bottom-nav-scroll" (scroll)="onProjectNavScroll()">
+                  <!-- id="project-settings-bottom-nav"     -->
+                <ul  class="bottom-nav" style="top:-9px; ">
+                  <li *ngIf="PERMISSION_TO_VIEW_GENERAL" (click)="goToProjectSettings_General()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
+                    <a> {{ "General" | translate }} </a>
+                  </li>
 
-             
-              <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
-                <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
-              </li>
+                
+                  <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
+                    <a> {{ "ProjectEditPage.Subscription" | translate }}</a>
+                  </li>
 
-              <li *ngIf="isVisibleDeveloperTab && PERMISSION_TO_VIEW_DEV" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
-                <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
-              </li>
-
-
-              <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent' && PERMISSION_TO_VIEW_SMART_ASSIGN"
-                (click)="goToProjectSettings_SmartAssignment()" class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === false }">
-                <a> {{ "SmartAssign" | translate }}</a>
-              </li>
-
-              <li *ngIf="isVisibleNotificationTab && PERMISSION_TO_VIEW_NOTIFICATIONS" (click)="goToProjectSettings_Notification()"
-                class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
-                <a> {{ "Notification" | translate }}</a>
-              </li>
-
-              <li *ngIf="isVisibleSecurityTab && PERMISSION_TO_VIEW_SECURITY" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-                <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
+                  <li *ngIf="isVisibleDeveloperTab && PERMISSION_TO_VIEW_DEV" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
+                    <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
+                  </li>
 
 
-              </li>
+                  <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent' && PERMISSION_TO_VIEW_SMART_ASSIGN"
+                    (click)="goToProjectSettings_SmartAssignment()" class="btn-with-border-effect"
+                    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === false }">
+                    <a> {{ "SmartAssign" | translate }}</a>
+                  </li>
 
-              <li *ngIf="isVisibleBannedVisitor && PERMISSION_TO_VIEW_BANNED" (click)="goToProjectSettings_BannedVisitors()"
-                class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
-                <a> {{'BannedVisitors' | translate }} </a>
-              </li>
+                  <li *ngIf="isVisibleNotificationTab && PERMISSION_TO_VIEW_NOTIFICATIONS" (click)="goToProjectSettings_Notification()"
+                    class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
+                    <a> {{ "Notification" | translate }}</a>
+                  </li>
 
-              <li (click)="goToProjectSettings_RetentionPolicy()"
-                class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
-                <a> {{'MessageRetention' | translate }} </a>
-              </li>
+                  <li *ngIf="isVisibleSecurityTab && PERMISSION_TO_VIEW_SECURITY" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
+                    <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
+                  </li>
 
-              <li *ngIf="PERMISSION_TO_VIEW_ADVANCED" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
-                [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
-                <a> {{'ProjectEditPage.Advanced' | translate }} </a>
-              </li>
+                  <li *ngIf="isVisibleBannedVisitor && PERMISSION_TO_VIEW_BANNED" (click)="goToProjectSettings_BannedVisitors()"
+                    class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
+                    <a> {{'BannedVisitors' | translate }} </a>
+                  </li>
 
-            </ul>
+                  <!-- <li (click)="goToProjectSettings_RetentionPolicy()"
+                    class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
+                    <a> {{'MessageRetention' | translate }} </a>
+                  </li> -->
+
+                  <li *ngIf="PERMISSION_TO_VIEW_ADVANCED" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+                    [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
+                    <a> {{'ProjectEditPage.Advanced' | translate }} </a>
+                  </li>
+
+                </ul>
+                <button type="button"
+                class="bottom-nav-scroll-arrow bottom-nav-scroll-arrow--right"
+                *ngIf="navScrollShowRight"
+                (click)="scrollProjectNavStep(1)"
+                [attr.aria-label]="'ProjectEditPage.NavScrollRight' | translate">
+                <span class="material-icons" aria-hidden="true">keyboard_arrow_right</span>
+              </button>
+
+            </div>
+  
           </div>
         </div>
 
