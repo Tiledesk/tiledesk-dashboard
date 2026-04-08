@@ -2323,6 +2323,11 @@
     "Friday": "Venerdì",
     "Saturday": "Sabato",
     "SelectAnOption": "Seleziona un'opzione",
+    "AnalyticsNew": {
+        "Loading": "Caricamento analytics…",
+        "ConfigurationMissing": "L’integrazione analytics non è configurata. Imposta analyticsApiBase e analyticsEmbedBase nella configurazione della dashboard (vedi EMBED-INTEGRATION.md).",
+        "TokenError": "Impossibile ottenere il token embed per analytics. Verifica la sessione e che l’API analytics sia raggiungibile."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Statistiche",
         "PanoramicaComponentTitle": "Panoramica",

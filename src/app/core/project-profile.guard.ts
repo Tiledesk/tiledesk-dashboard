@@ -298,7 +298,11 @@ export class ProjectProfileGuard implements CanActivate {
       // if (this.userIsAuthorized === false &&  userRole !== 'agent')
     } else {
       this.logger.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
-      this.router.navigate([url + '-demo']);
+      // Append "-demo" to the path breaks multi-segment routes (e.g. /analytics/new → /analytics/new-demo has no route).
+      const demoUrl = url.includes('/analytics/new')
+        ? url.replace('/analytics/new', '/analytics-demo')
+        : url + '-demo';
+      this.router.navigateByUrl(demoUrl);
       return false
     }
 

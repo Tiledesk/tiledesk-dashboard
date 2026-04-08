@@ -20,6 +20,8 @@ export const environment = {
     appsUrl: 'CHANGEIT',
     promoBannerUrl: 'CHANGEIT',
     chatStoragePrefix: "CHANGEIT",
+    analyticsApiBase: '',
+    analyticsEmbedBase: '',
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",

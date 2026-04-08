@@ -412,7 +412,6 @@ import { KeycloakService } from './services/keycloak.service';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
 
 
-
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
 // import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
@@ -730,7 +729,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpSelectTemplatesOrKbComponent,
     LogoutModalComponent,
     UnauthorizedToUpgradeComponent,
-    MaintenancePageComponent
+    MaintenancePageComponent,
+
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
