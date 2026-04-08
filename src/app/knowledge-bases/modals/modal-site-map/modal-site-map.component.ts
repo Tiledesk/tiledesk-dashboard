@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import { KB_LIMIT_CONTENT, URL_kb_contents_tags, URL_kb_synced_Sitemap } from 'app/utils/util';
+import { KB_LIMIT_CONTENT, normalizeDeprecatedScrapeType, URL_kb_contents_tags, URL_kb_synced_Sitemap } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -322,17 +322,19 @@ export class ModalSiteMapComponent implements OnInit {
       //   refresh_rate: this.selectedRefreshRate
       // }
 
-       let body  = {
+      const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
+      let body  = {
         "name":   this.siteMap,
         "source": this.siteMap,
         "content": "",
         "type": "sitemap",
         "namespace": this.selectedNamespace['id'],
         "refresh_rate": this.selectedRefreshRate,
-        "scrape_type": this.selectedScrapeType,
+        "scrape_type": scrapeType,
         "tags": this.kbTagsArray
       }
 
+      // With scrape_type 0 the server ignores scrape_options; we still send them when Advanced (4) is selected so they are preserved.
       if (this.selectedScrapeType === 4) {
         body['scrape_options'] = {
           tags_to_extract: this.extract_tags,

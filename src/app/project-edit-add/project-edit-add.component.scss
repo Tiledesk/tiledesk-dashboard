@@ -492,6 +492,21 @@ button.close {
   }
 }
 
+.upsell-for-retention-wpr {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  width: fit-content;
+}
+
+.upsell-for-retention {
+  color: var(--btn-get-feature-color);
+  cursor: pointer;
+}
+
 .tab-active {
   color: $brand-primary;
   border-bottom: 3px solid $brand-primary;

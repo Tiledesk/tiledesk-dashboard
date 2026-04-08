@@ -67,6 +67,12 @@
                 <a> {{'BannedVisitors' | translate }} </a>
               </li>
 
+              <li (click)="goToProjectSettings_RetentionPolicy()"
+                class="btn-with-border-effect"
+                [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
+                <a> {{'MessageRetention' | translate }} </a>
+              </li>
+
               <li *ngIf="PERMISSION_TO_VIEW_ADVANCED" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
                 <a> {{'ProjectEditPage.Advanced' | translate }} </a>
@@ -1881,6 +1887,73 @@
                   </ng-container>
                 </ng-container>
                 <!-- /. Smart Assignment ROUTE -->
+
+                <ng-container *ngIf="PROJECT_SETTINGS_RETENTION">
+                  <ng-container *ngIf="permissionCheckedRetention">
+                    <ng-container *ngIf="isAuthorizedRetention; else unauthorizedTplRetention">
+                      <div class="row" style="margin-top: 24px;">
+                        <div class="col-md-6">
+                          <h3 class="card_title__underlined">
+                            <span class="card_title__underline">
+
+                              {{'RetentionPolicy' | translate}}
+                            </span>
+                          </h3>
+                        </div>
+
+                        <!-- SUBTITLE -->
+                        <div class="col-md-12">
+                          <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                          <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                            {{'SetHowLongToRetainMessagesBeforeAutomaticDeletion' | translate }}
+                          </p>
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                          <span class="span-6"></span>
+
+                          <div class="messages-retention-select-wpr"> 
+
+                            <div class="retention-select-title" style="font-weight: 400; font-size: 14px;">
+                              {{'DeleteMessagesAfter' | translate}}:
+                            </div>
+                       
+                            <div class="messages-retention-select-wpr" style="font-size: 14px;margin-top: 3px;">
+                              <ng-select class="messages-retention" style="max-width: 250px;"
+                              
+                                [items]="messages_retention_items | selectOptionsTranslate"
+                                bindLabel="name" 
+                                bindValue="value"
+                                placeholder="Retention period"
+                                [clearable]="false" 
+                                [searchable]="false"
+                                [(ngModel)]="selectedRetention"
+                                (change)="onSelectRetention(selectedRetention)">
+                              </ng-select>
+                            </div>
+                          </div>
+
+                          <ng-container *ngIf="isVisiblePaymentTab">
+                            <div class="upsell-for-retention-wpr" *ngIf="!isAvailableRetention">
+                              <div class="upsell-for-retention-text">
+                                {{'UpgradePlanForRetention' | translate: retention_t_params}}
+                                <span class="upsell-for-retention" (click)="goToPricing('business')"> 
+                                     {{ 'Pricing.UpgradeYourPlan' | translate }}!
+                                </span>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-template #unauthorizedTplRetention>
+                      <unauthorized-for-settings></unauthorized-for-settings>
+                    </ng-template>
+                  </ng-container>
+
+                </ng-container>
 
                 <!-- -------------------------------------------------------- -->
                 <!-- Advanced -->

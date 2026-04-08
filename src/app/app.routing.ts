@@ -1097,6 +1097,13 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+  // Project edit / add - Retention - Check in RoleService
+  {
+    path: 'project/:projectid/project-settings/retention',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard]
+  },
+
   // Project edit / add - Advanced - Check moved in RoleService
   // {
   //   path: 'project/:projectid/project-settings/advanced',
@@ -1113,6 +1120,7 @@ const routes: Routes = [
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
     canActivate: [AuthGuard]
   },
+  
 
 
   // Project edit / add - Notifications - Check moved in RoleService

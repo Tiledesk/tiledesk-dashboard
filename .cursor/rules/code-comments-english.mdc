@@ -1,0 +1,17 @@
+---
+description: Write all code comments in English
+alwaysApply: true
+---
+
+# Code comments language
+
+- Write **all** code comments in **English**: `//`, `/* */`, `<!-- -->`, JSDoc/TSDoc, `TODO` / `FIXME` notes, and similar.
+- User-facing strings (i18n keys, UI copy) follow product locale rules; this rule applies only to **developer comments** in source files.
+
+```typescript
+// ❌ BAD — Italian (or other non-English) in comments
+// Calcola lo scrape type in base al toggle
+
+// ✅ GOOD
+// Resolve scrape type from the automatic extraction toggle
+```

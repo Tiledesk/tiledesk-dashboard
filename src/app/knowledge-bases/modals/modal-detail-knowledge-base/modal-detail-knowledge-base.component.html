@@ -79,12 +79,15 @@
         <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
         <div class="scrape-options-wpr" *ngIf="kb.type === 'url'">
             <mat-accordion class="scrape-options-accordion">
-                <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
+                <!-- <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
                     <mat-slide-toggle [checked]="automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
                         {{ 'KbPage.AutomaticContentExtraction' | translate }}
                     </mat-slide-toggle>
-                </div>
-                <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded" class="html-tags--expansion-panel">
+                </div> -->
+                <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
+                    [disabled]="automaticContentExtraction"
+                    class="html-tags--expansion-panel"
+                    [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">
                     <mat-expansion-panel-header class="disable_ripple">
                         <mat-panel-title>{{'HtmlTags' | translate}}</mat-panel-title>
                     </mat-expansion-panel-header>

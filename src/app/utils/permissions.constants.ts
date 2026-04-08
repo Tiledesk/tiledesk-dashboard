@@ -148,6 +148,8 @@ export const PERMISSIONS = {
 
   PROJECTSETTINGS_BANNED_READ: 'projectsettings_banned_read',
 
+  PROJECTSETTINGS_RETENTION_READ: 'projectsettings_retention_read',
+
   PROJECTSETTINGS_ADVANCED_READ: 'projectsettings_advanced_read',
   
 

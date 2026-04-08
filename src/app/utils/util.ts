@@ -1190,3 +1190,11 @@ export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integr
 export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
 export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
 
+/** scrape_type 2 (legacy "Standard") is deprecated; map to 4 (Advanced) for UI and new saves. */
+export function normalizeDeprecatedScrapeType(value: number | string | undefined | null): number {
+  const n = Number(value);
+  if (Number.isNaN(n)) return 4;
+  if (n === 2) return 4;
+  return n;
+}
+

@@ -80,6 +80,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_NOTIFICATION_ROUTE: boolean;
   PROJECT_SETTINGS_SECURITY_ROUTE: boolean;
   PROJECT_SETTINGS_BANNED_VISITORS_ROUTE: boolean;
+  PROJECT_SETTINGS_RETENTION: boolean;
 
   showSpinner = true;
 
@@ -240,6 +241,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   cancel: string;
   featureAvailableOnlyWithPaidPlans: string;
   t_params: any;
+  retention_t_params: any;
   planFeatures: any;
   highlightedFeatures: any;
   isTier3Plans: boolean = true// Plus or Custom
@@ -248,15 +250,26 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   public hideHelpLink: boolean;
   public displayExtremeMeasures: boolean;
 
-  messages_retention: Array<any> = [ 
+ messages_retention: Array<any> = [
+    {name : "NoRetention", value: -1},
     { name: "1Month", value: 30 },
     { name: "3Months", value: 90 },
-    { name: "6Months", value: 180},
-    { name: "12Months", value: 365},
-    { name: "18Months", value: 545},
-    { name: "24Months", value: 730}
-  ]
-  selectedRetention: number;
+    { name: "6Months", value: 180 },
+    { name: "12Months", value: 365 },
+    { name: "18Months", value: 545 },
+    { name: "24Months", value: 730 },
+    { name: "3Years", value: 1095 },
+    { name: "4Years", value: 1460 },
+    { name: "5Years", value: 1825 }
+  ];
+  /** Items passed to ng-select (includes `disabled` when plan restricts retention). */
+  messages_retention_items: Array<any> = [];
+  selectedRetention = -1;
+  isAvailableRetention = true;
+
+  /** Value from API when present; `null` means absent (UI default = -1 / No retention when plan allows). */
+  private pendingRetentionSelection: number | null = null;
+  private retentionDaysLoadedFromServer = false;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -316,6 +329,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isAuthorizedAdvanced = false;
   permissionCheckedAdvanced = false;
   PERMISSION_TO_VIEW_ADVANCED: boolean;
+
+  isAuthorizedRetention = true;
+  permissionCheckedRetention = false;
+  PERMISSION_TO_VIEW_RETENTION: boolean
 
   ROLE: string
   public widgetObj = {};
@@ -935,6 +952,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
@@ -946,6 +964,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.checkPermissionsForGeneral();
 
@@ -966,6 +985,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -975,6 +995,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
       this.checkPermissionsForSubscrition();
@@ -993,6 +1014,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -1002,6 +1024,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
       this.checkPermissionsForDev();
@@ -1021,6 +1044,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -1030,6 +1054,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
       this.checkPermissionsForSmartAssign();
@@ -1049,6 +1074,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') !== -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -1058,6 +1084,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = true;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
 
@@ -1075,6 +1102,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') !== -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -1084,6 +1112,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = true;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
       this.checkPermissionsForSecurity();
@@ -1100,6 +1129,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') !== -1) &&
+      (currentUrl.indexOf('/project-settings/retention') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -1109,6 +1139,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = true;
+      this.PROJECT_SETTINGS_RETENTION = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
       this.checkPermissionsForBanned();
@@ -1117,6 +1148,35 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
 
+      /** THE ACTIVE ROUTE IS  'project-settings/retention' , */
+    else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/retention') !== -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_RETENTION = true;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+
+      this.checkPermissionsForRetention();
+
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+    }
+
+    /** THE ACTIVE ROUTE IS  /project-settings/advanced', */
     else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
@@ -1206,6 +1266,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.permissionCheckedBanned = true;
     console.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedBanned ', this.isAuthorizedBanned)
     console.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedBanned ', this.permissionCheckedBanned)
+  }
+
+  async checkPermissionsForRetention () {
+    const result = await this.roleService.checkRoleForCurrentProject('project-settings-retention')
+    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.isAuthorizedRetention = result === true;
+    this.permissionCheckedRetention = true;
+    console.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedRetention ', this.isAuthorizedRetention)
+    console.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedRetention ', this.permissionCheckedRetention)
   }
 
   async checkPermissionsForAdvanced() {
@@ -1383,6 +1452,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+
+  goToProjectSettings_RetentionPolicy() {
+    if (this.PERMISSION_TO_VIEW_RETENTION === false) {  
+      this.notify.presentDialogNoPermissionToViewThisSection()
+      return
+    }
+    console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+    if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.id_project + '/project-settings/retention'])
+      }
     }
   }
 
@@ -1701,6 +1783,157 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
   }
 
+   managePlanRetentionAvailability(profileName, isActiveSubscription,  trialExpired, projectProfileType) {
+    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability profileName ', profileName);
+    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isActiveSubscription ', isActiveSubscription);
+    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability trialExpired ', trialExpired);
+    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability projectProfileType ', projectProfileType);
+    this.isAvailableRetention = true;
+     this.retention_t_params = { 'plan_name': PLAN_NAME.EE }
+     if (projectProfileType === 'free') {
+      if (trialExpired === false) {
+        // Trial active
+        if (profileName === 'free') {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+
+          // Pro (trial)
+        } else if (profileName === 'Sandbox') {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else {
+        // Trial expired
+        if (profileName === 'free') {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        } else if (this.profile_name === 'Sandbox') {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    } else if (projectProfileType === 'payment') {
+
+      if (isActiveSubscription === true) {
+        // Growth sub active
+        if (profileName === PLAN_NAME.A) {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub active
+        } else if (profileName === PLAN_NAME.B) {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub active
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.isAvailableRetention = true;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Starter (ex Basic) sub active
+        } else if (profileName === PLAN_NAME.D) {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Pro (ex Premium) sub active
+        } else if (profileName === PLAN_NAME.E) {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Business (ex Team) sub active
+        } else if (profileName === PLAN_NAME.EE) {
+          this.isAvailableRetention = true;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub active
+        } else if (profileName === PLAN_NAME.F) {
+          this.isAvailableRetention = true;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else if (isActiveSubscription === false) {
+        // Growth sub expired
+        if (profileName === PLAN_NAME.A) {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub expired
+        } else if (profileName === PLAN_NAME.B) {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub expired
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        // Starter (ex Basic) sub expired
+        } else if (profileName === PLAN_NAME.D) {
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        // Pro (ex Premium) sub expired
+        } else if (profileName === PLAN_NAME.E) {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Business (ex Team) sub expired
+        } else if (profileName === PLAN_NAME.EE) {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub expired
+        } else if (profileName === PLAN_NAME.F) {
+
+          this.isAvailableRetention = false;
+          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    }
+
+    this.applyRetentionSelectionFromProjectAndPlan();
+  }
+
+   /**
+   * Restricted plan: only 1 month (30) selectable; otherwise full list.
+   * When unrestricted and no saved retentionDays, default UI to No retention (-1).
+   */
+  private applyRetentionSelectionFromProjectAndPlan(): void {
+    const restricted = this.isAvailableRetention === false;
+    this.messages_retention_items = this.messages_retention.map((item) => ({
+      name: item.name,
+      value: item.value,
+      disabled: restricted && item.value !== 30
+    }));
+
+    if (restricted) {
+      this.selectedRetention = 30;
+      return;
+    }
+
+    if (this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null) {
+      this.selectedRetention = this.pendingRetentionSelection;
+    } else {
+      this.selectedRetention = -1;
+    }
+  }
 
 
   getProjectPlan() {
@@ -1734,6 +1967,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // this.getOSCODE(projectProfileData)
 
         this.manageSmtpSettingsVisibility(projectProfileData)
+        this.managePlanRetentionAvailability(this.profile_name, this.subscription_is_active,  this.prjct_trial_expired, this.prjct_profile_type)
 
         if (projectProfileData.subscription_creation_date) {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
@@ -3102,14 +3336,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
           }
 
-          if (project.settings.retentionDays !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] retentionDays  project.settings.retentionDays', project.settings.retentionDays) 
-            this.selectedRetention = Number(project.settings.retentionDays)
-             console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention ', this.selectedRetention) 
+         if (project.settings.retentionDays !== undefined && project.settings.retentionDays !== null) {
+            const raw = project.settings.retentionDays;
+            console.log('[PRJCT-EDIT-ADD] ** retentionDays  project.settings.retentionDays', raw);
+            const n = Number(raw);
+            this.pendingRetentionSelection = Number.isNaN(n) ? -1 : n;
+            this.retentionDaysLoadedFromServer = true;
+            console.log('[PRJCT-EDIT-ADD] ** retentionDays pendingRetentionSelection ', this.pendingRetentionSelection);
           } else {
-            this.selectedRetention = 90 // this.messages_retention[1].value;
-            console.log('[PRJCT-EDIT-ADD] retentionDays this.selectedRetention (else) ', this.selectedRetention) 
+            this.pendingRetentionSelection = null;
+            this.retentionDaysLoadedFromServer = false;
+            console.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
           }
+          this.applyRetentionSelectionFromProjectAndPlan();
 
          
 
@@ -3142,6 +3381,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.currentWhitelist = [];
           this.selectedOption = 'custom'
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+          this.pendingRetentionSelection = null;
+          this.retentionDaysLoadedFromServer = false;
+          this.applyRetentionSelectionFromProjectAndPlan();
           console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
           console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 

@@ -503,6 +503,13 @@
     }
 }
 
+.html-tags--expansion-panel.expansion-panel-disabled ::ng-deep {
+    .mat-expansion-panel-header-title {
+        color: #ddd !important;
+        cursor: not-allowed !important;
+    }
+}
+
 ::ng-deep.html-tags--expansion-panel {
     padding: 0px 0px !important;
 }

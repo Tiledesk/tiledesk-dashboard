@@ -407,6 +407,13 @@ export class RoleService {
               return hasPermission;
             }
 
+            // Project settings > Retention
+            if (calledby === 'project-settings-retention') {
+              const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+              console.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
+              return hasPermission;
+            }
+
             // Project settings > Advanced
             if (calledby === 'project-settings-advanced') {
               const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
@@ -641,6 +648,13 @@ export class RoleService {
           if (calledby === 'project-settings-banned') {
             const hasPermission = projectUserRole === 'owner' || projectUserRole === 'admin'
             console.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Retention
+          if (calledby === 'project-settings-retention') {
+            const hasPermission = projectUserRole === 'owner' || projectUserRole === 'admin'
+            console.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -998,6 +1012,13 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Project settings > Retention
+          if (calledby === 'project-settings-retention') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+            console.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           // Project settings > Advanced
           if (calledby === 'project-settings-advanced') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
@@ -1234,6 +1255,13 @@ export class RoleService {
         if (calledby === 'project-settings-banned') {
           const hasPermission = _projectUserRole === 'owner' || _projectUserRole === 'admin';
           console.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
+          return hasPermission;
+        }
+
+        // Project settings > Retention
+        if (calledby === 'project-settings-retention') {
+          const hasPermission = _projectUserRole === 'owner' || _projectUserRole === 'admin';
+          console.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
           return hasPermission;
         }
 

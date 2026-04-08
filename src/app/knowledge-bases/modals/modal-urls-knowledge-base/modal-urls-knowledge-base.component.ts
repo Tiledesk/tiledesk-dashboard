@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { KB_LIMIT_CONTENT, URL_kb_contents_tags } from 'app/utils/util';
+import { KB_LIMIT_CONTENT, normalizeDeprecatedScrapeType, URL_kb_contents_tags } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -38,8 +38,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   scrape_types: Array<any> = [
     // { name: "Full HTML page", value: 1 },
-    { name: "Standard", value: 2 },
-    // { name: "Headless (Text Only)", value: 3 },
+    // scrape_type 2 (Standard) deprecated — use 0 (automatic) or 4 (Advanced)
     { name: "Advanced", value: 4 },
   ];
 
@@ -252,13 +251,15 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
       return row.trim() !== '';
     });
+    const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
     let body: any = {
       list: arrayURLS,
-      scrape_type: this.selectedScrapeType,
+      scrape_type: scrapeType,
       refresh_rate: this.selectedRefreshRate,
       tags: this.kbTagsArray
     }
 
+    // With scrape_type 0 the server ignores scrape_options; we still send them when Advanced (4) is selected so they are preserved.
     if (this.selectedScrapeType === 4) {
       body.scrape_options = {
         tags_to_extract: this.extract_tags,
