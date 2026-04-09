@@ -36,6 +36,7 @@ import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.co
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+import { ModalInstallWidgetComponent } from './modals/modal-install-widget/modal-install-widget.component';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import { MatChipsModule } from '@angular/material/chips';
@@ -80,6 +81,7 @@ const routes: Routes = [
     ModalHookBotComponent,
     ModalNsLimitReachedComponent,
     ModalConfirmGotoCdsComponent,
+    ModalInstallWidgetComponent,
     ModalAddContentComponent,
     ModalUnansweredQuestionsComponent,
     ModalConfirmActionComponent

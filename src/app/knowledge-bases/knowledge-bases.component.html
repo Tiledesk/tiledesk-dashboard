@@ -24,8 +24,7 @@
       <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
         <!-- Sidebar sinistra -->
         <div *ngIf="kbPageConfig.sidebar" class="kb-sidebar">
-          <div class="sidebar-title" >
-         
+          <div class="sidebar-title">
             {{ 'KbPage.YourKnowledgeBases' | translate }}
           </div>
 
@@ -169,7 +168,7 @@
       
                       </div>
                       <div *ngIf="kbPageConfig.bottomBadges" class="kb-bottom-badge-wpr">
-                        <div *ngIf="selectedNamespace?.default && kbPageConfig.defaultBadge"
+                        <div *ngIf="selectedNamespace?.default"
                           class="kb-default-badge"
                           matTooltipClass="kb-custom-mat-tooltip"
                           matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}" 
@@ -194,6 +193,12 @@
                             matTooltipHideDelay="100">
                             {{'KbPage.Standard' | translate }}
                         </div>
+                      </div>
+
+                      <div *ngIf="kbPageConfig.buttonInstallWidget" class="kb-default-badge-wpr">
+                        <button type="button" class="kb-default-badge kb-install-widget-badge" (click)="presentModalInstallWidget()">
+                          {{ 'InstallOnYourWebsite' | translate }}
+                        </button>
                       </div>
                     </div>
       

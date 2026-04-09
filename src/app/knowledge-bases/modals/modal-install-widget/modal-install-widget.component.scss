@@ -1,0 +1,125 @@
+.m-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.m-top-right-icon {
+  cursor: pointer;
+}
+
+.m-top-right-icon > span {
+  padding: 8px;
+  background: #e4e6eb;
+  border-radius: 999px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  font-size: 18px;
+  color: rgb(91, 98, 106);
+}
+
+.m-top-right-icon:hover > span {
+  background-color: rgb(213, 214, 220);
+  color: rgb(28, 30, 33);
+}
+
+.copy-script-title {
+  font-family: var(--header-font-family);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.widget--script-copy-instructions {
+  padding-left: 5px;
+  padding-bottom: 12px;
+  text-align: center;
+  font-family: var(--header-font-family);
+}
+
+.widget--script {
+  background-color: rgb(15, 15, 16);
+  border: none;
+  box-shadow: unset !important;
+  line-height: 0;
+  counter-reset: line;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  font-family: monospace !important;
+  color: #fafafa;
+  border-radius: 12px !important;
+  font-size: 12px;
+
+  span {
+    display: block;
+    line-height: 2.1rem;
+
+    &:before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      border-right: 1px solid #ddd;
+      padding: 0 0.5em;
+      margin-right: 0.5em;
+      color: #039be5;
+      background: rgba(3, 155, 229, 0.1);
+      width: 30px;
+      text-align: end;
+    }
+  }
+}
+
+.widget-content-copy {
+  position: absolute;
+  top: 88px;
+  color: #fafafa;
+  right: 16px;
+  cursor: pointer;
+}
+
+.widget-content-copy:hover {
+  opacity: .6;
+}
+
+.copied--to--clipboard--tooltip {
+  opacity: 0;
+  text-align: center;
+  position: absolute;
+  max-width: 360px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background: antiquewhite;
+  width: 260px;
+  top: 97px;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.has--copied--text {
+  background-color: #3ecf8e;
+  color: white;
+  animation: fadeinout 2s linear forwards;
+  opacity: 1;
+}
+
+@keyframes fadeinout {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.link-to-installations {
+  margin-top: 14px;
+  text-align: center;
+  color: var(--blue-20);
+  cursor: pointer;
+  font-family: var(--header-font-family);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+

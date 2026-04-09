@@ -18,6 +18,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
+import { environment } from '../../environments/environment';
 import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
@@ -38,6 +39,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+import { ModalInstallWidgetComponent } from './modals/modal-install-widget/modal-install-widget.component';
 // import { ShepherdService } from 'angular-shepherd';
 // import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
 // import Step from 'shepherd.js/src/types/step';
@@ -255,7 +257,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   };
 
   get kbPageConfig() {
-    return { ...KnowledgeBasesComponent.DEFAULT_KB_PAGE_CONFIG, ...(this.appConfigService.getConfig().knowledgeBasesPage ?? {}) };
+    // Let environment.ts be the source of truth (and still allow runtime config defaults).
+    return {
+      ...KnowledgeBasesComponent.DEFAULT_KB_PAGE_CONFIG,
+      ...(this.appConfigService.getConfig().knowledgeBasesPage ?? {}),
+      ...(environment.knowledgeBasesPage ?? {}),
+    };
   }
 
   constructor(
@@ -2046,6 +2053,14 @@ _presentDialogImportContents() {
 
         this.createNewNamespace(namespaceName, hybrid)
       }
+    });
+  }
+
+  presentModalInstallWidget() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget');
+    this.dialog.open(ModalInstallWidgetComponent, {
+      width: '700px',
+      data: {}
     });
   }
 

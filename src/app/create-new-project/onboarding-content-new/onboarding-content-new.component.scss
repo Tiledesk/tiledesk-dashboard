@@ -5,3 +5,77 @@
 // Clone styling from onboarding-content
 @import "../onboarding-content/onboarding-content.component.scss";
 
+.onb-overlay {
+}
+
+.onb-overlay__top {
+}
+
+.onb-overlay__subtitle {
+}
+
+.onb-overlay__body {
+}
+
+.onb-overlay__error {
+}
+
+
+
+.onb-header {
+  position: absolute;
+  height: 70px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+}
+.onb-overlay {
+  position: relative;
+  float: left;
+  padding: 95px 46px;
+
+  h1.title {
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.3em;
+    margin-top: 0px;
+    margin-bottom: 0.5em;
+    font-family: var(--header-font-family);
+  }
+
+  h4.title {
+    color: #566787;
+    position: relative;
+    line-height: normal;
+    margin-bottom: 1em;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+  }
+  p {
+    margin-bottom: 1em;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: normal;
+  }
+}
+
+.onb-overlay__error-text {
+  color: #d32f2f;
+  
+}
+
+.onb-overlay__spinner {
+  // Always center on the viewport, independent from content/layout
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .circular {
+    width: 56px;
+    height: 56px;
+  }
+}
