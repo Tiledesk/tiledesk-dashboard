@@ -319,7 +319,8 @@
         <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
           [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-          matTooltipHideDelay="100">
+          matTooltipHideDelay="100" 
+          style="position: relative;">
           <a class="customAncor" 
           [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics', 'new'] : null"
           >
@@ -332,8 +333,16 @@
               </svg>
             </span>
           </a>
+
+          <div style="position: absolute;top: -3px;">
+            <span class="material-icons-outlined" style="color:#3ea9f5;">
+              fiber_new
+            </span>
+          </div>
         </div>
+
       </ng-container>
+
     </ng-container> 
 
       <!-- Maintance module -->
