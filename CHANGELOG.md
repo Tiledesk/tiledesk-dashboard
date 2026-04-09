@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.199-stage
+- New Analytics
+
 ### 2.7.198-stage
 - Improves the Automatic content extraction
 - Adds the quotas reset date
