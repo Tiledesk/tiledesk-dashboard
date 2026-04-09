@@ -713,6 +713,7 @@
     "AllowedFileExtensionsAgentChatDesc":  "Jamoa a'zolarining agent chatidan yuklay oladigan fayl turlarini boshqaring",
     "AddExtension": "Kengaytma qo'shish",
     "QuotaResetsOn": "Kvota {{reset_date}} sanada qayta tiklanadi",
+    "QuotasReset": "Kvotalarni tiklash",
     "AllExtensions": "Hammasi",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Oylik resurslar kvotalarini oshirish uchun biz bilan bog'laning",
     "ThisFeatureIsInBeta":"Bu xususiyat beta-versiyada",

@@ -462,6 +462,11 @@
                         </div>
                       </div>
                     </div>
+                    <!-- *ngIf="quotaResetEndDateLabel" -->
+                    <div class="quota-resets" >
+                      <!-- {{ 'QuotaResetsOn' | translate: { reset_date: quotaResetEndDateLabel } }} -->
+                       {{'QuotasReset' | translate}}: {{quotaResetEndDateLabel | amDateFormat: 'LL'}} 
+                    </div>
                   </div>
                 </div>
 

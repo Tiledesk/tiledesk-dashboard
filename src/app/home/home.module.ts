@@ -23,6 +23,7 @@ import { HomeKbComponent } from 'app/home-components/home-kb/home-kb.component';
 import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.component';
 import { HomeGoToChatComponent } from 'app/home-components/home-go-to-chat/home-go-to-chat.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MomentModule } from 'ngx-moment';
 const routes: Routes = [
   { path: "", component: HomeComponent},
 ];
@@ -54,7 +55,8 @@ const routes: Routes = [
     MatCheckboxModule,
     SatPopoverModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MomentModule
   ],
   exports: [
     RouterModule

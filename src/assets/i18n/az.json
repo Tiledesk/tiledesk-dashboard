@@ -713,6 +713,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Komanda yoldaşlarının agent söhbətindən yükləyə biləcəyi fayl növlərini idarə edin",
     "AddExtension": "Uzantı əlavə et",
     "QuotaResetsOn": "Kvota {{reset_date}} tarixində sıfırlanır",
+    "QuotasReset": "Kvotaların sıfırlanması",
     "AllExtensions": "Hamısı",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Aylıq resurs kvotalarınızı artırmaq üçün bizimlə əlaqə saxlayın",
     "ThisFeatureIsInBeta":"Bu funksiya beta-dadır",

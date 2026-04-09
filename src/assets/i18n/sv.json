@@ -714,6 +714,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Hantera filtyper som lagkamrater kan ladda upp från agentchatt",
     "AddExtension": "Lägg till tillägg",
     "QuotaResetsOn": "Kvoten återställs den {{reset_date}}",
+    "QuotasReset": "Återställning av kvoter",
     "AllExtensions": "Alla",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Kontakta oss för att öka dina månatliga resurskvoter",
     "ThisFeatureIsInBeta":"Den här funktionen är i beta",

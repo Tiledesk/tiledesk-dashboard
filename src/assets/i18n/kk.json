@@ -712,6 +712,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Команда мүшелерінің агент чатынан жүктей алатын файл түрлерін басқару",
     "AddExtension": "Кеңейтуді қосу",
     "QuotaResetsOn": "Квота {{reset_date}} күні қалпына келтіріледі",
+    "QuotasReset": "Квоталарды қалпына келтіру",
     "AllExtensions": "Барлығы",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Ай сайынғы ресурстар квотасын ұлғайту үшін бізге хабарласыңыз",
     "ThisFeatureIsInBeta":"Бұл мүмкіндік бета нұсқасында",

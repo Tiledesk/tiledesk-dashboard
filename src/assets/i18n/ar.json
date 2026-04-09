@@ -712,6 +712,7 @@
     "AllowedFileExtensionsAgentChatDesc":  "إدارة أنواع الملفات التي يمكن لزملاء الفريق تحميلها من دردشة الوكيل",
     "AddExtension": "إضافة امتداد",
     "QuotaResetsOn": "إعادة تعيين الحصة في {{reset_date}}",
+    "QuotasReset": "إعادة تعيين الحصص",
     "AllExtensions": "الكل",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"اتصل بنا لزيادة حصص الموارد الشهرية الخاصة بك",
     "ThisFeatureIsInBeta":"هذه الميزة في مرحلة تجريبية",

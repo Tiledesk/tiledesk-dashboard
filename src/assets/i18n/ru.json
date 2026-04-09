@@ -713,6 +713,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Управление типами файлов, которые члены команды могут загружать из чата агента",
     "AddExtension": "Добавить расширение",
     "QuotaResetsOn": "Квота сбрасывается {{reset_date}}",
+    "QuotasReset": "Сброс квот",
     "AllExtensions": "Все",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Свяжитесь с нами, чтобы увеличить ежемесячные квоты ресурсов",
     "ThisFeatureIsInBeta":"Эта функция находится в стадии бета-тестирования",

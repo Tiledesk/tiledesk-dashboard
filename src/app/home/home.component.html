@@ -249,7 +249,7 @@
         <!-- QUOTA Banner -->
         <!--  *ngIf="!displayQuotaSkeleton"-->
         <!-- <div class="test">  -->
-        <ng-cointainer *ngIf="isVisibleQuoteSection">
+        <ng-container *ngIf="isVisibleQuoteSection">
           <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
             [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
 
@@ -383,6 +383,9 @@
               </div>
             </div>
 
+            <div class="home-quota-resets">
+              {{ 'QuotasReset' | translate }}: {{ quotaResetEndDateLabel | amDateFormat: 'LL' }}
+            </div>
 
             <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut || voiceRunnedOut">
               <div class="home-quota-banner-icon">
@@ -435,7 +438,7 @@
               </div>
             </div>
           </div>
-        </ng-cointainer>
+        </ng-container>
 
 
         <!-- </div> // test div -->

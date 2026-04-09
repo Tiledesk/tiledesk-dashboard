@@ -712,6 +712,7 @@
     "AllowedFileExtensionsAgentChatDesc": "Verwalten Sie die Dateitypen, die Teammitglieder aus dem Agenten-Chat hochladen können",
     "AddExtension": "Erweiterung hinzufügen",
     "QuotaResetsOn": "Quote wird am {{reset_date}} zurückgesetzt",
+	"QuotasReset": "Kontingente zurücksetzen",
 	"AllExtensions": "Alle",
 	"ContactUsToIncreaseYourMonthlyResourcesQuotas":"Kontaktieren Sie uns, um Ihr monatliches Ressourcenkontingent zu erhöhen",
 	"ThisFeatureIsInBeta":"Diese Funktion ist in der Betaphase",

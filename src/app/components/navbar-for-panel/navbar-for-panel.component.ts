@@ -16,7 +16,7 @@ import { LoggerService } from './../../services/logger/logger.service';
 })
 export class NavbarForPanelComponent implements OnInit {
   user: any;
-  currentUserId: string;
+  currentUserId!: string;
   IS_AVAILABLE: boolean;
   IS_BUSY: boolean;
   USER_ROLE: string;
@@ -29,7 +29,7 @@ export class NavbarForPanelComponent implements OnInit {
   timeStamp: any;
   PROJECT_USER_ID: string;
   IS_PROJECTS_X_PANEL_ROUTE: boolean;
-  dkmode: string;
+  dkmode!: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(

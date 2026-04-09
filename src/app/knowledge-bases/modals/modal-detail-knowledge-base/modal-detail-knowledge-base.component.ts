@@ -7,6 +7,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { BrandService } from 'app/services/brand.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { URL_kb_contents_tags } from 'app/utils/util';
 
 @Component({
@@ -31,7 +32,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   getChunksError: boolean = false;
   showCopiedMessage: boolean = false;
 
-  panelOpenState = true;
+  /** Pannello HTML tags: chiuso di default; si chiude se si attiva l’estrazione automatica. */
+  htmlTagsPanelExpanded = false;
   /** URL only: when true, `scrape_type` 0 and no custom HTML tag rules. */
   automaticContentExtraction = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -107,13 +109,9 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         this.extract_tags = tagsFromKb?.length ? [...tagsFromKb] : ['body'];
         this.unwanted_tags = [...(this.kb.scrape_options?.unwanted_tags || [])];
         this.unwanted_classnames = [...(this.kb.scrape_options?.unwanted_classnames || [])];
-        // Preferenza utente dall’API: salvataggio automatico → scrape_type 0 senza scrape_options;
-        // manuale → di solito scrape_type 4/2 con regole in scrape_options.
+        // Automatic: scrape_type 0 (il backend può restituire anche scrape_options conservate).
         if (this.kb.type === 'url') {
-          const st = this.kb.scrape_type;
-          this.automaticContentExtraction =
-            Number(st) === 0 &&
-            !ModalDetailKnowledgeBaseComponent.hasScrapeRulesFromApi(this.kb.scrape_options);
+          this.automaticContentExtraction = Number(this.kb.scrape_type) === 0;
         }
         const savedRate = this.kb.refresh_rate;
         const validRate = this.refresh_rate.some(r => r.value === savedRate);
@@ -248,17 +246,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.kb.tags = [...this.kbTagsArray];
 
     if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
-      if (this.kb.type === 'url' && this.automaticContentExtraction) {
-        this.kb.scrape_type = 0;
-        delete this.kb.scrape_options;
-      } else {
-        this.kb.scrape_options = this.kb.scrape_options || {};
-        this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
-        this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
-        this.kb.scrape_options.unwanted_classnames = [...this.unwanted_classnames];
-        if (this.kb.type === 'url') {
-          this.kb.scrape_type = 4;
-        }
+      this.kb.scrape_options = this.kb.scrape_options || {};
+      this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
+      this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
+      this.kb.scrape_options.unwanted_classnames = [...this.unwanted_classnames];
+      if (this.kb.type === 'url') {
+        this.kb.scrape_type = this.automaticContentExtraction ? 0 : 4;
       }
       this.kb.refresh_rate = this.selectedRefreshRate;
     }
@@ -415,10 +408,18 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
   }
 
+  /** Chiude il pannello prima di applicare automatic (evita race con [disabled] sul panel). */
+  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
+    const checked = event.checked;
+    if (checked) {
+      this.htmlTagsPanelExpanded = false;
+    }
+    this.automaticContentExtraction = checked;
+  }
+
   /** Aggiorna this.kb.scrape_options con i valori correnti delle tag. */
   private syncScrapeOptionsToKb(): void {
     if (!this.kb || (this.kb.type !== 'url' && this.kb.type !== 'sitemap')) return;
-    if (this.kb.type === 'url' && this.automaticContentExtraction) return;
     this.kb.scrape_options = this.kb.scrape_options || {};
     this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
     this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
@@ -474,16 +475,6 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   goToKbTagsDoc() {
     const docsUrl = URL_kb_contents_tags;
     window.open(docsUrl, '_blank');
-  }
-
-  /** Regole manuali presenti in `scrape_options` (come restituite dall’API). */
-  private static hasScrapeRulesFromApi(so: KB['scrape_options'] | undefined): boolean {
-    if (!so) return false;
-    return (
-      (so.tags_to_extract?.length ?? 0) > 0 ||
-      (so.unwanted_tags?.length ?? 0) > 0 ||
-      (so.unwanted_classnames?.length ?? 0) > 0
-    );
   }
 
 }

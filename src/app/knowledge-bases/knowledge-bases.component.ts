@@ -2007,9 +2007,30 @@ _presentDialogImportContents() {
       this.logger.log('[KNOWLEDGE-BASES-COMP] updateKbContent response', response);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
       const paramsDefault = '?limit=' + KB_DEFAULT_PARAMS.LIMIT + '&page=' + KB_DEFAULT_PARAMS.NUMBER_PAGE + '&sortField=' + KB_DEFAULT_PARAMS.SORT_FIELD + '&direction=' + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'after-update');
+      // La lista GET spesso non include scrape_type / scrape_options: allineiamo alla risposta appena salvata.
+      this.getListOfKb(paramsDefault, 'after-update', kb);
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] updateKbContent error', error);
+    });
+  }
+
+  /** Dopo update dal modal dettaglio, preserva scrape_type e scrape_options sul row della lista. */
+  private mergeKbRowAfterDetailUpdate(kbs: any[], saved: any): any[] {
+    if (!saved?._id) return kbs;
+    return kbs.map((item: any) => {
+      if (item._id !== saved._id) return item;
+      const next: any = { ...item };
+      if (saved.scrape_type !== undefined && saved.scrape_type !== null) {
+        next.scrape_type = saved.scrape_type;
+      }
+      if (saved.scrape_options) {
+        next.scrape_options = {
+          tags_to_extract: [...(saved.scrape_options.tags_to_extract || [])],
+          unwanted_tags: [...(saved.scrape_options.unwanted_tags || [])],
+          unwanted_classnames: [...(saved.scrape_options.unwanted_classnames || [])]
+        };
+      }
+      return next;
     });
   }
 
@@ -2681,7 +2702,7 @@ _presentDialogImportContents() {
   }
 
 
-  getListOfKb(params?: any, calledby?: any) {
+  getListOfKb(params?: any, calledby?: any, kbMergeAfterUpdate?: any) {
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
@@ -2697,7 +2718,11 @@ _presentDialogImportContents() {
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
       // If called after update or add, replace the entire list to maintain server order
       if (calledby === 'after-update' || calledby === 'after-add') {
-        this.kbsList = [...resp.kbs];
+        let kbs = resp.kbs;
+        if (calledby === 'after-update' && kbMergeAfterUpdate) {
+          kbs = this.mergeKbRowAfterDetailUpdate(resp.kbs, kbMergeAfterUpdate);
+        }
+        this.kbsList = [...kbs];
       } else {
         resp.kbs.forEach((kb: any, i: number) => {
           // this.kbsList.push(kb);

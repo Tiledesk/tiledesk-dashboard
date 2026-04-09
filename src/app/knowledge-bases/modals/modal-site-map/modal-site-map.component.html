@@ -15,16 +15,16 @@
         </div>
     </div>
 
-    <!-- <div class="automatic-content-extraction-row" *ngIf="refreshRateIsEnabled"
+    <div class="automatic-content-extraction-row" *ngIf="refreshRateIsEnabled"
         style="display: flex; align-items: center; margin-bottom: 8px;">
-        <mat-slide-toggle [(ngModel)]="automaticContentExtraction" color="primary">
+        <mat-slide-toggle [checked]="automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
             {{ 'KbPage.AutomaticContentExtraction' | translate }}
         </mat-slide-toggle>
-    </div> -->
+    </div>
 
     <mat-accordion *ngIf="refreshRateIsEnabled">
         <!-- custom--expansion-panel  -->
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+        <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
             [disabled]="automaticContentExtraction"
             class="html-tags--expansion-panel"
             [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">

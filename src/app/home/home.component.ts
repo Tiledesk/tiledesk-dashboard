@@ -276,7 +276,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   closedConversations: number = 0;
   startSlot: string;
   endSlot: string;
-
+  /** ISO `slot.endDate` da quotes (via subscription), stesso uso della navbar. */
+  quotaResetEndDateLabel: string | null = null;
 
   // refactoring quotas
   quotasLimits
@@ -478,10 +479,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (data) {
           if (data['projectId'] === this.projectId) {
-            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
+            console.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
             this.quotasLimits = data.projectLimits;
             this.allQuotas = data.allQuotes;
+            this.quotaResetEndDateLabel = data.slot?.endDate ?? null;
             this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
             this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
 
@@ -604,7 +606,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       },
         (error) => {
           // Handle error
-          this.displayQuotaSkeleton = false
+          this.displayQuotaSkeleton = false;
+          this.quotaResetEndDateLabel = null;
         },
         () => {
           // This complete callback will be called if/when the observable completes
