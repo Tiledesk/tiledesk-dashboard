@@ -98,7 +98,7 @@ export class CannedResponsesService {
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/'
 
-    const body = { 'text': message, 'title': title };
+    const body = { 'text': message, 'title': title, shared: true};
 
     this.logger.log('[CANNED-RES.SERV] CREATE CANNED-RES BODY ', body);
     this.logger.log('[CANNED-RES.SERV] - CREATE CANNED-RES URL', url);

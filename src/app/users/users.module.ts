@@ -10,6 +10,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: "", component: UsersComponent},
@@ -29,7 +31,9 @@ const routes: Routes = [
     MatTooltipModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    UnauthorizedForSettingsModule,
+    FormsModule
   ]
 })
 export class UsersModule { }

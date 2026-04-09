@@ -28,6 +28,9 @@ const swal = require('sweetalert');
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -45,8 +48,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
-  @ViewChild('teamContent', { static: false })  teamContent: ElementRef;
-  @ViewChild('testwidgetbtn', { static: false })  testwidgetbtnRef: ElementRef;
+  @ViewChild('teamContent', { static: false }) teamContent: ElementRef;
+  @ViewChild('testwidgetbtn', { static: false }) testwidgetbtnRef: ElementRef;
 
 
   wsRequestsUnserved: any;
@@ -110,7 +113,15 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   SHOW_NO_REQUEST_MSG: boolean
   USER_ROLE: string;
   join_polling: any
-  archive_polling: any
+  archive_polling: any;
+  CHAT_PANEL_MODE: boolean = true;
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
   /**
    * 
    * @param wsRequestsService 
@@ -145,7 +156,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     private cdref: ChangeDetectorRef,
     public contactsService: ContactsService,
     public logger: LoggerService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    public rolesService: RolesService,
+    private roleService: RoleService,
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -165,12 +178,68 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.getLoggedUser();
     this.getTranslations();
     this.setPerfectScrollbar();
-    
+
     this.getUserRole();
+    this.listenToProjectUser()
+    this.checkPermissions()
   }
 
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('unserved-for-panel')
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] isAuthorized ', this.isAuthorized)
+    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] permissionChecked ', this.permissionChecked)
+  }
 
- 
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+        
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // You can also check status.role === 'owner' if needed
+      });
+
+  }
+
 
   ngAfterViewInit() {
     this.getProjectUserRole();
@@ -199,7 +268,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.unsubscribe$.complete();
   }
 
- 
+
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -216,16 +285,22 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   // Join request
   // ------------------------------------------
   joinRequest(request_id: string) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+      return;
+    }
+
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
 
     const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
     window.parent.postMessage(msg, '*')
-    // this.onJoinHandled(request_id, this.currentUserID);
+      // this.onJoinHandled(request_id, this.currentUserID);
 
-    // ------------------------
-    // For test
-    // ------------------------
-    // this.onJoinHandledinWsRequestsUnsevedForPanel(request_id, this.currentUserID);
+      // ------------------------
+      // For test
+      // ------------------------
+      // this.onJoinHandledinWsRequestsUnsevedForPanel(request_id, this.currentUserID);
+    
   }
 
   listenToParentPostMessage() {
@@ -250,18 +325,18 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       if (event && event.data && event.data.action && event.data.calledBy) {
         if (event.data.action === "hidewidget" && event.data.calledBy === "unassigned-convs") {
           try {
-            if (window &&  window['Tiledesk'] ) {
+            if (window && window['Tiledesk']) {
               this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HIDE WIDGET - HERE 1')
               // setTimeout(() => {
-                // window['Tiledesk']('hide');
-                // window['tiledesk_widget_hide']();
+              // window['Tiledesk']('hide');
+              // window['tiledesk_widget_hide']();
               // }, 1500);
               window['Tiledesk']('onLoadParams', (event_data) => {
                 this.logger.log("[WS-REQUESTS-UNSERVED-X-PANEL] onLoadParams Initialized!");
-               
+
                 window['Tiledesk']('setParameter', { key: 'autoStart', value: false })
                 window['tiledesk_widget_hide']();
-                this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]  window[Tiledesk]' ,  window['Tiledesk'] )
+                this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL]  window[Tiledesk]', window['Tiledesk'])
                 // customAuth((token) => {
                 //     if (token) {
                 //         window.tiledesk.signInWithCustomToken(token);
@@ -323,15 +398,19 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
 
   archiveRequest(request_id) {
-    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 
-    // this.archive_polling = setInterval(() => {
-    // if (this.webSocketJs.ws.readyState === 1) {
-    //   if (this.webSocketJs.ws.readyState === 1) {
-    //     clearInterval(this.archive_polling);
-    //   }
-    this._closeSupportGroup(request_id)
+      // this.archive_polling = setInterval(() => {
+      // if (this.webSocketJs.ws.readyState === 1) {
+      //   if (this.webSocketJs.ws.readyState === 1) {
+      //     clearInterval(this.archive_polling);
+      //   }
+      this._closeSupportGroup(request_id)
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
     //   }
     // }, 100);
   }
@@ -491,11 +570,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         takeUntil(this.unsubscribe$)
       )
       .subscribe((totalrequests: number) => {
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
 
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
-      
+
           this.showSpinner = false;
           this.SHOW_NO_REQUEST_MSG = true
           this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)

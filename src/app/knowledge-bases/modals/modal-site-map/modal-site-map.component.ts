@@ -51,7 +51,7 @@ export class ModalSiteMapComponent implements OnInit {
   ];
 
   selectedScrapeType = 4;
-  extract_tags = ['body']; // Always preset to 'body' 
+  extract_tags = ['body']; // Always preset to 'body'
   unwanted_tags = [];
   unwanted_classnames = [];
   stored_scrape_option: boolean
@@ -65,6 +65,7 @@ export class ModalSiteMapComponent implements OnInit {
 
   // selectedRefreshRate = 0;
   selectedRefreshRate: any;
+  
   isAvailableRefreshRateFeature: boolean;
   refreshRateIsEnabled : boolean;
   id_project: string;
@@ -112,7 +113,7 @@ export class ModalSiteMapComponent implements OnInit {
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-SITEMAP] data: ", data);
-
+   
     this.selectedRefreshRate = this.refresh_rate[2].value
     this.logger.log("[MODALS-SITEMAP] this.refresh_rate[2]: ", this.refresh_rate[2].value);
 
@@ -124,6 +125,7 @@ export class ModalSiteMapComponent implements OnInit {
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
       this.selectedNamespace = data.selectedNamespace
+      console.log("[MODALS-SITEMAP] data > selectedNamespace: ", this.selectedNamespace);
       this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
       this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
       this.logger.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
@@ -137,9 +139,9 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.kbForm = this.createConditionGroup();
-    this.listenToOnSenSitemapSiteListEvent();
-    this.hasStoredScrapeOptions();
+    // this.kbForm = this.createConditionGroup();
+    this.listenToOnSenSitemapSiteListEvent()
+    this.hasStoredScrapeOptions()
   }
 
   ngAfterViewInit() {
@@ -154,7 +156,7 @@ export class ModalSiteMapComponent implements OnInit {
     }
   }
 
-   // CDK methods
+  // CDK methods
   open() {
     clearTimeout(this.closeTimeout);
     this.isOpen = true;
@@ -192,37 +194,41 @@ export class ModalSiteMapComponent implements OnInit {
     );
   }
 
-  // ngOnChanges(changes: SimpleChanges){
-  //   // this.logger.log('ModalSiteMapComponent changes: ', changes);
-  //   if(this.listSitesOfSitemap.length > 0){
-  //     this.buttonDisabled = false;
-  //     this.listOfUrls = this.listSitesOfSitemap.join('\n');
-  //     // this.logger.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
-  //     this.countSitemap = this.listSitesOfSitemap.length;
-  //     this.isSitemapLoaded = true;
-  //   } else {
-  //     this.buttonDisabled = true;
-  //     this.isSitemapLoaded = false;
-  //   }
+
+
+
+
+
+  // createConditionGroup(): FormGroup {
+  //   const namePattern = /^[^&<>]{3,}$/;
+  //   return this.formBuilder.group({
+  //     //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+  //     // url: ['', [Validators.required]],
+  //     siteMap: ['', [Validators.required]],
+  //     // name: ['', [Validators.required, Validators.pattern(namePattern)]]
+  //   })
   // }
 
-
-  createConditionGroup(): FormGroup {
-    const namePattern = /^[^&<>]{3,}$/;
-    return this.formBuilder.group({
-      //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      url: ['', [Validators.required]],
-      // name: ['', [Validators.required, Validators.pattern(namePattern)]]
-    })
-  }
-
   onChangeInput(event): void {
-    if (this.kbForm.valid) {
-      this.buttonDisabled = false;
-    } else {
-      this.buttonDisabled = true;
-    }
+    // if (this.kbForm.valid) {
+    //   this.buttonDisabled = false;
+    // } else {
+    //   this.buttonDisabled = true;
+    // }
   }
+
+  // importSitemap() {
+  //   let body  = {
+  //       "name": "https://www.sitemaps.org/sitemap.xml",
+  //       "source": "https://www.sitemaps.org/sitemap.xml",
+  //       "content": "",
+  //       "type": "sitemap",
+  //       "namespace": "{{namespace_id}}",
+  //       "refresh_rate": "never",
+  //       "scrape_type": 2
+  //     }
+    
+  // }
 
 
   onChangeList(event):void {
@@ -262,7 +268,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
-    // this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
+    this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
 
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });
@@ -298,22 +304,14 @@ export class ModalSiteMapComponent implements OnInit {
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 
+
+
+
   onSaveKnowledgeBase(){
-    if(!this.refreshRateIsEnabled) {
-      return
-    }
-    // if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
-    //   this.errorLimit = true;
-    // } else {
-    //   this.errorLimit = false;
-    //   const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
-    //     return row.trim() !== '';
-    //   });
-    //   let body = {
-    //     'list': arrayURLS,
-    //     scrape_type: this.selectedScrapeType,
-    //     refresh_rate: this.selectedRefreshRate
-    //   }
+   if(!this.refreshRateIsEnabled) {
+    return
+   } 
+   
       const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
       let body  = {
           "name":   this.siteMap,
@@ -336,7 +334,7 @@ export class ModalSiteMapComponent implements OnInit {
       }
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);
-   // }
+    // }
     
   }
 
@@ -403,7 +401,7 @@ export class ModalSiteMapComponent implements OnInit {
     window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 
-    /**
+  /**
    * Copy all scrape options to localStorage
    */
   copyAllScrapeOptions(): void {
@@ -438,7 +436,8 @@ export class ModalSiteMapComponent implements OnInit {
    */
   hasStoredScrapeOptions(): boolean {
     try {
-      this.stored_scrape_option = localStorage.getItem('scrape_options') !== null;
+      this.stored_scrape_option =
+        localStorage.getItem('scrape_options') !== null;
 
       return this.stored_scrape_option;
     } catch (error) {
@@ -557,5 +556,7 @@ export class ModalSiteMapComponent implements OnInit {
     const docsUrl = URL_kb_synced_Sitemap;
     window.open(docsUrl, '_blank');
   }
+
+
 
 }

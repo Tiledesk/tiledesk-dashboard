@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from 'app/services/users.service';
 import { AuthService } from 'app/core/auth.service';
@@ -8,6 +8,7 @@ import { WsRequestsService } from '../../services/websocket/ws-requests.service'
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { AnalyticsService } from 'app/services/analytics.service';
   styleUrls: ['./realtime.component.scss']
 })
 export class RealtimeComponent implements OnInit {
-
+  private unsubscribe$: Subject<any> = new Subject<any>();
   activeRequestsCount: number;
   unservedRequestsCount: number;
   servedRequestsCount: number;
@@ -65,6 +66,16 @@ export class RealtimeComponent implements OnInit {
     this.getProfileImageStorage();
   }
 
+   ngOnDestroy() {
+    this.logger.log('[ANALYTICS - REALTIME] - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true
@@ -80,14 +91,13 @@ export class RealtimeComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {
-    this.logger.log('[ANALYTICS - REALTIME] - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
-    this.subscription.unsubscribe();
-  }
-
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+     )
+    .subscribe((project) => {
 
       if (project) {
         this.id_project = project._id

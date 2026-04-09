@@ -80,9 +80,9 @@
             WhatsApp phone id: {{phone_number_id}}
           </div>
 
-            <div class="template-select-label">{{ 'ChooseTemplate' | translate }}</div>
+            <div class="template-select-label" style="font-size: 14px;">{{ 'ChooseTemplate' | translate }}</div>
             
-            <div class="select-and-btn-wpr">
+            <div class="select-and-btn-wpr" style="font-size: 14px;">
               <ng-select id="template-select" class="select-wa-template custom-panel-height"
                 appendTo="body"  
                 [clearable]="false" 
@@ -344,12 +344,12 @@
       <!-- Template Preview -->
       <!-- -------------------------------------------------- -->
       <div class="b-right-column">
-        <div class="preview-template-header">
+        <div class="preview-template-header" style="font-size: 14px;">
           {{ 'TemplatePreview' | translate }}
         </div>
         
         <div class="no-template-selected-container" *ngIf="!selected_template">
-          <div class="no-template-selected">
+          <div class="no-template-selected" style="font-size: 14px;">
             {{ 'NoTemplateSelected' | translate }}
           </div>
         </div>

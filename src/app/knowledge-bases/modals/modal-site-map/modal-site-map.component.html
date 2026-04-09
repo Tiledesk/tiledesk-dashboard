@@ -267,9 +267,11 @@
        
         <ng-container *ngIf="payIsVisible">
             <div *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled" class="upsell-for-refresh-rate">
-                <span class="material-icons-outlined" style="font-size: 20px;">bolt</span>
-                <span class="upsell-text">  {{ 'KbPage.WantToTryThisNewFeature' | translate }}
-                    <a class="upsell-text-link" (click)="contacUsViaEmail()"> {{'ContactUs' | translate}}!</a>
+                <span class="material-icons-outlined" style="font-size: 20px;position: relative;top: -1px;">
+                    bolt
+                </span>
+                <span class="upsell-text">  {{ 'KbPage.WantToTryTheSynchronizedSitemapFeature' | translate }}
+                    <a class="upsell-text-link" (click)="contacUsViaEmail()" style="display: block;"> {{'ContactUsToEnableIt' | translate}}!</a>
                 </span>
             </div>
         </ng-container>

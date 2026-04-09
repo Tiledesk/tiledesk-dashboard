@@ -32,6 +32,7 @@
     font-weight: 400;
     cursor: pointer;
     margin-left: 8px;
+    text-decoration: none ;
 }
 
 .custom-anchor-to-docs:hover {
@@ -55,7 +56,19 @@ input[type="text"] {
     -moz-box-sizing: border-box;
     border-radius: 5px;
     background-color: #fff !important;
-    // border: solid 1px #ddd;
+    color: #000000de;
+    font-weight: 300;
+}
+
+input[type=text]:disabled {
+    background-color: rgb(248, 249, 249) !important;
+}
+
+.no-copy {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .ticketing-email-wpr {
@@ -64,7 +77,9 @@ input[type="text"] {
 
 .paragraph-custom-margin-and-weight {
     margin-bottom: 6px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 300;
+    color: #333;
 }
 
 .copy-btn {
@@ -80,8 +95,20 @@ input[type="text"] {
 
 #ticketing-email {
     font-weight: 400;
+    margin-bottom: 4px;
 }
 
 #ticketing-email-dept {
     font-weight: 400;
+    margin-bottom: 4px;
+}
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: var(--header-font-family) !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  color: #fff !important;
 }

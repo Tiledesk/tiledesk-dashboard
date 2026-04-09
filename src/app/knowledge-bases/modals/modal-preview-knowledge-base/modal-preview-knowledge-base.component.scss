@@ -67,6 +67,21 @@
     color: rgb(28, 30, 33)
 }
 
+ // Custom styles for question textarea
+    .question-textarea {
+    width: 100%;
+    min-height: 37px;
+    max-height: 132px; /* 6 righe */
+    resize: none;
+    overflow-y: hidden;
+
+    line-height: 18px;
+    font-size: 14px;
+    padding: 8px 12px;
+        
+    border: solid 1px #ccc;
+    border-radius: 6px;
+    }
 
 .fake-input {
     height: 37px;
@@ -76,6 +91,7 @@
     align-items: center;
     padding: 12px;
     cursor: text;
+    font-size: 14px;
 
     .fake-input-inner {
         width: 100%;
@@ -220,6 +236,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -233,6 +250,7 @@
         line-height: 35px;
         font-weight: 400;
         margin-bottom: 10px;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {

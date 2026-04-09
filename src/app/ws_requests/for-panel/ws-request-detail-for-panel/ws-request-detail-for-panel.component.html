@@ -2,14 +2,14 @@
   <div class="request-detail-for-panel-container">
 
     <div class="row request-detail-for-panel-header">
-      <div class="col-xs-8 request-detail-for-panel-title-wpr">
+      <div class="col-8 request-detail-for-panel-title-wpr">
         <h4 class="request-detail-for-panel-title">
           {{'RequestMsgsPage.Details' | translate}}
         </h4>
       </div>
 
-      <div class="col-xs-4" style="text-align: right;">
-        <button type="button" class="close--round-btn" aria-label="Close" style="margin-right: 18px;margin-top: 2px;"
+      <div class="col-4 d-flex align-items-center" style="justify-content: flex-end;">
+        <button type="button" class="close--round-btn" aria-label="Close" style="margin-right: 18px;"
           (click)="closeRightSideBar()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -19,7 +19,7 @@
 
 
   <div class="row" style="margin-top:5px">
-    <div class="col-sm-12">
+    <div class="col-12">
       
       <p style="margin-bottom: 0px;" 
         matTooltipClass="conv-dtls-custom-mat-tooltip"
@@ -45,7 +45,7 @@
 
 
   <div class="row" style="margin-top:5px">
-    <div class="col-sm-12">
+    <div class="col-12">
       <p style="margin-bottom: 0px;"
         matTooltipClass="conv-dtls-custom-mat-tooltip"
         matTooltip="{{ 'Created' | translate }}" 
@@ -70,7 +70,7 @@
   </div>
 
   <div class="row" style="margin-top:5px">
-    <div class="col-sm-12">
+    <div class="col-12">
       <p style="margin-bottom: 0px;"
         matTooltipClass="conv-dtls-custom-mat-tooltip"
         matTooltip="{{ 'Department' | translate }}" 
@@ -374,8 +374,8 @@
       <!-- ----------------------- -->
       <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
       <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-        class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn" (click)='joinRequest(request?.request_id)'
-        [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000">
+        class="btn btn-tdblu btn-simple btn-sm tool_tip join-btn" (click)='joinRequest(request?.request_id)'
+        [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000 || !PERMISSION_TO_JOIN_REQUEST">
         <!-- ------------------------------------------------------------------------------------------------------ -->
         <!-- SVG font-awesome link icon -->
         <!-- ------------------------------------------------------------------------------------------------------ -->
@@ -403,8 +403,8 @@
       <!-- Archive btn -->
       <!-- ----------------------- -->
       <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-        class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn" (click)='archiveRequest(request?.request_id)'
-        [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
+        class="btn btn-tdblu btn-simple btn-sm tool_tip archive-btn" (click)='archiveRequest(request?.request_id)'
+        [disabled]="((request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000) ||  !PERMISSION_TO_ARCHIVE_REQUEST">
 
         <i class="material-icons">archive</i>
         <span

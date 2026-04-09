@@ -63,7 +63,8 @@ export class GoogleIntegrationComponent implements OnInit {
   checkKey() {
     return new Promise((resolve) => {
                 //  https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=YOUR_GEMINI_API_KEY
-      let url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=" + this.integration.value.apikey;
+     // let url_old = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=" + this.integration.value.apikey;
+      const url = "https://generativelanguage.googleapis.com/v1beta/models?key=" + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url).subscribe((resp: any) => {
         this.logger.log('[INT-GOOGLE-GEMINI] resp ' ,resp)
         if (resp) {

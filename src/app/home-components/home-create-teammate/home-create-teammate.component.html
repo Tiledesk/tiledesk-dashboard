@@ -146,19 +146,20 @@
                             </div>
                         </div>
 
-                        <div class="view-detail-btn" style="text-align: center;" *ngIf="USER_ROLE !== 'agent'">
-                            <div class="arrow-container" (click)="goToAgentProfile(projectUser?.id_user?._id)">
-                                <div id="arrow_2" class="arrow-wrapper">
-                                    <div class="text-block" style="margin-right: 16px; font-size: 13px;">
-                                        {{ 'ViewDetails' | translate }}
-                                    </div>
-                                    <div class="arrow arrow--right">
-                                        <span></span>
+                        <ng-container *ngIf="PERMISSION_TO_READ_TEAMMATE_DETAILS">
+                            <div class="view-detail-btn" style="text-align: center;" *ngIf="USER_ROLE !== 'agent'">
+                                <div class="arrow-container" (click)="goToAgentProfile(projectUser?.id_user?._id)">
+                                    <div id="arrow_2" class="arrow-wrapper">
+                                        <div class="text-block" style="margin-right: 16px; font-size: 13px;">
+                                            {{ 'ViewDetails' | translate }}
+                                        </div>
+                                        <div class="arrow arrow--right">
+                                            <span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
+                        </ng-container>
                     </div>
 
                 </sat-popover>
@@ -251,33 +252,18 @@
                 error
             </span>
         </div> -->
+        <ng-container *ngIf="PERMISSION_TO_INVITE">
+            <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
 
-        <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
+                <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="btn btn-tdblu-no-boxshadow"
+                    [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit"
+                    [ngClass]="{'invite-teammate-btn-disabled': projectUsersLength + countOfPendingInvites >= seatsLimit}"
+                    (click)="inviteTeammate()">
+                    Invite teammate
+                </button>
 
-
-            <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="btn btn-tdblu-no-boxshadow"
-            [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit"
-            [ngClass]="{'invite-teammate-btn-disabled': projectUsersLength + countOfPendingInvites >= seatsLimit}"
-            (click)="inviteTeammate()">
-                Invite teammate
-            </button>
-           
-            <!-- <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-                [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit"
-                [ngClass]="{'invite-teammate-btn-disabled': projectUsersLength + countOfPendingInvites >= seatsLimit}"
-                (click)="inviteTeammate()">
-                <span class="mat-button-wrapper">
-                    <span class="ml-2" style="font-size: 15px;">
-                        Invite teammate
-                    </span>
-                </span>
-                <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
-                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
-                </span>
-                <span class="mat-button-focus-overlay"> </span>
-            </button> -->
-
-        </div>
+            </div>
+        </ng-container>
     </div>
 
 

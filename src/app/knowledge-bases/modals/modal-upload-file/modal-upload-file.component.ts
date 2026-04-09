@@ -115,7 +115,7 @@ export class ModalUploadFileComponent implements OnInit {
 
       if (fileList.length > 0) { }
       const file: File = fileList[0];
-      this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
+      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
 
       this.uploadedFile = file;
 
@@ -153,7 +153,7 @@ export class ModalUploadFileComponent implements OnInit {
       // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
       // || mimeType === "application/json"
       // || mimeType === "text/plain"
-      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || mimeType === "text/plain") {
+      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"  || mimeType === "text/plain") {
 
         this.fileSupported = true;
 
@@ -175,7 +175,7 @@ export class ModalUploadFileComponent implements OnInit {
         }
         // this.doFormData(file)
         // && mimeType !==  "text/plain"
-      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType === "text/plain") {
+      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType !==  "text/plain") {
         // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
         
         this.fileSupported = false;
@@ -511,4 +511,5 @@ export class ModalUploadFileComponent implements OnInit {
     const docsUrl = URL_kb_contents_tags;
     window.open(docsUrl, '_blank');
   }
+
 }

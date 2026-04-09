@@ -18,242 +18,261 @@
     <!-- -------------------------------------------------------- -->
     <!--  Widget  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUp()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Widget" #tooltip="matTooltip"
-        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">chat_bubble</i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
-            </svg>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_WIDGET_SETUP">
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': WIDGET_SETUP_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUp()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Widget" #tooltip="matTooltip"
+          matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">chat_bubble</i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+              </svg>
 
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            Widget
-          </p>
-        </a>
-      </li>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              Widget
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
 
     <!-- -------------------------------------------------------- -->
     <!-- Widget installation -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': WIDGET_INSTALLATION_ROUTE_IS_ACTIVE}" (click)="goToWidgetInstallation()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Installation' | translate}}"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor" [ngStyle]="{'padding-left':IS_OPEN === true  ? '20px' : '0px' }">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">code</i> -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_WIDGET_SETUP">
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': WIDGET_INSTALLATION_ROUTE_IS_ACTIVE}" (click)="goToWidgetInstallation()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Installation' | translate}}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor" [ngStyle]="{'padding-left':IS_OPEN === true  ? '20px' : '0px' }">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">code</i> -->
 
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="m384-336 56-57-87-87 87-87-56-57-144 144 144 144Zm192 0 144-144-144-144-56 57 87 87-87 87 56 57ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
-            </svg>
-          </span>
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="m384-336 56-57-87-87 87-87-56-57-144 144 144 144Zm192 0 144-144-144-144-56 57 87 87-87 87 56 57ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
+              </svg>
+            </span>
 
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'Installation' | translate}}
-          </p>
-        </a>
-      </li>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{'Installation' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
 
     <!-- -------------------------------------------------------- -->
     <!-- Widget Transtations  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': TRANSLATIONS_ROUTE_IS_ACTIVE}" (click)="goToMultilanguage()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{translations}}" #tooltip="matTooltip"
-        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor" [ngStyle]="{'padding-left':IS_OPEN === true  ? '20px' : '0px' }">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">language</i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z" />
-            </svg>
-          </span>
-
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'Translations' | translate}}
-          </p>
-        </a>
-      </li>
-    </ng-container>
-
-    <!-- ------------------------------------------------------- -->
-    <!-- Routing & depts -->
-    <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE  || EDIT_DEPT_ROUTE_IS_ACTIVE || ADD_DEPT_ROUTE_IS_ACTIVE}"
-        (click)="goToDepartments()" matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
-        matTooltip="{{routing_and_depts_lbl}}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            account_balance
-          </i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M200-280v-280h80v280h-80Zm240 0v-280h80v280h-80ZM80-120v-80h800v80H80Zm600-160v-280h80v280h-80ZM80-640v-80l400-200 400 200v80H80Zm178-80h444-444Zm0 0h444L480-830 258-720Z" />
-            </svg>
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-            <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span>
-
-          </p>
-        </a>
-      </li>
-    </ng-container>
-
-    <!-- ------------------------------------------------------- -->
-    <!-- Teammates & Groups || EDIT_GROUP_ROUTE_IS_ACTIVE -->
-    <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': 
-        TEAMMATES_ROUTE_IS_ACTIVE || 
-        TEAMMATES_ADD_ROUTE_IS_ACTIVE || 
-        GROUPS_ROUTE_IS_ACTIVE || 
-        EDIT_GROUP_ROUTE_IS_ACTIVE || 
-        EDIT_TEAMMATE_ROUTE_IS_ACTIVE ||
-        ADD_GROUP_ROUTE_IS_ACTIVE}" (click)="goToTeammates()" matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
-        matTooltip="{{ teammatates_and_groups_lbl }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            supervisor_account
-          </i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" />
-            </svg>
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            <span *ngIf="isVisibleGRO">
-              {{ 'UsersAndGroups' | translate }}
+    <ng-container *ngIf="PERMISSION_TO_VIEW_WIDGET_SETUP">
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': TRANSLATIONS_ROUTE_IS_ACTIVE}" (click)="goToMultilanguage()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{translations}}" #tooltip="matTooltip"
+          matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor" [ngStyle]="{'padding-left':IS_OPEN === true  ? '20px' : '0px' }">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">language</i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z" />
+              </svg>
             </span>
-            <span *ngIf="!isVisibleGRO">
-              <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
+
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{'Translations' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Routing & depts --> 
+    <!-- ------------------------------------------------------- -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_DEPTS">
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': DEPTS_ROUTE_IS_ACTIVE  || EDIT_DEPT_ROUTE_IS_ACTIVE || ADD_DEPT_ROUTE_IS_ACTIVE}"
+          (click)="goToDepartments()" matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
+          matTooltip="{{routing_and_depts_lbl}}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+              account_balance
+            </i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M200-280v-280h80v280h-80Zm240 0v-280h80v280h-80ZM80-120v-80h800v80H80Zm600-160v-280h80v280h-80ZM80-640v-80l400-200 400 200v80H80Zm178-80h444-444Zm0 0h444L480-830 258-720Z" />
+              </svg>
             </span>
-          </p>
-        </a>
-      </li>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
+              <span *ngIf="!isVisibleDEP"> {{'Routing' | translate}} </span>
+
+            </p>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container> 
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Teammates & Groups || EDIT_GROUP_ROUTE_IS_ACTIVE  -->
+    <!-- ------------------------------------------------------- -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_TEAMMATES_ROLES_GROUPS">
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': 
+          TEAMMATES_ROUTE_IS_ACTIVE || 
+          TEAMMATES_ADD_ROUTE_IS_ACTIVE || 
+          GROUPS_ROUTE_IS_ACTIVE || 
+          EDIT_GROUP_ROUTE_IS_ACTIVE || 
+          EDIT_TEAMMATE_ROUTE_IS_ACTIVE ||
+          ADD_GROUP_ROUTE_IS_ACTIVE ||
+          ROLE_ROUTE_IS_ACTIVE ||
+          CREATE_NEW_ROLE_ROUTE_IS_ACTIVE ||
+          EDIT_ROLE_ROUTE_IS_ACTIVE}" (click)="goToTeammatesRolesGroups()" matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
+          matTooltip="{{ teammatates_and_groups_lbl }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+              supervisor_account
+            </i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" />
+              </svg>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              <span *ngIf="isVisibleGRO">
+                {{ 'UsersAndGroups' | translate }}
+              </span>
+              <span *ngIf="!isVisibleGRO">
+                <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
+              </span>
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
 
 
     <!-- ------------------------------------------------------- -->
-    <!-- EMAIL-TICKETING -->
+    <!-- EMAIL-TICKETING   -->
     <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleETK">
-      <li [ngClass]="{'active-item': EMAIL_TICKETING_ROUTE_IS_ACTIVE}" (click)="goToEmailTicketing()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'EmailTicketing' | translate}}"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            email
-          </i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
-            </svg>
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'EmailTicketing' | translate}}
-          </p>
-        </a>
-      </li>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_EMAIL_TICKETING">
+      <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleETK">
+        <li [ngClass]="{'active-item': EMAIL_TICKETING_ROUTE_IS_ACTIVE}" (click)="goToEmailTicketing()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'EmailTicketing' | translate}}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+              email
+            </i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
+              </svg>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{'EmailTicketing' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
 
     <!-- ------------------------------------------------------- -->
     <!-- Canned responses -->
     <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleCAR && USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
-        matTooltip="{{'CannedResponses.CannedResponses' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            quickreply
-          </i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v240h-80v-240H160v525l46-45h394v80H240L80-80Zm80-240v-480 480ZM760-40v-200h-80v-240h200l-68 160h88L760-40Z" />
-            </svg>
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'CannedResponses.CannedResponses' | translate}}
-          </p>
-        </a>
-      </li>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_CANNED_RESPONSES && PERMISSION_TO_UPDATE_CANNED">
+      <ng-container *ngIf="isVisibleCAR && USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToCannedResponses()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
+          matTooltip="{{'CannedResponses.CannedResponses' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+              quickreply
+            </i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v240h-80v-240H160v525l46-45h394v80H240L80-80Zm80-240v-480 480ZM760-40v-200h-80v-240h200l-68 160h88L760-40Z" />
+              </svg>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{'CannedResponses.CannedResponses' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
 
     <!-- -------------------------------------------------------------  -->
     <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
     <!-- ------------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleLBS && USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip=" {{'Tags.ConversationsTAG' | translate}}"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">local_offer</i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM513-160l286-286-353-354H160v286l353 354ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Zm220 160Z" />
-            </svg>
-          </span>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_TAGS && PERMISSION_TO_UPDATE_TAGS">
+      <ng-container *ngIf="isVisibleLBS && USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip=" {{'Tags.ConversationsTAG' | translate}}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">local_offer</i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM513-160l286-286-353-354H160v286l353 354ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Zm220 160Z" />
+              </svg>
+            </span>
 
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'Tags.Tags' | translate}}
-          </p>
-        </a>
-      </li>
-    </ng-container>
-
-
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{'Tags.Tags' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container> 
 
     <!-- -------------------------------------------------------- -->
     <!--  Operatin Hours  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': OPERATING_HOURS_ROUTE_IS_ACTIVE}" (click)="goToOperatingHours()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'Hours' | translate }}"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">watch_later</i> -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_OH">
+      <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': OPERATING_HOURS_ROUTE_IS_ACTIVE}" (click)="goToOperatingHours()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'Hours' | translate }}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">watch_later</i> -->
 
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z" />
-            </svg>
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z" />
+              </svg>
 
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{ 'Hours' | translate }}
-          </p>
-        </a>
-      </li>
-    </ng-container>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{ 'Hours' | translate }}
+            </p>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container> 
 
 
     <!-- -------------------------------------------------------- -->
@@ -264,6 +283,7 @@
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Automations" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a class="settings-sidebar-anchor">
+         
           <span *ngIf="IS_OPEN === true || IS_OPEN === false">
             <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
               class="settings-sidebar-icons">
@@ -310,82 +330,88 @@
     <!-- -------------------------------------------------------- -->
     <!--  Integrations  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleINT && USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToIntegrations()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Integrations" #tooltip="matTooltip"
-        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            apps
-          </i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M240-160q-33 0-56.5-23.5T160-240q0-33 23.5-56.5T240-320q33 0 56.5 23.5T320-240q0 33-23.5 56.5T240-160Zm240 0q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm240 0q-33 0-56.5-23.5T640-240q0-33 23.5-56.5T720-320q33 0 56.5 23.5T800-240q0 33-23.5 56.5T720-160ZM240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400ZM240-640q-33 0-56.5-23.5T160-720q0-33 23.5-56.5T240-800q33 0 56.5 23.5T320-720q0 33-23.5 56.5T240-640Zm240 0q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Zm240 0q-33 0-56.5-23.5T640-720q0-33 23.5-56.5T720-800q33 0 56.5 23.5T800-720q0 33-23.5 56.5T720-640Z" />
-            </svg>
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'Integrations' | translate}}
-          </p>
-        </a>
-      </li>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_INTEGRATIONS"> 
+      <ng-container *ngIf="isVisibleINT && USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToIntegrations()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Integrations" #tooltip="matTooltip"
+          matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+              apps
+            </i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M240-160q-33 0-56.5-23.5T160-240q0-33 23.5-56.5T240-320q33 0 56.5 23.5T320-240q0 33-23.5 56.5T240-160Zm240 0q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm240 0q-33 0-56.5-23.5T640-240q0-33 23.5-56.5T720-320q33 0 56.5 23.5T800-240q0 33-23.5 56.5T720-160ZM240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400ZM240-640q-33 0-56.5-23.5T160-720q0-33 23.5-56.5T240-800q33 0 56.5 23.5T320-720q0 33-23.5 56.5T240-640Zm240 0q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Zm240 0q-33 0-56.5-23.5T640-720q0-33 23.5-56.5T720-800q33 0 56.5 23.5T800-720q0 33-23.5 56.5T720-640Z" />
+              </svg>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{'Integrations' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
 
     <!-- ----------------------------- -->
     <!-- APPS  -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': APPS_ROUTE_IS_ACTIVE}" (click)="goToApps()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'Apps' | translate }}"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            dashboard_customize
-          </i> -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_APPS"> 
+      <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': APPS_ROUTE_IS_ACTIVE}" (click)="goToApps()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'Apps' | translate }}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+              dashboard_customize
+            </i> -->
 
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M120-840h320v320H120v-320Zm80 80v160-160Zm320-80h320v320H520v-320Zm80 80v160-160ZM120-440h320v320H120v-320Zm80 80v160-160Zm440-80h80v120h120v80H720v120h-80v-120H520v-80h120v-120Zm-40-320v160h160v-160H600Zm-400 0v160h160v-160H200Zm0 400v160h160v-160H200Z" />
-            </svg>
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M120-840h320v320H120v-320Zm80 80v160-160Zm320-80h320v320H520v-320Zm80 80v160-160ZM120-440h320v320H120v-320Zm80 80v160-160Zm440-80h80v120h120v80H720v120h-80v-120H520v-80h120v-120Zm-40-320v160h160v-160H600Zm-400 0v160h160v-160H200Zm0 400v160h160v-160H200Z" />
+              </svg>
 
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{ 'Apps' | translate }}
-          </p>
-        </a>
-      </li>
-    </ng-container>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{ 'Apps' | translate }}
+            </p>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container> 
 
 
     <!-- -------------------------------------------------------- -->
     <!--  Project Settings  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': 
-        PROJECT_SETTINGS_ROUTE_IS_ACTIVE || 
-        SMTP_ROUTE_IS_ACTIVE || 
-        WEBHOOK_ROUTE_IS_ACTIVE ||
-        NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE } " (click)="goToProjectSettings()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'ProjectSettings' | translate }}"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false"
-            class="material-icons settings-sidebar-icons">construction</i> -->
-          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
-            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-              class="settings-sidebar-icons">
-              <path
-                d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z" />
-            </svg>
-          </span>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{ 'ProjectSettings' | translate }}
-          </p>
-        </a>
-      </li>
+    <ng-container *ngIf="PERMISSION_TO_VIEW_PROJECT_SETTINGS">   
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li [ngClass]="{'active-item': 
+          PROJECT_SETTINGS_ROUTE_IS_ACTIVE || 
+          SMTP_ROUTE_IS_ACTIVE || 
+          WEBHOOK_ROUTE_IS_ACTIVE ||
+          NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE } " (click)="goToProjectSettings()"
+          matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'ProjectSettings' | translate }}"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+          <a class="settings-sidebar-anchor">
+            <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false"
+              class="material-icons settings-sidebar-icons">construction</i> -->
+            <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
+                class="settings-sidebar-icons">
+                <path
+                  d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z" />
+              </svg>
+            </span>
+            <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              {{ 'ProjectSettings' | translate }}
+            </p>
+          </a>
+        </li>
+      </ng-container>
     </ng-container>
   </ul>
 

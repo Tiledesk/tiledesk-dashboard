@@ -21,6 +21,9 @@ import {
   LLM_MAX_TOKENS_SLIDER_UI_CAP,
 } from 'app/utils/util';
 
+
+
+
 @Component({
   selector: 'modal-preview-knowledge-base',
   templateUrl: './modal-preview-knowledge-base.component.html',
@@ -42,9 +45,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
-    chunkOnly: null,
-    reRanking: null,
-    reRankingMultipler: null,
   }]
   panelOpenState = false;
   chunksPanelOpen = false;
@@ -90,15 +90,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   storedQuestionNoDoubleQuote: string;
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number;
-  public chunkOnly: boolean;
-  public reRanking: boolean;
-  public reRankingMultipler: number
+  public chunkOnly: boolean
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   contentChunks: string[] = [];
   contentSources: { value: string; isUrl: boolean }[] = [];
 
-    // KB Tags
+  // KB Tags
   kbTag: string = '';
   kbTagsArray = []
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
@@ -118,6 +116,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       offsetX: -30
     }
   ];
+  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -148,7 +147,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
-      this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
@@ -159,15 +157,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
       }
-
-      if (!this.selectedNamespace.preview_settings.reranking) {
-        this.reRanking = false
-        this.selectedNamespace.preview_settings.reranking = this.reRanking
-      } else {
-        this.reRanking = this.selectedNamespace.preview_settings.reranking
-        this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
-      }
-
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
         this.advancedPrompt = false
@@ -333,7 +322,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       width: '320px',
       position: { left: 'calc(50% + 230px)', top: '60px' },
       hasBackdrop: false,
-      autoFocus: false,
       data: {
         selectedNamespace: this.selectedNamespace,
         calledBy: "modal-preview-kb",
@@ -448,14 +436,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.topK = this.selectedNamespace.preview_settings.top_k
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
         }
-        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
-          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
-        } else {
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 2', editedAiSettings[0]['reRankingMultipler'])
-          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
-        }
 
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
@@ -471,21 +451,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
         } else if (editedAiSettings && editedAiSettings[0]['chunkOnly'] === false) {
           this.chunkOnly = editedAiSettings[0]['chunkOnly']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 2', this.chunkOnly)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from editedAiSettings 1', this.chunkOnly)
         } else if ((editedAiSettings && editedAiSettings[0]['chunkOnly'] === null)) {
-          this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
-        }
-
-        if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
-          this.reRanking = editedAiSettings[0]['reRanking']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
-        } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
-          this.reRanking = editedAiSettings[0]['reRanking']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
-        } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
-          this.reRanking = this.selectedNamespace.preview_settings.reranking
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
+          this.chunkOnly = this.selectedNamespace.preview_settings.chunkOnly
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -561,8 +530,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
-      "reranking": this.reRanking,
-      "reranking_multiplier":  this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
@@ -597,7 +564,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   askAI(body, startTime) {
     this.openaiService.askGpt(body).subscribe((response: any) => {
-      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", body)
+
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       response['ai_model'] = this.selectedModel
       this.prompt_token_size = response.prompt_token_size;
@@ -607,7 +574,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
       this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
       this.qa = response;
-     
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
       this.logger.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
@@ -639,36 +605,79 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.searching = false;
     }, (err) => {
       this.logger.log("ask gpt preview response error: ", err);
-      // this.logger.log("ask gpt preview response error message: ", error.message);
-      // this.logger.log("ask gpt preview response error error: ", error.error);
-      if (err && err.error && err.error.error_code === 13001) {
+      
+      // Gestione errori con error_message che contiene JSON (es. errori Anthropic API)
+      if (err && err.error && err.error.error_message) {
+        try {
+          const errorMessage = err.error.error_message;
+          this.logger.log("ask gpt preview error_message: ", errorMessage);
+          
+          // Cerca di estrarre il JSON dalla stringa (formato: BadRequestError("Error code: 400 - {...}"))
+          const jsonMatch = errorMessage.match(/\{.*\}/);
+          if (jsonMatch) {
+            // Sostituisci le virgolette singole con doppie per rendere il JSON valido
+            let jsonString = jsonMatch[0].replace(/'/g, '"');
+            const parsedError = JSON.parse(jsonString);
+            
+            // Estrai il messaggio dall'oggetto error
+            if (parsedError.error && parsedError.error.message) {
+              this.answer = parsedError.error.message;
+              this.logger.log("ask gpt preview extracted message: ", this.answer);
+            } else if (parsedError.message) {
+              this.answer = parsedError.message;
+            } else {
+              this.answer = errorMessage;
+            }
+          } else {
+            // Se non c'è JSON, prova a estrarre il messaggio con regex
+            const match = errorMessage.match(/'message':\s*'([^']+)'/);
+            if (match) {
+              this.answer = match[1];
+            } else {
+              this.answer = errorMessage;
+            }
+          }
+        } catch (parseError) {
+          this.logger.error("ask gpt preview error parsing error_message: ", parseError);
+          // Fallback: usa il regex originale
+          const match = err.error.error_message.match(/'message':\s*'([^']+)'/);
+          this.answer = match ? match[1] : err.error.error_message;
+        }
+      } else if (err && err.error && err.error.error_code === 13001) {
         this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
         this.aiQuotaExceeded = true
       } else if (err && err.error && err.error.message) {
         this.answer = err.error.message;
       } else if (err.error && err.error.error && err.error.error.answer) {
         this.answer = err.error.error.answer;
-
         if (err.error.error.error_message) {
           let errorString = err.error.error.error_message
           const match = errorString.match(/'message':\s*'([^']+)'/);
           const message = match ? match[1] : '';
-          this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
-          // this.answer = this.answer + ' (' + err.statusText + ')'
-          this.answer = this.answer + ' (' + message + ')'
+          if (message) {
+            this.answer = this.answer + ' (' + message + ')'
+          }
         } else if (!err.error.error.error_message) {
           if (err.statusText) { 
             this.answer = this.answer + ' (' + err.statusText + ')'
           }
         }
-        
-       // if (err.statusText) {
-       //   this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
-       //   this.answer = this.answer + ' (' + err.statusText + ')'
-       // }
+      } else if (err && err.error && err.error.error) {
+        this.answer = err.error.error
+      } else if (err && err.message) {
+        this.answer = err.message;
+      } else {
+        this.answer = 'An error occurred while processing your request.';
       }
 
-      this.logger.error("ERROR ask gpt: ", err.message);
+      // this.logger.error("ERROR ask gpt err.message: ", err.message);
+      // console.log("ERROR ask gpt err: ", err);
+      // console.log("ERROR ask gpt err.error.error.error_message: ", err.error.error.error_message);
+      // let errorString = err.error.error.error_message
+      // // Estrai il messaggio dopo 'message': '
+      // const match = errorString.match(/'message':\s*'([^']+)'/);
+      // const message = match ? match[1] : '';
+      // console.log("ERROR ask gpt message ",  message);
 
       // this.error_answer = true;
       this.responseTime = 0;
@@ -871,43 +880,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
     textarea.style.overflowY =
     textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
- }
-
-
-  // onInputPreviewChange() {
-  //   let element = document.getElementById('enter-button')
-  //   if (this.question !== "") {
-  //     element.style.display = 'inline-block';
-  //   } else {
-  //     element.style.display = 'none';
-  //   }
-    
-  //   // Auto-resize textarea
-  //   this.adjustTextareaHeight();
-  // }
-
-  // adjustTextareaHeight() {
-  //   if (this.questionTextarea && this.questionTextarea.nativeElement) {
-  //     const textarea = this.questionTextarea.nativeElement;
-  //     // Reset height to calculate scrollHeight
-  //     textarea.style.height = 'auto';
-  //     const lineHeight = parseInt(getComputedStyle(textarea).lineHeight) || 20;
-  //     // Initial height: 37px (container has padding: 0px 12px, so no vertical padding)
-  //     const minHeight = 37; // Initial height to match container
-  //     const maxHeight = lineHeight * 3; // 3 rows max
-  //     const scrollHeight = textarea.scrollHeight;
-      
-  //     if (scrollHeight <= maxHeight) {
-  //       // Ensure minimum height of initial size (37px)
-  //       const newHeight = Math.max(scrollHeight, minHeight);
-  //       textarea.style.height = newHeight + 'px';
-  //       textarea.style.overflowY = 'hidden';
-  //     } else {
-  //       textarea.style.height = maxHeight + 'px';
-  //       textarea.style.overflowY = 'auto';
-  //     }
-  //   }
-  // }
+  }
 
   onEnterKeyDown(event: KeyboardEvent) {
     // Submit on Enter (without Shift), otherwise allow new line
@@ -917,6 +890,16 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       }
       event.preventDefault();
       this.submitQuestion();
+    }
+  }
+
+
+  onInputPreviewChange() {
+    let element = document.getElementById('enter-button')
+    if (this.question !== "") {
+      element.style.display = 'inline-block';
+    } else {
+      element.style.display = 'none';
     }
   }
 
@@ -959,8 +942,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     // element.style.display = 'none';
     this.dialogRef.close({ action: 'open-settings-modal', data: this.body });
   }
-
-   /**
+  
+  /**
    * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
    * L'observer viene creato una sola volta in ngAfterViewInit
    */
@@ -982,6 +965,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       });
     }
   }
+
+  
 
 
   /**

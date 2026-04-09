@@ -2,7 +2,8 @@
     <!-- <p>Start for free with <b>Customer.io.</b><a href="https://fly.customer.io/signup" target="_blank"> Sign up now!</a></p> -->
 
     <div class="signup">
-        <p [innerHTML]="'Integration.StartForFree' | translate: translateparams"></p><a href="https://fly.customer.io/signup" target="_blank" style="margin-left: 4px;"> {{ 'Integration.SignupNow' | translate }}</a>
+        <a href="https://fly.customer.io/signup" target="_blank" style="margin-left: 4px;"> {{ 'Integration.Signup' | translate }}.</a>
+        <p [innerHTML]="'Integration.StartForFree' | translate: translateparams"></p>
     </div>
 
     <div *ngIf="isVerified === true" class="status">
@@ -67,10 +68,6 @@
 
 
     <div class="integration-footer">
-        <!-- custom-primary-button -->
-        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
-            {{ 'Integration.Save' | translate }}
-        </button>
         <!-- custom-danger-button -->
         <button *ngIf="integration._id" class="btn btn-red" (click)="deleteIntegration()">
             {{ 'Integration.Delete' | translate }}
@@ -78,6 +75,10 @@
         <!-- custom-danger-button -->
         <button *ngIf="!integration._id" class="btn btn-outlined" (click)="resetValues()">
             {{ 'Integration.Clear' | translate }}
+        </button>
+        <!-- custom-primary-button -->
+        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+            {{ 'Integration.Save' | translate }}
         </button>
        
         

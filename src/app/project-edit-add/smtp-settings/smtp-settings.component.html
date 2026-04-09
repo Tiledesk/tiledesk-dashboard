@@ -1,22 +1,16 @@
-<!-- <div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
-[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="go back"
-    (click)="goBack()">keyboard_arrow_left</i>
 
-  {{ 'ProjectEditPage.SMTPSettings' | translate }}
-</div> -->
 
-<span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
+<!-- <span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
+</span> -->
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
 
-  <div class="page-title--sidebar-settings"
+  <div class="page-title--sidebar-settings" style="top: 19px;"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -47,7 +41,7 @@
                     <label class="col-sm-3  custom-label">
                       {{'ProjectEditPage.HostName' | translate}}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="smtphost" [(ngModel)]="smtp_host_name" class="input" type="text">
                     </div>
                   </div>
@@ -59,7 +53,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ "ProjectEditPage.Port" | translate }}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="smtp_port" [(ngModel)]="smtp_port" class="input" type="text">
                     </div>
                   </div>
@@ -71,7 +65,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ "ProjectEditPage.SenderAddress" | translate }}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="senderaddress" [(ngModel)]="sender_email_address"
                         (ngModelChange)="senderEmailChange($event)" class="input" type="email"
                         [ngClass]="{'invalid-email' : !SENDER_EMAIL_IS_VALID}" style="margin-bottom:3px">
@@ -103,7 +97,7 @@
                     <label class="col-sm-3  custom-label">
                       {{ "ProjectEditPage.UserName" | translate }}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <input name="smtpemail" [(ngModel)]="smtp_usermame" class="input" type="text">
 
                     </div>
@@ -116,17 +110,16 @@
                     <label class="col-sm-3  custom-label">
                       Password
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <!-- <input name="smtpswd" [(ngModel)]="smtp_pswd" class="input" type="password"
                     autocomplete="new-password"> -->
 
-                      <div class="input-group">
+                      <div class="input--group" style="display: flex;">
                         <input [(ngModel)]="smtp_pswd" class="input" [type]="showPswd ? 'text' : 'password'"
-                          name="smtpswd" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
+                          name="smtpswd" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: unset !important;"
                           autocomplete="new-password">
                         <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                          <button id="smtp-show-password-btn" class="btn btn-primary show-password-btn" (click)="showPassword()"
-                            style="">
+                          <button id="smtp-show-password-btn" class="btn btn-primary show-password-btn" (click)="showPassword()">
                             <span *ngIf="!showPswd" class="material-icons">
                               visibility_off
                             </span>
@@ -145,10 +138,10 @@
                   <!-- SMTP Connection security -->
                   <!-- --------------------------------------- -->
                   <div class="row">
-                    <label class="col-sm-3  custom-label">
+                    <label class="col-sm-3  custom-label" style="padding-top: 9px !important;">
                       {{ 'ProjectEditPage.ConnectionSecurity' | translate}}
                     </label>
-                    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                    <div class="col-12 col-sm-6 col-md-5 col-lg-4">
                       <div class="checkbox">
                         <label>
                           <input [(ngModel)]="smtp_connetion_security" type="checkbox" name="connectionSecurity">
@@ -162,7 +155,7 @@
 
                 <div class="row"
                   style="border-top:1px solid  #ddd !important;width: calc((100% / 3) + 360px); margin-left:18px">
-                  <div class="col-xs-6" style=" padding-left:0px">
+                  <div class="col-6" style=" padding-left:0px">
                     <!-- btn-primary send-smtp-test-email -->
                     <button class="btn btn-outlined" (click)="sendSMTPTestEmail()">
                       <span class="material-icons">
@@ -171,15 +164,17 @@
                       {{ "ProjectEditPage.SendSMPTTestEmail" | translate }}
                     </button>
                   </div>
-                  <div class="col-xs-6" style="text-align: right; padding-right:0px">
-                    <!-- btn-white reset-to-default-smtp-configuration -->
+                  <div class="col-6" style="text-align: right; padding-right:0px">
+               
                     <button type="submit" class="btn btn-gray-no-boxshadow"
                       (click)="resetToDefaultSMTPConfiguration()" style="margin-right: 8px;">
-                      {{ "ResetToDefaults" | translate }}
+                      {{ "RemoveSmtpSettings" | translate }}
                     </button>
+
                     <!-- btn-primary update-smtp-configuration -->
-                    <button type="submit" class="btn btn-tdblu-no-boxshadow"
-                      (click)="updateSMTPConfiguration()">
+                    <button type="submit" class="btn btn-tdblu-no-boxshadow update-smtp-configuration pull-right"
+                      (click)="updateSMTPConfiguration()" 
+                      [disabled]="!smtp_host_name || !smtp_host_name || !smtp_port">
                       {{ "Update" | translate }}
                     </button>
                   </div>

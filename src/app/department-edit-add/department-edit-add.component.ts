@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, group_assignment_doc, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { LoggerService } from '../services/logger/logger.service';
@@ -24,6 +24,12 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditLoadDistributionModalComponent } from './edit-load-distribution-modal/edit-load-distribution-modal.component';
+import { EditGroupsLoadDistributionModalComponent } from './edit-groups-load-distribution-modal/edit-groups-load-distribution-modal.component';
+import { ProjectService } from 'app/services/project.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -37,9 +43,9 @@ const Swal = require('sweetalert2')
   // host: { '[@slideInOutAnimation]': '' }
 })
 // , ComponentCanDeactivate
-export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
+export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  public group_assignment_doc_url = group_assignment_doc
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
 
@@ -53,12 +59,13 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   deptName_toUpdate: string;
   dept_description_toUpdate: string;
+  dept_description_toUpdate_temp: string;
 
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
   selectedBotId: string;
   selectedChatbot: string;
-  selectedGroupId: string;
+  selectedGroupId: any;
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
 
@@ -151,7 +158,25 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   botLogo: string;
-  
+
+  isAuthorized = false;
+  permissionChecked = false;
+  displayAssignTo: boolean = true;
+  groupsParsedArray: any[] = []
+
+  // groupsLoadPercentageFake = [{"id":"68480837c19660002ded7b79","percentage":23},{"id":"68480982c19660002deda58e","percentage":7},{"id":"687a6aa364222f002d1c83f9","percentage":30},{"id":"687a6ab364222f002d1c8410","percentage":20},{"id":"687a6ac064222f002d1c8426","percentage":12},{"id":"687a6aca64222f002d1c843c","percentage":8}]
+  groupsLoadPercentage: any[] = []
+
+  tags: any;
+
+  allowMultipleGroups: boolean;
+
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
+  PERMISSION_TO_CREATE_GROUP: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -168,6 +193,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     public prjctPlanService: ProjectPlanService,
     private roleService: RoleService,
     public brandService: BrandService,
+    private dialog: MatDialog,
+    private projectService: ProjectService,
+    public rolesService: RolesService
   ) {
     super(prjctPlanService, notify);
 
@@ -182,73 +210,49 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------
   // @HostListener('window:beforeunload')
 
-  @HostListener('window:beforeunload', ['$event'])
-  onbeforeunload(event) {
-    if (this.NOT_HAS_EDITED === false) {
-      event.preventDefault();
-      event.returnValue = false;
-    }
-  }
-  canDeactivate(): Observable<boolean> | boolean {
-    // insert logic to check if there are pending changes here;
-    // returning true will navigate without confirmation
-    // returning false will show a confirm dialog before navigating away
+  // @HostListener('window:beforeunload', ['$event'])
+  // onbeforeunload(event) {
+  //   if (this.NOT_HAS_EDITED === false) {
+  //     event.preventDefault();
+  //     event.returnValue = false;
+  //   }
+  // }
+  // canDeactivate(): Observable<boolean> | boolean {
+  //   // insert logic to check if there are pending changes here;
+  //   // returning true will navigate without confirmation
+  //   // returning false will show a confirm dialog before navigating away
 
-    if (this.NOT_HAS_EDITED === true) {
-      return true;
+  //   if (this.NOT_HAS_EDITED === true) {
+  //     return true;
 
-    } else if (this.NOT_HAS_EDITED === false) {
+  //   } else if (this.NOT_HAS_EDITED === false) {
 
-      // areYouSureMsg
-      // youHaveUnsavedChangesMsg
-      // cancelMsg
-      // this.cancelMsg,
 
-      // return swal({
-      //   // title: this.areYouSureMsg,
-      //   text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
-      //   icon: "warning",
-      //   buttons: true,
-      //   // dangerMode: true,
-      // }).then((willRemain) => {
-      //     if (willRemain) {
-      //       this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
+  //     return Swal.fire({
+  //       title: this.areYouSureMsg,
+  //       text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
+  //       icon: "warning",
+  //       showCloseButton: false,
+  //       showCancelButton: true,
+  //       confirmButtonText: this.translate.instant('YesImSure'),
+  //       // confirmButtonColor: "var(--blue-light)",
+  //       focusConfirm: false,
+  //       reverseButtons: true
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
 
-      //       return true;
+  //         return true;
 
-      //     } else {
-      //       this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
+  //       } else {
+  //         this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
 
-      //       return false;
+  //         return false;
 
-      //     }
-      //   });
-
-      return Swal.fire({
-        title: this.areYouSureMsg,
-        text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
-        icon: "warning",
-        showCloseButton: false,
-        showCancelButton: true,
-        confirmButtonText: this.translate.instant('YesImSure'),
-        // confirmButtonColor: "var(--blue-light)",
-        focusConfirm: false,
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
-
-          return true;
-
-        } else {
-          this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
-
-          return false;
-
-        }
-      });
-    }
-  }
+  //       }
+  //     });
+  //   }
+  // }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -280,7 +284,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('dept-edit-add')
+    // this.roleService.checkRoleForCurrentProject('dept-edit-add')
     this.getProfileImageStorage();
     this.listenSidebarIsOpened();
 
@@ -303,7 +307,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     // if (this.router.url === '/create') {
 
     if (this.router.url.indexOf('/create') !== -1) {
-
+      this.checkCreatePermissions();
       this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.showSpinner = false;
@@ -320,8 +324,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       this.logger.log('[DEPT-EDIT-ADD] ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
       this.ROUTING_PAGE_MODE = false;
+      this.getCurrentProject();
 
     } else if (this.router.url.indexOf('/edit') !== -1) {
+      this.checkEditPermissions();
       this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - HAS CLICKED EDIT DEPT');
       this.EDIT_VIEW = true;
       this.showSpinner = true;
@@ -329,23 +335,23 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.ROUTING_PAGE_MODE = false;
 
       // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
-      this.getParamsAndDeptById();
+      // this.getParamsAndDeptById();
+      this.getCurrentProject();
+    } 
+    // else if (this.router.url.indexOf('/routing') !== -1) {
 
+    //   this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
+    //   this.EDIT_VIEW = true;
+    //   this.SHOW_OPTION_FORM = false; // to check if is used
+    //   this.showSpinner = true;
 
-    } else if (this.router.url.indexOf('/routing') !== -1) {
+    //   this.ROUTING_PAGE_MODE = true;
 
-      this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
-      this.EDIT_VIEW = true;
-      this.SHOW_OPTION_FORM = false; // to check if is used
-      this.showSpinner = true;
+    //   // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
+    //   this.getParamsAndDeptById();
+    // }
 
-      this.ROUTING_PAGE_MODE = true;
-
-      // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
-      this.getParamsAndDeptById();
-    }
-
-    this.getCurrentProject();
+    
 
     /**
      * ======================= GET FAQ-KB LIST =========================
@@ -361,6 +367,180 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.getBrowserVersion()
     this.getProjectPlan();
     this.getOSCODE();
+    this.listenToProjectUser();
+  }
+
+  ngAfterViewInit() {
+    
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[DEPT-EDIT-ADD] - ROLE:', status.role);
+        console.log('[DEPT-EDIT-ADD] - PERMISSIONS', status.matchedPermissions);
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[DEPT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+
+        // PERMISSION_TO_EDIT_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[WDEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+
+        // --------------------------
+        // PERMISSION_TO_CREATE_GROUP
+        // --------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_CREATE_GROUP = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_CREATE_GROUP = false;
+          console.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_CREATE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUPS_CREATE);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+        }
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[DEPT-EDIT-ADD] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[DEPT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+
+      });
+  }
+
+  async checkEditPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('department-edit')
+    console.log('[DEPT-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[DEPT-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
+
+  }
+
+  async checkCreatePermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('department-create')
+    console.log('[DEPT-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project
+          this.projectId = project._id;
+          this.getProjectById(this.projectId)
+        }
+        // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
+      });
+  }
+
+  
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - this.EDIT_VIEW: ', this.EDIT_VIEW);
+      this.allowMultipleGroups = project.profile?.customization?.allowMultipleGroups ? true : false;
+      
+      if (this.EDIT_VIEW)  {
+     // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
+      this.getParamsAndDeptById();
+      }
+     
+      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
+    }, error => {
+      this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID * COMPLETE * ');
+    
+    });
+  }
+
+   getParamsAndDeptById() {
+    this.id_dept = this.route.snapshot.params['deptid'];
+    this.logger.log('[DEPT-EDIT-ADD] - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
+    if (this.id_dept) {
+      this.getDeptById();
+
+    }
+
   }
 
 
@@ -457,14 +637,22 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // @ canDeactivate NOT_HAS_EDITED is to canDeactivate if is false is displayed the alert
   // -------------------------------------------------------------------------------------
   onChangeDeptName($event) {
+    console.log('[DEPT-EDIT-ADD] - onChangeDeptName IS_DEFAULT_DEPT', this.IS_DEFAULT_DEPT);
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptName ', $event);
+
     this.NOT_HAS_EDITED = false
   }
 
 
   onChangeDeptDescription($event) {
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptDescription ', $event);
+
+    // this.dept_description_toUpdate = $event;
+    // this.dept_description_toUpdate_temp = "";
+    // this.displayAssignTo = true;
+
     this.NOT_HAS_EDITED = false
+
   }
 
 
@@ -614,7 +802,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = true
-    this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    console.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
@@ -626,19 +814,38 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
-    this.logger.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    console.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
   }
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
   handleNewGroupCreatedFromSidebar(event) {
-    this.logger.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
+    console.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
     if (event) {
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
 
-      this.NOT_HAS_EDITED = false;
+      if (!this.allowMultipleGroups) {
 
-      this.getGroupsByProjectId();
+        // this.selectedGroupId = [...this.selectedGroupId, this.new_group_created_id];
+        // console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR selectedGroupId', this.selectedGroupId);
+        // console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR groupsParsedArray', this.groupsParsedArray);
+
+        // // 2. Crea una mappa con le percentuali già salvate
+        // const currentMap = new Map(
+        //   this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+        // );
+
+        // // 3. Ricostruisci groupsParsedArray mantenendo le percentuali esistenti
+        // this.groupsParsedArray = this.selectedGroupId.map(id => ({
+        //   group_id: id,
+        //   percentage: currentMap.get(id) ?? 0 // se esiste mantiene il valore, altrimenti 0
+        // }));
+
+        // console.log('[DEBUG] groupsParsedArray aggiornato:', this.groupsParsedArray);
+      }
+      // this.NOT_HAS_EDITED = false;
+
+     this.getGroupsByProjectId();
       // this.HAS_COMPLETED_GET_GROUPS = true
       // this.logger.log('DEPT EDIT-ADD - handleNewGroupCreatedFromSidebar tHAS_COMPLETED_GET_GROUPS  ', this.HAS_COMPLETED_GET_GROUPS );
     }
@@ -674,21 +881,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
 
-  getParamsAndDeptById() {
-    this.id_dept = this.route.snapshot.params['deptid'];
-    this.logger.log('[DEPT-EDIT-ADD] - DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
-    if (this.id_dept) {
-      this.getDeptById();
-
-      // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
-      /* GET OPERATORS OF A DEPT */
-      // this.getDeptByIdToTestChat21AssigneesFunction()
-    }
-
-  }
-
-  ngAfterViewInit() {
-  }
+  
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -886,23 +1079,36 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   /**
    * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
-   * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
+   * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED AND POOLED ROUTING
    */
   getGroupsByProjectId() {
-
     if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-      this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR', this.new_group_created_id);
+      console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR new_group_created_id', this.new_group_created_id);
 
-      this.selectedGroupId = this.new_group_created_id;
+      if (!this.allowMultipleGroups) {
+        this.selectedGroupId = this.new_group_created_id;
+      }
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-       this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+      console.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+
+      if (Array.isArray(this.groupsParsedArray)) {
+        this.groupsParsedArray = this.groupsParsedArray.map(item => {
+          const matchedGroup = groups.find(group => group._id === item.group_id);
+          return {
+            ...item,
+            name: matchedGroup ? matchedGroup.name : 'Unknown group'
+          };
+        });
+
+        console.log('[DEPT-EDIT-ADD] - myParsedArray with group names:', this.groupsParsedArray);
+      }
 
       if (groups) {
         // this.groupsList = groups;
+
         this.groupsList = groups.filter(group => group.enabled !== false);
-        this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', this.groupsList);
 
         this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
@@ -997,51 +1203,71 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }
   }
 
-  _setSelectedGroup() {
-    this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED: ', this.selectedGroupId);
+  __setSelectedGroup() {
+    console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
     this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
-    this.NOT_HAS_EDITED = false
+
+    if (this.allowMultipleGroups) {
+      if (this.selectedGroupId) {
+        // 1. Crea una mappa con le percentuali esistenti
+        const currentMap = new Map(
+          this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+        );
+
+        // 2. Ricostruisci l’array mantenendo le percentuali già salvate
+        this.groupsParsedArray = this.selectedGroupId.map(id => ({
+          group_id: id,
+          percentage: currentMap.get(id) ?? 0   // se esiste lo recupera, altrimenti parte da 0
+        }));
+
+        console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
+        if (this.groupsParsedArray?.length > 0) {
+          this.displayAssignTo = false
+        }
+      }
+    }
+    // this.NOT_HAS_EDITED = false
     this.getGroupsByProjectId()
 
-
-    // this.logger.log('[DEPT-EDIT-ADD] - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
-
-
-
-    // // IF THE GROUP ASSIGNED TO THE DEPT HAS BEEN DELETED,
-    // // this.GROUP_ID_NOT_EXIST IS SET TO TRUE - IN THIS USE-CASE IS SHOWED THE SELECT OPTION
-    // // 'GROUP ERROR' AND the CLASS errorGroup OF THE HTML TAG select IS SET TO TRUE
-    // // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
-    // if (this.selectedGroupId !== 'Group error') {
-    //   this.GROUP_ID_NOT_EXIST = false
-
-    //   this.getGroupsByProjectId()
-    //   this.logger.log('[DEPT-EDIT-ADD] - setSelectedGroup this.selectedGroupId !== Group error');
-    // }
-
-    // // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
-    // // }
-
-    // // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
-    // if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
-    //   this.selectedGroupId = null;
-    // }
   }
 
-  getCurrentProject() {
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        if (project) {
-          this.project = project
-          this.projectId = project._id
-        }
-        // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
-      });
+  _setSelectedGroup() {
+  console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
+  this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
+
+  if (this.allowMultipleGroups) {
+    if (this.selectedGroupId && Array.isArray(this.selectedGroupId) && this.selectedGroupId.length > 0) {
+      // 1. Crea una mappa con le percentuali esistenti
+      const currentMap = new Map(
+        this.groupsParsedArray.map(g => [g.group_id, g.percentage])
+      );
+
+      // 2. Ricostruisci l'array mantenendo le percentuali già salvate
+      //    e includendo SOLO i gruppi ancora presenti in selectedGroupId
+      this.groupsParsedArray = this.selectedGroupId.map(id => ({
+        group_id: id,
+        percentage: currentMap.get(id) ?? 0   // se esiste lo recupera, altrimenti parte da 0
+      }));
+
+      console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
+      if (this.groupsParsedArray?.length > 0) {
+        this.displayAssignTo = false
+      }
+    } else {
+      // Intercetta la cancellazione: se selectedGroupId è null/undefined/array vuoto
+      // rimuovi tutti i gruppi da groupsParsedArray
+      this.groupsParsedArray = [];
+      this.displayAssignTo = true;
+      console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY svuotato (gruppo rimosso)');
+    }
   }
+
+  // this.NOT_HAS_EDITED = false
+  this.getGroupsByProjectId()
+}
+
+  
 
 
 
@@ -1081,6 +1307,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   // GO BACK TO DEPARTMENTS COMPONENT
   goBackToDeptsList() {
+    console.log('[DEPT-EDIT-ADD] goBackToDeptsList')
     this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 
@@ -1127,14 +1354,47 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getDeptById() {
     this.deptService.getDeptById(this.id_dept).subscribe((dept: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
         this.dept_description_toUpdate = dept.description;
+
+        this.groupsParsedArray = dept?.groups
+
+        if (this.allowMultipleGroups) {
+      
+          this.selectedGroupId = dept?.groups?.map(item => item.group_id);
+        
+        // } else  if (this.selectedGroupId?.length === 0 ) {
+        //   this.selectedGroupId.push(dept.id_group) 
+        //   console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - here yes : ', this.selectedGroupId);
+        //  }
+         
+        } else if (!this.allowMultipleGroups) {
+          this.selectedGroupId = dept.id_group;
+        }
+
+        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - selectedGroupId: ', this.selectedGroupId);
+        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
+        //  this.groupsParsedArray = this.groupsLoadPercentageFake 
+
+        if (this.groupsParsedArray?.length > 0) {
+          this.displayAssignTo = false
+          this.getGroupsByProjectId()
+        } else {
+          this.displayAssignTo = true
+        }
+
+
+        // console.log('[DEPT-EDIT-ADD] Final dept_description_toUpdate:', this.dept_description_toUpdate)
+        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - dept_description_toUpdate : ', this.dept_description_toUpdate);
+
         this.botId = dept.id_bot;
         this.dept_routing = dept.routing;
-        this.selectedGroupId = dept.id_group;
+
+        // this.selectedGroupId = dept.id_group;
+
         this.dept_created_at = dept.createdAt;
         this.dept_ID = dept.id;
         this.bot_only = dept.bot_only
@@ -1346,6 +1606,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       }
     } else if (this.bot_type === 'tilebot') {
       botType = 'tilebot'
+       if(!this.PERMISSION_TO_EDIT_FLOWS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
@@ -1353,22 +1617,37 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       }
     } else if (this.bot_type === 'tiledesk-ai') {
       botType = 'tiledesk-ai'
+      if(!this.PERMISSION_TO_EDIT_FLOWS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
         goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
+       if(!this.PERMISSION_TO_UPDATE_APP) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       botType = this.bot_type;
+      if(!this.PERMISSION_TO_UPDATE_APP) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
       }
     }
-
-
   }
 
   goToMemberProfile(memberid) {
+    if(!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+    }
+
     this.getProjectuserbyUseridAndGoToEditProjectuser(memberid)
   }
 
@@ -1376,10 +1655,16 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.router.navigate(['project/' + this.project._id + '/group/edit/' + this.selectedGroupId]);
   }
 
+  goToGroupDetail(groupid) {
+    console.log('goToGroupDetail groupid', groupid)
+    this.router.navigate(['project/' + this.project._id + '/group/edit/' + groupid]);
+  }
+
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
 
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
+
+      console.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
 
@@ -1416,7 +1701,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.selectedBotId,
       this.bot_only,
       this.selectedGroupId,
-      this.ROUTING_SELECTED)
+      this.ROUTING_SELECTED,
+      this.groupsParsedArray,
+      this.allowMultipleGroups,)
       .subscribe((department) => {
         this.logger.log('[DEPT-EDIT-ADD] - createDepartment - POST DATA DEPT', department);
       }, (error) => {
@@ -1432,21 +1719,86 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       });
   }
 
+  openEditGroupsLoadDistributionDialog() {
+    const dialogRef = this.dialog.open(EditGroupsLoadDistributionModalComponent, {
+      width: '400px',
+      data: {
+        groups: this.groupsParsedArray
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.groupsParsedArray = result;
+        this.onGroupPercentageChange(); // update description string
+      }
+    });
+
+  }
+
+  openEditLoadDistributionDialog(group) {
+    // prevent goToGroupDetail
+    const dialogRef = this.dialog.open(EditLoadDistributionModalComponent, {
+      width: '400px',
+      data: {
+        groups: this.groupsParsedArray,
+        group: group
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.groupsParsedArray = result;
+        this.onGroupPercentageChange();
+      }
+    });
+  }
+
+  onGroupPercentageChange() {
+    if (Array.isArray(this.groupsParsedArray)) {
+      const result = this.groupsParsedArray.map(group => ({
+        _id: group._id,
+        group_id: group.group_id,
+        percentage: group.percentage
+      }));
+
+
+      // this.dept_description_toUpdate_temp = JSON.stringify(result);
+      //  this.dept_description_toUpdate = ""; // always clear textarea if using array
+
+      // this.groupsLoadPercentage = result
+      this.groupsParsedArray = result
+      console.log('[DEPT-EDIT-ADD] 🔄 Updated groupsParsedArray:', this.groupsParsedArray);
+      this.getGroupsByProjectId()
+    }
+  }
+
+  // [{\"id\": \"68480837c19660002ded7b79\", \"percentage\":20},{\"id\": \"68480982c19660002deda58e\", \"percentage\":10}, {\"id\": \"687a6aa364222f002d1c83f9\", \"percentage\":10}, {\"id\": \"687a6ab364222f002d1c8410\", \"percentage\":10}, {\"id\": \"687a6ac064222f002d1c8426\", \"percentage\":10},{\"id\": \"687a6aca64222f002d1c843c\", \"percentage\":10}]
+
 
   edit() {
     this.NOT_HAS_EDITED = true;
     // RESOLVE THE BUG: THE BUTTON UPDATE REMAIN FOCUSED AFTER PRESSED
     const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
     updated_btn.blur();
+    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED 1', this.dept_description_toUpdate);
+    // if (this.dept_description_toUpdate_temp?.trim()  !== "") {
+    //   this.dept_description_toUpdate = this.dept_description_toUpdate_temp;
+    // }
 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - updated_btn ', updated_btn);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
-    this.logger.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    // console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
+    // console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION TEMP WHEN EDIT IS PRESSED 2', this.dept_description_toUpdate_temp);
     this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
+    // console.log('[DEPT-EDIT-ADD] - EDIT - TAGS WHEN EDIT IS PRESSED ', this.tags)
+    console.log('[DEPT-EDIT-ADD] - EDIT - WHEN EDIT IS PRESSED  this.groupsParsedArray ', this.groupsParsedArray)
+
+
 
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
@@ -1454,23 +1806,31 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.botIdEdit = this.selectedBotId
     }
 
-    this.deptService.updateDept(this.id_dept,
+    this.deptService.updateDept(
+      this.id_dept,
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
       this.botIdEdit,
       this.bot_only,
       this.selectedGroupId,
-      this.dept_routing).subscribe((data) => {
-        this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
+      this.dept_routing,
+      this.groupsParsedArray,
+      this.allowMultipleGroups,
+      this.tags
+     
+    ).subscribe((data) => {
+      console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
 
-      }, (error) => {
-        this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
-      }, () => {
-        this.logger.log('[DEPT-EDIT-ADD] - EDIT * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
-      });
+
+    }, (error) => {
+      this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+
+    }, () => {
+      this.logger.log('[DEPT-EDIT-ADD] - EDIT * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+    });
 
   }
 
@@ -1493,6 +1853,11 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     });
   }
 
+
+  goGroupAssignmentDocs() {
+    const url = this.group_assignment_doc_url;
+    window.open(url, '_blank');
+  }
 
 
 }

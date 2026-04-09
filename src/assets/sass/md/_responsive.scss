@@ -5,23 +5,25 @@
         padding-left: 5px;
         padding-right: 5px;
     }
-    .navbar-nav > li > .dropdown-menu,
-    .dropdown .dropdown-menu,
-    .dropdown-menu.bootstrap-datetimepicker-widget{
-        @include transition($fast-transition-time, $transition-linear);
-        margin-top: -20px;
-        visibility: hidden;
-        display: block;
-        @include opacity(0);
-    }
-    .navbar-nav > li.open > .dropdown-menu,
-    .dropdown.open .dropdown-menu,
-    .dropdown-menu.bootstrap-datetimepicker-widget.open{
-        @include opacity(1);
-        visibility: visible;
-        margin-top: 0px;
+    // COMMENTED OUT: This code hides dropdowns on >= 992px screens using Bootstrap 3/4 syntax (.open)
+    // Bootstrap 5 uses .show class on toggle button instead, so this breaks dropdown functionality
+    // .navbar-nav > li > .dropdown-menu,
+    // .dropdown .dropdown-menu,
+    // .dropdown-menu.bootstrap-datetimepicker-widget{
+    //     @include transition($fast-transition-time, $transition-linear);
+    //     margin-top: -20px;
+    //     visibility: hidden;
+    //     display: block;
+    //     @include opacity(0);
+    // }
+    // .navbar-nav > li.open > .dropdown-menu,
+    // .dropdown.open .dropdown-menu,
+    // .dropdown-menu.bootstrap-datetimepicker-widget.open{
+    //     @include opacity(1);
+    //     visibility: visible;
+    //     margin-top: 0px;
 
-    }
+    // }
 
     /*.navbar-nav > li > .dropdown-menu:before{
         border-bottom: 11px solid rgba(0, 0, 0, 0.2);

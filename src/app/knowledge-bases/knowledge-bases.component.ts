@@ -45,6 +45,9 @@ import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 const Swal = require('sweetalert2')
 
@@ -56,6 +59,7 @@ const Swal = require('sweetalert2')
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
+
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -162,6 +166,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   msgNamespaceHasBeenSuccessfullyUpdated: string;
   hasRemovedKb: boolean = false
   hasUpdatedKb: boolean = false
+  // Stores the last search/filter params used by the table, so we can
+  // re-apply them after an update without causing loops
   lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
@@ -192,7 +198,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
-  refreshRateIsEnabled: boolean
+  refreshRateIsEnabled: boolean;
+
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  // PERMISSION_TO_DELETE_CONTENTS: boolean;
+  // PERMISSION_TO_DELETE_NAMESPACE: boolean;
+  
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_ADD_KB: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+  PERMISSION_TO_ADD_CONTENTS: boolean;
+  PERMISSION_TO_EXPORT_CONTENTS: boolean;
+  PERMISSION_TO_EDIT_FLOWS:boolean
 
   // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
@@ -202,7 +221,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.loadUnansweredQuestions();
     }
   }
-
+  
   unansweredQuestions: UnansweredQuestion[] = [];
   unansweredQuestionsPage: number = 0;
   unansweredQuestionsCount: number = 0;
@@ -211,6 +230,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasMoreUnansweredQuestions: boolean = false;
   isLoadingNamespaces = true;
   pineconeReranking: boolean
+
+
+  fakeUnansered = [
+      { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
+      { _id: '68b92286f81418001303bfcf', question: 'What is the refund policy?' },
+      { _id: '68b92286f81418001303bfcf', question: 'How do I contact support?' },
+      { _id: '68b92286f81418001303bfcf', question: 'Where can I find my invoices?' }
+    ]
 
   constructor(
     private auth: AuthService,
@@ -234,7 +261,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private unansweredQuestionsService: UnansweredQuestionsService,
-    private quotasService: QuotesService
+    private quotasService: QuotesService,
+    private roleService: RoleService,
+    private rolesService: RolesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -244,7 +273,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   ngOnInit(): void {
-
+    this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
 
     // Misura il tempo dal click nella sidebar all'inizializzazione
@@ -272,6 +301,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getAllNamespaces()
     // this.getDeptsByProjectId()
      // this.listenSidebarIsOpened();
+    // this.listenSidebarIsOpened();
     // this.getTemplates();
     // this.getCommunityTemplates()
     // this.getOSCODE();
@@ -281,6 +311,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
     this.loadUnansweredQuestions();
+    this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
@@ -292,6 +323,154 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.trackPage();
       this.getTranslations();
     }, 0);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval_id);
+    this.unsubscribe$.next();   
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
+        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
+
+    
+
+
+        // PERMISSION_TO_DELETE
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_DELETE = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DELETE = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+        }
+
+          // PERMISSION_TO_DELETE_NAMESPACE
+          // if (status.role === 'owner' || status.role === 'admin') {
+          //   // Owner and Admin always has permission
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+  
+          // } else if (status.role === 'agent') {
+          //   // Agent never have permission
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+  
+          // } else {
+          //   // Custom roles: permission depends on matchedPermissions
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          // }
+
+        // PERMISSION_TO_ADD_KB
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_KB = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_KB = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO VIEW FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+
+        // PERMISSION_TO_ADD_CONTENTS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_CONTENTS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_CONTENTS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+        }
+
+
+        // PERMISSION_TO_EXPORT_CONTENTS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_EXPORT_CONTENTS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EXPORT_CONTENTS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EXPORT_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_EXPORT);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+        }
+
+      });
+
   }
 
   checkChromeVersion(): boolean {
@@ -403,9 +582,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   async getQuotas() {
     this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
+      
       this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
     })
+    this.logger.log('[KNOWLEDGE-BASES-COMP] ', this.quotas)
   }
+
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
@@ -733,7 +915,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
 
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("KbPage.NewNamespaceCreatedSuccessfully", { namespace_name: this.selectedNamespace.name }), 2, 'done');
+      // Build safe message without using translate with parameters (to avoid XSS)
+      // const safeNamespaceName = this.sanitizeForNotification(this.selectedNamespace.name);
+      // const message = `The Knowledge Base ${safeNamespaceName} has been successfully created`;
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('TheKBHasBeenSuccessfullyCreated') , 2, 'done');
     });
   }
 
@@ -1765,6 +1950,10 @@ _presentDialogImportContents() {
   }
 
   presentDialogGoToCDS(chatbot) {
+    if(!this.PERMISSION_TO_EDIT_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
 
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
     const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {
@@ -1933,6 +2122,10 @@ _presentDialogImportContents() {
   }
 
   onOpenDeleteNamespaceModal() {
+    if(!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log("onOpenDeleteNamespaceModal called....")
     if (this.selectedNamespace.default && this.kbsList.length === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
@@ -1962,7 +2155,7 @@ _presentDialogImportContents() {
     });
   }
 
-  onOpenBaseModalDetail(kb) {
+  onOpenBaseModalDetail(kb, type) {
     // this.kbid_selected = kb;
     this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
@@ -1977,11 +2170,14 @@ _presentDialogImportContents() {
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         payIsVisible: this.payIsVisible
+
       },
     });
     dialogRef.afterClosed().subscribe(res => {
-      this.logger.log('[Modal KB DETAILS] Dialog kb: ', res);
-      if (res) {
+    this.logger.log('[Modal KB DETAILS] Dialog kb: ', res);
+     console.log('[Modal KB DETAILS] Dialog afterClosed res : ', res);
+    
+     if (res) {
       if(res.method === 'update') {
         //  let kb = res.kb.kb
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
@@ -1990,13 +2186,19 @@ _presentDialogImportContents() {
         this.updateKbContent(res.kb)
       } else if (res.method === 'delete') {
         
-        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
-        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
+        console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.onOpenBaseModalDelete(res.kb)
       }
      }
       // if (kb) {
       //   this.onUpdateKb(kb)
+      // }
+      // if (typeof kb !== 'object') {
+      //   this.onUpdateKb(kb)
+      // } else {
+         
+      //   this.onOpenBaseModalDelete(kb.kb)
       // }
     });
   }
@@ -2059,7 +2261,7 @@ _presentDialogImportContents() {
     }
   }
 
-    presentDialogComfimDeleteSitemap(kb) {
+  presentDialogComfimDeleteSitemap(kb) {
      kb.deleting = false;
      Swal.fire({
       title: this.translate.instant('Warning'),
@@ -2095,7 +2297,7 @@ _presentDialogImportContents() {
     });
 
     dialogRef.afterClosed().subscribe(type => {
-      this.logger.log('[Modal ADD CONTENT] type: ', type);
+      this.logger.log('[KNOWLEDGE BASES COMP] type: ', type);
       if (type) {
         this.openAddKnowledgeBaseModal(type)
       }
@@ -2337,9 +2539,7 @@ _presentDialogImportContents() {
   }
 
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval_id);
-  }
+ 
 
   // No more used
   // listenToKbVersion() {
@@ -2613,24 +2813,26 @@ _presentDialogImportContents() {
 
 
   onLoadPage(searchParams?: any, calledby?: string) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
+    
     // Use page from searchParams if provided, otherwise increment numberPage
     if (searchParams && searchParams.page !== undefined) {
       this.numberPage = searchParams.page;
     } else {
       this.numberPage++;
     }
-    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
+    
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams?.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
     params += "&page=" + this.numberPage;
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
    
-    this.logger.log('onLoadNextPage searchParams > search (2):', searchParams.search);
+    this.logger.log('onLoadNextPage searchParams > search (2):', searchParams?.search);
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
       this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage status:', params);
@@ -2659,39 +2861,7 @@ _presentDialogImportContents() {
     this.getListOfKb(params,  calledby || 'onLoadPage');
   }
 
-  _onLoadByFilter(searchParams, calledby?: string) {
-    // this.logger.log('onLoadByFilter:',searchParams);
-    // searchParams.page = 0;
-    this.numberPage = -1;
-    this.kbsList = [];
-    this.onLoadPage(searchParams, calledby);
-  }
-
   onLoadByFilter(searchParams, calledby?: string) {
-    // Store last used search params so we can re-apply them after an update
-    this.lastKbSearchParams = { ...searchParams };
-    // Update current sort params to sync with table component
-    // Always ensure sortField and direction are set
-    // Always create a new object to force change detection
-    let sortField, direction;
-    if (searchParams.sortField && searchParams.direction !== undefined) {
-      sortField = searchParams.sortField;
-      direction = searchParams.direction;
-    } else {
-      // If not provided in searchParams, use last known or defaults
-      sortField = searchParams.sortField || this.lastKbSearchParams?.sortField || KB_DEFAULT_PARAMS.SORT_FIELD;
-      direction = searchParams.direction !== undefined ? searchParams.direction : 
-                 (this.lastKbSearchParams?.direction !== undefined ? this.lastKbSearchParams.direction : KB_DEFAULT_PARAMS.DIRECTION);
-      // Also update searchParams to ensure they are passed to onLoadPage
-      searchParams.sortField = sortField;
-      searchParams.direction = direction;
-    }
-    // Always create a new object to force Angular change detection
-    this.currentSortParams = {
-      sortField: sortField,
-      direction: direction,
-      timestamp: Date.now() // Add timestamp to force change detection
-    };
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
@@ -2716,6 +2886,7 @@ _presentDialogImportContents() {
       this.kbsListCount = resp.count;
       this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
+      
       // If called after update or add, replace the entire list to maintain server order
       if (calledby === 'after-update' || calledby === 'after-add') {
         let kbs = resp.kbs;
@@ -2744,7 +2915,7 @@ _presentDialogImportContents() {
           }
         });
       }
-
+      
       if (calledby === 'after-update' || calledby === 'after-add') {
         this.getKbCompleted = true;
       }
@@ -2754,13 +2925,15 @@ _presentDialogImportContents() {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
       this.showSpinner = false
-       this.showKBTableSpinner = false;
+      this.showKBTableSpinner = false;
       this.getKbCompleted = false
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
-       this.showKBTableSpinner = false;
+      this.showKBTableSpinner = false;
+
       // this.presentKBTour()
+
 
     })
   }
@@ -2833,6 +3006,7 @@ _presentDialogImportContents() {
       } else {
         //this.kbsList.push(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+        // this.kbsListCount++;
         // Don't modify kbsList here - it will be reloaded from server
         // this.kbsList.unshift(kb);
         // this.kbsListCount = this.kbsListCount + 1;
@@ -2944,9 +3118,7 @@ _presentDialogImportContents() {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
   }
 
   importSitemap(body) {
@@ -3240,7 +3412,7 @@ _presentDialogImportContents() {
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
 
           this.getListOfKb(paramsDefault, 'deleteNamespace');
-          this.getAllNamespaces();
+          this.getAllNamespaces()
         }
       })
 
@@ -3254,7 +3426,7 @@ _presentDialogImportContents() {
 
   /** */
   onUpdateKb(kb) {
-    //  this.logger.log('onUpdateKb: ', kb);
+    console.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
@@ -3312,45 +3484,28 @@ _presentDialogImportContents() {
               this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
             }
           } else {
-            // this.kbsList.push(kb);
-            // this.kbsList.unshift(kbNew);
+    
             this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
-            this.hasUpdatedKb = true;
           }
 
           const index = this.kbsList.findIndex(item => item.id === kb._id);
           if (index > -1) {
             this.kbsList[index] = kbNew;
           }
-          // this.removeKb(kb._id);
-          //-->this.updateStatusOfKb(kbNew._id, 0);
-
-          // After an update/create, reload the list using the last filters, but always start from page 0
-          // setTimeout(() => {
-          //  if (this.lastKbSearchParams) {
-          // Create a copy of lastKbSearchParams and reset page to 0
-          //    const refreshParams = { ...this.lastKbSearchParams };
-          //    refreshParams.page = 0;
-          //    this.onLoadByFilter(refreshParams, 'after-update');
-          //  } else {
-          // Fallback: load with default params, starting from page 0
-          //   this.onLoadPage({ page: 0 }, 'after-update');
-          //  }
-          // }, 300);
 
           // After an update/create, reload the list with descending order by updatedAt
           // to show the updated content at the top
           setTimeout(() => {
-              const refreshParams = {
-                sortField: 'updatedAt',
-                direction: -1, // descending order (most recent first)
-                page: 0,
-                status: this.lastKbSearchParams?.status || '',
-                search: this.lastKbSearchParams?.search || '',
-                type: this.lastKbSearchParams?.type || ''
-              };
-              this.onLoadByFilter(refreshParams, 'after-update');
-            }, 300);
+            const refreshParams = {
+              sortField: 'updatedAt',
+              direction: -1, // descending order (most recent first)
+              page: 0,
+              status: this.lastKbSearchParams?.status || '',
+              search: this.lastKbSearchParams?.search || '',
+              type: this.lastKbSearchParams?.type || ''
+            };
+            this.onLoadByFilter(refreshParams, 'after-update');
+          }, 300);
 
           this.refreshKbsList = !this.refreshKbsList;
           // setTimeout(() => {
@@ -3804,24 +3959,7 @@ _presentDialogImportContents() {
     });
   }
 
-  _loadUnansweredQuestions() {
-    if (!this.id_project || !this.selectedNamespace?.id) return;
-    //this.isLoadingUnanswered = true;
-    this.unansweredQuestionsService.getUnansweredQuestions(this.id_project, this.selectedNamespace.id)
-      .subscribe(
-        (res) => {
-          this.unansweredQuestions = res['questions'];
-          this.isLoadingUnanswered = false;
-        },
-        (err) => {
-          this.isLoadingUnanswered = false;
-          this.unansweredQuestions = [];
-          this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
-        }
-      );
-  }
-
-    loadUnansweredQuestions(page: number = 0, append: boolean = false) {
+  loadUnansweredQuestions(page: number = 0, append: boolean = false) {
     if (!this.id_project || !this.selectedNamespace?.id) return;
     
     if (page === 0 && !append) {
@@ -3839,6 +3977,7 @@ _presentDialogImportContents() {
       page,
       'createdAt',
       -1
+
     )
       .subscribe(
         (res) => {

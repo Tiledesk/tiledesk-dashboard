@@ -6,6 +6,12 @@ import { KB_DEFAULT_PARAMS, URL_kb } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { SatPopover } from '@ncstate/sat-popover';
+import { RolesService } from 'app/services/roles.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NotifyService } from 'app/core/notify.service';
+
 
 @Component({
   selector: 'knowledge-base-table',
@@ -65,12 +71,27 @@ export class KnowledgeBaseTableComponent implements OnInit {
   hasFiltered: boolean = false;
   hideHelpLink: boolean;
   companyName: string;
+   private unsubscribe$: Subject<any> = new Subject<any>();
   // kbsListCount: number = 0;
+  
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_ADD_CONTENTS: boolean;
+  PERMISSION_TO_UPDATE_SETTINGS: boolean;
+  // PERMISSION_TO_DELETE_CONTENTS: boolean;
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_UPDATE_CONTENT: boolean;
+  PERMISSION_TO_REINDEX_CONTENT: boolean;
+  PERMISSION_TO_CHECK_CONTENT_STATUS: boolean;
 
+ 
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private logger: LoggerService,
     public brandService: BrandService,
+    private rolesService: RolesService,
+    public notify: NotifyService,
     private cdr: ChangeDetectorRef,
   ) {
     this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
@@ -81,10 +102,134 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetFilter()
-
-
-
+    this.listenToProjectUser()
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();   
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+  
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          this.ROLE = status.role;
+          this.PERMISSIONS = status.matchedPermissions;
+          console.log('[KB TABLE] - this.ROLE:', this.ROLE);
+          console.log('[KB TABLE] - this.PERMISSIONS', this.PERMISSIONS);
+          this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+          console.log('[KB TABLE] - hasDefaultRole', this.hasDefaultRole);
+  
+          // PERMISSION_TO_ADD_CONTENTS
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_ADD_CONTENTS = true;
+            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_ADD_CONTENTS = false;
+            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
+            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          }
+
+
+          // PERMISSION_TO_UPDATE_CONTENT
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_UPDATE_CONTENT = true;
+            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_UPDATE_CONTENT = false;
+            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_UPDATE_CONTENT = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENT_UPDATE);
+            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
+          }
+
+          // PERMISSION_TO_REINDEX_CONTENTS
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_REINDEX_CONTENT = true;
+            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_REINDEX_CONTENT = false;
+            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_REINDEX_CONTENT = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENT_REINDEX);
+            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
+          }
+
+          // PERMISSION_TO_CHECK_CONTENT_STATUS
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_CHECK_CONTENT_STATUS = true;
+            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_CHECK_CONTENT_STATUS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_CHECK_CONTENT_STATUS = false;
+            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_CHECK_CONTENT_STATUS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_CHECK_CONTENT_STATUS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENT_CHECK_STATUS);
+            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_REINDEX_CONTENTS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
+          }
+
+          // PERMISSION_TO_UPDATE_SETTINGS
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_UPDATE_SETTINGS = true;
+            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_UPDATE_SETTINGS = false;
+            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_UPDATE_SETTINGS = status.matchedPermissions.includes(PERMISSIONS.KB_SETTINGS_EDIT);
+            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
+          }
+
+          // PERMISSION_TO_DELETE
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and Admin always has permission
+            this.PERMISSION_TO_DELETE = true;
+            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+  
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_DELETE = false;
+            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+  
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
+            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          }
+
+
+        });
+  
+    }
 
   resetFilter() {
     this.logger.log('[KB TABLE] resetFilter')
@@ -99,6 +244,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
       "search": '',
     }
   }
+
+ 
 
   contacUsViaEmail() {
     this.logger.log('[KB TABLE] - Satpopover ', this.refresRate)
@@ -128,6 +275,16 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
+    // Reset numberPage when kbsList is completely replaced (e.g., after-add or after-update)
+    if (changes['kbsList'] && changes['kbsList'].previousValue && changes['kbsList'].previousValue.length > 0) {
+      const previousLength = changes['kbsList'].previousValue.length;
+      const currentLength = this.kbsList?.length || 0;
+      // If list was replaced and we're starting fresh, reset numberPage
+      if (currentLength > 0 && previousLength !== currentLength && this.searchParams?.page === 0) {
+        this.numberPage = 0;
+        this.logger.log('[KB TABLE] Reset numberPage due to list replacement, previous length:', previousLength, 'current length:', currentLength);
+      }
+    }
 
     if (changes['kbsList'] && changes['kbsList'].previousValue && changes['kbsList'].previousValue.length > 0) {
       const previousLength = changes['kbsList'].previousValue.length;
@@ -174,12 +331,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
-    this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
+    console.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
     this.logger.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
     this.logger.log('[KB TABLE] ngOnChanges hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb);
     this.logger.log('[KB TABLE] ngOnChanges project_name ', this.project_name);
     
     
+    if (this.hasUpdatedKb) {
+      // this.onLoadByFilter()
+    }
 
     if (this.hasRemovedKb && this.kbsList.length === 0)  {
       this.SHOW_TABLE = false;
@@ -242,6 +402,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       this.isLoading = false;
     }
 
+    
     // Sync internal sorting state when parent changes sort params (e.g., after adding content)
     if (changes.currentSortParams) {
       if (this.currentSortParams && this.currentSortParams.sortField && this.currentSortParams.direction !== undefined) {
@@ -309,14 +470,18 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   onLoadByFilter(filterValue?: string, column?: string) {
     this.hasFiltered = true;
-    this.logger.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
-    this.logger.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
-    this.logger.log('[KB TABLE] >>> filterType ', this.filterType)
+    console.log('[KB TABLE] >>>  onLoadByFilter hasFiltered ', this.hasFiltered)
+    console.log('[KB TABLE] >>> onLoadByFilter filterStatus ', this.filterStatus)
+    console.log('[KB TABLE] >>> onLoadByFilter filterType ', this.filterType)
     // let status = '';
     // let search = '';
     this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
     this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
 
+    console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+    console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    
     // If called without parameters (manual refresh), reset page to 0
     if (filterValue === undefined && column === undefined) {
       this.searchParams.page = 0;
@@ -324,6 +489,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       this.logger.log('[KB TABLE] >>> onLoadByFilter - Manual refresh: reset page to 0');
     }
 
+    
     if (column == 'status') {
       this.searchParams.status = filterValue;
     }
@@ -347,29 +513,55 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   onRunIndexing(kb) {
+    if (!this.PERMISSION_TO_REINDEX_CONTENT) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    } 
     // this.logger.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
   }
 
   onOpenBaseModalPreview() {
+    if (!this.PERMISSION_TO_UPDATE_SETTINGS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    } 
     this.openBaseModalPreview.emit();
   }
 
   onOpenBaseModalPreviewSettings() {
+    if (!this.PERMISSION_TO_UPDATE_SETTINGS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    } 
+
     this.openBaseModalPreviewSettings.emit();
   }
 
   onOpenAddContent() {
+    if (!this.PERMISSION_TO_ADD_CONTENTS) {
+    this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
     this.logger.log('onOpenAddContent');
     this.onOpenAddContents.emit();
   }
 
   onOpenBaseModalDelete(kb) {
+    if (!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     // kb.deleting = true;
     this.openBaseModalDelete.emit(kb);
   }
 
   onOpenBaseModalDetail(kb) {
+    if (!this.PERMISSION_TO_UPDATE_CONTENT) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     // this.logger.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
@@ -398,6 +590,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onCheckStatus(kb) {
+    if (!this.PERMISSION_TO_CHECK_CONTENT_STATUS) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     // this.logger.log('onCheckStatus:: ', kb);
     this.checkStatus.emit(kb);
   }

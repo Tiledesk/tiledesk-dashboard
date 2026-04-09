@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { WebhookAddEditComponent } from './webhook-add-edit/webhook-add-edit.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: WebhookComponent},
@@ -27,6 +28,7 @@ const routes: Routes = [
     FormsModule,
     NgSelectModule,
     SettingsSidebarModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class WebhookModule { }

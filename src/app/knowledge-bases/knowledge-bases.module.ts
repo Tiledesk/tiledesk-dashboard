@@ -43,6 +43,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { MatRippleModule } from '@angular/material/core';
 import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-questions/modal-unanswered-questions.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
@@ -50,6 +51,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { AutoWidthInputDirective } from '../_directives/auto-width-input.directive';
 import { HtmlTagPipe } from '../html-tag.pipe';
 import { MatTabsModule } from '@angular/material/tabs';
+
+
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
 ];
@@ -109,7 +112,10 @@ const routes: Routes = [
     MatSelectModule,
     MatProgressSpinnerModule,
     OverlayModule,
-    MatTabsModule
+    MatTabsModule,
+    MatRippleModule,
+    MatProgressSpinnerModule,
+    OverlayModule
   ]
   // ,
   // providers: [

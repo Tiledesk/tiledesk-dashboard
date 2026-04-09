@@ -1,13 +1,13 @@
 <div class="row" style="text-align: center; margin-top:35px">
     <div class="col-md-12">
-        <h4 class="section-title">
+        <h4 class="analytics-section-title">
             {{ 'Analytics.ConversationsTags' | translate }}
         </h4>
     </div>
 </div>
 
 <div class="row" style="text-align: center; margin-top:6px">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card graph-card">
 
             <div class="graph-card-header">
@@ -27,7 +27,7 @@
 
                         </div>
 
-                        <div class="analytics-date-range-filter-select">
+                        <div class="analytics-date-range-filter-select" style="font-size: 14px;">
                             <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
                                 (change)="daysSelect(selectedDaysId)" placeholder="{{'SelectAnOption' | translate }}">
                                 <ng-option [value]="7">
@@ -57,7 +57,7 @@
                     <!-- ------------------------------- -->
                     <!-- Date Picker -->
                     <!-- ------------------------------- -->
-                    <div class="date-picker-wpr">
+                    <div class="date-picker-wpr" style="font-size: 14px;">
 
                         <div class="analytics-options-label">
                             {{ 'Analytics.FilterByCustomRange' | translate}} 

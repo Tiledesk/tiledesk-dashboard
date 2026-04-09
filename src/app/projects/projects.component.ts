@@ -20,6 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -82,7 +84,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   browserLang: string;
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
-    
+  
   // Language selection variables (from user-profile)
   selected_dashboard_language: any;
   display_msg_please_select_language: boolean = false;
@@ -209,6 +211,11 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   DISPLAY_PROJECT_ID: boolean = false;
   public logoutBtnVisible: boolean;
   userId: string;
+  public editProfileBtnVisible: boolean;
+  PERMISSION_TO_LOGOUT:boolean;
+  isAvatarDropdownOpen: boolean = false;
+
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -224,9 +231,11 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     private translate: TranslateService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    private rolesService: RolesService
   ) {
     const brand = brandService.getBrand();
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
+    this.editProfileBtnVisible = brand['DISPLAY_EDIT_PROFILE'];
     this.tparams = brand;
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
@@ -249,6 +258,17 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     // this.getUploadEgine();
     this.getProjectsAndSaveInStorage();
     this.getLoggedUserAndCheckProfilePhoto();
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const dropdown = document.querySelector('.projects-user-avatar-dropdown');
+      if (dropdown && !dropdown.contains(target) && this.isAvatarDropdownOpen) {
+        this.closeAvatarDropdown();
+      }
+    });
+
+   
 
     // this.checkUserImageUploadIsComplete();
     // this.checkUserImageExist();
@@ -317,15 +337,23 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
-      this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
+      console.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.showid) {
         this.logger.log('[PROJECTS] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.showid)
         if (params.showid === 'y') {
           this.DISPLAY_PROJECT_ID = true;
         }
       }
+
+      if (params['tiledesk_logOut']) { 
+        this.logoutBtnVisible = params['tiledesk_logOut'] == "true" ? true: false
+        this.logger.log('[PROJECTS] params tiledeskLogout', this.logoutBtnVisible);  
+      } else {
+        this.logoutBtnVisible = true
+      }
     });
   }
+
 
   getLoggedUserAndCheckProfilePhoto() {
     // this.logger.log('window.opener.location ', window.opener.location )
@@ -1091,6 +1119,31 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   _openLogoutModal() {
     this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+  }
+
+  toggleAvatarDropdown(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isAvatarDropdownOpen = !this.isAvatarDropdownOpen;
+    
+    // Toggle the open class on the parent li element
+    const target = event.currentTarget as HTMLElement;
+    const parentLi = target.closest('.projects-user-avatar-dropdown') as HTMLElement;
+    if (parentLi) {
+      if (this.isAvatarDropdownOpen) {
+        parentLi.classList.add('open');
+      } else {
+        parentLi.classList.remove('open');
+      }
+    }
+  }
+
+  closeAvatarDropdown() {
+    this.isAvatarDropdownOpen = false;
+    const dropdown = document.querySelector('.projects-user-avatar-dropdown') as HTMLElement;
+    if (dropdown) {
+      dropdown.classList.remove('open');
+    }
   }
 
   openLogoutModal() {

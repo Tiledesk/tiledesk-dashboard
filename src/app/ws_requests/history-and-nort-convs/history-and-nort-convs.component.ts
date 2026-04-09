@@ -33,6 +33,11 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NavigationService } from 'app/services/navigation.service';
+
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -138,6 +143,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   phone_applied: string = null;
 
   showAdvancedSearchOption = false;
+  preflight_applied: boolean = false;
+  
+  /** Quando true, la subscription a queryParamMap non deve chiamare search() né forzare il pannello da hasAdvancedInQs (evita che il toggle riapra il pannello o lanci una ricerca). */
+  justToggledAdvancedPanel = false;
   hasFocused = false;
   departments: any;
   selectedDeptId: string;
@@ -323,6 +332,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
+  isDefaultRole: boolean;
+
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_REOPEN: boolean;
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_VIEW_OPENED_CONV: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_UPDATE_APP: boolean;
+  PERMISSION_TO_FILTER_BY_AGENT: boolean;
+  PERMISSION_TO_EXPORT_REQUESTS: boolean;
+
+  private backSub?: Subscription;
   /**
    * 
    * @param router 
@@ -363,6 +387,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     private wsMsgsService: WsMsgsService,
     public route: ActivatedRoute,
     public brandService: BrandService,
+    public rolesService: RolesService,
+    private roleService: RoleService,
+    private navSvc: NavigationService,
     private cdr: ChangeDetectorRef
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -403,6 +430,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.getQueryParams();
 
+    this.listenToProjectUser()
+
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  fullText_applied_filter', this.fullText_applied_filter);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  startDateFormatted', this.startDateFormatted);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  selectedAgentFirstname', this.selectedAgentFirstname);
@@ -412,6 +441,210 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
+    this.listenToGoBack()
+    this.getCurrentTimezone()
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
+    this.backSub?.unsubscribe();
+  }
+
+  getCurrentTimezone() {
+    this.currentUTCName = moment.tz.guess();
+    console.log("[HISTORY & NORT-CONVS] currentUTCName ", this.currentUTCName)
+  }
+
+   listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBackToMonitorPage();
+    });
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[HISTORY & NORT-CONVS] - Role:', status.role);
+        console.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
+
+        this.isDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('[HISTORY & NORT-CONVS] isDefaultRole ', this.isDefaultRole)
+        
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+        }
+
+        // PERMISSION_TO_JOIN_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+
+            this.PERMISSION_TO_JOIN_REQUEST = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+          } else {
+            this.PERMISSION_TO_JOIN_REQUEST = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_JOIN_REQUEST = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+        }
+
+        // PERMISSION_TO_REOPEN
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
+
+            this.PERMISSION_TO_REOPEN = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
+          } else {
+            this.PERMISSION_TO_REOPEN = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 2', this.PERMISSION_TO_REOPEN);
+          }
+        } else {
+          this.PERMISSION_TO_REOPEN = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
+        }
+
+        // PERMISSION_TO_FILTER_BY_AGENT
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.HISTORY_FILTER_BY_AGENT)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_FILTER_BY_AGENT', PERMISSIONS.HISTORY_FILTER_BY_AGENT)
+
+            this.PERMISSION_TO_FILTER_BY_AGENT = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 1 ', this.PERMISSION_TO_FILTER_BY_AGENT);
+          } else {
+            this.PERMISSION_TO_FILTER_BY_AGENT = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 2', this.PERMISSION_TO_FILTER_BY_AGENT);
+          }
+        } else {
+          this.PERMISSION_TO_FILTER_BY_AGENT = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_FILTER_BY_AGENT ', this.PERMISSION_TO_FILTER_BY_AGENT);
+        }
+
+        // PERMISSION_TO_EXPORT_REQUESTS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUESTS_EXPORT)) {
+            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_EXPORT_REQUESTS', PERMISSIONS.REQUESTS_EXPORT)
+
+            this.PERMISSION_TO_EXPORT_REQUESTS = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 1 ', this.PERMISSION_TO_EXPORT_REQUESTS);
+          } else {
+            this.PERMISSION_TO_EXPORT_REQUESTS = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 2', this.PERMISSION_TO_EXPORT_REQUESTS);
+          }
+        } else {
+          this.PERMISSION_TO_EXPORT_REQUESTS = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_EXPORT_REQUESTS ', this.PERMISSION_TO_EXPORT_REQUESTS);
+        }
+
+        
+
+        // PERMISSION_TO_DELETE
+        if (status.role === 'owner') {
+          // Owner always has permission
+          this.PERMISSION_TO_DELETE = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else if (status.role === 'admin' || status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_DELETE = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.REQUEST_DELETE);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+        }
+
+        // PERMISSION_TO_READ_TEAMMATE_DETAILS
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+        // PERMISSION_TO_VIEW_OPENED_CONV
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner & Admin always has permission
+          this.PERMISSION_TO_VIEW_OPENED_CONV = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_OPENED_CONV = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_OPENED_CONV = status.matchedPermissions.includes(PERMISSIONS.INBOX_READ);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+        }
+
+        // PERMISSION_TO_EDIT_FLOWS
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+        }
+
+         // PERMISSION TO UPDATE APP
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_UPDATE_APP = true;
+          console.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_UPDATE_APP = false;
+          console.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
+          console.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+        }
+        
+        // You can also check status.role === 'owner' if needed
+      });
 
   }
 
@@ -421,7 +654,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
+        console.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
@@ -437,9 +670,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
   }
 
+
+
+
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
     this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
-    if (USER_ROLE === 'agent') {
+    if (USER_ROLE === 'agent' || (USER_ROLE !== 'agent' && USER_ROLE !== 'admin' && USER_ROLE !== 'owner' && !this.PERMISSION_TO_VIEW_OPENED_CONV)) {
       let unservedIndex = this.statusInHistory.findIndex(x => x.id === '100');
       this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
       this.statusInHistory.splice(unservedIndex, 1)
@@ -457,6 +693,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.logger.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
         this.queryParams = params['params']
         // this.logger.log('[HISTORY & NORT-CONVS]  this.queryParams', this.queryParams);
+
+        if (this.queryParams && (this.queryParams.hasOpenedAdvancedSearch !== undefined || this.queryParams.qs || this.queryParams._rated !== undefined)) {
+          const openedByUser = this.queryParams.hasOpenedAdvancedSearch === 'true';
+          const hasAdvancedInQs = this.queryParams.qs ? this.qsHasAdvancedFilters(this.queryParams.qs) : false;
+          const hasRatedFilter = this.queryParams._rated === 'true';
+          if (this.justToggledAdvancedPanel) {
+            this.showAdvancedSearchOption = openedByUser || !!(this.queryParams.leftfilter);
+          } else {
+            this.showAdvancedSearchOption = openedByUser || !!(this.queryParams.leftfilter) || hasAdvancedInQs || hasRatedFilter;
+          }
+        }
 
         // WHEN THE NORT LIST IS FILTERRD BY THE LEFT FILTER 
         if (this.queryParams && this.queryParams.leftfilter) {
@@ -482,8 +729,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           const preflightValue = this.queryParams._preflight;
           this._preflight = preflightValue === 'true' || preflightValue === true;
           this.preflight = this._preflight;
+          if (this.IS_HERE_FOR_HISTORY) {
+            this.preflight_applied = this._preflight;
+          }
           this.logger.log('[HISTORY & NORT-CONVS]  queryParams _preflight:', this._preflight);
         }
+        if (this.queryParams && this.queryParams._rated !== undefined) {
+          const ratedValue = this.queryParams._rated;
+          this._rated = ratedValue === 'true' || ratedValue === true;
+          this.rated = this._rated;
+          this.rated_applied = this._rated;
+          this.logger.log('[HISTORY & NORT-CONVS]  queryParams _rated:', this._rated);
+        }
+
 
         if (this.queryParams && this.queryParams._rated !== undefined) {
           const ratedValue = this.queryParams._rated;
@@ -529,12 +787,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               const email_value = paramArray[1]
               // this.logger.log('[HISTORY & NORT-CONVS]  queryParams email_value value', email_value)
               if (email_value) {
-                this.fullText =  email_value;
+                this.fullText = email_value;
                 // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > this.fullText:', this.fullText)
                 this.fullText_temp = this.fullText
               }
             }
-            
+
 
             if (paramArray[0] === 'full_text' && paramArray[1] !== '') {
               const full_text_value = paramArray[1]
@@ -606,6 +864,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedAgentId:', this.selectedAgentId)
                 // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > user_and_bot_array:', this.user_and_bot_array)
 
+              }
+            }
+
+            if (paramArray[0] === 'requester_email' && paramArray[1] !== '') {
+              const requester_email_value = paramArray[1];
+              if (requester_email_value) {
+                this.requester_email = requester_email_value;
+                this.emailValue = requester_email_value;
+                this.requester_email_applied_filter = requester_email_value;
               }
             }
 
@@ -704,26 +971,34 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
             }
           });
 
+          if (this.IS_HERE_FOR_HISTORY && this._rated) {
+            this.rated_applied = true;
+          }
+          if (this.IS_HERE_FOR_HISTORY && this._preflight) {
+            this.preflight_applied = true;
+          }
         }
         // || this.requests_status !== 'all'
        // if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status_selected_from_advanced_option) {
         if (!this.isClearingSearch && (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status_selected_from_advanced_option)) {
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search fullText ', this.fullText)
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selectedDeptId ', this.selectedDeptId)
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search startDate ', this.startDate)
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search endDate ', this.endDate)
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
-          // this.logger.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
           const savedPageNo = restoredPageNo !== null ? restoredPageNo : this.pageNo;
-          this.search('get-query-params');
-          // Restore pageNo after search() if it was restored from query params
-          if (restoredPageNo !== null) {
-            this.pageNo = savedPageNo;
-            this.logger.log('[HISTORY & NORT-CONVS] queryParams pageNo restored after search:', this.pageNo);
+          const openedByUser = this.queryParams.hasOpenedAdvancedSearch === 'true';
+          const hasAdvancedInQs = this.queryParams.qs ? this.qsHasAdvancedFilters(this.queryParams.qs) : false;
+          const hasRatedFilter = this.queryParams._rated === 'true';
+          if (this.justToggledAdvancedPanel) {
+            this.justToggledAdvancedPanel = false;
+            this.showAdvancedSearchOption = openedByUser || !!(this.queryParams.leftfilter);
+          } else {
+            this.showAdvancedSearchOption = openedByUser || !!(this.queryParams.leftfilter) || hasAdvancedInQs || hasRatedFilter;
+            this.search('get-query-params');
+            if (restoredPageNo !== null) {
+              this.pageNo = savedPageNo;
+              this.logger.log('[HISTORY & NORT-CONVS] queryParams pageNo restored after search:', this.pageNo);
+            }
           }
         }
 
+        this.justToggledAdvancedPanel = false;
       });
   }
 
@@ -782,32 +1057,53 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     });
   }
 
+  /**
+   * Restituisce true se la query string qs contiene almeno un filtro del pannello advanced
+   * (es. dept_id, date, requester_email, tags, ...), non solo full_text/ticket_id/snap_lead_email.
+   * Usato per riaprire il pannello al ritorno dal dettaglio quando ci sono filtri avanzati
+   * ma l'utente l'aveva chiuso, così vede i campi popolati.
+   */
+  private qsHasAdvancedFilters(qsParam: string): boolean {
+    if (!qsParam || typeof qsParam !== 'string') return false;
+    let qsString: string;
+    try {
+      qsString = JSON.parse(qsParam);
+    } catch {
+      qsString = qsParam;
+    }
+    if (typeof qsString !== 'string') return false;
+    const advancedKeys = ['dept_id', 'start_date', 'end_date', 'participant', 'requester_email', 'tags', 'channel', 'rstatus', 'duration_op', 'duration', 'called', 'phone', 'call_id', 'rated'];
+    const pairs = qsString.split('&');
+    for (const pair of pairs) {
+      const eq = pair.indexOf('=');
+      const k = (eq === -1 ? pair : pair.slice(0, eq)).trim();
+      const v = (eq === -1 ? '' : pair.slice(eq + 1)).trim();
+      if (advancedKeys.indexOf(k) !== -1 && v !== '') {
+        if (k === 'rstatus' && (v === '1000' || v === 'all')) continue;
+        return true;
+      }
+    }
+    return false;
+  }
+
   getCurrentUrlLoadRequests() {
     const currentUrl = this.router.url;
     // this.logger.log('[HISTORY & NORT-CONVS] current_url ', currentUrl);
+
     const queryParams = this.route.snapshot.queryParamMap;
-    const hasRelevantQueryParams = queryParams.has('qs') || queryParams.has('leftfilter');
+    const hasLeftFilter = queryParams.has('leftfilter');
+    const hasOpenedAdvancedSearch = queryParams.get('hasOpenedAdvancedSearch') === 'true';
+    const qsParam = queryParams.get('qs');
+    const hasAdvancedFiltersInQs = qsParam ? this.qsHasAdvancedFilters(qsParam) : false;
+    const hasRatedFilter = queryParams.get('_rated') === 'true';
+
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
+      this.showAdvancedSearchOption = hasLeftFilter || hasOpenedAdvancedSearch || hasAdvancedFiltersInQs;
+      this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
-      
-      // Read pageNo from query params to restore pagination (same as IS_HERE_FOR_HISTORY)
-      const pageNoParam = queryParams.get('pageNo');
-      if (pageNoParam !== null) {
-        const pageNoValue = parseInt(pageNoParam, 10);
-        if (!isNaN(pageNoValue) && pageNoValue >= 0) {
-          this.pageNo = pageNoValue;
-          this.logger.log('[HISTORY & NORT-CONVS] getCurrentUrlLoadRequests (!IS_HERE_FOR_HISTORY) - pageNo restored:', this.pageNo);
-        }
-      }
-      
-      // if (currentUrl.indexOf('?') === -1) {
-      //   this._preflight = false;
-      //   // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
-      //   this.getRequests();
-      // }
-      if (!hasRelevantQueryParams) {
+      if (!hasLeftFilter && !hasOpenedAdvancedSearch && !hasAdvancedFiltersInQs) {
         this._preflight = false;
          this._rated = false;
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
@@ -816,6 +1112,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
+      this.showAdvancedSearchOption = hasOpenedAdvancedSearch || hasAdvancedFiltersInQs || hasRatedFilter;
+      this.roleService.checkRoleForCurrentProject('history')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status_temp = '1000'
@@ -858,13 +1156,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       //  // this.getRequests();
 
       // }
-      if (!hasRelevantQueryParams) {
+      if (!hasOpenedAdvancedSearch && !hasAdvancedFiltersInQs && !hasRatedFilter) {
         // this.logger.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
-
         // this.getRequests(); nk commented
-
       }
     }
+  }
+
+  /**
+   * Helper method to preserve tiledesk_logOut query parameter when navigating
+   */
+  private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
+    const currentParams = this.route.snapshot.queryParamMap;
+    const tiledeskLogOut = currentParams.get('tiledesk_logOut');
+    
+    const queryParams = { ...customParams };
+    if (tiledeskLogOut) {
+      queryParams['tiledesk_logOut'] = tiledeskLogOut;
+    }
+    
+    return queryParams;
   }
 
   goToRequestMsgs(request_recipient: string) {
@@ -878,17 +1189,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
        if (this.has_searched === true) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], 
-          { queryParams: { 
-            qs: JSON.stringify(this.queryString), 
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'],
+          { queryParams: {
+            qs: JSON.stringify(this.queryString),
             _preflight: this._preflight.toString(),
              _rated: this._rated.toString(),
             pageNo: this.pageNo.toString() 
             } 
           })
       } else if (this.has_searched === false) {
-       this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], 
-        { queryParams: { 
+       this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'],
+        { queryParams: {
             _preflight: this._preflight.toString(),
              _rated: this._rated.toString(),
             pageNo: this.pageNo.toString() 
@@ -900,17 +1211,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
 
       if (this.has_searched === true) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { 
-          queryParams: { 
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], {
+          queryParams: {
             qs: JSON.stringify(this.queryString),
-            pageNo: this.pageNo.toString()
-          } 
+            pageNo: this.pageNo.toString(),
+            hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString()
+          }
         })
       } else if (this.has_searched === false) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { 
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], {
           queryParams: {
-            pageNo: this.pageNo.toString()
-          } 
+            pageNo: this.pageNo.toString(),
+            hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString()
+          }
         })
           
       }
@@ -919,7 +1232,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('goToRequestMsgs requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option)
       if (this.requests_status_selected_from_left_filter && !this.requests_status_selected_from_advanced_option) {
         if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
-          this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { leftfilter: this.requests_status_selected_from_left_filter , pageNo: this.pageNo.toString() } })
+          this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], {
+            queryParams: {
+              leftfilter: this.requests_status_selected_from_left_filter,
+              pageNo: this.pageNo.toString(),
+              hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString()
+            }
+          })
         }
       }
     }
@@ -931,20 +1250,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
 
-    // if (this.requestList.length > 0) {
-    //   this.requestList.forEach(request => {
-    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -1182,6 +1488,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // Join request
   // ------------------------------------------
   joinRequest(request, request_id: string) {
+    if (!this.PERMISSION_TO_JOIN_REQUEST) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
 
     // this._onJoinHandled(request_id, this.currentUserID, request);
     //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
@@ -1227,6 +1537,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
       }
     }
+
   }
 
   presentModalYouCannotJoinChat() {
@@ -1391,6 +1702,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this._preflight = false
       // this.logger.log('[HISTORY & NORT-CONVS] - onChangePreflight - this._preflight', this._preflight);
     }
+    // URL will be updated in search() method when user clicks Search button
   }
 
   onChangeRated($event) {
@@ -1427,10 +1739,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsStatusesSelectFromAdvancedOption(requests_statuses) {
-    this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
+    console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
 
     if (this.requests_statuses.length === 0) {
-      this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses 2', this.requests_statuses);
+      console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses USE CASE requests_statuses.length === 0', this.requests_statuses);
       // this.requests_statuses = ['1000', '100', '200', '50']
       // this.requests_status = "1000,100,200,50"
       // this.requests_status = "1000,100,200"
@@ -1599,10 +1911,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-    this.logger.log('getRequests queryString', this.queryString)
+    this.logger.log('[HISTORY & NORT-CONVS] getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    this.logger.log('getRequests requests_statuses ', this.requests_statuses)
-    this.logger.log('getRequests requests_status ', this.requests_status)
+    console.log('[HISTORY & NORT-CONVS] getRequests requests_statuses ', this.requests_statuses)
+    this.logger.log('[HISTORY & NORT-CONVS] getRequests requests_status ', this.requests_status)
 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
@@ -2289,10 +2601,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName event term', event.term);
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName tags_array ', this.tags_array);
 
-  
-    const existsInList  = this.tags_array.filter((tag: any) => {
+
+    const existsInList = this.tags_array.filter((tag: any) => {
       return tag.name === event.term;
-      
+
     });
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName existsInList ', existsInList);
 
@@ -2365,6 +2677,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.conversationTypeValue = 'whatsapp'
       this.conversation_type = 'voice_twilio'
     }
+
+    if (this.conversation_type === 'sms-twilio') {
+      // this.conversationTypeValue = 'whatsapp'
+      this.conversation_type = 'sms-twilio'
+    }
+   
   }
 
 
@@ -2512,8 +2830,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('[HISTORY & NORT-CONVS] - TOGGLE DIV this.requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option);
     }
 
-    // this.requests_status_selected_from_left_filter = '200'
-    // this.requests_status_selected_from_advanced_option = null
+    this.justToggledAdvancedPanel = true;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString() },
+      queryParamsHandling: 'merge'
+    });
   }
 
   searchOnEnterPressed(event: any) {
@@ -2544,8 +2866,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
     this.logger.log('HERE IN SEARCH this.startDate', this.startDate)
     this.logger.log('HERE IN SEARCH this.endDate', this.endDate)
-    this.logger.log('HERE IN SEARCH this.requests_status', this.requests_status)
+    console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH this.requests_status', this.requests_status)
     this.logger.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
+
+    // Reset status from 9999 (used in clearSearch) back to 1000 for history page
+    if (this.IS_HERE_FOR_HISTORY && this.requests_status === '9999') {
+      this.requests_status = '1000'
+      this.requests_statuses = ['1000']
+    }
 
     // Reset status from 9999 (used in clearSearch) back to 1000 for history page
     if (this.IS_HERE_FOR_HISTORY && this.requests_status === '9999') {
@@ -2745,9 +3073,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.SEARCH_FOR_TICKET_ID === true) {
       variable_parameter = "ticket_id="
     }
-    
+
     if (this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX === true) {
-      variable_parameter =  "snap_lead_email="  
+      variable_parameter = "snap_lead_email="
     }
 
     if (!this.duration) {
@@ -2801,56 +3129,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
     
     if (this.IS_HERE_FOR_HISTORY) {
-       // Update URL with _preflight and pageNo query parameters when in history mode
-      const queryParams = { 
+       // Update URL with _preflight, pageNo and hasOpenedAdvancedSearch
+      const queryParams = {
         _preflight: this._preflight.toString(),
         _rated: this._rated.toString(),
         pageNo: this.pageNo.toString()
       };
-      this.router.navigate([], { 
+      this.router.navigate([], {
         relativeTo: this.route,
         queryParams: queryParams,
         queryParamsHandling: 'merge'
       });
-    }
-
-    // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selectedDeptId > ', this.selectedDeptId);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 startDate > ', this.startDate);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 endDate > ', this.endDate);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requester_email > ', this.requester_email);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selecteTagName > ', this.selecteTagName);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 conversation_type > ', this.conversation_type);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 fullText', this.fullText)
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_advanced_option > ', this.requests_status_selected_from_advanced_option);
-    this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_left_filter > ', this.requests_status_selected_from_left_filter);
-
-    // ||
-    // this.requests_status_selected_from_left_filter !== undefined ||
-    // this.requests_status_selected_from_advanced_option  !== undefined
-
-    if (this.showAdvancedSearchOption === false) {
-
-      if (this.selectedDeptId ||
-        this.startDate ||
-        this.endDate ||
-        this.selectedAgentId ||
-        this.requester_email ||
-        this.selecteTagName ||
-        this.conversation_type !== 'all' ||
-        (this.requests_status_selected_from_left_filter && this.requests_status_selected_from_left_filter === '100') ||
-        (this.requests_status_selected_from_left_filter && this.requests_status_selected_from_left_filter === '200') ||
-        (this.requests_status_selected_from_advanced_option && this.requests_status_selected_from_advanced_option !== 'all')
-
-      ) {
-
-        this.showAdvancedSearchOption = true;
-        this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 2 ', this.showAdvancedSearchOption);
-      } else {
-        this.showAdvancedSearchOption = false;
-        this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 3 ', this.showAdvancedSearchOption);
-      }
     }
     this.getRequests();
   }
@@ -2887,6 +3176,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.rated = false;
     this._rated = false;
     this.phone_applied = null;
+
+    this.rated_applied = false;
+    this.preflight_applied = false;
+    this.rated = false;
+    this._rated = false;
+    this.phone_applied = null;
+
 
     if (this.selectedDeptId) {
       this.deptIdValue = this.selectedDeptId;
@@ -2982,8 +3278,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.queryString = ''
     this.pageNo = 0;
 
+    this.showAdvancedSearchOption = false;
     // Navigate first, then execute search that returns no results after navigation completes
-    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]).then(() => {
+    this.router.navigate(['project/' + this.projectId + '/' + currentRoute], {
+      queryParams: { hasOpenedAdvancedSearch: 'false' }
+    }).then(() => {
       // Execute search that returns no results after navigation
       this.getRequests();
       // Reset flag after a short delay to allow navigation to complete
@@ -3074,6 +3373,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.fullText_applied_filter = null;
     this.requester_email_applied_filter = null;
     this.rated_applied = false;
+    this.preflight_applied = false;
     this.phone_applied = null;
     this.selecteTagName = null
     this.selecteTagColor = null
@@ -3097,13 +3397,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
      //   + 'call_id='   
     this.queryString = ''
     this.pageNo = 0;
+    
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.fullTextValue)
     // this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.queryString)
 
-    // this.getRequests();
-
+    this.showAdvancedSearchOption = false;
     // Navigate first, then execute search that returns no results after navigation completes
-    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]).then(() => {
+    this.router.navigate(['project/' + this.projectId + '/' + currentRoute], {
+      queryParams: { hasOpenedAdvancedSearch: 'false' }
+    }).then(() => {
       // Execute search that returns no results after navigation
       this.getRequests();
       // Reset flag after a short delay to allow navigation to complete
@@ -3346,6 +3648,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   goToAgentProfile(member_id) {
+    if (!this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
+
     this.logger.log('[HISTORY & NORT-CONVS] goToAgentProfile (AFTER GET PROJECT-USER-ID BY ID)', member_id)
     // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
 
@@ -3380,11 +3687,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else if (bot_type === 'tilebot') {
       botType = 'tilebot'
+
+      if(!this.PERMISSION_TO_EDIT_FLOWS) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
+
       if (this.ROLE_IS_AGENT === false) {
         // this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
+      if(!this.PERMISSION_TO_UPDATE_APP) {
+        this.notify.presentDialogNoPermissionToPermomfAction()
+        return;
+      }
       botType = bot_type
       if (this.ROLE_IS_AGENT === false) {
         this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
@@ -3403,8 +3720,39 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  selectAll(e) {
-    this.logger.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+
+
+  selectAllHistory(e) {
+    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
+
+
+    if (e.target.checked == true) {
+      this.allChecked = true;
+      for (let request of this.requestList) {
+        const index = this.request_selected.indexOf(request.request_id);
+        // || request.status !== 1000
+        if (index > -1 || request.status !== 1000) {
+          this.logger.log("[HISTORY & NORT-CONVS] **++ Already present")
+        } else {
+          this.logger.log("[HISTORY & NORT-CONVS] *+*+ Request Selected: ", request.request_id);
+          this.request_selected.push(request.request_id);
+        }
+      }
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    } else {
+      this.allChecked = false;
+      this.request_selected = [];
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    }
+
+  }
+
+  selectAllNort(e) {
+    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
 
@@ -3436,9 +3784,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // --------------------------------------------------------------
   change(requestId) {
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    this.logger.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+    console.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
 
-    this.logger.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
+    console.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
     const index = this.request_selected.indexOf(requestId);
     this.logger.log("[HISTORY & NORT-CONVS] - change - request selected INDEX: ", index);
 
@@ -3467,71 +3815,92 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      console.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
 
 
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - DATA ', data);
-      }, (err) => {
-        this.logger.error('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - ERROR ', err);
+      this.wsRequestsService.closeSupportGroup(request_id)
+        .subscribe((data: any) => {
+          this.logger.log('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - DATA ', data);
+        }, (err) => {
+          this.logger.error('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - ERROR ', err);
 
 
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        // this.ngOnInit();
-        this.logger.log('[HISTORY & NORT-CONVS] +- CLOSE SUPPORT GROUP - COMPLETE');
+          // =========== NOTIFY ERROR ===========
+          // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+          this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
+          // this.ngOnInit();
+          this.logger.log('[HISTORY & NORT-CONVS] +- CLOSE SUPPORT GROUP - COMPLETE');
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+          // =========== NOTIFY SUCCESS===========
+          // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
-        // this.onArchiveRequestCompleted()
+          // this.onArchiveRequestCompleted()
 
-        this.getRequests();
-      });
+          // this.getRequests();
+
+          for (var i = 0; i < this.requestList.length; i++) {
+
+            if (this.requestList[i].request_id === request_id) {
+              console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
+              this.requestList[i]['status'] = 1000
+              if (!this.IS_HERE_FOR_HISTORY) {
+                this.requestList.splice(i, 1);
+              }
+            }
+            console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
+          }
+
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 
   archiveSelected() {
-    this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
-    this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
-    let count = 0;
-    const promises = [];
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
+      this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
+      let count = 0;
+      const promises = [];
 
-    this.request_selected.forEach((requestid, index) => {
-      promises.push(this.wsRequestsService.archiveRequestOnPromise(requestid)
-        .then((res) => {
+      this.request_selected.forEach((requestid, index) => {
+        promises.push(this.wsRequestsService.archiveRequestOnPromise(requestid)
+          .then((res) => {
 
-          this.logger.log("[HISTORY & NORT-CONVS] - then res : ", res);
+            this.logger.log("[HISTORY & NORT-CONVS] - then res : ", res);
 
 
 
-          count = index + 1;
-          this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
-          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);
+            count = index + 1;
+            this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
+            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);
 
-        }).catch((error) => {
+          }).catch((error) => {
 
-          this.logger.error('[HISTORY & NORT-CONVS] PROMISE ERROR: ', error);
-        })
-      );
-    });
+            this.logger.error('[HISTORY & NORT-CONVS] PROMISE ERROR: ', error);
+          })
+        );
+      });
 
-    Promise.all(promises).then((res) => {
-      this.logger.log("[HISTORY & NORT-CONVS] - ALL PROMISE RESOLVED", res);
-      this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-      this.allChecked = false;
-      this.getRequests();
-    });
+      Promise.all(promises).then((res) => {
+        this.logger.log("[HISTORY & NORT-CONVS] - ALL PROMISE RESOLVED", res);
+        this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+        this.allChecked = false;
+        this.getRequests();
+      });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 
   deleteSelected() {
-    this.logger.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
+    console.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
     let nRequestsBefore = this.requestList.length;
     //let correctnessCheck = (this.requestList.length - this.request_selected.length);
 
@@ -3613,8 +3982,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   deleteArchivedRequest(request_id) {
-    this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)
 
+    if (!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
+
+    this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)
     Swal.fire({
       title: this.areYouSure + "?",
       text: this.requestWillBePermanentlyDeleted,
@@ -3642,7 +4017,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.errorDeleting + ' ' + this.pleaseTryAgain, 
+              text: this.errorDeleting + ' ' + this.pleaseTryAgain,
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -3654,7 +4029,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
             });
           }, () => {
             this.logger.log('[HISTORY & NORT-CONVS] in swal deleteRequest res* COMPLETE *');
-            Swal.fire( {
+            Swal.fire({
               title: this.done_msg + "!",
               text: this.requestWasSuccessfullyDeleted,
               icon: "success",
@@ -3675,6 +4050,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   reopenArchivedRequest(request, request_id) {
+    if (!this.PERMISSION_TO_REOPEN) {
+
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
     this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
     // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
@@ -3708,6 +4088,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
+
   }
 
   presentModalReopenConvIsNotPossible() {
@@ -3728,6 +4109,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   reopenConversation(request_id) {
+    if (!this.PERMISSION_TO_REOPEN) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
     this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
       this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
 

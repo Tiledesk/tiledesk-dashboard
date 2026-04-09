@@ -27,6 +27,7 @@
   "aiModels":"${AI_MODELS}",
   "oauth2SigninEnabled": "${OAUTH2_SIGNIN_ENABLED}",
   "pineconeReranking":"${PINECONE_RERANKING}",
+  "logoutURL": "${LOGOUT_URL}",
   "firebase": {
     "apiKey": "${FIREBASE_APIKEY}",
     "authDomain": "${FIREBASE_AUTHDOMAIN}",

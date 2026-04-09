@@ -46,7 +46,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   extract_tags = ['body']; // Always preset to 'body'
   unwanted_tags = [];
   unwanted_classnames = [];
-  stored_scrape_option: boolean;
+  stored_scrape_option: boolean
 
   // ---------------------
   // Refressh rate
@@ -130,7 +130,6 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     this.initTagContainerObserver();
   }
 
-
   ngOnChanges(changes: SimpleChanges){
     // this.logger.log('ModalSiteMapComponent changes: ', changes);
     // if(this.listSitesOfSitemap.length > 0){
@@ -167,8 +166,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
     const body = {sitemap: this.siteMap, tags: this.kbTagsArray}
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      this.logger.log("[MODALS-URLS] addSitemap:", resp);
-      this.logger.log("[MODALS-URLS] addSitemap sites:", resp.sites);
+      this.logger.log("[ModalSiteMapComponent] addSitemap:", resp);
+      this.logger.log("[ModalSiteMapComponent] addSitemap sites:", resp.sites);
 
 
       if(resp.sites.length > 0){
@@ -185,12 +184,23 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
           this.buttonDisabled = false;
         }
      }
+      // this.listOfUrls = resp.sites;
+    //   let listSitesOfSitemap = resp.sites.split("\n").filter(function(row) {
+    //   return row.trim() !== '';
+    // });
+    // var lines = resp.sites.split('\n');
+    // if (lines.length > KB_LIMIT_CONTENT) {
+    //   this.errorLimit = true;
+    //   this.buttonDisabled = true;
+    //   this.listOfUrls = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
+    //   // this.logger.log("onChangeInput: ",this.listOfUrls);
+    // } else {
+    //   this.errorLimit = false;
+    //   this.buttonDisabled = false;
+    // }
+    // this.countSitemap = listSitesOfSitemap.length;
 
-    }, (error) => {
-      this.logger.error('[MODALS-URLS] addSitemap - ERROR ', error);
-    }, () => {
-      this.logger.log('[MODALS-URLS] addSitemap * COMPLETE *');
-    });
+    })
 
    
   }
@@ -343,7 +353,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 
-    /**
+  /**
    * Copy all scrape options to localStorage
    */
   copyAllScrapeOptions(): void {
@@ -378,7 +388,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
    */
   hasStoredScrapeOptions(): boolean {
     try {
-      this.stored_scrape_option = localStorage.getItem('scrape_options') !== null;
+      this.stored_scrape_option =
+        localStorage.getItem('scrape_options') !== null;
 
       return this.stored_scrape_option;
     } catch (error) {

@@ -47,7 +47,7 @@
             [ngClass]="{
                 'selected-option': selectedNamespaceType === 'hybrid',
                 'disabled-option': !hybridActive
-            }"
+                }"
             (click)="hybridActive ? selectedNamespaceType = 'hybrid' : null"
             [style.transition]="'border-color 0.2s'"
             [style.boxShadow]="!hybridActive ? 'none' : null"
@@ -93,8 +93,8 @@
             <a class="upsell-text-link" (click)="contactUs()">{{'ContactUs' | translate}}!</a></span>
     </div>
 
-    <div class="cc-mat-form-field-wrapper">
-        <mat-form-field appearance="outline" class="cc-mat-form-field custom-namespace-mat-form-field" style="width: 465px;">
+    <div class="add-namespace-mat-form-field-wrapper">
+        <mat-form-field appearance="outline" class="cc-mat-form-field custom-namespace-mat-form-field" style="width: 465px; font-size: 14px;">
             <mat-label>{{ 'KbPage.NamespaceName' | translate }}</mat-label>
             <input matInput [(ngModel)]="namespaceName">
         </mat-form-field>

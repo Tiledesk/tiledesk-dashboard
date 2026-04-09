@@ -17,7 +17,7 @@
   height: 52px;
   // background-color: rgb(1, 118, 255);
   border-radius: 10px 10px 0 0;
-  background-color: #217eeb;
+  // background-color: #217eeb;
   fill: #fff;
   color: #fff;
 }
@@ -44,6 +44,7 @@
   margin-left: 0px;
   margin-right: 0px;
   min-height: 103px;
+  background: #fff;
 }
 
 .td-widget-preview-avatar-image {
@@ -130,9 +131,11 @@
     color: #fff;
     margin-right: 0;
     margin-left: 114px;
-     margin-left: 1oopx;
     margin-top: 10px;
     border-radius: 20px;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 300;
 }
 
 .td-widget-preview-slide-in-left {
@@ -288,7 +291,7 @@ text-align: center;
 
 .visible-text-area>span {
   position: relative;
-  top: 9px;
+  top: 14px;
   left: 11px;
 }
 

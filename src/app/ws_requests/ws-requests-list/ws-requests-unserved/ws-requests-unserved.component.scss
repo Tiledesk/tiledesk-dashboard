@@ -223,8 +223,8 @@ span .switch-agent-admin-requests-btn {
 
 .verified-user-icon-wpr {
   position: absolute;
-  top: -2px;
-  left: -6px;
+  top: -4px;
+  left: -8px;
 }
 
 .verified-user-icon-wpr>span {
@@ -636,10 +636,25 @@ span .switch-agent-admin-requests-btn {
   line-height: 13px;
 }
 
+// Ensure divs with position: relative contain the badge correctly
+div[style*="position: relative"] {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 0; // Prevent extra space from inline elements
+}
+
+// Ensure the span inside doesn't interfere
+div[style*="position: relative"] > span[style*="cursor:pointer"] {
+  display: inline-block;
+  position: relative;
+}
+
 .abandoned_chat-badge-wpr {
   position: absolute;
-  top: -1px;
-  left: -5px;
+  top: 4px;
+  right: 0;
+  z-index: 10;
+  transform: translate(50%, -50%);
 }
 .abandoned_chat-badge-wpr > span > .material-icons {
   font-size: 14px !important;
@@ -717,10 +732,12 @@ span .switch-agent-admin-requests-btn {
 .email-wpr {
   background: #bb001b;
   border-radius: 50%;
+  display: block;
 }
 .form-wpr {
   background: #39988d;
   border-radius: 50%;
+  display: block;
 }
 
 .channel-img-in-conversations {
@@ -831,4 +848,18 @@ span .switch-agent-admin-requests-btn {
 
 .span-link-style:hover {
   text-decoration: underline;
+}
+
+.no-agent-icon-wpr {
+  width: 30px;
+  cursor: pointer;
+  height: 30px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.no-agent-icon-wpr svg > g > path {
+    fill: var(--svg-icon-gray);
 }

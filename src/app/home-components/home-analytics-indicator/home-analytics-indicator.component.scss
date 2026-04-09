@@ -9,7 +9,7 @@
 .shadow {
     // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
     //     0 4px 4px -2px rgb(91 94 105 / 15%);
-    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
 }
 
 .flex {
@@ -185,6 +185,7 @@
     color: #00d4ff;
     font-weight: 400;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .text-accent-link-on-black .m-i-arrow-on-black {
@@ -236,6 +237,7 @@
     color: #fff;
     font-weight: 400;
     border: unset;
+    font-size: 14px;
 }
 
 .period-switch-btn:hover {
@@ -354,7 +356,7 @@
     &:before,
     &:after {
       // background: #fff;
-      background: #0f62ff;
+      background: var(--blue-20);
       content: "";
       display: block;
       width: $size;

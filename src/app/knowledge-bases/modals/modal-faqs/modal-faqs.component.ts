@@ -25,7 +25,7 @@ export class ModalFaqsComponent implements OnInit {
   parse_done: boolean;
   parse_err: boolean;
   modalChoosefileDisabled: boolean;
-  namespaceid: string
+  namespaceid: string;
   showBackButton: boolean = true;
 
   kb: KB = {
@@ -84,7 +84,8 @@ export class ModalFaqsComponent implements OnInit {
     this.kbForm = this.createConditionGroup();
   }
 
-   ngAfterViewInit() {
+
+  ngAfterViewInit() {
     this.initTagContainerObserver();
   }
 

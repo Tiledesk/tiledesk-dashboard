@@ -13,6 +13,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
+import { NavigationService } from 'app/services/navigation.service';
 
 @Component({
   selector: 'appdashboard-contacts-static',
@@ -52,6 +53,7 @@ export class ContactsStaticComponent extends PricingBaseComponent implements OnI
   PLAN_NAME = PLAN_NAME;
   public_Key: any;
   payIsVisible: boolean;
+  private backSub?: Subscription;
 
   constructor(
     private router: Router,
@@ -62,7 +64,8 @@ export class ContactsStaticComponent extends PricingBaseComponent implements OnI
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private navSvc: NavigationService
   ) {
     super(prjctPlanService, notify);
   }
@@ -74,7 +77,8 @@ export class ContactsStaticComponent extends PricingBaseComponent implements OnI
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
+    this.presentModalsOnInit();
+    this.listenToGoBack()
     // this.tparams = {'plan_name': PLAN_NAME.A}
   }
 
@@ -83,6 +87,13 @@ export class ContactsStaticComponent extends PricingBaseComponent implements OnI
     // this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
   }
 
   getBrowserVersion() {

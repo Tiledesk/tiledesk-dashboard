@@ -11,6 +11,12 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AutomationsService } from '../services/automations.service';
+import { RoleService } from 'app/services/role.service';
+import { Subject, Subscription } from 'rxjs';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { NavigationService } from 'app/services/navigation.service';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -105,6 +111,18 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   contactNewFirstName: string;
   contactNewLastName: string;
   USER_ROLE: string;
+
+  // isAuthorized = false;
+  // permissionChecked = false;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  PERMISSION_TO_UPDATE_LEAD: boolean;
+  PERMISSION_TO_VIEW_TAG: boolean;
+  PERMISSION_TO_VIEW_CONVS: boolean;
+  PERMISSION_TO_TRASH_LEAD: boolean;
+
+  private backSub?: Subscription;
+  
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -116,7 +134,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private appConfigService: AppConfigService,
     private usersService: UsersService,
     private logger: LoggerService,
-    private automationsService: AutomationsService
+    private automationsService: AutomationsService,
+    private roleService: RoleService,
+    public rolesService: RolesService,
+    private navSvc: NavigationService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -125,6 +146,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
+
+    // if (!this.isAuthorized || !this.permissionChecked) return; // ✅ Skip if user isn't authorized
 
     // ------------------------------
     // Right sidebar width on resize
@@ -139,6 +162,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('contact-details')
     this.getRequesterIdParam_AndThenGetRequestsAndContactById();
     this.getCurrentProject();
     this.getCurrentUser();
@@ -153,16 +177,107 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     if (tabParam === 'sent-messages') {
       this.selectedTab = 'sent-messages';
     }
+    // this.checkPermissions()
+    this.listenToProjectUser()
+    this.listenToGoBack()
   }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.backSub?.unsubscribe();
+  }
+
+  listenToGoBack() {
+    this.backSub = this.navSvc.onBack().subscribe(() => {
+      this.goBack();
+    });
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[CONTACTS-DTLS] - Role:', status.role);
+        console.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
+
+        // --------------------------
+        // PERMISSION_TO_VIEW_CONVS
+        // -------------------------
+        // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+        //   if (status.matchedPermissions.includes(PERMISSIONS.INBOX_READ)) {
+        //     this.PERMISSION_TO_VIEW_CONVS = true
+        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
+        //   } else {
+        //     this.PERMISSION_TO_VIEW_CONVS = false
+
+        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
+        //   }
+        // } else {
+        //   this.PERMISSION_TO_VIEW_CONVS = true
+        //   console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_CONVS ', this.PERMISSION_TO_VIEW_CONVS);
+        // }
+
+        // --------------------------------
+        // PERMISSION_TO_TRASH_LEAD
+        // --------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_TRASH)) {
+            this.PERMISSION_TO_TRASH_LEAD = true
+            console.log('[CONTACTS-DTLS] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+          } else {
+            this.PERMISSION_TO_TRASH_LEAD = false
+
+            console.log('[CONTACTS-DTLS] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_TRASH_LEAD = true
+          console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+        }
+
+          
+        // ---------------------------
+        // PERMISSION_TO_UPDATE_LEAD 
+        // --------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
+
+            this.PERMISSION_TO_UPDATE_LEAD = true
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          } else {
+            this.PERMISSION_TO_UPDATE_LEAD = false
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_LEAD = true
+          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+        }
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+  // async checkPermissions() {
+  //   const result = await this.roleService.checkRoleForCurrentProject('contact-details')
+  //   console.log('[CONTACTS-DTLS] result ', result)
+  //   this.isAuthorized = result === true;
+  //   this.permissionChecked = true;
+  //   console.log('[CONTACTS-DTLS] isAuthorized ', this.isAuthorized)
+  //   console.log('[CONTACTS-DTLS] permissionChecked ', this.permissionChecked)
+  // }
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
-   
+
 
       if (user_role) {
         this.USER_ROLE = user_role;
       }
-      
+
     });
   }
 
@@ -175,7 +290,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.logger.log('[CONTACTS-DTLS] - public_Key keys', keys)
 
     keys.forEach(key => {
-   
+
       if (key.includes("LBS")) {
         let lbs = key.split(":");
         if (lbs[1] === "F") {
@@ -236,6 +351,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   // MOVE TO TRASH
   // --------------------------------------------------
   moveContactToTrash(contactid: string, fullName: string) {
+
+    if(this.PERMISSION_TO_TRASH_LEAD === false || this.USER_ROLE === 'agent') {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     // this.logger.log('[CONTACTS-DTLS] - ON MODAL DELETE OPEN -> USER ID ', id);
 
     // this.displayDeleteModal = 'block';
@@ -274,7 +394,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           }, (error) => {
             this.logger.error('[CONTACTS-DTLS] in swal deleteRequest res - ERROR ', error);
 
-            Swal.fire(  {
+            Swal.fire({
               title: this.errorDeleting + '!',
               text: this.pleaseTryAgain,
               icon: "error",
@@ -317,6 +437,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     // -----------------------------------
     // Right sidebar width after view init
     // -----------------------------------
+    // if (!this.isAuthorized || !this.permissionChecked) return; // ✅ Skip if user isn't authorized
+
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
 
     this.rightSidebarWidth = rightSidebar.offsetWidth
@@ -480,7 +602,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   toggleAttributes() {
     this.showAttributes = !this.showAttributes;
-    this.logger.log('[CONTACTS-DTLS] SHOW ALL ATTRIBUTES ', this.showAttributes);
+    console.log('[CONTACTS-DTLS] SHOW ALL ATTRIBUTES ', this.showAttributes);
     const attributesArrowIconElem = <HTMLElement>document.querySelector('#lead-attributes_arrow_down');
     if (this.showAttributes === true) {
       attributesArrowIconElem.classList.add("up");
@@ -537,7 +659,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     }
     this.contactTempTags = this.contactTempTags.slice(0)
     this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTags: ', this.contactTags);
-    
+
     this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTempTags: ', this.contactTempTags);
 
     setTimeout(() => {
@@ -563,8 +685,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       this.contactTags.splice(index, 1);
       this.contactTempTags.push({ tag: tag })
       this.contactTempTags = this.contactTempTags.slice(0)
-     this.logger.log('[CONTACTS-DTLS] removeTag contactTempTags', this.contactTempTags)
-     this.logger.log('[CONTACTS-DTLS] removeTag contactTags', this.contactTags)
+      this.logger.log('[CONTACTS-DTLS] removeTag contactTempTags', this.contactTempTags)
+      this.logger.log('[CONTACTS-DTLS] removeTag contactTags', this.contactTags)
 
       this.updateContactTag(this.requester_id, this.contactTags)
     }
@@ -583,7 +705,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       })
   }
 
-  
+
 
 
   getTagContainerElementHeight() {
@@ -606,8 +728,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
         if (lead) {
           this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
-
-
           if (lead.email && !isValidEmail(lead.email)) {
             lead.email = null; // Or 'N/A', depending on what you want to display
           }
@@ -741,14 +861,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                   }
                 }
 
-                this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                console.log('[CONTACTS-DTLS] - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
                 let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
                 this.attributesArray.push(entries)
               }
             } // ./end for
-            this.logger.log('[CONTACTS-DTLS] - getWsRequestById attributesArray: ', this.attributesArray);
+            console.log('[CONTACTS-DTLS] - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
 
             // ---------------------------------------------------------
@@ -1061,9 +1181,16 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   openAddContactNameForm($event) {
+    console.log('openAddContactNameForm') 
+
+    if (this.PERMISSION_TO_UPDATE_LEAD === false)  {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+
     $event.stopPropagation();
     this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
-    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
+    console.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
     const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
     this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
     if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
@@ -1089,7 +1216,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     elemDropDown.classList.remove("dropdown__menu-form--active");
     this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewFirstName', this.contactNewFirstName)
     this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewLastName', this.contactNewLastName)
-   
+
     // request?.lead?.fullname
     if (this.contactNewFirstName && !this.contactNewLastName) {
 

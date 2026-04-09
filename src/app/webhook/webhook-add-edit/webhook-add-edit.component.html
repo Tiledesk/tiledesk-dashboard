@@ -4,10 +4,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
 
-      <div class="modal-header" style="padding-bottom: 15px; border-bottom: none !important">
-        <button type="button" class="close" aria-label="Close" (click)="closeModal_AddEditWebhook()">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModal_AddEditWebhook()">
           <span aria-hidden="true">
-            <!-- &times; -->
             <svg class="tide-icon" width="18" height="18" viewBox="0 0 24 24">
               <path
                 d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
@@ -15,8 +14,8 @@
             </svg>
 
           </span>
-        </button>
-        <h4 class="modal-title">
+        </button> -->
+        <h4 class="modal-title" style="font-size: 14px;">
 
           <section *ngIf="modalMode === 'add'">
             <span style="vertical-align: middle;">
@@ -30,10 +29,12 @@
             </span>
           </section>
         </h4>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal_AddEditWebhook()"></button>
       </div>
 
       <!-- Controllare se è possibile eliminare qualcosa -->
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
 
         <div *ngIf="showSkeleton === true" class="edit-response_view" style="min-height: 133px;">
           <div class="stretchspinner">
@@ -47,14 +48,16 @@
 
         <div *ngIf="showSkeleton === false" class="edit-response_view">
 
-          <div class="form-group row" style="margin-top: 15px;">
-            <label for="webhookEvent" class="col-xs-3 custom-label">
+          <div class="row" style="margin-top: 15px;">
+            <label for="webhookEvent" class="col-12 custom-label">
               {{ "Webhook.SelectEvent" | translate }}
             </label>
-            <div class="col-xs-9">
-              <ng-select placeholder="{{'Webhook.SelectEvent' | translate}}" [(ngModel)]="subscriptionEvent">
-                <ng-option [value]="webhook.id" *ngFor="let webhook of webHookEvents">{{webhook.name}}</ng-option>
-              </ng-select>
+            <div class="col-12">
+              <div class="select-webhook-event-wpr" style="font-size: 14px;"> 
+                <ng-select placeholder="{{'Webhook.SelectEvent' | translate}}" [(ngModel)]="subscriptionEvent">
+                  <ng-option [value]="webhook.id" *ngFor="let webhook of webHookEvents">{{webhook.name}}</ng-option>
+                </ng-select>
+              </div>
             </div>
 
             <span *ngIf="eventIsEmpty === true" class="error-message" style="color: #f6303a;font-size: 14px;">
@@ -64,7 +67,7 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
               <div class="form-group" style="margin-top: 20px;">
                 <input id="webhook-title" name="webhook-title" [(ngModel)]="webhookTarget" value=""
                   placeholder='Enter Webhook Target (example: "https://www.yourwebsite.com/")' class="form-control" />

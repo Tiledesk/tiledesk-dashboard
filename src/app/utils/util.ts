@@ -108,12 +108,12 @@ export function getColorBck(requester_fullname) {
     return arrayBckColor[num];
 }
 
-
 export function isValidEmail(email: string): boolean {
   if (!email) return false;
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
+
 
 
 export function htmlEntities(str) {
@@ -122,6 +122,7 @@ export function htmlEntities(str) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     // .replace(/\n/g, '<br>')
 }
 
@@ -761,33 +762,7 @@ export function loadTokenMultiplier(ai_models) {
     return models
 }
 
-// export const TYPE_GPT_MODEL = {
-//     'GPT-3': { name: "GPT-3 (DaVinci)", value: "text-davinci-003", status: "inactive"},
-//     'GPT-3.5' : { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo", status: "active"},
-//     'GPT-4' : { name: "GPT-4 (ChatGPT)", value: "gpt-4", status: "active"},
-//     'GPT-4-turbo-preview': { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview", status: "active"},
-//     'GPT-4o': { name: "GPT-4o (ChatGPT)", value: "gpt-4o", status: "active"}
-// }
 
-// export const TYPE_GPT_MODEL = {
-//     'GPT-3': { name: "GPT-3 (DaVinci)", value: "text-davinci-003", status: "inactive"},
-//     'GPT-3.5' : { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", status: "active"},
-//     'GPT-4' : { name: "GPT-4", value: "gpt-4", status: "active"},
-//     'GPT-4-turbo-preview': { name: "GPT-4 Turbo", value: "gpt-4-turbo-preview", status: "active"},
-//     'GPT-4o': { name: "GPT-4o", value: "gpt-4o", status: "active"},
-//     'GPT-4o-mini':{ name: "GPT-4o mini",value: "gpt-4o-mini", status: "active"}
-// }
-
-// export const TYPE_GPT_MODEL: Array<{ name: string, value: string, description: string, status: "active" | "inactive" }> = [
-//     { name: "GPT-3 (DaVinci)", value: "text-davinci-003", description: "TYPE_GPT_MODEL.text-davinci-003.description", status: "inactive" },
-//     { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description", status: "active" },
-//     { name: "GPT-4 (Legacy)", value: "gpt-4", description: "TYPE_GPT_MODEL.gpt-4.description", status: "active" },
-//     { name: "GPT-4 Turbo Preview", value: "gpt-4-turbo-preview", description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description", status: "active" },
-//     { name: "GPT-4o", value: "gpt-4o", description: "TYPE_GPT_MODEL.gpt-4o.description", status: "active" },
-//     { name: "GPT-4o mini", value: "gpt-4o-mini", description: "TYPE_GPT_MODEL.gpt-4o-mini.description", status: "active" },
-//     { name: "OpenAI o1-mini", value: "o1-mini", description: "TYPE_GPT_MODEL.o1-mini.description", status: "active" },
-//     { name: "OpenAI o1-preview", value: "o1-preview", description: "TYPE_GPT_MODEL.o1-preview.description", status: "active" }
-// ]
 
 // export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: string, status: "active" | "inactive"}> = [
 //     { name: "GPT-4.1",                          value: "gpt-4.1",               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
@@ -997,7 +972,6 @@ export var OLLAMA_MODEL: Array<{ name: string, value: string, description:string
 export var VLLM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
 
-
 export const LLM_MODEL: Array<{name: string, value: string, description: string, src: string, status: "active" | "inactive", models: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> }> = [
   { name: "Cohere",         value: "cohere",            description: "",      src:"assets/images/icons/ai_prompt/cohere.svg",      status: "active",   models: COHERE_MODEL        },
   { name: "Google",         value: "google",            description: "",      src:"assets/images/icons/ai_prompt/google.svg",      status: "active",   models: GOOGLE_MODEL        },
@@ -1008,6 +982,7 @@ export const LLM_MODEL: Array<{name: string, value: string, description: string,
   { name: "vLLM",           value: "vllm",              description: "",      src:"assets/images/icons/ai_prompt/vllm.svg",      status: "active",     models: VLLM_MODEL        },
   { name: "OpenAI",         value: "openai",            description: "",      src:"assets/images/icons/ai_prompt/openai.svg",      status: "active",   models: OPENAI_MODEL        },
 ]
+
 
 export const CHANNELS_NAME = {
     CHAT21: 'chat21',
@@ -1174,6 +1149,35 @@ export function isMaliciousHTML(input) {
     return false; // No XSS detected
 }
 
+export const BLOCKED_DOMAINS = [
+  // DOMINI MALEVOLI NOTI
+ 'attacker.me', 'evil.com', 'malicious.site', 'hacker.com', 'phishing.com',
+ 'malware.com', 'ransomware.com', 'trojan.com', 'virus.com', 'spyware.com',
+ 
+ // DOMINI DI PHISHING
+ 'phish.com', 'stealer.com', 'credential-thief.com', 'login-stealer.com',
+ 'password-stealer.com', 'banking-phish.com', 'paypal-phish.com',
+ 
+ // DOMINI DI SPAM
+ 'spam.com', 'spammer.com', 'bulk-email.com', 'unsolicited.com',
+ 
+ // DOMINI TRUFFA
+ 'scam.com', 'fraud.com', 'fake.com', 'counterfeit.com', 'hoax.com',
+ 
+ // DOMINI EXPLOIT
+ 'exploit.com', 'vulnerability.com', 'zero-day.com', 'payload.com',
+ 'shellcode.com', 'backdoor.com', 'rootkit.com',
+ 
+ // DOMINI BOTNET
+ 'botnet.com', 'zombie-pc.com', 'command-control.com', 'c2-server.com',
+ 
+ // DOMINI ADWARE/MALVERTISING
+ 'adware.com', 'malvertising.com', 'popup-ads.com', 'unwanted-ads.com',
+ 
+ // DOMINI GENERICI PERICOLOSI
+ 'danger.com', 'unsafe.com', 'insecure.com', 'threat.com', 'risk.com',
+]
+
 // Projects created after this date will no longer be able to use the free plan when the trial expires.
 // export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
 export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
@@ -1182,7 +1186,9 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 // Links to documentation
 export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
 export const URL_hybrid_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/hybrid-search'
-export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
+export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
+export const URL_understanding_default_roles = 'https://guide.tiledesk.com/understanding-default-roles' // 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
+// export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
 export const URL_getting_started_with_email_ticketing = "https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
@@ -1229,9 +1235,11 @@ export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/a
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
+export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"
 export const URL_WA_BroadcastsDocs = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-create-whatsapp-broadcasts';
 export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrations/whatsapp-business/how-to-send-whatsapp-messages-to-contacts';
 export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/if-operating-hours#how-to-configure-the-action'
 export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
 export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
+
 

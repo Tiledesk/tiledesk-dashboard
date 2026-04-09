@@ -1,0 +1,114 @@
+<h1 mat-dialog-title>
+  <span *ngIf="actionInModal === 'reassign'">
+    {{ "VisitorsPage.ReassignRequest" | translate }}
+  </span>
+  <span *ngIf="actionInModal === 'invite'">
+    {{ "VisitorsPage.AddAgent" | translate }}
+  </span>
+</h1>
+
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-md-12">
+      <mat-tab-group mat-align-tabs="center" *ngIf="actionInModal === 'reassign'">
+        <mat-tab label="{{'HumanTeammates' | translate }} ( {{projectUsersList?.length}} )">
+          <div class="card assign-reassign-modal-card">
+            <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
+            <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive">
+              <table class="table table-hover assign-reassign-modal-table">
+                <thead>
+                  <tr>
+                    <th colspan="2">
+                      <span style="color: #566787">
+                        {{ "UsersPage.User" | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let projectUser of projectUsersList">
+                    <td style="cursor:pointer"
+                      (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                      <p class="assign-reassign-modal-text-col1">
+                        {{ projectUser?.id_user?.firstname }} {{ projectUser?.id_user?.lastname }}
+                      </p>
+                      <span class="assign-reassign-modal-text-col2">
+                        {{ projectUser?.id_user?.email }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="{{'Chatbots' | translate}}  ( {{bots?.length}} )">
+          <div class="card assign-reassign-modal-card">
+            <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
+            <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive">
+              <table class="table table-hover assign-reassign-modal-table">
+                <thead>
+                  <tr>
+                    <th colspan="2">
+                      <span style="color: #566787">
+                        {{ "UserProfile.Name" | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let bot of bots">
+                    <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
+                      <p class="assign-reassign-modal-text-col1">
+                        {{ bot?.name }}
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="{{'Departments' | translate}} ( {{departments?.length }} )">
+          <div class="card assign-reassign-modal-card">
+            <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
+            <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive">
+              <table class="table table-hover assign-reassign-modal-table">
+                <thead>
+                  <tr>
+                    <th colspan="2">
+                      <span style="color: #566787">
+                        {{ "Department" | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let department of departments">
+                    <td style="cursor:pointer" (click)="selectDepartment(department?._id, department?.name)">
+                      <p class="assign-reassign-modal-text-col1">
+                        {{ department?.name }}
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+  <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+    {{ "Cancel" | translate }}
+  </button>
+</div>
+

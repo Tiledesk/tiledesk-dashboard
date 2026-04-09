@@ -7,7 +7,8 @@ import { environment } from '../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 
-const swal = require('sweetalert');
+// const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Injectable()
 export class BrandService {
@@ -34,6 +35,7 @@ export class BrandService {
       "contact_us_email": "support@tiledesk.com",
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,
+      "display_forgot_pwd": true,
       "display_help_in_installation": true,
       "display_invite_teammate_btn": true,
       "display_contact_us_email": true,
@@ -43,7 +45,7 @@ export class BrandService {
       "display_templates_category": true,
       "display_change_pwd": true,
       "EXTREME_MEASURES": true,
-      "SUPPORT_MENU": true,
+      "SUPPORT_MENU": false,
       // "widget_logo_URL":"https://tiledesk.com/tiledesk-logo-white.png",
       // "widget_default_footer" :"<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>",
       // "widget_launcher_button_placeholder": "assets/img/logos/custom-launcher-button-placeholder_v2.svg",
@@ -103,7 +105,8 @@ export class BrandService {
       BRAND_PRIMARY_COLOR: "#f0806f",
       BRAND_SECONDARY_COLOR: "#f0806f",
       DOCS: true,
-      LOGOUT_ENABLED: true
+      LOGOUT_ENABLED: true,
+      DISPLAY_EDIT_PROFILE: true,
     }
   }
 
@@ -224,12 +227,15 @@ export class BrandService {
   }
 
   displaySwalAlert(err) {
-    swal({
+    Swal.fire({
       title: this.warning,
       text: 'An error occurred while uploading your brand. Error code: ' + err.status,
       icon: "warning",
-      button: true,
-      dangerMode: false,
+      // button: true,
+      // dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
     })
   }
 

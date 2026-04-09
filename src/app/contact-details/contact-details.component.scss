@@ -1,4 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
+
 .table td,
 .table th {
   vertical-align: middle;
@@ -29,6 +30,34 @@
   padding: 0px;
 }
 
+.contact-details-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.contact-details-tabs>.contact-details-tab {
+  padding: 12px 24px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.3s;
+  font-family: var(--header-font-family);
+}
+
+.table-sent-messages-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-sent-messages-header>h4 {
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
 // HOVER ON THE MEMBER LIST OF THE COLUMN SERVED BY
 p.member:hover {
   background-color: #58c1d6;
@@ -37,10 +66,11 @@ p.member:hover {
 }
 
 .title-attribute {
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   color: #394f5a;
   font-weight: 500;
 }
+
 .attribute {
   color: #7695a5;
   font-weight: 500;
@@ -55,6 +85,7 @@ p.member:hover {
 .attribute_cutted_text {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }
+
 .attribute_full_text {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }
@@ -71,15 +102,18 @@ p.member:hover {
   cursor: pointer;
   display: table;
 }
+
 .showPosts .greekCross,
 .showPosts h5 {
   display: table-cell;
 }
+
 .greekCross {
   color: #00bff3;
   font-size: 15px;
 }
-.showPosts > h5 {
+
+.showPosts>h5 {
   font-size: 15px;
   display: inline;
   padding-left: 5px;
@@ -109,7 +143,8 @@ p.member:hover {
   // width: 420px;
   bottom: 100%;
   left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 
   max-width: 10em; // only for contacts component
   overflow-wrap: break-word; // only for contacts component
@@ -124,6 +159,7 @@ p.member:hover {
 .tooltipx:hover .tooltiptext-custom {
   visibility: visible;
 }
+
 // /.end TOOLTIP
 
 .contact-avatar {
@@ -153,11 +189,10 @@ p.member:hover {
   transform: translate(-50%, -50%);
 }
 
-.contact-verified {
-  position: relative;
-  // left: -20px;
-  margin-top: -24px !important;
-}
+// .contact-verified {
+//   position: relative;
+//   margin-top: -24px !important;
+// }
 
 .column-th-span {
   font-size: 14px;
@@ -302,7 +337,7 @@ p.member:hover {
 /* 
  Attributes decoded JWT Accordion 
  ------------------------------------ */
- .attributes-jwt-decoded-accordion-wpr {
+.attributes-jwt-decoded-accordion-wpr {
   margin-top: 12px !important;
   background-color: var(--card-background-color);
   border-radius: 4px;
@@ -341,7 +376,7 @@ p.member:hover {
 }
 
 .cnct-jwt-accordion {
-  padding-top: 8px !important; 
+  padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
 
@@ -417,7 +452,7 @@ p.member:hover {
   cursor: pointer;
 }
 
-.contact-action > span {
+.contact-action>span {
   font-size: 18px;
 }
 
@@ -452,7 +487,7 @@ p.member:hover {
 
 
 
-.lead-tag-content-wpr > svg {
+.lead-tag-content-wpr>svg {
   fill: #8796af;
   margin-right: 12px;
   margin-top: 2px;
@@ -528,6 +563,7 @@ p.member:hover {
   .tag_icon_in_ws_msgs {
     fill: rgba(233, 235, 238, 0.3) !important;
   }
+
   .lead-tag-delete {
     opacity: 1;
     font-size: 16px;
@@ -575,7 +611,7 @@ p.member:hover {
   color: #8796af;
   font-size: 25px;
   position: relative;
-  top: 2px;
+  // top: 2px;
   left: 2px;
 }
 
@@ -609,6 +645,7 @@ p.member:hover {
   box-shadow: 0 8px 24px 0 rgb(60 72 91 / 32%);
   margin-bottom: 10px;
   padding: 8px;
+  max-width: fit-content;
 }
 
 .contact-form {
@@ -680,7 +717,8 @@ label {
   font-weight: 400;
   color: #080f1a;
   margin-left: 45px;
-  margin-right: 12px;
+  // margin-right: 12px;
+  margin-right: 24px;
   cursor: pointer;
 }
 
@@ -689,7 +727,7 @@ label {
   border-radius: 4px;
 }
 
-.contact-details-fullname:hover > .lead-edit--icon {
+.contact-details-fullname:hover>.lead-edit--icon {
   display: inline-block;
 }
 
@@ -703,17 +741,18 @@ label {
 }
 
 // WhatsApp Sent Messages Styles
-.custom-button {
+.reload-sent-wa-messages-button {
   background-color: white;
   color: var(--blue-20);
   border: solid 1px var(--blue-20);
   border-radius: 20px;
   height: 32px;
-  font-weight: 300;
+  font-weight: 400;
   display: flex;
   align-items: center;
   padding: 0 12px;
   cursor: pointer;
+  font-size: 12px;
 
   .button-icon {
     font-size: 18px;
@@ -729,6 +768,12 @@ label {
     opacity: 0.6;
     cursor: not-allowed;
   }
+}
+
+.no-sent-messages {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
 }
 
 .logs-list {
@@ -867,6 +912,7 @@ label {
       from {
         opacity: 0;
       }
+
       to {
         opacity: 1;
       }
@@ -1006,4 +1052,27 @@ label {
   letter-spacing: 0px;
   border: none;
   cursor: pointer;
+}
+
+.restricted-access-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // height: 100%;
+  // height: calc(100vh - 190px);
+  font-size: 24px;
+}
+
+.restricted-access-title {
+  font-family: var(--header-font-family);
+  color: var(--text-color);
+  font-weight: 400;
+  font-size: 24px;
+
+}
+
+.restricted-access-subtitle {
+  color: var(--secondary-text-color);
+  font-size: 20px;
 }

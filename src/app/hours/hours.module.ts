@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: HoursComponent},
@@ -40,7 +41,8 @@ const routes: Routes = [
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class HoursModule { }

@@ -43,7 +43,7 @@
 .request_count {
     font-size: 72px;
     line-height: 72px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     margin-top: 35px;
 }
 
@@ -55,16 +55,17 @@
 }
 
 .request_count_footer {
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
-    font-size: 16px;
+    font-family: var(--header-font-family);
+    font-size: 14px;
     color: rgba(0, 0, 0, .54);
     text-align: center;
+    background: #ffffff;
 }
 
 // END - CARDS WITH THE COUNTS OF THE REQUESTS: TOTALS SERVED AND UNSERVED
 
 .c21-title {
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     font-size: 16px;
     color: rgba(0, 0, 0, .54);
 }
@@ -95,7 +96,7 @@
     padding-top: 24px;
     font-size: 18px;
     //color: #fff;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
 }
 
 .ct-label {
@@ -157,16 +158,16 @@
 
 .chart-container {
     //background-color: #1e88e5;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
 }
 
 // BOTTOM NAVBAR  //
 
 @media (max-width: 991px) {
-    .bottom-nav-analytics li {
-        top: -6px !important;
-        z-index: 1049;
-    }
+    // .bottom-nav-analytics li {
+    //     top: -6px !important;
+    //     z-index: 1049;
+    // }
 
     .chart-wrapper {
         margin-top: 60px !important;

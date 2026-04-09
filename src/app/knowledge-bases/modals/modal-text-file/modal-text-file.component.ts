@@ -7,6 +7,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BrandService } from 'app/services/brand.service';
 import { URL_kb_contents_tags } from 'app/utils/util';
 
+
 @Component({
   selector: 'modal-text-file',
   templateUrl: './modal-text-file.component.html',
@@ -95,14 +96,12 @@ export class ModalTextFileComponent implements OnInit {
 
   createConditionGroup(): FormGroup {
     const contentPattern = /^[^&<>]{3,}$/;
-    // const namePattern = /^[^&<>]{3,}$/;
-    const namePattern = /^[^&<>]{1,}$/;
+    const namePattern = /^[^&<>]{3,}$/;
     return this.formBuilder.group({
       content: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.pattern(namePattern)]]
     })
   }
-
 
   onChangeInput(event): void {
     if (this.kbForm.valid) {
