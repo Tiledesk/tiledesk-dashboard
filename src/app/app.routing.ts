@@ -1357,16 +1357,15 @@ const routes: Routes = [
   {
     path: 'project/:projectid/flows/flow-webhooks-logs/:type/:id',
     loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    // AuthGuard only: same access as wsrequests / flow-webhooks — custom project roles must reach request logs
+    canActivate: [AuthGuard]
   },
 
   {
     // path: 'project/:projectid/wsrequests/logs/:type/:id',
     path: 'project/:projectid/logs/:type/:id',
     loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
   {
     path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',

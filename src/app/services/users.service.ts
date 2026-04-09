@@ -585,7 +585,7 @@ export class UsersService {
   }
 
   // The endpoint /project_users/me is not suppoerted in prod
-  public _getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
 
     const url = this.SERVER_BASE_PATH + project_id + '/project_users/me';
     // const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
@@ -604,7 +604,7 @@ export class UsersService {
       .get<ProjectUser[]>(url, httpOptions)
   }
 
-  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+  public _getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
 
     // const url = this.PROJECT_USER_URL + 'users/' + user_id;
 

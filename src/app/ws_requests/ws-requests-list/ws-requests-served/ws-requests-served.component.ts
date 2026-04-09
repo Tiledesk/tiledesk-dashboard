@@ -1318,7 +1318,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       // this.router.navigate([`project/${this.projectId}/wsrequests/logs/request/${request.request_id}`]);
       this.router.navigate([`project/${this.projectId}/logs/request/${request.request_id}`]);
     } else {
-      this.logger.error('Project ID o webhook_id non disponibili per la navigazione ai log.');
+      this.logger.error('Project ID or request_id missing; cannot open request logs.');
     }
   }
 
