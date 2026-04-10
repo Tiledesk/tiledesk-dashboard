@@ -19,12 +19,11 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { environment } from '../../environments/environment';
-import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
-import { DEFAULT_CHATBOT_NAME } from 'app/utils/constants';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER, DEFAULT_CHATBOT_NAME } from 'app/utils/constants';
 import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
@@ -42,9 +41,6 @@ import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.co
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { ModalInstallWidgetComponent } from './modals/modal-install-widget/modal-install-widget.component';
-// import { ShepherdService } from 'angular-shepherd';
-// import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
-// import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
@@ -53,11 +49,10 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
+import { KbDialogsService } from './services/kb-dialogs.service';
+import { KbWidgetInstallationService } from './services/kb-widget-installation.service';
 
-const Swal = require('sweetalert2')
-
-
-//import { Router } from '@angular/router';
+const Swal = require('sweetalert2');
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -89,16 +84,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   currentSortParams: any = null; // Store current sort params to sync with table component
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
-  //analytics
-  // SHOW_TABLE: boolean = false;
+  // analytics
   CURRENT_USER: any;
-  CURRENT_USER_ID: string
+  CURRENT_USER_ID: string;
   project: Project;
   project_name: string;
   id_project: string;
-
-
-
   profile_name: string;
 
   isAvailableRefreshRateFeature: boolean;
@@ -287,7 +278,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private usersService: UsersService,
     public brandService: BrandService,
     public localDbService: LocalDbService,
-    public dialog: MatDialog,
+    private kbDialogs: KbDialogsService,
+    private kbWidgetInstallationService: KbWidgetInstallationService,
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private onboardingChatbotSetupService: OnboardingChatbotSetupService,
@@ -904,6 +896,33 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
+  /**
+   * Crea una nuova Knowledge Base (namespace) nel progetto corrente e aggiorna lo stato/UI locale.
+   *
+   * Flusso completo:
+   * - Esegue la chiamata `kbService.createNamespace(namespaceName, hybrid)`.
+   * - In caso di successo:
+   *   - Imposta il namespace creato come `selectedNamespace`.
+   *   - Aggiorna la sezione “chatbot che usano il namespace” chiamando `getChatbotUsingNamespace(namespace.id)`.
+   *   - Aggiorna `selectedNamespaceName` e naviga alla route del namespace appena creato
+   *     (`project/<projectId>/knowledge-bases/<namespaceId>`).
+   *   - Salva il namespace come “ultimo namespace usato” in localStorage
+   *     (`last_kbnamespace-<projectId>`), così al refresh l’app può ripristinare la selezione.
+   *   - Aggiunge il nuovo namespace alla lista locale `namespaces` e ricarica la lista contenuti KB
+   *     (`getListOfKb(...)`) con i parametri di default.
+   *   - Se il tema KB è `cssTheme === 'new'`, crea automaticamente anche un agente/chatbot:
+   *     - nome chatbot = `namespaceName`
+   *     - il chatbot viene creato dal template certificato “kb-official-responder”
+   *     - viene collegato al namespace appena creato e (se necessario) pubblicato/agganciato al dipartimento di default
+   *       tramite `OnboardingChatbotSetupService.createKbOfficialResponderChatbotForNamespace(...)`.
+   *     - in caso di successo ricarica i chatbot del namespace; in caso di errore non blocca la creazione KB
+   *       ma mostra una notifica di errore.
+   * - In caso di errore:
+   *   - Logga i dettagli e, se l’errore indica il raggiungimento del limite risorse del piano,
+   *     apre la modale `presentDialogNsLimitReached(...)`.
+   * - In `complete`:
+   *   - Mostra una notifica di successo all’utente.
+   */
   createNewNamespace(namespaceName: string, hybrid: boolean) {
     this.kbService.createNamespace(namespaceName, hybrid).subscribe((namespace: any) => {
       if (namespace) {
@@ -976,16 +995,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   presentDialogNsLimitReached(planName, planLimit, planType) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName, ' planLimit ', planLimit, ' planType ', planType)
-    const dialogRef = this.dialog.open(ModalNsLimitReachedComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '400px',
-      data: {
-        planName: planName,
-        planLimit: planLimit,
-        planType: planType,
-        id_project: this.id_project
-      },
+    const dialogRef = this.kbDialogs.openNsLimitReached({
+      planName,
+      planLimit,
+      planType,
+      id_project: this.id_project
     });
 
     dialogRef.afterClosed().subscribe(res => {
@@ -1335,14 +1349,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   presentDialogChatbotname(chatbot) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogChatbotname chatbot ', chatbot)
-    const dialogRef = this.dialog.open(ModalChatbotNameComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        chatbot: chatbot,
-      },
-    });
+    const dialogRef = this.kbDialogs.openChatbotName({ chatbot });
 
     dialogRef.afterClosed().subscribe(editedChatbot => {
       if (editedChatbot) {
@@ -1943,13 +1950,10 @@ _presentDialogImportContents() {
 
   openDialogHookBot(deptsWithoutBotArray, faqkb) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!')
-    this.dialogRefHookBoot = this.dialog.open(ModalHookBotComponent, {
-      width: '700px',
-      data: {
-        deptsWithoutBotArray: deptsWithoutBotArray,
-        chatbot: faqkb
-      },
-    })
+    this.dialogRefHookBoot = this.kbDialogs.openHookBot({
+      deptsWithoutBotArray,
+      chatbot: faqkb
+    });
     this.dialogRefHookBoot.afterClosed().subscribe(result => {
       this.dialogRefHookBoot = null;
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
@@ -1998,16 +2002,12 @@ _presentDialogImportContents() {
 
   presentDialogReachedChatbotLimit() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
-    const dialogRef = this.dialog.open(ChatbotModalComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      data: {
-        projectProfile: this.prjct_profile_name,
-        subscriptionIsActive: this.subscription_is_active,
-        prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired,
-        chatBotLimit: this.chatBotLimit
-      },
+    const dialogRef = this.kbDialogs.openReachedChatbotLimit({
+      projectProfile: this.prjct_profile_name,
+      subscriptionIsActive: this.subscription_is_active,
+      prjctProfileType: this.prjct_profile_type,
+      trialExpired: this.trial_expired,
+      chatBotLimit: this.chatBotLimit
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2026,12 +2026,7 @@ _presentDialogImportContents() {
     }
 
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
-    const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {
-      width: '700px',
-      data: {
-        chatbot: chatbot
-      },
-    })
+    const dialogRef = this.kbDialogs.openConfirmGotoCds({ chatbot })
     dialogRef.afterClosed().subscribe(result => {
 
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
@@ -2080,13 +2075,10 @@ _presentDialogImportContents() {
   presentModalAddNewNamespace() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
 
-    const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
-      width: '600px',
-      data: {
-        pay: this.payIsVisible,
-        hybridActive: this.isActiveHybrid
-      },
-    })
+    const dialogRef = this.kbDialogs.openAddNamespace({
+      pay: this.payIsVisible,
+      hybridActive: this.isActiveHybrid
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
 
@@ -2105,59 +2097,24 @@ _presentDialogImportContents() {
     const projectId = this.project?._id;
     if (!projectId) {
       this.logger.warn('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - missing projectId');
-      this.dialog.open(ModalInstallWidgetComponent, { width: '700px', data: {} });
+      this.kbDialogs.openInstallWidget({});
       return;
     }
 
-    // Best practice: la modale è "presentational" e riceve solo dati già pronti.
-    // Qui risolviamo participants (bot) e departmentID (dept default) e li passiamo via MAT_DIALOG_DATA.
-    this.faqKbService.getFaqKbByProjectId().pipe(takeUntil(this.unsubscribe$), take(1)).subscribe({
-      next: (bots: any[]) => {
-        const bot =
-          bots?.find((b: any) => b?.name === DEFAULT_CHATBOT_NAME) ??
-          bots?.find((b: any) => b?.certifiedTags?.some((t: any) => t?.name === CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER)) ??
-          bots?.[0];
-
-        const participants = bot?._id ? `bot_${bot._id}` : undefined;
-
-        this.departmentService.getDeptsByProjectId().pipe(takeUntil(this.unsubscribe$), take(1)).subscribe({
-          next: (depts: any[]) => {
-            const dept = depts?.find((d: any) => d?.default === true) ?? depts?.[0];
-            const departmentID = dept?._id;
-
-            this.dialog.open(ModalInstallWidgetComponent, {
-              width: '700px',
-              data: { projectId, participants, departmentID }
-            });
-          },
-          error: (err) => {
-            this.logger.error('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - getDeptsByProjectId error', err);
-            this.dialog.open(ModalInstallWidgetComponent, {
-              width: '700px',
-              data: { projectId, participants }
-            });
-          }
-        });
-      },
-      error: (err) => {
-        this.logger.error('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - getFaqKbByProjectId error', err);
-        this.dialog.open(ModalInstallWidgetComponent, { width: '700px', data: { projectId } });
-      }
-    });
+    // Best practice: risoluzione parametri spostata in un workflow service; la modale resta presentational.
+    this.kbWidgetInstallationService
+      .resolveWidgetInstallTarget(projectId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((target) => {
+        this.kbDialogs.openInstallWidget(target);
+      });
   }
 
   onOpenBaseModalPreview(previedata?: any) {
     // this.baseModalPreview = true;
-    const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      disableClose: true,
-      width: '400px',
-      id: 'kb-test',
-      data: {
-        selectedNamespace: this.selectedNamespace,
-        askBody: previedata
-      },
+    const dialogRef = this.kbDialogs.openPreviewKnowledgeBase({
+      selectedNamespace: this.selectedNamespace,
+      askBody: previedata
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('Modal preview Backdrop clicked', event);
@@ -2185,17 +2142,11 @@ _presentDialogImportContents() {
   onOpenBaseModalPreviewSettings(previedata?: any) {
     // this.baseModalPreviewSettings = true;
     //#191d2285;
-    const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
-      // backdropClass: 'cdk-overlay-transparent-backdrop',
-      backdropClass: 'overlay-backdrop',
-      hasBackdrop: true,
-      disableClose: true,
-      width: '360px',
-      data: {
-        selectedNamespace: this.selectedNamespace,
-        pineconeReranking: this.pineconeReranking
-      },
-    });
+    const dialogData: any = {
+      selectedNamespace: this.selectedNamespace,
+      pineconeReranking: this.pineconeReranking
+    };
+    const dialogRef = this.kbDialogs.openPreviewSettings(dialogData);
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('AI model Backdrop clicked', event);
       this.hasClickedAiSettingsModalBackdrop = true
@@ -2249,15 +2200,10 @@ _presentDialogImportContents() {
   }
 
   presentDeleteNamespaceModal() {
-    const dialogRef = this.dialog.open(ModalDeleteNamespaceComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        namespaces: this.namespaces,
-        selectedNamespace: this.selectedNamespace,
-        kbsList: this.kbsList,
-      },
+    const dialogRef = this.kbDialogs.openDeleteNamespace({
+      namespaces: this.namespaces,
+      selectedNamespace: this.selectedNamespace,
+      kbsList: this.kbsList,
     });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalDeleteNamespace] Dialog result: ', result);
@@ -2273,17 +2219,11 @@ _presentDialogImportContents() {
     this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
 
-    const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      autoFocus: false,
-      data: {
-        kb: kb,
-        refreshRateIsEnabled: this.refreshRateIsEnabled,
-        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-        payIsVisible: this.payIsVisible
-      },
+    const dialogRef = this.kbDialogs.openDetailKnowledgeBase({
+      kb,
+      refreshRateIsEnabled: this.refreshRateIsEnabled,
+      isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+      payIsVisible: this.payIsVisible
     });
     dialogRef.afterClosed().subscribe(res => {
 
@@ -2332,14 +2272,7 @@ _presentDialogImportContents() {
     this.baseModalDelete = true;
 
     if (kb.type !== 'sitemap') {
-      const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
-        backdropClass: 'cdk-overlay-transparent-backdrop',
-        hasBackdrop: true,
-        width: '600px',
-        data: {
-          kb: kb
-        },
-      });
+      const dialogRef = this.kbDialogs.openDeleteKnowledgeBase({ kb });
       dialogRef.afterClosed().subscribe(kb => {
         this.logger.log('[Modal DELETE KB] kb: ', kb);
         if (kb) {
@@ -2380,11 +2313,7 @@ _presentDialogImportContents() {
 
 
   onOpenAddContent() {
-    const dialogRef = this.dialog.open(ModalAddContentComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '900px',
-    });
+    const dialogRef = this.kbDialogs.openAddContent({});
 
     dialogRef.afterClosed().subscribe(type => {
       this.logger.log('[KNOWLEDGE BASES COMP] type: ', type);
@@ -2399,14 +2328,9 @@ _presentDialogImportContents() {
     this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal typeOrKb', typeOrKb);
     // Se è un oggetto KB (ad esempio da unanswered questions), apri direttamente la modale FAQ con i dati precompilati
     if (typeOrKb && typeof typeOrKb === 'object' && typeOrKb.type === 'faq') {
-      const dialogRef = this.dialog.open(ModalFaqsComponent, {
-        backdropClass: 'cdk-overlay-transparent-backdrop',
-        hasBackdrop: true,
-        width: '600px',
-        data: {
-          selectedNamespace: this.selectedNamespace,
-          prefillKb: typeOrKb
-        },
+      const dialogRef = this.kbDialogs.openFaqs({
+        selectedNamespace: this.selectedNamespace,
+        prefillKb: typeOrKb
       });
       this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs with prefillKb')
       dialogRef.afterClosed().subscribe(result => {
@@ -2445,11 +2369,7 @@ _presentDialogImportContents() {
   }
 
   presentModalAddContent() {
-    const dialogRef = this.dialog.open(ModalTextFileComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-    });
+    const dialogRef = this.kbDialogs.openTextFile({});
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
       if (body) {
@@ -2460,13 +2380,8 @@ _presentDialogImportContents() {
   }
 
   presentModalAddFaqs() {
-    const dialogRef = this.dialog.open(ModalFaqsComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        selectedNamespace: this.selectedNamespace,
-      },
+    const dialogRef = this.kbDialogs.openFaqs({
+      selectedNamespace: this.selectedNamespace,
     });
     this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs ')
 
@@ -2484,19 +2399,13 @@ _presentDialogImportContents() {
   }
 
   presentModalAddURLs() {
-    const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      autoFocus: false,
-      data: {
-        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-        refreshRateIsEnabled: this.refreshRateIsEnabled,
-        t_params: this.t_params,
-        id_project: this.id_project,
-        project_name: this.project_name,
-        payIsVisible: this.payIsVisible
-      },
+    const dialogRef = this.kbDialogs.openUrlsKnowledgeBase({
+      isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+      refreshRateIsEnabled: this.refreshRateIsEnabled,
+      t_params: this.t_params,
+      id_project: this.id_project,
+      project_name: this.project_name,
+      payIsVisible: this.payIsVisible
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
@@ -2515,20 +2424,14 @@ _presentDialogImportContents() {
   }
 
   presentModalImportSitemap() {
-    const dialogRef = this.dialog.open(ModalSiteMapComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      autoFocus: false,
-      data: {
-        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-        refreshRateIsEnabled: this.refreshRateIsEnabled,
-        t_params: this.t_params,
-        id_project: this.id_project,
-        project_name: this.project_name,
-        payIsVisible: this.payIsVisible,
-        selectedNamespace: this.selectedNamespace
-      },
+    const dialogRef = this.kbDialogs.openSiteMap({
+      isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+      refreshRateIsEnabled: this.refreshRateIsEnabled,
+      t_params: this.t_params,
+      id_project: this.id_project,
+      project_name: this.project_name,
+      payIsVisible: this.payIsVisible,
+      selectedNamespace: this.selectedNamespace
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
@@ -2552,13 +2455,10 @@ _presentDialogImportContents() {
 
   presentModalUploadFile() {
     this.logger.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
-    const dialogRef = this.dialog.open(ModalUploadFileComponent, {
+    const dialogRef = this.kbDialogs.openUploadFile({
       autoFocus: false,
       width: '400px'
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
+    });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP]  AFTER CLOSED MODAL UPLOAD FILE body:`, body);
 
@@ -4029,22 +3929,17 @@ _presentDialogImportContents() {
     // Apre la modale FAQ con la domanda precompilata
     const question = event.q?.question;
     this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
-    const dialogRef = this.dialog.open(ModalFaqsComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        selectedNamespace: this.selectedNamespace,
-        prefillKb: {
-          name: question,
-          content: '',
-          type: 'faq',
-          source: question,
-          id_project: this.id_project,
-          namespace: this.selectedNamespace?.name,
-          _id: ''
-        }
-      },
+    const dialogRef = this.kbDialogs.openFaqs({
+      selectedNamespace: this.selectedNamespace,
+      prefillKb: {
+        name: question,
+        content: '',
+        type: 'faq',
+        source: question,
+        id_project: this.id_project,
+        namespace: this.selectedNamespace?.name,
+        _id: ''
+      }
     });
     this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs from unanswered')
     dialogRef.afterClosed().subscribe(result => {
