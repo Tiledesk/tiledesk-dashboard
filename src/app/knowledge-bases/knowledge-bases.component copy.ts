@@ -19,11 +19,12 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { environment } from '../../environments/environment';
-import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER, DEFAULT_CHATBOT_NAME } from 'app/utils/constants';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
+import { DEFAULT_CHATBOT_NAME } from 'app/utils/constants';
 import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
@@ -41,6 +42,9 @@ import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.co
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { ModalInstallWidgetComponent } from './modals/modal-install-widget/modal-install-widget.component';
+// import { ShepherdService } from 'angular-shepherd';
+// import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
+// import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
@@ -49,11 +53,11 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
-import { KnowledgeBasesFacadeService } from './services/knowledge-bases-facade.service';
-import { KbChatbotTemplateWorkflowService } from './services/kb-chatbot-template-workflow.service';
-import { KbChatbotWorkflowsService } from './services/kb-chatbot-workflows.service';
 
-const Swal = require('sweetalert2');
+const Swal = require('sweetalert2')
+
+
+//import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -85,12 +89,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   currentSortParams: any = null; // Store current sort params to sync with table component
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
-  // analytics
+  //analytics
+  // SHOW_TABLE: boolean = false;
   CURRENT_USER: any;
-  CURRENT_USER_ID: string;
+  CURRENT_USER_ID: string
   project: Project;
   project_name: string;
   id_project: string;
+
+
+
   profile_name: string;
 
   isAvailableRefreshRateFeature: boolean;
@@ -279,9 +287,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private usersService: UsersService,
     public brandService: BrandService,
     public localDbService: LocalDbService,
-    private kbFacade: KnowledgeBasesFacadeService,
-    private kbChatbotTemplateWorkflow: KbChatbotTemplateWorkflowService,
-    private kbChatbotWorkflows: KbChatbotWorkflowsService,
+    public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private onboardingChatbotSetupService: OnboardingChatbotSetupService,
@@ -314,21 +320,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.kbsList = [];
-    this.kbFacade.setKbsList(this.kbsList);
-
-    // Step 3: single source of truth (component = view-model synced from facade/state)
-    this.kbFacade.state$.projectId$.pipe(takeUntil(this.unsubscribe$)).subscribe((projectId) => {
-      if (projectId) this.id_project = projectId;
-    });
-    this.kbFacade.state$.namespaces$.pipe(takeUntil(this.unsubscribe$)).subscribe((namespaces) => {
-      if (namespaces) this.namespaces = namespaces;
-    });
-    this.kbFacade.state$.selectedNamespace$.pipe(takeUntil(this.unsubscribe$)).subscribe((namespace) => {
-      if (namespace) this.selectedNamespace = namespace;
-    });
-    this.kbFacade.state$.kbsList$.pipe(takeUntil(this.unsubscribe$)).subscribe((kbsList) => {
-      if (kbsList) this.kbsList = kbsList;
-    });
     // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
    
@@ -579,7 +570,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
-        this.kbFacade.setProjectId(this.id_project);
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -587,7 +577,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getProjectById(projectId) {
-    this.kbFacade.loadProjectById(projectId).subscribe((project: any) => {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
       const isActiveSubscription = project.isActiveSubscription
@@ -622,7 +612,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   async getQuotas() {
-    this.quotas = await this.kbFacade.loadQuotas(this.id_project).catch((err) => {
+    this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
       
       this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
     })
@@ -786,11 +776,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getAllNamespaces() {
     this.isLoadingNamespaces = true;
-    this.kbFacade.loadNamespaces().subscribe((res: any) => {
+    this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
-        this.kbFacade.setNamespaces(res);
+        this.namespaces = res
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP]  GET GET ALL NAMESPACES ERROR ', error);
@@ -820,60 +810,106 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   };
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
-    const selection = this.kbFacade.resolveInitialNamespaceSelection({
-      projectId: this.id_project,
-      namespaces,
-      currentUrl: this.router.url
-    });
+    const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
+    //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
+    if (!storedNamespace) {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
 
-    this.selectedNamespace = selection.selectedNamespace;
-    this.kbFacade.setSelectedNamespace(this.selectedNamespace);
+      const currentUrl = this.router.url;
 
-    if (this.selectedNamespace) {
-      this.selectedNamespaceName = this.selectedNamespace.name;
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-      this.kbFacade.namespaces.persistLastNamespace(this.id_project, this.selectedNamespace);
-      this.getChatbotUsingNamespace(this.selectedNamespace.id);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
+      let currentUrlSegment = currentUrl.split('/');
 
-      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
-      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
+      currentUrlSegment.forEach(segment => {
+        if (segment === 'knowledge-bases') {
+          this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
+          // this.logger.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
+          let nameSpaceIdisAlphaNumeric = this.isAlphaNumeric(this.nameSpaceId)
+          // this.logger.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
+          if (nameSpaceIdisAlphaNumeric === false) {
+            this.nameSpaceId = '0'
+          }
+        }
+
+      });
+
+
+
+      // const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
+      //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
+
+      if (this.nameSpaceId === '0') {
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.default === true
+        });
+        if (this.selectedNamespace) {
+          this.selectedNamespaceName = this.selectedNamespace.name
+
+          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
+
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+          this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+          this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        }
+      } else {
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.id === this.nameSpaceId;
+        });
+        if (!this.selectedNamespace) {
+          // Fall back to default
+          this.selectedNamespace = namespaces.find((el) => {
+            return el.default === true
+          });
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        }
+        this.selectedNamespaceName = this.selectedNamespace.name
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+      }
+
+    } else {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
+      const storedNamespaceObjct = JSON.parse(storedNamespace)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace storedNamespaceObjct ', storedNamespaceObjct),
+
+
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.id === storedNamespaceObjct['id'];
+        });
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
+
+
+      if (this.selectedNamespace) {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
+        this.selectedNamespaceName = this.selectedNamespace.name
+        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+      } else {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (NOT EXIST BETWEEN THE NASPACES A NASPACE  WITH THE ID GET FROM STORED NAMESPACE)', this.selectedNamespaceName)
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.default === true
+        });
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        if (this.selectedNamespaceName) {
+          this.selectedNamespaceName = this.selectedNamespace.name
+        }
+      }
     }
+    this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+    this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
-  /**
-   * Crea una nuova Knowledge Base (namespace) nel progetto corrente e aggiorna lo stato/UI locale.
-   *
-   * Flusso completo:
-   * - Esegue la chiamata `kbService.createNamespace(namespaceName, hybrid)`.
-   * - In caso di successo:
-   *   - Imposta il namespace creato come `selectedNamespace`.
-   *   - Aggiorna la sezione “chatbot che usano il namespace” chiamando `getChatbotUsingNamespace(namespace.id)`.
-   *   - Aggiorna `selectedNamespaceName` e naviga alla route del namespace appena creato
-   *     (`project/<projectId>/knowledge-bases/<namespaceId>`).
-   *   - Salva il namespace come “ultimo namespace usato” in localStorage
-   *     (`last_kbnamespace-<projectId>`), così al refresh l’app può ripristinare la selezione.
-   *   - Aggiunge il nuovo namespace alla lista locale `namespaces` e ricarica la lista contenuti KB
-   *     (`getListOfKb(...)`) con i parametri di default.
-   *   - Se il tema KB è `cssTheme === 'new'`, crea automaticamente anche un agente/chatbot:
-   *     - nome chatbot = `namespaceName`
-   *     - il chatbot viene creato dal template certificato “kb-official-responder”
-   *     - viene collegato al namespace appena creato e (se necessario) pubblicato/agganciato al dipartimento di default
-   *       tramite `OnboardingChatbotSetupService.createKbOfficialResponderChatbotForNamespace(...)`.
-   *     - in caso di successo ricarica i chatbot del namespace; in caso di errore non blocca la creazione KB
-   *       ma mostra una notifica di errore.
-   * - In caso di errore:
-   *   - Logga i dettagli e, se l’errore indica il raggiungimento del limite risorse del piano,
-   *     apre la modale `presentDialogNsLimitReached(...)`.
-   * - In `complete`:
-   *   - Mostra una notifica di successo all’utente.
-   */
   createNewNamespace(namespaceName: string, hybrid: boolean) {
-    this.kbFacade.createNamespace(this.id_project, namespaceName, hybrid).subscribe((namespace: any) => {
+    this.kbService.createNamespace(namespaceName, hybrid).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
         this.selectedNamespace = namespace;
-        this.kbFacade.setSelectedNamespace(this.selectedNamespace);
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.selectedNamespaceName = namespace['name']
@@ -886,9 +922,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         // this.selectedNamespaceIsDefault = namespace['default']; 
         // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
-        // Storage already handled by workflow service
+        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
         this.namespaces.push(namespace)
-        this.kbFacade.setNamespaces(this.namespaces);
         this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
 
         // New KB theme: auto-create an agent/chatbot with the same name and bind it to this namespace.
@@ -941,11 +976,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   presentDialogNsLimitReached(planName, planLimit, planType) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName, ' planLimit ', planLimit, ' planType ', planType)
-    const dialogRef = this.kbFacade.dialogs.openNsLimitReached({
-      planName,
-      planLimit,
-      planType,
-      id_project: this.id_project
+    const dialogRef = this.dialog.open(ModalNsLimitReachedComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '400px',
+      data: {
+        planName: planName,
+        planLimit: planLimit,
+        planType: planType,
+        id_project: this.id_project
+      },
     });
 
     dialogRef.afterClosed().subscribe(res => {
@@ -966,14 +1006,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
-    this.kbFacade.updateNamespace(this.id_project, this.selectedNamespace.id, body).subscribe((namespace: any) => {
+    this.kbService.updateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE RES', namespace);
         this.selectedNamespace = namespace
-        this.kbFacade.setSelectedNamespace(this.selectedNamespace);
         let updatedNameSpaceName = namespace.name
-        // Storage already handled by workflow service
+        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
 
 
         // let storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
@@ -1095,7 +1134,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // this.getDeptsByProjectId()
       this.hasChangedNameSpace = true;
       this.selectedNamespace = namespace
-      this.kbFacade.setSelectedNamespace(this.selectedNamespace);
       this.selectedNamespaceName = namespace['name']
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
@@ -1109,7 +1147,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // this.selectedNamespaceIsDefault = namespace['default']
       // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
-      this.kbFacade.namespaces.persistLastNamespace(this.id_project, namespace)
+      this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
       this.loadUnansweredQuestions();
@@ -1245,34 +1283,66 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   findKbOfficialResponderAndThenExportToJSON() {
     this.esportingKBChatBotTemplate = true
-    const namespaceId = this.selectedNamespace?.id;
-    this.kbChatbotTemplateWorkflow
-      .exportKbOfficialResponderPatchedJson({ namespaceId })
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: (chatbot: any) => {
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
-          this.esportingKBChatBotTemplate = false
-          this.presentDialogChatbotname(chatbot)
-        },
-        error: (error) => {
-          this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
+    this.faqKbService.getTemplates().subscribe((certifiedTemplates: any) => {
+
+      if (certifiedTemplates) {
+
+        let kbOfficialResponderTemplate = certifiedTemplates.find(c => {
+          if (c.certifiedTags) {
+            let officialResponder = c.certifiedTags.find(t => t.name === this.kbOfficialResponderTag)
+            return officialResponder
+          }
+        });
+        this.logger.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+
+        if (kbOfficialResponderTemplate) {
+          this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
+        } else {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] Not exist kbOfficialResponderTemplate', kbOfficialResponderTemplate)
           this.esportingKBChatBotTemplate = false;
           this.presentDialogNotExistThekbOfficialResponderTemplate()
         }
-      })
+      }
+    })
   }
   // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
   // exportFaqToJsonBtnEl.blur();
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
-    // Legacy wrapper: mantenuto per compatibilità con chiamate esistenti (ora delega al workflow service).
-    // NB: `kbOfficialResponderTemplate_id` viene ignorato: il workflow cerca sempre il template certificato.
-    this.findKbOfficialResponderAndThenExportToJSON();
+    this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
+      chatbot.intents.forEach((intent, index) => {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
+        const askGPT_Action = intent.actions.find(o => o._tdActionType === ACTION_TYPE_ASKGPTV2)
+
+        if (askGPT_Action) {
+          askGPT_Action.namespace = this.selectedNamespace.id
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
+          this.esportingKBChatBotTemplate = false
+          this.presentDialogChatbotname(chatbot)
+        }
+      });
+
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
+      this.esportingKBChatBotTemplate = false
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - COMPLETE');
+
+
+    });
   }
 
   presentDialogChatbotname(chatbot) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogChatbotname chatbot ', chatbot)
-    const dialogRef = this.kbFacade.dialogs.openChatbotName({ chatbot });
+    const dialogRef = this.dialog.open(ModalChatbotNameComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        chatbot: chatbot,
+      },
+    });
 
     dialogRef.afterClosed().subscribe(editedChatbot => {
       if (editedChatbot) {
@@ -1284,40 +1354,24 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   importChatbotFromJSON(editedChatbot) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
-    const projectId = this.project?._id;
-    const namespaceId = this.selectedNamespace?.id;
-    const chatbotName = editedChatbot?.name;
+    this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      if (faqkb) {
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
-    if (!projectId || !namespaceId || !chatbotName) {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - missing required data', {
-        projectId,
-        namespaceId,
-        chatbotName
-      });
-      return;
-    }
+        this.getDeptsByProjectId(faqkb)
+        // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
 
-    this.kbChatbotWorkflows
-      .importPublishHookAndRenameNamespace({
-        projectId,
-        namespaceId,
-        chatbotJson: editedChatbot,
-        chatbotName
-      })
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: ({ faqkb }) => {
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT WORKFLOW - created faqkb', faqkb);
-          this.getChatbotUsingNamespace(namespaceId);
-          this.presentDialogChatbotSuccessfullyCreated();
-        },
-        error: (error) => {
-          this.logger.error('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT WORKFLOW - ERROR', error);
-        },
-        complete: () => {
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT WORKFLOW - COMPLETE');
-        }
-      });
+      }
+
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
+
+      // this.presentDialogChatbotSuccessfullyCreated()
+
+    });
   }
 
 
@@ -1416,7 +1470,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
       .then((result) => {
         if (result.isConfirmed) {
-          this.kbFacade.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
+          this.kbService.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
 
             this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
 
@@ -1544,7 +1598,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             }
           });
 
-          this.kbFacade.importContents(this.selectedNamespace.id, formData).subscribe({
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe({
             next: (res) => {
               this.logger.log('[KB IMPORT] Response:', res);
             },
@@ -1658,7 +1712,7 @@ _presentDialogImportContents() {
           const formData = new FormData();
           formData.append('uploadFile', file, file.name);
 
-          this.kbFacade.importContents(this.selectedNamespace.id, formData).subscribe({
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe({
             next: (res) => {
               this.logger.log('[KB IMPORT] Response:', res);
             },
@@ -1776,7 +1830,7 @@ _presentDialogImportContents() {
           const formData = new FormData();
           formData.append('uploadFile', file, file.name); // Backend should accept 'file' field
 
-          this.kbFacade.importContents(this.selectedNamespace.id, formData).subscribe((res: any) => {
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe((res: any) => {
             this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
           }, (error) => {
             Swal.fire({
@@ -1889,10 +1943,13 @@ _presentDialogImportContents() {
 
   openDialogHookBot(deptsWithoutBotArray, faqkb) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!')
-    this.dialogRefHookBoot = this.kbFacade.dialogs.openHookBot({
-      deptsWithoutBotArray,
-      chatbot: faqkb
-    });
+    this.dialogRefHookBoot = this.dialog.open(ModalHookBotComponent, {
+      width: '700px',
+      data: {
+        deptsWithoutBotArray: deptsWithoutBotArray,
+        chatbot: faqkb
+      },
+    })
     this.dialogRefHookBoot.afterClosed().subscribe(result => {
       this.dialogRefHookBoot = null;
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
@@ -1941,12 +1998,16 @@ _presentDialogImportContents() {
 
   presentDialogReachedChatbotLimit() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
-    const dialogRef = this.kbFacade.dialogs.openReachedChatbotLimit({
-      projectProfile: this.prjct_profile_name,
-      subscriptionIsActive: this.subscription_is_active,
-      prjctProfileType: this.prjct_profile_type,
-      trialExpired: this.trial_expired,
-      chatBotLimit: this.chatBotLimit
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1965,7 +2026,12 @@ _presentDialogImportContents() {
     }
 
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
-    const dialogRef = this.kbFacade.dialogs.openConfirmGotoCds({ chatbot })
+    const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {
+      width: '700px',
+      data: {
+        chatbot: chatbot
+      },
+    })
     dialogRef.afterClosed().subscribe(result => {
 
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
@@ -2014,10 +2080,13 @@ _presentDialogImportContents() {
   presentModalAddNewNamespace() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
 
-    const dialogRef = this.kbFacade.dialogs.openAddNamespace({
-      pay: this.payIsVisible,
-      hybridActive: this.isActiveHybrid
-    });
+    const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
+      width: '600px',
+      data: {
+        pay: this.payIsVisible,
+        hybridActive: this.isActiveHybrid
+      },
+    })
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
 
@@ -2036,24 +2105,59 @@ _presentDialogImportContents() {
     const projectId = this.project?._id;
     if (!projectId) {
       this.logger.warn('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - missing projectId');
-      this.kbFacade.dialogs.openInstallWidget({});
+      this.dialog.open(ModalInstallWidgetComponent, { width: '700px', data: {} });
       return;
     }
 
-    // Best practice: risoluzione parametri spostata in un workflow service; la modale resta presentational.
-    this.kbFacade
-      .resolveWidgetInstallTarget(projectId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((target) => {
-        this.kbFacade.dialogs.openInstallWidget(target);
-      });
+    // Best practice: la modale è "presentational" e riceve solo dati già pronti.
+    // Qui risolviamo participants (bot) e departmentID (dept default) e li passiamo via MAT_DIALOG_DATA.
+    this.faqKbService.getFaqKbByProjectId().pipe(takeUntil(this.unsubscribe$), take(1)).subscribe({
+      next: (bots: any[]) => {
+        const bot =
+          bots?.find((b: any) => b?.name === DEFAULT_CHATBOT_NAME) ??
+          bots?.find((b: any) => b?.certifiedTags?.some((t: any) => t?.name === CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER)) ??
+          bots?.[0];
+
+        const participants = bot?._id ? `bot_${bot._id}` : undefined;
+
+        this.departmentService.getDeptsByProjectId().pipe(takeUntil(this.unsubscribe$), take(1)).subscribe({
+          next: (depts: any[]) => {
+            const dept = depts?.find((d: any) => d?.default === true) ?? depts?.[0];
+            const departmentID = dept?._id;
+
+            this.dialog.open(ModalInstallWidgetComponent, {
+              width: '700px',
+              data: { projectId, participants, departmentID }
+            });
+          },
+          error: (err) => {
+            this.logger.error('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - getDeptsByProjectId error', err);
+            this.dialog.open(ModalInstallWidgetComponent, {
+              width: '700px',
+              data: { projectId, participants }
+            });
+          }
+        });
+      },
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - getFaqKbByProjectId error', err);
+        this.dialog.open(ModalInstallWidgetComponent, { width: '700px', data: { projectId } });
+      }
+    });
   }
 
   onOpenBaseModalPreview(previedata?: any) {
     // this.baseModalPreview = true;
-    const dialogRef = this.kbFacade.dialogs.openPreviewKnowledgeBase({
-      selectedNamespace: this.selectedNamespace,
-      askBody: previedata
+    const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      disableClose: true,
+      width: '400px',
+      id: 'kb-test',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        askBody: previedata
+      },
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('Modal preview Backdrop clicked', event);
@@ -2081,11 +2185,17 @@ _presentDialogImportContents() {
   onOpenBaseModalPreviewSettings(previedata?: any) {
     // this.baseModalPreviewSettings = true;
     //#191d2285;
-    const dialogData: any = {
-      selectedNamespace: this.selectedNamespace,
-      pineconeReranking: this.pineconeReranking
-    };
-    const dialogRef = this.kbFacade.dialogs.openPreviewSettings(dialogData);
+    const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
+      // backdropClass: 'cdk-overlay-transparent-backdrop',
+      backdropClass: 'overlay-backdrop',
+      hasBackdrop: true,
+      disableClose: true,
+      width: '360px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        pineconeReranking: this.pineconeReranking
+      },
+    });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('AI model Backdrop clicked', event);
       this.hasClickedAiSettingsModalBackdrop = true
@@ -2139,10 +2249,15 @@ _presentDialogImportContents() {
   }
 
   presentDeleteNamespaceModal() {
-    const dialogRef = this.kbFacade.dialogs.openDeleteNamespace({
-      namespaces: this.namespaces,
-      selectedNamespace: this.selectedNamespace,
-      kbsList: this.kbsList,
+    const dialogRef = this.dialog.open(ModalDeleteNamespaceComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        namespaces: this.namespaces,
+        selectedNamespace: this.selectedNamespace,
+        kbsList: this.kbsList,
+      },
     });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalDeleteNamespace] Dialog result: ', result);
@@ -2158,11 +2273,17 @@ _presentDialogImportContents() {
     this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
 
-    const dialogRef = this.kbFacade.dialogs.openDetailKnowledgeBase({
-      kb,
-      refreshRateIsEnabled: this.refreshRateIsEnabled,
-      isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-      payIsVisible: this.payIsVisible
+    const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      autoFocus: false,
+      data: {
+        kb: kb,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        payIsVisible: this.payIsVisible
+      },
     });
     dialogRef.afterClosed().subscribe(res => {
 
@@ -2195,7 +2316,7 @@ _presentDialogImportContents() {
 
   updateKbContent(kb) {
     this.logger.log('[Modal KB DETAILS] updateKbContent kb:', kb);
-    this.kbFacade.updateKbContent(kb).subscribe((response: any) => {
+    this.kbService.updateKbContent(kb).subscribe((response: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] updateKbContent response', response);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
       const paramsDefault = '?limit=' + KB_DEFAULT_PARAMS.LIMIT + '&page=' + KB_DEFAULT_PARAMS.NUMBER_PAGE + '&sortField=' + KB_DEFAULT_PARAMS.SORT_FIELD + '&direction=' + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
@@ -2211,7 +2332,14 @@ _presentDialogImportContents() {
     this.baseModalDelete = true;
 
     if (kb.type !== 'sitemap') {
-      const dialogRef = this.kbFacade.dialogs.openDeleteKnowledgeBase({ kb });
+      const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          kb: kb
+        },
+      });
       dialogRef.afterClosed().subscribe(kb => {
         this.logger.log('[Modal DELETE KB] kb: ', kb);
         if (kb) {
@@ -2252,7 +2380,11 @@ _presentDialogImportContents() {
 
 
   onOpenAddContent() {
-    const dialogRef = this.kbFacade.dialogs.openAddContent({});
+    const dialogRef = this.dialog.open(ModalAddContentComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '900px',
+    });
 
     dialogRef.afterClosed().subscribe(type => {
       this.logger.log('[KNOWLEDGE BASES COMP] type: ', type);
@@ -2267,9 +2399,14 @@ _presentDialogImportContents() {
     this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal typeOrKb', typeOrKb);
     // Se è un oggetto KB (ad esempio da unanswered questions), apri direttamente la modale FAQ con i dati precompilati
     if (typeOrKb && typeof typeOrKb === 'object' && typeOrKb.type === 'faq') {
-      const dialogRef = this.kbFacade.dialogs.openFaqs({
-        selectedNamespace: this.selectedNamespace,
-        prefillKb: typeOrKb
+      const dialogRef = this.dialog.open(ModalFaqsComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          selectedNamespace: this.selectedNamespace,
+          prefillKb: typeOrKb
+        },
       });
       this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs with prefillKb')
       dialogRef.afterClosed().subscribe(result => {
@@ -2308,7 +2445,11 @@ _presentDialogImportContents() {
   }
 
   presentModalAddContent() {
-    const dialogRef = this.kbFacade.dialogs.openTextFile({});
+    const dialogRef = this.dialog.open(ModalTextFileComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+    });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
       if (body) {
@@ -2319,8 +2460,13 @@ _presentDialogImportContents() {
   }
 
   presentModalAddFaqs() {
-    const dialogRef = this.kbFacade.dialogs.openFaqs({
-      selectedNamespace: this.selectedNamespace,
+    const dialogRef = this.dialog.open(ModalFaqsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+      },
     });
     this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs ')
 
@@ -2338,13 +2484,19 @@ _presentDialogImportContents() {
   }
 
   presentModalAddURLs() {
-    const dialogRef = this.kbFacade.dialogs.openUrlsKnowledgeBase({
-      isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-      refreshRateIsEnabled: this.refreshRateIsEnabled,
-      t_params: this.t_params,
-      id_project: this.id_project,
-      project_name: this.project_name,
-      payIsVisible: this.payIsVisible
+    const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      autoFocus: false,
+      data: {
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name: this.project_name,
+        payIsVisible: this.payIsVisible
+      },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
@@ -2363,14 +2515,20 @@ _presentDialogImportContents() {
   }
 
   presentModalImportSitemap() {
-    const dialogRef = this.kbFacade.dialogs.openSiteMap({
-      isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-      refreshRateIsEnabled: this.refreshRateIsEnabled,
-      t_params: this.t_params,
-      id_project: this.id_project,
-      project_name: this.project_name,
-      payIsVisible: this.payIsVisible,
-      selectedNamespace: this.selectedNamespace
+    const dialogRef = this.dialog.open(ModalSiteMapComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      autoFocus: false,
+      data: {
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name: this.project_name,
+        payIsVisible: this.payIsVisible,
+        selectedNamespace: this.selectedNamespace
+      },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
@@ -2394,10 +2552,13 @@ _presentDialogImportContents() {
 
   presentModalUploadFile() {
     this.logger.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
-    const dialogRef = this.kbFacade.dialogs.openUploadFile({
+    const dialogRef = this.dialog.open(ModalUploadFileComponent, {
       autoFocus: false,
       width: '400px'
-    });
+      // data: {
+      //   calledBy: 'step1'
+      // },
+    })
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP]  AFTER CLOSED MODAL UPLOAD FILE body:`, body);
 
@@ -2814,7 +2975,6 @@ _presentDialogImportContents() {
     // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
-    this.kbFacade.setKbsList(this.kbsList);
     // Show table spinner for table operations
     this.showKBTableSpinner = true;
     this.onLoadPage(searchParams, calledby);
@@ -2827,10 +2987,9 @@ _presentDialogImportContents() {
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' || calledby === 'after-add' ) {
       this.kbsList = [];
-      this.kbFacade.setKbsList(this.kbsList);
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
-    this.kbFacade.listContents(params).subscribe((resp: any) => {
+    this.kbService.getListOfKb(params).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
@@ -2840,7 +2999,6 @@ _presentDialogImportContents() {
       // If called after update or add, replace the entire list to maintain server order
       if (calledby === 'after-update' || calledby === 'after-add') {
         this.kbsList = [...resp.kbs];
-        this.kbFacade.setKbsList(this.kbsList);
       } else {
         resp.kbs.forEach((kb: any, i: number) => {
           // this.kbsList.push(kb);
@@ -2861,7 +3019,6 @@ _presentDialogImportContents() {
             this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
           }
         });
-        this.kbFacade.setKbsList(this.kbsList);
       }
       
       if (calledby === 'after-update' || calledby === 'after-add') {
@@ -2891,7 +3048,7 @@ _presentDialogImportContents() {
   onSendSitemap(body) {
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
-    this.kbFacade.addSitemap(body).subscribe((resp: any) => {
+    this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         Swal.fire({
@@ -2941,7 +3098,7 @@ _presentDialogImportContents() {
     this.logger.log("onAddKb body:", body);
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
-    this.kbFacade.addKb(body).subscribe((resp: any) => {
+    this.kbService.addKb(body).subscribe((resp: any) => {
       this.logger.log("onAddKb:", resp);
       let kb = resp.value;
       if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
@@ -3075,7 +3232,7 @@ _presentDialogImportContents() {
     let error = this.msgErrorAddUpdateKb;
     this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
 
-    this.kbFacade.importSitemap(this.selectedNamespace['id'], body).subscribe((kbs: any) => {
+    this.kbService.importSitemap(body, this.selectedNamespace['id']).subscribe((kbs: any) => {
 
      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
 
@@ -3162,7 +3319,7 @@ _presentDialogImportContents() {
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
-    this.kbFacade.addMultiKb(this.selectedNamespace.id, body).subscribe((kbs: any) => {
+    this.kbService.addMultiKb(body, this.selectedNamespace.id).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
@@ -3254,7 +3411,7 @@ _presentDialogImportContents() {
     // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
     // this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
-    this.kbFacade.deleteKb(data).subscribe((response: any) => {
+    this.kbService.deleteKb(data).subscribe((response: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
@@ -3404,7 +3561,7 @@ _presentDialogImportContents() {
     }
     //  this.logger.log('dataAdd: ', dataAdd);
     kb.deleting = true;
-    this.kbFacade.deleteKb(dataDelete).subscribe((response: any) => {
+    this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
 
@@ -3422,7 +3579,7 @@ _presentDialogImportContents() {
 
 
       } else {
-        this.kbFacade.addKb(dataAdd).subscribe((resp: any) => {
+        this.kbService.addKb(dataAdd).subscribe((resp: any) => {
           let kbNew = resp.value;
           //  this.logger.log(' onUpdateKb ') 
           if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
@@ -3508,12 +3665,16 @@ _presentDialogImportContents() {
   checkStatusWithRetry(kb) {
     this.logger.log('[KNOWLEDGE BASES COMP] checkStatusWithRetry selectedNamespace id', this.selectedNamespace.id)
 
+    let data = {
+      "namespace_list": [],
+      // "namespace": this.id_project,
+      "namespace": this.selectedNamespace.id,
+      "id": kb._id
+    }
     var status_msg = "Indexing completed successfully!";
     var status_code = 2;
     var status_label = "done"
-    this.kbFacade
-      .checkScrapingStatus({ id_project: this.id_project, namespaceId: this.selectedNamespace.id, kbId: kb._id })
-      .subscribe((response: any) => {
+    this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
 
       // this.logger.log('Risposta ricevuta:', response);
       // if(response.status_code && response.status_code == -1){
@@ -3615,11 +3776,17 @@ _presentDialogImportContents() {
    * runIndexing
    */
   onRunIndexing(kb) {
+    let data = {
+      "id": kb._id,
+      "source": kb.source,
+      "type": kb.type,
+      "content": kb.content ? kb.content : '',
+      "namespace": this.selectedNamespace.id
+    }
+
     this.updateStatusOfKb(kb._id, 100);
 
-    this.kbFacade
-      .startScraping({ id_project: this.id_project, namespaceId: this.selectedNamespace.id, kbId: kb._id, source: kb.source })
-      .subscribe((response: any) => {
+    this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.error) {
         this.notify.showWidgetStyleUpdateNotification(this.msgErrorIndexingKb, 4, 'report_problem');
@@ -3862,17 +4029,22 @@ _presentDialogImportContents() {
     // Apre la modale FAQ con la domanda precompilata
     const question = event.q?.question;
     this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
-    const dialogRef = this.kbFacade.dialogs.openFaqs({
-      selectedNamespace: this.selectedNamespace,
-      prefillKb: {
-        name: question,
-        content: '',
-        type: 'faq',
-        source: question,
-        id_project: this.id_project,
-        namespace: this.selectedNamespace?.name,
-        _id: ''
-      }
+    const dialogRef = this.dialog.open(ModalFaqsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        prefillKb: {
+          name: question,
+          content: '',
+          type: 'faq',
+          source: question,
+          id_project: this.id_project,
+          namespace: this.selectedNamespace?.name,
+          _id: ''
+        }
+      },
     });
     this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs from unanswered')
     dialogRef.afterClosed().subscribe(result => {
@@ -3904,14 +4076,14 @@ _presentDialogImportContents() {
       this.isLoadingMoreUnanswered = true;
     }
     
-    this.kbFacade.loadUnansweredQuestions({
-      projectId: this.id_project,
-      namespaceId: this.selectedNamespace.id,
-      limit: Number(KB_DEFAULT_PARAMS.LIMIT),
+    this.unansweredQuestionsService.getUnansweredQuestions(
+      this.id_project,
+      this.selectedNamespace.id,
+      KB_DEFAULT_PARAMS.LIMIT,
       page,
-      sortField: 'createdAt',
-      direction: -1
-    })
+      'createdAt',
+      -1
+    )
       .subscribe(
         (res) => {
           const questions = res['questions'] || [];
