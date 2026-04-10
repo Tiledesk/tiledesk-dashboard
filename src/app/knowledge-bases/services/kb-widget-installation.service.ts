@@ -13,6 +13,25 @@ export type WidgetInstallTarget = {
 };
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Workflow service per la modale “Installa sul tuo sito web”.
+ *
+ * Azioni:
+ * - risolve `participants` (bot da associare al widget) usando una strategia di priorità:
+ *   1) bot con nome `DEFAULT_CHATBOT_NAME`
+ *   2) bot con tag certificato `CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER`
+ *   3) fallback al primo bot disponibile
+ * - risolve `departmentID` (dipartimento target) preferendo il default
+ *
+ * Quando viene invocato:
+ * - al click del badge “Installa sul tuo sito web” in `knowledge-bases.component.html`.
+ *
+ * Da chi viene invocato:
+ * - `KnowledgeBasesComponent.presentModalInstallWidget()` tramite `KnowledgeBasesFacadeService.resolveWidgetInstallTarget()`.
+ *
+ * Nota:
+ * - best-effort: non fa fallire la UI; in caso di errori restituisce dati parziali.
+ */
 export class KbWidgetInstallationService {
   constructor(
     private faqKbService: FaqKbService,

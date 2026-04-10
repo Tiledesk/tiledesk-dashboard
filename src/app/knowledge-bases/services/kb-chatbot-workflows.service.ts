@@ -5,6 +5,21 @@ import { map, switchMap } from 'rxjs/operators';
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Workflow “post-name-dialog” per i chatbot creati nella pagina Knowledge Bases.
+ *
+ * Azioni:
+ * - importa il chatbot JSON nel progetto
+ * - rinomina il namespace (agente) con lo stesso nome del bot
+ * - pubblica il bot e (se possibile) lo aggancia al dipartimento di default
+ *
+ * Quando viene invocato:
+ * - dopo la chiusura della modale `ModalChatbotNameComponent` (nome bot confermato).
+ *
+ * Da chi viene invocato:
+ * - `KnowledgeBasesFacadeService.chatbots.*` (wrapper tramite `kbFacade.chatbots...`)
+ * - `KnowledgeBasesComponent.importChatbotFromJSON()` tramite `kbFacade.chatbots...` (indiretto).
+ */
 export class KbChatbotWorkflowsService {
   constructor(private onboardingChatbotSetupService: OnboardingChatbotSetupService) {}
 

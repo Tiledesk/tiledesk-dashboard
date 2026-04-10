@@ -4,6 +4,24 @@ import { Observable, throwError } from 'rxjs';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Workflow di dominio per i contenuti (resources) della Knowledge Base.
+ *
+ * Azioni:
+ * - listare contenuti (paginazione/filtri) del namespace selezionato
+ * - import/export contenuti (JSON)
+ * - CRUD contenuti singoli (faq/url/text/file)
+ * - import sitemap / invio sitemap
+ * - helper “preview modal closed” (notifica interna usata dal service KB)
+ *
+ * Quando viene invocato:
+ * - tab “Contenuti” nella pagina KB (caricamento lista, aggiunta, import/export, delete/update)
+ * - modal preview KB (chiusura/cleanup)
+ *
+ * Da chi viene invocato:
+ * - `KnowledgeBasesFacadeService.contents.*` (wrapper tramite `kbFacade.*`)
+ * - `KnowledgeBasesComponent` tramite `kbFacade.*`
+ */
 export class KbContentsWorkflowService {
   constructor(private kbService: KnowledgeBaseService) {}
 
@@ -52,6 +70,10 @@ export class KbContentsWorkflowService {
   addSitemap(body: any): Observable<any> {
     if (!body) return throwError(() => new Error('body is required'));
     return this.kbService.addSitemap(body);
+  }
+
+  modalPreviewKbHasBeenClosed() {
+    return this.kbService.modalPreviewKbHasBeenClosed();
   }
 }
 

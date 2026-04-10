@@ -11,6 +11,23 @@ export type KbNamespaceSelection = {
 };
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Workflow di dominio per i namespaces (Agenti) della Knowledge Base.
+ *
+ * Azioni principali:
+ * - caricare tutti i namespaces del progetto
+ * - risolvere la selezione iniziale (storage/URL/default)
+ * - persistere l’ultimo namespace selezionato (local storage)
+ * - creare/aggiornare/eliminare un namespace
+ *
+ * Quando viene invocato:
+ * - in init della pagina KB per popolare sidebar e selezione iniziale
+ * - quando l’utente crea/aggiorna/elimina un agente
+ *
+ * Da chi viene invocato:
+ * - `KnowledgeBasesFacadeService.namespaces.*`
+ * - `KnowledgeBasesComponent` tramite `kbFacade.*` (es. `loadNamespaces()`, `createNamespace()`, `updateNamespace()`)
+ */
 export class KbNamespacesWorkflowService {
   constructor(
     private kbService: KnowledgeBaseService,
@@ -99,6 +116,13 @@ export class KbNamespacesWorkflowService {
         return namespace;
       }),
     );
+  }
+
+  deleteNamespace(namespaceId: string, removeAlsoNamespace?: boolean): Observable<any> {
+    if (!namespaceId) {
+      return throwError(() => new Error('namespaceId is required'));
+    }
+    return this.kbService.deleteNamespace(namespaceId, removeAlsoNamespace);
   }
 
   private extractNamespaceIdFromUrl(currentUrl: string): string | undefined {

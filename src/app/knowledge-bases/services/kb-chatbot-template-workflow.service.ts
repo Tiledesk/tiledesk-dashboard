@@ -6,6 +6,21 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Workflow “template -> JSON patchato” per la creazione di chatbot in Knowledge Bases.
+ *
+ * Azioni:
+ * - trova il template certificato `kb-official-responder`
+ * - esporta il template in JSON
+ * - patcha tutte le azioni `askgptv2` impostando `action.namespace = namespaceId`
+ *
+ * Quando viene invocato:
+ * - quando l’utente crea un chatbot/agente dalla sezione “Chatbots” della pagina KB.
+ *
+ * Da chi viene invocato:
+ * - `KnowledgeBasesComponent.findKbOfficialResponderAndThenExportToJSON()` (direttamente)
+ * - opzionalmente via `KnowledgeBasesFacadeService.chatbotTemplates` se in futuro si vuole uniformare al resto.
+ */
 export class KbChatbotTemplateWorkflowService {
   constructor(private faqKbService: FaqKbService) {}
 

@@ -36,7 +36,6 @@ import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowled
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
 import { FaqService } from 'app/services/faq.service';
-import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
@@ -50,8 +49,7 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
 import { KnowledgeBasesFacadeService } from './services/knowledge-bases-facade.service';
-import { KbChatbotTemplateWorkflowService } from './services/kb-chatbot-template-workflow.service';
-import { KbChatbotWorkflowsService } from './services/kb-chatbot-workflows.service';
+import { combineLatest } from 'rxjs';
 
 const Swal = require('sweetalert2');
 
@@ -265,9 +263,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-    private openaiService: OpenaiService,
-    private kbService: KnowledgeBaseService,
-    private projectService: ProjectService,
     private router: Router,
     public route: ActivatedRoute,
     //private router: Router,
@@ -280,13 +275,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public brandService: BrandService,
     public localDbService: LocalDbService,
     private kbFacade: KnowledgeBasesFacadeService,
-    private kbChatbotTemplateWorkflow: KbChatbotTemplateWorkflowService,
-    private kbChatbotWorkflows: KbChatbotWorkflowsService,
     public faqService: FaqService,
-    private departmentService: DepartmentService,
-    private onboardingChatbotSetupService: OnboardingChatbotSetupService,
-    private unansweredQuestionsService: UnansweredQuestionsService,
-    private quotasService: QuotesService,
     private roleService: RoleService,
     private rolesService: RolesService
   ) {
@@ -317,18 +306,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbFacade.setKbsList(this.kbsList);
 
     // Step 3: single source of truth (component = view-model synced from facade/state)
-    this.kbFacade.state$.projectId$.pipe(takeUntil(this.unsubscribe$)).subscribe((projectId) => {
-      if (projectId) this.id_project = projectId;
-    });
-    this.kbFacade.state$.namespaces$.pipe(takeUntil(this.unsubscribe$)).subscribe((namespaces) => {
-      if (namespaces) this.namespaces = namespaces;
-    });
-    this.kbFacade.state$.selectedNamespace$.pipe(takeUntil(this.unsubscribe$)).subscribe((namespace) => {
-      if (namespace) this.selectedNamespace = namespace;
-    });
-    this.kbFacade.state$.kbsList$.pipe(takeUntil(this.unsubscribe$)).subscribe((kbsList) => {
-      if (kbsList) this.kbsList = kbsList;
-    });
+    combineLatest([
+      this.kbFacade.state$.projectId$,
+      this.kbFacade.state$.namespaces$,
+      this.kbFacade.state$.selectedNamespace$,
+      this.kbFacade.state$.kbsList$,
+    ])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(([projectId, namespaces, selectedNamespace, kbsList]) => {
+        if (projectId) this.id_project = projectId;
+        if (namespaces) this.namespaces = namespaces;
+        if (selectedNamespace) this.selectedNamespace = selectedNamespace;
+        if (kbsList) this.kbsList = kbsList;
+      });
     // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
    
@@ -844,7 +834,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    * Crea una nuova Knowledge Base (namespace) nel progetto corrente e aggiorna lo stato/UI locale.
    *
    * Flusso completo:
-   * - Esegue la chiamata `kbService.createNamespace(namespaceName, hybrid)`.
+   * - Esegue la chiamata `kbFacade.createNamespace(projectId, namespaceName, hybrid)`.
    * - In caso di successo:
    *   - Imposta il namespace creato come `selectedNamespace`.
    *   - Aggiorna la sezione “chatbot che usano il namespace” chiamando `getChatbotUsingNamespace(namespace.id)`.
@@ -893,7 +883,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         // New KB theme: auto-create an agent/chatbot with the same name and bind it to this namespace.
         if (this.kbPageConfig?.cssTheme === 'new' && this.project?._id && namespace?.id) {
-          this.onboardingChatbotSetupService.createKbOfficialResponderChatbotForNamespace({
+          this.kbFacade.createKbOfficialResponderChatbotForNamespace({
             projectId: this.project._id,
             namespaceId: namespace.id,
             chatbotName: namespaceName,
@@ -1129,7 +1119,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.chatbotsUsingNamespace = []
-    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
+    this.kbFacade.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
       // let isArray = this.isArray(chatbots)
@@ -1246,7 +1236,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   findKbOfficialResponderAndThenExportToJSON() {
     this.esportingKBChatBotTemplate = true
     const namespaceId = this.selectedNamespace?.id;
-    this.kbChatbotTemplateWorkflow
+    this.kbFacade.chatbotTemplates
       .exportKbOfficialResponderPatchedJson({ namespaceId })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
@@ -1297,7 +1287,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       return;
     }
 
-    this.kbChatbotWorkflows
+    this.kbFacade.chatbots
       .importPublishHookAndRenameNamespace({
         projectId,
         namespaceId,
@@ -1324,7 +1314,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getDeptsByProjectId(faqkb?: string) {
-    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+    this.kbFacade.loadDepartments().subscribe((departments: any) => {
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS RES ', departments);
 
@@ -1908,7 +1898,7 @@ _presentDialogImportContents() {
   hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
     this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
-    this.departmentService.updateExistingDeptWithSelectedBot(deptId, botId).subscribe((res) => {
+    this.kbFacade.hookBotToDept(deptId, botId).subscribe((res) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
 
     }, (error) => {
@@ -2064,7 +2054,7 @@ _presentDialogImportContents() {
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
-        this.kbService.modalPreviewKbHasBeenClosed()
+        this.kbFacade.modalPreviewKbHasBeenClosed()
       }
 
       if (result) {
@@ -3325,7 +3315,7 @@ _presentDialogImportContents() {
     this.showSpinner = true;
     // this.closeDeleteNamespaceModal();
 
-    this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
+    this.kbFacade.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
       .subscribe((response: any) => {
         this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
         this.showSpinner = false;

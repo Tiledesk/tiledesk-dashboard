@@ -4,6 +4,20 @@ import { Observable, throwError } from 'rxjs';
 import { OpenaiService } from 'app/services/openai.service';
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Workflow di indicizzazione/scraping (OpenAI) per una risorsa KB.
+ *
+ * Azioni:
+ * - `checkStatus()`: legge lo stato di indicizzazione della risorsa (kb_id) per namespace/progetto
+ * - `start()`: avvia lo scraping/indicizzazione per la risorsa (kb_id + source)
+ *
+ * Quando viene invocato:
+ * - dalla tabella contenuti (azioni “Indexing / Check status”).
+ *
+ * Da chi viene invocato:
+ * - `KnowledgeBasesFacadeService.scraping.*` (wrapper tramite `kbFacade.checkScrapingStatus()` / `kbFacade.startScraping()`)
+ * - `KnowledgeBasesComponent` tramite `kbFacade.*`
+ */
 export class KbScrapingWorkflowService {
   constructor(private openaiService: OpenaiService) {}
 

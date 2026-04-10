@@ -9,6 +9,19 @@ export type KbStateSnapshot = {
 };
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Store minimale (state container) per Knowledge Bases.
+ *
+ * Contiene lo stato “core” condiviso tra workflow e UI:
+ * - `projectId`
+ * - `namespaces`
+ * - `selectedNamespace`
+ * - `kbsList`
+ *
+ * Invocazioni tipiche:
+ * - `KnowledgeBasesFacadeService`: unica porta d’ingresso consigliata per leggere/scrivere lo state.
+ * - `KnowledgeBasesComponent`: si sottoscrive agli stream per sincronizzare il view-model usato dal template.
+ */
 export class KbStateService {
   private readonly projectIdSubject = new BehaviorSubject<string | undefined>(undefined);
   readonly projectId$ = this.projectIdSubject.asObservable();

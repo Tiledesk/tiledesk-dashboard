@@ -11,8 +11,23 @@ import { KbUnansweredWorkflowService } from './kb-unanswered-workflow.service';
 import { KbProjectWorkflowService } from './kb-project-workflow.service';
 import { KbChatbotWorkflowsService } from './kb-chatbot-workflows.service';
 import { KbChatbotTemplateWorkflowService } from './kb-chatbot-template-workflow.service';
+import { KbChatbotsUsingNamespaceWorkflowService } from './kb-chatbots-using-namespace-workflow.service';
+import { KbDepartmentsWorkflowService } from './kb-departments-workflow.service';
+import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Facade di dominio per l’area Knowledge Bases.
+ *
+ * Obiettivo:
+ * - esporre al componente una sola dipendenza (thin component)
+ * - centralizzare l’accesso ai workflow (namespace, contenuti, scraping, unanswered, install widget, chatbot)
+ * - fornire uno state condiviso (`KbStateService`) come single source of truth
+ *
+ * Invocazioni tipiche:
+ * - `KnowledgeBasesComponent`: usa questa facade per leggere/scrivere state e avviare workflow,
+ *   evitando dipendenze sparse verso molti service.
+ */
 export class KnowledgeBasesFacadeService {
   readonly state$ = {
     projectId$: this.kbState.projectId$,
@@ -40,6 +55,9 @@ export class KnowledgeBasesFacadeService {
     public project: KbProjectWorkflowService,
     public chatbots: KbChatbotWorkflowsService,
     public chatbotTemplates: KbChatbotTemplateWorkflowService,
+    public chatbotsUsingNamespace: KbChatbotsUsingNamespaceWorkflowService,
+    public departments: KbDepartmentsWorkflowService,
+    private onboardingChatbotSetupService: OnboardingChatbotSetupService,
   ) {}
 
   setProjectId(projectId?: string) {
@@ -58,7 +76,13 @@ export class KnowledgeBasesFacadeService {
     this.kbState.setKbsList(kbsList);
   }
 
-  /** Helper usato dal componente per sincronizzare view-model col single state */
+  /**
+   * Helper usato dal componente per sincronizzare il view-model col single state.
+   * Usalo quando vuoi aggiornare più “slice” di state con un’unica chiamata.
+   *
+   * Invocato da:
+   * - `KnowledgeBasesComponent` (inizializzazione / refresh locali).
+   */
   syncViewModel(params: { projectId?: string; namespaces?: any[]; selectedNamespace?: any; kbsList?: any[] }) {
     if (params?.projectId !== undefined) this.setProjectId(params.projectId);
     if (params?.namespaces !== undefined) this.setNamespaces(params.namespaces);
@@ -88,6 +112,10 @@ export class KnowledgeBasesFacadeService {
 
   updateNamespace(projectId: string, namespaceId: string, body: any) {
     return this.namespaces.updateNamespace(projectId, namespaceId, body);
+  }
+
+  deleteNamespace(namespaceId: string, removeAlsoNamespace?: boolean) {
+    return this.namespaces.deleteNamespace(namespaceId, removeAlsoNamespace);
   }
 
   listContents(params: any) {
@@ -126,6 +154,10 @@ export class KnowledgeBasesFacadeService {
     return this.contents.addSitemap(body);
   }
 
+  modalPreviewKbHasBeenClosed() {
+    return this.contents.modalPreviewKbHasBeenClosed();
+  }
+
   checkScrapingStatus(params: Parameters<KbScrapingWorkflowService['checkStatus']>[0]) {
     return this.scraping.checkStatus(params);
   }
@@ -140,6 +172,33 @@ export class KnowledgeBasesFacadeService {
 
   loadQuotas(projectId: string) {
     return this.project.loadQuotas(projectId);
+  }
+
+  /**
+   * Workflow “new theme”: dopo la creazione di un namespace (agente),
+   * crea automaticamente un chatbot associato usando il template certificato.
+   *
+   * Invocato da:
+   * - `KnowledgeBasesComponent.createNewNamespace()` quando `cssTheme === 'new'`.
+   */
+  createKbOfficialResponderChatbotForNamespace(params: {
+    projectId: string;
+    namespaceId: string;
+    chatbotName: string;
+  }) {
+    return this.onboardingChatbotSetupService.createKbOfficialResponderChatbotForNamespace(params);
+  }
+
+  getChatbotsUsingNamespace(namespaceId: string) {
+    return this.chatbotsUsingNamespace.getChatbotsUsingNamespace(namespaceId);
+  }
+
+  loadDepartments() {
+    return this.departments.loadDepartments();
+  }
+
+  hookBotToDept(deptId: string, botId: string) {
+    return this.departments.hookBotToDept(deptId, botId);
   }
 }
 
