@@ -1,4 +1,9 @@
 {
+    "Retry": "Покушај поново",
+    "OnboardingNew": {
+        "ProjectCreated": "Пројекат је креиран",
+        "CreatingKbAndAgentMessage": "Креирам базу знања и агента. Ово може потрајати неколико секунди."
+    },
     "ChangeDashboardLanguage": "Промените језик контролне табле",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Ово је панел за праћење разговора у реалном времену. Да бисте управљали својим разговорима, користите",
     "chatTool": "алатка за ћаскање",

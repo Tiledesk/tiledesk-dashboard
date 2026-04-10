@@ -1,4 +1,9 @@
 {
+    "Retry": "Спробувати знову",
+    "OnboardingNew": {
+        "ProjectCreated": "Проєкт створено",
+        "CreatingKbAndAgentMessage": "Я створюю базу знань і агента. Це може зайняти кілька секунд."
+    },
     "ChangeDashboardLanguage": "Змінити мову інформаційної панелі",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Це панель яка контролює розмову реально часі. Щоб керувати своїми\nрозмовами, використовуйте",
     "chatTool": "Інструмент чату",

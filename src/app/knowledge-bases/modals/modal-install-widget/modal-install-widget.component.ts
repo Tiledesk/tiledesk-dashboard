@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Router } from '@angular/router';
+import { TILEDESK_JSSDK_SCRIPT_ID, WIDGET_LAUNCH_JS_FILENAME } from 'app/utils/constants';
 
 @Component({
   selector: 'appdashboard-modal-install-widget',
@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class ModalInstallWidgetComponent implements OnInit {
   WIDGET_URL: string;
   projectId: string;
+  participants: string;
+  departmentID: string;
   has_copied = false;
 
   constructor(
@@ -21,26 +23,19 @@ export class ModalInstallWidgetComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalInstallWidgetComponent>,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    private auth: AuthService,
     private clipboard: Clipboard,
     public router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.getCurrentProject();
     this.getWidgetUrl();
-  }
-
-  private getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      if (project?._id) {
-        this.projectId = project._id;
-      }
-    });
+    this.projectId = this.data?.projectId;
+    this.participants = this.data?.participants;
+    this.departmentID = this.data?.departmentID;
   }
 
   private getWidgetUrl() {
-    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
+    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + WIDGET_LAUNCH_JS_FILENAME;
   }
 
   copyToClipboard() {
@@ -51,12 +46,14 @@ export class ModalInstallWidgetComponent implements OnInit {
 
     const projectId = this.projectId ?? '';
     const widgetUrl = this.WIDGET_URL ?? '';
+    const participants = this.participants;
+    const departmentID = this.departmentID;
 
     this.clipboard.copy(
       `<script type="application/javascript">
   window.tiledeskSettings=
   {
-    projectid: "${projectId}"
+    projectid: "${projectId}"${participants ? `,\n    participants: "${participants}"` : ''}${departmentID ? `,\n    departmentID: "${departmentID}"` : ''}
   };
   (function(d, s, id) {
     var w=window; var d=document; var i=function(){i.c(arguments);};
@@ -66,7 +63,7 @@ export class ModalInstallWidgetComponent implements OnInit {
     js=d.createElement(s);
     js.id=id; js.async=true; js.src="${widgetUrl}";
     fjs.parentNode.insertBefore(js, fjs);
-  }(document,'script','tiledesk-jssdk'));
+  }(document,'script','${TILEDESK_JSSDK_SCRIPT_ID}'));
 </script>`
     );
   }

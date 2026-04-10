@@ -12,10 +12,10 @@
   <section class="onb-overlay">
     <div class="onb-overlay__top">
       <h1 class="title">
-        Progetto creato{{ projectName ? (': ' + projectName) : '' }}
+        {{ 'OnboardingNew.ProjectCreated' | translate }}{{ projectName ? (': ' + projectName) : '' }}
       </h1>
       <h4 class="title onb-overlay__subtitle">
-        Sto procedendo alla creazione della knowledge base e del chatbot. Potrebbe richiedere qualche secondo.
+        {{ 'OnboardingNew.CreatingKbAndAgentMessage' | translate }}
       </h4>
     </div>
 
@@ -27,7 +27,7 @@
             </p>
         </div>
         <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="createChatbot()">
-          Riprova
+          {{ 'Retry' | translate }}
         </button>
       </div>
     </div>

@@ -19,6 +19,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { goToCDSVersion } from 'app/utils/util';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 const Swal = require('sweetalert2')
@@ -55,7 +56,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   kbNameSpaceid: string = '';
   kbNameSpaceName: string
   kbAssistantName: string;
-  kbOfficialResponderTag = "kb-official-responder";
+  kbOfficialResponderTag = CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER;
   dept_id: string;
   private dialogRefHookBoot: MatDialogRef<any>;
   private dialogRefCreateCb: MatDialogRef<any>;
@@ -350,7 +351,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
         actionsArray.push(intent.actions)
 
 
-        const askGPT_Action = intent.actions.find(o => o._tdActionType === "askgptv2")
+        const askGPT_Action = intent.actions.find(o => o._tdActionType === ACTION_TYPE_ASKGPTV2)
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.kbNameSpaceid

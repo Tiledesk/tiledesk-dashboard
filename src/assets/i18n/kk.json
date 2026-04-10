@@ -1,4 +1,9 @@
 {
+    "Retry": "Қайталап көру",
+    "OnboardingNew": {
+        "ProjectCreated": "Жоба құрылды",
+        "CreatingKbAndAgentMessage": "Білім базасын және агентті жасап жатырмын. Бұл бірнеше секунд алуы мүмкін."
+    },
     "ChangeDashboardLanguage": "Бақылау тақтасының тілін өзгерту",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Бұл нақты уақыттағы сөйлесулерді бақылау тақтасы. Сөйлесулерді басқару үшін пайдаланыңыз",
     "chatTool": "сөйлесу құралы",

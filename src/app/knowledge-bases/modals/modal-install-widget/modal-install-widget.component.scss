@@ -24,6 +24,18 @@
   color: rgb(28, 30, 33);
 }
 
+.modal-install-widget-content {
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  overflow: visible;
+  font-weight: 400;
+  font-family: var(--header-font-family);
+  font-size: 14px;
+  line-height: 17px;
+}
+
 .copy-script-title {
   font-family: var(--header-font-family);
   font-weight: 500;
@@ -49,6 +61,7 @@
   color: #fafafa;
   border-radius: 12px !important;
   font-size: 12px;
+  overflow: visible;
 
   span {
     display: block;
@@ -71,7 +84,7 @@
 
 .widget-content-copy {
   position: absolute;
-  top: 88px;
+  top: 16px;
   color: #fafafa;
   right: 16px;
   cursor: pointer;

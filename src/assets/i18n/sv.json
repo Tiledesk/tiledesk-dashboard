@@ -1,4 +1,9 @@
 {
+    "Retry": "Försök igen",
+    "OnboardingNew": {
+        "ProjectCreated": "Projekt skapat",
+        "CreatingKbAndAgentMessage": "Jag skapar kunskapsbasen och agenten. Det kan ta några sekunder."
+    },
     "ChangeDashboardLanguage": "Byt språk på instrumentpanelen",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Detta är övervakningspanelen för konversationer i realtid. För att hantera dina konversationer använd",
     "chatTool": "chattverktyg",

@@ -17,6 +17,7 @@ import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -62,7 +63,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   // Hook bot to dept
   dept_id: string;
-  kbOfficialResponderTag = "kb-official-responder";
+  kbOfficialResponderTag = CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER;
   selectedNamespace: any;
   welcomeMsg: string;
   spinnerInBtn: boolean = false;
@@ -506,7 +507,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         actionsArray.push(intent.actions)
 
 
-        const askGPT_Action = intent.actions.find(o => o._tdActionType === "askgptv2")
+        const askGPT_Action = intent.actions.find(o => o._tdActionType === ACTION_TYPE_ASKGPTV2)
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.selectedNamespace.id

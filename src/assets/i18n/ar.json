@@ -1,4 +1,9 @@
 {
+    "Retry": "أعد المحاولة",
+    "OnboardingNew": {
+        "ProjectCreated": "تم إنشاء المشروع",
+        "CreatingKbAndAgentMessage": "أقوم بإنشاء قاعدة المعرفة والوكيل. قد يستغرق ذلك بضع ثوانٍ."
+    },
     "ChangeDashboardLanguage": "تغيير لغة لوحة التحكم",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "هذه هي لوحة مراقبة المحادثات في الوقت الحقيقي. لإدارة محادثاتك ، استخدم ملف",
     "chatTool": "أداة الدردشة",

@@ -11,7 +11,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -19,6 +19,8 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { environment } from '../../environments/environment';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
+import { DEFAULT_CHATBOT_NAME } from 'app/utils/constants';
 import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
@@ -50,6 +52,7 @@ import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
 
 const Swal = require('sweetalert2')
 
@@ -188,7 +191,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   dept_id: string;
   depts_length: any
   depts_without_bot_array = [];
-  kbOfficialResponderTag = "kb-official-responder"
+  kbOfficialResponderTag = CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER
 
   public hoveredChatbot: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -246,6 +249,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     sidebarNewNamespaceButton: true,
     namespaceRename: true,
     defaultBadge: true,
+    learnMoreAboutKbLink: true,
     exportButton: true,
     importButton: true,
     deleteButton: true,
@@ -286,6 +290,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService,
+    private onboardingChatbotSetupService: OnboardingChatbotSetupService,
     private unansweredQuestionsService: UnansweredQuestionsService,
     private quotasService: QuotesService,
     private roleService: RoleService,
@@ -921,6 +926,26 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.namespaces.push(namespace)
         this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
 
+        // New KB theme: auto-create an agent/chatbot with the same name and bind it to this namespace.
+        if (this.kbPageConfig?.cssTheme === 'new' && this.project?._id && namespace?.id) {
+          this.onboardingChatbotSetupService.createKbOfficialResponderChatbotForNamespace({
+            projectId: this.project._id,
+            namespaceId: namespace.id,
+            chatbotName: namespaceName,
+          }).subscribe({
+            next: () => {
+              this.logger.log('[KNOWLEDGE-BASES-COMP] createNewNamespace - agent created and hooked for namespace', namespace.id);
+              // refresh bots list for the selected namespace
+              this.getChatbotUsingNamespace(namespace.id);
+            },
+            error: (err) => {
+              this.logger.error('[KNOWLEDGE-BASES-COMP] createNewNamespace - agent creation error', err);
+              // Do not block KB creation flow; just notify.
+              this.notify.showWidgetStyleUpdateNotification(this.translate.instant('Error'), 2, 'error');
+            }
+          });
+        }
+
         let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
         this.getListOfKb(paramsDefault, 'createNewNamespace');
       }
@@ -1213,6 +1238,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   //   return Object.prototype.toString.call(what) === '[object Array]';
   // }
 
+  /**
+   * Avvia il flusso “one-click” per creare un nuovo agente/chatbot a partire dal template certificato
+   * `kb-official-responder`, associandolo alla Knowledge Base (namespace) selezionata.
+   *
+   * Riepilogo azioni eseguite:
+   * - Controlla i permessi/ruolo: se l’utente è `agent` blocca l’operazione mostrando la relativa modale.
+   * - Controlla i limiti di piano sul numero di chatbot (se configurati): se il limite è raggiunto mostra la modale
+   *   “limite raggiunto” e interrompe il flusso.
+   * - Se i controlli passano, avvia la catena:
+   *   1) Cerca tra i template pubblici/certificati quello con tag `kb-official-responder`.
+   *   2) Esporta il template in JSON.
+   *   3) Modifica il JSON impostando il `namespace` dell’azione `askgptv2` sul namespace KB selezionato
+   *      (`this.selectedNamespace.id`), così l’agente userà quella Knowledge Base.
+   *   4) Chiede all’utente il nome del chatbot tramite `ModalChatbotNameComponent`.
+   *   5) Importa il chatbot nel progetto via `FaqService.importChatbotFromJSONFromScratch(...)`.
+   *   6) Aggiorna la UI caricando i chatbot che usano il namespace selezionato.
+   *   7) Recupera i dipartimenti del progetto e, se possibile, aggancia il bot al dipartimento di default
+   *      (oppure chiede dove agganciarlo se ci sono più dipartimenti senza bot).
+   */
   createChatbotfromKbOfficialResponderTemplate() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
     this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
@@ -1269,7 +1313,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
       chatbot.intents.forEach((intent, index) => {
         this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
-        const askGPT_Action = intent.actions.find(o => o._tdActionType === "askgptv2")
+        const askGPT_Action = intent.actions.find(o => o._tdActionType === ACTION_TYPE_ASKGPTV2)
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.selectedNamespace.id
@@ -2058,9 +2102,47 @@ _presentDialogImportContents() {
 
   presentModalInstallWidget() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget');
-    this.dialog.open(ModalInstallWidgetComponent, {
-      width: '700px',
-      data: {}
+    const projectId = this.project?._id;
+    if (!projectId) {
+      this.logger.warn('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - missing projectId');
+      this.dialog.open(ModalInstallWidgetComponent, { width: '700px', data: {} });
+      return;
+    }
+
+    // Best practice: la modale è "presentational" e riceve solo dati già pronti.
+    // Qui risolviamo participants (bot) e departmentID (dept default) e li passiamo via MAT_DIALOG_DATA.
+    this.faqKbService.getFaqKbByProjectId().pipe(takeUntil(this.unsubscribe$), take(1)).subscribe({
+      next: (bots: any[]) => {
+        const bot =
+          bots?.find((b: any) => b?.name === DEFAULT_CHATBOT_NAME) ??
+          bots?.find((b: any) => b?.certifiedTags?.some((t: any) => t?.name === CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER)) ??
+          bots?.[0];
+
+        const participants = bot?._id ? `bot_${bot._id}` : undefined;
+
+        this.departmentService.getDeptsByProjectId().pipe(takeUntil(this.unsubscribe$), take(1)).subscribe({
+          next: (depts: any[]) => {
+            const dept = depts?.find((d: any) => d?.default === true) ?? depts?.[0];
+            const departmentID = dept?._id;
+
+            this.dialog.open(ModalInstallWidgetComponent, {
+              width: '700px',
+              data: { projectId, participants, departmentID }
+            });
+          },
+          error: (err) => {
+            this.logger.error('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - getDeptsByProjectId error', err);
+            this.dialog.open(ModalInstallWidgetComponent, {
+              width: '700px',
+              data: { projectId, participants }
+            });
+          }
+        });
+      },
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] - presentModalInstallWidget - getFaqKbByProjectId error', err);
+        this.dialog.open(ModalInstallWidgetComponent, { width: '700px', data: { projectId } });
+      }
     });
   }
 

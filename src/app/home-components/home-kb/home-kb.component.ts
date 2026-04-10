@@ -22,6 +22,7 @@ import { FaqService } from 'app/services/faq.service';
 import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
 import { DepartmentService } from 'app/services/department.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-home-kb',
@@ -59,7 +60,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   kbNameSpaceid: string = '';
   kbNameSpaceName: string;
   kbAssistantName: string;
-  kbOfficialResponderTag = "kb-official-responder";
+  kbOfficialResponderTag = CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER;
   chatbotsUsingNamespace: any;
   dept_id: string;
   private dialogRefHookBoot: MatDialogRef<any>;
@@ -273,7 +274,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
         actionsArray.push(intent.actions)
 
 
-        const askGPT_Action = intent.actions.find(o => o._tdActionType === "askgptv2")
+        const askGPT_Action = intent.actions.find(o => o._tdActionType === ACTION_TYPE_ASKGPTV2)
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.kbNameSpaceid

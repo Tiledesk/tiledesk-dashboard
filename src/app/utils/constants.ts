@@ -121,3 +121,12 @@ export const TEAMMATE_STATUS = [
     { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg', label: "LABEL_NOT_AVAILABLE" },
     { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg', label: "LABEL_INACTIVE" },
 ];
+
+// CHATBOT / KB
+export const DEFAULT_CHATBOT_NAME = 'default';
+export const CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER = 'kb-official-responder';
+export const ACTION_TYPE_ASKGPTV2 = 'askgptv2';
+
+// WIDGET INSTALLATION
+export const WIDGET_LAUNCH_JS_FILENAME = 'launch.js';
+export const TILEDESK_JSSDK_SCRIPT_ID = 'tiledesk-jssdk';

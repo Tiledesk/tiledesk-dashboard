@@ -1,4 +1,9 @@
 {
+    "Retry": "Yenidən cəhd edin",
+    "OnboardingNew": {
+        "ProjectCreated": "Layihə yaradıldı",
+        "CreatingKbAndAgentMessage": "Bilik bazasını və agenti yaradıram. Bu bir neçə saniyə çəkə bilər."
+    },
     "ChangeDashboardLanguage": "İdarə panelinin dilini dəyişdirin",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Bu real vaxt söhbətlərinin monitorinq panelidir. Söhbətlərinizi idarə etmək üçün istifadə edin",
     "chatTool": "söhbət aləti",

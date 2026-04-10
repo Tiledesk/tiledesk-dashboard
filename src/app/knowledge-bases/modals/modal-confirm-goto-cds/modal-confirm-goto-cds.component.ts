@@ -6,6 +6,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Router } from '@angular/router';
+import { TILEDESK_JSSDK_SCRIPT_ID, WIDGET_LAUNCH_JS_FILENAME } from 'app/utils/constants';
 
 
 @Component({
@@ -80,7 +81,7 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   }
 
   getWidgetUrl() {
-    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
+    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + WIDGET_LAUNCH_JS_FILENAME;
     this.logger.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 
@@ -109,7 +110,7 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
             js=d.createElement(s); 
             js.id=id; js.async=true; js.src="${this.WIDGET_URL}";
             fjs.parentNode.insertBefore(js, fjs);
-        }(document,'script','tiledesk-jssdk'));
+        }(document,'script','${TILEDESK_JSSDK_SCRIPT_ID}'));
       </script>`
     );
   }

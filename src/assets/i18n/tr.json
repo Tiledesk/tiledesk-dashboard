@@ -1,4 +1,9 @@
 {
+    "Retry": "Yeniden dene",
+    "OnboardingNew": {
+        "ProjectCreated": "Proje oluşturuldu",
+        "CreatingKbAndAgentMessage": "Bilgi tabanını ve ajanı oluşturuyorum. Bu işlem birkaç saniye sürebilir."
+    },
     "ChangeDashboardLanguage": "Pano Dilini değiştir",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Bu, gerçek zamanlı konuşmaları izleme panelidir. Konuşmalarınızı yönetmek için şunu kullanın",
     "chatTool": "sohbet aracı",

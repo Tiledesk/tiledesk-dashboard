@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div mat-dialog-content>
+<div mat-dialog-content class="modal-install-widget-content">
   <div class="widget--script-copy-instructions">
     <div class="copy-script-title">Javascript {{ 'Installation' | translate }}</div>
     {{ 'Resourcepage.CopyTheFollowingScript...' | translate }}
@@ -21,7 +21,9 @@
       <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
       <span>   window.tiledeskSettings=</span>
       <span>   {{'{'}}</span>
-      <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+      <span>	 projectid: &quot;{{ projectId }}&quot;,</span>
+      <span *ngIf="participants">    participants: &quot;{{ participants }}&quot;,</span>
+      <span *ngIf="departmentID">    departmentID: &quot;{{ departmentID }}&quot;,</span>
       <span>   {{'};'}}</span>
       <span>   (function(d, s, id) {{'{'}}</span>
       <span>      var w=window; var d=document; var i=function(){{'{'}}i.c(arguments);{{'};'}} </span>

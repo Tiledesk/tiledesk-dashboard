@@ -7,6 +7,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
+import { ACTION_TYPE_ASKGPTV2, CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER } from 'app/utils/constants';
 
 @Injectable({ providedIn: 'root' })
 export class OnboardingChatbotSetupService {
@@ -155,6 +156,72 @@ export class OnboardingChatbotSetupService {
           observer.complete();
         });
       }),
+    );
+  }
+
+  /**
+   * Crea un chatbot basato sul template certificato "kb-official-responder" e lo collega ad un namespace KB.
+   *
+   * - Esporta il template in JSON
+   * - Imposta `chatbotJson.name = chatbotName`
+   * - Imposta `action.namespace = namespaceId` per tutte le azioni `askgptv2`
+   * - Import + (ri)rinomina namespace con lo stesso nome del bot
+   * - Publish + hook al default dept (se necessario)
+   */
+  createKbOfficialResponderChatbotForNamespace(params: {
+    projectId: string;
+    namespaceId: string;
+    chatbotName: string;
+  }): Observable<any> {
+    const { projectId, namespaceId, chatbotName } = params || ({} as any);
+    if (!projectId) {
+      return throwError(() => new Error('projectId is required'));
+    }
+    if (!namespaceId) {
+      return throwError(() => new Error('namespaceId is required'));
+    }
+    if (!chatbotName) {
+      return throwError(() => new Error('chatbotName is required'));
+    }
+
+    return this.faqKbService.getTemplates().pipe(
+      take(1),
+      switchMap((templates: any[]) => {
+        const tpl = templates?.find((t: any) =>
+          t?.certifiedTags?.some((tag: any) => tag?.name === CHATBOT_TEMPLATE_TAG_KB_OFFICIAL_RESPONDER),
+        );
+        if (!tpl?._id) {
+          return throwError(() => new Error('kb-official-responder template not found'));
+        }
+        return this.faqKbService.exportChatbotToJSON(tpl._id).pipe(
+          take(1),
+          map((chatbotJson: any) => {
+            if (!chatbotJson) {
+              throw new Error('exportChatbotToJSON returned empty payload');
+            }
+
+            chatbotJson['name'] = chatbotName;
+            if (Array.isArray(chatbotJson?.intents)) {
+              chatbotJson.intents.forEach((intent: any) => {
+                const actions = intent?.actions;
+                if (!Array.isArray(actions)) return;
+                actions.forEach((action: any) => {
+                  if (action?._tdActionType === ACTION_TYPE_ASKGPTV2) {
+                    action.namespace = namespaceId;
+                  }
+                });
+              });
+            }
+
+            return chatbotJson;
+          }),
+        );
+      }),
+      switchMap((chatbotJson: any) =>
+        this.importChatbotAndRenameNamespace({ chatbotJson, chatbotName, projectId, namespaceId }),
+      ),
+      switchMap(({ faqkb }) => this.publishAndHookToDefaultDeptIfNeeded(faqkb)),
+      catchError((err) => throwError(() => err)),
     );
   }
 }

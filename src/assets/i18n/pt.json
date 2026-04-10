@@ -1,4 +1,9 @@
 {
+    "Retry": "Tentar novamente",
+    "OnboardingNew": {
+        "ProjectCreated": "Projeto criado",
+        "CreatingKbAndAgentMessage": "Estou a criar a base de conhecimento e o agente. Isto pode demorar alguns segundos."
+    },
     "ChangeDashboardLanguage": "Alterar idioma do painel",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Este é o painel de monitoramento de conversas em tempo real. Para gerenciar suas conversas, use a",
     "chatTool": "ferramenta de bate-papo",
