@@ -1716,6 +1716,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Qiymətləndirmə",
         "Requester": "Müraciət edən",
         "Message": "Mesaj",
         "NoRequests": "Söhbət yoxdur",

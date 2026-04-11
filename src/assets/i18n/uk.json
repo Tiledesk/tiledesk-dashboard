@@ -1732,6 +1732,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Оцінка",
         "Requester": "Запитувач",
         "Message": "повідомлення",
         "NoRequests": "Немає розмови",

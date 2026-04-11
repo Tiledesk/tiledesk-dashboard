@@ -1732,6 +1732,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Betyg",
         "Requester": "Förfrågare",
         "Message": "Meddelande",
         "NoRequests": "Inget samtal",

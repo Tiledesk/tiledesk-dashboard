@@ -1731,6 +1731,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Бағалау",
         "Requester": "Өтініш беруші",
         "Message": "Хабар",
         "NoRequests": "Сөйлесу жоқ",

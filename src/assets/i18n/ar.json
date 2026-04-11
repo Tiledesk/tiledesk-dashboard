@@ -1716,6 +1716,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "التقييم",
         "Requester": "مقدم الطلب",
         "Message": "رسالة",
         "NoRequests": "لا محادثة",

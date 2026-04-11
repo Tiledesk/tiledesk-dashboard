@@ -1716,6 +1716,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Оценка",
         "Requester": "Заявитель",
         "Message": "Сообщение",
         "NoRequests": "Нет разговора",

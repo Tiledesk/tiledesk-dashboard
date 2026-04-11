@@ -1716,6 +1716,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Оцена",
         "Requester": "Подносилац захтева",
         "Message": "Порука",
         "NoRequests": "Нема разговора",

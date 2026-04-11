@@ -1715,6 +1715,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Évaluation",
         "Requester": "Demandeur",
         "Message": "Message",
         "NoRequests": "Pas de conversation",

@@ -1688,6 +1688,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Calificación",
         "Requester": "Solicitante",
         "Message": "Mensaje",
         "NoRequests": "Sin conversación",

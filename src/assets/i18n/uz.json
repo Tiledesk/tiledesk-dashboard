@@ -1715,6 +1715,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Baholash",
         "Requester": "So'rovchi",
         "Message": "Xabar",
         "NoRequests": "Suhbat yo'q",
