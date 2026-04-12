@@ -1202,11 +1202,13 @@
                                   class="served-by-avatar--img"
                                   src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                                  (click)="goToMemberProfile(agent, agent?._id )" matTooltipClass="custom-mat-tooltip"
+                                  [satPopoverAnchor]="botntengine" (click)="!CHAT_PANEL_MODE && botntengine.toggle()"
+                                  (click)="$event.stopPropagation()" (document:click)="botntengine.close()"
+                                   matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
                                   #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" />
 
-                                <!-- <sat-popover #botntengine horizontalAlign="before">
+                                <sat-popover #botntengine horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}} (bot)
@@ -1215,7 +1217,7 @@
                                       {{'ViewProfile' | translate }}
                                     </button>
                                   </div>
-                                </sat-popover> -->
+                                </sat-popover>
 
                               </li>
                               <!-- ------------------------------------- -->

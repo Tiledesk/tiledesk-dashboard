@@ -4539,6 +4539,19 @@ li.li-active a {
   box-shadow: unset;
 }
 
+.td--actions .btn-tdblu:active  {
+  background-color: transparent;
+  color: var(--blue-20);
+  box-shadow: unset;
+}
+
+.td--actions .btn-tdblu:focus  {
+  background-color: transparent;
+  color: var(--blue-20);
+  box-shadow: unset;
+}
+
+
 .td--actions .btn-danger {
   box-shadow: unset;
   background: transparent;

@@ -6035,7 +6035,7 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
 
     if (this.CHAT_PANEL_MODE === false) {
       if (member_id.indexOf('bot_') !== -1) {
-        this.logger.log('[WS-REQUESTS-MSGS] IS A BOT !');
+        console.log('[WS-REQUESTS-MSGS] IS A BOT !');
 
         const id_bot = member_id.substring(4);
         // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
