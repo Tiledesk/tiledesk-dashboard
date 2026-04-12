@@ -827,13 +827,12 @@
     <div class="modal-content custom--modal-content">
 
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title warning">
-          <!-- Delete department with id: -->
-          <!-- <i class="material-icons" style="vertical-align: middle;">report_problem</i> -->
+        <h4 class="modal-title warning"  style="font-size: 14px;">
+
           <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
@@ -845,13 +844,11 @@
           </span>
         </h4>
 
-        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
-          {{ "DepartmentsPage.DeleteDepartmentWithId" | translate }} <code>{{id_toDelete}}</code>
-          {{ "DepartmentsPage.WillBeDeleted" | translate }}
-        </h4> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseModal()"></button>
+
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
 
         <p class="modal-body--content">
           {{ "DepartmentsPage.AreYouSure" | translate }}
@@ -866,7 +863,7 @@
 
           {{ "Cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-red" (click)="onCloseDeleteModalHandled()">
+        <button type="button" class="btn btn-red" (click)="onCloseDeleteModalHandled()" style="margin-bottom: 0px;margin-left: 12px;">
           {{ "DepartmentsPage.Confirm" | translate }}
         </button>
       </div>

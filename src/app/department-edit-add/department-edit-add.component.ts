@@ -91,6 +91,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   showSpinner = false;
   projectUsers: any;
   projectUsersInGroup: any;
+  /** Lista teammate in dept edit: come home-create-teammate, max visibili poi +N → /users */
+  maxTeammatesDisplayed = 10;
 
   dept_name_initial: string
   dept_name_fillcolour: string
@@ -900,13 +902,40 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.getProjectUsers();
   }
 
+  /** Iniziali + colore sfondo per avatar (stesso pattern di GroupEditAddComponent). */
+  createUserAvatarInitials(user: any) {
+    if (!user) {
+      return;
+    }
+    if (user.fullname_initial && user.fillColour) {
+      return;
+    }
+    let fullname = '';
+    if (user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else if (user.firstname) {
+      fullname = user.firstname;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else if (user.email) {
+      fullname = user.email;
+      user.fullname_initial = avatarPlaceholder(fullname);
+      user.fillColour = getColorBck(fullname);
+    } else {
+      user.fullname_initial = 'N/A';
+      user.fillColour = 'rgb(98, 100, 167)';
+    }
+  }
+
   getProjectUsers() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT USERS - RES ', projectUsers)
 
       if (projectUsers) {
         this.projectUsers = projectUsers;
-
+        this.projectUsers.forEach((pu: any) => this.createUserAvatarInitials(pu?.id_user));
       }
     }, error => {
       this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT USERS - ERROR', error);
@@ -1131,6 +1160,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
                 });
 
               });
+
+              this.projectUsersInGroup.forEach((u: any) => this.createUserAvatarInitials(u));
 
               this.logger.log('[DEPT-EDIT-ADD] - PROJECT USERS IN GROUP ', this.projectUsersInGroup);
               // const filteredProjectUsers = group.members
@@ -1639,6 +1670,13 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
       }
+    }
+  }
+
+  goToTeammatesList() {
+    if (this.USER_ROLE !== 'agent') {
+      this.logger.log('[DEPT-EDIT-ADD] - goToTeammatesList');
+      this.router.navigate(['project/' + this.project._id + '/users']);
     }
   }
 

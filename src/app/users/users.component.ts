@@ -105,7 +105,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   canceledInviteErrorMsg: string
   subscription: Subscription
   isVisibleGroups: boolean;
-  areActivePay: boolean;
+  areActivePay = false;
   isVisibleAnalytics: boolean;
   storageBucket: string
 
@@ -143,6 +143,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_UPDATE: boolean;
   PERMISSION_TO_VIEW_ROLES: boolean;
+  projectUserMatchedPermissions: string[] = [];
   PERMISSION_TO_VIEW_GROUPS:boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
 
@@ -594,9 +595,13 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     } else {
       agentFullname = agentFirstname
     }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
-    this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url)
-    window.open(url, '_blank')
+    // const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+    // this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url)
+    // window.open(url, '_blank')
+    
+    this.router.navigate(['project', this.id_project, 'conversation-detail', agentId, agentFullname, 'new']);
+    this.logger.log('[USERS] - navigazione a conversation-detail ', agentId, agentFullname, 'new');
+
   }
 
   getBrowserLanguage() {
@@ -624,7 +629,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   goToUsersRoles() {
-    this.router.navigate(['project/' + this.id_project + '/roles']);
+    if(!this.PERMISSION_TO_VIEW_ROLES) {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+      return
+    }
+    this.notify.navigateToCustomRolesSectionOrExplain({
+      projectId: this.id_project,
+      hasPermission: this.PERMISSION_TO_VIEW_ROLES,
+      profileName: this.profile_name,
+      customization: this.projectProfileData?.customization,
+      userRole: this.USER_ROLE,
+      prjct_profile_type: this.prjct_profile_type,
+      subscription_is_active: this.subscription_is_active,
+      subscription_end_date: this.subscription_end_date,
+    });
   }
 
   goToPendingInvitation() {

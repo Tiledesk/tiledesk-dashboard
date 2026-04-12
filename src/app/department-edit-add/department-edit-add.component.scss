@@ -696,6 +696,53 @@ select[disabled] {
   object-fit: cover;
 }
 
+/* Wrapper avatar con iniziali (come group-edit-add) */
+.user-img-teammates-in-edit-dept.avatar-with-initials {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.user-img-teammates-in-edit-dept.avatar-with-initials > .user-img-teammates-in-edit-dept {
+  margin-right: 0;
+}
+
+.avatar-initials-text {
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.dept-teammates-more {
+  clear: both;
+  display: block;
+}
+
+/* +N overflow → /users (come home-create-teammate; pill per +10 ecc.) */
+.other-teammates-dept {
+  box-sizing: border-box;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(33, 150, 243);
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: -0.5px;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
 
 .bot-description-trunc {
   white-space: nowrap;
@@ -873,7 +920,7 @@ select[disabled] {
 }
 
 .link-to-docs-wpr {
-  margin-bottom: 16px;
+  margin-bottom: 0px;
 }
 
 .link-to-docs-wpr > div > div > span > svg {
@@ -885,7 +932,7 @@ select[disabled] {
   // background-color: rgb(241, 241, 241);
   margin-right: 0px;
   margin-left: 0px;
-  margin-left: -14px;
+  margin-left: 15px;
   // padding-bottom: 12px;
   // padding-top: 12px;
   padding: 10px 0px;

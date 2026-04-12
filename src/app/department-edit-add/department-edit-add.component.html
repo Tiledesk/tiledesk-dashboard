@@ -923,26 +923,39 @@
                           <div *ngIf="!selectedGroupId" class="row-body" style="margin-bottom: 10px; margin-left: 2px;">
 
                             <div class="dept___served_by_alluser">
-                              <div *ngFor="let agent of projectUsers" style="margin-bottom: 5px;">
-                                <span (click)="goToMemberProfile( agent?.id_user?._id )" style="cursor:pointer">
-                                  <!-- --------------------------------------------------- -->
-                                  <!-- USECASE uploadEngine Firebase -->
-                                  <!-- --------------------------------------------------- -->
-                                  <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                                    onerror="this.src='assets/img/no_image_user.png'" />
-
-                                  <!-- --------------------------------------------------- -->
-                                  <!-- USECASE uploadEngine Native -->
-                                  <!-- --------------------------------------------------- -->
-                                  <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                    onerror="this.src='assets/img/no_image_user.png'" />
-
+                              <div *ngFor="let agent of projectUsers | slice:0:maxTeammatesDisplayed" style="margin-bottom: 5px;">
+                                <span (click)="goToMemberProfile( agent?.id_user?._id )" style="cursor:pointer; display: inline-flex; align-items: center;">
+                                  <div class="user-img-teammates-in-edit-dept avatar-with-initials"
+                                    [ngStyle]="{'background': 'linear-gradient(rgb(255,255,255) -125%,' + (agent?.id_user?.fillColour || 'rgb(98, 100, 167)') + ')', 'display': 'flex'}"
+                                    style="align-items: center; justify-content: center; border-radius: 50%; position: relative;">
+                                    <span class="avatar-initials-text">
+                                      {{ agent?.id_user?.fullname_initial || 'N/A' }}
+                                    </span>
+                                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                      #firebaseImgAll
+                                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                                      (load)="firebaseImgAll.style.display='block'; firebaseImgAll.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                      (error)="firebaseImgAll.style.display='none';"
+                                      style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                      #nativeImgAll
+                                      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                      (load)="nativeImgAll.style.display='block'; nativeImgAll.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                      (error)="nativeImgAll.style.display='none';"
+                                      style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                                  </div>
 
                                   <span style="font-size:12px; font-weight: 400">
                                     {{agent?.id_user?.firstname}} {{agent?.id_user?.lastname}}
                                   </span>
+                                </span>
+                              </div>
+                              <div *ngIf="projectUsers?.length > maxTeammatesDisplayed" class="dept-teammates-more"
+                                (click)="goToTeammatesList()" style="margin-bottom: 5px;">
+                                <span style="display: inline-flex; align-items: center; cursor: pointer;">
+                                  <div class="other-teammates-dept">
+                                    + {{ projectUsers.length - maxTeammatesDisplayed }}
+                                  </div>
                                 </span>
                               </div>
                             </div>
@@ -965,26 +978,39 @@
                                 </p>
                               </div>
 
-                              <div *ngFor="let agent of projectUsersInGroup" style="margin-bottom: 5px;">
-                                <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
-                                  <!-- --------------------------------------------------- -->
-                                  <!-- USECASE uploadEngine Firebase -->
-                                  <!-- --------------------------------------------------- -->
-                                  <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
-                                    onerror="this.src='assets/img/no_image_user.png'" />
-
-                                  <!-- --------------------------------------------------- -->
-                                  <!-- USECASE uploadEngine Native -->
-                                  <!-- --------------------------------------------------- -->
-                                  <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                    onerror="this.src='assets/img/no_image_user.png'" />
-
+                              <div *ngFor="let agent of projectUsersInGroup | slice:0:maxTeammatesDisplayed" style="margin-bottom: 5px;">
+                                <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer; display: inline-flex; align-items: center;">
+                                  <div class="user-img-teammates-in-edit-dept avatar-with-initials"
+                                    [ngStyle]="{'background': 'linear-gradient(rgb(255,255,255) -125%,' + (agent?.fillColour || 'rgb(98, 100, 167)') + ')', 'display': 'flex'}"
+                                    style="align-items: center; justify-content: center; border-radius: 50%; position: relative;">
+                                    <span class="avatar-initials-text">
+                                      {{ agent?.fullname_initial || 'N/A' }}
+                                    </span>
+                                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                      #firebaseImgGrp
+                                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                                      (load)="firebaseImgGrp.style.display='block'; firebaseImgGrp.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                      (error)="firebaseImgGrp.style.display='none';"
+                                      style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                      #nativeImgGrp
+                                      src="{{baseUrl}}files?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                      (load)="nativeImgGrp.style.display='block'; nativeImgGrp.parentElement.querySelector('.avatar-initials-text').style.display='none';"
+                                      (error)="nativeImgGrp.style.display='none';"
+                                      style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                                  </div>
 
                                   <span style="font-size:12px; font-weight: 400">
                                     {{agent?.firstname}} {{agent?.lastname}}
                                   </span>
+                                </span>
+                              </div>
+                              <div *ngIf="projectUsersInGroup?.length > maxTeammatesDisplayed" class="dept-teammates-more"
+                                (click)="goToTeammatesList()" style="margin-bottom: 5px;">
+                                <span style="display: inline-flex; align-items: center; cursor: pointer;">
+                                  <div class="other-teammates-dept">
+                                    + {{ projectUsersInGroup.length - maxTeammatesDisplayed }}
+                                  </div>
                                 </span>
                               </div>
                             </div>

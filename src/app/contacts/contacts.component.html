@@ -253,13 +253,13 @@
         <div id="contacts-page">
           <div id="contacts-sideBar">
 
-            <div class="add-contact-wpr">
-              <!-- <span *ngIf="hasClickedTrashed === false"> -->
+            <!-- <div class="add-contact-wpr">
+           
               <button class="btn btn-tdblu-no-boxshadow" (click)="presentDialogAddContact()">
                 {{ 'AddContact' | translate }}
               </button>
-              <!-- </span> -->
-            </div>
+        
+            </div> -->
 
 
             <div class="card nav-card">
@@ -530,7 +530,7 @@
                                   <!-- -------------------------------------------------------------------- -->
                                   <div [id]="'more_tags_btn_' + contact?._id" *ngIf="contact?.tags?.length > 2">
                                     <a (click)="$event.stopPropagation(); displayMoreTags(contact?._id)"
-                                      class="display-more-tags-btn"> ...{{contact?.tags?.length - 2}} {{'more' |
+                                      class="display-more-tags-btn">... {{contact?.tags?.length - 2}} {{'more' |
                                       translate}}
                                     </a>
                                   </div>
@@ -575,14 +575,18 @@
                           </td>
 
                           <!-- ========== CHAT WITH ========== -->
-                          <!-- <td style="width: 1%;">
-                                <span>
-                                  <span class="White__Tooltip">
-                                    <i class="material-icons chat-with-agent"
-                                      (click)="chatWithAgent(contact)">
+                          <!-- <td > -->
+                                <!-- <span> -->
+                                  <!-- <span class="White__Tooltip"> -->
+                                    <!-- <i class="material-icons chat-with-agent"
+                                      (click)="chatWithAgent(contact)"
+                                      matTooltip="{{'ChatWith | translate }}: {{contact?.fullname}}"
+                                      matTooltipClass="custom-mat-tooltip"
+                                      matTooltipPosition="above"
+                                      matTooltipHideDelay="100">
                                       chat
-                                    </i>
-                                    <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
+                                    </i> -->
+                                    <!-- <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
                                       {{"ChatWith" | translate }}:
                                       <span *ngIf="contact.fullname" style="display:block">
                                         {{contact?.fullname}}
@@ -590,10 +594,10 @@
                                       <span *ngIf="!contact.fullname" style="display:block">
                                         Guest
                                       </span>
-                                    </span>
-                                  </span>
-                                </span>
-                              </td>  -->
+                                    </span> -->
+                                  <!-- </span> -->
+                                <!-- </span> -->
+                              <!-- </td>  -->
 
                           <!-- ========== CONTACT PHONE ========== -->
                           <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
@@ -628,6 +632,12 @@
 
                           <!--  Actions  -->
                           <td *ngIf="hasClickedTrashed === false" class="td--actions" style="padding-left: 0px;">
+
+                            <!-- <button type="button" class="btn btn-default" (click)='chatWithAgent(contact)'
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{'ChatWith | translate }}: {{contact?.fullname}}"
+                              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                              <i class="material-icons">chat</i>
+                            </button> -->
 
                             <!-- VIEW CONVERSATIONS {{ 'ViewContactRequests' | translate }}  -->
                             <button type="button" class="btn btn-tdblu" (click)='goToContactDetails(contact?._id)'

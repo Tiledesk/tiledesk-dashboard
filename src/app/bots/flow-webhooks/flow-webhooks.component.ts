@@ -78,6 +78,7 @@ export class FlowWebhooksComponent implements OnInit {
     this.getServerBaseURL()
     this.listenToProjectUser()
     this.getCurrentProject()
+    this.getTemplates()
   }
 
   getCurrentProject() {
@@ -200,16 +201,22 @@ export class FlowWebhooksComponent implements OnInit {
   // --------------------------------------------------------------------------------------
   //  @ Enable / disable flow webkook
   // --------------------------------------------------------------------------------------
-  webhookOnOff(event, webhook_id) {
+  webhookOnOff(event: Event, webhook_id: string) {
+    const input = event.target as HTMLInputElement;
+    if (!input || input.type !== 'checkbox') {
+      return;
+    }
+
     if (!this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK) {
       event.preventDefault();
+      input.checked = !input.checked;
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }
 
-    this.logger.log('[FLOW-WEBHOOKS] Enable / Disable flow webhook - event', event.target.checked, 'webhook_id ', webhook_id)
+    this.logger.log('[FLOW-WEBHOOKS] Enable / Disable flow webhook - event', input.checked, 'webhook_id ', webhook_id);
 
-    this.webhookService.updateFlowWebhook(event.target.checked, webhook_id).subscribe((res: any) => {
+    this.webhookService.updateFlowWebhook(input.checked, webhook_id).subscribe((res: any) => {
 
       this.logger.log('[FLOW-WEBHOOKS] UPDATE WH RES  ', res);
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('WebhookUpdatedSuccessfully'), 2, 'done');

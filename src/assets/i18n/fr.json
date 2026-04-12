@@ -195,6 +195,7 @@
     "NewRole": "Nouveau rôle",
     "EditRole":"Modifier le rôle",
     "Role": "Rôle",
+    "ContactUsToEnableCustomRoleManagement": "Contactez-nous pour activer la gestion personnalisée des rôles",
     "owner": "Propriétaire",
     "admin": "Administrateur",
     "_agent": "Agent",
@@ -1304,7 +1305,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Retirez le coéquipier des groupes avant de le désactiver.",
         "RemoveUserFromTagsBeforeDelete": "Retirez le coéquipier des étiquettes avant de le supprimer.",
         "RemoveUserFromTagsBeforeDisable": "Retirez le coéquipier des étiquettes avant de le désactiver.",
-        "AndOthers": "et {{count}} autres"
+        "AndOthers": "et {{count}} autres",
+        "CustomPlanExpiredTitle": "Le plan Custom a expiré",
+        "CustomPlanExpiredMessage": "L'abonnement au plan Custom de ce projet n'est plus actif. Demandez au propriétaire du projet de le renouveler.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Contactez le propriétaire du projet ou les administrateurs pour activer la gestion personnalisée des rôles"
     },
     "UserEditAddPage": {
         "AddUser": "Ajouter un joueur",
@@ -1749,6 +1753,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Évaluation",
         "Requester": "Demandeur",
         "Message": "Message",
         "NoRequests": "Pas de conversation",

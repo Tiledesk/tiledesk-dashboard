@@ -859,7 +859,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header" style="padding-bottom:15px">
-        <button type="button" class="close" aria-label="Close" (click)="closeInternalRequestModal()"
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeInternalRequestModal()"
           style="position: absolute; right: 14px;top:19px">
           <span aria-hidden="true">
 
@@ -869,13 +869,15 @@
               </path>
             </svg>
           </span>
-        </button>
-        <h4 class="modal-title">
-          <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
-          <span style="vertical-align: middle; padding-left:8px">
+        </button> -->
+        <h4 class="modal-title" style="font-size: 14px;">
+     
+          <!-- <span style="vertical-align: middle; padding-left:8px"> -->
             {{ "CreateTicket" | translate }}
-          </span>
+          <!-- </span> -->
         </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeInternalRequestModal()"></button>
+
 
       </div>
       <div class="modal-body" style="min-height: 217px;">
@@ -905,68 +907,70 @@
           <div class="col-sm-12" style="margin-bottom: 20px;">
 
             <!-- // with custom search -->
-            <ng-select class="internal-request-custom-select" name="users_and_leads" [items]="projectUserAndLeadsArray"
-              bindLabel="name" bindValue="id" [(ngModel)]="selectedRequester" [virtualScroll]="true"
-              [searchFn]="customSearchFn" [clearable]="false" (change)="selectRequester($event)"
-              placeholder="{{'SelectRequester' | translate}}" [loading]=loadingRequesters loadingText='Loading...'>
+            <div class="internal-request-custom-select-wpr" style="font-size: 14px;"> 
+              <ng-select class="internal-request-custom-select" name="users_and_leads" [items]="projectUserAndLeadsArray"
+                bindLabel="name" bindValue="id" [(ngModel)]="selectedRequester" [virtualScroll]="true"
+                [searchFn]="customSearchFn" [clearable]="false" (change)="selectRequester($event)"
+                placeholder="{{'SelectRequester' | translate}}" [loading]=loadingRequesters loadingText='Loading...'>
 
-              <ng-template ng-label-tmp let-item="item">
-                <!-- ---------------------------------------- -->
-                <!-- Usecase Firebase -->
-                <!-- ---------------------------------------- -->
-                <img *ngIf="item.requestertype === 'agent' && UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
-                  style="border-radius:50%; object-fit: cover;"
-                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{item.id}}%2Fphoto.jpg?alt=media"
-                  alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
-                <!-- ---------------------------------------- -->
-                <!-- Usecase Native -->
-                <!-- ---------------------------------------- -->
-                <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
-                  style="border-radius:50%;object-fit: cover;"
-                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                  alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
+                <ng-template ng-label-tmp let-item="item">
+                  <!-- ---------------------------------------- -->
+                  <!-- Usecase Firebase -->
+                  <!-- ---------------------------------------- -->
+                  <img *ngIf="item.requestertype === 'agent' && UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
+                    style="border-radius:50%; object-fit: cover;"
+                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{item.id}}%2Fphoto.jpg?alt=media"
+                    alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
+                  <!-- ---------------------------------------- -->
+                  <!-- Usecase Native -->
+                  <!-- ---------------------------------------- -->
+                  <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
+                    style="border-radius:50%;object-fit: cover;"
+                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
-                <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
-                  style="border-radius:50%;object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
-                <span style="font-weight: 400; margin-left: 4px;">{{ item.name }}</span><span
-                  class="requester-role-or-type">
-                  ({{item.role}}) </span>
+                  <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
+                    style="border-radius:50%;object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
+                  <span style="font-weight: 400; margin-left: 4px;">{{ item.name }}</span><span
+                    class="requester-role-or-type">
+                    ({{item.role}}) </span>
 
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
 
-                <!-- ---------------------------------------- -->
-                <!-- Usecase Firebase -->
-                <!-- ---------------------------------------- -->
-                <img *ngIf="item.requestertype === 'agent' && UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
-                  style="border-radius:50%;object-fit: cover;"
-                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{item.id}}%2Fphoto.jpg?alt=media"
-                  alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
+                  <!-- ---------------------------------------- -->
+                  <!-- Usecase Firebase -->
+                  <!-- ---------------------------------------- -->
+                  <img *ngIf="item.requestertype === 'agent' && UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
+                    style="border-radius:50%;object-fit: cover;"
+                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{item.id}}%2Fphoto.jpg?alt=media"
+                    alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
-                <!-- ---------------------------------------- -->
-                <!-- Usecase Native -->
-                <!-- ---------------------------------------- -->
-                <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
-                  style="border-radius:50%;object-fit: cover;"
-                  src="{{baseUrl}}files?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                  alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
+                  <!-- ---------------------------------------- -->
+                  <!-- Usecase Native -->
+                  <!-- ---------------------------------------- -->
+                  <img *ngIf="item.requestertype === 'agent' && !UPLOAD_ENGINE_IS_FIREBASE" height="24" width="24"
+                    style="border-radius:50%;object-fit: cover;"
+                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{item.id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    alt="" onerror="this.src='assets/img/default-avatar-x-select.png'">
 
-                <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
-                  style="border-radius:50%; object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
-                <span style="font-weight: 400;margin-left: 4px;">{{ item.name }}</span> <span
-                  class="requester-role-or-type">
-                  ({{item.role}}) </span> <br />
-                <small style="font-weight:400;font-size: 13px; margin-left: 28px; position: relative;top: -3px;">
-                  {{ item.email }}</small>
-              </ng-template>
+                  <img *ngIf="item.requestertype === 'lead'" height="24" width="24"
+                    style="border-radius:50%; object-fit: cover;" src="assets/img/default-avatar-x-select.png" alt="">
+                  <span style="font-weight: 400;margin-left: 4px;">{{ item.name }}</span> <span
+                    class="requester-role-or-type">
+                    ({{item.role}}) </span> <br />
+                  <small style="font-weight:400;font-size: 13px; margin-left: 28px; position: relative;top: -3px;">
+                    {{ item.email }}</small>
+                </ng-template>
 
-              <ng-template ng-footer-tmp>
-                <div style="cursor:pointer" (click)="presentModalAddNewRequester()">
-                  <span class="material-icons add-requester-btn-icon"> add </span>
-                  <span class="add-requester-btn-text"> {{'AddRequester' | translate}}</span>
-                </div>
-              </ng-template>
-            </ng-select>
+                <ng-template ng-footer-tmp>
+                  <div style="cursor:pointer" (click)="presentModalAddNewRequester()">
+                    <span class="material-icons add-requester-btn-icon"> add </span>
+                    <span class="add-requester-btn-text"> {{'AddRequester' | translate}}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
             <!-- <ng-select class="custom" name="users_and_leads" [(ngModel)]="selectedRequester" [searchable]="true"
               (change)="selectRequester()" [clearable]="true" placeholder="Select requester">
               <ng-option *ngFor="let item of projectUserAndLeadsArray" [value]="item.id">
@@ -995,13 +999,15 @@
             {{ 'SelectAssignee' | translate }}
           </label>
           <div class="col-sm-12" style="margin-bottom: 20px;">
-            <ng-select class="custom" name="dept" [(ngModel)]="assignee_id" [searchable]="true" [clearable]="false"
-              placeholder="{{ 'SelectAssignee' | translate }}" (change)="selectedAssignee()" [loading]=loadingAssignee
-              loadingText='Loading...'>
-              <ng-option *ngFor="let assignee of projectUserBotsAndDeptsArray" [value]="assignee.id">
-                {{assignee.name}}
-              </ng-option>
-            </ng-select>
+            <div class="assignee-select-wpr" style="font-size: 14px;">
+              <ng-select class="custom" name="dept" [(ngModel)]="assignee_id" [searchable]="true" [clearable]="false"
+                placeholder="{{ 'SelectAssignee' | translate }}" (change)="selectedAssignee()" [loading]=loadingAssignee
+                loadingText='Loading...'>
+                <ng-option *ngFor="let assignee of projectUserBotsAndDeptsArray" [value]="assignee.id">
+                  {{assignee.name}}
+                </ng-option>
+              </ng-select>
+            </div>
           </div>
 
           <label class="col-sm-12" style="text-align: left; color:#7695a5;">
@@ -1009,17 +1015,19 @@
           </label>
           <div class="col-sm-12" style="margin-bottom: 20px;">
 
-            <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false" [hideSelected]="true"
-              [(ngModel)]="selectedPriority" (change)="onChangeSelectedPriority(selectedPriority)">
-              <ng-template ng-label-tmp let-item="item">
-                <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                {{item.name | translate}}
-              </ng-template>
-              <ng-template ng-option-tmp let-item="item" let-index="index">
-                <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                {{item.name | translate }}
-              </ng-template>
-            </ng-select>
+            <div class="priority-slect-wpr" style="font-size: 14px;"> 
+              <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false" [hideSelected]="true"
+                [(ngModel)]="selectedPriority" (change)="onChangeSelectedPriority(selectedPriority)">
+                <ng-template ng-label-tmp let-item="item">
+                  <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                  {{item.name | translate}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                  <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                  {{item.name | translate }}
+                </ng-template>
+              </ng-select>
+            </div>
           </div>
 
 
@@ -1112,11 +1120,11 @@
         </button>
         <!-- (click)="openTheChaForInternalRequest()" -->
         <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px"
-          class="btn btn-gray-no-boxshadow" style="padding:12px 16px;" (click)="closeInternalRequestModal()">
+          class="btn btn-gray-no-boxshadow"  (click)="closeInternalRequestModal()">
           <span style="vertical-align: middle"> {{ 'Cancel' | translate }} </span>
         </button>
         <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px"
-          class="btn btn-tdblu-no-boxshadow" style="padding:12px 16px;" (click)="goToInternalRequestDetails()">
+          class="btn btn-tdblu-no-boxshadow" (click)="goToInternalRequestDetails()" style="margin-bottom: 0px;margin-left: 12px;">
           <span style="vertical-align: middle"> {{ 'ViewDetails' | translate }} </span>
         </button>
 

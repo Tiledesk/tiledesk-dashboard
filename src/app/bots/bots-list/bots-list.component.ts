@@ -277,7 +277,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   ngOnInit() {
     this.roleService.checkRoleForCurrentProject('flows')
     // this.getCommunityTemplates()
-    // this.getTemplates()
+    this.getTemplates()
     // this.getAllNamespaces()
     // this.getFaqKb();
     // this.getQueryParams()
@@ -570,6 +570,30 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }, () => {
       this.logger.log('[BOTS-LIST] GET WH COMPLETE');
      
+    });
+  }
+
+   getTemplates() {
+
+    this.faqKbService.getTemplates().subscribe((res: any) => {
+
+      if (res) {
+        // this.certfifiedTemplates = res;
+        // this.certfifiedTemplates = this.fake_tmplt
+
+        this.allTemplatesCount = res.length;
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+       
+      }
+
+
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] GET TEMPLATES ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[BOTS-LIST] GET TEMPLATES COMPLETE');
+    
+   
     });
   }
 

@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -72,9 +73,20 @@ export class GroupsComponent implements OnInit {
 
   PERMISSION_TO_VIEW_TEAMMATES: boolean;
   PERMISSION_TO_VIEW_ROLES: boolean;
+  projectUserMatchedPermissions: string[] = [];
   PERMISSION_TO_EDIT_GROUP: boolean;
   PERMISSION_TO_CREATE_GROUP: boolean;
   PERMISSION_TO_DELETE_GROUP: boolean;
+
+  projectProfileData: any;
+  groupsPlanProfileName: string;
+  groupsPrjctProfileType: string;
+  groupsSubscriptionActive: boolean;
+  groupsSubscriptionEnd: any;
+  groupsPlanUserRole: string;
+  /** Ruolo progetto utente loggato (da permissions stream), per gate /roles — non confondere con groupsPlanUserRole dal piano */
+  loggedInProjectUserRole: string;
+  areActivePay = false;
 
   groupsList: Group[] = [];
   filteredGroups: any[] = [];
@@ -98,7 +110,8 @@ export class GroupsComponent implements OnInit {
     public departmentService: DepartmentService,
     private translate: TranslateService,
     private roleService: RoleService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private projectPlanService: ProjectPlanService
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -115,7 +128,23 @@ export class GroupsComponent implements OnInit {
     this.getBrowserVersion()
     this.getTranslations();
     this.checkPermissions();
-    this.listenToProjectUser()
+    this.listenToProjectUser();
+    this.listenProjectPlanForRolesGate();
+  }
+
+  listenProjectPlanForRolesGate() {
+    this.projectPlanService.projectPlan$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data: any) => {
+        if (data) {
+          this.projectProfileData = data;
+          this.groupsPlanProfileName = data.profile_name;
+          this.groupsPrjctProfileType = data.profile_type;
+          this.groupsSubscriptionActive = data.subscription_is_active;
+          this.groupsSubscriptionEnd = data.subscription_end_date;
+          this.groupsPlanUserRole = data.user_role;
+        }
+      });
   }
 
    ngOnDestroy() {
@@ -130,7 +159,9 @@ export class GroupsComponent implements OnInit {
         .subscribe(status => {
           console.log('[USERS] - Role:', status.role);
           console.log('[USERS] - Permissions:', status.matchedPermissions);
-        
+          this.loggedInProjectUserRole = status.role;
+          this.projectUserMatchedPermissions = status.matchedPermissions || [];
+
           // ----------------------------
           // PERMISSION_TO_VIEW_TEAMMATES
           // ----------------------------
@@ -266,10 +297,17 @@ export class GroupsComponent implements OnInit {
           this.isVisibleGRO = true;
         }
       }
+      if (key.includes("PAY")) {
+        const pay = key.split(":");
+        this.areActivePay = pay[1] !== "F";
+      }
     });
 
     if (!this.public_Key.includes("GRO")) {
       this.isVisibleGRO = false;
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.areActivePay = false;
     }
   }
 
@@ -382,7 +420,21 @@ export class GroupsComponent implements OnInit {
   }
 
   goToUsersRoles() {
-    this.router.navigate(['project/' + this.project_id + '/roles']);
+    if(!this.PERMISSION_TO_VIEW_ROLES) {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+    const projectUserRole = this.loggedInProjectUserRole || this.groupsPlanUserRole;
+    this.notify.navigateToCustomRolesSectionOrExplain({
+      projectId: this.project_id,
+      hasPermission: this.PERMISSION_TO_VIEW_ROLES,
+      // matchedPermissions: this.projectUserMatchedPermissions,
+      profileName: this.groupsPlanProfileName,
+      customization: this.projectProfileData?.customization,
+      userRole: projectUserRole,
+      prjct_profile_type: this.groupsPrjctProfileType,
+      subscription_is_active: this.groupsSubscriptionActive,
+      subscription_end_date: this.groupsSubscriptionEnd,
+    });
   }
 
   goToEditAddPage_edit(id_group: string) {

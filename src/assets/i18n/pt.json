@@ -195,6 +195,7 @@
     "NewRole": "Nova função",
     "EditRole": "Editar função",
     "Role": "Papel",
+    "ContactUsToEnableCustomRoleManagement": "Contacte-nos para ativar a gestão personalizada de funções",
     "owner": "Proprietário",
     "admin": "Administrador",
     "_agent": "Agente",
@@ -1304,7 +1305,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Remova o companheiro de equipe dos grupos antes de desabilitá-lo.",
         "RemoveUserFromTagsBeforeDelete": "Remova o companheiro de equipe das tags antes de excluí-lo.",
         "RemoveUserFromTagsBeforeDisable": "Remova o companheiro de equipe das tags antes de desabilitá-lo.",
-        "AndOthers": "e outros {{count}}"
+        "AndOthers": "e outros {{count}}",
+        "CustomPlanExpiredTitle": "O plano Custom expirou",
+        "CustomPlanExpiredMessage": "A subscrição ao plano Custom deste projeto já não está ativa. Peça ao proprietário do projeto para a renovar.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Contacte o proprietário do projeto ou os administradores para ativar a gestão de funções personalizadas"
     },
     "UserEditAddPage": {
         "AddUser": "Adicionar companheiro de equipe",
@@ -1749,6 +1753,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Avaliação",
         "Requester": "Solicitante",
         "Message": "Mensagem",
         "NoRequests": "Sem conversa",

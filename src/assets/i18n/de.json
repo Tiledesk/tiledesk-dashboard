@@ -195,6 +195,7 @@
     "NewRole": "Neue Rolle",
 	"EditRole":"Rolle bearbeiten",
     "Role": "Rolle",
+	"ContactUsToEnableCustomRoleManagement": "Kontaktieren Sie uns, um die benutzerdefinierte Rollenverwaltung zu aktivieren",
 	"owner": "Eigentümer",
 	"admin": "Administrator",
 	"_agent": "Agent",
@@ -1304,9 +1305,12 @@
 		"RemoveUserFromGroupsBeforeDisable": "Entfernen Sie den Teamkollegen aus Gruppen, bevor Sie ihn deaktivieren.",
 		"RemoveUserFromTagsBeforeDelete": "Entfernen Sie den Teamkollegen aus Tags, bevor Sie ihn löschen.",
 		"RemoveUserFromTagsBeforeDisable": "Entfernen Sie den Teamkollegen aus Tags, bevor Sie ihn deaktivieren.",
-		"AndOthers": "und {{count}} weitere"
-	},
-	"UserEditAddPage": {
+		"AndOthers": "und {{count}} weitere",
+  		"CustomPlanExpiredTitle": "Custom-Tarif abgelaufen",
+    	"CustomPlanExpiredMessage": "Das Abonnement für den Custom-Tarif für dieses Projekt ist nicht mehr aktiv. Bitten Sie den Projektinhaber, es zu verlängern.",
+		"ContactProjectOwnerOrAdministratorsToEnableRoles": "Kontaktieren Sie den Projektinhaber oder die Administratoren, um die benutzerdefinierte Rollenverwaltung zu aktivieren"
+    },
+    "UserEditAddPage": {
 		"AddUser": "Teamkollege hinzufügen",
 		"AddUserToThe": "Teamkollege hinzufügen zu ",
 		"Project": "Projekt",
@@ -1750,6 +1754,7 @@
 		}
 	},
 	"HistoryPage": {
+		"Rating": "Bewertung",
 		"Requester": "Anfragesteller",
 		"Message": "Nachricht",
 		"NoRequests": "Keine Anfragen",

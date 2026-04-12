@@ -195,6 +195,7 @@
     "NewRole": "Новая роль",
     "EditRole":"Редактировать роль",
     "Role": "Роль",
+    "ContactUsToEnableCustomRoleManagement": "Свяжитесь с нами, чтобы включить управление пользовательскими ролями",
     "owner": "Владелец",
     "admin": "Администратор",
     "_agent": "Агент",
@@ -1305,7 +1306,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Удалите товарища по команде из групп перед отключением.",
         "RemoveUserFromTagsBeforeDelete": "Удалите товарища по команде из тегов перед удалением.",
         "RemoveUserFromTagsBeforeDisable": "Удалите товарища по команде из тегов перед отключением.",
-        "AndOthers": "и еще {{count}}"
+        "AndOthers": "и еще {{count}}",
+        "CustomPlanExpiredTitle": "Тариф Custom истёк",
+        "CustomPlanExpiredMessage": "Подписка на тариф Custom для этого проекта больше не активна. Попросите владельца проекта продлить её.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Свяжитесь с владельцем проекта или администраторами, чтобы включить управление пользовательскими ролями"
     },
     "UserEditAddPage": {
         "AddUser": "Добавить товарища по команде",
@@ -1750,6 +1754,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Оценка",
         "Requester": "Заявитель",
         "Message": "Сообщение",
         "NoRequests": "Нет разговора",

@@ -190,6 +190,11 @@
     "Actions": "Acciones",
     "CopyInviteURL": "Copiar URL de invitación",
     "MoreFilterInAnalytics": "Más filtro en Analytics",
+    "Roles": "Roles",
+    "NewRole": "Nuevo rol",
+    "EditRole": "Editar rol",
+    "Role": "Rol",
+    "ContactUsToEnableCustomRoleManagement": "Contáctanos para activar la gestión de roles personalizados",
     "owner": "Propietario",
     "admin": "Administrador",
     "agent": "Agente",
@@ -1278,7 +1283,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Elimina al compañero de los grupos antes de deshabilitarlo.",
         "RemoveUserFromTagsBeforeDelete": "Elimina al compañero de las etiquetas antes de eliminarlo.",
         "RemoveUserFromTagsBeforeDisable": "Elimina al compañero de las etiquetas antes de deshabilitarlo.",
-        "AndOthers": "y otros {{count}}"
+        "AndOthers": "y otros {{count}}",
+        "CustomPlanExpiredTitle": "El plan Custom ha caducado",
+        "CustomPlanExpiredMessage": "La suscripción al plan Custom de este proyecto ya no está activa. Pide al propietario del proyecto que la renueve.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Contacta al propietario del proyecto o a los administradores para activar la gestión de roles personalizados"
     },
     "UserEditAddPage": {
         "AddUser": "Añadir compañero",
@@ -1722,6 +1730,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Calificación",
         "Requester": "Solicitante",
         "Message": "Mensaje",
         "NoRequests": "Sin conversación",

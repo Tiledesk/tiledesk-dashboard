@@ -197,6 +197,7 @@
     "NewRole": "New role",
     "EditRole":"Edit role",
     "Role": "Role",
+    "ContactUsToEnableCustomRoleManagement": "Contact us to enable custom role management",
     "owner": "Owner",
     "admin": "Administrator",
     "_agent": "Agent",
@@ -1306,7 +1307,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Remove the teammate from groups before disabling them.",
         "RemoveUserFromTagsBeforeDelete": "Remove the teammate from tags before deleting them.",
         "RemoveUserFromTagsBeforeDisable": "Remove the teammate from tags before disabling them.",
-        "AndOthers": "and {{count}} others"
+        "AndOthers": "and {{count}} others",
+        "CustomPlanExpiredTitle": "Custom plan has expired",
+        "CustomPlanExpiredMessage": "The Custom plan subscription for this project is no longer active. Ask the project owner to renew it.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Contact the project owner or administrators to enable custom roles management"
     },
     "UserEditAddPage": {
         "AddUser": "Add Teammate",
@@ -1751,6 +1755,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Rating",
         "Requester": "Requester",
         "Message": "Message",
         "NoRequests": "No Conversation",

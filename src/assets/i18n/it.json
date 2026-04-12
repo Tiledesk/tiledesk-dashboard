@@ -195,6 +195,7 @@
     "NewRole": "Nuovo ruolo",
     "EditRole":"Modifica ruolo",
     "Role": "Ruolo",
+    "ContactUsToEnableCustomRoleManagement": "Contattaci per attivare la gestione dei ruoli personalizzati",
     "owner": "Proprietario",
     "admin": "Amministratore",
     "_agent": "Agente",
@@ -1304,7 +1305,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Rimuovi il collaboratore dai gruppi prima di disabilitarlo.",
         "RemoveUserFromTagsBeforeDelete": "Rimuovi il collaboratore dalle tag prima di eliminarlo.",
         "RemoveUserFromTagsBeforeDisable": "Rimuovi il collaboratore dalle tag prima di disabilitarlo.",
-        "AndOthers": "e altri {{count}}"
+        "AndOthers": "e altri {{count}}",
+        "CustomPlanExpiredTitle": "Il piano Custom è scaduto",
+        "CustomPlanExpiredMessage": "L'abbonamento al piano Custom di questo progetto non è più attivo. Chiedi al proprietario del progetto di rinnovarlo.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Contatta il project owner o gli amministratori per attivare la gestione dei ruoli personalizzati"
     },
     "UserEditAddPage": {
         "AddUser": "Aggiungi Collaboratore",
@@ -1751,6 +1755,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Valutazione",
         "Requester": "Richiedente",
         "Message": "Messaggio",
         "NoRequests": "Nessuna conversazione",

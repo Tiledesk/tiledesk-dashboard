@@ -16,7 +16,7 @@
 
             <a *ngIf="kb.sitemap_origin" class="input-label link-page" [href]="name" target="_blank" style="text-decoration: none;">
                 <span class="material-icons-outlined">
-                    open_in_new
+                  open_in_new
                 </span>
             </a>
             <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin">
@@ -27,9 +27,14 @@
             <div *ngIf="kb.type === 'url'">
                 <span *ngIf="!kb.sitemap_origin" class="input-label">{{ 'KbPage.Url' | translate }}</span>
                 <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span>
-                <a class="input-label link-page" [href]="kb.sitemap_origin" target="_blank" style="text-decoration: none;">
+                <a *ngIf="!kb.sitemap_origin" class="input-label link-page" [href]="source" target="_blank" style="text-decoration: none;">
                     <span class="material-icons-outlined">
                         open_in_new
+                    </span>
+                </a>
+                <a *ngIf="kb.sitemap_origin" class="input-label link-page" [href]="kb.sitemap_origin" target="_blank" style="text-decoration: none;">
+                    <span class="material-icons-outlined">
+                       open_in_new
                     </span>
                 </a>
 
@@ -78,8 +83,16 @@
     <ng-container *ngIf="!showSpinner">
         <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
         <div class="scrape-options-wpr" *ngIf="kb.type === 'url'">
+            <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
+                <mat-slide-toggle [checked]="automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
+                    {{ 'KbPage.AutomaticContentExtraction' | translate }}
+                </mat-slide-toggle>
+            </div>
             <mat-accordion class="scrape-options-accordion">
-                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="html-tags--expansion-panel">
+                <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
+                    [disabled]="automaticContentExtraction"
+                    class="html-tags--expansion-panel"
+                    [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">
                     <mat-expansion-panel-header class="disable_ripple">
                         <mat-panel-title>{{'HtmlTags' | translate}}</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -192,91 +205,7 @@
         </div>
     </ng-container>
     
-    <ng-container *ngIf="!showSpinner" >
-        <!-- TODO: remove condition sitemap -->
-        <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
-            <div class="content-tags-title-wpr" [ngStyle]="{'margin-top': kb.type === 'url' ? '18px' : '12px'}" style="display: flex;vertical-align: middle;">
-                <div class="content-tags-title">
-                    {{'Tags.Tags' | translate}}
-                </div>
-
-                <div class="kb-tags-help"
-                    style="margin-left: 4px;"
-                    #trigger="cdkOverlayOrigin"
-                    cdkOverlayOrigin
-                    (mouseenter)="open()"
-                    (mouseleave)="scheduleClose()">
-                    <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
-                    help_outline
-                    </span>
-                </div>
-
-
-            </div>
-   
-
-        <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
-            <input id="kb-tags" class="adds-kb-input" name="kb-tags"
-                [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
-                [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-                [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
-
-            <!-- <div class="kb-tags-help"
-                style="position: relative;top: 3px;"
-                #trigger="cdkOverlayOrigin"
-                cdkOverlayOrigin
-                (mouseenter)="open()"
-                (mouseleave)="scheduleClose()">
-
-                <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
-                help_outline
-                </span>
-            </div> -->
-        </div>
-        <ng-template
-            cdk-connected-overlay
-            [cdkConnectedOverlayOrigin]="trigger"
-            [cdkConnectedOverlayOpen]="isOpen"
-            [cdkConnectedOverlayPositions]="positions"
-            [cdkConnectedOverlayHasBackdrop]="false"
-            (detach)="isOpen = false">
-            <div class="cdk-popover"
-            (mouseenter)="cancelClose()"
-            (mouseleave)="scheduleClose()">
-
-                <div class="cdk-popover-arrow"></div>
-
-                <div class="cdk-popover-content">
-                    {{'AssignOneOrMoreTagsToThisContent' | translate}}
-                </div>
-
-                <div *ngIf="hideHelpLink" class="cdk-learn-more"
-                    (click)="goToKbTagsDoc()">
-                    {{ 'LearnMore' | translate }}
-                </div>
-
-            </div>
-        </ng-template>
-
-            <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }" [ngClass]="{'kb-tags-container-with-tags': kbTagsArray?.length > 0 }">
-
-                <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
-                    <p  style="line-height: 1em;" class="kb-tag">{{kbtag}}</p>
-                    <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                        class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;cursor:pointer">
-                        <path
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                        </path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                        </svg>
-                    </button>
-                </span>
-
-            </div>
-            
-        </div>
-    </ng-container>
+ 
 
    <ng-container *ngIf="!showSpinner" >
         <!-- TODO: remove condition sitemap -->
@@ -391,13 +320,13 @@
     </ng-container>
 
     <ng-container *ngIf="kb.type !== 'sitemap' && kb.status !== 300 && kb.status !== 400"> 
-        <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--secondary-text-color);">
+        <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--secondary-text-color); font-size: 14px;">
             {{'KbPage.Indexing' | translate}}...
         </div>
     </ng-container>
 
     <ng-container *ngIf="kb.type !== 'sitemap' && kb.status === 400"> 
-        <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--error-color);">
+        <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--error-color); font-size: 14px;">
            {{'AnErrorHasOccurred' | translate}}
         </div>
     </ng-container>

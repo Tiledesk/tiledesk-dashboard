@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, SimpleChanges, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, Input, OnChanges, OnDestroy, ViewChild, SimpleChanges, AfterViewInit } from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { merge, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
@@ -25,7 +25,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
-// import scrollToWithAnimation from 'scrollto-with-animation'
+import scrollToWithAnimation from 'scrollto-with-animation';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
@@ -136,7 +136,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
     public route: ActivatedRoute,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -145,23 +147,51 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getRouteParams()
   }
 
+  /**
+   * scrollposition lives on a parent ActivatedRoute (this component is not router-outlet routed).
+   */
+  private readScrollPositionFromRouteSnapshot(): void {
+    let r: ActivatedRoute | null = this.route;
+    while (r) {
+      const sp = r.snapshot.params['scrollposition'];
+      if (sp != null && sp !== '') {
+        this.scrollYposition = sp;
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollYposition from route snapshot', +this.scrollYposition);
+        return;
+      }
+      r = r.parent;
+    }
+  }
+
   getRouteParams() {
     this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] oninit scrollEl', this.scrollEl)
-    this.route.params.subscribe((params) => {
-      // this.projectId = params.projectid
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET ROUTE PARAMS ', params);
-      if (params.scrollposition) {
-        this.scrollYposition = params.scrollposition;
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
-        if (this.scrollEl) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
-        } else {
-          this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl)
-        }
-      }
-    })
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] oninit scrollEl', this.scrollEl);
+    this.readScrollPositionFromRouteSnapshot();
 
+    const streams: Observable<Params>[] = [];
+    let ar: ActivatedRoute | null = this.route;
+    while (ar) {
+      streams.push(ar.params);
+      ar = ar.parent;
+    }
+    merge(...streams)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((params: Params) => {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET ROUTE PARAMS ', params);
+        if (params.scrollposition != null && params.scrollposition !== '') {
+          this.scrollYposition = params.scrollposition;
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
+          if (this.scrollEl) {
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop);
+          } else {
+            this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl);
+          }
+        }
+      });
+  }
+
+  private syncStoredRequestIdFromStorage(): void {
+    this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id');
   }
 
   // -------------------------------------------------------------
@@ -188,23 +218,36 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   scrollToWithAnimation(
-    //     this.scrollEl, // element to scroll
-    //     'scrollTop', // direction to scroll
-    //     +this.scrollYposition, // target scrollY (0 means top of the page)
-    //     500, // duration in ms
-    //     'easeInOutCirc',
-    //     // Can be a name of the list of 'Possible easing equations' or a callback
-    //     // that defines the ease. # http://gizma.com/easing/
+    this.syncStoredRequestIdFromStorage();
+    this.cdr.detectChanges();
 
-    //     () => { // callback function that runs after the animation (optional)
-    //       this.logger.log('done!')
-    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-    //       this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
-    //     }
-    //   );
-    // }, 100);
+    const el = this.scrollEl as HTMLElement | null;
+    const raw = this.scrollYposition;
+    const y = raw != null && raw !== '' ? +raw : NaN;
+
+    const finish = () => {
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] scroll / highlight sync done');
+      this.ngZone.run(() => {
+        this.syncStoredRequestIdFromStorage();
+        this.cdr.detectChanges();
+      });
+    };
+
+    if (!el || !Number.isFinite(y)) {
+      finish();
+      return;
+    }
+
+    setTimeout(() => {
+      scrollToWithAnimation(
+        el,
+        'scrollTop',
+        y,
+        500,
+        'easeInOutCirc',
+        finish
+      );
+    }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -918,7 +961,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
+    this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme, this.projectId)
   }
 
   // openChatInNewWindow(requestid: string, requester_fullanme: string) {

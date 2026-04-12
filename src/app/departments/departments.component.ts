@@ -663,7 +663,15 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     this.deptService.deleteDeparment(this.id_toDelete).subscribe((data) => {
       this.logger.log('[DEPTS] - DELETE DEPT RES ', data);
 
-      this.getDeptsByProjectId();
+      // this.getDeptsByProjectId();
+      console.log('[DEPTS] - DELETE DEPT  ', this.departments);
+      for (var i = 0; i < this.departments.length; i++) {
+
+        if (this.departments[i]._id === this.id_toDelete) {
+          this.departments.splice(i, 1);
+          i--;
+        }
+      }
 
     }, (error) => {
       this.logger.error('[DEPTS] DELETE DEPT - ERROR ', error);

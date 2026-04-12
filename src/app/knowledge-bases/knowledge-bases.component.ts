@@ -2165,6 +2165,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         kb: kb,
         refreshRateIsEnabled: this.refreshRateIsEnabled,

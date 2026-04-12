@@ -1275,7 +1275,7 @@ export class WsRequestsService implements OnDestroy {
   // ------------------------------------------------------
   // @ Download history request as CSV
   // ------------------------------------------------------
-  public downloadHistoryRequestsAsCsv(requests_status: any, querystring: string, preflight: boolean, pagenumber: number,rated?: boolean) {
+  public downloadHistoryRequestsAsCsv(requests_status: any, querystring: string, preflight: boolean, pagenumber: number,  rated?: boolean) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV requests_status ', requests_status);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV preflight ', preflight);
     let _querystring = '&' + querystring
@@ -1300,7 +1300,7 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   // WS Requests NO-RT & HISTORY
   // -------------------------------------------------------------
-  public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number, rated?: boolean) {
+  public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number,rated?: boolean) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
     // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses  ', statuses);
@@ -1308,9 +1308,11 @@ export class WsRequestsService implements OnDestroy {
     // console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - rated  ', rated);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - rated  ', rated);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
     
+    if (Array.isArray(status)) {
+      status = status.join(',');
+    }
 
     if (Array.isArray(status)) {
       status = status.join(',');

@@ -429,7 +429,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
   ngAfterViewInit(): void {
     this.initProjectNavScrollObservers();
-    setTimeout(() => this.scrollActiveBottomNavTabIntoView(), 0);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.scrollActiveBottomNavTabIntoView());
+    });
   }
 
   private initProjectNavScrollObservers(): void {
@@ -474,10 +476,34 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     if (!el) {
       return;
     }
-    const tol = 2;
+    // Wider edge tolerance: last tab + active border / subpixel scroll metrics otherwise flash the right arrow.
+    const edgeTol = 10;
     const { scrollLeft, scrollWidth, clientWidth } = el;
-    this.navScrollShowLeft = scrollLeft > tol;
-    this.navScrollShowRight = scrollLeft + clientWidth < scrollWidth - tol;
+    const maxScrollLeft = Math.max(0, scrollWidth - clientWidth);
+    // All tabs fit (or only subpixel overflow): never show scroll arrows — avoids stuck right arrow on last tab.
+    if (maxScrollLeft <= edgeTol) {
+      this.navScrollShowLeft = false;
+      this.navScrollShowRight = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    const vr = el.getBoundingClientRect();
+    const ul = el.querySelector('.bottom-nav') as HTMLElement | null;
+    const firstLi = ul?.firstElementChild as HTMLElement | null;
+    const lastLi = ul?.lastElementChild as HTMLElement | null;
+
+    // Prefer tab geometry over raw scrollWidth (avoids phantom space after the last tab / subpixel).
+    let showLeft = scrollLeft > edgeTol;
+    let showRight = scrollLeft + clientWidth < scrollWidth - edgeTol;
+    if (firstLi) {
+      showLeft = firstLi.getBoundingClientRect().left < vr.left - 2;
+    }
+    if (lastLi) {
+      showRight = lastLi.getBoundingClientRect().right > vr.right + 2;
+    }
+    this.navScrollShowLeft = showLeft;
+    this.navScrollShowRight = showRight;
     this.cdr.detectChanges();
   }
 
@@ -509,7 +535,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       }
       this.getCurrentUrlAndSwitchView();
       this.cdr.detectChanges();
-      setTimeout(() => this.scrollActiveBottomNavTabIntoView(), 0);
+      // Double rAF: layout/scrollWidth stable before measuring (avoids right-arrow flash on tab change).
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => this.scrollActiveBottomNavTabIntoView());
+      });
     });
   }
 
@@ -522,8 +551,37 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     if (!active) {
       return;
     }
-    active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    setTimeout(() => this.scheduleProjectNavScrollUpdate(), 400);
+    // Do not use scrollIntoView({ inline: 'center' }): it can scroll horizontal *ancestors*
+    // (e.g. main-panel), shifting the whole settings layout under the fixed app sidebar.
+    const tol = 2;
+    const rightPad = 10; // li-active / borders: last tab can extend slightly past the viewport edge
+    const parentRect = scrollEl.getBoundingClientRect();
+    const childRect = active.getBoundingClientRect();
+    const alreadyVisible =
+      childRect.left >= parentRect.left - tol && childRect.right <= parentRect.right + rightPad;
+    if (alreadyVisible) {
+      this.updateProjectNavScrollArrows();
+      return;
+    }
+
+    const visibleOffset = childRect.left - parentRect.left;
+    const delta =
+      visibleOffset - (scrollEl.clientWidth / 2 - childRect.width / 2);
+    const maxLeft = Math.max(0, scrollEl.scrollWidth - scrollEl.clientWidth);
+    const nextLeft = Math.max(0, Math.min(scrollEl.scrollLeft + delta, maxLeft));
+    if (Math.abs(nextLeft - scrollEl.scrollLeft) <= tol) {
+      this.updateProjectNavScrollArrows();
+      return;
+    }
+
+    // Small correction: instant scroll avoids intermediate frames (right arrow flash) during smooth scroll.
+    const useSmooth = Math.abs(nextLeft - scrollEl.scrollLeft) > 48;
+    scrollEl.scrollTo({ left: nextLeft, behavior: useSmooth ? 'smooth' : 'auto' });
+    if (useSmooth) {
+      setTimeout(() => this.scheduleProjectNavScrollUpdate(), 450);
+    } else {
+      this.scheduleProjectNavScrollUpdate();
+    }
   }
   
   listenToProjectUser() {

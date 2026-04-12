@@ -195,6 +195,7 @@
     "NewRole": "Yeni rol",
     "EditRole":"Rolu redaktə edin",
     "Role": "Rol",
+    "ContactUsToEnableCustomRoleManagement": "Xüsusi rol idarəetməsini aktivləşdirmək üçün bizimlə əlaqə saxlayın",
     "owner": "Sahibi",
     "admin": "İdarəçi",
     "_agent": "Agent",
@@ -1305,7 +1306,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Deaktiv etmədən əvvəl komanda yoldaşını qruplardan çıxarın.",
         "RemoveUserFromTagsBeforeDelete": "Silmədən əvvəl komanda yoldaşını teqlərdən çıxarın.",
         "RemoveUserFromTagsBeforeDisable": "Deaktiv etmədən əvvəl komanda yoldaşını teqlərdən çıxarın.",
-        "AndOthers": "və digər {{count}}"
+        "AndOthers": "və digər {{count}}",
+        "CustomPlanExpiredTitle": "Custom planının müddəti bitib",
+        "CustomPlanExpiredMessage": "Bu layihə üçün Custom plan abunəliyi artıq aktiv deyil. Layihə sahibindən onu yeniləməsini xahiş edin.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Xüsusi rol idarəetməsini aktivləşdirmək üçün layihə sahibi və ya administratorlarla əlaqə saxlayın"
     },
     "UserEditAddPage": {
         "AddUser": "Komanda yoldaşı əlavə edin",
@@ -1750,6 +1754,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Qiymətləndirmə",
         "Requester": "Müraciət edən",
         "Message": "Mesaj",
         "NoRequests": "Söhbət yoxdur",

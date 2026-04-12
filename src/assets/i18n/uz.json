@@ -195,6 +195,7 @@
     "NewRole": "Yangi rol",
     "EditRole":"Rolni tahrirlash",
     "Role":"Rol",
+    "ContactUsToEnableCustomRoleManagement": "Maxsus rol boshqaruvini yoqish uchun biz bilan bog'lang",
     "owner": "Egasi",
     "admin": "Administrator",
     "_agent": "Agent",
@@ -1305,7 +1306,10 @@
         "RemoveUserFromGroupsBeforeDisable": "O'chirib qo'yishdan oldin jamoadoshni guruhlardan olib tashlang.",
         "RemoveUserFromTagsBeforeDelete": "O'chirishdan oldin jamoadoshni teglardan olib tashlang.",
         "RemoveUserFromTagsBeforeDisable": "O'chirib qo'yishdan oldin jamoadoshni teglardan olib tashlang.",
-        "AndOthers": "va yana {{count}} ta"
+        "AndOthers": "va yana {{count}} ta",
+        "CustomPlanExpiredTitle": "Custom rejasining muddati tugadi",
+        "CustomPlanExpiredMessage": "Ushbu loyiha uchun Custom reja obunasi endi faol emas. Loyiha egasidan uni yangilashni so'rang.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Maxsus rol boshqaruvini yoqish uchun loyiha egasi yoki administratorlar bilan bog'lanishingiz kerak"
     },
     "UserEditAddPage": {
         "AddUser": "Jamoadosh qo'shing",
@@ -1749,6 +1753,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Baholash",
         "Requester": "So'rovchi",
         "Message": "Xabar",
         "NoRequests": "Suhbat yo'q",

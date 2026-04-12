@@ -195,6 +195,7 @@
     "NewRole": "دور جديد",
     "EditRole":"تعديل الدور",
     "Role": "الدور",
+    "ContactUsToEnableCustomRoleManagement": "اتصل بنا لتفعيل إدارة الأدوار المخصصة",
     "owner": "صاحب",
     "admin": "مدير",
     "_agent": "وكيلات",
@@ -1305,7 +1306,10 @@
         "RemoveUserFromGroupsBeforeDisable": "قم بإزالة شريك الفريق من المجموعات قبل تعطيله.",
         "RemoveUserFromTagsBeforeDelete": "قم بإزالة شريك الفريق من العلامات قبل حذفه.",
         "RemoveUserFromTagsBeforeDisable": "قم بإزالة شريك الفريق من العلامات قبل تعطيله.",
-        "AndOthers": "و{{count}} أخرى"
+        "AndOthers": "و{{count}} أخرى",
+        "CustomPlanExpiredTitle": "انتهت صلاحية خطة Custom",
+        "CustomPlanExpiredMessage": "اشتراك خطة Custom لهذا المشروع لم يعد نشطًا. اطلب من مالك المشروع تجديده.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "اتصل بمالك المشروع أو المسؤولين لتفعيل إدارة الأدوار المخصصة"
     },
     "UserEditAddPage": {
         "AddUser": "اضف شريكك في الفريق",
@@ -1750,6 +1754,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "التقييم",
         "Requester": "مقدم الطلب",
         "Message": "رسالة",
         "NoRequests": "لا محادثة",

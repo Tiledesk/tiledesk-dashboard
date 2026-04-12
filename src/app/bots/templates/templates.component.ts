@@ -29,6 +29,8 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 const Swal = require('sweetalert2')
 
 
+
+
 @Component({
   selector: 'appdashboard-templates',
   templateUrl: './templates.component.html',
@@ -39,6 +41,7 @@ const Swal = require('sweetalert2')
 //   name: string;
 //   [others: string]: any;
 // }
+
 
 export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -128,6 +131,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     const brand = brandService.getBrand();
     this.displayChatbotsCommunity = brand['display_chatbots_community']
     this.displayTemplatesCategory = brand['display_templates_category']
+
   }
 
 
@@ -149,6 +153,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getOSCODE();
     this.getCurreURL();
     this.listenToProjectUser()
+    
   }
 
 
@@ -593,7 +598,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        // this.certfifiedTemplates = res;
+        this.certfifiedTemplates = res;
         // this.certfifiedTemplates = this.fake_tmplt
         console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 

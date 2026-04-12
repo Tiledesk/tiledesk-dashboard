@@ -195,6 +195,7 @@
     "NewRole": "Жаңа рөл",
     "EditRole": "Рөлді өңдеу",
     "Role": "Рөл",
+    "ContactUsToEnableCustomRoleManagement": "Рөлдерді басқаруды қосу үшін бізге хабарласыңыз",
     "owner": "Меншік иесі",
     "admin": "Әкімші",
     "_agent": "Чат агенті",
@@ -1320,7 +1321,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Өшіру алдында командаласты топтардан алып тастаңыз.",
         "RemoveUserFromTagsBeforeDelete": "Жою алдында командаласты тегтерден алып тастаңыз.",
         "RemoveUserFromTagsBeforeDisable": "Өшіру алдында командаласты тегтерден алып тастаңыз.",
-        "AndOthers": "және тағы {{count}}"
+        "AndOthers": "және тағы {{count}}",
+        "CustomPlanExpiredTitle": "Custom жоспарының мерзімі аяқталды",
+        "CustomPlanExpiredMessage": "Бұл жоба үшін Custom жоспар жазылымы енді белсенді емес. Жоба иесінен оны жаңартуды сұраңыз.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Рөлдерді басқаруды қосу үшін жоба иесіне немесе әкімшілерге хабарласыңыз"
     },
     "UserEditAddPage": {
         "AddUser": "Командалас қосу",
@@ -1765,6 +1769,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Бағалау",
         "Requester": "Өтініш беруші",
         "Message": "Хабар",
         "NoRequests": "Сөйлесу жоқ",

@@ -195,6 +195,7 @@
     "NewRole": "Нова улога",
     "EditRole":"Измени улогу",
     "Role": "Улога",
+    "ContactUsToEnableCustomRoleManagement": "Контактирајте нас да омогућите управљање прилагођеним улогама",
     "owner": "Власник",
     "admin": "Администратор",
     "_agent": "Агент",
@@ -1305,7 +1306,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Уклоните саиграча из група пре онемогућавања.",
         "RemoveUserFromTagsBeforeDelete": "Уклоните саиграча из ознака пре брисања.",
         "RemoveUserFromTagsBeforeDisable": "Уклоните саиграча из ознака пре онемогућавања.",
-        "AndOthers": "и још {{count}}"
+        "AndOthers": "и још {{count}}",
+        "CustomPlanExpiredTitle": "Custom план је истекао",
+        "CustomPlanExpiredMessage": "Претплата на Custom план за овај пројекат више није активна. Замолите власника пројекта да је обнови.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Контактирајте власника пројекта или администраторе да омогуће управљање прилагођеним улогама"
     },
     "UserEditAddPage": {
         "AddUser": "Додај саиграча",
@@ -1750,6 +1754,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Оцена",
         "Requester": "Подносилац захтева",
         "Message": "Порука",
         "NoRequests": "Нема разговора",

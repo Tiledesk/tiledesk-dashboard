@@ -196,6 +196,7 @@
     "NewRole": "Yeni rol",
     "EditRole":"Rolü düzenle",
     "Role": "Rol",
+    "ContactUsToEnableCustomRoleManagement": "Özel rol yönetimini etkinleştirmek için bizimle iletişime geçin",
     "owner": "Sahip",
     "admin": "Yönetici",
     "_agent": "Ajan",
@@ -1306,7 +1307,10 @@
         "RemoveUserFromGroupsBeforeDisable": "Devre dışı bırakmadan önce takım arkadaşını gruplardan kaldırın.",
         "RemoveUserFromTagsBeforeDelete": "Silmeden önce takım arkadaşını etiketlerden kaldırın.",
         "RemoveUserFromTagsBeforeDisable": "Devre dışı bırakmadan önce takım arkadaşını etiketlerden kaldırın.",
-        "AndOthers": "ve diğer {{count}}"
+        "AndOthers": "ve diğer {{count}}",
+        "CustomPlanExpiredTitle": "Custom planının süresi doldu",
+        "CustomPlanExpiredMessage": "Bu proje için Custom plan aboneliği artık aktif değil. Proje sahibinden yenilemesini isteyin.",
+        "ContactProjectOwnerOrAdministratorsToEnableRoles": "Özel rol yönetimini etkinleştirmek için proje sahibi veya yöneticilerle iletişime geçin"
     },
     "UserEditAddPage": {
         "AddUser": "Takım Arkadaşı Ekle",
@@ -1750,6 +1754,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Değerlendirme",
         "Requester": "istekte bulunan",
         "Message": "İleti",
         "NoRequests": "Konuşma Yok",

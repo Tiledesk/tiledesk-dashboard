@@ -33,7 +33,8 @@
 
     <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
         <div class="content-wpr" style="display: flex;">
-            <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+            <appdashboard-bots-sidebar 
+                [allTemplatesCount]="allTemplatesCount"
                 [allCommunityTemplatesCount]="allCommunityTemplatesCount"
                 [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
                 [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
@@ -126,6 +127,7 @@
 
                                             <div class="cl-card-second-column">
                                                 <div class="wh-onoffswitch"
+                                                    (click)="$event.stopPropagation()"
                                                     matTooltipClass="custom-mat-tooltip"
                                                     #tooltip="matTooltip"
                                                     matTooltipPosition='above'
@@ -135,7 +137,7 @@
                                                     <input type="checkbox" name="onoffswitch{{i}}"
                                                         class="wh-onoffswitch-checkbox" id="whonoffswitch{{i}}"
                                                         tabindex="0" [checked]="webhook.enabled"
-                                                        (click)="webhookOnOff($event, webhook.webhook_id)"
+                                                        (change)="webhookOnOff($event, webhook.webhook_id)"
                                                         [disabled]="!PERMISSION_TO_ENABLE_DISABLE_WEBHOOK">
                                                     <label class="wh-onoffswitch-label" for="whonoffswitch{{i}}">
                                                         <span class="wh-onoffswitch-inner"></span>

@@ -562,6 +562,7 @@ button.close {
   }
 
   // Override global demo.scss .bottom-nav { width:100%; float:left } so tabs extend past viewport
+  // No min-width: 100% — it added empty scrollable space after the last tab so the right arrow never cleared.
   .bottom-nav {
     float: none !important;
     display: inline-flex !important;
@@ -569,7 +570,7 @@ button.close {
     align-items: stretch;
     width: auto !important;
     max-width: none !important;
-    min-width: 100%;
+    min-width: 0;
     box-sizing: border-box;
     margin-bottom: 0;
     box-shadow: none !important;

@@ -163,7 +163,7 @@
         <!-- CONVS SERVED FOR -->
         <!-- ------------------------------ -->
         <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn"
-          [ngClass]="{'active-row': request?.request_id === storedRequestId }" class="align-middle">
+          [ngClass]="{'active-row': request?.request_id != null && storedRequestId != null && request.request_id == storedRequestId }" class="align-middle">
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!-- Checkbox -->

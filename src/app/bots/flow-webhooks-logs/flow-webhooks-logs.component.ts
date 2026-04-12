@@ -89,6 +89,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
     await this.getServerBaseURL();
     await this.getRouteParams();
     this.listenToGoBack()
+    this.getTemplates()
   }
 
    ngOnDestroy() {
@@ -202,6 +203,51 @@ export class FlowWebhooksLogsComponent implements OnInit {
 
     });
 
+  }
+
+  // ------------------------------------------------------------------------
+  // FOR the bot sidebar
+  // ------------------------------------------------------------------------
+  getTemplates() {
+    this.faqKbService.getTemplates().subscribe((res: any) => {
+
+      if (res) {
+        const templates = res
+        //  this.logger.log('[FLOW-WEBHOOKS] - GET ALL TEMPLATES', templates);
+        this.allTemplatesCount = templates.length;
+        this.logger.log('[FLOW-WEBHOOKS] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+
+        // --------------------------------
+        // Customer Satisfaction templates
+        // --------------------------------
+        const customerSatisfactionTemplates = templates.filter((obj) => {
+          return obj.mainCategory === "Customer Satisfaction"
+        });
+        this.logger.log('[FLOW-WEBHOOKS] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
+        if (customerSatisfactionTemplates) {
+          this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
+          this.logger.log('[FLOW-WEBHOOKS] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+        }
+
+        // --------------------------------
+        // Customer Increase Sales
+        // --------------------------------
+        const increaseSalesTemplates = templates.filter((obj) => {
+          return obj.mainCategory === "Increase Sales"
+        });
+        //  this.logger.log('[FLOW-WEBHOOKS] - Increase Sales TEMPLATES', increaseSalesTemplates);
+        if (increaseSalesTemplates) {
+          this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
+          this.logger.log('[FLOW-WEBHOOKS] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
+        }
+      }
+
+    }, (error) => {
+      this.logger.error('[FLOW-WEBHOOKS] GET TEMPLATES ERROR ', error);
+
+    }, () => {
+      this.logger.log('[FLOW-WEBHOOKS] GET TEMPLATES COMPLETE');
+    });
   }
 
   private getServerBaseURL(): Promise<void> {

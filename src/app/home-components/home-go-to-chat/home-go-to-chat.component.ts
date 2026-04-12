@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -21,6 +22,8 @@ export class HomeGoToChatComponent implements OnInit {
     private logger: LoggerService,
     public auth: AuthService,
     private projectService: ProjectService,
+    private router: Router,
+
   ) { }
 
   ngOnInit(): void {
@@ -89,12 +92,20 @@ export class HomeGoToChatComponent implements OnInit {
     this.notify.publishHasClickedChat(true);
     // window.open(url, '_blank');
 
-    // --- new
+    
     localStorage.setItem('last_project', JSON.stringify(this.current_prjct))
-    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl
-    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    myWindow.focus();
+
+    const projectId = this.current_prjct?.id_project?.id;
+    if (projectId) {
+      this.router.navigate(['project', projectId, 'conversation-detail']);
+    } else {
+      this.router.navigate(['conversation-detail']);
+    }
+
+    // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    // let url = baseUrl
+    // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+    // myWindow.focus();
 
 
   }

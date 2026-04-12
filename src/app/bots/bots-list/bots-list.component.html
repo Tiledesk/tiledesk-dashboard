@@ -115,7 +115,7 @@
             </div>
 
 
-            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
+            <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               <!-- Add from template -->
               {{'AddFromTemplate' | translate}}
 

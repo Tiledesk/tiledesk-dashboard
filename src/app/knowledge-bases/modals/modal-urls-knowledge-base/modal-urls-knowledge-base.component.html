@@ -199,11 +199,11 @@
                 rows="4" style="margin-top: 3px;"></textarea>
             <!-- [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched" -->
             <!-- <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span> -->
-            <div *ngIf="!errorLimit" class="input-label input-label-on-bottom" style="margin-top: -7px;"> 
+            <div *ngIf="!errorLimit" class="input-label input-label-on-bottom" style="margin-top: -3px;"> 
                 {{'KbPage.YouCanAddKBUrlsLimit' | translate }} {{KB_LIMIT_CONTENT}}
             </div>
             <!-- <span *ngIf="!errorLimit" class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span> -->
-            <div *ngIf="errorLimit" class="input-label-error" style="margin-top: -7px;">
+            <div *ngIf="errorLimit" class="input-label-error" style="margin-top: -3px;">
                 {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
             </div>
         </div>
@@ -285,7 +285,7 @@
             <span class="input-label">
                
                 {{'KbPage.RefreshRate' | translate}}
-                 <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                 <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 4px;cursor: pointer; color: #566787;"
                     matTooltipClass="kb-custom-mat-tooltip"
                     matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
                     matTooltipPosition="above"
@@ -293,17 +293,18 @@
                     help_outline
                 </span>
             </span>
-
-            <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
-                appendTo="body" 
-                [items]="refresh_rate | selectOptionsTranslate" 
-                bindLabel="name" bindValue="value" 
-                placeholder="Refresh rate"
-                [clearable]="false" [searchable]="false" 
-                [(ngModel)]="selectedRefreshRate"
-                (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
-            </ng-select>
+            <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 6px;"> 
+                <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
+                    appendTo="body" 
+                    [items]="refresh_rate | selectOptionsTranslate" 
+                    bindLabel="name" bindValue="value" 
+                    placeholder="Refresh rate"
+                    [clearable]="false" [searchable]="false" 
+                    [(ngModel)]="selectedRefreshRate"
+                    (change)="onSelectRefreshRate(selectedRefreshRate)" 
+                    [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
+                </ng-select>
+            </div>
 
             <!-- <span class="input-label input-label-on-bottom">
                 {{'KbPage.URLsSyncFrequency' | translate}}

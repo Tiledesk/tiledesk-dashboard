@@ -3099,69 +3099,21 @@
 
 									
 
-								<!-- ------------------------------------------------------ -->
-								<!-- Enable / Disable Emoji or/and Attachment-->
-								<!-- ------------------------------------------------------ -->
-								<div class="widget-section-container"
-									style="height: auto; transition-duration: 0.613s;">
-									<div class="section-offset">
-										<!-- ---------------------------------- -->
-										<!-- Enable / Disable Attachment -->
-										<!-- ---------------------------------- -->
-										<div class="widget-footer-actions-wpr"
-											style="display: flex; align-items: center;">
-											<div class="widget-footer-actions">
-												<div class="form-group"
-													style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-													<label
-														class="col-sm-12 control-label widget-settings-control-head-label">
-
-														<!-- {{'DisableAttachments' | translate}} -->
-														{{'Attachments' | translate}}
-														<span class="info-icon---wpr"
-															matTooltipClass="custom-mat-tooltip-in-widget-setup"
-															matTooltip="{{'WhenEnabledAttachments' | translate}}"
-															#tooltip="matTooltip" matTooltipPosition='above'
-															matTooltipHideDelay="100">
-															<span>
-																<i class="material-icons" style="font-size: 18px;
-																	color: #566787;
-																	cursor: pointer;
-																	vertical-align: middle;">
-																	help_outline
-																</i>
-															</span>
-														</span>
-													</label>
-													<div class="col-sm-12">
-														<div class="nw-attachment-button-onoffswitch-wrapper">
-															<div class="nw-onoffswitch-wrapper" style="clear: both;">
-																<div class="advanced-sect-nw-onoffswitch">
-																	<input
-																		(change)="toggleDiplayAttachmentButton($event)"
-																		type="checkbox"
-																		name="nw-attachment-button-switch"
-																		class="advanced-sect-nw-onoffswitch-checkbox"
-																		id="nw-attachment-button-switch" tabindex="0"
-																		[checked]="!showAttachmentButton">
-																	<label class="advanced-sect-nw-onoffswitch-label"
-																		for="nw-attachment-button-switch"></label>
-																</div>
-															</div>
-
-															<div class="on-off-enabled-disabled-lbl-wpr">
-																<div *ngIf="!showAttachmentButton">
-																	<!-- <span class="material-icons-outlined">
-																		attach_file
-																	</span> -->
-																	{{ 'Disabled' | translate }}
-																</div>
-																<div *ngIf="showAttachmentButton">
-
-																	{{ 'Enabled' | translate }}
-																</div>
-															</div>
-														</div>
+										<!-- ------------------------------------------------------ -->
+										<!-- Widget regex whitelist (click)="hasOpenedAdvancedSettigs()" -->
+										<!-- ------------------------------------------------------ -->
+										<button type="button" class="widget-section-accordion widget-section-header">
+											<div class="widget-section-title">
+												<div class="widget-setting-icon-wrap">
+													<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+														viewBox="0 0 512 512" style="transform: rotate(45deg);">
+														<path
+															d="M208 352h-64a96 96 0 010-192h64M304 160h64a96 96 0 010 192h-64M163.29 256h187.42"
+															fill="none" stroke="currentColor" stroke-linecap="round"
+															stroke-linejoin="round" stroke-width="36" />
+													</svg>
+												</div>
+												<h4 class="widget-section-header__title-underlined">
 	
 													 <!-- {{'HideOnSpecificPages' | translate}} -->
 													 {{'DisplayOnSpecificPages' | translate}}
@@ -3191,14 +3143,14 @@
 													<div class="col-sm-12">
 														<div class="widget-pattern-withelist-button-onoffswitch-wrapper">
 															<div class="nw-onoffswitch-wrapper" style="clear: both;">
-																<div class="advanced-sect-nw-onoffswitch">
-																	<input (change)="toggleDiplayEmojiButton($event)"
-																		type="checkbox" name="nw-emoji-button-switch"
-																		class="advanced-sect-nw-onoffswitch-checkbox"
-																		id="nw-emoji-button-switch" tabindex="0"
-																		[checked]="!showEmojiButton">
-																	<label class="advanced-sect-nw-onoffswitch-label"
-																		for="nw-emoji-button-switch"></label>
+																<div class="nw-onoffswitch">
+																	<input (change)="toggleWidgetPatternWithelist($event)"
+																		type="checkbox" name="nw-widget-pattern-switch"
+																		class="nw-onoffswitch-checkbox"
+																		id="nw-widget-pattern-switch" tabindex="0"
+																		[checked]="allowedOnSpecificUrl">
+																	<label class="nw-onoffswitch-label"
+																		for="nw-widget-pattern-switch"></label>
 																</div>
 															</div>
 
@@ -3216,60 +3168,13 @@
 														</div>
 														
 
-												<!-- ---------------------------------- -->
-												<!-- Enable / Disable Audio recorder -->
-												<!-- ---------------------------------- -->
-												<div class="form-group"
-													style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-													<label
-														class="col-sm-12 control-label widget-settings-control-head-label">
-
-														<!-- {{'DisableVoiceRecoder' | translate}}  -->
-														{{'VoiceRecorder' | translate}}
-
-														<span class="info-icon---wpr"
-															matTooltipClass="custom-mat-tooltip-in-widget-setup"
-															matTooltip="{{'WhenEnabledVoiceRecoder' | translate}}"
-															#tooltip="matTooltip" matTooltipPosition='above'
-															matTooltipHideDelay="100">
-															<span>
-																<i class="material-icons" style="font-size: 18px;
-																	color: #566787;
-																	cursor: pointer;
-																	vertical-align: middle;">
-																	help_outline
-																</i>
-															</span>
-														</span>
-													</label>
-
-													<div class="col-sm-12">
-														<div class="nw-audio-recorder-button-onoffswitch-wrapper">
-															<div class="nw-onoffswitch-wrapper" style="clear: both;">
-																<div class="advanced-sect-nw-onoffswitch">
-																	<input (change)="toggleAudioRecorderButton($event)"
-																		type="checkbox"
-																		name="nw-audio-recorder-button-switch"
-																		class="advanced-sect-nw-onoffswitch-checkbox"
-																		id="nw-audio-recorder-button-switch"
-																		tabindex="0"
-																		[checked]="!showAudioRecorderButton">
-																	<label class="advanced-sect-nw-onoffswitch-label"
-																		for="nw-audio-recorder-button-switch"></label>
-																</div>
-															</div>
-
-															<div class="on-off-enabled-disabled-lbl-wpr">
-																<div *ngIf="!showAudioRecorderButton">
-
-																	{{ 'Disabled' | translate }}
-																</div>
-																<div *ngIf="showAudioRecorderButton">
-
-																	{{ 'Enabled' | translate }}
-																</div>
-															</div>
-														</div>
+														<div class="configure-urls-pattern-btn-wpr" style="height: 50px;">
+															<button *ngIf="allowedOnSpecificUrl === true"  class="btn configure-urls-withelist-btn" 
+																(click)="onOpenPatternWithelist()">
+																{{'ConfigureList' | translate}}
+															</button>
+													    </div>
+														<span class="span-20"></span>
 													</div>
 												</div>
 											</div>
@@ -3345,11 +3250,11 @@
 																				(change)="toggleDiplayAttachmentButton($event)"
 																				type="checkbox"
 																				name="nw-attachment-button-switch"
-																				class="nw-onoffswitch-checkbox"
+																				class="advanced-sect-nw-onoffswitch-checkbox"
 																				id="nw-attachment-button-switch"
 																				tabindex="0"
 																				[checked]="!showAttachmentButton">
-																			<label class="nw-onoffswitch-label"
+																			<label class="advanced-sect-nw-onoffswitch-label"
 																				for="nw-attachment-button-switch"></label>
 																		</div>
 																	</div>
@@ -3459,10 +3364,10 @@
 																				(change)="toggleDiplayEmojiButton($event)"
 																				type="checkbox"
 																				name="nw-emoji-button-switch"
-																				class="nw-onoffswitch-checkbox"
+																				class="advanced-sect-nw-onoffswitch-checkbox"
 																				id="nw-emoji-button-switch" tabindex="0"
 																				[checked]="!showEmojiButton">
-																			<label class="nw-onoffswitch-label"
+																			<label class="advanced-sect-nw-onoffswitch-label"
 																				for="nw-emoji-button-switch"></label>
 																		</div>
 																	</div>
@@ -3517,11 +3422,11 @@
 																				(change)="toggleAudioRecorderButton($event)"
 																				type="checkbox"
 																				name="nw-audio-recorder-button-switch"
-																				class="nw-onoffswitch-checkbox"
+																				class="advanced-sect-nw-onoffswitch-checkbox"
 																				id="nw-audio-recorder-button-switch"
 																				tabindex="0"
 																				[checked]="!showAudioRecorderButton">
-																			<label class="nw-onoffswitch-label"
+																			<label class="advanced-sect-nw-onoffswitch-label"
 																				for="nw-audio-recorder-button-switch"></label>
 																		</div>
 																	</div>

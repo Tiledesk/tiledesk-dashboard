@@ -12,6 +12,20 @@ const Swal = require('sweetalert2')
 // import Swal from 'sweetalert2';
 
 declare var $: any;
+
+/** Gate per /roles: permesso lettura ruoli (stream), piano Custom, customization.roles (tab Ruoli nascosta se pay off). */
+export interface CustomRolesNavigationContext {
+  projectId: string;
+  /** Custom: true se può vedere i ruoli (es. ROLES_READ). Owner/admin: come valorizzato dal caller. */
+  hasPermission: boolean;
+  profileName: string;
+  customization: any;
+  userRole: string;
+  prjct_profile_type: string;
+  subscription_is_active: boolean;
+  subscription_end_date?: any;
+}
+
 /// Notify users about errors and other helpful stuff
 export interface Msg {
   content: string;
@@ -1020,7 +1034,195 @@ export class NotifyService {
     })
   }
 
+  /**
+   * Custom Roles: accesso (owner / admin / custom con permesso lettura) → piano Custom → customization.roles → /roles.
+   * Upgrade del piano dopo lo Swal: solo owner (canProceedWithCustomPlanUpgrade).
+   */
+  navigateToCustomRolesSectionOrExplain(p: CustomRolesNavigationContext): void {
+    const isOwner = p.userRole === 'owner';
+    const isAdmin = p.userRole === 'admin';
+    const isCustomRole = !isOwner && !isAdmin && p.userRole !== 'agent';
 
+    const hasAccess =
+      isOwner ||
+      isAdmin ||
+      (isCustomRole && p.hasPermission === true);
 
+    if (!hasAccess) {
+      this.presentDialogNoPermissionToViewThisSection();
+      return;
+    }
+
+    if (!this.isCustomPlanProfileName(p.profileName)) {
+      this.presentModalRolesRequiresCustomPlan(p);
+      return;
+    }
+
+    if (p.prjct_profile_type === 'payment' && p.subscription_is_active === false) {
+      if (isCustomRole) {
+        this.presentModalCustomPlanExpiredForCustomTeammate();
+      } else {
+        this.displayEnterprisePlanHasExpiredModal(true, this.PLAN_NAME.F + ' plan', p.subscription_end_date);
+      }
+      return;
+    }
+
+    if (!this.isCustomizationRolesEnabled(p.customization)) {
+      this.presentContactUsToEnableCustomRolesFeature(p);
+      return;
+    }
+
+    this.router.navigate(['project/' + p.projectId + '/roles']);
+  }
+
+  /** Teammate con ruolo custom: piano Custom scaduto → messaggio informativo, solo OK (niente mail Contattaci). */
+  private presentModalCustomPlanExpiredForCustomTeammate(): void {
+    Swal.fire({
+      title: this.translate.instant('UsersPage.CustomPlanExpiredTitle'),
+      text: this.translate.instant('UsersPage.CustomPlanExpiredMessage'),
+      icon: 'warning',
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      focusConfirm: true,
+    });
+  }
+
+  /** profile_name from API may be PLAN_NAME.F ('Custom') or occasional variants */
+  private isCustomPlanProfileName(profileName: string | undefined | null): boolean {
+    if (profileName == null || profileName === '') {
+      return false;
+    }
+    if (profileName === this.PLAN_NAME.F) {
+      return true;
+    }
+    return String(profileName).trim().toLowerCase() === 'custom';
+  }
+
+  /** Piano Custom con flag customization.roles esplicito (true / 'true'). Assenza oggetto, chiave roles o valore falso → contattaci. */
+  private isCustomizationRolesEnabled(customization: any): boolean {
+    if (!customization || typeof customization !== 'object') {
+      return false;
+    }
+    const v = customization['roles'];
+    return v === true || v === 'true';
+  }
+
+  /** Solo l'owner può confermare upgrade piano (contact / pricing su free). */
+  private canProceedWithCustomPlanUpgrade(p: CustomRolesNavigationContext): boolean {
+    return p.userRole === 'owner';
+  }
+
+  /** Piano non Custom → Aggiorna piano; dopo conferma solo chi può gestire account/upgrade. */
+  private presentModalRolesRequiresCustomPlan(p: CustomRolesNavigationContext): void {
+    const title = this.translate.instant('Integration.UpgradePlan');
+    const text = this.translate.instant('AvailableWithThePlan', { plan_name: this.PLAN_NAME.F });
+    const upgradeLbl = this.translate.instant('Upgrade');
+    const cancelLbl = this.translate.instant('Cancel');
+    Swal.fire({
+      title,
+      text,
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: upgradeLbl,
+      cancelButtonText: cancelLbl,
+      focusConfirm: true,
+      reverseButtons: true,
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        return;
+      }
+      if (p.prjct_profile_type === 'free') {
+        if (p.userRole === 'owner') {
+          this.router.navigate(['project/' + p.projectId + '/pricing']);
+        } else {
+          this.presentFreePlanCustomRolesOwnerOnlyInfoForNonOwner();
+        }
+        return;
+      }
+      if (!this.canProceedWithCustomPlanUpgrade(p)) {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan(
+          this.translate.instant('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan'),
+          this.translate.instant('LearnMoreAboutDefaultRoles')
+        );
+        return;
+      }
+      if (p.prjct_profile_type === 'payment' && p.subscription_is_active === true) {
+        if (
+          p.profileName === this.PLAN_NAME.A ||
+          p.profileName === this.PLAN_NAME.B ||
+          p.profileName === this.PLAN_NAME.C ||
+          p.profileName === this.PLAN_NAME.D ||
+          p.profileName === this.PLAN_NAME.E ||
+          p.profileName === this.PLAN_NAME.EE
+        ) {
+          this._displayContactUsModal(true, 'upgrade_plan');
+        }
+      } else if (p.prjct_profile_type === 'payment' && p.subscription_is_active === false) {
+        if (
+          p.profileName === this.PLAN_NAME.A ||
+          p.profileName === this.PLAN_NAME.B ||
+          p.profileName === this.PLAN_NAME.C ||
+          p.profileName === this.PLAN_NAME.D ||
+          p.profileName === this.PLAN_NAME.E ||
+          p.profileName === this.PLAN_NAME.EE
+        ) {
+          this.displaySubscripionHasExpiredModal(true, p.profileName, p.subscription_end_date);
+        }
+      }
+    });
+  }
+
+  /**
+   * Piano free, non-owner: dopo il primo Swal, spiega che solo il proprietario può aggiornare il piano (nessun redirect a pricing).
+   */
+  private presentFreePlanCustomRolesOwnerOnlyInfoForNonOwner(): void {
+    const ownerPlanMsg = this.translate.instant('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan');
+    Swal.fire({
+      title: this.translate.instant('Pricing.PlanChange'),
+      text: ownerPlanMsg,
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Close'),
+      focusConfirm: true,
+    });
+  }
+
+  private presentContactUsToEnableCustomRolesFeature(p: CustomRolesNavigationContext): void {
+    const isOwner = p.userRole === 'owner';
+    const isAdmin = p.userRole === 'admin';
+    const isCustomRole = !isOwner && !isAdmin && p.userRole !== 'agent';
+
+    if (isCustomRole) {
+      Swal.fire({
+        title: this.translate.instant('Pricing.PlanChange'),
+        text: this.translate.instant('UsersPage.ContactProjectOwnerOrAdministratorsToEnableRoles'),
+        icon: 'warning',
+        showCloseButton: false,
+        showCancelButton: false,
+        confirmButtonText: this.translate.instant('Ok'),
+        focusConfirm: true,
+      });
+      return;
+    }
+
+    const text = this.translate.instant('ContactUsToEnableCustomRoleManagement');
+    Swal.fire({
+      title: this.translate.instant('Pricing.PlanChange'),
+      text,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const subj = encodeURIComponent(`Enable custom roles (project ${p.projectId})`);
+        window.open(`mailto:${this.salesEmail}?subject=${subj}`);
+      }
+    });
+  }
 
 }

@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, SimpleChanges, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Input, OnChanges, OnDestroy, SimpleChanges, AfterViewInit, NgZone } from '@angular/core';
 import { Request } from '../../../models/request-model';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
-import { Subject } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
@@ -15,10 +15,9 @@ import { FaqKbService } from '../../../services/faq-kb.service';
 import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-// import scrollToWithAnimation from 'scrollto-with-animation'
+import scrollToWithAnimation from 'scrollto-with-animation';
 import { CHANNELS_NAME } from 'app/utils/util';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
@@ -107,7 +106,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public logger: LoggerService,
     private wsMsgsService: WsMsgsService,
     public route: ActivatedRoute,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -115,17 +116,46 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.getRouteParams()
   }
 
+  /**
+   * scrollposition lives on a parent ActivatedRoute (this component is not router-outlet routed).
+   */
+  private readScrollPositionFromRouteSnapshot(): void {
+    let r: ActivatedRoute | null = this.route;
+    while (r) {
+      const sp = r.snapshot.params['scrollposition'];
+      if (sp != null && sp !== '') {
+        this.scrollYposition = sp;
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] scrollYposition from route snapshot', +this.scrollYposition);
+        return;
+      }
+      r = r.parent;
+    }
+  }
+
+  private syncStoredRequestIdFromStorage(): void {
+    this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id');
+  }
 
   getRouteParams() {
     this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] oninit scrollEl', this.scrollEl)
-    this.route.params.subscribe((params) => {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET ROUTE PARAMS ', params);
-      if (params.scrollposition) {
-        this.scrollYposition = params.scrollposition;
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - scrollYposition', +this.scrollYposition);
-      }
-    })
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] oninit scrollEl', this.scrollEl);
+    this.readScrollPositionFromRouteSnapshot();
+
+    const streams: Observable<Params>[] = [];
+    let ar: ActivatedRoute | null = this.route;
+    while (ar) {
+      streams.push(ar.params);
+      ar = ar.parent;
+    }
+    merge(...streams)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((params: Params) => {
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET ROUTE PARAMS ', params);
+        if (params.scrollposition != null && params.scrollposition !== '') {
+          this.scrollYposition = params.scrollposition;
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - scrollYposition', +this.scrollYposition);
+        }
+      });
   }
 
   // -------------------------------------------------------------
@@ -191,25 +221,37 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
   ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   scrollToWithAnimation(
-    //     this.scrollEl, // element to scroll
-    //     'scrollTop', // direction to scroll
-    //     +this.scrollYposition, // target scrollY (0 means top of the page)
-    //     500, // duration in ms
-    //     'easeInOutCirc',
-    //     // Can be a name of the list of 'Possible easing equations' or a callback
-    //     // that defines the ease. # http://gizma.com/easing/
+    this.syncStoredRequestIdFromStorage();
+    this.cdr.detectChanges();
 
-    //     () => { // callback function that runs after the animation (optional)
-    //       this.logger.log('done!')
-    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-    //     }
-    //   );
-    // }, 100);
+    const el = this.scrollEl as HTMLElement | null;
+    const raw = this.scrollYposition;
+    const y = raw != null && raw !== '' ? +raw : NaN;
+
+    const finish = () => {
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] scroll / highlight sync done');
+      this.ngZone.run(() => {
+        this.syncStoredRequestIdFromStorage();
+        this.cdr.detectChanges();
+      });
+    };
+
+    if (!el || !Number.isFinite(y)) {
+      finish();
+      return;
+    }
+
+    setTimeout(() => {
+      scrollToWithAnimation(
+        el,
+        'scrollTop',
+        y,
+        500,
+        'easeInOutCirc',
+        finish
+      );
+    }, 100);
   }
-
-
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
