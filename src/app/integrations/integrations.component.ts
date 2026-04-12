@@ -18,7 +18,6 @@ import { AppConfigService } from 'app/services/app-config.service';
 
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
-import { C } from '@angular/cdk/keycodes';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { browserRefresh } from 'app/app.component';
 
@@ -285,14 +284,13 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
           this.customization = projectProfileData.customization;
 
-          this.INTEGRATIONS.forEach(integration => {
-            this.manageProBadgeVisibility(integration, projectProfileData)
-          });
-
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
           this.logger.log("[INTEGRATION-COMP] app retrieved")
-          this.manageAppVisibility(projectProfileData)
+          this.manageAppVisibility(projectProfileData);
+          this.INTEGRATIONS.forEach((integration) => {
+            this.manageProBadgeVisibility(integration, projectProfileData);
+          });
           this.getIntegrations();
         }
       }, (error) => {
@@ -1040,7 +1038,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   manageAppVisibility(projectProfileData) {
     const isVisiblePAY = this.getPayValue();
     this.logger.log('[INTEGRATIONS] manageAppVisibility isVisiblePAY ', isVisiblePAY)
-    
+
+    // Fresh copies each plan load: avoids mutating shared module arrays and missing items after navigation
+    this.INTEGRATIONS = [...INTEGRATION_LIST_ARRAY_CLONE];
+    this.CATEGORIES = CATEGORIES_LIST.map((c) => ({ ...c }));
+
     if (projectProfileData && projectProfileData.customization) {
 
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
@@ -1059,8 +1061,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
-      // Remove TWILIO_VOICE if getPayValue() is false or if customization.voice_twilio is false
-      if (!isVisiblePAY || (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false)) {
+      // Twilio Voice: keep in list when PAY is on; lock / "Contact us" is handled in checkPlan + template when not enabled in customization
+      if (!isVisiblePAY) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }

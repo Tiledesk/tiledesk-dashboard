@@ -522,19 +522,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
     else if (cleanUrl.indexOf('/user-profile') !== -1) {
       this.currentTitle = 'UserProfile.Profile';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null // this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.indexOf('/password/change') !== -1) {
       this.currentTitle = 'ChangePsw.ChangePsw';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null // this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.includes('/user/') && cleanUrl.includes('/settings')) {
       this.currentTitle = 'Settings';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null //this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.includes('/user/') && cleanUrl.includes('/notifications')) {
       this.currentTitle = 'Notification';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null // this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.indexOf('/analytics-demo') !== -1) {
       this.currentTitle = 'Analytics.AnalyticsTITLE';

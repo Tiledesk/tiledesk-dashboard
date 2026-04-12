@@ -926,7 +926,11 @@ export class NotifyService {
 
 
 
-  presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
+  presentModalOnlyOwnerCanManageTheAccountPlan(
+    onlyOwnerCanManageTheAccountPlanMsg: string,
+    learnMoreAboutDefaultRoles: string,
+    modalTitle?: string
+  ) {
     // console.log('NOTIFY SERVICE presentModalOnlyOwnerCanManageTheAccountPlan hideHelpLink', this.hideHelpLink)
     const el = document.createElement('div')
     if (this.hideHelpLink) {
@@ -946,8 +950,7 @@ export class NotifyService {
     // })
 
     Swal.fire({
-      // title: yourTrialHasEnded, // "Your 14-days free trial has expired",
-      // text: upgradeNowToKeepOurAmazingFeatures, //"Upgrade now to keep our amazing features",
+      ...(modalTitle ? { title: modalTitle } : {}),
       // content: el,
       html: el,
       icon: "warning",
@@ -1061,6 +1064,13 @@ export class NotifyService {
     if (p.prjct_profile_type === 'payment' && p.subscription_is_active === false) {
       if (isCustomRole) {
         this.presentModalCustomPlanExpiredForCustomTeammate();
+      } else if (!isOwner) {
+        // Admin (e altri non-owner): piano Custom scaduto → titolo scadenza + solo owner può gestire il piano
+        this.presentModalOnlyOwnerCanManageTheAccountPlan(
+          this.translate.instant('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan'),
+          this.translate.instant('LearnMoreAboutDefaultRoles'),
+          this.translate.instant('UsersPage.CustomPlanExpiredTitle')
+        );
       } else {
         this.displayEnterprisePlanHasExpiredModal(true, this.PLAN_NAME.F + ' plan', p.subscription_end_date);
       }
@@ -1160,15 +1170,11 @@ export class NotifyService {
           this._displayContactUsModal(true, 'upgrade_plan');
         }
       } else if (p.prjct_profile_type === 'payment' && p.subscription_is_active === false) {
-        if (
-          p.profileName === this.PLAN_NAME.A ||
-          p.profileName === this.PLAN_NAME.B ||
-          p.profileName === this.PLAN_NAME.C ||
-          p.profileName === this.PLAN_NAME.D ||
-          p.profileName === this.PLAN_NAME.E ||
-          p.profileName === this.PLAN_NAME.EE
-        ) {
+        // Solo piano Custom scaduto → "Subscription payment problem". Altri piani scaduti → contact upgrade (anche owner).
+        if (this.isCustomPlanProfileName(p.profileName)) {
           this.displaySubscripionHasExpiredModal(true, p.profileName, p.subscription_end_date);
+        } else {
+          this._displayContactUsModal(true, 'upgrade_plan');
         }
       }
     });
