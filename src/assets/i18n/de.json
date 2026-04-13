@@ -195,6 +195,7 @@
     "NewRole": "Neue Rolle",
 	"EditRole":"Rolle bearbeiten",
     "Role": "Rolle",
+	"EnableCustomRoles": "Benutzerdefinierte Rollen aktivieren",
 	"ContactUsToEnableCustomRoleManagement": "Kontaktieren Sie uns, um die benutzerdefinierte Rollenverwaltung zu aktivieren",
 	"owner": "Eigentümer",
 	"admin": "Administrator",

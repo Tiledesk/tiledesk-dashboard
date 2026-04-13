@@ -195,6 +195,7 @@
     "NewRole": "دور جديد",
     "EditRole":"تعديل الدور",
     "Role": "الدور",
+    "EnableCustomRoles": "تفعيل الأدوار المخصصة",
     "ContactUsToEnableCustomRoleManagement": "اتصل بنا لتفعيل إدارة الأدوار المخصصة",
     "owner": "صاحب",
     "admin": "مدير",

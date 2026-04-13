@@ -195,6 +195,7 @@
     "NewRole": "Nuovo ruolo",
     "EditRole":"Modifica ruolo",
     "Role": "Ruolo",
+    "EnableCustomRoles": "Attiva ruoli personalizzati",
     "ContactUsToEnableCustomRoleManagement": "Contattaci per attivare la gestione dei ruoli personalizzati",
     "owner": "Proprietario",
     "admin": "Amministratore",

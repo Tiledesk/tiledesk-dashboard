@@ -195,6 +195,7 @@
     "NewRole": "Nova função",
     "EditRole": "Editar função",
     "Role": "Papel",
+    "EnableCustomRoles": "Ativar funções personalizadas",
     "ContactUsToEnableCustomRoleManagement": "Contacte-nos para ativar a gestão personalizada de funções",
     "owner": "Proprietário",
     "admin": "Administrador",

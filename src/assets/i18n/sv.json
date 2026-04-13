@@ -195,6 +195,7 @@
     "NewRole": "Ny roll",
     "EditRole": "Redigera roll",
     "Role": "Roll",
+    "EnableCustomRoles": "Aktivera anpassade roller",
     "ContactUsToEnableCustomRoleManagement": "Kontakta oss för att aktivera anpassad rollhantering",
     "owner": "Ägare",
     "admin": "Administratör",

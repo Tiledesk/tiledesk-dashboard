@@ -196,6 +196,7 @@
     "NewRole": "Yeni rol",
     "EditRole":"Rolü düzenle",
     "Role": "Rol",
+    "EnableCustomRoles": "Özel rolleri etkinleştir",
     "ContactUsToEnableCustomRoleManagement": "Özel rol yönetimini etkinleştirmek için bizimle iletişime geçin",
     "owner": "Sahip",
     "admin": "Yönetici",

@@ -195,6 +195,7 @@
     "NewRole": "Нова роль",
     "EditRole":"Редагувати роль",
     "Role": "Роль",
+    "EnableCustomRoles": "Увімкнути користувацькі ролі",
     "ContactUsToEnableCustomRoleManagement": "Зв'яжіться з нами, щоб увімкнути керування користувацькими ролями",
     "owner": "Власник",
     "admin": "Адміністратор",

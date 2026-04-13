@@ -195,6 +195,7 @@
     "NewRole": "Yangi rol",
     "EditRole":"Rolni tahrirlash",
     "Role":"Rol",
+    "EnableCustomRoles": "Maxsus rollarni yoqish",
     "ContactUsToEnableCustomRoleManagement": "Maxsus rol boshqaruvini yoqish uchun biz bilan bog'lang",
     "owner": "Egasi",
     "admin": "Administrator",

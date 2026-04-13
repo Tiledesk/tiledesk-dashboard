@@ -195,6 +195,7 @@
     "NewRole": "Нова улога",
     "EditRole":"Измени улогу",
     "Role": "Улога",
+    "EnableCustomRoles": "Омогући прилагођене улоге",
     "ContactUsToEnableCustomRoleManagement": "Контактирајте нас да омогућите управљање прилагођеним улогама",
     "owner": "Власник",
     "admin": "Администратор",
