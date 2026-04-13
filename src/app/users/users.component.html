@@ -33,7 +33,7 @@
           <li class="btn-with-border-effect li-active">
             <a> {{ "TeammatesCapitalized" | translate }} </a>
           </li>
-          <li *ngIf="areActivePay" class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
+          <li *ngIf="isVisibleRolesTab" class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
             <a style="text-transform: capitalize;"> {{ "Roles" | translate }} </a>
           </li>
           <li *ngIf="isVisibleGroups && PERMISSION_TO_VIEW_GROUPS" class="btn-with-border-effect border-from-center" (click)="goToGroups()">

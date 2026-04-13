@@ -54,6 +54,8 @@ export class GroupsComponent implements OnInit {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public_Key: any;
   isVisibleGRO: any
+  overridePay: boolean;
+  isVisibleRolesTab: boolean;
   isChromeVerGreaterThan100: boolean;
 
   disassociateTheGroup: string;
@@ -96,7 +98,7 @@ export class GroupsComponent implements OnInit {
   pageSize: number = 20;  // numero di gruppi per pagina
   currentPage: number = 1;
   totalPages: number = 1;
-
+  salesEmail: string;
 
 
   constructor(
@@ -115,6 +117,7 @@ export class GroupsComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   ngOnInit() {
@@ -301,6 +304,31 @@ export class GroupsComponent implements OnInit {
         const pay = key.split(":");
         this.areActivePay = pay[1] !== "F";
       }
+
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+
+      if (key.includes("ROL")) {
+
+        let ana = key.split(":");
+
+        if (ana[1] === "F") {
+          this.isVisibleRolesTab = false;
+          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleRolesTab', this.isVisibleRolesTab);
+        } else {
+          this.isVisibleRolesTab = true;
+          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleRolesTab', this.isVisibleRolesTab);
+        }
+      }
+
+
     });
 
     if (!this.public_Key.includes("GRO")) {
@@ -308,6 +336,13 @@ export class GroupsComponent implements OnInit {
     }
     if (!this.public_Key.includes("PAY")) {
       this.areActivePay = false;
+    }
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
+
+    if (!this.public_Key.includes("ROL")) {
+      this.overridePay = false;
     }
   }
 
@@ -424,17 +459,72 @@ export class GroupsComponent implements OnInit {
       this.notify.presentDialogNoPermissionToViewThisSection()
     }
     const projectUserRole = this.loggedInProjectUserRole || this.groupsPlanUserRole;
-    this.notify.navigateToCustomRolesSectionOrExplain({
-      projectId: this.project_id,
-      hasPermission: this.PERMISSION_TO_VIEW_ROLES,
-      // matchedPermissions: this.projectUserMatchedPermissions,
-      profileName: this.groupsPlanProfileName,
-      customization: this.projectProfileData?.customization,
-      userRole: projectUserRole,
-      prjct_profile_type: this.groupsPrjctProfileType,
-      subscription_is_active: this.groupsSubscriptionActive,
-      subscription_end_date: this.groupsSubscriptionEnd,
-    });
+    if (this.areActivePay && !this.overridePay) {
+      this.notify.navigateToCustomRolesSectionOrExplain({
+        projectId: this.project_id,
+        hasPermission: this.PERMISSION_TO_VIEW_ROLES,
+        // matchedPermissions: this.projectUserMatchedPermissions,
+        profileName: this.groupsPlanProfileName,
+        customization: this.projectProfileData?.customization,
+        userRole: projectUserRole,
+        prjct_profile_type: this.groupsPrjctProfileType,
+        subscription_is_active: this.groupsSubscriptionActive,
+        subscription_end_date: this.groupsSubscriptionEnd,
+      });
+    } else if (!this.areActivePay && this.overridePay) {
+      console.log('projectProfileData' , this.projectProfileData) 
+      if (this.projectProfileData.profile_type === "payment" &&  this.projectProfileData.subscription_is_active === false) {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+        return
+      }
+       if (!this.isCustomizationRolesEnabled(this.projectProfileData?.customization)) {
+        const isOwner = projectUserRole === 'owner';
+        const isAdmin = projectUserRole === 'admin';
+        const isCustomRole = !isOwner && !isAdmin && projectUserRole !== 'agent';
+   
+        if (isCustomRole) {
+          Swal.fire({
+            title: this.translate.instant('Pricing.PlanChange'),
+            text: this.translate.instant('UsersPage.ContactProjectOwnerOrAdministratorsToEnableRoles'),
+            icon: 'warning',
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok'),
+            focusConfirm: true,
+        });
+          return;
+        }
+
+    
+        const text = this.translate.instant('ContactUsToEnableCustomRoleManagement');
+        Swal.fire({
+          title: this.translate.instant('EnableCustomRoles'),
+          text,
+          icon: 'warning',
+          showCloseButton: true,
+          showCancelButton: false,
+          confirmButtonText: this.translate.instant('ContactUs'),
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const subj = encodeURIComponent(`Enable custom roles (project ${this.project_id})`);
+            window.open(`mailto:${this.salesEmail}?subject=${subj}`);
+          }
+        });
+      } else {
+        this.router.navigate(['project/' + this.project_id + '/roles']);
+      }
+
+    }
+  }
+
+  private isCustomizationRolesEnabled(customization: any): boolean {
+    console.log('isCustomizationRolesEnabled customization ' ,customization)
+    if (!customization || typeof customization !== 'object') {
+      return false;
+    }
+    const v = customization['roles'];
+    return v === true || v === 'true';
   }
 
   goToEditAddPage_edit(id_group: string) {

@@ -106,6 +106,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   subscription: Subscription
   isVisibleGroups: boolean;
   areActivePay = false;
+  overridePay: boolean;
+  isVisibleRolesTab: boolean;
   isVisibleAnalytics: boolean;
   storageBucket: string
 
@@ -161,6 +163,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
    
   // Variabili per ricerca
   searchTerm = '';
+  salesEmail: string;
 
   constructor(
     private usersService: UsersService,
@@ -189,6 +192,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.displayInviteTeammateBtn = brand['display_invite_teammate_btn'];
     this.logger.log('[USERS] displayInviteTeammateBtn ', this.displayInviteTeammateBtn)
     this.hideHelpLink = brand['DOCS'];
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   ngOnInit() {
@@ -238,25 +242,25 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[USERS] - Role:', status.role);
-        console.log('[USERS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[USERS] - Role:', status.role);
+        this.logger.log('[USERS] - Permissions:', status.matchedPermissions);
         // ---------------------------------------------------
         // PERMISSION_TO_INVITE
         // ---------------------------------------------------
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_INVITE = true;
-          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+          this.logger.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_INVITE = false;
-          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+          this.logger.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_INVITE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE);
-          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+          this.logger.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
         }
 
         // ---------------------
@@ -265,17 +269,17 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_UPDATE = true;
-          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_UPDATE = false;
-          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_UPDATE:', this.PERMISSION_TO_UPDATE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UPDATE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
-          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_UPDATE);
         }
 
         // ------------------------
@@ -284,17 +288,17 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_ROLES = true;
-          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+          this.logger.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ROLES = false;
-          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+          this.logger.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
-          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+          this.logger.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
         }
 
         // -------------------------
@@ -303,17 +307,17 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_GROUPS = true;
-          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+          this.logger.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_GROUPS = false;
-          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+          this.logger.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
-          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+          this.logger.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
         }
 
         // ----------------------------
@@ -322,17 +326,17 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_ANALYTICS = true;
-          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ANALYTICS = false;
-          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
-          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
 
@@ -344,11 +348,11 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('teammates')
-    console.log('[USERS] result ', result)
+    this.logger.log('[USERS] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[USERS] - checkPermissions -isAuthorized ', this.isAuthorized)
-    console.log('[USERS] - checkPermissions - permissionChecked ', this.permissionChecked)
+    this.logger.log('[USERS] - checkPermissions -isAuthorized ', this.isAuthorized)
+    this.logger.log('[USERS] - checkPermissions - permissionChecked ', this.permissionChecked)
   }
 
 
@@ -495,6 +499,16 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         }
       }
 
+     if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+
       if (key.includes("ANA")) {
 
         let ana = key.split(":");
@@ -505,6 +519,19 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         } else {
           this.isVisibleAnalytics = true;
           this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+        }
+      }
+
+      if (key.includes("ROL")) {
+
+        let ana = key.split(":");
+
+        if (ana[1] === "F") {
+          this.isVisibleRolesTab = false;
+          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleRolesTab', this.isVisibleRolesTab);
+        } else {
+          this.isVisibleRolesTab = true;
+          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleRolesTab', this.isVisibleRolesTab);
         }
       }
 
@@ -520,6 +547,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
+    }
+
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
+
+    if (!this.public_Key.includes("ROL")) {
+      this.overridePay = false;
     }
   }
 
@@ -633,16 +668,71 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       this.notify.presentDialogNoPermissionToViewThisSection()
       return
     }
-    this.notify.navigateToCustomRolesSectionOrExplain({
-      projectId: this.id_project,
-      hasPermission: this.PERMISSION_TO_VIEW_ROLES,
-      profileName: this.profile_name,
-      customization: this.projectProfileData?.customization,
-      userRole: this.USER_ROLE,
-      prjct_profile_type: this.prjct_profile_type,
-      subscription_is_active: this.subscription_is_active,
-      subscription_end_date: this.subscription_end_date,
-    });
+    if (this.areActivePay && !this.overridePay) {
+      this.notify.navigateToCustomRolesSectionOrExplain({
+        projectId: this.id_project,
+        hasPermission: this.PERMISSION_TO_VIEW_ROLES,
+        profileName: this.profile_name,
+        customization: this.projectProfileData?.customization,
+        userRole: this.USER_ROLE,
+        prjct_profile_type: this.prjct_profile_type,
+        subscription_is_active: this.subscription_is_active,
+        subscription_end_date: this.subscription_end_date,
+      });
+    } else if (!this.areActivePay && this.overridePay) {
+      this.logger.log('projectProfileData' , this.projectProfileData) 
+      if (this.projectProfileData.profile_type === "payment" &&  this.projectProfileData.subscription_is_active === false) {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+        return
+      }
+       if (!this.isCustomizationRolesEnabled(this.projectProfileData?.customization)) {
+        const isOwner = this.USER_ROLE === 'owner';
+        const isAdmin = this.USER_ROLE === 'admin';
+        const isCustomRole = !isOwner && !isAdmin && this.USER_ROLE !== 'agent';
+   
+        if (isCustomRole) {
+          Swal.fire({
+            title: this.translate.instant('Pricing.PlanChange'),
+            text: this.translate.instant('UsersPage.ContactProjectOwnerOrAdministratorsToEnableRoles'),
+            icon: 'warning',
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok'),
+            focusConfirm: true,
+        });
+          return;
+        }
+
+    
+        const text = this.translate.instant('ContactUsToEnableCustomRoleManagement');
+        Swal.fire({
+          title: this.translate.instant('EnableCustomRoles'),
+          text,
+          icon: 'warning',
+          showCloseButton: true,
+          showCancelButton: false,
+          confirmButtonText: this.translate.instant('ContactUs'),
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const subj = encodeURIComponent(`Enable custom roles (project ${this.id_project})`);
+            window.open(`mailto:${this.salesEmail}?subject=${subj}`);
+          }
+        });
+      } else {
+        this.router.navigate(['project/' + this.id_project + '/roles']);
+      }
+
+    }
+  }
+
+  private isCustomizationRolesEnabled(customization: any): boolean {
+    this.logger.log('isCustomizationRolesEnabled customization ' ,customization)
+    if (!customization || typeof customization !== 'object') {
+      return false;
+    }
+    const v = customization['roles'];
+    return v === true || v === 'true';
   }
 
   goToPendingInvitation() {
@@ -811,7 +901,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
-        console.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
+        this.logger.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
 
         if (projectUsers) {
           this.projectUsersList = projectUsers
@@ -877,7 +967,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
    getPendingInvitation() {
     this.usersService.getPendingUsers().subscribe(
       (pendingInvitation: any) => {
-        console.log('[USERS] - GET PENDING INVITATION - RES', pendingInvitation)
+        this.logger.log('[USERS] - GET PENDING INVITATION - RES', pendingInvitation)
 
         if (pendingInvitation) {
           this.pendingInvitationList = pendingInvitation
@@ -912,19 +1002,19 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     ...this.pendingInvitationList
   ];
 
-  console.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
+  this.logger.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
 
   // Applica il filtro su tutti (users + pending)
   const filtered = this.filterUsers(combinedItems, this.searchTerm);
 
-  console.log('applyFilterAndPagination elementi filtrati:', filtered);
+  this.logger.log('applyFilterAndPagination elementi filtrati:', filtered);
 
   // Aggiorna conteggio e paginazione
   this.totalItems = filtered.length;
   this.applyPagination(filtered);
 
   this.filteredUsers = filtered;
-  console.log('filteredUsers ',  this.filteredUsers) 
+  this.logger.log('filteredUsers ',  this.filteredUsers) 
 }
 
  ordered_applyFilterAndPagination() {
@@ -955,7 +1045,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // Salva l'elenco filtrato per il template
   this.filteredUsers = ordered;
 
-  // console.log('applyFilterAndPagination elementi filtrati ordinati:', this.filteredUsers);
+  // this.logger.log('applyFilterAndPagination elementi filtrati ordinati:', this.filteredUsers);
 }
 
 // ordina per visualizzare prima  User poi  pending e ordine alfabetico
@@ -970,12 +1060,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 //     ...this.pendingInvitationList
 //   ];
 
-//   console.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
+//   this.logger.log('applyFilterAndPagination combinedItems (prima del filtro):', combinedItems);
 
 //   // Applica il filtro su tutti (users + pending)
 //   const filtered = this.filterUsers(combinedItems, this.searchTerm);
 
-//   console.log('applyFilterAndPagination elementi filtrati:', filtered);
+//   this.logger.log('applyFilterAndPagination elementi filtrati:', filtered);
 
 //   // ✅ Ordina: utenti prima, pending dopo
 //   const ordered = filtered.sort((a, b) => {
@@ -1022,7 +1112,7 @@ filterUsers(items: any[], searchTerm: string): any[] {
 
     // Se è una pending invitation
     if (item.type === 'invitation' && item.email) {
-      console.log('Pendind item', item)
+      this.logger.log('Pendind item', item)
       const email = item.email.toLowerCase();
       return email.includes(term);
     }
@@ -1033,7 +1123,7 @@ filterUsers(items: any[], searchTerm: string): any[] {
 
 
 searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
-    console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ', searchTerm);
+    this.logger.log('[USERS] - PROJECT USERS filterUsers > searchTerm ', searchTerm);
 
     if (!searchTerm.trim()) {
       return users;
@@ -1059,11 +1149,11 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
 
 
   _filterUsers(users: any[], searchTerm: string): any[] {
-    console.log('[USERS] - PROJECT USERS filterUsers > searchTerm ' , searchTerm)
+    this.logger.log('[USERS] - PROJECT USERS filterUsers > searchTerm ' , searchTerm)
     if (!searchTerm.trim()) {
       return users;
     }
-    console.log('[USERS] - PROJECT USERS filterUsers > users ' , users)
+    this.logger.log('[USERS] - PROJECT USERS filterUsers > users ' , users)
 
     const term = searchTerm.toLowerCase().trim();
     
@@ -1071,14 +1161,14 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     const isEmail = this.isValidEmail(term);
 
     return users.filter(user => {
-       console.log('[USERS] - PROJECT USERS filterUsers > user ' , user)
+       this.logger.log('[USERS] - PROJECT USERS filterUsers > user ' , user)
       if (isEmail) {
         // Cerca per email
         return user.id_user.email.toLowerCase().includes(term);
       } else {
         // Cerca per nome e cognome
         const fullName = `${user.id_user.firstname || ''} ${user.id_user.lastname || ''}`.toLowerCase().trim();
-         console.log('[USERS] - PROJECT USERS filterUsers > fullName ' , fullName)
+         this.logger.log('[USERS] - PROJECT USERS filterUsers > fullName ' , fullName)
         return fullName.includes(term) ||
                (user.id_user.firstname && user.id_user.firstname.toLowerCase().includes(term)) ||
                (user.id_user.lastname && user.id_user.lastname.toLowerCase().includes(term));
@@ -1096,13 +1186,13 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     const endIndex = startIndex + this.pageSize;
     // this.paginatedUsers = this.filteredUsers.slice(startIndex, endIndex);
     this.paginatedUsers = combinedItems.slice(startIndex, endIndex)
-    // console.log('paginatedUsers',  this.paginatedUsers)
+    // this.logger.log('paginatedUsers',  this.paginatedUsers)
   }
 
   // Metodo chiamato quando cambia il termine di ricerca
   onSearchChange($event) {
-     console.log('[USERS] - PROJECT USERS filterUsers > onSearchChange event' , $event)
-     console.log('[USERS] - PROJECT USERS filterUsers > onSearchChange searchTerm' , this.searchTerm)
+     this.logger.log('[USERS] - PROJECT USERS filterUsers > onSearchChange event' , $event)
+     this.logger.log('[USERS] - PROJECT USERS filterUsers > onSearchChange searchTerm' , this.searchTerm)
     this.currentPage = 1; // Reset alla prima pagina
     this.applyFilterAndPagination();
   }
@@ -1407,7 +1497,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     userFirstname: string,
     userLastname: string,
   ) {
-    console.log('[USERS] openDeleteModal projectUser', projectUser ,'  projectUser_id ', projectUser_id , ' userID ', userID) 
+    this.logger.log('[USERS] openDeleteModal projectUser', projectUser ,'  projectUser_id ', projectUser_id , ' userID ', userID) 
     this.id_projectUser = projectUser_id
     this.user_id = userID
     this.user_firstname = userFirstname
@@ -1429,15 +1519,15 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
   }
 
   checkUserAssociations(userId: string, reason?: string) {
-    console.log('[USERS] checkUserAssociations - DELETE / DISABLE reason ', reason);
-    console.log('[USERS] checkUserAssociations - ID OF THE USER TO DELETE / DISABLE ', userId);
+    this.logger.log('[USERS] checkUserAssociations - DELETE / DISABLE reason ', reason);
+    this.logger.log('[USERS] checkUserAssociations - ID OF THE USER TO DELETE / DISABLE ', userId);
 
     // Controlla sia i gruppi che le tag in parallelo
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[USERS] ON MODAL DELETE OPEN - GET GROUPS RES', groups);
+      this.logger.log('[USERS] ON MODAL DELETE OPEN - GET GROUPS RES', groups);
 
       this.tagsService.getTags().subscribe((tags: any) => {
-        console.log('[USERS] ON MODAL DELETE OPEN - GET TAGS RES', tags);
+        this.logger.log('[USERS] ON MODAL DELETE OPEN - GET TAGS RES', tags);
 
         // ✅ Controlla se l'utente è membro di un gruppo
         const groupsListWithUser = groups?.filter((group: any) => 
@@ -1449,12 +1539,12 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
           tag.createdBy === userId
         ) || [];
 
-        console.log('[USERS] ON MODAL DELETE OPEN - groupsListWithUser', groupsListWithUser);
-        console.log('[USERS] ON MODAL DELETE OPEN - tagsCreatedByUser', tagsCreatedByUser);
+        this.logger.log('[USERS] ON MODAL DELETE OPEN - groupsListWithUser', groupsListWithUser);
+        this.logger.log('[USERS] ON MODAL DELETE OPEN - tagsCreatedByUser', tagsCreatedByUser);
 
         // Se l'utente non è associato a gruppi né ha creato tag, procedi con l'eliminazione/disabilitazione
         if (groupsListWithUser.length === 0 && tagsCreatedByUser.length === 0) {
-          console.log('[USERS] ON MODAL DELETE/DISABLE OPEN - USER NOT ASSOCIATED');
+          this.logger.log('[USERS] ON MODAL DELETE/DISABLE OPEN - USER NOT ASSOCIATED');
           if (reason === 'delete') {
             this.displayDeleteModal = 'block';
           } else {
@@ -1464,7 +1554,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         }
 
         // ✅ Utente associato ad almeno un gruppo o ha creato tag
-        console.log('[USERS] ON MODAL DELETE OPEN - USER ASSOCIATED');
+        this.logger.log('[USERS] ON MODAL DELETE OPEN - USER ASSOCIATED');
         
         const warnings: string[] = [];
 
@@ -1586,8 +1676,8 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     const soft = true;
     this.usersService.deleteProjectUser(this.id_projectUser, soft).subscribe(
       (projectUsers: any) => {
-        console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
-        console.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
+        this.logger.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES projectUsers', projectUsers )
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser)
         // this.ngOnInit();
         if (!isDevMode()) {
           this.trackDeleteProjectUser(projectUsers)
@@ -1604,7 +1694,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
         // NOTIFY SUCCESS
         this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
-       console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
+       this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList ', this.projectUsersList)
         for (var i = 0; i < this.paginatedUsers.length; i++) {
               if (this.paginatedUsers[i].id === this.id_projectUser) {
                 this.paginatedUsers.splice(i, 1);
@@ -1614,8 +1704,8 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
 
         
 
-        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
-        console.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList)
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL projectUsersList after delete ', this.projectUsersList.length)
         this.projectUsersLength = this.projectUsersList.length;
         this.cachePuService.clearPuCache()
       },
