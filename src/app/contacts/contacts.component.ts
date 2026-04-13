@@ -208,8 +208,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[CONTACTS-DTLS] - Role:', status.role);
-        console.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[CONTACTS-DTLS] - Role:', status.role);
+        this.logger.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
 
        
    
@@ -220,15 +220,15 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (status.matchedPermissions.includes(PERMISSIONS.LEAD_TRASH)) {
             this.PERMISSION_TO_TRASH_LEAD = true
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
           } else {
             this.PERMISSION_TO_TRASH_LEAD = false
 
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
           }
         } else {
           this.PERMISSION_TO_TRASH_LEAD = true
-          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+          this.logger.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
         }
 
         // ---------------------------
@@ -238,14 +238,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           if (status.matchedPermissions.includes(PERMISSIONS.LEAD_RESTORE)) {
 
             this.PERMISSION_TO_RESTORE_LEAD = true
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
           } else {
             this.PERMISSION_TO_RESTORE_LEAD = false
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
           }
         } else {
           this.PERMISSION_TO_RESTORE_LEAD = true
-          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
+          this.logger.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
         }
 
         // -------------------------  
@@ -255,14 +255,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           if (status.matchedPermissions.includes(PERMISSIONS.LEADS_EXPORT)) {
 
             this.PERMISSION_TO_EXPORT_LEADS = true
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
           } else {
             this.PERMISSION_TO_EXPORT_LEADS = false
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
           }
         } else {
           this.PERMISSION_TO_EXPORT_LEADS = true
-          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
+          this.logger.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_EXPORT_LEADS ', this.PERMISSION_TO_EXPORT_LEADS);
         }
 
         // -------------------------
@@ -271,17 +271,17 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
          if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_DELETE_LEAD = true;
-          console.log('[CONTACTS-COMP] - Project user is owner (1)', 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
+          this.logger.log('[CONTACTS-COMP] - Project user is owner (1)', 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
 
         } else if (status.role === 'admin' || status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_DELETE_LEAD = false;
-          console.log('[CONTACTS-COMP] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
+          this.logger.log('[CONTACTS-COMP] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE_LEAD = status.matchedPermissions.includes(PERMISSIONS.LEAD_DELETE);
-          console.log('[CONTACTS-COMP] - Custom role (3) role ', status.role, 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
+          this.logger.log('[CONTACTS-COMP] - Custom role (3) role ', status.role, 'PERMISSION_TO_DELETE_LEAD:', this.PERMISSION_TO_DELETE_LEAD);
         }
 
 
@@ -865,7 +865,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.contacts = leads_object['leads'];
       // console.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
       this.contacts.forEach(contact => {
-        console.log('[CONTACTS-COMP] - contact ', contact);
+        this.logger.log('[CONTACTS-COMP] - contact ', contact);
         if (contact.email && !isValidEmail(contact.email)) {
           contact.email = null; // Or 'N/A', depending on what you want to display
         }
@@ -1398,7 +1398,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (isAvailable === false) {
           return
         }
-        console.log('[CONTACTS-COMP] here YES ')
+        this.logger.log('[CONTACTS-COMP] here YES ')
         this.dwnldCSV()
 
         //  this.logger.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
@@ -1412,7 +1412,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (isAvailable === false) {
         return
       }
-      console.log('[CONTACTS-COMP] here YES 2')
+      this.logger.log('[CONTACTS-COMP] here YES 2')
       this.dwnldCSV()
     }
   }

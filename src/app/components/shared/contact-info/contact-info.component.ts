@@ -136,8 +136,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[CONTACT-INFO] - Role:', status.role);
-        console.log('[CONTACT-INFO] - Permissions:', status.matchedPermissions);
+        this.logger.log('[CONTACT-INFO] - Role:', status.role);
+        this.logger.log('[CONTACT-INFO] - Permissions:', status.matchedPermissions);
 
         // ----------------------------   
         // PERMISSION_TO_UPDATE_LEAD
@@ -146,14 +146,14 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
           if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
 
             this.PERMISSION_TO_UPDATE_LEAD = true
-            console.log('[CONTACT-INFO] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+            this.logger.log('[CONTACT-INFO] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
           } else {
             this.PERMISSION_TO_UPDATE_LEAD = false
-            console.log('[CONTACT-INFO] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+            this.logger.log('[CONTACT-INFO] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
           }
         } else {
           this.PERMISSION_TO_UPDATE_LEAD = true
-          console.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          this.logger.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
         }
         // ----------------------------
         // PERMISSION_TO_VIEW_TAG
@@ -162,14 +162,14 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
           if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ)) {
 
             this.PERMISSION_TO_VIEW_TAG = true
-            console.log('[CONTACT-INFO] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
+            this.logger.log('[CONTACT-INFO] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
           } else {
             this.PERMISSION_TO_VIEW_TAG = false
-            console.log('[CONTACT-INFO] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
+            this.logger.log('[CONTACT-INFO] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
           }
         } else {
           this.PERMISSION_TO_VIEW_TAG = true
-          console.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
+          this.logger.log('[CONTACT-INFO] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
         }
         
 
@@ -205,7 +205,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   ngOnChanges() {
     // console.log('[CONTACT-INFO] contact_details', this.contact_details)
     this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
-    console.log('[CONTACT-INFO] PERMISSION_TO_UPDATE_LEAD', this.PERMISSION_TO_UPDATE_LEAD)
+    this.logger.log('[CONTACT-INFO] PERMISSION_TO_UPDATE_LEAD', this.PERMISSION_TO_UPDATE_LEAD)
 
     if (this.contact_details) {
 
@@ -416,7 +416,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   editContactEmailOnBlur() {
-    console.log('[CONTACT-INFO] > editContactEmailOnBlur here yes')
+    this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur here yes')
     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
       // this.notify.presentDialogNoPermissionToPermomfAction();
       return
@@ -666,7 +666,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   editContactCompany() {
 
     if (this.PERMISSION_TO_UPDATE_LEAD === false) {
-      console.log('[CONTACT-INFO] - editContactCompany  here yes');
+      this.logger.log('[CONTACT-INFO] - editContactCompany  here yes');
       // this.notify.presentDialogNoPermissionToPermomfAction();
       return
     }
@@ -943,7 +943,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   toggleAddress() {
 
     this.showAllAddress = !this.showAllAddress;
-    console.log('here yes', this.showAllAddress)
+    this.logger.log('here yes', this.showAllAddress)
     const addressArrowIconElem = <HTMLElement>document.querySelector('#address-arrow-down');
     this.logger.log('toggleAddress ', addressArrowIconElem)
     if (this.showAllAddress === true) {

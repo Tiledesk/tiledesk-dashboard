@@ -46,6 +46,6 @@ export class CachePuService {
 
    clearPuCache() {
     this.cache = null;
-    console.log('[CACHE-PU-SERV] CLEAR CACHE - Cache cleared');
+    this.logger.log('[CACHE-PU-SERV] CLEAR CACHE - Cache cleared');
   }
 }

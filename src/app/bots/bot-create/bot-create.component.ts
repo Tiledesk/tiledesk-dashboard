@@ -223,11 +223,11 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('app-store')
-    console.log('[BOT-CREATE] result ', result)
+    this.logger.log('[BOT-CREATE] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[BOT-CREATE] isAuthorized ', this.isAuthorized)
-    console.log('[BOT-CREATE] permissionChecked ', this.permissionChecked)
+    this.logger.log('[BOT-CREATE] isAuthorized ', this.isAuthorized)
+    this.logger.log('[BOT-CREATE] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {

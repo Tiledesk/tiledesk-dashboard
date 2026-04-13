@@ -323,60 +323,60 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('BOT-LIST] - this.ROLE:', this.ROLE);
-        console.log('BOT-LIST] - this.PERMISSIONS', this.PERMISSIONS);
+        this.logger.log('BOT-LIST] - this.ROLE:', this.ROLE);
+        this.logger.log('BOT-LIST] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('BOT-LIST] - hasDefaultRole', this.hasDefaultRole);
+        this.logger.log('BOT-LIST] - hasDefaultRole', this.hasDefaultRole);
 
         // PERMISSION_TO_ADD_FLOWS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_FLOWS = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('[BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
 
         // PERMISSION_TO_EDIT_FLOWS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
         // PERMISSION_TO_TEST_FLOW
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_TEST_FLOW = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_TEST_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_TEST);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_TEST_FLOW:', this.PERMISSION_TO_TEST_FLOW);
         }
 
 
@@ -384,67 +384,67 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_DUPLICATE_FLOW = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_DUPLICATE_FLOW = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DUPLICATE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_DUPLICATE);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
         }
 
         // PERMISSION_TO_DELETE_FLOW
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_DELETE_FLOW = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_DELETE_FLOW = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_DELETE);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_FLOW:', this.PERMISSION_TO_DELETE_FLOW);
         }
 
            if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_DUPLICATE_FLOW = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_DUPLICATE_FLOW = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DUPLICATE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_DUPLICATE);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_DUPLICATE_FLOW:', this.PERMISSION_TO_DUPLICATE_FLOW);
         }
 
         // PERMISSION_TO_SHARE_FLOW
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_SHARE_FLOW = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_SHARE_FLOW = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_SHARE_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_SHARE);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_SHARE_FLOW:', this.PERMISSION_TO_SHARE_FLOW);
         }
 
 
@@ -452,17 +452,17 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_EXPORT_FLOW = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EXPORT_FLOW = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EXPORT_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_EXPORT);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
         }
 
 
@@ -487,17 +487,17 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_VIEW_ANALYTICS = true;
-          console.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[BOT-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ANALYTICS = false;
-          console.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[BOT-LIST] - Project user is agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
-          console.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
       });
@@ -767,19 +767,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      console.log(`Dialog afterClosed result (selectedProjectId) res:`, res);
+      this.logger.log(`Dialog afterClosed result (selectedProjectId) res:`, res);
       
       if (res) {
-        console.log(`Dialog afterClosed result (selectedProjectId) res selectedProjectId:`, res.selectedProjectId);
+        this.logger.log(`Dialog afterClosed result (selectedProjectId) res selectedProjectId:`, res.selectedProjectId);
         this.forkTemplateinAnotherProject(bot_id, res.storedCurrentrojectId, res.selectedProjectId)
       }
     });
   }
 
   forkTemplateinAnotherProject(bot_id, storedCurrentrojectId, selectedProjectId) {
-    console.log('forkTemplateinAnotherProject this.currentProjectId ', this.currentProjectId) 
-    console.log('forkTemplateinAnotherProject storedCurrentrojectId ', storedCurrentrojectId) 
-    console.log('forkTemplateinAnotherProject selectedProjectId ', selectedProjectId) 
+    this.logger.log('forkTemplateinAnotherProject this.currentProjectId ', this.currentProjectId) 
+    this.logger.log('forkTemplateinAnotherProject storedCurrentrojectId ', storedCurrentrojectId) 
+    this.logger.log('forkTemplateinAnotherProject selectedProjectId ', selectedProjectId) 
 
     this.faqKbService.duplicateChatbot(bot_id, storedCurrentrojectId, false, selectedProjectId).subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
@@ -1151,7 +1151,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.currentPage = 1
         this.updatePagedFaqkbList();
 
-        console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
+        this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID  - PAGED',   this.faqkbList);
         this.chatBotCount = this.faqkbList.length;
 
         if (this.orderBylastUpdated) {
@@ -1352,7 +1352,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST]] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
 
     const start = (this.currentPage - 1) * this.pageSize;
-    console.log('[BOTS-LIST] pagedFaqkbList start ', start )
+    this.logger.log('[BOTS-LIST] pagedFaqkbList start ', start )
     this.logger.log('[BOTS-LIST] pagedFaqkbList end ', start + this.pageSize )
     this.logger.log('[BOTS-LIST] pagedFaqkbList this.faqkbList ', this.faqkbList.slice(start, start + this.pageSize) )
     // return this.faqkbList.slice(start, start + this.pageSize);

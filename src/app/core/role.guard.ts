@@ -54,7 +54,7 @@ export class RoleGuard implements CanActivate {
     this.logger.log('[ROLE-GUARD] roles ',this.roles)
 
     const userIsInProject = await this.getProjectUserInProject(this.currentUserId, prjct_id)
-    console.log('[ROLE-GUARD] userIsInProject ', userIsInProject) 
+    this.logger.log('[ROLE-GUARD] userIsInProject ', userIsInProject) 
     // this.logger.log('[ROLE-GUARD] this.projectUser.role ', this.projectUser.role)
     const roleEnabled = this.roles.includes(this.projectUser?.role);
     this.logger.log('[ROLE-GUARD] roleEnabled ', roleEnabled) 
@@ -126,7 +126,7 @@ getProjectUserInProject(currentUserId: string, projectId: string): Promise<boole
     return new Promise((resolve, reject)=> {
       this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe( (projectUser) => {
         this.projectUser = projectUser[0]
-        console.log('[ROLE-GUARD] projectUser ', this.projectUser) 
+        this.logger.log('[ROLE-GUARD] projectUser ', this.projectUser) 
         this.logger.log('[ROLE-GUARD] projectUser role', projectUser[0]['role']) 
         resolve(true)
         // if (projectUser[0]['role'] === 'agent') {

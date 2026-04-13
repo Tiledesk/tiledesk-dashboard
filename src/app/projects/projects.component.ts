@@ -337,7 +337,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
-      console.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
+      this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.showid) {
         this.logger.log('[PROJECTS] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.showid)
         if (params.showid === 'y') {

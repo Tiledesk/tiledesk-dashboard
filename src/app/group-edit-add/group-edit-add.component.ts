@@ -126,22 +126,22 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[DEPTS] - Role:', status.role);
-          console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+          this.logger.log('[DEPTS] - Role:', status.role);
+          this.logger.log('[DEPTS] - Permissions:', status.matchedPermissions);
           
           // PERMISSION_TO_VIEW_DEPT
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
             if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENTS_LIST_READ)) {
   
               this.PERMISSION_TO_VIEW_DEPT = true
-              console.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+              this.logger.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
             } else {
               this.PERMISSION_TO_VIEW_DEPT = false
-              console.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+              this.logger.log('[DEPTS] - PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
             }
           } else {
             this.PERMISSION_TO_VIEW_DEPT = true
-            console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
+            this.logger.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_DEPT ', this.PERMISSION_TO_VIEW_DEPT);
           }
   
           // PERMISSION_TO_READ_DEPT_DETAILS
@@ -149,14 +149,14 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
             if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ)) {
   
               this.PERMISSION_TO_READ_DEPT_DETAILS = true
-              console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+              this.logger.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
             } else {
               this.PERMISSION_TO_READ_DEPT_DETAILS = false
-              console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+              this.logger.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
             }
           } else {
             this.PERMISSION_TO_READ_DEPT_DETAILS = true
-            console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            this.logger.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
           }
   
   
@@ -167,20 +167,20 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
     
   async checkEditPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('group-edit')
-    console.log('[GROUP-EDIT-ADD] result ', result)
+    this.logger.log('[GROUP-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[GROUP-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
-    console.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
+    this.logger.log('[GROUP-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    this.logger.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
   }
 
    async checkCreatePermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('group-create')
-    console.log('[GROUP-EDIT-ADD] result ', result)
+    this.logger.log('[GROUP-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[GROUP-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
-    console.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
+    this.logger.log('[GROUP-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    this.logger.log('[GROUP-EDIT-ADD] permissionChecked ', this.permissionChecked)
   }
 
   listenSidebarIsOpened() {
@@ -300,7 +300,7 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((params) => {
         const newGroupId = params['groupid'];
-        console.log('[GROUP-EDIT-ADD] - GROUP-LIST PAGE HAS PASSED group_id ', newGroupId);
+        this.logger.log('[GROUP-EDIT-ADD] - GROUP-LIST PAGE HAS PASSED group_id ', newGroupId);
         
         // Se il group_id è cambiato, resetta i dati prima di caricare il nuovo gruppo
         if (newGroupId && newGroupId !== this.group_id) {
@@ -317,7 +317,7 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
 
   // Resetta tutti i dati del gruppo quando si cambia gruppo
   resetGroupData() {
-    console.log('[GROUP-EDIT-ADD] - RESET GROUP DATA');
+    this.logger.log('[GROUP-EDIT-ADD] - RESET GROUP DATA');
     this.group_members = [];
     this.users_selected = [];
     this.groupNameToUpdate = '';
@@ -341,7 +341,7 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
   // ---------------------------------
   getGroupById() {
     this.groupsService.getGroupById(this.group_id).subscribe((group: any) => {
-      console.log('[GROUP-EDIT-ADD] - GROUP GET BY ID', group);
+      this.logger.log('[GROUP-EDIT-ADD] - GROUP GET BY ID', group);
       this.group_members = []
       // this.logger.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
       if (group) {
@@ -351,7 +351,7 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
         this.groupCreatedAt = group.createdAt
 
         this.users_selected = this.group_members;
-        console.log('[GROUP-EDIT-ADD] -GROUP MEMBERS ', this.group_members)
+        this.logger.log('[GROUP-EDIT-ADD] -GROUP MEMBERS ', this.group_members)
       }
       // this.showSpinner = false;
 
@@ -370,9 +370,9 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
 
 
   getDeptsByProjectId(groupid: string) {
-  console.log('[GROUP-EDIT-ADD] - GET DEPTS groupid', groupid);
+  this.logger.log('[GROUP-EDIT-ADD] - GET DEPTS groupid', groupid);
   this.deptService.getDeptsByProjectId().subscribe((departments: any[]) => {
-    console.log('[GROUP-EDIT-ADD] - GET DEPTS (RAW)', departments);
+    this.logger.log('[GROUP-EDIT-ADD] - GET DEPTS (RAW)', departments);
 
     if (Array.isArray(departments)) {
       // filtra e salva il risultato in una proprietà dell'istanza
@@ -380,10 +380,10 @@ export class GroupEditAddComponent implements OnInit, OnDestroy {
         Array.isArray(dept.groups) && dept.groups.some(g => g.group_id === groupid)
       );
 
-      console.log('[GROUP-EDIT-ADD] - GET DEPTS (FILTERED) departmentsOfGroup', this.departmentsOfGroup);
+      this.logger.log('[GROUP-EDIT-ADD] - GET DEPTS (FILTERED) departmentsOfGroup', this.departmentsOfGroup);
     } else {
       this.departmentsOfGroup = [];
-      console.warn('[GROUP-EDIT-ADD] - GET DEPTS: response non è un array');
+      this.logger.warn('[GROUP-EDIT-ADD] - GET DEPTS: response non è un array');
     }
   }, error => {
     this.logger.error('[GROUP-EDIT-ADD] - GET DEPTS - ERROR', error);

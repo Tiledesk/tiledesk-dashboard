@@ -120,11 +120,11 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('departments-list')
-    console.log('[DEPTS] result ', result)
+    this.logger.log('[DEPTS] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[DEPTS] isAuthorized ', this.isAuthorized)
-    console.log('[DEPTS] permissionChecked ', this.permissionChecked)
+    this.logger.log('[DEPTS] isAuthorized ', this.isAuthorized)
+    this.logger.log('[DEPTS] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {
@@ -132,34 +132,34 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[DEPTS] - Role:', status.role);
-        console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[DEPTS] - Role:', status.role);
+        this.logger.log('[DEPTS] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ)) {
 
             this.PERMISSION_TO_CREATE_DEPT = true
-            console.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+            this.logger.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
           } else {
             this.PERMISSION_TO_CREATE_DEPT = false
-            console.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+            this.logger.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
           }
         } else {
           this.PERMISSION_TO_CREATE_DEPT = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+          this.logger.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
         }
 
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ)) {
 
             this.PERMISSION_TO_READ_DEPT_DETAILS = true
-            console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            this.logger.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
           } else {
             this.PERMISSION_TO_CREATE_DEPT = false
-            console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+            this.logger.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
           }
         } else {
           this.PERMISSION_TO_READ_DEPT_DETAILS = true
-          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_CREATE_DEPT);
+          this.logger.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_CREATE_DEPT);
         }
 
 
@@ -282,7 +282,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     // Clear cache to ensure fresh data when entering the component
     this.deptService.clearDepartmentsCache();
     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
-      console.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
+      this.logger.log('[DEPTS] - GET DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       if (departments) {
         let count = 0;
@@ -545,20 +545,20 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
  getGroupsById(dept, groups) {
   let groupsName = []
   groups.forEach(group => {
-    console.log('[DEPTS] GROUPS foreach  group', group) 
+    this.logger.log('[DEPTS] GROUPS foreach  group', group) 
 
      this.groupsService.getGroupById(group.group_id).subscribe((group: any) => {
 
-      console.log('[DEPTS] GROUPS getGroupById RES ', group) 
+      this.logger.log('[DEPTS] GROUPS getGroupById RES ', group) 
       
       groupsName.push(group.name)
 
       if (groupsName.length > 0) {
         dept.hasGroupsName =  groupsName.join(', ').trim()
-        console.log('[DEPTS] GROUPS dept.hasGroupsName ', dept.hasGroupsName) 
+        this.logger.log('[DEPTS] GROUPS dept.hasGroupsName ', dept.hasGroupsName) 
       }
 
-      console.log('[DEPTS] GROUPS groupsName ', groupsName) 
+      this.logger.log('[DEPTS] GROUPS groupsName ', groupsName) 
 
       }, error => {
       this.logger.error('[DEPTS] --> GROUP GET BY ID - ERROR', error);
@@ -664,7 +664,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
       this.logger.log('[DEPTS] - DELETE DEPT RES ', data);
 
       // this.getDeptsByProjectId();
-      console.log('[DEPTS] - DELETE DEPT  ', this.departments);
+      this.logger.log('[DEPTS] - DELETE DEPT  ', this.departments);
       for (var i = 0; i < this.departments.length; i++) {
 
         if (this.departments[i]._id === this.id_toDelete) {

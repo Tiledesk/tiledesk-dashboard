@@ -125,7 +125,7 @@ export class ModalSiteMapComponent implements OnInit {
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
       this.selectedNamespace = data.selectedNamespace
-      console.log("[MODALS-SITEMAP] data > selectedNamespace: ", this.selectedNamespace);
+      this.logger.log("[MODALS-SITEMAP] data > selectedNamespace: ", this.selectedNamespace);
       this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
       this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
       this.logger.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);

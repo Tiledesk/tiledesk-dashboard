@@ -118,26 +118,26 @@ export class KnowledgeBaseTableComponent implements OnInit {
         .subscribe(status => {
           this.ROLE = status.role;
           this.PERMISSIONS = status.matchedPermissions;
-          console.log('[KB TABLE] - this.ROLE:', this.ROLE);
-          console.log('[KB TABLE] - this.PERMISSIONS', this.PERMISSIONS);
+          this.logger.log('[KB TABLE] - this.ROLE:', this.ROLE);
+          this.logger.log('[KB TABLE] - this.PERMISSIONS', this.PERMISSIONS);
           this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-          console.log('[KB TABLE] - hasDefaultRole', this.hasDefaultRole);
+          this.logger.log('[KB TABLE] - hasDefaultRole', this.hasDefaultRole);
   
           // PERMISSION_TO_ADD_CONTENTS
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_ADD_CONTENTS = true;
-            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+            this.logger.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_ADD_CONTENTS = false;
-            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+            this.logger.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
-            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+            this.logger.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
           }
 
 
@@ -145,85 +145,85 @@ export class KnowledgeBaseTableComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_UPDATE_CONTENT = true;
-            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
+            this.logger.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_UPDATE_CONTENT = false;
-            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
+            this.logger.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_UPDATE_CONTENT = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENT_UPDATE);
-            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
+            this.logger.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_UPDATE_CONTENT:', this.PERMISSION_TO_UPDATE_CONTENT);
           }
 
           // PERMISSION_TO_REINDEX_CONTENTS
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_REINDEX_CONTENT = true;
-            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
+            this.logger.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_REINDEX_CONTENT = false;
-            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
+            this.logger.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_REINDEX_CONTENT = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENT_REINDEX);
-            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
+            this.logger.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_REINDEX_CONTENT:', this.PERMISSION_TO_REINDEX_CONTENT);
           }
 
           // PERMISSION_TO_CHECK_CONTENT_STATUS
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_CHECK_CONTENT_STATUS = true;
-            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_CHECK_CONTENT_STATUS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
+            this.logger.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_CHECK_CONTENT_STATUS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_CHECK_CONTENT_STATUS = false;
-            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_CHECK_CONTENT_STATUS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
+            this.logger.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_CHECK_CONTENT_STATUS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_CHECK_CONTENT_STATUS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENT_CHECK_STATUS);
-            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_REINDEX_CONTENTS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
+            this.logger.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_REINDEX_CONTENTS:', this.PERMISSION_TO_CHECK_CONTENT_STATUS);
           }
 
           // PERMISSION_TO_UPDATE_SETTINGS
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_UPDATE_SETTINGS = true;
-            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
+            this.logger.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_UPDATE_SETTINGS = false;
-            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
+            this.logger.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_UPDATE_SETTINGS = status.matchedPermissions.includes(PERMISSIONS.KB_SETTINGS_EDIT);
-            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
+            this.logger.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_UPDATE_SETTINGS:', this.PERMISSION_TO_UPDATE_SETTINGS);
           }
 
           // PERMISSION_TO_DELETE
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_DELETE = true;
-            console.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+            this.logger.log('[KB TABLE] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_DELETE = false;
-            console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+            this.logger.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
-            console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+            this.logger.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
           }
 
 
@@ -331,7 +331,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
     this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
-    console.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
+    this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
     this.logger.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
     this.logger.log('[KB TABLE] ngOnChanges hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb);
     this.logger.log('[KB TABLE] ngOnChanges project_name ', this.project_name);
@@ -470,17 +470,17 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   onLoadByFilter(filterValue?: string, column?: string) {
     this.hasFiltered = true;
-    console.log('[KB TABLE] >>>  onLoadByFilter hasFiltered ', this.hasFiltered)
-    console.log('[KB TABLE] >>> onLoadByFilter filterStatus ', this.filterStatus)
-    console.log('[KB TABLE] >>> onLoadByFilter filterType ', this.filterType)
+    this.logger.log('[KB TABLE] >>>  onLoadByFilter hasFiltered ', this.hasFiltered)
+    this.logger.log('[KB TABLE] >>> onLoadByFilter filterStatus ', this.filterStatus)
+    this.logger.log('[KB TABLE] >>> onLoadByFilter filterType ', this.filterType)
     // let status = '';
     // let search = '';
     this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
     this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
 
-    console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
-    console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
-    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
     
     // If called without parameters (manual refresh), reset page to 0
     if (filterValue === undefined && column === undefined) {

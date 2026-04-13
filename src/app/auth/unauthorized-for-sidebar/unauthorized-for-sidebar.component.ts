@@ -24,12 +24,12 @@ export class UnauthorizedForSidebarComponent implements OnInit, OnDestroy {
 
     // Ottieni i parametri immediatamente (non solo dalla subscription)
     this.callingPage = this.route.snapshot.paramMap.get('callingpage');
-    console.log('Unauthorized for sidebar - *** Called from page (snapshot):', this.callingPage);
+    // console.log('Unauthorized for sidebar - *** Called from page (snapshot):', this.callingPage);
     this.setPageName(this.callingPage);
 
     this.route.paramMap.subscribe((params) => {
       this.callingPage = params.get('callingpage');
-      console.log('Unauthorized for sidebar - *** Called from page:', this.callingPage);
+      // console.log('Unauthorized for sidebar - *** Called from page:', this.callingPage);
       this.setPageName(this.callingPage);
     });
      this.getBrowserVersion()

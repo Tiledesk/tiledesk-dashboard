@@ -14,7 +14,7 @@ export class UnauthorizedForSettingsComponent implements OnInit , OnChanges{
   }
   
   ngOnChanges() {  
-    console.log('unauthorized-for-settings customHeight', this.customHeight)
+    // console.log('unauthorized-for-settings customHeight', this.customHeight)
   }
 
 }

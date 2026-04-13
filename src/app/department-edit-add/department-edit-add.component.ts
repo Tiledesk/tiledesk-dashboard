@@ -387,22 +387,22 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[DEPT-EDIT-ADD] - ROLE:', status.role);
-        console.log('[DEPT-EDIT-ADD] - PERMISSIONS', status.matchedPermissions);
+        this.logger.log('[DEPT-EDIT-ADD] - ROLE:', status.role);
+        this.logger.log('[DEPT-EDIT-ADD] - PERMISSIONS', status.matchedPermissions);
 
         // PERMISSION_TO_READ_TEAMMATE_DETAILS
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
 
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-            console.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           } else {
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-            console.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[DEPT-EDIT-ADD] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           }
         } else {
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-          console.log('[DEPT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 
 
@@ -410,34 +410,34 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[WDEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[WDEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
         // PERMISSION TO UPDATE APP
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_UPDATE_APP = true;
-          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_UPDATE_APP = false;
-          console.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
-          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
         }
 
         // --------------------------
@@ -446,34 +446,34 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_CREATE_GROUP = true;
-          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_CREATE_GROUP = false;
-          console.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_CREATE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUPS_CREATE);
-          console.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+          this.logger.log('[DEPT-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
         }
 
         // PERMISSION_TO_ADD_FLOWS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_FLOWS = true;
-          console.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[DEPT-EDIT-ADD] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[DEPT-EDIT-ADD] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('[DEPT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[DEPT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
 
       });
@@ -481,21 +481,21 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   async checkEditPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('department-edit')
-    console.log('[DEPT-EDIT-ADD] result ', result)
+    this.logger.log('[DEPT-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[DEPT-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
-    console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
+    this.logger.log('[DEPT-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    this.logger.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
 
   }
 
   async checkCreatePermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('department-create')
-    console.log('[DEPT-EDIT-ADD] result ', result)
+    this.logger.log('[DEPT-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
-    console.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
+    this.logger.log('[DEPT-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    this.logger.log('[DEPT-EDIT-ADD] permissionChecked ', this.permissionChecked)
   }
 
   getCurrentProject() {
@@ -518,7 +518,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - this.EDIT_VIEW: ', this.EDIT_VIEW);
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - this.EDIT_VIEW: ', this.EDIT_VIEW);
       this.allowMultipleGroups = project.profile?.customization?.allowMultipleGroups ? true : false;
       
       if (this.EDIT_VIEW)  {
@@ -526,7 +526,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.getParamsAndDeptById();
       }
      
-      console.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
+      this.logger.log('[DEPT-EDIT-ADD] - GET PROJECT BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
     }, error => {
       this.logger.error('[DEPT-EDIT-ADD] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
@@ -639,7 +639,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // @ canDeactivate NOT_HAS_EDITED is to canDeactivate if is false is displayed the alert
   // -------------------------------------------------------------------------------------
   onChangeDeptName($event) {
-    console.log('[DEPT-EDIT-ADD] - onChangeDeptName IS_DEFAULT_DEPT', this.IS_DEFAULT_DEPT);
+    this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptName IS_DEFAULT_DEPT', this.IS_DEFAULT_DEPT);
     this.logger.log('[DEPT-EDIT-ADD] - onChangeDeptName ', $event);
 
     this.NOT_HAS_EDITED = false
@@ -804,7 +804,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = true
-    console.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    this.logger.log('[DEPT-EDIT-ADD] - OPEN CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
@@ -816,12 +816,12 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // HALDLE OUTPUT 'CLOSE SIDEBAR' * CREATE GROUP RIGHT SIDEBAR *
   handleCloseCreateGroupSidebar(event) {
     this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR = event;
-    console.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
+    this.logger.log('[DEPT-EDIT-ADD] - CLOSE CREATE GROUP SIDEBAR ', this.OPEN_CREATE_GROUP_RIGHT_SIDEBAR);
   }
 
   // HALDLE OUTPUT 'GROUP CREATED' * CREATE GROUP RIGHT SIDEBAR *
   handleNewGroupCreatedFromSidebar(event) {
-    console.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
+    this.logger.log('[DEPT-EDIT-ADD] - handleNewGroupCreatedFromSidebar ID GROUP ', event);
     if (event) {
       this.new_group_created_id = event
       this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = true
@@ -1112,7 +1112,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getGroupsByProjectId() {
     if (this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR === true) {
-      console.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR new_group_created_id', this.new_group_created_id);
+      this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS  SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR new_group_created_id', this.new_group_created_id);
 
       if (!this.allowMultipleGroups) {
         this.selectedGroupId = this.new_group_created_id;
@@ -1120,7 +1120,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+      this.logger.log('[DEPT-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
 
       if (Array.isArray(this.groupsParsedArray)) {
         this.groupsParsedArray = this.groupsParsedArray.map(item => {
@@ -1131,7 +1131,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           };
         });
 
-        console.log('[DEPT-EDIT-ADD] - myParsedArray with group names:', this.groupsParsedArray);
+        this.logger.log('[DEPT-EDIT-ADD] - myParsedArray with group names:', this.groupsParsedArray);
       }
 
       if (groups) {
@@ -1235,7 +1235,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   __setSelectedGroup() {
-    console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
+    this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
     this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
 
@@ -1252,7 +1252,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           percentage: currentMap.get(id) ?? 0   // se esiste lo recupera, altrimenti parte da 0
         }));
 
-        console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
+        this.logger.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
         if (this.groupsParsedArray?.length > 0) {
           this.displayAssignTo = false
         }
@@ -1264,7 +1264,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   _setSelectedGroup() {
-  console.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
+  this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED ----> selectedGroupId: ', this.selectedGroupId);
   this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
 
   if (this.allowMultipleGroups) {
@@ -1281,7 +1281,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         percentage: currentMap.get(id) ?? 0   // se esiste lo recupera, altrimenti parte da 0
       }));
 
-      console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
+      this.logger.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY aggiornato:', this.groupsParsedArray);
       if (this.groupsParsedArray?.length > 0) {
         this.displayAssignTo = false
       }
@@ -1290,7 +1290,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       // rimuovi tutti i gruppi da groupsParsedArray
       this.groupsParsedArray = [];
       this.displayAssignTo = true;
-      console.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY svuotato (gruppo rimosso)');
+      this.logger.log('[DEPT-EDIT-ADD] - GROUPS PARSED ARRAY svuotato (gruppo rimosso)');
     }
   }
 
@@ -1338,7 +1338,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   // GO BACK TO DEPARTMENTS COMPONENT
   goBackToDeptsList() {
-    console.log('[DEPT-EDIT-ADD] goBackToDeptsList')
+    this.logger.log('[DEPT-EDIT-ADD] goBackToDeptsList')
     this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 
@@ -1385,7 +1385,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getDeptById() {
     this.deptService.getDeptById(this.id_dept).subscribe((dept: any) => {
-      console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
@@ -1406,8 +1406,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           this.selectedGroupId = dept.id_group;
         }
 
-        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - selectedGroupId: ', this.selectedGroupId);
-        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
+        this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - selectedGroupId: ', this.selectedGroupId);
+        this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - allowMultipleGroups: ', this.allowMultipleGroups);
         //  this.groupsParsedArray = this.groupsLoadPercentageFake 
 
         if (this.groupsParsedArray?.length > 0) {
@@ -1419,7 +1419,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
 
         // console.log('[DEPT-EDIT-ADD] Final dept_description_toUpdate:', this.dept_description_toUpdate)
-        console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - dept_description_toUpdate : ', this.dept_description_toUpdate);
+        this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - dept_description_toUpdate : ', this.dept_description_toUpdate);
 
         this.botId = dept.id_bot;
         this.dept_routing = dept.routing;
@@ -1694,7 +1694,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   goToGroupDetail(groupid) {
-    console.log('goToGroupDetail groupid', groupid)
+    this.logger.log('goToGroupDetail groupid', groupid)
     this.router.navigate(['project/' + this.project._id + '/group/edit/' + groupid]);
   }
 
@@ -1702,7 +1702,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
     this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
 
-      console.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
+      this.logger.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
 
@@ -1806,7 +1806,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
       // this.groupsLoadPercentage = result
       this.groupsParsedArray = result
-      console.log('[DEPT-EDIT-ADD] 🔄 Updated groupsParsedArray:', this.groupsParsedArray);
+      this.logger.log('[DEPT-EDIT-ADD] 🔄 Updated groupsParsedArray:', this.groupsParsedArray);
       this.getGroupsByProjectId()
     }
   }
@@ -1819,7 +1819,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     // RESOLVE THE BUG: THE BUTTON UPDATE REMAIN FOCUSED AFTER PRESSED
     const updated_btn = <HTMLElement>document.querySelector('.update-dept-btn');
     updated_btn.blur();
-    console.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED 1', this.dept_description_toUpdate);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED 1', this.dept_description_toUpdate);
     // if (this.dept_description_toUpdate_temp?.trim()  !== "") {
     //   this.dept_description_toUpdate = this.dept_description_toUpdate_temp;
     // }
@@ -1834,7 +1834,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
     // console.log('[DEPT-EDIT-ADD] - EDIT - TAGS WHEN EDIT IS PRESSED ', this.tags)
-    console.log('[DEPT-EDIT-ADD] - EDIT - WHEN EDIT IS PRESSED  this.groupsParsedArray ', this.groupsParsedArray)
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - WHEN EDIT IS PRESSED  this.groupsParsedArray ', this.groupsParsedArray)
 
 
 
@@ -1857,7 +1857,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.tags
      
     ).subscribe((data) => {
-      console.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
+      this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
 
 
 

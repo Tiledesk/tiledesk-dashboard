@@ -127,27 +127,27 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log("[INTEGRATION-COMP] - PERMISSION_TO_UPDATE Project: ", this.project) ;
-        console.log('[INTEGRATION-COMP] - Role:', status.role);
-        console.log('[INTEGRATION-COMP] - Permissions:', status.matchedPermissions);
+        this.logger.log("[INTEGRATION-COMP] - PERMISSION_TO_UPDATE Project: ", this.project) ;
+        this.logger.log('[INTEGRATION-COMP] - Role:', status.role);
+        this.logger.log('[INTEGRATION-COMP] - Permissions:', status.matchedPermissions);
 
         // PERMISSION TO UPDATE
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
           if (status.matchedPermissions.includes(PERMISSIONS.INTEGRATIONS_UPDATE)) {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false;
             if (this.PERMISSION_TO_UPDATE === false) {
               this.router.navigate(['project/' + this.projectID + '/integrations/'])
             }
            
-            console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[INTEGRATION-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[INTEGRATION-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
 
@@ -167,11 +167,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('integrations')
-    console.log('[INTEGRATION-COMP] result ', result)
+    this.logger.log('[INTEGRATION-COMP] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[INTEGRATION-COMP] isAuthorized ', this.isAuthorized)
-    console.log('[INTEGRATION-COMP] permissionChecked ', this.permissionChecked)
+    this.logger.log('[INTEGRATION-COMP] isAuthorized ', this.isAuthorized)
+    this.logger.log('[INTEGRATION-COMP] permissionChecked ', this.permissionChecked)
   }
 
   // ------------------------------
@@ -254,8 +254,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
           this.project = project
           this.projectID = project._id
-          console.log("[INTEGRATION-COMP] getCurrentProject Project: ", this.project) ;
-          console.log("[INTEGRATION-COMP] getCurrentProject PERMISSION_TO_UPDATE: ", this.PERMISSION_TO_UPDATE) ;
+          this.logger.log("[INTEGRATION-COMP] getCurrentProject Project: ", this.project) ;
+          this.logger.log("[INTEGRATION-COMP] getCurrentProject PERMISSION_TO_UPDATE: ", this.PERMISSION_TO_UPDATE) ;
            if (this.PERMISSION_TO_UPDATE === false) {
               this.router.navigate(['project/' + this.projectID + '/integrations/'])
            }
@@ -342,7 +342,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
 
         this.showSpinner = false
@@ -499,7 +499,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
 
 
-    console.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
 
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
@@ -554,7 +554,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   integrationUpdateEvent(data) {
-    console.log('[INTEGRATION-COMP] data', data)
+    this.logger.log('[INTEGRATION-COMP] data', data)
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
       this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
@@ -662,7 +662,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(key) {
-    console.log('[INTEGRATION-COMP] browserRefresh', this.browserRefresh)
+    this.logger.log('[INTEGRATION-COMP] browserRefresh', this.browserRefresh)
     this.logger.log("[INTEGRATION-COMP] change route in ", key);
 
     this.router.navigate(['project/' + this.projectID + '/integrations/'], { queryParams: { name: key } })

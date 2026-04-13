@@ -109,17 +109,17 @@ export class MessagesStatsModalComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_VIEW_ANALYTICS = true;
-            console.log('[CHATBOT-STATS-MODAL] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+            this.logger.log('[CHATBOT-STATS-MODAL] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_VIEW_ANALYTICS = false;
-            console.log('[CHATBOT-STATS-MODAL] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+            this.logger.log('[CHATBOT-STATS-MODAL] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
-            console.log('[CHATBOT-STATS-MODAL] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+            this.logger.log('[CHATBOT-STATS-MODAL] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
           }
   
   

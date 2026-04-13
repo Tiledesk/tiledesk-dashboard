@@ -325,7 +325,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
     };
 
     const url = this.ROLES_URL;
-    console.log('[ROLES-SERV] - CREATE NEW ROLE - URL ', url);
+    this.logger.log('[ROLES-SERV] - CREATE NEW ROLE - URL ', url);
 
     const body = payload;
     this.logger.log('[ROLES-SERV] - CREATE NEW ROLE - REQUEST BODY ', body);
@@ -342,7 +342,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
    */
   public updateRole(payload, roleid) {
     let url = this.ROLES_URL + roleid;
-    console.log('[ROLES-SERV] - UPDATE ROLE - URL ', url);
+    this.logger.log('[ROLES-SERV] - UPDATE ROLE - URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -353,7 +353,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
     };
 
     const body = payload;
-    console.log('[ROLES-SERV] - UPDATE ROLE - BODY ', body);
+    this.logger.log('[ROLES-SERV] - UPDATE ROLE - BODY ', body);
 
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
@@ -367,7 +367,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
   public deleteRole(roleid: string) {
 
     let url = this.ROLES_URL + roleid;
-    console.log('[ROLES-SERV] - DELETE ROLE - URL ', url);
+    this.logger.log('[ROLES-SERV] - DELETE ROLE - URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -389,7 +389,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
 
     const url = this.ROLES_URL;
 
-    console.log('[ROLES-SERV] - GET ALL ROLES - URL', url);
+    this.logger.log('[ROLES-SERV] - GET ALL ROLES - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -407,7 +407,7 @@ listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
 
     const url = this.ROLES_URL + roleid;
 
-    console.log('[ROLES-SERV] - GET ROLES BY ID - URL', url);
+    this.logger.log('[ROLES-SERV] - GET ROLES BY ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

@@ -157,8 +157,8 @@ export class GroupsComponent implements OnInit {
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[USERS] - Role:', status.role);
-          console.log('[USERS] - Permissions:', status.matchedPermissions);
+          this.logger.log('[USERS] - Role:', status.role);
+          this.logger.log('[USERS] - Permissions:', status.matchedPermissions);
           this.loggedInProjectUserRole = status.role;
           this.projectUserMatchedPermissions = status.matchedPermissions || [];
 
@@ -168,17 +168,17 @@ export class GroupsComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_VIEW_TEAMMATES = true;
-            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+            this.logger.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_VIEW_TEAMMATES = false;
-            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+            this.logger.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
-            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+            this.logger.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
           }
   
           // ------------------------
@@ -187,17 +187,17 @@ export class GroupsComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_VIEW_ROLES = true;
-            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+            this.logger.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
 
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_VIEW_ROLES = false;
-            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+            this.logger.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
 
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_ROLES = status.matchedPermissions.includes(PERMISSIONS.ROLES_READ);
-            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
+            this.logger.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ROLES:', this.PERMISSION_TO_VIEW_ROLES);
           }
 
           // ------------------------
@@ -206,17 +206,17 @@ export class GroupsComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_EDIT_GROUP = true;
-            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+            this.logger.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
 
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_EDIT_GROUP = false;
-            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+            this.logger.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
 
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_EDIT_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUP_UPDATE);
-            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
+            this.logger.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUP:', this.PERMISSION_TO_EDIT_GROUP);
           }
 
           // --------------------------
@@ -225,17 +225,17 @@ export class GroupsComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_CREATE_GROUP = true;
-            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+            this.logger.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
 
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_CREATE_GROUP = false;
-            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+            this.logger.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
 
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_CREATE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUPS_CREATE);
-            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
+            this.logger.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_GROUP:', this.PERMISSION_TO_CREATE_GROUP);
           }
 
           // --------------------------
@@ -244,17 +244,17 @@ export class GroupsComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_DELETE_GROUP = true;
-            console.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+            this.logger.log('[GROUPS] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
 
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_DELETE_GROUP = false;
-            console.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+            this.logger.log('[GROUPS] - Project user agent (2)', 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
 
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_DELETE_GROUP = status.matchedPermissions.includes(PERMISSIONS.GROUP_DELETE);
-            console.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
+            this.logger.log('[GROUPS] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_GROUP:', this.PERMISSION_TO_DELETE_GROUP);
           }
 
           
@@ -266,11 +266,11 @@ export class GroupsComponent implements OnInit {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('groups')
-    console.log('[GROUPS] result ', result)
+    this.logger.log('[GROUPS] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[GROUPS] isAuthorized ', this.isAuthorized)
-    console.log('[GROUPS] permissionChecked ', this.permissionChecked)
+    this.logger.log('[GROUPS] isAuthorized ', this.isAuthorized)
+    this.logger.log('[GROUPS] permissionChecked ', this.permissionChecked)
   }
 
   getBrowserVersion() {
@@ -332,7 +332,7 @@ export class GroupsComponent implements OnInit {
    * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID   */
   getGroupsByProjectId() {
     this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
+      this.logger.log('[GROUPS] - GET GROUPS BY PROJECT ID ', groups);
       if (groups) {
         this.groupsList = (groups || []).sort((a, b) => {
         const nameA = (a.name || '').toLowerCase();
@@ -341,7 +341,7 @@ export class GroupsComponent implements OnInit {
       });
         this.filteredGroups = [...this.groupsList];
         this.updatePagination();
-        console.log('[GROUPS] - GET GROUPS BY PROJECT this.groupsList ', this.groupsList);
+        this.logger.log('[GROUPS] - GET GROUPS BY PROJECT this.groupsList ', this.groupsList);
         this.createGroupAvatar(this.groupsList)
       }
 
@@ -484,11 +484,11 @@ export class GroupsComponent implements OnInit {
   }
 
   getDepartments(selectedGrouId?: string, reason?: string) {
-  console.log('[GROUPS] getDepartments - DELETE / DISABLE reason ', reason);
-  console.log('[GROUPS] getDepartments - ID OF THE GROUP TO DELETE / DISABLE ', selectedGrouId);
+  this.logger.log('[GROUPS] getDepartments - DELETE / DISABLE reason ', reason);
+  this.logger.log('[GROUPS] getDepartments - ID OF THE GROUP TO DELETE / DISABLE ', selectedGrouId);
 
   this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-    console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+    this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
 
     // ✅ cerca sia nel vecchio campo id_group che nel nuovo array groups[]
     const deptsArrayWithAssociatedGroup = _departments.filter((dept: any) => {
@@ -498,7 +498,7 @@ export class GroupsComponent implements OnInit {
     });
 
     if (deptsArrayWithAssociatedGroup.length === 0) {
-      console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
+      this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
       if (reason === 'delete') {
         this.displayDeleteModal = 'block';
       } else {
@@ -508,8 +508,8 @@ export class GroupsComponent implements OnInit {
     }
 
     // ✅ gruppo associato ad almeno un dipartimento
-    console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP ASSOCIATED');
-    console.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
+    this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP ASSOCIATED');
+    this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
 
     const deptsNameAssociatedToGroup = deptsArrayWithAssociatedGroup.map(dept => dept.name);
     const isPlural = deptsNameAssociatedToGroup.length > 1;
@@ -529,10 +529,10 @@ export class GroupsComponent implements OnInit {
 }
 
   _getDepartments(selectedGrouId?: string, reason?: string) {
-    console.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
+    this.logger.log('[GROUPS] getDepartmentsL - DELETE / DISABLE reason ', reason)
     this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE / DISABLE ', selectedGrouId)
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+      this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
 
       const deptsArrayWithAssociatedGroup = _departments.filter((obj: any) => {
         return obj.id_group === selectedGrouId;
@@ -555,7 +555,7 @@ export class GroupsComponent implements OnInit {
           deptsNameAssociatedToGroup.push(dept.name)
         });
 
-        console.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
 
         const isPlural = deptsNameAssociatedToGroup.length > 1;
         const translationKey = isPlural
@@ -637,11 +637,11 @@ export class GroupsComponent implements OnInit {
 
   disableGroup(group_id: string) {
     this.displayDisableModal = 'none';
-    console.log("[GROUPS] disableGroup group_id: ", group_id);
+    this.logger.log("[GROUPS] disableGroup group_id: ", group_id);
     this.groupsService.disableGroup(group_id).subscribe((group) => {
-      console.log("[GROUPS] disableGroup response: ", group);
+      this.logger.log("[GROUPS] disableGroup response: ", group);
     }, (error) => {
-      console.error("[GROUPS] error disabling group: ", error);
+      this.logger.error("[GROUPS] error disabling group: ", error);
       if (error.status === 403) {
         // this.notify.showWidgetStyleUpdateNotification('Hey' + error.error.error, 4, 'report_problem')
         // this.getDepartments(group_id, 'disable') 

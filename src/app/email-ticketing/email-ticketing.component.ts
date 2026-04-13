@@ -73,11 +73,11 @@ export class EmailTicketingComponent implements OnInit {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('email-ticketing')
-    console.log('[EMAIL-TICKETING] result ', result)
+    this.logger.log('[EMAIL-TICKETING] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[EMAIL-TICKETING] isAuthorized ', this.isAuthorized)
-    console.log('[EMAIL-TICKETING] permissionChecked ', this.permissionChecked)
+    this.logger.log('[EMAIL-TICKETING] isAuthorized ', this.isAuthorized)
+    this.logger.log('[EMAIL-TICKETING] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {
@@ -85,20 +85,20 @@ export class EmailTicketingComponent implements OnInit {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[EMAIL-TICKETING] - listenToProjectUser-  Role:', status.role);
-        console.log('[EMAIL-TICKETING] - listenToProjectUser - Permissions:', status.matchedPermissions);
+        this.logger.log('[EMAIL-TICKETING] - listenToProjectUser-  Role:', status.role);
+        this.logger.log('[EMAIL-TICKETING] - listenToProjectUser - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.EMAIL_TICKETING_UPDATE)) {
 
             this.PERMISSION_TO_UPDATE = true
-            console.log('[EMAIL-TICKETING] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[EMAIL-TICKETING] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false
-            console.log('EMAIL-TICKETING] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('EMAIL-TICKETING] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[EMAIL-TICKETING] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[EMAIL-TICKETING] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
 

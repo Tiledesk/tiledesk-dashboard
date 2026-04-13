@@ -400,8 +400,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[HOME] - Role:', status.role);
-        console.log('[HOME] - Permissions:', status.matchedPermissions);
+        this.logger.log('[HOME] - Role:', status.role);
+        this.logger.log('[HOME] - Permissions:', status.matchedPermissions);
         // -------------------------------
         // PERMISSION_TO_VIEW_QUOTA_USAGE
         // -------------------------------
@@ -409,14 +409,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
 
             this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+            this.logger.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
           } else {
             this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
-            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+            this.logger.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
           }
         } else {
           this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+          this.logger.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
         }
 
         // -------------------------------
@@ -426,15 +426,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (status.matchedPermissions.includes(PERMISSIONS.HOURS_READ)) {
             this.PERMISSION_TO_VIEW_OP = true
-            console.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
+            this.logger.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
           } else {
             this.PERMISSION_TO_VIEW_OP = false
 
-            console.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
+            this.logger.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
           }
         } else {
           this.PERMISSION_TO_VIEW_OP = true
-          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
+          this.logger.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
         }
     
 
@@ -444,17 +444,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_WIDGET_SETUP = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_WIDGET_SETUP = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_WIDGET_SETUP = status.matchedPermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
         }
 
         // ---------------------------------
@@ -463,17 +463,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_FLOWS = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_FLOWS = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
         }
 
         // -------------------------------
@@ -482,17 +482,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_KB = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_KB = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.KB_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
         }
 
         // -------------------------------
@@ -501,17 +501,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_ANALYTICS = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ANALYTICS = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
         // -------------------------------
@@ -520,17 +520,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_WA_BRODCAST = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_WA_BRODCAST = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_WA_BRODCAST = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
         }
 
         // -------------------------------
@@ -539,17 +539,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_TEAMMATES = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_TEAMMATES = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
         }
 
         // -----------------------------------
@@ -558,17 +558,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 
         // -----------------------------------
@@ -577,17 +577,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_INVITE = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+          this.logger.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_INVITE = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+          this.logger.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_INVITE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
+          this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
         }
 
         
@@ -686,7 +686,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (data) {
           if (data['projectId'] === this.projectId) {
-            console.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
+            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
             this.quotasLimits = data.projectLimits;
             this.allQuotas = data.allQuotes;
@@ -2422,7 +2422,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
-    console.log('[HOME] CALL GET-PROJECT-USER')
+    this.logger.log('[HOME] CALL GET-PROJECT-USER')
     // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
     this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
@@ -2436,7 +2436,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         //   this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
         // }
         if (projectUser[0].role !== undefined) {
-          console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
           this.usersService.user_role(projectUser[0].role);

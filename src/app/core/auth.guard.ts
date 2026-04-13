@@ -338,7 +338,7 @@ export class AuthGuard implements CanActivate {
   // canActivate SSO 
   // ------------------------------------------------------------------------
  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-  console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+  this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
   this.logger.log('[AUTH-GUARD] - user ', this.user);
 
   const url = state.url;
@@ -365,25 +365,25 @@ export class AuthGuard implements CanActivate {
 
   const token = queryParamsFromUrl.get('token');
   const tiledeskLogOut = queryParamsFromUrl.get('tiledesk_logOut');
-   console.log('[AUTH-GUARD] SSO queryParamsFromUrl token:', tiledeskLogOut);
-   console.log('[AUTH-GUARD] SSO queryParamsFromUrl tiledeskLogOut:', tiledeskLogOut);
+   this.logger.log('[AUTH-GUARD] SSO queryParamsFromUrl token:', tiledeskLogOut);
+   this.logger.log('[AUTH-GUARD] SSO queryParamsFromUrl tiledeskLogOut:', tiledeskLogOut);
   // Memorizzo tiledesk_logOut nello storage se presente
   if (tiledeskLogOut !== null) {
     this.localDbService.setInStorage('tiledesk_logOut', tiledeskLogOut);
   } else {
     // Se il parametro non è presente, lo rimuovo
     this.localDbService.removeFromStorage('tiledesk_logOut');
-    console.log('[AUTH-GUARD] SSO tiledesk_logOut rimosso perché non presente nell’URL');
+    this.logger.log('[AUTH-GUARD] SSO tiledesk_logOut rimosso perché non presente nell’URL');
   } 
 
   const persistentLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
 
-  console.log('[AUTH-GUARD] SSO Route pulita:', route);
-  console.log('[AUTH-GUARD] SSO Token:', token);
-  console.log('[AUTH-GUARD] SSO tiledesk_logOut persistente:', persistentLogOut);
+  this.logger.log('[AUTH-GUARD] SSO Route pulita:', route);
+  this.logger.log('[AUTH-GUARD] SSO Token:', token);
+  this.logger.log('[AUTH-GUARD] SSO tiledesk_logOut persistente:', persistentLogOut);
 
   const HAS_JWT = JSON.stringify(next.queryParams).includes('JWT');
-  console.log('[AUTH-GUARD] SSO HAS_JWT', HAS_JWT);
+  this.logger.log('[AUTH-GUARD] SSO HAS_JWT', HAS_JWT);
 
   // Logica principale
   if (

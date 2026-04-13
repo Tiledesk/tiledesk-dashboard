@@ -170,26 +170,26 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[BOTS-TEMPLATES] - this.ROLE:', this.ROLE);
-        console.log('[BOTS-TEMPLATES] - this.PERMISSIONS', this.PERMISSIONS);
+        this.logger.log('[BOTS-TEMPLATES] - this.ROLE:', this.ROLE);
+        this.logger.log('[BOTS-TEMPLATES] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('[BOTS-TEMPLATES] - hasDefaultRole', this.hasDefaultRole);
+        this.logger.log('[BOTS-TEMPLATES] - hasDefaultRole', this.hasDefaultRole);
 
         // PERMISSION_TO_ADD_FLOWS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_FLOWS = true;
-          console.log('[BOTS-TEMPLATES] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[BOTS-TEMPLATES] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[BOTS-TEMPLATES] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[BOTS-TEMPLATES] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('[BOTS-TEMPLATES] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[BOTS-TEMPLATES] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
       });
 
@@ -600,7 +600,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       if (res) {
         this.certfifiedTemplates = res;
         // this.certfifiedTemplates = this.fake_tmplt
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res

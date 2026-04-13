@@ -1787,50 +1787,50 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // Chatbot sidebar
         if (event.url.indexOf('/bots/my-chatbots/all') !== -1 || event.url.indexOf('/bots') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('flows/no-auth') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH = true;
-          console.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH);
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH);
         } else {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH = false;
-          console.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH);
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE_NO_AUTH);
         }
 
         if (event.url.indexOf('/external') !== -1) {
           this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ', this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ', this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE);
         } else {
           this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ', this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE ', this.EDIT_EXTERNAL_CHATBOT_ROUTE_IS_ACTIVE);
         }
         
         if (event.url.indexOf('/flows/flow-automations') !== -1) {
           this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
         } else {
           this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/flows/flow-aiagent') !== -1) {
           this.FLOW_AIAGENT_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
         } else {
           this.FLOW_AIAGENT_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AIAGENT_ROUTE_IS_ACTIVE ', this.FLOW_AIAGENT_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/flows/flow-webhooks') !== -1 || event.url.indexOf('/flow-webhook/no-auth') !== -1) {
           this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
         } else {
           this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
         }
 
         
@@ -1992,26 +1992,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         if (event.url.indexOf('/wsrequests/no-auth') !== -1) {
           this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
         } else {
           this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
         }
 
          if (event.url.indexOf('/history/no-auth') !== -1) {
           this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
         } else {
           this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - HISTORY_NO_AUTH_ROUTE_IS_ACTIVE ', this.HISTORY_NO_AUTH_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/conversation-detail') !== -1) {
           this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - CONVERSATION_DETAIL_ROUTE_IS_ACTIVE ', this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONVERSATION_DETAIL_ROUTE_IS_ACTIVE ', this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE);
         } else {
           this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - CONVERSATION_DETAIL_ROUTE_IS_ACTIVE ', this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONVERSATION_DETAIL_ROUTE_IS_ACTIVE ', this.CONVERSATION_DETAIL_ROUTE_IS_ACTIVE);
         }
 
 
@@ -2020,10 +2020,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // if (event.url.indexOf('/messages') !== -1) {
         if (event.url.indexOf('/messages') !== -1) {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         } else {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/wsrequest-detail') !== -1 || event.url.indexOf('/wsrequest-detail-history') !== -1) {
@@ -2059,18 +2059,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // Verifica che l'URL contenga /contact/ ma non /contacts (per evitare falsi positivi)
         if (event.url.indexOf('/contact/') !== -1 && event.url.indexOf('/contacts') === -1) {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE, 'URL:', event.url);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE, 'URL:', event.url);
         } else {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE, 'URL:', event.url);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE, 'URL:', event.url);
         }
 
         if (event.url.indexOf('/contacts') !== -1) {
           this.CONTACTS_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - CONTACTS_ROUTE_IS_ACTIVE ', this.CONTACTS_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_ROUTE_IS_ACTIVE ', this.CONTACTS_ROUTE_IS_ACTIVE);
         } else {
           this.CONTACTS_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - CONTACTS_ROUTE_IS_ACTIVE ', this.CONTACTS_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_ROUTE_IS_ACTIVE ', this.CONTACTS_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/contacts-demo') !== -1) {
@@ -2171,10 +2171,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         
         if (event.url.indexOf('/automations/no-auth') !== -1) {
           this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE);
         } else {
           this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_NO_AUTH_IS_ACTIVE);
         }
 
         

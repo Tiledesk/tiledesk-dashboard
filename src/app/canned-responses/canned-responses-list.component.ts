@@ -99,11 +99,11 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('canned-responses')
-    console.log('[CANNED-RES-LIST] result ', result)
+    this.logger.log('[CANNED-RES-LIST] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[CANNED-RES-LIST] isAuthorized ', this.isAuthorized)
-    console.log('[CANNED-RES-LIST] permissionChecked ', this.permissionChecked)
+    this.logger.log('[CANNED-RES-LIST] isAuthorized ', this.isAuthorized)
+    this.logger.log('[CANNED-RES-LIST] permissionChecked ', this.permissionChecked)
   }
 
     listenToProjectUser() {
@@ -111,22 +111,22 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[CANNED-RES-LIST] - listenToProjectUser-  Role:', status.role);
-          console.log('[CANNED-RES-LIST] - listenToProjectUser - Permissions:', status.matchedPermissions);
+          this.logger.log('[CANNED-RES-LIST] - listenToProjectUser-  Role:', status.role);
+          this.logger.log('[CANNED-RES-LIST] - listenToProjectUser - Permissions:', status.matchedPermissions);
 
           // PERMISSION TO UPDATE
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
             if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_UPDATE)) {
   
               this.PERMISSION_TO_UPDATE = true
-              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+              this.logger.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
             } else {
               this.PERMISSION_TO_UPDATE = false
-              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+              this.logger.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
             }
           } else {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
 
           // PERMISSION TO CREATE
@@ -134,14 +134,14 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
             if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_CREATE)) {
   
               this.PERMISSION_TO_CREATE = true
-              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE 1', this.PERMISSION_TO_CREATE);
+              this.logger.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE 1', this.PERMISSION_TO_CREATE);
             } else {
               this.PERMISSION_TO_CREATE = false
-              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE 2', this.PERMISSION_TO_CREATE);
+              this.logger.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE 2', this.PERMISSION_TO_CREATE);
             }
           } else {
             this.PERMISSION_TO_CREATE = true
-            console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+            this.logger.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
           }
 
           // PERMISSION_TO_CREATE_PROJECT_SHARED
@@ -164,14 +164,14 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
             if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_DELETE)) {
   
               this.PERMISSION_TO_DELETE = true
-              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_DELETE 1', this.PERMISSION_TO_DELETE);
+              this.logger.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_DELETE 1', this.PERMISSION_TO_DELETE);
             } else {
               this.PERMISSION_TO_DELETE = false
-              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_DELETE 2', this.PERMISSION_TO_DELETE);
+              this.logger.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_DELETE 2', this.PERMISSION_TO_DELETE);
             }
           } else {
             this.PERMISSION_TO_DELETE = true
-            console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+            this.logger.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
           }
 
   
@@ -357,13 +357,13 @@ export class CannedResponsesListComponent implements OnInit, OnDestroy {
       return
     }
 
-    console.log('[CANNED-RES-LIST] - createdby ', createdby, ' currentUserId ' , this.currentUserId);
+    this.logger.log('[CANNED-RES-LIST] - createdby ', createdby, ' currentUserId ' , this.currentUserId);
     
     this.getScrollPos();
     this.selectCannedResponseId = cannedresponseid;
     this.displayModal_AddEditResponse = 'block';
     this.modalMode = 'edit';
-    console.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
+    this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
     
   }
 

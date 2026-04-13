@@ -17,7 +17,7 @@ export class EditLoadDistributionModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { groups: any[], group: any },
     public dialogRef: MatDialogRef<EditLoadDistributionModalComponent>,
   ) { 
-    console.log('EditLoadDistributionModalComponent  data', data) 
+    // console.log('EditLoadDistributionModalComponent  data', data) 
      // Create a deep copy of groups to avoid modifying the original data
     this.data.groups = JSON.parse(JSON.stringify(data.groups));
     this.data.group = this.data.groups.find(g => g.id === data.group.id);

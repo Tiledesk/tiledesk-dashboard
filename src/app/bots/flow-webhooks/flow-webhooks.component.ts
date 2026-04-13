@@ -97,43 +97,43 @@ export class FlowWebhooksComponent implements OnInit {
         .subscribe(status => {
           this.ROLE = status.role;
           this.PERMISSIONS = status.matchedPermissions;
-          console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - this.ROLE:', this.ROLE);
-          console.log('PERMISSION_TO_COPY_WEBHOOK_URL] - this.PERMISSIONS', this.PERMISSIONS);
+          this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - this.ROLE:', this.ROLE);
+          this.logger.log('PERMISSION_TO_COPY_WEBHOOK_URL] - this.PERMISSIONS', this.PERMISSIONS);
           this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-          console.log('PERMISSION_TO_COPY_WEBHOOK_URL] - hasDefaultRole', this.hasDefaultRole);
+          this.logger.log('PERMISSION_TO_COPY_WEBHOOK_URL] - hasDefaultRole', this.hasDefaultRole);
   
           // PERMISSION_TO_COPY_WEBHOOK_URL
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_COPY_WEBHOOK_URL = true;
-            console.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
+            this.logger.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_COPY_WEBHOOK_URL = false;
-            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
+            this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_COPY_WEBHOOK_URL = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_COPY);
-            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
+            this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_COPY_WEBHOOK_URL:', this.PERMISSION_TO_COPY_WEBHOOK_URL);
           }
 
           // PERMISSION_TO_ENABLE_DISABLE_WEBHOOK
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK = true;
-            console.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
+            this.logger.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK = false;
-            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
+            this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_EDIT);
-            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
+            this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_ENABLE_DISABLE_WEBHOOK:', this.PERMISSION_TO_ENABLE_DISABLE_WEBHOOK);
           }
 
 
@@ -141,17 +141,17 @@ export class FlowWebhooksComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and Admin always has permission
             this.PERMISSION_TO_DELETE_WEBHOOK = true;
-            console.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
+            this.logger.log('[BOT-PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
   
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_DELETE_WEBHOOK = false;
-            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
+            this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Project user is agent (2)', 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
   
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_DELETE_WEBHOOK = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_DELETE);
-            console.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
+            this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
           }
         });
   

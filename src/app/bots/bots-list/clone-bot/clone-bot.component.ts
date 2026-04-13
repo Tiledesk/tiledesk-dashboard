@@ -74,7 +74,7 @@ export class CloneBotComponent implements OnInit {
       if (project.id_project.id === this.selectedProjectId) {
         this.logger.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
         const _project = project.id_project
-        console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
+        this.logger.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
         // console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
 
         _project['role'] =  project['role']

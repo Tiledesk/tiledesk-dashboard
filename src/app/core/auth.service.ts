@@ -162,7 +162,7 @@ export class AuthService {
   getKeycloakURLToRedirectAfterLogout() {
     this.keycloakURLToRedirectAfterLogout = this.appConfigService.getConfig().logoutURL
     this.redirectToKeycloakURLAfterLogout =  typeof this.keycloakURLToRedirectAfterLogout === 'string' && this.keycloakURLToRedirectAfterLogout.trim() !== '';
-    // console.log('[AUTH-SERV] keycloakURLToRedirectAfterLogout ', this.keycloakURLToRedirectAfterLogout)
+    this.logger.log('[AUTH-SERV] keycloakURLToRedirectAfterLogout ', this.keycloakURLToRedirectAfterLogout)
     // console.log('[AUTH-SERV] redirectToKeycloakURLAfterLogout ', this.redirectToKeycloakURLAfterLogout)
   }
 
@@ -1151,7 +1151,7 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] - SIGNOUT - Cleared all project cache, project users cache and departments cache')
     // this.resetSleekplanUser()
     this.closeSleekplanWidget()
-    console.log('[AUTH-SERV] SSO Signout calledby +++++ ', calledby)
+    this.logger.log('[AUTH-SERV] SSO Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       this.localDbService.removeFromStorage('tiledesk_logOut');
       try {
@@ -1460,10 +1460,10 @@ export class AuthService {
             // KeycloakURLAfterLogout
             // ----------------------------------------
             if (this.redirectToKeycloakURLAfterLogout  === false) {
-              console.log('[AUTH-SERV] HERE firebaseSignout 1 ', '/login')
+              this.logger.log('[AUTH-SERV] HERE firebaseSignout 1 ', '/login')
               that.router.navigate(['/login'])
             } else {
-              console.log('[AUTH-SERV] HERE firebaseSignout 1 ', 'REDIRECT')
+              this.logger.log('[AUTH-SERV] HERE firebaseSignout 1 ', 'REDIRECT')
               location.replace( this.keycloakURLToRedirectAfterLogout);
             }
           }
@@ -1482,11 +1482,11 @@ export class AuthService {
 
             // ----------------------------------------
             if ( this.redirectToKeycloakURLAfterLogout  === false) {
-              console.log('[AUTH-SERV] HERE firebaseSignout 2 ', '/login')
+              this.logger.log('[AUTH-SERV] HERE firebaseSignout 2 ', '/login')
               that.router.navigate(['/login'])
             } else {
               // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
-              console.log('[AUTH-SERV] HERE firebaseSignout 2 ', 'REDIRECT')
+              this.logger.log('[AUTH-SERV] HERE firebaseSignout 2 ', 'REDIRECT')
               location.replace( this.keycloakURLToRedirectAfterLogout);
             }
           }
@@ -1506,12 +1506,12 @@ export class AuthService {
       // }
 
        if ( this.redirectToKeycloakURLAfterLogout  === false) {
-        console.log('[AUTH-SERV] HERE signoutNoFirebase ', '/login')
+        this.logger.log('[AUTH-SERV] HERE signoutNoFirebase ', '/login')
         this.router.navigate(['/login'])
        
       } else {
         // window.open( this.keycloakURLToRedirectAfterLogout, '_self');
-        console.log('[AUTH-SERV] HERE signoutNoFirebase ', 'REDIRECT')
+        this.logger.log('[AUTH-SERV] HERE signoutNoFirebase ', 'REDIRECT')
         // location.replace( this.keycloakURLToRedirectAfterLogout);
         this.router.navigateByUrl('/', { replaceUrl: true }).then(() => {
           location.replace(this.keycloakURLToRedirectAfterLogout);
@@ -1556,7 +1556,7 @@ export class AuthService {
 
   signinWithOAuth2() {
     const url = this.SERVER_BASE_PATH + 'auth/oauth2'
-    console.log('[AUTH-SERV] signinWithOAuth2 url ', url)
+    this.logger.log('[AUTH-SERV] signinWithOAuth2 url ', url)
     window.open(url, '_self');
   }
 

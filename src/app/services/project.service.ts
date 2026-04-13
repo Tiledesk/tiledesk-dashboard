@@ -1134,7 +1134,7 @@ export class ProjectService {
   // --------------------------------------------------------------------------------------
   saveAgentsChatAllowedExtensions (allowed_upload_extentions) {
     let promise = new Promise((resolve, reject) => {
-      console.log("[PROJECT-SERV] SAVE allowed_upload_extentions", allowed_upload_extentions)
+      this.logger.log("[PROJECT-SERV] SAVE allowed_upload_extentions", allowed_upload_extentions)
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
@@ -1157,7 +1157,7 @@ export class ProjectService {
   // --------------------------------------------------------------------------------------
   saveRetentionDays(retentionDays) {
     let promise = new Promise((resolve, reject) => {
-      console.log("[PROJECT-SERV] SAVE retention Days", retentionDays)
+      this.logger.log("[PROJECT-SERV] SAVE retention Days", retentionDays)
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN

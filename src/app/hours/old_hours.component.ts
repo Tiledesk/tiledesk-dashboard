@@ -475,16 +475,16 @@ export class HoursComponent implements OnInit, OnDestroy {
           }
 
           if (project.timeSlots) {
-            console.log("project.timeSlots: ", project.timeSlots)
+            this.logger.log("project.timeSlots: ", project.timeSlots)
             this.project_timeSlots = project.timeSlots;
             this.timeSlotsArray = Object.keys(project.timeSlots).map(key => ({
               id: key,
               ...project.timeSlots[key]
             }));
-            console.log("this.timeSlotsArray: ", this.timeSlotsArray)
+            this.logger.log("this.timeSlotsArray: ", this.timeSlotsArray)
           } else {
             this.project_timeSlots = {};
-            console.log("this.timeSlotsArray: ", this.timeSlotsArray)
+            this.logger.log("this.timeSlotsArray: ", this.timeSlotsArray)
           }
 
         }
@@ -810,12 +810,12 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   // SLOTS SECTION - START
   onSelectGeneralOperatingHours() {
-    console.log("onSelectGeneralOperatingHours clicked")
+    this.logger.log("onSelectGeneralOperatingHours clicked")
     this.getProjectById();
   }
   
   onSelectSlot(slot) {
-    console.log("onSelectSlot slot: ", slot)
+    this.logger.log("onSelectSlot slot: ", slot)
     this.isActiveOperatingHours = slot.active;
   }
 
@@ -829,7 +829,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
       if (body) {
-        console.log("body after close: ", body)
+        this.logger.log("body after close: ", body)
         this.addSlot(body.slotName);
         //this.onAddKb(body)
       }
@@ -845,13 +845,13 @@ export class HoursComponent implements OnInit, OnDestroy {
     }
 
     let uuid = uuidv4();
-    console.log("uuid: ", uuid)
+    this.logger.log("uuid: ", uuid)
     let short_uuid = uuid.substring(uuid.lastIndexOf('-') + 1)
-    console.log("short_uuid: ", short_uuid)
+    this.logger.log("short_uuid: ", short_uuid)
 
-    console.log("new_slot: ", new_slot);
+    this.logger.log("new_slot: ", new_slot);
     this.project_timeSlots[short_uuid] = new_slot;
-    console.log("project timeSlots: ", this.project_timeSlots);
+    this.logger.log("project timeSlots: ", this.project_timeSlots);
     this.saveSlot();
   }
 
@@ -859,11 +859,11 @@ export class HoursComponent implements OnInit, OnDestroy {
     let data = {
       timeSlots: this.project_timeSlots
     }
-    console.log("data: ", data);
+    this.logger.log("data: ", data);
     this.projectService.updateProject(this.projectid, data).subscribe((updatedProject) => {
-      console.log("updatedProject: ", updatedProject);
+      this.logger.log("updatedProject: ", updatedProject);
     }, (error) => {
-      console.log("error updating project: ", error);
+      this.logger.log("error updating project: ", error);
     })
   }
 

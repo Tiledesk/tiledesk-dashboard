@@ -343,7 +343,7 @@ export class UsersService {
 
   public old_getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
-    console.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -569,7 +569,7 @@ export class UsersService {
 
     // const url = this.PROJECT_USER_URL + 'users/' + user_id;
     const url = this.PROJECT_USER_URL + 'me';
-    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -609,7 +609,7 @@ export class UsersService {
     // const url = this.PROJECT_USER_URL + 'users/' + user_id;
 
     const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
-    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -658,7 +658,7 @@ export class UsersService {
       hasImage: false
     };
     const url = this.PROJECT_USER_URL + 'me';
-    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
     this.logger.log('[USER-SERV] - MOCKED GET PROJECT USER BY ID');
 
     return of([fakeMember]);
@@ -672,7 +672,7 @@ export class UsersService {
   public getProjectUserByUserId(user_id: string): Observable<any[]> {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
-    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -696,7 +696,7 @@ export class UsersService {
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
 
     const url = this.PROJECT_USER_URL + projectuser_id;
-    console.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
+    this.logger.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -1035,7 +1035,7 @@ export class UsersService {
    * @param projectUser_role 
    */
   public user_role(projectUser_role: string) {
-    console.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
 
     // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);

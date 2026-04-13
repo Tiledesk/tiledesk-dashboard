@@ -1187,26 +1187,26 @@ export class AutomationsComponent implements OnInit {
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[AUTOMATION] - this.ROLE:', this.ROLE);
-        console.log('[AUTOMATION] - this.PERMISSIONS', this.PERMISSIONS);
+        this.logger.log('[AUTOMATION] - this.ROLE:', this.ROLE);
+        this.logger.log('[AUTOMATION] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('[AUTOMATION] - hasDefaultRole', this.hasDefaultRole);
+        this.logger.log('[AUTOMATION] - hasDefaultRole', this.hasDefaultRole);
 
         // PERMISSION_TO_CREATE
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_CREATE = true;
-          console.log('[AUTOMATION] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
+          this.logger.log('[AUTOMATION] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_CREATE = false;
-          console.log('[AUTOMATION] - Project user is agent (2)', 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
+          this.logger.log('[AUTOMATION] - Project user is agent (2)', 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_CREATE = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_CREATE);
-          console.log('[AUTOMATION] - Custom role (3)', status.role, 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
+          this.logger.log('[AUTOMATION] - Custom role (3)', status.role, 'PERMISSION_TO_CREATE:', this.PERMISSION_TO_CREATE);
         }
 
       }

@@ -107,11 +107,11 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('hours')
-    console.log('[HOURS] result ', result)
+    this.logger.log('[HOURS] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[HOURS] isAuthorized ', this.isAuthorized)
-    console.log('[HOURS] permissionChecked ', this.permissionChecked)
+    this.logger.log('[HOURS] isAuthorized ', this.isAuthorized)
+    this.logger.log('[HOURS] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {
@@ -120,22 +120,22 @@ export class HoursComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[HOURS] - Role:', status.role);
-        console.log('[HOURS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[HOURS] - Role:', status.role);
+        this.logger.log('[HOURS] - Permissions:', status.matchedPermissions);
 
         // PERMISSION TO UPDATE
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
           if (status.matchedPermissions.includes(PERMISSIONS.HOURS_UPDATE)) {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[HOURS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[HOURS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false
-            console.log('[HOURS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[HOURS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
         // PERMISSION TO DELETE
@@ -143,14 +143,14 @@ export class HoursComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.HOURS_DELETE)) {
             this.PERMISSION_TO_DELETE = true
-            console.log('[HOURS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+            this.logger.log('[HOURS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
           } else {
             this.PERMISSION_TO_DELETE = false
-            console.log('[HOURS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+            this.logger.log('[HOURS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
           }
         } else {
           this.PERMISSION_TO_DELETE = true
-          console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          this.logger.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
         }
 
         // PERMISSION TO CREATE
@@ -158,14 +158,14 @@ export class HoursComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.HOURS_CREATE)) {
             this.PERMISSION_TO_CREATE = true
-            console.log('[HOURS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+            this.logger.log('[HOURS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
           } else {
             this.PERMISSION_TO_CREATE = false
-            console.log('[HOURS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+            this.logger.log('[HOURS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
           }
         } else {
           this.PERMISSION_TO_CREATE = true
-          console.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          this.logger.log('[HOURS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
         }
 
 
@@ -340,7 +340,7 @@ export class HoursComponent implements OnInit, OnDestroy {
       this.notify.presentDialogNoPermissionToPermomfAction()
       return
     }
-    console.log('[HOURS] - CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', $event.target.checked);
+    this.logger.log('[HOURS] - CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', $event.target.checked);
 
     this.days[weekdayid].isOpen = $event.target.checked;
 

@@ -75,27 +75,27 @@ export class ModalDeleteNamespaceComponent implements OnInit {
           .subscribe(status => {
             this.ROLE = status.role;
             this.PERMISSIONS = status.matchedPermissions;
-            console.log('[MODAL-DELETE] - this.ROLE:', this.ROLE);
-            console.log('[MODAL-DELETE] - this.PERMISSIONS', this.PERMISSIONS);
+            // console.log('[MODAL-DELETE] - this.ROLE:', this.ROLE);
+            // console.log('[MODAL-DELETE] - this.PERMISSIONS', this.PERMISSIONS);
             this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-            console.log('[MODAL-DELETE] - hasDefaultRole', this.hasDefaultRole);
+            // console.log('[MODAL-DELETE] - hasDefaultRole', this.hasDefaultRole);
     
   
             // PERMISSION_TO_DELETE_NAMESPACE
             if (status.role === 'owner' || status.role === 'admin') {
               // Owner and Admin always has permission
               this.PERMISSION_TO_DELETE_NAMESPACE = true;
-              console.log('[MODAL-DELETE] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+              // console.log('[MODAL-DELETE] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
     
             } else if (status.role === 'agent') {
               // Agent never have permission
               this.PERMISSION_TO_DELETE_NAMESPACE = false;
-              console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+              // console.log('[KB TABLE] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
     
             } else {
               // Custom roles: permission depends on matchedPermissions
               this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
-              console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+              // console.log('[KB TABLE] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
             }
   
   

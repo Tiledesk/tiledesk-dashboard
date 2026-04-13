@@ -141,7 +141,7 @@ export class SmtpSettingsComponent implements OnInit {
 
   getProjectById(project_id: string) {
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
-      console.log('[SMTP-SETTINGS] - GET PROJECT BY ID - project ', project);
+      this.logger.log('[SMTP-SETTINGS] - GET PROJECT BY ID - project ', project);
 
       if (project && project.settings && project.settings.email && project.settings.email.from) {
         this.sender_email_address = project.settings.email.from;
@@ -235,7 +235,7 @@ export class SmtpSettingsComponent implements OnInit {
         reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          console.log('[SMTP-SETTINGS] - HAS CLICKED SEND RECIPIENT EMAIL', result.value);
+          this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND RECIPIENT EMAIL', result.value);
           this.sendTestEmail(result.value);
         }
       });
@@ -329,7 +329,7 @@ export class SmtpSettingsComponent implements OnInit {
         this.projectService.resetToDefaultSMPTSettings()
           .subscribe({
             next: (res: any) => {
-              console.log('[SMTP-SETTINGS] Reset successful', res);
+              this.logger.log('[SMTP-SETTINGS] Reset successful', res);
             },
             error: (error) => {
               this.logger.error('[SMTP-SETTINGS] Reset error', error);

@@ -36,16 +36,16 @@ export class HomeInviteTeammateModalComponent implements OnInit {
           takeUntil(this.unsubscribe$)
         )
         .subscribe((res: any) => {
-          console.log('[HOME-MODAL-INVITE-USER] - GET ROLES - RES ', res);
+          this.logger.log('[HOME-MODAL-INVITE-USER] - GET ROLES - RES ', res);
           this.roles = res
   
         }, error => {
   
         
-          console.error('[HOME-MODAL-INVITE-USER] - GET ROLES - ERROR: ', error);
+          this.logger.error('[HOME-MODAL-INVITE-USER] - GET ROLES - ERROR: ', error);
         }, () => {
     
-          console.log('[HOME-MODAL-INVITE-USER] - GET ROLES * COMPLETE *')
+          this.logger.log('[HOME-MODAL-INVITE-USER] - GET ROLES * COMPLETE *')
         });
     }
 

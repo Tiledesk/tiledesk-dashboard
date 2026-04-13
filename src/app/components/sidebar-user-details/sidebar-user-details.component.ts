@@ -166,9 +166,9 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[SIDEBAR-USER-DETAILS] - Role:', status.role);
+          this.logger.log('[SIDEBAR-USER-DETAILS] - Role:', status.role);
       
-          console.log('[SIDEBAR-USER-DETAILS] - Permissions:', status.matchedPermissions);
+          this.logger.log('[SIDEBAR-USER-DETAILS] - Permissions:', status.matchedPermissions);
   
   
           // -------------------------------
@@ -178,15 +178,15 @@ export class SidebarUserDetailsComponent implements OnInit {
   
             if (status.matchedPermissions.includes(PERMISSIONS.LOGOUT)) {
               this.PERMISSION_TO_LOGOUT = true
-              console.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+              this.logger.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
             } else {
               this.PERMISSION_TO_LOGOUT = false
   
-              console.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+              this.logger.log('[SIDEBAR-USER-DETAILS] - PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
             }
           } else {
             this.PERMISSION_TO_LOGOUT = true
-            console.log('[SIDEBAR-USER-DETAILS] - Project user has a default role ', status.role, 'PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
+            this.logger.log('[SIDEBAR-USER-DETAILS] - Project user has a default role ', status.role, 'PERMISSION_TO_LOGOUT ', this.PERMISSION_TO_LOGOUT);
           }
   
         });
@@ -200,7 +200,7 @@ export class SidebarUserDetailsComponent implements OnInit {
           if (params['params']['tiledesk_logOut']) {
             
             this.logoutBtnVisible = params['params']['tiledesk_logOut'] == "true" ? true: false
-             console.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
+             this.logger.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
             
           } else {
             this.logoutBtnVisible = true
@@ -211,7 +211,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   checkLogoutVisibility(): void {
     const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
-    console.log('[SIDEBAR] tiledesk_logOut:', tiledeskLogOut);
+    this.logger.log('[SIDEBAR] tiledesk_logOut:', tiledeskLogOut);
 
     // Nasconde il logout solo se tiledesk_logOut === 'false'
     this.logoutBtnVisible = tiledeskLogOut !== 'false';
@@ -541,7 +541,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
     // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
     this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
-      console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
@@ -562,7 +562,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          console.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;
@@ -603,7 +603,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       .subscribe((projectUser: any) => {
 
 
-       console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+       this.logger.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_btn_clicked(true)

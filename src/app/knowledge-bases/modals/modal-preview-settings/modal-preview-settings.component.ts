@@ -173,7 +173,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.pineconeReranking = data.pineconeReranking
-      console.log("[MODAL PREVIEW SETTINGS] pineconeReranking ", this.pineconeReranking)
+      this.logger.log("[MODAL PREVIEW SETTINGS] pineconeReranking ", this.pineconeReranking)
 
       this.selectedNamespace.preview_settings
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)

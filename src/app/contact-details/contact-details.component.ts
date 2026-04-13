@@ -200,8 +200,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[CONTACTS-DTLS] - Role:', status.role);
-        console.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[CONTACTS-DTLS] - Role:', status.role);
+        this.logger.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
 
         // --------------------------
         // PERMISSION_TO_VIEW_CONVS
@@ -228,15 +228,15 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
           if (status.matchedPermissions.includes(PERMISSIONS.LEAD_TRASH)) {
             this.PERMISSION_TO_TRASH_LEAD = true
-            console.log('[CONTACTS-DTLS] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+            this.logger.log('[CONTACTS-DTLS] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
           } else {
             this.PERMISSION_TO_TRASH_LEAD = false
 
-            console.log('[CONTACTS-DTLS] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+            this.logger.log('[CONTACTS-DTLS] - PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
           }
         } else {
           this.PERMISSION_TO_TRASH_LEAD = true
-          console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
+          this.logger.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
         }
 
           
@@ -247,14 +247,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
 
             this.PERMISSION_TO_UPDATE_LEAD = true
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
           } else {
             this.PERMISSION_TO_UPDATE_LEAD = false
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+            this.logger.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
           }
         } else {
           this.PERMISSION_TO_UPDATE_LEAD = true
-          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          this.logger.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
         }
 
         // You can also check status.role === 'owner' if needed
@@ -602,7 +602,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   toggleAttributes() {
     this.showAttributes = !this.showAttributes;
-    console.log('[CONTACTS-DTLS] SHOW ALL ATTRIBUTES ', this.showAttributes);
+    this.logger.log('[CONTACTS-DTLS] SHOW ALL ATTRIBUTES ', this.showAttributes);
     const attributesArrowIconElem = <HTMLElement>document.querySelector('#lead-attributes_arrow_down');
     if (this.showAttributes === true) {
       attributesArrowIconElem.classList.add("up");
@@ -861,14 +861,14 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                   }
                 }
 
-                console.log('[CONTACTS-DTLS] - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+                this.logger.log('[CONTACTS-DTLS] - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
                 let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
                 this.attributesArray.push(entries)
               }
             } // ./end for
-            console.log('[CONTACTS-DTLS] - getWsRequestById attributesArray: ', this.attributesArray);
+            this.logger.log('[CONTACTS-DTLS] - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
 
             // ---------------------------------------------------------
@@ -1184,7 +1184,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   openAddContactNameForm($event) {
-    console.log('openAddContactNameForm') 
+    this.logger.log('openAddContactNameForm') 
 
     if (this.PERMISSION_TO_UPDATE_LEAD === false)  {
       this.notify.presentDialogNoPermissionToPermomfAction()
@@ -1193,7 +1193,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     $event.stopPropagation();
     this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
-    console.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
+    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
     const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
     this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
     if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {

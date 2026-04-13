@@ -363,7 +363,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-     console.log('[NAVBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+    this.logger.log('[NAVBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
     this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
@@ -381,7 +381,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   private updateTitle(url: string) {
     const cleanUrl = url.split('?')[0];
-    console.log('[NAVBAR] Clean URL:', cleanUrl);
+    this.logger.log('[NAVBAR] Clean URL:', cleanUrl);
 
     // Reset currentIcon all'inizio per evitare che rimanga impostato da route precedenti
     this.currentIcon = null;
@@ -399,7 +399,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       const noAuthMatch = cleanUrl.match(/\/project\/[^\/]+\/([^\/]+)\/no-auth$/);
       if (noAuthMatch && noAuthMatch[1]) {
         const callingPage = noAuthMatch[1];
-        console.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
+        this.logger.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
         
         // Imposta il titolo in base al callingPage
         if (callingPage === 'wsrequests' || callingPage === 'all-conversations') {
@@ -430,7 +430,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
         // Non mostrare l'icona keyboard_arrow_left per le pagine /no-auth
         this.currentIcon = null;
-        console.log('[NAVBAR] Title set to:', this.currentTitle);
+        this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
         return; // Esci subito per evitare che altri controlli sovrascrivano il titolo
       }
     }
@@ -632,7 +632,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentIcon = null;
     }
 
-    console.log('[NAVBAR] Title set to:', this.currentTitle);
+    this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
   }
 
   /**
@@ -741,22 +741,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[NAVBAR] - Role:', status.role);
-          console.log('[NAVBAR] - Permissions:', status.matchedPermissions);
+          this.logger.log('[NAVBAR] - Role:', status.role);
+          this.logger.log('[NAVBAR] - Permissions:', status.matchedPermissions);
   
           // PERMISSION_TO_CHANGE_PROJCT
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
             if (status.matchedPermissions.includes(PERMISSIONS.CHANGE_PROJECT)) {
   
               this.PERMISSION_TO_CHANGE_PROJECT = true
-              console.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
             } else {
               this.PERMISSION_TO_CHANGE_PROJECT = false
-              console.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
             }
           } else {
             this.PERMISSION_TO_CHANGE_PROJECT = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
           }
 
           // PERMISSION_TO_SIMULATE_CONVERSATION
@@ -764,14 +764,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (status.matchedPermissions.includes(PERMISSIONS.SIMULATE_CONV)) {
   
               this.PERMISSION_TO_SIMULATE_CONVERSATION = true
-              console.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
             } else {
               this.PERMISSION_TO_SIMULATE_CONVERSATION = false
-              console.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
             }
           } else {
             this.PERMISSION_TO_SIMULATE_CONVERSATION = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
           }
 
         // -------------------------------
@@ -781,14 +781,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
   
               this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
             } else {
               this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
             }
           } else {
             this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
           }
 
           // -------------------------------------------
@@ -798,14 +798,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ)) {
   
               this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
             } else {
               this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = false
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
             }
           } else {
             this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
           }
 
         
@@ -1426,7 +1426,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   ngAfterViewInit() {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
-    console.log('[NAVBAR] toggleButton ', this.toggleButton)
+    this.logger.log('[NAVBAR] toggleButton ', this.toggleButton)
     
     // Check if Bootstrap 5 is loaded and let it handle dropdowns automatically
     setTimeout(() => {
@@ -1437,23 +1437,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         // Let Bootstrap 5 handle dropdowns automatically via data-bs-toggle
         // But add event listeners to debug
         const dropdownElements = navbar.querySelectorAll('[data-bs-toggle="dropdown"]');
-        console.log('[NAVBAR] Found dropdown elements:', dropdownElements.length);
+        this.logger.log('[NAVBAR] Found dropdown elements:', dropdownElements.length);
         
         dropdownElements.forEach((element) => {
           // Listen for click events to debug
           element.addEventListener('click', (e) => {
-            console.log('[NAVBAR] Dropdown clicked:', element.id || element.className, e);
+            this.logger.log('[NAVBAR] Dropdown clicked:', element.id || element.className, e);
           });
           
           // Listen for Bootstrap dropdown events
           element.addEventListener('show.bs.dropdown', () => {
-            console.log('[NAVBAR] Dropdown show event:', element.id || element.className);
+            this.logger.log('[NAVBAR] Dropdown show event:', element.id || element.className);
           });
           
           element.addEventListener('shown.bs.dropdown', () => {
-            console.log('[NAVBAR] Dropdown shown event:', element.id || element.className);
+            this.logger.log('[NAVBAR] Dropdown shown event:', element.id || element.className);
             const parent = element.closest('.dropdown');
-            console.log('[NAVBAR] Parent classes:', parent?.className);
+            this.logger.log('[NAVBAR] Parent classes:', parent?.className);
           });
         });
       } else {
@@ -2334,7 +2334,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         // --------------------------------------------------------------------------
         localStorage.setItem(r.id + '_' + r.status, 'true');
       } else {
-        console.log('[NAVBAR] - displayUnservedInAppNotification - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
+        this.logger.log('[NAVBAR] - displayUnservedInAppNotification - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
       }
     }
 
@@ -2665,7 +2665,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
-    console.log('[NAVBAR] sidebarToggle titlee ', titlee)
+    this.logger.log('[NAVBAR] sidebarToggle titlee ', titlee)
     if (titlee.charAt(0) === '#') {
       titlee = titlee.slice(2);
     }

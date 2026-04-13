@@ -118,7 +118,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
         this.log_type = params.type;
         this.log_id = params.id;
 
-        console.log('[FLOW-WEBHOOKS-LOGS] params ', params);
+        this.logger.log('[FLOW-WEBHOOKS-LOGS] params ', params);
         if (this.log_type === LogType.WEBHOOK && this.log_id) {
           await this.getFlowWebhookById(params.id);
           if (this.webhook_id) {
