@@ -226,14 +226,20 @@
                         </svg>
                       </button>
       
-                      <!-- Delete Button -->
-                      <button *ngIf="kbPageConfig.deleteButton && kbsListCount" id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
-                        style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
-                        <span *ngIf="selectedNamespace.default === false">
-                          {{ 'Delete' | translate }}
+                      <!-- Delete / Clear contents Button -->
+                      <button
+                        *ngIf="kbPageConfig.deleteButton && selectedNamespace && (!selectedNamespace?.default || kbsListCount > 0)"
+                        id="delete-kb"
+                        class="btn btn-red"
+                        [disabled]="!this.PERMISSION_TO_DELETE"
+                        aria-label="Delete"
+                        style="text-transform: capitalize;"
+                        (click)="selectedNamespace?.default ? onDeleteAllContentsOfDefaultKb() : onOpenDeleteNamespaceModal()">
+                        <span *ngIf="!selectedNamespace?.default">
+                          {{ 'KbPage.DeleteKb' | translate }}
                         </span>
-                        <span *ngIf="selectedNamespace.default === true">
-                          {{'KbPage.DeleteNamespace' | translate}}
+                        <span *ngIf="selectedNamespace?.default">
+                          {{ 'KbPage.DeleteNamespace' | translate }}
                         </span>
                       </button>
       

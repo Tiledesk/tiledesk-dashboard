@@ -935,7 +935,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
-    this.kbFacade.updateNamespace(this.id_project, this.selectedNamespace.id, body).pipe(takeUntil(this.unsubscribe$)).subscribe((namespace: any) => {
+    // When renaming via inline input, `selectedNamespace.name` is already mutated by ngModel.
+    // Use the pre-edit value captured on focus as the authoritative "old name".
+    const previousNamespaceName: string | undefined = this.namespaceValueOnFocus || this.selectedNamespace?.name;
+    this.kbFacade
+      .updateNamespaceAndSyncAssociatedChatbotName({
+        projectId: this.id_project,
+        namespaceId: this.selectedNamespace.id,
+        body,
+        oldNamespaceName: previousNamespaceName,
+      })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE RES', namespace);
@@ -1862,7 +1873,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     // Best practice: risoluzione parametri spostata in un workflow service; la modale resta presentational.
     this.kbFacade
-      .resolveWidgetInstallTarget(projectId)
+      .resolveWidgetInstallTarget({
+        projectId,
+        namespaceId: this.selectedNamespace?.id,
+        namespaceName: this.selectedNamespace?.name,
+      })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((target) => {
         this.kbFacade.dialogs.openInstallWidget(target);
@@ -2639,7 +2654,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getListOfKb(params?: any, calledby?: any) {
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' || calledby === 'after-add' ) {
+    if (
+      calledby === 'onSelectNamespace' ||
+      calledby === 'createNewNamespace' ||
+      calledby === 'deleteNamespace' ||
+      calledby === 'deleteDefaultNamespaceContents' ||
+      calledby === 'onImportJSON' ||
+      calledby === 'after-update' ||
+      calledby === 'after-add'
+    ) {
       this.kbsList = [];
       this.kbFacade.setKbsList(this.kbsList);
     }
@@ -3139,7 +3162,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.showSpinner = true;
     // this.closeDeleteNamespaceModal();
 
-    this.kbFacade.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
+    const currentNamespaceName: string | undefined = this.selectedNamespace?.name;
+    this.kbFacade
+      .deleteNamespaceAndAssociatedChatbot({
+        namespaceId: this.selectedNamespace.id,
+        removeAlsoNamespace,
+        namespaceName: currentNamespaceName,
+      })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response: any) => {
         this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
         this.showSpinner = false;
@@ -3163,6 +3193,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.selectedNamespace = this.namespaces.find((el) => {
             return el.default === true
           });
+          this.kbFacade.setSelectedNamespace(this.selectedNamespace);
+          this.kbFacade.namespaces.persistLastNamespace(this.id_project, this.selectedNamespace);
           // this.hasRemovednNamespace
           this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
@@ -3179,6 +3211,68 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         }
       })
 
+  }
+
+  /**
+   * Svuota i contenuti della KB "default" senza eliminare il namespace.
+   *
+   * Implementazione:
+   * - usa lo stesso endpoint di delete namespace con `contents_only=true`
+   *   (in `KnowledgeBaseService.deleteNamespace()` quando `removeAlsoNamespace === false`)
+   *
+   * UI:
+   * - esposta come bottone top-right solo quando `selectedNamespace.default === true`.
+   */
+  onDeleteAllContentsOfDefaultKb() {
+    if (!this.selectedNamespace?.default) return;
+
+    const safeNamespaceName = this.sanitizeForNotification(this.selectedNamespace?.name || '');
+    const confirmHtml = this.translate.instant('KbPage.SureToDeleteNamespaceContents', {
+      namespace_name: safeNamespaceName,
+    });
+
+    Swal.fire({
+      title: this.translate.instant('AreYouSure'),
+      html: confirmHtml,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Yes'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusCancel: true,
+      confirmButtonColor: '#d32f2f',
+    }).then((result) => {
+      if (!result?.isConfirmed) return;
+
+      this.showSpinner = true;
+      this.kbFacade
+        .deleteNamespace(this.selectedNamespace.id, false)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          () => {
+            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
+          },
+          (error) => {
+            this.logger.error('[KNOWLEDGE-BASES-COMP] onDeleteAllContentsOfDefaultKb ERROR', error);
+            this.notify.showWidgetStyleUpdateNotification(this.msgErrorDeleteKb, 2, 'error');
+            this.showSpinner = false;
+          },
+          () => {
+            this.showSpinner = false;
+            this.getAllNamespaces();
+            const paramsDefault =
+              '?limit=' +
+              KB_DEFAULT_PARAMS.LIMIT +
+              '&page=' +
+              KB_DEFAULT_PARAMS.NUMBER_PAGE +
+              '&sortField=' +
+              KB_DEFAULT_PARAMS.SORT_FIELD +
+              '&direction=' +
+              KB_DEFAULT_PARAMS.DIRECTION +
+              '&namespace=' +
+              this.selectedNamespace.id;
+            this.getListOfKb(paramsDefault, 'deleteDefaultNamespaceContents');
+          },
+        );
+    });
   }
 
 

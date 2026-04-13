@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { KbStateService } from './kb-state.service';
 import { KbDialogsService } from './kb-dialogs.service';
@@ -15,6 +16,8 @@ import { KbChatbotsUsingNamespaceWorkflowService } from './kb-chatbots-using-nam
 import { KbDepartmentsWorkflowService } from './kb-departments-workflow.service';
 import { KbBotDepartmentHookWorkflowService } from './kb-bot-department-hook-workflow.service';
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { Chatbot } from 'app/models/faq_kb-model';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -60,6 +63,7 @@ export class KnowledgeBasesFacadeService {
     public departments: KbDepartmentsWorkflowService,
     public botDeptHook: KbBotDepartmentHookWorkflowService,
     private onboardingChatbotSetupService: OnboardingChatbotSetupService,
+    private faqKbService: FaqKbService,
   ) {}
 
   setProjectId(projectId?: string) {
@@ -92,8 +96,8 @@ export class KnowledgeBasesFacadeService {
     if (params?.kbsList !== undefined) this.setKbsList(params.kbsList);
   }
 
-  resolveWidgetInstallTarget(projectId: string) {
-    return this.widgetInstallation.resolveWidgetInstallTarget(projectId);
+  resolveWidgetInstallTarget(params: { projectId: string; namespaceId?: string; namespaceName?: string }) {
+    return this.widgetInstallation.resolveWidgetInstallTarget(params);
   }
 
   loadUnansweredQuestions(params: Parameters<KbUnansweredWorkflowService['load']>[0]) {
@@ -118,6 +122,63 @@ export class KnowledgeBasesFacadeService {
 
   deleteNamespace(namespaceId: string, removeAlsoNamespace?: boolean) {
     return this.namespaces.deleteNamespace(namespaceId, removeAlsoNamespace);
+  }
+
+  /**
+   * Update namespace e, se il namespace viene rinominato, rinomina anche il chatbot associato.
+   *
+   * Regola di associazione (conservativa):
+   * - se esiste un solo bot che usa il namespace -> quello
+   * - altrimenti, se tra i bot ce n’è uno con `name === oldNamespaceName` -> quello
+   * - altrimenti: non rinomina nulla (evita di rinominare bot “sbagliati”)
+   *
+   * Nota: eventuali errori di rename bot non bloccano l’update del namespace.
+   */
+  updateNamespaceAndSyncAssociatedChatbotName(params: {
+    projectId: string;
+    namespaceId: string;
+    body: any;
+    oldNamespaceName?: string;
+  }) {
+    return this.updateNamespace(params.projectId, params.namespaceId, params.body).pipe(
+      switchMap((namespace: any) => {
+        const renamedTo = namespace?.name;
+        const requestedName = params.body?.name;
+        if (!requestedName || !renamedTo) return of(namespace);
+        if (!params.oldNamespaceName || params.oldNamespaceName === renamedTo) return of(namespace);
+        return this.renameAssociatedChatbotForNamespace({
+          namespaceId: params.namespaceId,
+          oldNamespaceName: params.oldNamespaceName,
+          newNamespaceName: renamedTo,
+        }).pipe(
+          map(() => namespace),
+          catchError(() => of(namespace)),
+        );
+      }),
+    );
+  }
+
+  /**
+   * Delete namespace e, se richiesto (`removeAlsoNamespace === true`),
+   * elimina (trashed=true) anche il chatbot associato.
+   *
+   * Nota: eventuali errori su bot deletion non bloccano l’eliminazione del namespace.
+   */
+  deleteNamespaceAndAssociatedChatbot(params: {
+    namespaceId: string;
+    removeAlsoNamespace?: boolean;
+    namespaceName?: string;
+  }) {
+    if (!params.removeAlsoNamespace) {
+      return this.deleteNamespace(params.namespaceId, params.removeAlsoNamespace);
+    }
+    return this.trashAssociatedChatbotForNamespace({
+      namespaceId: params.namespaceId,
+      namespaceName: params.namespaceName,
+    }).pipe(
+      catchError(() => of(undefined)),
+      switchMap(() => this.deleteNamespace(params.namespaceId, params.removeAlsoNamespace)),
+    );
   }
 
   listContents(params: any) {
@@ -220,6 +281,63 @@ export class KnowledgeBasesFacadeService {
 
   resolveAndHookBotToDepartmentIfPossible(botId: string) {
     return this.botDeptHook.resolveAndHookIfPossible(botId);
+  }
+
+  private normalizeChatbotsResponse(res: any): any[] {
+    if (!res) return [];
+    if (Array.isArray(res)) return res;
+    if (Array.isArray(res.chatbots)) return res.chatbots;
+    if (Array.isArray(res.data)) return res.data;
+    return [];
+  }
+
+  private resolveAssociatedChatbotForNamespace(params: {
+    namespaceId: string;
+    namespaceName?: string;
+  }): Observable<Chatbot | undefined> {
+    return this.getChatbotsUsingNamespace(params.namespaceId).pipe(
+      map((res: any) => this.normalizeChatbotsResponse(res) as Chatbot[]),
+      map((bots: Chatbot[]) => {
+        if (!bots?.length) return undefined;
+        if (bots.length === 1) return bots[0];
+        if (params.namespaceName) {
+          const exactMatch = bots.find((b) => (b as any)?.name === params.namespaceName);
+          if (exactMatch) return exactMatch;
+        }
+        return undefined;
+      }),
+      catchError(() => of(undefined)),
+    );
+  }
+
+  private renameAssociatedChatbotForNamespace(params: {
+    namespaceId: string;
+    oldNamespaceName: string;
+    newNamespaceName: string;
+  }) {
+    return this.resolveAssociatedChatbotForNamespace({
+      namespaceId: params.namespaceId,
+      namespaceName: params.oldNamespaceName,
+    }).pipe(
+      switchMap((bot) => {
+        if (!bot?._id) return of(undefined);
+        const updated: Chatbot = { ...(bot as any), name: params.newNamespaceName };
+        return this.faqKbService.updateChatbot(updated).pipe(
+          catchError(() => of(undefined)),
+        );
+      }),
+    );
+  }
+
+  private trashAssociatedChatbotForNamespace(params: { namespaceId: string; namespaceName?: string }) {
+    return this.resolveAssociatedChatbotForNamespace(params).pipe(
+      switchMap((bot) => {
+        if (!bot?._id) return of(undefined);
+        return this.faqKbService.updateFaqKbAsTrashed(bot._id, true).pipe(
+          catchError(() => of(undefined)),
+        );
+      }),
+    );
   }
 }
 

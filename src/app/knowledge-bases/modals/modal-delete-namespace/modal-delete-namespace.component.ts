@@ -122,11 +122,9 @@ export class ModalDeleteNamespaceComponent implements OnInit {
 
   checkNamespaceTyped() {
     // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaceTyped ', this.namespaceTyped)
-    if (this.namespaceTyped !== this.selectedNamespace.id) {
-      this.namespacenameMatch = false 
-    } else {
-      this.namespacenameMatch = true 
-    }
+    const typed = (this.namespaceTyped || '').trim();
+    const expected = (this.selectedNamespace?.name || '').trim();
+    this.namespacenameMatch = typed.length > 0 && typed === expected;
   }
 
   onCloseModal() {

@@ -26,8 +26,8 @@
                 <label for="delete-namespace-input"  [ngStyle]="{'color':deleteAlsoNamespace === true ? '#3c4858' : '#00000042' }">
                   
              
-                    {{ 'ToDeleteTheKBaseTypeItsId' | translate }}
-                    <code>  {{selectedNamespace.id }}  </code> 
+                    {{ 'KbPage.ToDeleteTheNamespaceTypeTheNamespaceName' | translate }}
+                    <code>  {{selectedNamespace.name }}  </code> 
                 </label>
                 <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder=" {{ 'KbPage.NamespaceName' | translate }}" [disabled]="!deleteAlsoNamespace">
             </div>
