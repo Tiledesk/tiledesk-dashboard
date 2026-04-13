@@ -1086,6 +1086,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
       this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
+      // Avoid "empty state" flash while contents are loading
+      this.showKBTableSpinner = true;
+      this.getKbCompleted = false;
+
       // this.selectedNamespaceID = namespace['id']
       // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
 

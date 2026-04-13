@@ -196,8 +196,9 @@
                       </div>
 
                       <div *ngIf="kbPageConfig.buttonInstallWidget" class="kb-default-badge-wpr">
-                        <button type="button" class="kb-default-badge kb-install-widget-badge" (click)="presentModalInstallWidget()">
-                          {{ 'InstallOnYourWebsite' | translate }}
+                        <!-- kb-default-badge kb-install-widget-badge -->
+                        <button type="button" class="custom-button xs ng-star-inserted" (click)="presentModalInstallWidget()">
+                          <span style="vertical-align: middle;">{{ 'InstallOnYourWebsite' | translate }}</span>
                         </button>
                       </div>
                     </div>

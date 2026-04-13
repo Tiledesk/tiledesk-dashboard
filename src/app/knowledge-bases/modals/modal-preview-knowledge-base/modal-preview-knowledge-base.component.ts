@@ -182,6 +182,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.listenToCurrentURL()
   }
 
+  get isKbThemeNew(): boolean {
+    return this.appConfigService.getConfig()?.knowledgeBasesPage?.cssTheme === 'new';
+  }
+
   ngOnInit(): void {
     this.listenPreviewKbHasBeenCloseBackdropClicking()
     this.listenToAiSettingsChanges()
