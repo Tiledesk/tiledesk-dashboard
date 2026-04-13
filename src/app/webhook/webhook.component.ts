@@ -72,11 +72,11 @@ export class WebhookComponent implements OnInit {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('webhook')
-    console.log('[WEBHOOK] result ', result)
+    this.logger.log('[WEBHOOK] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[WEBHOOK] isAuthorized ', this.isAuthorized)
-    console.log('[WEBHOOK] permissionChecked ', this.permissionChecked)
+    this.logger.log('[WEBHOOK] isAuthorized ', this.isAuthorized)
+    this.logger.log('[WEBHOOK] permissionChecked ', this.permissionChecked)
   }
 
    listenToProjectUser() {
@@ -85,22 +85,22 @@ export class WebhookComponent implements OnInit {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
   
-          console.log('[WEBHOOK] - Role:', status.role);
-          console.log('[WEBHOOK] - Permissions:', status.matchedPermissions);
+          this.logger.log('[WEBHOOK] - Role:', status.role);
+          this.logger.log('[WEBHOOK] - Permissions:', status.matchedPermissions);
   
           // PERMISSION TO UPDATE
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
   
             if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_UPDATE)) {
               this.PERMISSION_TO_UPDATE = true
-              console.log('[WEBHOOK] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+              this.logger.log('[WEBHOOK] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
             } else {
               this.PERMISSION_TO_UPDATE = false
-              console.log('[WEBHOOK] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+              this.logger.log('[WEBHOOK] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
             }
           } else {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[WEBHOOK] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[WEBHOOK] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
   
   
@@ -118,7 +118,7 @@ export class WebhookComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    //  this.logger.log("[WEBHOOK] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
    } 
 

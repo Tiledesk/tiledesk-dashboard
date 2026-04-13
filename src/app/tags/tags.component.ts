@@ -109,11 +109,11 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('tags')
-    console.log('[TAGS] result ', result)
+    this.logger.log('[TAGS] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[TAGS] isAuthorized ', this.isAuthorized)
-    console.log('[TAGS] permissionChecked ', this.permissionChecked)
+    this.logger.log('[TAGS] isAuthorized ', this.isAuthorized)
+    this.logger.log('[TAGS] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {
@@ -121,20 +121,20 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[TAGS] - Role:', status.role);
-        console.log('[TAGS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[TAGS] - Role:', status.role);
+        this.logger.log('[TAGS] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TAG_CREATE)) {
           
             this.PERMISSION_TO_CREATE = true
-            console.log('[TAGS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+            this.logger.log('[TAGS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
           } else {
             this.PERMISSION_TO_CREATE = false
-            console.log('[TAGS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+            this.logger.log('[TAGS] - PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
           }
         } else {
           this.PERMISSION_TO_CREATE = true
-          console.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          this.logger.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
         }
 
 
@@ -142,28 +142,28 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (status.matchedPermissions.includes(PERMISSIONS.TAG_DELETE)) {
           
             this.PERMISSION_TO_DELETE = true
-            console.log('[TAGS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+            this.logger.log('[TAGS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
           } else {
             this.PERMISSION_TO_DELETE = false
-            console.log('[TAGS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+            this.logger.log('[TAGS] - PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
           }
         } else {
           this.PERMISSION_TO_DELETE = true
-          console.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          this.logger.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
         }
 
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TAG_UPDATE)) {
           
             this.PERMISSION_TO_UPDATE = true
-            console.log('[TAGS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[TAGS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false
-            console.log('[TAGS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[TAGS] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[TAGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -177,7 +177,7 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
    } 
 
@@ -256,7 +256,7 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   // getTag() {
   //  this.tagsService.getTags().subscribe(
   //   (tags: any) => {
-  //    console.log('[TAGS] - GET TAGS - RES ', tags);
+  //    this.logger.log('[TAGS] - GET TAGS - RES ', tags);
 
   //     if (tags) {
   //       this.tagsList = tags;
@@ -266,16 +266,16 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   //         // Get the user by id ('createdBy' matches the user id)
   //         // -----------------------------------------------------
   //         let user: TagUser | string | null = this.usersLocalDbService.getMemberFromStorage(tag.createdBy);
-  //         console.log('[TAGS] - GET TAGS - getMemberFromStorage - createdBy ', user);
+  //         this.logger.log('[TAGS] - GET TAGS - getMemberFromStorage - createdBy ', user);
 
   //         if (!user) {
             
   //           const storedValue = localStorage.getItem(tag.createdBy);
   //           if (storedValue) {
-  //             console.log('[TAGS] - GET TAGS - NO USER CHECK FOR BOT IN STOAGE storedValue', storedValue);
+  //             this.logger.log('[TAGS] - GET TAGS - NO USER CHECK FOR BOT IN STOAGE storedValue', storedValue);
   //             // Se lo storage contiene solo una stringa, assumiamo sia un chatbot
   //             let storedValueParsed = JSON.parse(storedValue) 
-  //              console.log('[TAGS] - GET TAGS - NO USER CHECK FOR BOT IN STOAGE storedValueParsed', storedValueParsed);
+  //              this.logger.log('[TAGS] - GET TAGS - NO USER CHECK FOR BOT IN STOAGE storedValueParsed', storedValueParsed);
   //              if (storedValueParsed.type = "tilebot") {
   //                 user = { firstname: storedValueParsed.name, isBot: true };
   //              }
@@ -286,7 +286,7 @@ export class TagsComponent implements OnInit, AfterViewInit, OnDestroy {
   //         if (user) {
   //           tag.createdBy_user = user;
   //         } else {
-  //           console.log('[TAGS] - GET TAGS - NO USER IN STORAGE ', user);
+  //           this.logger.log('[TAGS] - GET TAGS - NO USER IN STORAGE ', user);
   //           // -----------------------------------------------------
   //           // From remote if not exist in the local storage
   //           // -----------------------------------------------------
@@ -446,7 +446,7 @@ getBotById(botid: string, tag: any) {
 
 
   tagSelectedColor(hex: any) {
-    // console.log('[TAGS] - TAG SELECTED COLOR ', hex);
+    // this.logger.log('[TAGS] - TAG SELECTED COLOR ', hex);
     this.tag_selected_color = hex;
   }
 
@@ -454,7 +454,7 @@ getBotById(botid: string, tag: any) {
   createTag() {
 
     if (this.PERMISSION_TO_CREATE) {
-      // console.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
+      // this.logger.log('[TAGS] - CREATE TAG - TAG-NAME: ', this.tagname, ' TAG-COLOR: ', this.tag_selected_color)
       const createTagBtn = <HTMLElement>document.querySelector('.create-tag-btn');
 
       createTagBtn.blur();

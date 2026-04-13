@@ -86,11 +86,11 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
    async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('widget-multilanguage')
-    console.log('[MULTILANGUAGE] result ', result)
+    this.logger.log('[MULTILANGUAGE] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[MULTILANGUAGE] isAuthorized ',  this.isAuthorized)
-    console.log('[MULTILANGUAGE] permissionChecked ',  this.permissionChecked)
+    this.logger.log('[MULTILANGUAGE] isAuthorized ',  this.isAuthorized)
+    this.logger.log('[MULTILANGUAGE] permissionChecked ',  this.permissionChecked)
   }
 
   getRouteParams() {

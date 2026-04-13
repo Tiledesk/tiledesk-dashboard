@@ -179,17 +179,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   ngOnInit() {
 
-    console.log('on init  Role ', this.role);
+    this.logger.log('on init  Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
-    console.log('on init Selected Role ', this.selectedRole);
+    this.logger.log('on init Selected Role ', this.selectedRole);
 
     if (this.router.url.indexOf('/add') !== -1) {
-      console.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
+      this.logger.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
       this.CREATE_VIEW = true;
       this.EDIT_VIEW = false;
       this.checkCreatePermissions()
     } else {
-      console.log('[USER-EDIT-ADD] HAS CLICKED EDIT ');
+      this.logger.log('[USER-EDIT-ADD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       this.CREATE_VIEW = false;
       this.checkEditPermissions()
@@ -227,21 +227,21 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   async checkCreatePermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('teammate-create')
-    console.log('[USER-EDIT-ADD] result ', result)
+    this.logger.log('[USER-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[USER-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
-    console.log('[USER-EDIT-ADD] permissionChecked ', this.permissionChecked)
+    this.logger.log('[USER-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    this.logger.log('[USER-EDIT-ADD] permissionChecked ', this.permissionChecked)
 
   }
 
   async checkEditPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('teammate-edit')
-    console.log('[USER-EDIT-ADD] result ', result)
+    this.logger.log('[USER-EDIT-ADD] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[USER-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
-    console.log('[USER-EDIT-ADD] permissionChecked ', this.permissionChecked)
+    this.logger.log('[USER-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    this.logger.log('[USER-EDIT-ADD] permissionChecked ', this.permissionChecked)
 
   }
 
@@ -251,8 +251,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
      this.rolesService.getUpdateRequestPermission()
        .pipe(takeUntil(this.unsubscribe$))
        .subscribe(status => {
-         console.log('[USERS] - Role:', status.role);
-         console.log('[USERS] - Permissions:', status.matchedPermissions);
+         this.logger.log('[USERS] - Role:', status.role);
+         this.logger.log('[USERS] - Permissions:', status.matchedPermissions);
        
 
  
@@ -262,17 +262,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
          if (status.role === 'owner' || status.role === 'admin') {
            // Owner and admin always has permission
            this.PERMISSION_TO_VIEW_GROUPS = true;
-           console.log('[USER-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+           this.logger.log('[USER-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
  
          } else if (status.role === 'agent') {
            // Agent never have permission
            this.PERMISSION_TO_VIEW_GROUPS = false;
-           console.log('[USER-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+           this.logger.log('[USER-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
  
          } else {
            // Custom roles: permission depends on matchedPermissions
            this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
-           console.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+           this.logger.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
          }
 
          // -------------------------
@@ -281,17 +281,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
          if (status.role === 'owner' || status.role === 'admin') {
            // Owner and admin always has permission
            this.PERMISSION_TO_EDIT_GROUPS = true;
-           console.log('[USER-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
+           this.logger.log('[USER-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
  
          } else if (status.role === 'agent') {
            // Agent never have permission
            this.PERMISSION_TO_EDIT_GROUPS = false;
-           console.log('[USER-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
+           this.logger.log('[USER-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
  
          } else {
            // Custom roles: permission depends on matchedPermissions
            this.PERMISSION_TO_EDIT_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUP_UPDATE);
-           console.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
+           this.logger.log('[USER-EDIT-ADD] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_GROUPS:', this.PERMISSION_TO_EDIT_GROUPS);
          }
 
       
@@ -305,16 +305,16 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((res: any) => {
-        console.log('[USER-EDIT-ADD] - GET ROLES - RES ', res);
+        this.logger.log('[USER-EDIT-ADD] - GET ROLES - RES ', res);
         this.roles = res
 
       }, error => {
 
         this.showSpinner = false
-        console.error('[USER-EDIT-ADD] - GET ROLES - ERROR: ', error);
+        this.logger.error('[USER-EDIT-ADD] - GET ROLES - ERROR: ', error);
       }, () => {
         this.showSpinner = false
-        console.log('[USER-EDIT-ADD] - GET ROLES * COMPLETE *')
+        this.logger.log('[USER-EDIT-ADD] - GET ROLES * COMPLETE *')
       });
   }
 
@@ -342,7 +342,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -423,11 +423,11 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
+      //  this.logger.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
         this.CURRENT_USER_ID = user._id;
-        console.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
+        this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
       }
     });
 
@@ -438,7 +438,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   getUserRole() {
     this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
 
-      console.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
       this.CURRENT_USER_ROLE = userRole;
     })
@@ -522,9 +522,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getAllUsersOfCurrentProject() {
-     console.log('[USER-EDIT-ADD] - [USER-EDIT-ADD] - GET ALL PROJECT USERS - CURRENT USER ID ', this.CURRENT_USER_ID)
+     this.logger.log('[USER-EDIT-ADD] - [USER-EDIT-ADD] - GET ALL PROJECT USERS - CURRENT USER ID ', this.CURRENT_USER_ID)
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
+      this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - RES ', projectUsers);
 
       if (projectUsers && projectUsers.length > 0) {
         this.projectUsersLength = projectUsers.length;
@@ -535,7 +535,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         });
         this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser FOR CURRENT_USER_ID ', filteredProjectUser);
         this.currentUser_projectUserID = filteredProjectUser[0]?._id
-        console.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser currentUser_projectUserID ', this.currentUser_projectUserID);
+        this.logger.log('[USER-EDIT-ADD] - GET ALL PROJECT USERS OF THE PROJECT - filteredProjectUser currentUser_projectUserID ', this.currentUser_projectUserID);
 
       }
     }, error => {
@@ -653,7 +653,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   getParamsProjectUserIdAndThenGetProjectUsersById() {
     this.project_user_id = this.route.snapshot.params['projectuserid'];
-    console.log('[USER-EDIT-ADD] - GET PARAMS PROJ-USER ID ', this.project_user_id);
+    this.logger.log('[USER-EDIT-ADD] - GET PARAMS PROJ-USER ID ', this.project_user_id);
 
     if (this.project_user_id) {
       this.getProjectUsersByIdAndGroups();
@@ -664,20 +664,20 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   getProjectUsersByIdAndGroups() {
 
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
-      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', this.project_user_id);
-      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', this.project_user_id);
+      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
       if (projectUser) {
         this.projectUser = projectUser;
         if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
 
           this.selectedStatus = this.teammateStatus[2].id;
-          // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+          // this.logger.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
         } else if (projectUser.user_available === false && (projectUser.profileStatus === '' || !projectUser.profileStatus)) {
           this.selectedStatus = this.teammateStatus[1].id;
-          // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+          // this.logger.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
         } else if (projectUser.user_available === true && (projectUser.profileStatus === '' || !projectUser.profileStatus)) {
           this.selectedStatus = this.teammateStatus[0].id
-          // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+          // this.logger.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
 
         this.teammateStatus = this.teammateStatus.slice(0)
@@ -746,7 +746,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string) {
-    // console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - CHANGE STATUS -  selecedstatusID ', selecedstatusID , 'PROJECT-USER ID ', projectUser_id);
+    // this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - CHANGE STATUS -  selecedstatusID ', selecedstatusID , 'PROJECT-USER ID ', projectUser_id);
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -780,10 +780,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getGroupsByProjectId(userId) {
-    console.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID userId', userId);
+    this.logger.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID userId', userId);
     // this.HAS_COMPLETED_GET_GROUPS = false
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
+      this.logger.log('[USER-EDIT-ADD] - GROUPS GET BY PROJECT ID', groups);
 
       if (groups) {
           this.groupsList = groups
@@ -794,7 +794,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
             groupId: group._id
           }));
 
-          console.log('[USER-EDIT-ADD] - GET GROUPS - groupsList in which the temmate is a member', this.groupsList);
+          this.logger.log('[USER-EDIT-ADD] - GET GROUPS - groupsList in which the temmate is a member', this.groupsList);
       
 
 
@@ -881,7 +881,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.logger.log('[USER-EDIT-ADD] - UPDATE PROJECT USER BTN ', update_project_user_btn)
     update_project_user_btn.blur();
 
-    console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - this.max_assigned_chat', this.max_assigned_chat)
+    this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - this.max_assigned_chat', this.max_assigned_chat)
     this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - current user id', this.CURRENT_USER_ID)
     this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - project_user_id', this.project_user_id)
     this.logger.log('USER-EDIT-ADD] PROJECT-USER DETAILS - updateUserRoleAndMaxchat - user_id  from project-user object', this.user_id)
@@ -894,7 +894,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       // Se è null, undefined o -1, usa -1
       maxassignedchat = -1;
     }
-    console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - this.max_assigned_chat:', this.max_assigned_chat, 'maxassignedchat to send:', maxassignedchat);
+    this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - this.max_assigned_chat:', this.max_assigned_chat, 'maxassignedchat to send:', maxassignedchat);
 
     if (this.role === undefined) {
       this.role = this.user_role
@@ -912,8 +912,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
     this.usersService.updateProjectUserRoleAndMaxchat(projectuserid, this.role, maxassignedchat)
       .subscribe((projectUser: any) => {
-       console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
-       console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - projectUser.max_assigned_chat from backend:', projectUser?.max_assigned_chat);
+       this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED - RES ', projectUser)
+       this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - projectUser.max_assigned_chat from backend:', projectUser?.max_assigned_chat);
        // Aggiorna max_assigned_chat con il valore salvato - usa sempre il valore che abbiamo inviato se il backend non lo restituisce
        if (projectUser && projectUser.max_assigned_chat !== null && projectUser.max_assigned_chat !== undefined) {
          this.max_assigned_chat = projectUser.max_assigned_chat;
@@ -921,7 +921,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
          // Se il backend non restituisce il valore, usa quello che abbiamo inviato
          this.max_assigned_chat = maxassignedchat;
        }
-       console.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - max_assigned_chat after update:', this.max_assigned_chat);
+       this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - max_assigned_chat after update:', this.max_assigned_chat);
 
       }, (error) => {
         this.logger.error('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED ERROR  ', error);
@@ -993,7 +993,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   setSelected(role) {
     this.role = role;
-    console.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
+    this.logger.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
@@ -1015,12 +1015,12 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   invite() {
-    // console.log('[USER-EDIT-ADD] - INVITE USER  Project Users Length', this.projectUsersLength)
-    // console.log('[USER-EDIT-ADD] - INVITE USER Pending Invites Count ', this.countOfPendingInvites)
-    // console.log('[USER-EDIT-ADD] - INVITE USER No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
-    // console.log('[USER-EDIT-ADD] - INVITE USER PROJECT PROFILE TYPE ', this.prjct_profile_type)
-    // console.log('[USER-EDIT-ADD] - INVITE USER Seats Limit ', this.seatsLimit)
-    // console.log('[USER-EDIT-ADD] - INVITE USER projectUsersLength + countOfPendingInvites', this.projectUsersLength + this.countOfPendingInvites)
+    // this.logger.log('[USER-EDIT-ADD] - INVITE USER  Project Users Length', this.projectUsersLength)
+    // this.logger.log('[USER-EDIT-ADD] - INVITE USER Pending Invites Count ', this.countOfPendingInvites)
+    // this.logger.log('[USER-EDIT-ADD] - INVITE USER No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
+    // this.logger.log('[USER-EDIT-ADD] - INVITE USER PROJECT PROFILE TYPE ', this.prjct_profile_type)
+    // this.logger.log('[USER-EDIT-ADD] - INVITE USER Seats Limit ', this.seatsLimit)
+    // this.logger.log('[USER-EDIT-ADD] - INVITE USER projectUsersLength + countOfPendingInvites', this.projectUsersLength + this.countOfPendingInvites)
 
 
 
@@ -1065,17 +1065,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.SHOW_CIRCULAR_SPINNER = false
     }, 1000);
 
-    console.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
-    console.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
+    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
+    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
 
     if (this.role === 'ROLE_NOT_SELECTED') {
       this.role = ''
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
-      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
-      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
+      this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
+      this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
+      this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
 
       if (project_user) {
         this.invitedProjectUser = project_user
@@ -1232,14 +1232,14 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       input.value = String(numValue);
     }
     
-    console.log('[USER-EDIT-ADD] - onMaxAssignedChatBlur - value:', value, 'max_assigned_chat:', this.max_assigned_chat);
+    this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatBlur - value:', value, 'max_assigned_chat:', this.max_assigned_chat);
   }
 
   onMaxAssignedChatChange(value: string | number): void {
     // Gestisci il caso di stringa vuota, null o undefined
     if (value === '' || value === null || value === undefined) {
       this.max_assigned_chat = -1;
-      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - empty value, set to -1');
+      this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - empty value, set to -1');
       return;
     }
 
@@ -1247,10 +1247,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     if (typeof value === 'number') {
       if (value < 0) {
         this.max_assigned_chat = -1;
-        console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - negative number, set to -1');
+        this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - negative number, set to -1');
       } else {
         this.max_assigned_chat = value;
-        console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - valid number:', value);
+        this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - valid number:', value);
       }
       return;
     }
@@ -1261,7 +1261,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     // Se la stringa è vuota dopo il trim, imposta a -1
     if (stringValue === '') {
       this.max_assigned_chat = -1;
-      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - empty string after trim, set to -1');
+      this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - empty string after trim, set to -1');
       return;
     }
 
@@ -1271,20 +1271,20 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     // Se non è un numero valido, imposta a -1
     if (isNaN(numValue)) {
       this.max_assigned_chat = -1;
-      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - NaN after parseInt, set to -1');
+      this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - NaN after parseInt, set to -1');
       return;
     }
 
     // Se il valore è negativo, imposta a -1 (illimitato)
     if (numValue < 0) {
       this.max_assigned_chat = -1;
-      console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - negative value, set to -1');
+      this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - negative value, set to -1');
       return;
     }
 
     // Se il valore è >= 0 (incluso 0), lo assegna direttamente
     // 0 è un valore valido che significa "limite massimo di 0 chat"
     this.max_assigned_chat = numValue;
-    console.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - valid value:', numValue, 'max_assigned_chat:', this.max_assigned_chat);
+    this.logger.log('[USER-EDIT-ADD] - onMaxAssignedChatChange - valid value:', numValue, 'max_assigned_chat:', this.max_assigned_chat);
   }
 }

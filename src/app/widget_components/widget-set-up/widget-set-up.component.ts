@@ -557,11 +557,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('widget-set-up')
-    console.log('[WIDGET-SET-UP] result ', result)
+    this.logger.log('[WIDGET-SET-UP] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[WIDGET-SET-UP] isAuthorized ', this.isAuthorized)
-    console.log('[WIDGET-SET-UP] permissionChecked ', this.permissionChecked)
+    this.logger.log('[WIDGET-SET-UP] isAuthorized ', this.isAuthorized)
+    this.logger.log('[WIDGET-SET-UP] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {
@@ -570,20 +570,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
         this.ROLE = status.role
-        console.log('[WIDGET-SET-UP] - Role:', this.ROLE);
-        console.log('[WIDGET-SET-UP] - Permissions:', status.matchedPermissions);
+        this.logger.log('[WIDGET-SET-UP] - Role:', this.ROLE);
+        this.logger.log('[WIDGET-SET-UP] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TRANSLATIONS_READ)) {
             // Enable read translations
             this.PERMISSION_TO_READ_TRANSLATIONS = true
-            console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+            this.logger.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
           } else {
             this.PERMISSION_TO_READ_TRANSLATIONS = false
-            console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+            this.logger.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
           }
         } else {
           this.PERMISSION_TO_READ_TRANSLATIONS = true
-          console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+          this.logger.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
         }
 
     
@@ -1612,18 +1612,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       let firstAccordion = acc[0];
       let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
 
-      // console.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
+      // this.logger.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
 
       const hasClosedFirstAccordion = this.localDbService.getFromStorage(`hasclosedfirstaccordion-${this.id_project}`)
-      // console.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+      // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
 
       if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
-        // console.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
+        // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
         setTimeout(() => {
           firstAccordion.classList.add("active");
           // firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; // auto with setTimeout 2000
           firstPanel.style.maxHeight = 523 + "px"; // hardcoded with setTimeout 100
-          // console.log('firstPanel.scrollHeight ', firstPanel.scrollHeight) 
+          // this.logger.log('firstPanel.scrollHeight ', firstPanel.scrollHeight) 
 
           this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
 
@@ -1653,7 +1653,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // this.logger.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
 
         setTimeout(() => {
-          // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+          // this.logger.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
 
           if (firstAccordion.classList.contains('active')) {
             self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'false')
@@ -2704,10 +2704,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // --------------------------------------------
         if (project.widget.allowedOnSpecificUrl) {
           this.allowedOnSpecificUrl = true;
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         } else {
           this.allowedOnSpecificUrl = false;
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
         }
 
         // --------------------------------------------
@@ -2715,10 +2715,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // --------------------------------------------
         if (project.widget.allowedOnSpecificUrlList) {
           this.allowedOnSpecificUrlList = project.widget.allowedOnSpecificUrlList;
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         } else {
           this.allowedOnSpecificUrlList = [];
-          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+          this.logger.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
         }
 
         // ----------------------------------------------------
@@ -2741,22 +2741,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
         if (project.widget.hasOwnProperty('allowedUploadExtentions')) {
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
           
           if (project.widget.allowedUploadExtentions === '*/*') {
 
             this.selectedOption = 'all';
-            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
           } else {
             this.selectedOption = 'custom'
-            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
             this.extensions = project.widget.allowedUploadExtentions.split(',').map(v => v.trim());
-            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
           }
         } else {
           this.selectedOption = 'custom'
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
         }
 
         // ----------------------------------------------------
@@ -3003,16 +3003,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.allowedOnSpecificUrl = false;
         this.allowedOnSpecificUrlList = []
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
 
         // -----------------------------------------------------------------------
         // @ allowedUploadExtentions
         // -----------------------------------------------------------------------
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
         this.selectedOption = 'custom'
         this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -3958,14 +3958,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
 
     this.widgetService.updateWidgetProject(this.widgetObj)
-    // console.log('[WIDGET-SET-UP] SAVE WIDGET single conversation widgetObj', this.widgetObj)
+    // this.logger.log('[WIDGET-SET-UP] SAVE WIDGET single conversation widgetObj', this.widgetObj)
   }
 
   // --------------------------------------------------------------------------------------
   //  @ Widget visibility
   // --------------------------------------------------------------------------------------
   changeDesktopWidgetVisibility(event) {
-    // console.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
+    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
     this.desktop_widget_is_visible = event.target.checked;
 
     if (this.desktop_widget_is_visible === false) {
@@ -3983,7 +3983,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   changeMobileWidgetVisibility(event) {
-    // console.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
+    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
     this.mobile_widget_is_visible = event.target.checked
 
     // if (this.mobile_widget_is_visible === false) {
@@ -3998,13 +3998,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onSelectDesktopWidgetStatus() {
-    // console.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
+    // this.logger.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
     // this.widgetObj['onPageChangeVisibilityDesktop'] = this.desktopWidgetStatus;
     // this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   onSelectMobilepWidgetStatus() {
-    // console.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
+    // this.logger.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
     // this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
     // this.widgetService.updateWidgetProject(this.widgetObj)
   }
@@ -4030,7 +4030,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.widgetService.updateWidgetProject(this.widgetObj)
 
-    // console.log('[WIDGET-SET-UP] SAVE WIDGET VISIBILITY widgetObj', this.widgetObj)
+    // this.logger.log('[WIDGET-SET-UP] SAVE WIDGET VISIBILITY widgetObj', this.widgetObj)
   }
 
 
@@ -4763,7 +4763,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //     // return '*/*';
   //     this.allowedUploadExtentions = '*/*';
   //   } else {
-  //     console.log('[WIDGET-SET-UP] ExtensionsForBackend ', this.extensions.join(','))
+  //     this.logger.log('[WIDGET-SET-UP] ExtensionsForBackend ', this.extensions.join(','))
   //     // return this.extensions.join(',');
   //     this.allowedUploadExtentions = this.extensions.join(',');
   //   }
@@ -4807,9 +4807,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
 
     this.widgetObj['allowedUploadExtentions'] = this.allowedUploadExtentions;
-    console.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
+    this.logger.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
 
-     console.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
+     this.logger.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
      if(this.selectedOption === 'all') {
        this.widgetObj['allowedUploadExtentions'] = '*/*'
      } else {

@@ -177,39 +177,39 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
         
-        console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
-        console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
+        this.logger.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
+        this.logger.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
         
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            this.logger.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
             
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
             this.PERMISSION_TO_ARCHIVE_REQUEST = false
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
           }
         } else {
           this.PERMISSION_TO_ARCHIVE_REQUEST = true
-          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          this.logger.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // PERMISSION_TO_JOIN_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
-            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            this.logger.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
             
             this.PERMISSION_TO_JOIN_REQUEST = true
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
           } else {
             this.PERMISSION_TO_JOIN_REQUEST = false
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
           }
         } else {
           this.PERMISSION_TO_JOIN_REQUEST = true
-          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+          this.logger.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
 

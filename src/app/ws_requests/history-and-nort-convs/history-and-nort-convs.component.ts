@@ -456,7 +456,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   getCurrentTimezone() {
     this.currentUTCName = moment.tz.guess();
-    console.log("[HISTORY & NORT-CONVS] currentUTCName ", this.currentUTCName)
+    this.logger.log("[HISTORY & NORT-CONVS] currentUTCName ", this.currentUTCName)
   }
 
    listenToGoBack() {
@@ -471,91 +471,91 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[HISTORY & NORT-CONVS] - Role:', status.role);
-        console.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[HISTORY & NORT-CONVS] - Role:', status.role);
+        this.logger.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
 
         this.isDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('[HISTORY & NORT-CONVS] isDefaultRole ', this.isDefaultRole)
+        this.logger.log('[HISTORY & NORT-CONVS] isDefaultRole ', this.isDefaultRole)
         
 
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            this.logger.log('[HISTORY & NORT-CONVS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
 
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
             this.PERMISSION_TO_ARCHIVE_REQUEST = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
           }
         } else {
           this.PERMISSION_TO_ARCHIVE_REQUEST = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // PERMISSION_TO_JOIN_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
-            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            this.logger.log('[HISTORY & NORT-CONVS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
 
             this.PERMISSION_TO_JOIN_REQUEST = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
           } else {
             this.PERMISSION_TO_JOIN_REQUEST = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
           }
         } else {
           this.PERMISSION_TO_JOIN_REQUEST = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
         // PERMISSION_TO_REOPEN
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
-            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
+            this.logger.log('[HISTORY & NORT-CONVS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
 
             this.PERMISSION_TO_REOPEN = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
           } else {
             this.PERMISSION_TO_REOPEN = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 2', this.PERMISSION_TO_REOPEN);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 2', this.PERMISSION_TO_REOPEN);
           }
         } else {
           this.PERMISSION_TO_REOPEN = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_REOPEN ', this.PERMISSION_TO_REOPEN);
         }
 
         // PERMISSION_TO_FILTER_BY_AGENT
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.HISTORY_FILTER_BY_AGENT)) {
-            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_FILTER_BY_AGENT', PERMISSIONS.HISTORY_FILTER_BY_AGENT)
+            this.logger.log('[HISTORY & NORT-CONVS] PERMISSION_TO_FILTER_BY_AGENT', PERMISSIONS.HISTORY_FILTER_BY_AGENT)
 
             this.PERMISSION_TO_FILTER_BY_AGENT = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 1 ', this.PERMISSION_TO_FILTER_BY_AGENT);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 1 ', this.PERMISSION_TO_FILTER_BY_AGENT);
           } else {
             this.PERMISSION_TO_FILTER_BY_AGENT = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 2', this.PERMISSION_TO_FILTER_BY_AGENT);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_FILTER_BY_AGENT 2', this.PERMISSION_TO_FILTER_BY_AGENT);
           }
         } else {
           this.PERMISSION_TO_FILTER_BY_AGENT = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_FILTER_BY_AGENT ', this.PERMISSION_TO_FILTER_BY_AGENT);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_FILTER_BY_AGENT ', this.PERMISSION_TO_FILTER_BY_AGENT);
         }
 
         // PERMISSION_TO_EXPORT_REQUESTS
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUESTS_EXPORT)) {
-            console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_EXPORT_REQUESTS', PERMISSIONS.REQUESTS_EXPORT)
+            this.logger.log('[HISTORY & NORT-CONVS] PERMISSION_TO_EXPORT_REQUESTS', PERMISSIONS.REQUESTS_EXPORT)
 
             this.PERMISSION_TO_EXPORT_REQUESTS = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 1 ', this.PERMISSION_TO_EXPORT_REQUESTS);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 1 ', this.PERMISSION_TO_EXPORT_REQUESTS);
           } else {
             this.PERMISSION_TO_EXPORT_REQUESTS = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 2', this.PERMISSION_TO_EXPORT_REQUESTS);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_EXPORT_REQUESTS 2', this.PERMISSION_TO_EXPORT_REQUESTS);
           }
         } else {
           this.PERMISSION_TO_EXPORT_REQUESTS = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_EXPORT_REQUESTS ', this.PERMISSION_TO_EXPORT_REQUESTS);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_EXPORT_REQUESTS ', this.PERMISSION_TO_EXPORT_REQUESTS);
         }
 
         
@@ -564,17 +564,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_DELETE = true;
-          console.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else if (status.role === 'admin' || status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_DELETE = false;
-          console.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.REQUEST_DELETE);
-          console.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
 
         // PERMISSION_TO_READ_TEAMMATE_DETAILS
@@ -582,65 +582,65 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
 
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           } else {
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           }
         } else {
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 
         // PERMISSION_TO_VIEW_OPENED_CONV
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner & Admin always has permission
           this.PERMISSION_TO_VIEW_OPENED_CONV = true;
-          console.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user is owner (1)', 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_OPENED_CONV = false;
-          console.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user is admin or agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_VIEW_OPENED_CONV);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_OPENED_CONV = status.matchedPermissions.includes(PERMISSIONS.INBOX_READ);
-          console.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
+          this.logger.log('[HISTORY & NORT-CONVS] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_OPENED_CONV:', this.PERMISSION_TO_VIEW_OPENED_CONV);
         }
 
         // PERMISSION_TO_EDIT_FLOWS
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
-          console.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
          // PERMISSION TO UPDATE APP
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_UPDATE_APP = true;
-          console.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_UPDATE_APP = false;
-          console.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[HISTORY & NORT-CONVS] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
-          console.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[HISTORY & NORT-CONVS] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
         }
         
         // You can also check status.role === 'owner' if needed
@@ -654,7 +654,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
@@ -1740,10 +1740,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsStatusesSelectFromAdvancedOption(requests_statuses) {
-    console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
+    this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
 
     if (this.requests_statuses.length === 0) {
-      console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses USE CASE requests_statuses.length === 0', this.requests_statuses);
+      this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses USE CASE requests_statuses.length === 0', this.requests_statuses);
       // this.requests_statuses = ['1000', '100', '200', '50']
       // this.requests_status = "1000,100,200,50"
       // this.requests_status = "1000,100,200"
@@ -1914,7 +1914,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getRequests() {
     this.logger.log('[HISTORY & NORT-CONVS] getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    console.log('[HISTORY & NORT-CONVS] getRequests requests_statuses ', this.requests_statuses)
+    this.logger.log('[HISTORY & NORT-CONVS] getRequests requests_statuses ', this.requests_statuses)
     this.logger.log('[HISTORY & NORT-CONVS] getRequests requests_status ', this.requests_status)
 
     this.showSpinner = true;
@@ -2867,7 +2867,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
     this.logger.log('HERE IN SEARCH this.startDate', this.startDate)
     this.logger.log('HERE IN SEARCH this.endDate', this.endDate)
-    console.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH this.requests_status', this.requests_status)
+    this.logger.log('[HISTORY & NORT-CONVS] - HERE IN SEARCH this.requests_status', this.requests_status)
     this.logger.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
 
     // Reset status from 9999 (used in clearSearch) back to 1000 for history page
@@ -3725,7 +3725,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   selectAllHistory(e) {
-    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+    this.logger.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
 
@@ -3754,7 +3754,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   selectAllNort(e) {
-    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+    this.logger.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
 
@@ -3786,9 +3786,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // --------------------------------------------------------------
   change(requestId) {
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    console.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+    this.logger.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
 
-    console.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
+    this.logger.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
     const index = this.request_selected.indexOf(requestId);
     this.logger.log("[HISTORY & NORT-CONVS] - change - request selected INDEX: ", index);
 
@@ -3819,7 +3819,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   archiveRequest(request_id) {
     if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-      console.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
+      this.logger.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
 
 
       this.wsRequestsService.closeSupportGroup(request_id)
@@ -3847,13 +3847,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           for (var i = 0; i < this.requestList.length; i++) {
 
             if (this.requestList[i].request_id === request_id) {
-              console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
+              this.logger.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
               this.requestList[i]['status'] = 1000
               if (!this.IS_HERE_FOR_HISTORY) {
                 this.requestList.splice(i, 1);
               }
             }
-            console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
+            this.logger.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
           }
 
         });
@@ -3902,7 +3902,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   deleteSelected() {
-    console.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
+    this.logger.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
     let nRequestsBefore = this.requestList.length;
     //let correctnessCheck = (this.requestList.length - this.request_selected.length);
 

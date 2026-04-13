@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
+import { LoggerService } from 'app/services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
 import { URL_web_integrations } from 'app/utils/util';
 
@@ -46,6 +47,7 @@ export class WidgetInstallationComponent implements OnInit {
      public brandService: BrandService,
      private roleService: RoleService,
      private router: Router,
+     public logger: LoggerService
     ) { 
       const brand = brandService.getBrand();
       this.tparams = brand;
@@ -77,11 +79,11 @@ export class WidgetInstallationComponent implements OnInit {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('widget-installation')
-    console.log('[WIDGET-SET-UP] result ', result)
+    this.logger.log('[WIDGET-SET-UP] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[WIDGET-SET-UP] isAuthorized ',  this.isAuthorized)
-    console.log('[WIDGET-SET-UP] permissionChecked ',  this.permissionChecked)
+    this.logger.log('[WIDGET-SET-UP] isAuthorized ',  this.isAuthorized)
+    this.logger.log('[WIDGET-SET-UP] permissionChecked ',  this.permissionChecked)
   }
 
   getCurrentProject() {
@@ -94,19 +96,19 @@ export class WidgetInstallationComponent implements OnInit {
 
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
-  // console.log('[WIDGET-INSTALLATION] getAppConfig WIDGET_URL ', this.WIDGET_URL)
+  // this.logger.log('[WIDGET-INSTALLATION] getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WIDGET-INSTALLATION] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WIDGET-INSTALLATION] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-    //  console.log('[WIDGET-INSTALLATION] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+    //  this.logger.log('[WIDGET-INSTALLATION] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
@@ -119,7 +121,7 @@ export class WidgetInstallationComponent implements OnInit {
     var i;
     for (i = 0; i < coll.length; i++) {
       coll[i].addEventListener("click", function() {
-        // console.log(this.parentElement);
+        // this.logger.log(this.parentElement);
         this.elActive = this.parentElement.querySelector('.collapsible-content');
         this.parentElement.classList.toggle("active");
         if (this.elActive.style.maxHeight){
@@ -138,12 +140,12 @@ export class WidgetInstallationComponent implements OnInit {
   getAndManageAccordionInstallWidget() {
     var acc = document.getElementsByClassName("accordion-install-widget");
 
-    // console.log('[WIDGET-INSTALLATION] ACCORDION INSTALL WIDGET', acc);
+    // this.logger.log('[WIDGET-INSTALLATION] ACCORDION INSTALL WIDGET', acc);
 
     var i: number;
     for (i = 0; i < acc.length; i++) {
-    // console.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - QUI ENTRO');
-    // console.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
+    // this.logger.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - QUI ENTRO');
+    // this.logger.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
 
       const self = this;
       var firstAccordion = acc[0];
@@ -158,10 +160,10 @@ export class WidgetInstallationComponent implements OnInit {
         // this.logger.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - panel', panel);
 
         var arrow_icon_div = this.children[1];
-        // console.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - ICON WRAP DIV', arrow_icon_div);
+        // this.logger.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - ICON WRAP DIV', arrow_icon_div);
 
         var arrow_icon = arrow_icon_div.children[0]
-        // console.log('[WIDGET-INSTALLATION] ACCORDION ARROW ICON', arrow_icon);
+        // this.logger.log('[WIDGET-INSTALLATION] ACCORDION ARROW ICON', arrow_icon);
         arrow_icon.classList.toggle("arrow-up-install-widget");
 
         if (panel.style.maxHeight) {
@@ -186,7 +188,7 @@ export class WidgetInstallationComponent implements OnInit {
   close_panel_install_widget() {
     this.HAS_SELECT_INSTALL_WITH_CODE = false;
     this.HAS_SELECT_INSTALL_WITH_GTM = false
-  // console.log('[WIDGET-INSTALLATION] close_panel_install_widget HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
+  // this.logger.log('[WIDGET-INSTALLATION] close_panel_install_widget HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
 
   }
 
@@ -207,7 +209,7 @@ export class WidgetInstallationComponent implements OnInit {
     //   this.HAS_SELECT_INSTALL_WITH_CODE = false;
     // }
 
-    // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
+    // this.logger.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
   }
 
   installWithGTM() {
@@ -221,7 +223,7 @@ export class WidgetInstallationComponent implements OnInit {
     //   this.HAS_SELECT_INSTALL_WITH_GTM = false;
     // }
 
-    // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
+    // this.logger.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
   }
 
   goToSupport() {

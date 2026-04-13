@@ -290,39 +290,39 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
 
-        console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
-        console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
+        this.logger.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
+        this.logger.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
 
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
 
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
             this.PERMISSION_TO_ARCHIVE_REQUEST = false
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
           }
         } else {
           this.PERMISSION_TO_ARCHIVE_REQUEST = true
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // PERMISSION_TO_JOIN_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
-            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
 
             this.PERMISSION_TO_JOIN_REQUEST = true
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
           } else {
             this.PERMISSION_TO_JOIN_REQUEST = false
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
           }
         } else {
           this.PERMISSION_TO_JOIN_REQUEST = true
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
         // PERMISSION_TO_READ_TEAMMATE_DETAILS
@@ -330,14 +330,14 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
 
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           } else {
             this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
-            console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
           }
         } else {
           this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
         }
 
 
@@ -345,34 +345,34 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-          console.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
         // PERMISSION TO UPDATE APP
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_UPDATE_APP = true;
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_UPDATE_APP = false;
-          console.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Project user agent (2)', 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UPDATE_APP = status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE);
-          console.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_APP:', this.PERMISSION_TO_UPDATE_APP);
         }
 
       });

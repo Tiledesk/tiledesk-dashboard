@@ -88,8 +88,8 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[USERS] - Role:', status.role);
-        console.log('[USERS] - Permissions:', status.matchedPermissions);
+        this.logger.log('[USERS] - Role:', status.role);
+        this.logger.log('[USERS] - Permissions:', status.matchedPermissions);
       
         // ----------------------------
         // PERMISSION_TO_VIEW_TEAMMATES
@@ -97,17 +97,17 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_TEAMMATES = true;
-          console.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          this.logger.log('[USERS] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_TEAMMATES = false;
-          console.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          this.logger.log('[USERS] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
-          console.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
+          this.logger.log('[USERS] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
         }
 
         // -------------------------
@@ -116,17 +116,17 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_VIEW_GROUPS = true;
-          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+          this.logger.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_GROUPS = false;
-          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+          this.logger.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_GROUPS = status.matchedPermissions.includes(PERMISSIONS.GROUPS_READ);
-          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
+          this.logger.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_GROUPS:', this.PERMISSION_TO_VIEW_GROUPS);
         }
 
         // -----------------------------
@@ -135,17 +135,17 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_CREATE_NEW_ROLE = true;
-          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
+          this.logger.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_CREATE_NEW_ROLE = false;
-          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
+          this.logger.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_CREATE_NEW_ROLE = status.matchedPermissions.includes(PERMISSIONS.ROLE_CREATE);
-          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
+          this.logger.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_CREATE_NEW_ROLE:', this.PERMISSION_TO_CREATE_NEW_ROLE);
         }
 
         // -----------------------------
@@ -154,17 +154,17 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_UPDATE_ROLE = true;
-          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
+          this.logger.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_UPDATE_ROLE = false;
-          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
+          this.logger.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UPDATE_ROLE = status.matchedPermissions.includes(PERMISSIONS.ROLE_UPDATE);
-          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
+          this.logger.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_UPDATE_ROLE:', this.PERMISSION_TO_UPDATE_ROLE);
         }
 
         // -----------------------------
@@ -173,17 +173,17 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_DELETE_ROLE = true;
-          console.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
+          this.logger.log('[USERS-ROLES] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_DELETE_ROLE = false;
-          console.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
+          this.logger.log('[USERS-ROLES] - Project user agent (2)', 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE_ROLE = status.matchedPermissions.includes(PERMISSIONS.ROLE_DELETE);
-          console.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
+          this.logger.log('[USERS-ROLES] - Custom role (3) role', status.role, 'PERMISSION_TO_DELETE_ROLE:', this.PERMISSION_TO_DELETE_ROLE);
         }
 
         
@@ -193,11 +193,11 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('users-roles')
-    console.log('[USERS-ROLES] result ', result)
+    this.logger.log('[USERS-ROLES] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[USERS-ROLES] isAuthorized ', this.isAuthorized)
-    console.log('[USERS-ROLES] permissionChecked ', this.permissionChecked)
+    this.logger.log('[USERS-ROLES] isAuthorized ', this.isAuthorized)
+    this.logger.log('[USERS-ROLES] permissionChecked ', this.permissionChecked)
   }
 
   getAllUsersOfCurrentProject() {
@@ -205,28 +205,28 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
-        console.log('[USERS-ROLES] - GET PROJECT-USERS - RES', projectUsers)
+        this.logger.log('[USERS-ROLES] - GET PROJECT-USERS - RES', projectUsers)
 
         if (projectUsers) {
           this.projectUsers = projectUsers
         }
       }, (error) => {
-        console.log('[USERS-ROLES] - GET PROJECT-USERS - ERROR', error)
+        this.logger.log('[USERS-ROLES] - GET PROJECT-USERS - ERROR', error)
 
       }, () => {
-        console.log('[USERS-ROLES] - GET PROJECT-USERS * COMPLETE *')
+        this.logger.log('[USERS-ROLES] - GET PROJECT-USERS * COMPLETE *')
       });
   }
 
    getPendingInvitation() {
     this.usersService.getPendingUsers().subscribe(
       (pendingInvitation: any) => {
-        console.log('[USERS-ROLES] - GET PENDING INVITATION - RES', pendingInvitation)
+        this.logger.log('[USERS-ROLES] - GET PENDING INVITATION - RES', pendingInvitation)
 
         if (pendingInvitation) {
           this.pendingInvitationList = pendingInvitation
    
-          console.log('[USERS-ROLES] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.pendingInvitationList)
+          this.logger.log('[USERS-ROLES] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.pendingInvitationList)
         }
       }, (error) => {
     
@@ -245,24 +245,24 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((res: any) => {
-        console.log('[USERS-ROLES] - GET ROLES - RES ', res);
+        this.logger.log('[USERS-ROLES] - GET ROLES - RES ', res);
         this.roles = res
 
       }, error => {
 
         this.showSpinner = false
-        console.error('[USERS-ROLES] - GET ROLES - ERROR: ', error);
+        this.logger.error('[USERS-ROLES] - GET ROLES - ERROR: ', error);
       }, () => {
         this.showSpinner = false
-        console.log('[USERS-ROLESN] - GET ROLES * COMPLETE *')
+        this.logger.log('[USERS-ROLESN] - GET ROLES * COMPLETE *')
       });
   }
 
   _deleteRole(roleid: string) {
-    console.log('[USERS-ROLES] - DELETE ROLE - roleid ', roleid);
+    this.logger.log('[USERS-ROLES] - DELETE ROLE - roleid ', roleid);
     this.rolesService.deleteRole(roleid)
       .subscribe((res: any) => {
-        console.log('[USERS-ROLES] - DELETE ROLE - RES ', res);
+        this.logger.log('[USERS-ROLES] - DELETE ROLE - RES ', res);
         // Remove role foem the list
         for (var i = 0; i < this.roles.length; i++) {
           if (this.roles[i]._id === roleid) {
@@ -272,9 +272,9 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         }
 
       }, error => {
-        console.error('[USERS-ROLES] - DELETE ROLE - ERROR: ', error);
+        this.logger.error('[USERS-ROLES] - DELETE ROLE - ERROR: ', error);
       }, () => {
-        console.log('[USERS-ROLES] - DELETE ROLE * COMPLETE *')
+        this.logger.log('[USERS-ROLES] - DELETE ROLE * COMPLETE *')
       });
   }
 
@@ -293,11 +293,11 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         return invitation.role === rolename;
     });
 
-    console.log('[USERS-ROLES] delete role - puFilteredForRoleArray ', puFilteredForRoleArray)
-    console.log('[USERS-ROLES] delete role - pendingInvitationFilteredForRoleArray ', pendingInvitationFilteredForRoleArray)
+    this.logger.log('[USERS-ROLES] delete role - puFilteredForRoleArray ', puFilteredForRoleArray)
+    this.logger.log('[USERS-ROLES] delete role - pendingInvitationFilteredForRoleArray ', pendingInvitationFilteredForRoleArray)
 
     const totalAssociations = puFilteredForRoleArray.length + pendingInvitationFilteredForRoleArray.length;
-    console.log('[USERS-ROLES] delete role - totalAssociations ', totalAssociations)
+    this.logger.log('[USERS-ROLES] delete role - totalAssociations ', totalAssociations)
 
     // this.projectUsersAssociatedToRole = []
 
@@ -377,7 +377,7 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   }
 
   presentDialogDeleteRole(rolename, roleid) {
-    console.log('[USERS-ROLES] delete role - roleid ', roleid)
+    this.logger.log('[USERS-ROLES] delete role - roleid ', roleid)
     const htmlContent = this.translate.instant('TheRoleWillBeDeleted', {
       role_name: `<strong>${rolename}</strong>`
     });
@@ -401,7 +401,7 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
         if (result.isDenied) {
           this.rolesService.deleteRole(roleid)
             .subscribe((res: any) => {
-              console.log('[USERS-ROLES] - DELETE ROLE - RES ', res);
+              this.logger.log('[USERS-ROLES] - DELETE ROLE - RES ', res);
             }, (error) => {
               Swal.fire({
                 title: this.translate.instant('Oops') + '!',

@@ -526,20 +526,20 @@ export class UsersNewRoleComponent implements OnInit {
 
   async checkEditPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('edit-roles')
-    console.log('[CREATE-NEW-ROLE] edit-roles result ', result)
+    this.logger.log('[CREATE-NEW-ROLE] edit-roles result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[CREATE-NEW-ROLE] isAuthorized to EDIT ', this.isAuthorized)
-    console.log('[CREATE-NEW-ROLE] permissionChecked ', this.permissionChecked)
+    this.logger.log('[CREATE-NEW-ROLE] isAuthorized to EDIT ', this.isAuthorized)
+    this.logger.log('[CREATE-NEW-ROLE] permissionChecked ', this.permissionChecked)
   }
 
   async checkCreatePermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('create-roles')
-    console.log('[CREATE-NEW-ROLE] result ', result)
+    this.logger.log('[CREATE-NEW-ROLE] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[CREATE-NEW-ROLE] isAuthorized to CREATE', this.isAuthorized)
-    console.log('[CREATE-NEW-ROLE] permissionChecked ', this.permissionChecked)
+    this.logger.log('[CREATE-NEW-ROLE] isAuthorized to CREATE', this.isAuthorized)
+    this.logger.log('[CREATE-NEW-ROLE] permissionChecked ', this.permissionChecked)
   }
 
 
@@ -570,16 +570,16 @@ export class UsersNewRoleComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((roles: any) => {
-        console.log('[CREATE-NEW-ROLE] - GET ROLES - roles ', roles);
+        this.logger.log('[CREATE-NEW-ROLE] - GET ROLES - roles ', roles);
         this.roles = roles || [];
 
       }, error => {
 
 
-        console.error('[CREATE-NEW-ROLE] - GET ROLES - ERROR: ', error);
+        this.logger.error('[CREATE-NEW-ROLE] - GET ROLES - ERROR: ', error);
       }, () => {
 
-        console.log('[CREATE-NEW-ROLE] - GET ROLES * COMPLETE *')
+        this.logger.log('[CREATE-NEW-ROLE] - GET ROLES * COMPLETE *')
       });
   }
   detectsCreateEditInTheUrl() {
@@ -587,7 +587,7 @@ export class UsersNewRoleComponent implements OnInit {
     this.checkCreatePermissions();
 
       this.CREATE_VIEW = true;
-      console.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
+      this.logger.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
       // this.showSpinner = false;
 
     } else {
@@ -595,11 +595,11 @@ export class UsersNewRoleComponent implements OnInit {
       this.EDIT_VIEW = true;
       this.form.get('roleName')?.disable();
       this.sections.forEach(section => section.expanded = true);
-      console.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
-      console.log('[CREATE-NEW-ROLE] - EDIT_VIEW ', this.EDIT_VIEW)
-      console.log('[CREATE-NEW-ROLE] - EDIT_VIEW this.route', this.route)
+      this.logger.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
+      this.logger.log('[CREATE-NEW-ROLE] - EDIT_VIEW ', this.EDIT_VIEW)
+      this.logger.log('[CREATE-NEW-ROLE] - EDIT_VIEW this.route', this.route)
       this.roleId = this.route.snapshot.params['roleid'];
-      console.log('[CREATE-NEW-ROLE] - CREATE_VIEW  roleId', this.roleId)
+      this.logger.log('[CREATE-NEW-ROLE] - CREATE_VIEW  roleId', this.roleId)
       this.getRoleById(this.roleId)
       // this.showSpinner = false;
     }
@@ -608,7 +608,7 @@ export class UsersNewRoleComponent implements OnInit {
   getRoleById(roleId) {
     this.rolesService.getRoleById(roleId)
       .subscribe((res: any) => {
-        console.log('[USERS-ROLES] - GET ROLE BY ID - RES ', res);
+        this.logger.log('[USERS-ROLES] - GET ROLE BY ID - RES ', res);
         // Set role name
         this.form.patchValue({
           roleName: res.name
@@ -637,10 +637,10 @@ export class UsersNewRoleComponent implements OnInit {
         });
       },
         error => {
-          console.error('[USERS-ROLES] - GET ROLE BY ID - ERROR: ', error);
+          this.logger.error('[USERS-ROLES] - GET ROLE BY ID - ERROR: ', error);
         },
         () => {
-          console.log('[USERS-ROLES] - GET ROLE BY ID * COMPLETE *')
+          this.logger.log('[USERS-ROLES] - GET ROLE BY ID * COMPLETE *')
           this.syncAfterPatch()
         });
   }
@@ -722,8 +722,8 @@ export class UsersNewRoleComponent implements OnInit {
           value: this.form.get(child.key)?.value
         }));
 
-        console.log(`[USERS-ROLES] - Parent [${parent}]:`, parentValue);
-        console.log(`[USERS-ROLES] - Children:`, children);
+        this.logger.log(`[USERS-ROLES] - Parent [${parent}]:`, parentValue);
+        this.logger.log(`[USERS-ROLES] - Children:`, children);
       });
       const payload = {
         name: this.form.value.roleName,
@@ -731,7 +731,7 @@ export class UsersNewRoleComponent implements OnInit {
         permissions: this.getSelectedPermissions()
       };
 
-      console.log('[USERS-ROLES] - payload ', payload)
+      this.logger.log('[USERS-ROLES] - payload ', payload)
       this.validateRoleName(payload.name)
     });
 
@@ -744,9 +744,9 @@ export class UsersNewRoleComponent implements OnInit {
 
     // Check against reserved names
     if (this.reservedRoleNames.includes(name)) {
-      console.log('[USERS-ROLES] - reservedName ', this.reservedRoleNames.includes(name))
+      this.logger.log('[USERS-ROLES] - reservedName ', this.reservedRoleNames.includes(name))
       this.reservedName = true
-      console.log('[USERS-ROLES] - reservedName ', this.reservedName)
+      this.logger.log('[USERS-ROLES] - reservedName ', this.reservedName)
       // return { reservedName: true };
     } else {
       this.reservedName = false
@@ -756,11 +756,11 @@ export class UsersNewRoleComponent implements OnInit {
     const nameExists = this.roles.some(role => role.name?.toLowerCase()?.trim() === name);
     if (nameExists) {
       this.nameExists = true
-      console.log('[USERS-ROLES] - nameExists ', this.nameExists)
+      this.logger.log('[USERS-ROLES] - nameExists ', this.nameExists)
       // return { nameExists: true };
     } else {
       this.nameExists = false
-      console.log('[USERS-ROLES] - nameExists ', this.nameExists)
+      this.logger.log('[USERS-ROLES] - nameExists ', this.nameExists)
     }
   }
 
@@ -866,7 +866,7 @@ export class UsersNewRoleComponent implements OnInit {
     const name = this.form.get('roleName')!.value;
     const permissions = this.getSelectedPermissions();  // your helper to pull all `true` keys
     const payload = { name, permissions };
-    console.log(payload);
+    this.logger.log(payload);
     if (this.CREATE_VIEW) {
       this.saveRole(payload)
     } else {
@@ -878,14 +878,14 @@ export class UsersNewRoleComponent implements OnInit {
     this.rolesService.createNewRole(payload)
 
       .subscribe((res: any) => {
-        console.log('[CREATE-NEW-ROLE] - SAVE ROLE - RES ', res);
+        this.logger.log('[CREATE-NEW-ROLE] - SAVE ROLE - RES ', res);
 
 
       }, error => {
-        console.error('[CREATE-NEW-ROLE] - SAVE ROLE - ERROR: ', error);
+        this.logger.error('[CREATE-NEW-ROLE] - SAVE ROLE - ERROR: ', error);
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileCreatingTheNewRole"), 4, 'report_problem');
       }, () => {
-        console.log('[CREATE-NEW-ROLE] - SAVE ROLE * COMPLETE *')
+        this.logger.log('[CREATE-NEW-ROLE] - SAVE ROLE * COMPLETE *')
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("TheNewRoleHasBeenSuccessfullyCreated"), 2, 'done');
       });
   }
@@ -894,14 +894,14 @@ export class UsersNewRoleComponent implements OnInit {
     this.rolesService.updateRole(payload, this.roleId)
 
       .subscribe((res: any) => {
-        console.log('[CREATE-NEW-ROLE] - EDIT ROLE - RES ', res);
+        this.logger.log('[CREATE-NEW-ROLE] - EDIT ROLE - RES ', res);
 
 
       }, error => {
-        console.error('[CREATE-NEW-ROLE] - EDIT ROLE - ERROR: ', error);
+        this.logger.error('[CREATE-NEW-ROLE] - EDIT ROLE - ERROR: ', error);
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileUpdatingTheRole"), 4, 'report_problem');
       }, () => {
-        console.log('[CREATE-NEW-ROLE] - EDIT ROLE * COMPLETE *')
+        this.logger.log('[CREATE-NEW-ROLE] - EDIT ROLE * COMPLETE *')
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RoleSuccessfullyUpdated"), 2, 'done');
       });
   }

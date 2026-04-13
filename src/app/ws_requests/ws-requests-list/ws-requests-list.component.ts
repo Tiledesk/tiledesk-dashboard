@@ -290,11 +290,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   //  async checkPermissions() {
   //   const result = await this.roleService.checkRoleForCurrentProject('ws-request-list')
-  //   console.log('[WS-REQUESTS-LIST] result ', result)
+  //   this.logger.log('[WS-REQUESTS-LIST] result ', result)
   //   this.isAuthorized = result === true;
   //   this.permissionChecked = true;
-  //   console.log('[WS-REQUESTS-LIST] isAuthorized ', this.isAuthorized)
-  //   console.log('[WS-REQUESTS-LIST] permissionChecked ', this.permissionChecked)
+  //   this.logger.log('[WS-REQUESTS-LIST] isAuthorized ', this.isAuthorized)
+  //   this.logger.log('[WS-REQUESTS-LIST] permissionChecked ', this.permissionChecked)
   // }
 
   listenToProjectUser() {
@@ -305,10 +305,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[WS-REQUESTS-LIST] - this.ROLE:', this.ROLE);
-        console.log('[WS-REQUESTS-LIST] - this.PERMISSIONS', this.PERMISSIONS);
+        this.logger.log('[WS-REQUESTS-LIST] - this.ROLE:', this.ROLE);
+        this.logger.log('[WS-REQUESTS-LIST] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('[WS-REQUESTS-LIST] - hasDefaultRole', this.hasDefaultRole);
+        this.logger.log('[WS-REQUESTS-LIST] - hasDefaultRole', this.hasDefaultRole);
 
 
         // -------------------------------------
@@ -316,17 +316,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         // -------------------------------------
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CREATE_TICKET)) {
-            console.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_CREATE_TICKET)
+            this.logger.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_CREATE_TICKET)
             // Enable update action
             this.PERMISSION_TO_CREATE_TICKET = true
-            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE TICKET 1 ', this.PERMISSION_TO_CREATE_TICKET);
+            this.logger.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE TICKET 1 ', this.PERMISSION_TO_CREATE_TICKET);
           } else {
             this.PERMISSION_TO_CREATE_TICKET = false
-            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE_TICKET 2', this.PERMISSION_TO_CREATE_TICKET);
+            this.logger.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE_TICKET 2', this.PERMISSION_TO_CREATE_TICKET);
           }
         } else {
           this.PERMISSION_TO_CREATE_TICKET = true
-          console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_CREATE_TICKET ', this.PERMISSION_TO_CREATE_TICKET);
+          this.logger.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_CREATE_TICKET ', this.PERMISSION_TO_CREATE_TICKET);
         }
 
 
@@ -336,17 +336,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = true;
-          console.log('[WS-REQUESTS-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          this.logger.log('[WS-REQUESTS-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
 
         } else if (status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = false;
-          console.log('[WS-REQUESTS-LIST] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          this.logger.log('[WS-REQUESTS-LIST] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_UPDATE);
-          console.log('[WS-REQUESTS-LIST] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          this.logger.log('[WS-REQUESTS-LIST] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
         }
 
         // -------------------------------------
@@ -355,17 +355,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_EDIT_OPERATING_HOURS = true;
-          console.log('[WS-REQUESTS-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+          this.logger.log('[WS-REQUESTS-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
 
         } else if (status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_EDIT_OPERATING_HOURS = false;
-          console.log('[WS-REQUESTS-LIST] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+          this.logger.log('[WS-REQUESTS-LIST] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_OPERATING_HOURS = status.matchedPermissions.includes(PERMISSIONS.HOURS_UPDATE);
-          console.log('[WS-REQUESTS-LIST] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+          this.logger.log('[WS-REQUESTS-LIST] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
         }
 
 
@@ -675,7 +675,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 getProjectUserRole() {
-    console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
+    this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -722,13 +722,13 @@ getProjectUserRole() {
   getAllProjectUsers(imagestorage: string, isfirebaseuploadengine: boolean) {
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
-      console.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', _projectUsers);
+      this.logger.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', _projectUsers);
 
       if (_projectUsers) {
         this.project_users = _projectUsers
         this.project_user_length = _projectUsers.length;
         // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
-        console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
+        this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
         this.projectUserArray = _projectUsers;
 
         _projectUsers.forEach(projectuser => {
@@ -791,18 +791,18 @@ getProjectUserRole() {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription id_user ', projectUser_from_ws_subscription['id_user']);
+        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription id_user ', projectUser_from_ws_subscription['id_user']);
       
-          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
        
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
-        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS $UBSC TO WS PROJECT-USERS projectuser[_id] ', projectuser['_id'])
-        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS projectUser_from_ws_subscription[_id] ', projectUser_from_ws_subscription['_id'])
+        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS $UBSC TO WS PROJECT-USERS projectuser[_id] ', projectuser['_id'])
+        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS projectUser_from_ws_subscription[_id] ', projectUser_from_ws_subscription['_id'])
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
-          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF')
-          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> user_available ', projectUser_from_ws_subscription['user_available'])
-          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus ', projectUser_from_ws_subscription['profileStatus'])
+          this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF')
+          this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> user_available ', projectUser_from_ws_subscription['user_available'])
+          this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus ', projectUser_from_ws_subscription['profileStatus'])
           // projectUser_from_ws_subscription['email'] = projectuser['id_user']['email']
           // projectUser_from_ws_subscription['firstname'] = projectuser['id_user']['firstname']
           // projectUser_from_ws_subscription['lastname'] = projectuser['id_user']['lastname']
@@ -815,7 +815,7 @@ getProjectUserRole() {
           //  projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
           // }
           if ('profileStatus' in projectUser_from_ws_subscription) {
-            // console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+            // this.logger.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
             projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
           }
 
@@ -900,7 +900,7 @@ getProjectUserRole() {
 
         // this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
-          console.log('[WS-REQUESTS-LIST] - GROUP ', group);
+          this.logger.log('[WS-REQUESTS-LIST] - GROUP ', group);
 
           if (group.members.includes(this.currentUserID)) {
             // this.logger.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
@@ -1107,7 +1107,7 @@ getProjectUserRole() {
 
 
   goToProjectSettings_Smartassignment() {
-    console.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Smartassignment');
+    this.logger.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Smartassignment');
 
     if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.PERMISSION_TO_EDIT_SMART_ASSIGN) {
       if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
@@ -1241,7 +1241,7 @@ getProjectUserRole() {
 
     this.ONLY_MY_REQUESTS = seeIamAgentReq
     if (this.ONLY_MY_REQUESTS === false && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
-      console.log('[WS-REQUESTS-LIST] seeIamAgentRequests ONLY_MY_REQUESTS', this.ONLY_MY_REQUESTS)
+      this.logger.log('[WS-REQUESTS-LIST] seeIamAgentRequests ONLY_MY_REQUESTS', this.ONLY_MY_REQUESTS)
       this.displayAgentsSelect = true
       this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
     } else if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
@@ -1249,7 +1249,7 @@ getProjectUserRole() {
       this.displayAgentsSelect = false
       this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
     }
-    console.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
+    this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
     if (seeIamAgentReq === false) {
       this.displayBtnLabelSeeYourRequets = false;
     } else {
@@ -1271,8 +1271,8 @@ getProjectUserRole() {
   }
 
   hasmeInAgents(agents, wsrequest) {
-    console.log('[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
-    console.log("[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - currentUserID ", this.currentUserID);
+    this.logger.log('[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
+    this.logger.log("[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - currentUserID ", this.currentUserID);
     if (agents) {
       for (let j = 0; j < agents.length; j++) {
         if (this.currentUserID === agents[j].id_user) {
@@ -1418,7 +1418,7 @@ getProjectUserRole() {
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     // this.wsRequestsService.wsRequestsList$
     //   .pipe(
     //     takeUntil(this.unsubscribe$)
@@ -1432,9 +1432,9 @@ getProjectUserRole() {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequests) => {
-        console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
-        console.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.ROLE ', this.ROLE);
-        console.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.PERMISSIONS ', this.PERMISSIONS);
+        this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        this.logger.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.ROLE ', this.ROLE);
+        this.logger.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.PERMISSIONS ', this.PERMISSIONS);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1502,8 +1502,8 @@ getProjectUserRole() {
               // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
             }
           } else if (this.ROLE !== 'owner' && this.ROLE !== 'admin' && this.ROLE !== 'agent') {
-            console.log('[WS-REQUESTS-LIST-USECASE] - getWsRequests$ this.ROLE (else) ', this.ROLE);
-            console.log('[WS-REQUESTS-LIST-USECASE] - getWsRequests$ this.PERMISSIONS (else) ', this.PERMISSIONS);
+            this.logger.log('[WS-REQUESTS-LIST-USECASE] - getWsRequests$ this.ROLE (else) ', this.ROLE);
+            this.logger.log('[WS-REQUESTS-LIST-USECASE] - getWsRequests$ this.PERMISSIONS (else) ', this.PERMISSIONS);
 
             // Se il tuo ruolo è uno custom e ha scelto opzione request_reame_my allora devi visualizzare solo le tue conv e scartare le altre. Praticamente la stessa cosa che fai con AGENTS_CAN_SEE_ONLY_OWN_CONVS
             // Se invece ha scelto request_read_group allora solo quelle del gruppo di appartenenza
@@ -1512,24 +1512,24 @@ getProjectUserRole() {
             // request_read_all
             if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_ALL)) {
 
-              console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE getWsRequests$ request_read_all');
+              this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE getWsRequests$ request_read_all');
               this.ws_requests = wsrequests;
               this.addDeptObject(this.ws_requests)
             }
 
             // request_read_group
             if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_GROUP)) {
-              console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE getWsRequests$ request_read_group');
+              this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE getWsRequests$ request_read_group');
               this.ws_requests = [];
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
 
-                  console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
-                  console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
+                  this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
                   if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
                     this.ws_requests.push(wsrequest);
-                    // console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group -  this.ws_requests ', this.ws_requests)
+                    // this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group -  this.ws_requests ', this.ws_requests)
                   }
                 }
               });
@@ -1538,19 +1538,19 @@ getProjectUserRole() {
             }
             // request_read_my
             if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_MY)) {
-              console.log('[WS-REQUESTS-LIST-USECASE]  ---> USECASE getWsRequests$ request_read_my');
+              this.logger.log('[WS-REQUESTS-LIST-USECASE]  ---> USECASE getWsRequests$ request_read_my');
               this.displayAgentsSelect = false
 
               this.ws_requests = [];
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
 
-                  console.log('[WS-REQUESTS-LIST-USECASE]- request_read_my - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
-                  console.log('[WS-REQUESTS-LIST-USECASE] - request_read_my - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants, wsrequest))
+                  this.logger.log('[WS-REQUESTS-LIST-USECASE]- request_read_my - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  this.logger.log('[WS-REQUESTS-LIST-USECASE] - request_read_my - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants, wsrequest))
 
                   if (this.hasmeInParticipants(wsrequest.participants) === true) {
                     this.ws_requests.push(wsrequest);
-                    // console.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_my -  this.ws_requests ', this.ws_requests)
+                    // this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_my -  this.ws_requests ', this.ws_requests)
                   }
                 }
               });
