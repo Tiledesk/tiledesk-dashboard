@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+
+### 2.7.172-AR-mini
+- mini dashboard version
+
 ### 2.7.172-AR
 - Adds the ability to change availability status on every project the lodded user belongs to
 
