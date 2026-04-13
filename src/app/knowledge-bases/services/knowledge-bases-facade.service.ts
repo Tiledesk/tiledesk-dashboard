@@ -13,6 +13,7 @@ import { KbChatbotWorkflowsService } from './kb-chatbot-workflows.service';
 import { KbChatbotTemplateWorkflowService } from './kb-chatbot-template-workflow.service';
 import { KbChatbotsUsingNamespaceWorkflowService } from './kb-chatbots-using-namespace-workflow.service';
 import { KbDepartmentsWorkflowService } from './kb-departments-workflow.service';
+import { KbBotDepartmentHookWorkflowService } from './kb-bot-department-hook-workflow.service';
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
 
 @Injectable({ providedIn: 'root' })
@@ -57,6 +58,7 @@ export class KnowledgeBasesFacadeService {
     public chatbotTemplates: KbChatbotTemplateWorkflowService,
     public chatbotsUsingNamespace: KbChatbotsUsingNamespaceWorkflowService,
     public departments: KbDepartmentsWorkflowService,
+    public botDeptHook: KbBotDepartmentHookWorkflowService,
     private onboardingChatbotSetupService: OnboardingChatbotSetupService,
   ) {}
 
@@ -175,6 +177,21 @@ export class KnowledgeBasesFacadeService {
   }
 
   /**
+   * Workflow “template -> JSON patchato” per la creazione bot nella sezione Chatbots della KB:
+   * - trova template certificato `kb-official-responder`
+   * - esporta JSON
+   * - patcha `askgptv2.namespace = namespaceId`
+   *
+   * Invocato da:
+   * - `KnowledgeBasesComponent.findKbOfficialResponderAndThenExportToJSON()`
+   */
+  exportKbOfficialResponderPatchedJson(
+    params: Parameters<KbChatbotTemplateWorkflowService['exportKbOfficialResponderPatchedJson']>[0],
+  ) {
+    return this.chatbotTemplates.exportKbOfficialResponderPatchedJson(params);
+  }
+
+  /**
    * Workflow “new theme”: dopo la creazione di un namespace (agente),
    * crea automaticamente un chatbot associato usando il template certificato.
    *
@@ -199,6 +216,10 @@ export class KnowledgeBasesFacadeService {
 
   hookBotToDept(deptId: string, botId: string) {
     return this.departments.hookBotToDept(deptId, botId);
+  }
+
+  resolveAndHookBotToDepartmentIfPossible(botId: string) {
+    return this.botDeptHook.resolveAndHookIfPossible(botId);
   }
 }
 
