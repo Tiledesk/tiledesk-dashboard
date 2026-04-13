@@ -1216,7 +1216,7 @@ export class NotifyService {
 
     const text = this.translate.instant('ContactUsToEnableCustomRoleManagement');
     Swal.fire({
-      title: this.translate.instant('Pricing.PlanChange'),
+      title: this.translate.instant('EnableCustomRoles'),
       text,
       icon: 'warning',
       showCloseButton: true,
