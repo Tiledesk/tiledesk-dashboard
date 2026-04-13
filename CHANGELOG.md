@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.166-rc2
+- Adds the ability to create custom roles (improvements)
+
 ### 2.7.166-rc1
 - Adds the ability to create custom roles 
 
