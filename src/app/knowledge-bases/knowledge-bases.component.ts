@@ -541,7 +541,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((project) => {
       this.project = project
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT ', this.project)
@@ -556,7 +556,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getProjectById(projectId) {
-    this.kbFacade.loadProjectById(projectId).subscribe((project: any) => {
+    this.kbFacade.loadProjectById(projectId).pipe(takeUntil(this.unsubscribe$)).subscribe((project: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
       const isActiveSubscription = project.isActiveSubscription
@@ -755,7 +755,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getAllNamespaces() {
     this.isLoadingNamespaces = true;
-    this.kbFacade.loadNamespaces().subscribe((res: any) => {
+    this.kbFacade.loadNamespaces().pipe(takeUntil(this.unsubscribe$)).subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
@@ -837,7 +837,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    *   - Mostra una notifica di successo all’utente.
    */
   createNewNamespace(namespaceName: string, hybrid: boolean) {
-    this.kbFacade.createNamespace(this.id_project, namespaceName, hybrid).subscribe((namespace: any) => {
+    this.kbFacade.createNamespace(this.id_project, namespaceName, hybrid).pipe(takeUntil(this.unsubscribe$)).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
@@ -866,7 +866,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             projectId: this.project._id,
             namespaceId: namespace.id,
             chatbotName: namespaceName,
-          }).subscribe({
+          }).pipe(takeUntil(this.unsubscribe$)).subscribe({
             next: () => {
               this.logger.log('[KNOWLEDGE-BASES-COMP] createNewNamespace - agent created and hooked for namespace', namespace.id);
               // refresh bots list for the selected namespace
@@ -935,7 +935,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
-    this.kbFacade.updateNamespace(this.id_project, this.selectedNamespace.id, body).subscribe((namespace: any) => {
+    this.kbFacade.updateNamespace(this.id_project, this.selectedNamespace.id, body).pipe(takeUntil(this.unsubscribe$)).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE RES', namespace);
@@ -1098,7 +1098,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.chatbotsUsingNamespace = []
-    this.kbFacade.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
+    this.kbFacade.getChatbotsUsingNamespace(selectedNamespaceid).pipe(takeUntil(this.unsubscribe$)).subscribe((chatbots: any) => {
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
       // let isArray = this.isArray(chatbots)
@@ -1336,7 +1336,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
       .then((result) => {
         if (result.isConfirmed) {
-          this.kbFacade.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
+          this.kbFacade.exportContents(this.selectedNamespace.id).pipe(takeUntil(this.unsubscribe$)).subscribe((res: any) => {
 
             this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
 
@@ -1464,7 +1464,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             }
           });
 
-          this.kbFacade.importContents(this.selectedNamespace.id, formData).subscribe({
+          this.kbFacade.importContents(this.selectedNamespace.id, formData).pipe(takeUntil(this.unsubscribe$)).subscribe({
             next: (res) => {
               this.logger.log('[KB IMPORT] Response:', res);
             },
@@ -1597,7 +1597,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           const formData = new FormData();
           formData.append('uploadFile', file, file.name); // Backend should accept 'file' field
 
-          this.kbFacade.importContents(this.selectedNamespace.id, formData).subscribe((res: any) => {
+          this.kbFacade.importContents(this.selectedNamespace.id, formData).pipe(takeUntil(this.unsubscribe$)).subscribe((res: any) => {
             this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
           }, (error) => {
             Swal.fire({
@@ -1728,7 +1728,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
     this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
-    this.kbFacade.hookBotToDept(deptId, botId).subscribe((res) => {
+    this.kbFacade.hookBotToDept(deptId, botId).pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
 
     }, (error) => {
@@ -2015,7 +2015,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   updateKbContent(kb) {
     this.logger.log('[Modal KB DETAILS] updateKbContent kb:', kb);
-    this.kbFacade.updateKbContent(kb).subscribe((response: any) => {
+    this.kbFacade.updateKbContent(kb).pipe(takeUntil(this.unsubscribe$)).subscribe((response: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] updateKbContent response', response);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
       const paramsDefault = '?limit=' + KB_DEFAULT_PARAMS.LIMIT + '&page=' + KB_DEFAULT_PARAMS.NUMBER_PAGE + '&sortField=' + KB_DEFAULT_PARAMS.SORT_FIELD + '&direction=' + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
@@ -2489,7 +2489,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getRouteParams() {
-    this.route.params.subscribe((params) => {
+    this.route.params.pipe(takeUntil(this.unsubscribe$)).subscribe((params) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS ', params);
       if (params.calledby && params.calledby === 'h') {
         this.callingPage = 'Home'
@@ -2515,7 +2515,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
+    this.auth.user_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((user) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
@@ -2538,13 +2538,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // ----------------------
   // UTILS FUNCTION - Start
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100.pipe(takeUntil(this.unsubscribe$)).subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
   }
 
   listenSidebarIsOpened() {
-    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+    this.auth.settingSidebarIsOpned.pipe(takeUntil(this.unsubscribe$)).subscribe((isopened) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
@@ -2644,7 +2644,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.kbFacade.setKbsList(this.kbsList);
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
-    this.kbFacade.listContents(params).subscribe((resp: any) => {
+    this.kbFacade.listContents(params).pipe(takeUntil(this.unsubscribe$)).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
@@ -2705,7 +2705,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   onSendSitemap(body) {
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
-    this.kbFacade.addSitemap(body).subscribe((resp: any) => {
+    this.kbFacade.addSitemap(body).pipe(takeUntil(this.unsubscribe$)).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         Swal.fire({
@@ -2755,7 +2755,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log("onAddKb body:", body);
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
-    this.kbFacade.addKb(body).subscribe((resp: any) => {
+    this.kbFacade.addKb(body).pipe(takeUntil(this.unsubscribe$)).subscribe((resp: any) => {
       this.logger.log("onAddKb:", resp);
       let kb = resp.value;
       if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
@@ -2889,7 +2889,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     let error = this.msgErrorAddUpdateKb;
     this.logger.log('[KNOWLEDGE-BASES-COMP] importSitemap error', error)
 
-    this.kbFacade.importSitemap(this.selectedNamespace['id'], body).subscribe((kbs: any) => {
+    this.kbFacade.importSitemap(this.selectedNamespace['id'], body).pipe(takeUntil(this.unsubscribe$)).subscribe((kbs: any) => {
 
      this.logger.log("[KNOWLEDGE-BASES-COMP] importSitemap RESP: ", kbs);
 
@@ -2976,7 +2976,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
-    this.kbFacade.addMultiKb(this.selectedNamespace.id, body).subscribe((kbs: any) => {
+    this.kbFacade.addMultiKb(this.selectedNamespace.id, body).pipe(takeUntil(this.unsubscribe$)).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
@@ -3068,7 +3068,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
     // this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
-    this.kbFacade.deleteKb(data).subscribe((response: any) => {
+    this.kbFacade.deleteKb(data).pipe(takeUntil(this.unsubscribe$)).subscribe((response: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
@@ -3217,7 +3217,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
     //  this.logger.log('dataAdd: ', dataAdd);
     kb.deleting = true;
-    this.kbFacade.deleteKb(dataDelete).subscribe((response: any) => {
+    this.kbFacade.deleteKb(dataDelete).pipe(takeUntil(this.unsubscribe$)).subscribe((response: any) => {
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
 
@@ -3235,7 +3235,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
       } else {
-        this.kbFacade.addKb(dataAdd).subscribe((resp: any) => {
+        this.kbFacade.addKb(dataAdd).pipe(takeUntil(this.unsubscribe$)).subscribe((resp: any) => {
           let kbNew = resp.value;
           //  this.logger.log(' onUpdateKb ') 
           if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
