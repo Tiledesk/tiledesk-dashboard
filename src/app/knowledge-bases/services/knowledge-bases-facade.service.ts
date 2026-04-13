@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { KbStateService } from './kb-state.service';
@@ -18,6 +18,8 @@ import { KbBotDepartmentHookWorkflowService } from './kb-bot-department-hook-wor
 import { OnboardingChatbotSetupService } from 'app/services/onboarding-chatbot-setup.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { KbDepartmentProvisioningWorkflowService } from './kb-department-provisioning-workflow.service';
+import { KbDepartmentSyncWorkflowService } from './kb-department-sync-workflow.service';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -62,6 +64,8 @@ export class KnowledgeBasesFacadeService {
     public chatbotsUsingNamespace: KbChatbotsUsingNamespaceWorkflowService,
     public departments: KbDepartmentsWorkflowService,
     public botDeptHook: KbBotDepartmentHookWorkflowService,
+    public departmentProvisioning: KbDepartmentProvisioningWorkflowService,
+    private departmentSync: KbDepartmentSyncWorkflowService,
     private onboardingChatbotSetupService: OnboardingChatbotSetupService,
     private faqKbService: FaqKbService,
   ) {}
@@ -146,11 +150,20 @@ export class KnowledgeBasesFacadeService {
         const requestedName = params.body?.name;
         if (!requestedName || !renamedTo) return of(namespace);
         if (!params.oldNamespaceName || params.oldNamespaceName === renamedTo) return of(namespace);
-        return this.renameAssociatedChatbotForNamespace({
-          namespaceId: params.namespaceId,
-          oldNamespaceName: params.oldNamespaceName,
-          newNamespaceName: renamedTo,
-        }).pipe(
+        return forkJoin([
+          this.renameAssociatedChatbotForNamespace({
+            namespaceId: params.namespaceId,
+            oldNamespaceName: params.oldNamespaceName,
+            newNamespaceName: renamedTo,
+          }).pipe(catchError(() => of(undefined))),
+          this.departmentSync
+            .renameAssociatedDepartment({
+              namespaceId: params.namespaceId,
+              oldNamespaceName: params.oldNamespaceName,
+              newNamespaceName: renamedTo,
+            })
+            .pipe(catchError(() => of(undefined))),
+        ]).pipe(
           map(() => namespace),
           catchError(() => of(namespace)),
         );
@@ -172,11 +185,19 @@ export class KnowledgeBasesFacadeService {
     if (!params.removeAlsoNamespace) {
       return this.deleteNamespace(params.namespaceId, params.removeAlsoNamespace);
     }
-    return this.trashAssociatedChatbotForNamespace({
-      namespaceId: params.namespaceId,
-      namespaceName: params.namespaceName,
-    }).pipe(
-      catchError(() => of(undefined)),
+    return forkJoin([
+      this.trashAssociatedChatbotForNamespace({
+        namespaceId: params.namespaceId,
+        namespaceName: params.namespaceName,
+      }).pipe(catchError(() => of(undefined))),
+      this.departmentSync
+        .deleteAssociatedDepartment({
+          namespaceId: params.namespaceId,
+          namespaceName: params.namespaceName,
+        })
+        .pipe(catchError(() => of(undefined))),
+    ]).pipe(
+      catchError(() => of([undefined, undefined])),
       switchMap(() => this.deleteNamespace(params.namespaceId, params.removeAlsoNamespace)),
     );
   }
@@ -265,6 +286,19 @@ export class KnowledgeBasesFacadeService {
     chatbotName: string;
   }) {
     return this.onboardingChatbotSetupService.createKbOfficialResponderChatbotForNamespace(params);
+  }
+
+  /**
+   * Provisioning completo per KB “new theme”:
+   * - crea chatbot certificato associato al namespace
+   * - crea/aggiorna department omonimo e lo collega al bot
+   */
+  createKbOfficialResponderChatbotAndDepartmentForNamespace(params: {
+    projectId: string;
+    namespaceId: string;
+    namespaceName: string;
+  }) {
+    return this.departmentProvisioning.createChatbotAndDepartmentForNamespace(params);
   }
 
   getChatbotsUsingNamespace(namespaceId: string) {

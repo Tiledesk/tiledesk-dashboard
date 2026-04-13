@@ -369,6 +369,9 @@ export class DepartmentService {
     this.logger.log('[DEPTS-SERV] UPDATE DEPT - URL ', url);
 
     const body = { 'name': deptName, 'description': deptDescription, 'id_group': id_group, 'routing': routing, groups: groups };
+    if (tags !== undefined) {
+      body['tags'] = tags;
+    }
     if (id_bot) {
       body['id_bot'] = id_bot;
       body['bot_only'] = bot_only;

@@ -862,13 +862,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         // New KB theme: auto-create an agent/chatbot with the same name and bind it to this namespace.
         if (this.kbPageConfig?.cssTheme === 'new' && this.project?._id && namespace?.id) {
-          this.kbFacade.createKbOfficialResponderChatbotForNamespace({
+          this.kbFacade.createKbOfficialResponderChatbotAndDepartmentForNamespace({
             projectId: this.project._id,
             namespaceId: namespace.id,
-            chatbotName: namespaceName,
+            namespaceName,
           }).pipe(takeUntil(this.unsubscribe$)).subscribe({
             next: () => {
-              this.logger.log('[KNOWLEDGE-BASES-COMP] createNewNamespace - agent created and hooked for namespace', namespace.id);
+              this.logger.log('[KNOWLEDGE-BASES-COMP] createNewNamespace - agent+department provisioned for namespace', namespace.id);
               // refresh bots list for the selected namespace
               this.getChatbotUsingNamespace(namespace.id);
             },
@@ -966,11 +966,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         // }
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE > NAMESPACES ', this.namespaces)
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAMESPACES EL to update  ', this.namespaces[this.newNamespaceNameIndex])
-        // let namespaceItemToUpdate  = this.namespaces[this.newNamespaceNameIndex]
-
+        // Update only the selected namespace item (by id) to avoid touching other KBs with same name.
+        const idx = this.namespaces?.findIndex((e) => e?.id === this.selectedNamespace?.id);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAMESPACES EL to update  ', idx !== -1 ? this.namespaces[idx] : undefined)
         if (calledBy !== 'modal-update-settings' && calledBy !== 'modal-update-settings-and-open-preview') {
-          this.namespaces[this.newNamespaceNameIndex]['name'] = updatedNameSpaceName
+          if (idx !== -1 && this.namespaces?.[idx]) {
+            this.namespaces[idx] = { ...this.namespaces[idx], name: updatedNameSpaceName };
+          }
         }
 
         // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
@@ -1030,7 +1032,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       namespaceNameInputEl.focus()
       this.namespaceValueOnFocus = (<HTMLInputElement>namespaceNameInputEl).value
-      this.newNamespaceNameIndex = this.namespaces.findIndex((e) => e.name === this.namespaceValueOnFocus);
+      // Use namespace id to avoid collisions when multiple KBs share the same name.
+      this.newNamespaceNameIndex = this.namespaces.findIndex((e) => e?.id === this.selectedNamespace?.id);
       this.logger.log('[KNOWLEDGE-BASES-COMP] hasClickedNamespaceName >>> index <<< in namespaces of namespace name cliked ', this.newNamespaceNameIndex)
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] hasClickedNamespaceName namespaceNameInputEl value', this.namespaceValueOnFocus)
