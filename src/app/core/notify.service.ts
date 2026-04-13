@@ -1203,7 +1203,7 @@ export class NotifyService {
 
     if (isCustomRole) {
       Swal.fire({
-        title: this.translate.instant('Pricing.PlanChange'),
+        title: this.translate.instant('EnableCustomRoles'),
         text: this.translate.instant('UsersPage.ContactProjectOwnerOrAdministratorsToEnableRoles'),
         icon: 'warning',
         showCloseButton: false,
