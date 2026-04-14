@@ -9,9 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 
 import { Subscription } from 'rxjs';
-import { AppConfigService } from '../services/app-config.service';
-import { BrandService } from '../services/brand.service';
-import { Home2BrandVmService } from './services/home2-brand-vm.service';
+import { Home2ConfigVmService } from './services/home2-config-vm.service';
 
 import moment from "moment";
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
@@ -33,8 +31,10 @@ import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
-import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { Home2Facade } from './services/home2.facade';
+import { Home2PermissionsVmService } from './services/home2-permissions-vm.service';
+import { Home2QuotesVmService } from './services/home2-quotes-vm.service';
+import { Home2ProjectAttributesVmService } from './services/home2-project-attributes-vm.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -235,15 +235,16 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public auth: AuthService,
     private home2Facade: Home2Facade,
-    private home2BrandVm: Home2BrandVmService,
     private router: Router,
     private usersService: UsersService,
     private usersLocalDbService: LocalDbService,
     private notify: NotifyService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
-    public appConfigService: AppConfigService,
-    public brandService: BrandService,
+    private home2ConfigVm: Home2ConfigVmService,
+    private home2PermissionsVm: Home2PermissionsVmService,
+    private home2QuotesVm: Home2QuotesVmService,
+    private home2ProjectAttributesVm: Home2ProjectAttributesVmService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
@@ -252,13 +253,14 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     private quotesService: QuotesService,
     public rolesService: RolesService
   ) {
-    const brandVm = this.home2BrandVm.getBrandVm();
-    this.company_name = brandVm.companyName;
-    this.custom_company_home_logo = brandVm.customCompanyHomeLogo;
-    this.companyLogoNoText = brandVm.companyLogoNoText;
-    this.displayNewsAndDocumentation = brandVm.displayNewsAndDocumentation;
-    this.tparams = brandVm.tparams;
-    this.salesEmail = brandVm.salesEmail;
+    this.home2Facade.brandVm$.pipe(take(1)).subscribe((brandVm) => {
+      this.company_name = brandVm.companyName;
+      this.custom_company_home_logo = brandVm.customCompanyHomeLogo;
+      this.companyLogoNoText = brandVm.companyLogoNoText;
+      this.displayNewsAndDocumentation = brandVm.displayNewsAndDocumentation;
+      this.tparams = brandVm.tparams;
+      this.salesEmail = brandVm.salesEmail;
+    });
   }
 
   ngOnInit() {
@@ -321,203 +323,19 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   listenToProjectUser() {
-    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
-    this.rolesService.getUpdateRequestPermission()
+    this.home2PermissionsVm.permissions$(this.unsubscribe$)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(status => {
-
-        console.log('[HOME] - Role:', status.role);
-        console.log('[HOME] - Permissions:', status.matchedPermissions);
-        // -------------------------------
-        // PERMISSION_TO_VIEW_QUOTA_USAGE
-        // -------------------------------
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
-
-            this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
-          } else {
-            this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
-            console.log('[HOME] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
-          }
-        } else {
-          this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
-        }
-
-        // -------------------------------
-        // PERMISSION_TO_VIEW_OP
-        // -------------------------------
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-
-          if (status.matchedPermissions.includes(PERMISSIONS.HOURS_READ)) {
-            this.PERMISSION_TO_VIEW_OP = true
-            console.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
-          } else {
-            this.PERMISSION_TO_VIEW_OP = false
-
-            console.log('[HOME] - PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
-          }
-        } else {
-          this.PERMISSION_TO_VIEW_OP = true
-          console.log('[HOME] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_OP ', this.PERMISSION_TO_VIEW_OP);
-        }
-    
-
-        // ---------------------------------
-        // PERMISSION_TO_VIEW_WIDGET_SETUP
-        // ---------------------------------
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_VIEW_WIDGET_SETUP = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_WIDGET_SETUP = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WIDGET_SETUP:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_WIDGET_SETUP = status.matchedPermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_WIDGET_SETUP);
-        }
-
-        // ---------------------------------
-        // PERMISSION TO VIEW FLOWS
-        // ---------------------------------
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_VIEW_FLOWS = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_FLOWS = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
-        }
-
-        // -------------------------------
-        // PERMISSION TO VIEW KB
-        // -------------------------------
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_VIEW_KB = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_KB = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.KB_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
-        }
-
-        // -------------------------------
-        // PERMISSION_TO_VIEW_ANALYTICS
-        // -------------------------------
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_VIEW_ANALYTICS = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_ANALYTICS = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
-        }
-
-        // -------------------------------
-        // PERMISSION_TO_VIEW_WA_BRODCAST
-        // -------------------------------
-         if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_VIEW_WA_BRODCAST = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_WA_BRODCAST = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_WA_BRODCAST:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_WA_BRODCAST = status.matchedPermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_WA_BRODCAST);
-        }
-
-        // -------------------------------
-        // PERMISSION_TO_VIEW_TEAMMATES
-        // -------------------------------
-         if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_VIEW_TEAMMATES = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_VIEW_TEAMMATES = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_VIEW_TEAMMATES = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_TEAMMATES:', this.PERMISSION_TO_VIEW_TEAMMATES);
-        }
-
-        // -----------------------------------
-        // PERMISSION_TO_READ_TEAMMATE_DETAILS
-        // -----------------------------------
-         if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS:', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
-        }
-
-        // -----------------------------------
-        // PERMISSION_TO_INVITE
-        // -----------------------------------
-         if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_INVITE = true;
-          console.log('[HOME] - Project user is owner or admin (1)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_INVITE = false;
-          console.log('[HOME] - Project user agent (2)', 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_INVITE = status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE);
-          console.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
-        }
-
-        
-        
+      .subscribe((vm) => {
+        this.PERMISSION_TO_VIEW_QUOTA_USAGE = vm.PERMISSION_TO_VIEW_QUOTA_USAGE;
+        this.PERMISSION_TO_VIEW_OP = vm.PERMISSION_TO_VIEW_OP;
+        this.PERMISSION_TO_VIEW_WIDGET_SETUP = vm.PERMISSION_TO_VIEW_WIDGET_SETUP;
+        this.PERMISSION_TO_VIEW_FLOWS = vm.PERMISSION_TO_VIEW_FLOWS;
+        this.PERMISSION_TO_VIEW_KB = vm.PERMISSION_TO_VIEW_KB;
+        this.PERMISSION_TO_VIEW_ANALYTICS = vm.PERMISSION_TO_VIEW_ANALYTICS;
+        this.PERMISSION_TO_VIEW_WA_BRODCAST = vm.PERMISSION_TO_VIEW_WA_BRODCAST;
+        this.PERMISSION_TO_VIEW_TEAMMATES = vm.PERMISSION_TO_VIEW_TEAMMATES;
+        this.PERMISSION_TO_READ_TEAMMATE_DETAILS = vm.PERMISSION_TO_READ_TEAMMATE_DETAILS;
+        this.PERMISSION_TO_INVITE = vm.PERMISSION_TO_INVITE;
       });
   }
 
@@ -591,126 +409,39 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectChangedFromList :", this.projectChangedFromList);
     this.quotasSubscription = this.quotesService.quotesData$
       .subscribe((data) => {
+        const vm = this.home2QuotesVm.mapQuotesDataToVm(data, this.projectId, this.diplayVXMLVoiceQuota);
+        if (!vm) return;
 
-        if (data) {
-          if (data['projectId'] === this.projectId) {
-            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
-            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
-            this.quotasLimits = data.projectLimits;
-            this.allQuotas = data.allQuotes;
-            this.quotaResetEndDateLabel = data.slot?.endDate ?? null;
-            this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
-            this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
+        this.quotasLimits = vm.quotasLimits;
+        this.allQuotas = vm.allQuotas;
+        this.quotaResetEndDateLabel = vm.quotaResetEndDateLabel;
 
-            if (this.quotasLimits) {
-              this.messages_limit = this.quotasLimits.messages;
-              this.requests_limit = this.quotasLimits.requests;
-              this.email_limit = this.quotasLimits.email;
-              this.tokens_limit = this.quotasLimits.tokens;
+        this.messages_limit = vm.messages_limit;
+        this.requests_limit = vm.requests_limit;
+        this.email_limit = vm.email_limit;
+        this.tokens_limit = vm.tokens_limit;
+        this.voice_limit_in_sec = vm.voice_limit_in_sec;
+        this.voice_limit = vm.voice_limit;
 
-              // if (this.quotasLimits.voice_duration)  {
-              this.voice_limit_in_sec = this.quotasLimits.voice_duration;
-              this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
-              // } else {
-              //   this.voice_limit = 0
-              // }
+        this.requests_count = vm.requests_count;
+        this.messages_count = vm.messages_count;
+        this.email_count = vm.email_count;
+        this.tokens_count = vm.tokens_count;
+        this.voice_count = vm.voice_count;
+        this.voice_count_min_sec = vm.voice_count_min_sec;
 
+        this.requests_perc = vm.requests_perc;
+        this.messages_perc = vm.messages_perc;
+        this.email_perc = vm.email_perc;
+        this.tokens_perc = vm.tokens_perc;
+        this.voice_perc = vm.voice_perc;
 
-              this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
-              this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
-              this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
-              this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
-              this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
-              this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
-              this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
-            }
+        this.conversationsRunnedOut = vm.conversationsRunnedOut;
+        this.emailsRunnedOut = vm.emailsRunnedOut;
+        this.tokensRunnedOut = vm.tokensRunnedOut;
+        this.voiceRunnedOut = vm.voiceRunnedOut;
 
-            this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
-            this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
-            this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
-            this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
-            if (this.allQuotas.requests.quote === null) {
-              this.allQuotas.requests.quote = 0;
-            }
-            if (this.allQuotas.messages.quote === null) {
-              this.allQuotas.messages.quote = 0;
-            }
-            if (this.allQuotas.email.quote === null) {
-              this.allQuotas.email.quote = 0;
-            }
-            if (this.allQuotas.tokens.quote === null) {
-              this.allQuotas.tokens.quote = 0;
-            }
-            if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
-              this.allQuotas.voice_duration.quote = 0;
-              this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
-            }
-
-
-            if (this.allQuotas.requests.quote >= this.requests_limit) {
-              this.conversationsRunnedOut = true;
-              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-            } else {
-              this.conversationsRunnedOut = false;
-              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-            }
-
-            if (this.allQuotas.email.quote >= this.email_limit) {
-              this.emailsRunnedOut = true;
-              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-            } else {
-              this.emailsRunnedOut = false;
-              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-            }
-
-            if (this.allQuotas.tokens.quote >= this.tokens_limit) {
-              this.tokensRunnedOut = true;
-              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-            } else {
-              this.tokensRunnedOut = false;
-              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-            }
-
-            if (this.diplayVXMLVoiceQuota) {
-              if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
-                // if (3342 >= this.voice_limit_in_sec) {   
-                this.voiceRunnedOut = true;
-                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-              } else {
-                this.voiceRunnedOut = false;
-                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-              }
-            }
-
-
-            this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
-            this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
-            this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
-            this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
-            this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
-
-            this.requests_count = this.allQuotas.requests.quote;
-            this.messages_count = this.allQuotas.messages.quote;
-            this.email_count = this.allQuotas.email.quote;
-            this.tokens_count = this.allQuotas.tokens.quote;
-            this.voice_count = this.allQuotas.voice_duration?.quote
-            this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
-
-            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
-            this.displayQuotaSkeleton = false
-            // if (this.projectChangedFromList) {
-            //   setTimeout(() => {
-            //     this.displayQuotaSkeleton = false
-            //   }, 1000);
-
-            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
-            // } 
-            // else {
-            //   this.displayQuotaSkeleton = false
-            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
-            // }
-          }
-        }
+        this.displayQuotaSkeleton = false;
       },
         (error) => {
           // Handle error
@@ -721,12 +452,6 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[QUOTA-DEBUG][HOME] Subscription completed');
         }
       )
-  }
-
-  secondsToMinutes_seconds(seconds) {
-    let minutes = Math.floor(seconds / 60);
-    let remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
   }
 
   contacUsViaEmail() {
@@ -742,15 +467,43 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
       if (project) {
         this.project = project
-        if (project.attributes && project.attributes.dashlets) {
-          this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getDashlet(this.PROJECT_ATTRIBUTES)
+        this.PROJECT_ATTRIBUTES = project.attributes;
+
+        const attrsVm = this.home2ProjectAttributesVm.getVm(this.PROJECT_ATTRIBUTES);
+
+        if (attrsVm.dashlets) {
+          this.displayAnalyticsConvsGraph = attrsVm.dashlets.displayAnalyticsConvsGraph;
+          this.displayAnalyticsIndicators = attrsVm.dashlets.displayAnalyticsIndicators;
+          this.displayConnectWhatsApp = attrsVm.dashlets.displayConnectWhatsApp;
+          this.displayCreateChatbot = attrsVm.dashlets.displayCreateChatbot;
+          this.displayKnowledgeBase = attrsVm.dashlets.displayKnowledgeBase;
+          this.displayInviteTeammate = attrsVm.dashlets.displayInviteTeammate;
+          this.displayCustomizeWidget = attrsVm.dashlets.displayCustomizeWidget;
+          this.displayNewsFeed = attrsVm.dashlets.displayNewsFeed;
         }
 
-        if (project.attributes && project.attributes.userPreferences) {
-          this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
+        if (attrsVm.onboarding) {
+          this.displayKbHeroSection = attrsVm.onboarding.displayKbHeroSection;
+          this.solution = attrsVm.onboarding.solution;
+          this.solution_channel = attrsVm.onboarding.solution_channel;
+          this.use_case = attrsVm.onboarding.use_case;
 
+          this.solution_for_child = this.solution;
+          this.solution_channel_for_child = this.solution_channel;
+          this.use_case_for_child = this.use_case;
+
+          this.child_list_order = attrsVm.onboarding.child_list_order;
+          this.displayWhatsappAccountWizard = attrsVm.onboarding.displayWhatsappAccountWizard;
+
+          // onboarding maps also these visibility flags (same names as component fields)
+          this.displayConnectWhatsApp = attrsVm.onboarding.displayConnectWhatsApp;
+          this.displayCreateChatbot = attrsVm.onboarding.displayCreateChatbot;
+          this.displayInviteTeammate = attrsVm.onboarding.displayInviteTeammate;
+          this.displayCustomizeWidget = attrsVm.onboarding.displayCustomizeWidget;
+          this.displayKnowledgeBase = attrsVm.onboarding.displayKnowledgeBase;
+
+          // Keep legacy behavior for the detailed rules (no regressions).
+          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES);
         } else {
           this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES > USER PREFERENCES UNDEFINED - SET DEFAULT', this.PROJECT_ATTRIBUTES)
           this.setDefaultPreferences()
@@ -1994,162 +1747,27 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
   getChatUrl() {
-    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    this.logger.log('[HOME] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
+    const cfg = this.home2ConfigVm.getConfigVm();
+    this.CHAT_BASE_URL = cfg.chatBaseUrl;
+    this.logger.log('[HOME] Chat base url', this.CHAT_BASE_URL);
   }
 
   getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // this.logger.log('[HOME] AppConfigService getAppConfig public_Key', this.public_Key);
-    let keys = this.public_Key.split("-");
-    // this.logger.log('[HOME] PUBLIC-KEY keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('[HOME] public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let pay = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisiblePay = false;
-          //  this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
-        } else {
-          this.isVisiblePay = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
-        }
-      }
-      if (key.includes("ANA")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let ana = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - ana key&value', ana);
+    const cfg = this.home2ConfigVm.getConfigVm();
+    this.public_Key = cfg.publicKey;
 
-        if (ana[1] === "F") {
-          this.isVisibleANA = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
-        } else {
-          this.isVisibleANA = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
-        }
-      }
+    const flags = this.home2ConfigVm.parsePublicKeyFlags(this.public_Key);
+    this.isVisiblePay = flags.isVisiblePay;
+    this.isVisibleANA = flags.isVisibleANA;
+    this.isVisibleAPP = flags.isVisibleAPP;
+    this.isVisibleOPH = flags.isVisibleOPH;
+    this.isVisibleHomeBanner = flags.isVisibleHomeBanner;
+    this.project_plan_badge = flags.projectPlanBadge;
+    this.isVisibleKNB = flags.isVisibleKNB;
+    this.isVisibleQuoteSection = flags.isVisibleQuoteSection;
 
-      if (key.includes("APP")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let lbs = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - app key&value', lbs);
-
-        if (lbs[1] === "F") {
-          this.isVisibleAPP = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
-        } else {
-          this.isVisibleAPP = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - app isVisible', this.isVisibleAPP);
-        }
-      }
-
-      if (key.includes("OPH")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let oph = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
-
-        if (oph[1] === "F") {
-          this.isVisibleOPH = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        } else {
-          this.isVisibleOPH = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        }
-      }
-
-      if (key.includes("HPB")) {
-        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
-        let hpb = key.split(":");
-        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
-
-        if (hpb[1] === "F") {
-          this.isVisibleHomeBanner = false;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        } else {
-          this.isVisibleHomeBanner = true;
-          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
-        }
-      }
-
-      if (key.includes("PPB")) {
-        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
-        let ppb = key.split(":");
-        // this.logger.log('PUBLIC-KEY (HOME) - ppb key&value', ppb);
-
-        if (ppb[1] === "F") {
-          this.project_plan_badge = false;
-          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
-        } else {
-          this.project_plan_badge = true;
-          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
-        }
-      }
-
-      if (key.includes('KNB')) {
-        let knb = key.split(':')
-        if (knb[1] === 'F') {
-          this.isVisibleKNB = false;
-        } else {
-          this.isVisibleKNB = true;
-          this.getProjectPlan()
-        }
-      }
-
-      if (key.includes("QIN")) {
-        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
-        let qt = key.split(":");
-        // this.logger.log('PUBLIC-KEY (HOME) - mt key&value', mt);
-        if (qt[1] === "F") {
-          this.isVisibleQuoteSection = false;
-          // this.logger.log('PUBLIC-KEY (HOME) - isVisibleQuoteSection ', this.isVisibleQuoteSection);
-        } else {
-          this.isVisibleQuoteSection = true;
-          // this.logger.log('PUBLIC-KEY (HOME) - isVisibleQuoteSection ', this.isVisibleQuoteSection);
-        }
-      }
-
-
-    });
-
-    if (!this.public_Key.includes("ANA")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("V1L")', this.public_Key.includes("ANA"));
-      this.isVisibleANA = false;
-    }
-
-    if (!this.public_Key.includes("APP")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("APP")', this.public_Key.includes("APP"));
-      this.isVisibleAPP = false;
-    }
-
-    if (!this.public_Key.includes("OPH")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
-      this.isVisibleOPH = false;
-    }
-
-    if (!this.public_Key.includes("HPB")) {
-      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
-      this.isVisibleHomeBanner = false;
-    }
-
-    if (!this.public_Key.includes("PPB")) {
-      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
-      this.project_plan_badge = false;
-    }
-
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
-      this.isVisiblePay = false;
-    }
-
-    if (!this.public_Key.includes('KNB')) {
-      this.isVisibleKNB = false
-    }
-
-    if (!this.public_Key.includes("QIN")) {
-      this.isVisibleQuoteSection = false;
-      // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteSection', this.isVisibleQuoteSection);
+    if (this.isVisibleKNB) {
+      this.getProjectPlan();
     }
   }
 
@@ -2169,7 +1787,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   manageknowledgeBasesVisibility(projectProfileData) {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.public_Key = this.home2ConfigVm.getConfigVm().publicKey;
     if (projectProfileData['customization']) {
       this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE EXIST customization > knowledgeBases (1)', projectProfileData['customization']['knowledgeBases'])
     }
@@ -2205,7 +1823,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getKnbValue() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.public_Key = this.home2ConfigVm.getConfigVm().publicKey;
     // this.logger.log('[HOME] getAppConfig  public_Key', this.public_Key);
     // this.logger.log('[HOME] getAppConfig  public_Key type of', typeof this.public_Key);
     // this.logger.log('[HOME] getAppConfig  this.public_Key.includes("KNB") ', this.public_Key.includes("KNB"));
@@ -2231,23 +1849,8 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
   checkPromoURL() {
-    const hasKeyPromoBannerUrl = this.appConfigService.getConfig().hasOwnProperty('promoBannerUrl');
-    this.logger.log('HOME CHECK PROMO URL promoUrl - env hasKeyPromoBannerUrl', hasKeyPromoBannerUrl)
-    if (hasKeyPromoBannerUrl) {
-      for (const [key, value] of Object.entries(this.appConfigService.getConfig())) {
-        // this.logger.log(`${key}: ${value}`);
-        if (key === 'promoBannerUrl' && value === '') {
-          this.logger.log('HOME CHECK PROMO URL promoUrl - exist key but value is empty value', value)
-          this.isVisibleHomeBanner = false;
-        } else if (key === 'promoBannerUrl' && value !== '') {
-          this.logger.log('HOME CHECK PROMO URL promoUrl - exist key', key, 'and value', value)
-          this.isVisibleHomeBanner = true;
-        }
-      }
-    } else {
-      this.logger.log('HOME CHECK PROMO URL promoUrl - env NOT HAS hasKeyPromoBannerUrl', hasKeyPromoBannerUrl)
-      this.isVisibleHomeBanner = false;
-    }
+    const cfg = this.home2ConfigVm.getConfigVm();
+    this.isVisibleHomeBanner = cfg.promoBannerVisible;
   }
 
   showPromoBanner() {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { defer, Observable } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
+import { Home2BrandVm, Home2BrandVmService } from './home2-brand-vm.service';
 
 export interface Home2ProjectVm {
   project: Project | any;
@@ -26,6 +27,10 @@ export class Home2Facade {
 
   readonly project$: Observable<Project> = this.auth.project_bs.pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
+  readonly brandVm$: Observable<Home2BrandVm> = defer(() => [this.brandVmService.getBrandVm()]).pipe(
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
   readonly projectVm$: Observable<Home2ProjectVm> = this.project$.pipe(
     map((p: any) => ({
       project: p,
@@ -42,6 +47,9 @@ export class Home2Facade {
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private brandVmService: Home2BrandVmService
+  ) {}
 }
 
