@@ -35,9 +35,12 @@ import { Home2Facade } from './services/home2.facade';
 import { Home2PermissionsVmService } from './services/home2-permissions-vm.service';
 import { mapQuotesDataToVm } from './services/home2-quotes-vm.service';
 import { getProjectAttributesVm } from './services/home2-project-attributes-vm.service';
+import { Home2StorageService } from './services/home2-storage.service';
+import { Home2TrackingService } from './services/home2-tracking.service';
+import { Home2NavigationService } from './services/home2-navigation.service';
+import { Home2ModalService } from './services/home2-modal.service';
 
 const swal = require('sweetalert');
-const Swal = require('sweetalert2')
 
 @Component({
   selector: 'home2',
@@ -243,6 +246,10 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     private prjctPlanService: ProjectPlanService,
     private home2ConfigVm: Home2ConfigVmService,
     private home2PermissionsVm: Home2PermissionsVmService,
+    private home2Storage: Home2StorageService,
+    private home2Tracking: Home2TrackingService,
+    private home2Nav: Home2NavigationService,
+    private home2Modal: Home2ModalService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
@@ -299,15 +306,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        try {
-          window['analytics'].page("Home Page, Home", {});
-        } catch (err) {
-          // this.logger.error('page Home error', err);
-        }
-      }
-    }
+    this.home2Tracking.pageHome();
   }
 
   ngOnDestroy() {
@@ -374,7 +373,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
           this.prjct_name = vm.projectName
 
-          const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
+          const hasEmittedTrialEnded = this.home2Storage.getHasEmittedTrialEnded(this.project._id)
           this.logger.log('[HOME] - getCurrentProjectAndInit  hasEmittedTrialEnded ', hasEmittedTrialEnded, '  for project id', this.project._id)
 
           this.OPERATING_HOURS_ACTIVE = vm.operatingHoursActive
@@ -398,7 +397,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   goToCreateChatbot() {
     this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
     // this.scrollToChild(this.childCreateChatbot)
-    this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
+    this.home2Nav.goToBotsAll(this.projectId);
   }
 
 
@@ -453,11 +452,15 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   contacUsViaEmail() {
-    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
+    this.home2Nav.openMailTo(
+      `mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`
+    );
   }
 
   contacUsViaEmailToUpdadePaymentInformation() {
-    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
+    this.home2Nav.openMailTo(
+      `mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`
+    );
   }
 
   getProjectById(projectId) {
@@ -568,14 +571,14 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
         this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
-        const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
+        const hasEmittedTrialEnded = this.home2Storage.getHasEmittedTrialEnded(project._id)
         this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
         this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
 
-        if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
+        if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === false) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === false)) {
           this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
 
-          localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
+          this.home2Storage.setHasEmittedTrialEnded(project._id)
 
           this.trackTrialEnded(project, trialStarDate, trialEndDate)
 
@@ -772,55 +775,27 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
   trackTrialEnded(project, trialStarDate, trialEndDate) {
-    if (!isDevMode()) {
-      setTimeout(() => {
-        if (window['analytics']) {
-          this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
-          try {
-            window['analytics'].track('Trial Ended', {
-              "userId": this.user._id,
-              "trial_start_date": trialStarDate,
-              "trial_end_date": trialEndDate,
-              "trial_plan_name": this.profile_name_for_segment,
-            }, {
-              "context": {
-                "groupId": project._id
-              }
-            });
-            // this.updatedProjectTrialEndedEmitted(true)
-            // localStorage.setItem('dshbrd----' + this.current_prjct.id_project._id, 'hasEmittedTrialEnded')
-          } catch (err) {
-            // this.logger.error('track Trial Started event error', err);
-          }
-
-
-        } else {
-          this.logger.log('track Trial Started window[analytics]', window['analytics']);
-        }
-      }, 100);
-    }
+    setTimeout(() => {
+      this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+      this.home2Tracking.trackTrialEnded(
+        this.user?._id,
+        project?._id,
+        trialStarDate,
+        trialEndDate,
+        this.profile_name_for_segment
+      );
+    }, 100);
 
   }
 
   trackGroup(projectProfileData) {
-    if (!isDevMode()) {
-      this.logger.log('here yes - group isDevMode', isDevMode())
-      setTimeout(() => {
-        if (window['analytics']) {
-          try {
-            window['analytics'].group(projectProfileData._id, {
-              name: this.prjct_name,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            // this.logger.error('group Home error', err);
-          }
-        }
-      }, 100);
-      // else {
-      //   this.logger.error('group Home window[analytics]', window['analytics']);
-      // }
-    }
+    this.logger.log('here yes - group isDevMode', isDevMode())
+    setTimeout(() => {
+      this.home2Tracking.groupProject(projectProfileData?._id, {
+        name: this.prjct_name,
+        plan: this.profile_name_for_segment
+      });
+    }, 100);
   }
 
   // dismissKbSkeleton(event) {
@@ -996,34 +971,16 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
-    if (!isDevMode()) {
-      try {
-        window['analytics'].track(userAction, trackObjct);
-      } catch (err) {
-        // this.logger.error(`Track ${userAction} error`, err);
-      }
-
-      try {
-        window['analytics'].identify(this.user._id, {
-          username: userFullname,
-          email: this.user.email,
-          logins: 5,
-
-        });
-      } catch (err) {
-        // this.logger.error(`Identify ${userAction} error`, err);
-      }
-
-      try {
-        window['analytics'].group(this.projectId, {
-          name: this.project.name,
-          plan: this.prjct_profile_name,
-
-        });
-      } catch (err) {
-        // this.logger.error(`Group ${userAction} error`, err);
-      }
-    }
+    this.home2Tracking.track(userAction, trackObjct);
+    this.home2Tracking.identifyUser(this.user?._id, {
+      username: userFullname,
+      email: this.user?.email,
+      logins: 5
+    });
+    this.home2Tracking.groupProject(this.projectId, {
+      name: this.project?.name,
+      plan: this.prjct_profile_name
+    });
   }
 
 
@@ -1490,7 +1447,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
     // || this.appTitle === "Facebook Messenger"
     if (this.appTitle === "WhatsApp Business") {
-      this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
+      this.home2Nav.goToIntegrationsWhatsApp(this.projectId);
       // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
 
     }
@@ -1533,7 +1490,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     if (this.isVisiblePay) {
       // const el = document.createElement('div')
       // el.innerHTML = planName //this.featureAvailableFromBPlan
-      Swal.fire({
+      this.home2Modal.fire({
         // content: el,
         title: this.upgradePlan,
         text: planName,
@@ -1563,12 +1520,12 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
               // this.logger.log('[APP-STORE] HERE 2')
               if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
                 // this.logger.log('[APP-STORE] HERE 3')
-                this.notify._displayContactUsModal(true, 'upgrade_plan');
+                this.home2Modal.displayContactUsModal(true, 'upgrade_plan');
               } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
-                this.notify._displayContactUsModal(true, 'upgrade_plan');
+                this.home2Modal.displayContactUsModal(true, 'upgrade_plan');
               } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
                 // this.logger.log('[APP-STORE] HERE 4')
-                this.router.navigate(['project/' + this.projectId + '/pricing']);
+                this.home2Nav.goToPricing(this.projectId);
               }
             } else {
               // this.logger.log('[APP-STORE] HERE 5')
@@ -1577,19 +1534,19 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
             }
           } else {
             // this.logger.log('[APP-STORE] HERE 6')
-            this.notify._displayContactUsModal(true, 'upgrade_plan');
+            this.home2Modal.displayContactUsModal(true, 'upgrade_plan');
           }
         }
       });
     } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.home2Modal.displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
     // const el = document.createElement('div')
     // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    Swal.fire({
+    this.home2Modal.fire({
       // content: el,
       icon: "info",
       title: this.upgradePlan,
@@ -1613,7 +1570,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     }).then((result) => {
       if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
-          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+          this.home2Nav.goToPayments(this.projectId);
         } else {
           // this.logger.log('[HOME-WA] HERE 5')
           this.presentModalAgentCannotManageAvancedSettings();
@@ -1625,7 +1582,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
   presentModalAgentCannotManageAvancedSettings() {
     // this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+    this.home2Modal.presentOnlyOwnerCanManageAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -1641,21 +1598,12 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (this.user) {
-          if (!isDevMode()) {
-            if (window['analytics']) {
-              try {
-                window['analytics'].identify(this.user._id, {
-                  name: this.user.firstname + ' ' + this.user.lastname,
-                  email: this.user.email,
-                  logins: 5,
-                  plan: this.profile_name_for_segment,
-
-                });
-              } catch (err) {
-                // this.logger.error('identify Home error', err);
-              }
-            }
-          }
+          this.home2Tracking.identifyUser(this.user?._id, {
+            name: this.user.firstname + ' ' + this.user.lastname,
+            email: this.user.email,
+            logins: 5,
+            plan: this.profile_name_for_segment
+          });
 
           // !!!! NO MORE USED - MOVED IN USER SERVICE
           // this.getAllUsersOfCurrentProject();
@@ -1685,20 +1633,19 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
   diplayPopup() {
-    const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
-    // this.logger.log('[HOME] hasClosedPopup', hasClosedPopup)
-    if (hasClosedPopup === null) {
+    const hasClosedPopup = this.home2Storage.getHasClosedPopup()
+    if (!hasClosedPopup) {
       this.popup_visibility = 'block'
       // this.logger.log('[HOME] popup_visibility', this.popup_visibility)
     }
-    if (hasClosedPopup === 'true') {
+    if (hasClosedPopup) {
       this.popup_visibility = 'none'
     }
   }
 
   closeEverythingStartsHerePopup() {
     // this.logger.log('[HOME] closeEverythingStartsHerePopup')
-    localStorage.setItem('dshbrd----hasclosedpopup', 'true')
+    this.home2Storage.setHasClosedPopup(true)
     this.popup_visibility = 'none'
     // this.logger.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
@@ -1906,7 +1853,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   goToPayment() {
     if (this.USER_ROLE === 'owner') {
       // if (this.prjct_profile_type === 'payment') {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+      this.home2Nav.goToPayments(this.projectId);
       // }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
@@ -1917,14 +1864,14 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] goToSubscription')
 
     if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+      this.home2Nav.goToPayments(this.projectId);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+    this.home2Modal.presentOnlyOwnerCanManageAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -2037,7 +1984,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
   goToProjectSettingsGeneral() {
     if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+      this.home2Nav.goToProjectSettingsGeneral(this.projectId);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
@@ -2046,7 +1993,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToOperatingHours() {
-    this.router.navigate(['project/' + this.projectId + '/hours']);
+    this.home2Nav.goToOperatingHours(this.projectId);
   }
 
   // goToTiledeskMobileAppPage() {
@@ -2061,29 +2008,29 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
   goToAdminDocs() {
     const url = URL_getting_started_for_admins
-    window.open(url, '_blank');
+    this.home2Nav.openExternal(url);
   }
 
   goToAgentDocs() {
     const url = URL_getting_started_for_agents
-    window.open(url, '_blank');
+    this.home2Nav.openExternal(url);
   }
 
   goToDeveloperDocs() {
     // const url = 'https://docs.tiledesk.com/';
     const url = 'https://developer.tiledesk.com';
-    window.open(url, '_blank');
+    this.home2Nav.openExternal(url);
   }
 
   goToInstallWithTagManagerDocs() {
     const url = URL_google_tag_manager_add_tiledesk_to_your_sites;
-    window.open(url, '_blank');
+    this.home2Nav.openExternal(url);
   }
 
   goToChangelogBlog() {
     // const url = 'https://tiledesk.com/tiledesk-changelog'
     const url = 'https://tiledesk.com/category/changelog/'
-    window.open(url, '_blank');
+    this.home2Nav.openExternal(url);
     this.usersLocalDbService.savChangelogDate()
     this.hidechangelogrocket = true;
   }
@@ -2091,7 +2038,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToCreateProject() {
-    this.router.navigate(['/create-new-project']);
+    this.home2Nav.goToCreateNewProject();
   }
 
 
