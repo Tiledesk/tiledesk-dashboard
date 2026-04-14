@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 
 import { Subscription } from 'rxjs';
-import { Home2ConfigVmService } from './services/home2-config-vm.service';
+import { Home2ConfigVmService, parsePublicKeyFlags } from './services/home2-config-vm.service';
 
 import moment from "moment";
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
@@ -33,8 +33,8 @@ import { QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 import { Home2Facade } from './services/home2.facade';
 import { Home2PermissionsVmService } from './services/home2-permissions-vm.service';
-import { Home2QuotesVmService } from './services/home2-quotes-vm.service';
-import { Home2ProjectAttributesVmService } from './services/home2-project-attributes-vm.service';
+import { mapQuotesDataToVm } from './services/home2-quotes-vm.service';
+import { getProjectAttributesVm } from './services/home2-project-attributes-vm.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -243,8 +243,6 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     private prjctPlanService: ProjectPlanService,
     private home2ConfigVm: Home2ConfigVmService,
     private home2PermissionsVm: Home2PermissionsVmService,
-    private home2QuotesVm: Home2QuotesVmService,
-    private home2ProjectAttributesVm: Home2ProjectAttributesVmService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
@@ -409,7 +407,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectChangedFromList :", this.projectChangedFromList);
     this.quotasSubscription = this.quotesService.quotesData$
       .subscribe((data) => {
-        const vm = this.home2QuotesVm.mapQuotesDataToVm(data, this.projectId, this.diplayVXMLVoiceQuota);
+        const vm = mapQuotesDataToVm(data, this.projectId, this.diplayVXMLVoiceQuota);
         if (!vm) return;
 
         this.quotasLimits = vm.quotasLimits;
@@ -469,7 +467,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         this.project = project
         this.PROJECT_ATTRIBUTES = project.attributes;
 
-        const attrsVm = this.home2ProjectAttributesVm.getVm(this.PROJECT_ATTRIBUTES);
+        const attrsVm = getProjectAttributesVm(this.PROJECT_ATTRIBUTES);
 
         if (attrsVm.dashlets) {
           this.displayAnalyticsConvsGraph = attrsVm.dashlets.displayAnalyticsConvsGraph;
@@ -501,9 +499,6 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
           this.displayInviteTeammate = attrsVm.onboarding.displayInviteTeammate;
           this.displayCustomizeWidget = attrsVm.onboarding.displayCustomizeWidget;
           this.displayKnowledgeBase = attrsVm.onboarding.displayKnowledgeBase;
-
-          // Keep legacy behavior for the detailed rules (no regressions).
-          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES);
         } else {
           this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES > USER PREFERENCES UNDEFINED - SET DEFAULT', this.PROJECT_ATTRIBUTES)
           this.setDefaultPreferences()
@@ -1756,7 +1751,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     const cfg = this.home2ConfigVm.getConfigVm();
     this.public_Key = cfg.publicKey;
 
-    const flags = this.home2ConfigVm.parsePublicKeyFlags(this.public_Key);
+    const flags = parsePublicKeyFlags(this.public_Key);
     this.isVisiblePay = flags.isVisiblePay;
     this.isVisibleANA = flags.isVisibleANA;
     this.isVisibleAPP = flags.isVisibleAPP;

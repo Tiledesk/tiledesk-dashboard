@@ -195,13 +195,23 @@ Consolidare, ridurre rischio regressioni future e preparare il “detach/attach�
 - In questo step ho volutamente lasciato `AuthService` ancora iniettato nel component (non rimosso) per minimizzare la superficie di cambiamento. Verrà eliminato quando la facade diventerà l’unica sorgente (step successivi).
 
 #### Step 2
-- **Status**: pending
+- **Status**: completed
 - **Changes**:
-  - -
+  - Estesa `Home2ProjectAttributesVmService` per coprire tutti gli 8 onboarding use-cases attuali (prima mancavano 7-8) e rimosso il fallback legacy `getOnbordingPreferences()` nel wiring di `getProjectById()` (mapping ora deterministico via VM).
+  - Reso più robusto `parsePublicKeyFlags()` (trim/spazi/case-insensitive) mantenendo la semantica attuale (abilitato se value ≠ `F`, anche se value manca).
+  - Trasformati `Home2QuotesVmService` e `Home2ProjectAttributesVmService` in **mapper puri** (funzioni `mapQuotesDataToVm()` e `getProjectAttributesVm()`), rimuovendo DI dal componente.
+  - Estratto anche il parsing dei flags da public key in un **mapper puro** `parsePublicKeyFlags()` (e aggiornato component + test).
+  - Aggiunti unit test per:
+    - `Home2ConfigVmService.parsePublicKeyFlags()` (`home2-config-vm.service.spec.ts`)
+    - `Home2QuotesVmService.mapQuotesDataToVm()` (`home2-quotes-vm.service.spec.ts`)
+    - `Home2ProjectAttributesVmService` (`home2-project-attributes-vm.service.spec.ts`)
 - **Verifiche eseguite**:
-  - -
+  - Lint/typecheck OK sui file toccati.
+  - Build applicazione (`ng build`) completata con successo (solo warning Sass deprecati già presenti).
+  - Installata dipendenza mancante `karma-coverage-istanbul-reporter`.
+  - `ng test` resta **bloccato** da problemi pre-esistenti nella suite (spec legacy in `src/app/analytics/**` con import non risolti e riferimenti a `@angular/http`/`rxjs-compat`); non è stato risolto nello scope dello Step 2.
 - **Esito**:
-  - -
+  - Step 2 completato (estratta logica pura + mapper + test aggiunti). Esecuzione completa della suite test rimane un'attività separata di manutenzione.
 
 #### Step 3
 - **Status**: pending
