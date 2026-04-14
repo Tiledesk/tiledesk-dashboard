@@ -243,7 +243,7 @@ const routes: Routes = [
   // Home
   {
     path: 'project/:projectid/home',
-    loadChildren: () => import('app/home/home.module').then(m => m.HomeModule),
+    loadChildren: () => import('app/home2/home2.module').then(m => m.Home2Module),
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] }, // now Lazy
