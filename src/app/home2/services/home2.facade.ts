@@ -27,6 +27,10 @@ export class Home2Facade {
 
   readonly project$: Observable<Project> = this.auth.project_bs.pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
+  readonly hasChangedProjectFromList$: Observable<boolean> = (this.auth as any).hasChangedProjectFroList$.pipe(
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
   readonly brandVm$: Observable<Home2BrandVm> = defer(() => [this.brandVmService.getBrandVm()]).pipe(
     shareReplay({ bufferSize: 1, refCount: true })
   );

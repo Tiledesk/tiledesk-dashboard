@@ -1,10 +1,7 @@
 import { AfterViewInit, Component, ElementRef, isDevMode, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
-import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { LocalDbService } from '../services/users-local-db.service';
-import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 
@@ -39,8 +36,10 @@ import { Home2StorageService } from './services/home2-storage.service';
 import { Home2TrackingService } from './services/home2-tracking.service';
 import { Home2NavigationService } from './services/home2-navigation.service';
 import { Home2ModalService } from './services/home2-modal.service';
+import { Home2ProjectProfileService } from './services/home2-project-profile.service';
 
-const swal = require('sweetalert');
+// `sweetalert` kept only if other flows still use it (currently unused here).
+// const swal = require('sweetalert');
 
 @Component({
   selector: 'home2',
@@ -236,12 +235,9 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
 
   constructor(
-    public auth: AuthService,
     private home2Facade: Home2Facade,
-    private router: Router,
     private usersService: UsersService,
     private usersLocalDbService: LocalDbService,
-    private notify: NotifyService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private home2ConfigVm: Home2ConfigVmService,
@@ -250,6 +246,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     private home2Tracking: Home2TrackingService,
     private home2Nav: Home2NavigationService,
     private home2Modal: Home2ModalService,
+    private home2ProjectProfile: Home2ProjectProfileService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
@@ -337,7 +334,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   listenHasChangedProjectFroList() {
-    this.auth.hasChangedProjectFroList$
+    this.home2Facade.hasChangedProjectFromList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
@@ -603,7 +600,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.profile_name === 'free') {
           this.prjct_profile_name = PLAN_NAME.B + " (trial)"
           this.profile_name_for_segment = this.prjct_profile_name;
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         } else if (this.profile_name === 'Sandbox') {
 
           // --------------------------------------------------
@@ -611,7 +608,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
           // --------------------------------------------------
           this.prjct_profile_name = PLAN_NAME.E + " (trial)"
           this.profile_name_for_segment = this.prjct_profile_name;
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         }
 
         this.project['plan_badge_background_type'] = 'b_plan_badge'
@@ -621,13 +618,13 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.profile_name === 'free') {
           this.prjct_profile_name = "Free plan";
           this.profile_name_for_segment = this.prjct_profile_name
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
           this.project['plan_badge_background_type'] = 'free_plan_badge'
 
         } else if (this.profile_name === 'Sandbox') {
           this.prjct_profile_name = "Sandbox plan";
           this.profile_name_for_segment = this.prjct_profile_name
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
           this.project['plan_badge_background_type'] = 'free_plan_badge'
         }
       }
@@ -638,11 +635,11 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         if (!this.appSumoProfile) {
           this.prjct_profile_name = PLAN_NAME.A + ' plan'
           this.profile_name_for_segment = this.prjct_profile_name
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         } else {
           this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
           this.profile_name_for_segment = this.prjct_profile_name;
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         }
         this.project['plan_badge_background_type'] = 'a_plan_badge'
 
@@ -651,11 +648,11 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
         if (!this.appSumoProfile) {
           this.prjct_profile_name = PLAN_NAME.B + ' plan'
           this.profile_name_for_segment = this.prjct_profile_name
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         } else {
           this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
           this.profile_name_for_segment = this.prjct_profile_name
-          this.auth.projectProfile(this.profile_name_for_segment)
+          this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         }
         this.project['plan_badge_background_type'] = 'b_plan_badge'
 
@@ -663,34 +660,34 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
       } else if (this.prjct_profile_name === PLAN_NAME.C) {
         this.prjct_profile_name = PLAN_NAME.C + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name;
-        this.auth.projectProfile(this.profile_name_for_segment)
+        this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'c_plan_badge'
 
         // Basic plan
       } else if (this.prjct_profile_name === PLAN_NAME.D || this.prjct_profile_name === "Basic") {
         this.prjct_profile_name = PLAN_NAME.D + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name;
-        this.auth.projectProfile(this.profile_name_for_segment)
+        this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'a_plan_badge'
 
         // Premium plan
       } else if (this.prjct_profile_name === PLAN_NAME.E || this.prjct_profile_name === "Premium") {
         this.prjct_profile_name = PLAN_NAME.E + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name
-        this.auth.projectProfile(this.profile_name_for_segment)
+        this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'b_plan_badge'
 
       } else if (this.prjct_profile_name === PLAN_NAME.EE || this.prjct_profile_name === "Team") {
         this.prjct_profile_name = PLAN_NAME.EE + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name
-        this.auth.projectProfile(this.profile_name_for_segment)
+        this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'bb_plan_badge'
 
         // Custom plan
       } else if (this.prjct_profile_name === PLAN_NAME.F) {
         this.prjct_profile_name = PLAN_NAME.F + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name
-        this.auth.projectProfile(this.profile_name_for_segment)
+        this.home2ProjectProfile.setProfileNameForSegment(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'c_plan_badge'
 
       } else if (
@@ -862,6 +859,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
     this.editOperatingHoursBtn.nativeElement.blur();
   }
 
+  // Legacy: left for reference, no longer called (handled by project attributes VM).
   getDashlet(project_attributes) {
     // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
@@ -984,6 +982,7 @@ export class Home2Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  // Legacy: left for reference, no longer called (handled by project attributes VM).
   async getOnbordingPreferences(project_attributes) {
 
     this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PROJECT ATTRIBUTES ', project_attributes);
