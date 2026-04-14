@@ -387,7 +387,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     });
   }
   goToHome() {
-    this.router.navigate([`/project/${this.new_project._id}/home`]);
+    this.router.navigate([`/project/${this.new_project._id}`]);
   }
 
   goToPayments() {

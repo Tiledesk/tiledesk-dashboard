@@ -107,7 +107,7 @@ export class ChatbotModalComponent implements OnInit {
 
   onGoToHomePresssed () {
     this.dialogRef.close();
-    this.router.navigate([`/project/${this.id_project}/home`]);
+    this.router.navigate([`/project/${this.id_project}`]);
   }
 
   contacUsViaEmail() {

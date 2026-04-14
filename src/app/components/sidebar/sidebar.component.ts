@@ -57,6 +57,22 @@ declare interface RouteInfo {
   class: string;
 }
 
+type SidebarItemKey =
+  | 'chat'
+  | 'home'
+  | 'knowledgeBases'
+  | 'flows'
+  | 'monitor'
+  | 'waBroadcasts'
+  | 'contacts'
+  | 'analytics'
+  | 'activities'
+  | 'history'
+  | 'settings'
+  | 'support';
+
+type SidebarItemsConfig = Partial<Record<SidebarItemKey, boolean>>;
+
 //    export const ROUTES: RouteInfo[];
 //  = [
 //     { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
@@ -85,6 +101,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INFO_MENU_ITEMS = INFO_MENU_ITEMS;
   public version: string = environment.VERSION;
   test: Date = new Date();
+
+  private readonly sidebarItemsConfig: SidebarItemsConfig = (environment as any)?.sidebarItems ?? {};
+
+  isSidebarItemEnabled(key: SidebarItemKey): boolean {
+    // Default: enabled, to preserve backward compatibility when the env key is missing.
+    return this.sidebarItemsConfig[key] !== false;
+  }
 
   // tparams = brand;
 

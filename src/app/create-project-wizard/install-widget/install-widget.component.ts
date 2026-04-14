@@ -145,7 +145,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   }
 
   continueToHome() {
-    this.router.navigate([`/project/${this.projectId}/home`]);
+    this.router.navigate([`/project/${this.projectId}`]);
   }
 
   // goToInstallTemplate() {

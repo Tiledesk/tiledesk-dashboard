@@ -429,7 +429,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
       if (this.chatBotCount < this.chatBotLimit) {
         this.location.back();
       } else if (this.chatBotCount >= this.chatBotLimit) {
-        this.router.navigate([`/project/${this.projectId}/home`]);
+        this.router.navigate([`/project/${this.projectId}`]);
       }
 
     }

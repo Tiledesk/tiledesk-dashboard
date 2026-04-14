@@ -154,6 +154,7 @@ import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welc
 import { RoleGuard } from './core/role.guard';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+import { ProjectEntryComponent } from './core/project-entry/project-entry.component';
 
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
@@ -241,6 +242,11 @@ const routes: Routes = [
   // { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] }, // now Lazy
 
   // Home
+  {
+    path: 'project/:projectid',
+    component: ProjectEntryComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'project/:projectid/home',
     loadChildren: () => import('app/home2/home2.module').then(m => m.Home2Module),

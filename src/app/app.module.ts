@@ -25,6 +25,7 @@ import { UiModule } from './ui/shared/ui.module';
 
 // Core
 import { CoreModule } from './core/core.module';
+import { ProjectEntryComponent } from './core/project-entry/project-entry.component';
 
 // Shared/Widget
 import { SharedModule } from './shared/shared.module';
@@ -508,6 +509,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // ContactsComponent, // now lazy
     ChatComponent,
     ConversationDetailIframeComponent,
+    ProjectEntryComponent,
     // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy

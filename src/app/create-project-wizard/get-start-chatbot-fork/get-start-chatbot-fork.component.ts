@@ -389,7 +389,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
 
   goToHome() {
-    this.router.navigate([`/project/${this.project._id}/home`]);
+    this.router.navigate([`/project/${this.project._id}`]);
   }
 
   goToYourProject() {
