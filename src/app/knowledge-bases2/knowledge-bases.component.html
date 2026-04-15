@@ -1,0 +1,392 @@
+<!-- <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
+   [class.chrome-gt-100]="isChromeVerGreaterThan100"
+   [class.chrome-lt-100]="!isChromeVerGreaterThan100">
+  {{ 'KnowledgeBases' | translate }}
+</p> -->
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+    <!-- <div class="content-wpr" style="display: flex;"> -->
+
+    <!-- <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB"> </appdashboard-settings-sidebar>
+
+      <appdashboard-bots-sidebar *ngIf="ARE_NEW_KB" [allTemplatesCount]="allTemplatesCount"
+        [allCommunityTemplatesCount]="allCommunityTemplatesCount"
+        [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
+        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
+        [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
+        [increaseSalesBotsCount]="increaseSalesBotsCount" [kbCount]="kbCount">
+      </appdashboard-bots-sidebar> -->
+
+      <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
+        <!-- Sidebar sinistra -->
+        <div class="kb-sidebar">
+          <div class="sidebar-title" >
+         --------- 2 ---------
+            {{ 'KbPage.YourKnowledgeBases' | translate }} 
+          </div>
+
+          <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
+            <mat-icon style="vertical-align: middle;">add</mat-icon>
+            <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
+          </button>
+
+
+          <!-- SKELETON LOADER -->
+          <ul *ngIf="isLoadingNamespaces" class="kb-list">
+            <li *ngFor="let skeleton of [1]" >
+              <div class="skeleton-item" style="display: flex; align-items: center; gap: 3px;">
+                <div class="skeleton-text" style="flex: 1; height: 42px; background: #eee;"></div>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="kb-list" *ngIf="!isLoadingNamespaces && namespaces?.length > 0">
+            <li *ngFor="let ns of namespaces"
+                (click)="onSelectNamespace(ns)"
+                [ngClass]="{'active': ns === selectedNamespace}"
+                [style.background]="ns === selectedNamespace ? '#e3e9f6' : 'transparent'"
+                [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'"
+                [style.fontWeight]="ns === selectedNamespace ? '400' : '300'">
+              <div style="display: flex; align-items: center; width: 100%;">
+
+                <div style="display: flex; align-items: center; justify-content: flex-end; min-width: 0; margin-bottom: 2px;">
+                  
+                  <span *ngIf="ns?.hybrid === true" 
+                    class="hybrid-search-icon" 
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='after'
+                    matTooltipShowDelay="600"
+                    matTooltipHideDelay="100">H
+                  </span>
+                  <span *ngIf="!ns?.hybrid" 
+                      class="standard-search-icon"
+                      matTooltipClass="kb-custom-mat-tooltip"
+                      matTooltip="{{ 'KbPage.ThisKBUsesSemanticSearch' | translate }}" 
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='after'
+                      matTooltipShowDelay="600"
+                      matTooltipHideDelay="100">
+                    S
+                  </span>
+                  <span *ngIf="ns?.default" 
+                    class="material-icons-round" 
+                    matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='after'
+                    matTooltipShowDelay="600"
+                    matTooltipHideDelay="100"
+                    style="font-size: 18px; color: #d9b100; margin-right: 6px;">
+                    grade
+                  </span>
+                </div>
+
+                <div style="flex: 1 1 0; font-size: 14px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;font-family: var(--header-font-family)">
+                  {{ ns.name }}
+                </div>
+                
+
+                <div *ngIf="ns.count" class="counter-badge">{{ns.count}}</div>
+                <div *ngIf="!ns.count" class="counter-badge">0</div>
+
+                <div style="flex: 0 0 32px; display: flex; align-items: center; justify-content: center; margin-left: 12px;">
+                  <mat-icon *ngIf="ns === selectedNamespace" style="color: #0f62ff;">chevron_right</mat-icon>
+                </div>
+              </div>
+            </li>
+            <!-- <li *ngIf="!namespaces || namespaces?.length === 0" style="padding: 12px 24px; color: #888;">
+              {{ 'KbPage.NoKnowledgeBases' | translate }}
+            </li> -->
+            
+          </ul>
+
+
+          <div  *ngIf="!isLoadingNamespaces" class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
+            {{'KbPage.TotalContents' | translate }}: {{totalCount}}/{{quotas?.kbs}}
+          </div>
+          
+        </div>
+        <!-- Contenuto destro -->
+        <div class="kb-main-content" style="flex: 1 1 0; min-width: 0; padding-left: 0;">
+          <div class="kb-content">
+            <!-- <appdashboard-knowledge-bases-alert [kbsListCount]="kbsListCount" *ngIf="kbsListCount && kbsListCount > kbLimit"> </appdashboard-knowledge-bases-alert> -->
+      
+      
+            <div class="kb-container-wpr">
+              <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
+                <span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                        width="24px" fill="none" style="vertical-align: middle;">
+                        <path
+                            d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                    </svg>
+
+                </span>
+
+                <span class="kb-link-to-docs" (click)="goToKbDoc()">
+                    {{'KbPage.LearnMoreAboutKB' | translate}}
+                </span>
+              </div>
+      
+              <div class="kb-content-container">
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      
+                <div class="card-content" *ngIf="!showSpinner">
+      
+                  <div class="header">
+      
+                    <div style="display: flex; flex-direction: column;">
+                      <div class="selected-namespace-content">
+                        <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
+                          (mouseout)="onMouseOut()">
+                          <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+                            style="padding: 0px;" (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
+                            matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='after'
+                            matTooltipHideDelay="100">
+                            <div class="selected-namespace">
+                              {{selectedNamespace?.name}}
+                            </div>
+                          </div>
+
+                          <input *ngIf="namespaceIsEditable" id="namespace-name-input"
+                            class="namespace-name-input"
+                            type="text"
+                            style="min-width: 220px; width: 300px; max-width: 450;"
+                            [(ngModel)]="selectedNamespace.name"
+                            (keypress)="onPressEnterUpdateNamespaceName($event)"
+                            (focus)="onFocusNamespaceName($event.target.value)"
+                            (ngModelChange)="onChangeNamespaceName($event)"
+                            (blur)="onBlurUpdateNamespaceName($event)">
+                        </div>
+            
+      
+                      </div>
+                      <div class="kb-bottom-badge-wpr"> 
+                        <div *ngIf="selectedNamespace?.default" 
+                          class="kb-default-badge"
+                          matTooltipClass="kb-custom-mat-tooltip"
+                          matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='after'
+                          matTooltipHideDelay="100">
+                           {{'KbPage.Default' | translate }}
+                        </div>
+                        <div class="hybrid-search-badge" *ngIf="selectedNamespace?.hybrid === true"
+                              matTooltipClass="kb-custom-mat-tooltip"
+                              matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}" 
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right'
+                              matTooltipHideDelay="100">
+                            {{ 'KbPage.Hybrid' | translate }}
+                        </div>
+                        <div class="standard-search-badge" *ngIf="!selectedNamespace?.hybrid"
+                            matTooltipClass="kb-custom-mat-tooltip"
+                            matTooltip="{{'KbPage.ThisKBUsesSemanticSearch' | translate}}" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='after'
+                            matTooltipHideDelay="100">
+                            {{'KbPage.Standard' | translate }}
+                        </div>
+                      </div>
+                    </div>
+      
+      
+    
+                    <div class="buttons-div">
+      
+                      <!-- Export Button  -->
+                      <button *ngIf="PERMISSION_TO_EXPORT_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{'KbPage.ExportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
+                        matTooltipHideDelay="100" (click)="presentDialogExportContents()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                          <path
+                            d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+                        </svg>      
+                      </button>
+      
+                      <!-- Import Button -->
+                      <button *ngIf="PERMISSION_TO_ADD_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{'KbPage.ImportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
+                        matTooltipHideDelay="100" (click)="presentDialogImportContents()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                          <path
+                            d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+                        </svg>
+                      </button>
+      
+                      <!-- Delete Button -->
+                      <button id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
+                        style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
+                        <span *ngIf="selectedNamespace.default === false">
+                          {{ 'Delete' | translate }}
+                        </span>
+                        <span *ngIf="selectedNamespace.default === true">
+                          {{'KbPage.DeleteNamespace' | translate}}
+                        </span>
+                      </button>
+      
+                    </div>
+                  </div>
+      
+                  <!-- --------------------------------------- -->
+                  <!-- Chatbots that used current KB -->
+                  <!-- --------------------------------------- -->
+                  <div class="chatbot-using-current-namespace-wpr">
+                    <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
+                      class="chatbot-using-current-namespace">
+                      {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:
+                    </div>
+      
+                 
+                    <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
+                       id="kb-chatbot" class="served-by-cb-wpr" style="margin-left: 8px;">
+                      <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; flex-wrap: wrap;">
+                        <ng-container *ngFor="let chatbot of chatbotsUsingNamespace; let i = index">
+                          <div class="served-by-cb-b" [ngClass]="{'first-served-by': i === 0, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
+                            <div class="served-by-cb-c"
+                              (click)="presentDialogGoToCDS(chatbot)"
+                              matTooltipClass="kb-custom-mat-tooltip"
+                              matTooltip=" {{'ViewOption' | translate}}"
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below'
+                              matTooltipHideDelay="100">
+                              <div class="served-by-cb-d">
+                                <div size="32" class="served-by-cb-e">
+                                  <!-- USECASE uploadEngine Firebase -->
+                                  <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                    [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
+                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{chatbot?._id}}%2Fphoto.jpg?alt=media"
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                                  <!-- USECASE uploadEngine Native -->
+                                  <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                    [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
+                                    src="{{baseUrl}}files?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                                </div>
+                                <div class="served-by-cb-name">
+                                  {{chatbot.name }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+      
+                    <sat-popover #cbPopover horizontalAlign="center" verticalAlign="below" panelClass="cb-details-popover">
+      
+                      <div class="cbPopover-cbname">
+                        <!-- {{chatbot.name }} -->
+                        <!-- {{hoveredChatbot.name}} -->
+                        {{hoveredChatbot?.name }}
+                      </div>
+      
+                      <div class="cbPopover-cbtext">
+                        <!-- View in the design studio -->
+                        {{'ViewInTheDesignStudio' | translate}}
+                      </div>
+      
+                    </sat-popover>
+      
+                    <!-- --------------------------------------- -->
+                    <!-- Create a Chatbot that use current KB -->
+                    <!-- --------------------------------------- -->
+                    <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
+                      {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
+    
+                      <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="font-size: 12px;"
+                        (click)="createChatbotfromKbOfficialResponderTemplate()">
+      
+                        <span *ngIf="!esportingKBChatBotTemplate">
+                          {{ 'CreateYourAIAgentWithOneClick' | translate }}
+                        </span>
+                        <span *ngIf="esportingKBChatBotTemplate">
+                          {{ 'Processing' | translate }}
+                        </span>
+                      </button>
+                    </div> 
+                         
+                  </div>
+      
+                  <!-- TAB SWITCHER START -->
+                  <div class="kb-switch-field">
+                    <input type="radio" id="tab-contents" name="kb-tab-switch" [checked]="selectedTab === 'contents'" (change)="switchTab('contents')">
+                    <label for="tab-contents">
+                      <span>{{'KbPage.Contents' | translate }}</span>
+                    </label>
+                    <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
+                    <label for="tab-unanswered">
+                      <span>{{'KbPage.UnansweredQuestions' | translate }}</span>
+                    </label>
+                  </div>
+                  <!-- TAB SWITCHER END -->
+      
+                  <!-- START TABLE -->
+                  <div [@fadeInOut] *ngIf="selectedTab === 'contents'">
+                    <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
+                      [hasRemovedKb]="hasRemovedKb" [hasUpdatedKb]="hasUpdatedKb" [getKbCompleted]="getKbCompleted"
+                      [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
+                      [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature" [t_params]="t_params"
+                      [refreshRateIsEnabled]="refreshRateIsEnabled" [payIsVisible]="payIsVisible" [salesEmail]="salesEmail"
+                      [project_name]="project_name" [id_project]="id_project"
+                      [showKBTableSpinner]="showKBTableSpinner"
+                      [currentSortParams]="currentSortParams"
+                      (openBaseModalDetail)="onOpenBaseModalDetail($event)"
+                      (openBaseModalDelete)="onOpenBaseModalDelete($event)"
+                      (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
+                      (openBaseModalPreview)="onOpenBaseModalPreview()" (onOpenAddContents)="onOpenAddContent()"
+                      (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
+                      (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
+                      (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                      (loadByFilter)="onLoadByFilter($event)">
+                    </knowledge-base-table>
+                  </div>
+                  <div [@fadeInOut] *ngIf="selectedTab === 'unanswered'">
+                    <modal-unanswered-questions 
+                      [unansweredQuestions]="unansweredQuestions"
+                      [unansweredQuestionsCount]="unansweredQuestionsCount"
+                      [hasMore]="hasMoreUnansweredQuestions"
+                      [isLoadingMore]="isLoadingMoreUnanswered"
+                      [showUQTableSpinner]="showUQTableSpinner"
+                      [namespace]="selectedNamespace"
+                      [id_project]="id_project"
+                      (refresh)="refreshUnansweredQuestions()"
+                      (loadMore)="loadMoreUnansweredQuestions()"
+                      (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)">
+                    </modal-unanswered-questions>
+                  </div>
+                  <!-- END TABLE -->
+      
+                </div>
+              </div>
+      
+            </div>
+      
+          </div>
+          <ng-content></ng-content>
+        </div>
+      </div>
+
+    
+    <!-- </div> -->
+  </div>
+</div>
+
+
+<!-- ADD KNOWLEDGE BASE MODAL - START -->
+<modal-page-url *ngIf="typeKnowledgeBaseModal == 'url-page'" (saveKnowledgeBase)="onAddKb($event)"
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-page-url>
+
+
+<!-- ERROR KNOWLEDGE BASE MODAL - START -->
+<modal-error-knowledge-base *ngIf="baseModalError" [errorMessage]="errorMessage" (closeBaseModal)="onCloseBaseModal()">
+</modal-error-knowledge-base>
+<!-- ERROR KNOWLEDGE BASE MODAL - END -->

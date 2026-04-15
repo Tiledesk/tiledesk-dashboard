@@ -1254,7 +1254,7 @@ const routes: Routes = [
 
   {
     path: 'project/:projectid/knowledge-bases',
-    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard]
   },
 
@@ -1267,7 +1267,7 @@ const routes: Routes = [
   // },
   {
     path: 'project/:projectid/knowledge-bases/:namespaceid',
-    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard]
   },
 
@@ -1281,7 +1281,7 @@ const routes: Routes = [
 
   {
     path: 'project/:projectid/knowledge-bases/:calledby',
-    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy // when called from home
