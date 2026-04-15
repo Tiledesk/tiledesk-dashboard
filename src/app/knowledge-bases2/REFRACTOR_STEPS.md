@@ -74,12 +74,13 @@ Extract child components (in `knowledge-bases2/components/`), with `@Input/@Outp
 
 ## Progress (updated)
 
-- **Step 5**: in progress
+- **Step 5**: done
   - Done: namespace sidebar (`KbNamespaceSidebarComponent`)
   - Done: selected namespace header (`KbSelectedNamespaceHeaderComponent`)
+  - Done: header actions + tab switcher (`KbHeaderActionsComponent`)
   - Done: contents tab wrapper (`KbContentsTabComponent`)
   - Done: unanswered tab wrapper (`KbUnansweredTabComponent`)
-  - Pending: chatbot actions panel (extract)
+  - Done: chatbot actions panel (`KbChatbotActionsPanelComponent`)
 - **Step 6**: done
   - Added `models/kb-types.ts` + `models/kb-ui-state.ts`
   - Typed new presentational components (removed `any` from their public API)

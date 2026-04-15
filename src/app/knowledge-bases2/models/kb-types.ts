@@ -27,3 +27,9 @@ export interface KbListItem {
   [key: string]: any;
 }
 
+export interface KbListResponse {
+  count: number;
+  kbs: KbListItem[];
+  [key: string]: any;
+}
+

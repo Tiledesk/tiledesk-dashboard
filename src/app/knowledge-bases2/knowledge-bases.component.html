@@ -1,28 +1,8 @@
-<!-- <p class="navbar-brand" style="z-index: 1050;position: relative;  padding-left:30px"
-   [class.chrome-gt-100]="isChromeVerGreaterThan100"
-   [class.chrome-lt-100]="!isChromeVerGreaterThan100">
-  {{ 'KnowledgeBases' | translate }}
-</p> -->
-
-
-<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
-
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
-
-    <!-- <div class="content-wpr" style="display: flex;"> -->
-
-    <!-- <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB"> </appdashboard-settings-sidebar>
-
-      <appdashboard-bots-sidebar *ngIf="ARE_NEW_KB" [allTemplatesCount]="allTemplatesCount"
-        [allCommunityTemplatesCount]="allCommunityTemplatesCount"
-        [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
-        [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
-        [increaseSalesBotsCount]="increaseSalesBotsCount" [kbCount]="kbCount">
-      </appdashboard-bots-sidebar> -->
-
-      <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
-        <!-- Sidebar sinistra -->
+<!-- Page shell -->
+<div class="main-content kb-page">
+  <div class="container-fluid kb-page__container">
+    <div class="kb-layout kb-page__layout">
+      <!-- Left sidebar -->
         <appdashboard-kb-namespace-sidebar
           [permissionToAddKb]="PERMISSION_TO_ADD_KB"
           [isLoadingNamespaces]="isLoadingNamespaces"
@@ -33,21 +13,24 @@
           (addNamespace)="presentModalAddNewNamespace()"
           (selectNamespace)="onSelectNamespace($event)"
         ></appdashboard-kb-namespace-sidebar>
-        <!-- Contenuto destro -->
-        <div class="kb-main-content" style="flex: 1 1 0; min-width: 0; padding-left: 0;">
+        <!-- Main content -->
+        <div class="kb-main-content kb-page__main">
           <div class="kb-content">
-            <!-- <appdashboard-knowledge-bases-alert [kbsListCount]="kbsListCount" *ngIf="kbsListCount && kbsListCount > kbLimit"> </appdashboard-knowledge-bases-alert> -->
-      
-      
             <div class="kb-container-wpr">
               <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
                 <span>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                        width="24px" fill="none" style="vertical-align: middle;">
-                        <path
-                            d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                    </svg>
+                  <svg
+                    class="kb-link-to-docs__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="none"
+                  >
+                    <path
+                      d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z"
+                    />
+                  </svg>
 
                 </span>
 
@@ -77,45 +60,20 @@
       
       
     
-                    <div class="buttons-div">
-      
-                      <!-- Export Button  -->
-                      <button *ngIf="PERMISSION_TO_EXPORT_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
-                        matTooltip="{{'KbPage.ExportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
-                        matTooltipHideDelay="100" (click)="presentDialogExportContents()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                          <path
-                            d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
-                        </svg>      
-                      </button>
-      
-                      <!-- Import Button -->
-                      <button *ngIf="PERMISSION_TO_ADD_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
-                        matTooltip="{{'KbPage.ImportContents' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
-                        matTooltipHideDelay="100" (click)="presentDialogImportContents()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                          <path
-                            d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
-                        </svg>
-                      </button>
-      
-                      <!-- Delete Button -->
-                      <button id="delete-kb" class="btn btn-red" [disabled]="!this.PERMISSION_TO_DELETE" aria-label="Delete"
-                        style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
-                        <span *ngIf="selectedNamespace.default === false">
-                          {{ 'Delete' | translate }}
-                        </span>
-                        <span *ngIf="selectedNamespace.default === true">
-                          {{'KbPage.DeleteNamespace' | translate}}
-                        </span>
-                      </button>
-      
-                    </div>
+                    <appdashboard-kb-header-actions
+                      [permissionToExportContents]="PERMISSION_TO_EXPORT_CONTENTS"
+                      [permissionToAddContents]="PERMISSION_TO_ADD_CONTENTS"
+                      [permissionToDelete]="PERMISSION_TO_DELETE"
+                      [selectedNamespaceIsDefault]="selectedNamespace?.default"
+                      [selectedTab]="selectedTab"
+                      (exportContents)="presentDialogExportContents()"
+                      (importContents)="presentDialogImportContents()"
+                      (deleteNamespace)="onOpenDeleteNamespaceModal()"
+                      (tabChange)="switchTab($event)"
+                    ></appdashboard-kb-header-actions>
                   </div>
       
-                  <!-- --------------------------------------- -->
-                  <!-- Chatbots that used current KB -->
-                  <!-- --------------------------------------- -->
+                  <!-- Chatbots using this namespace -->
                   <appdashboard-kb-chatbot-actions-panel
                     [chatbotsUsingNamespace]="chatbotsUsingNamespace"
                     [userRole]="USER_ROLE"
@@ -129,20 +87,7 @@
                     (createChatbotOneClick)="createChatbotfromKbOfficialResponderTemplate()"
                   ></appdashboard-kb-chatbot-actions-panel>
       
-                  <!-- TAB SWITCHER START -->
-                  <div class="kb-switch-field">
-                    <input type="radio" id="tab-contents" name="kb-tab-switch" [checked]="selectedTab === 'contents'" (change)="switchTab('contents')">
-                    <label for="tab-contents">
-                      <span>{{'KbPage.Contents' | translate }}</span>
-                    </label>
-                    <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
-                    <label for="tab-unanswered">
-                      <span>{{'KbPage.UnansweredQuestions' | translate }}</span>
-                    </label>
-                  </div>
-                  <!-- TAB SWITCHER END -->
-      
-                  <!-- START TABLE -->
+                  <!-- Main tabs -->
                   <div [@fadeInOut] *ngIf="selectedTab === 'contents'">
                     <appdashboard-kb-contents-tab
                       [kbsList]="kbsList"
@@ -189,7 +134,7 @@
                       (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)"
                     ></appdashboard-kb-unanswered-tab>
                   </div>
-                  <!-- END TABLE -->
+                  <!-- /Main tabs -->
       
                 </div>
               </div>
@@ -197,23 +142,16 @@
             </div>
       
           </div>
-          <ng-content></ng-content>
         </div>
       </div>
 
-    
-    <!-- </div> -->
   </div>
 </div>
 
-
-<!-- ADD KNOWLEDGE BASE MODAL - START -->
+<!-- Modals -->
 <modal-page-url *ngIf="typeKnowledgeBaseModal == 'url-page'" (saveKnowledgeBase)="onAddKb($event)"
   (closeBaseModal)="onCloseBaseModal()">
 </modal-page-url>
 
-
-<!-- ERROR KNOWLEDGE BASE MODAL - START -->
 <modal-error-knowledge-base *ngIf="baseModalError" [errorMessage]="errorMessage" (closeBaseModal)="onCloseBaseModal()">
 </modal-error-knowledge-base>
-<!-- ERROR KNOWLEDGE BASE MODAL - END -->

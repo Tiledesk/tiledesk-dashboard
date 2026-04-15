@@ -38,9 +38,6 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
-// import { ShepherdService } from 'angular-shepherd';
-// import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
-// import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
@@ -55,11 +52,10 @@ import { KbVisitedService } from './services/kb-visited.service';
 import { KbSitemapEventsService } from './services/kb-sitemap-events.service';
 import type { KbNamespace, KbQuotas } from './models/kb-types';
 import { KB2_UI_INITIAL_STATE, type KnowledgeBases2UiState } from './models/kb-ui-state';
+import type { KbListItem } from './models/kb-types';
 
 const Swal = require('sweetalert2')
 
-
-//import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-knowledge-bases2',
@@ -69,24 +65,15 @@ const Swal = require('sweetalert2')
 
 export class KnowledgeBases2Component extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
-  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
-  public isChromeVerGreaterThan100: boolean;
   typeKnowledgeBaseModal: string;
-  addKnowledgeBaseModal = 'none';
-  previewKnowledgeBaseModal = 'none';
-  deleteKnowledgeBaseModal = 'none';
   baseModalDelete: boolean = false;
-  showDeleteNamespaceModal: boolean = false;
   baseModalPreview: boolean = false;
   baseModalPreviewSettings: boolean = false;
   baseModalError: boolean = false;
   baseModalDetail: boolean = false;
 
-  secretsModal = 'none';
-  missingGptkeyModal = 'none';
   ui: KnowledgeBases2UiState = { ...KB2_UI_INITIAL_STATE };
 
-  // Template compatibility layer: gradually migrate bindings to `ui.*`.
   get showSpinner(): boolean {
     return this.ui.showSpinner;
   }
@@ -96,12 +83,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   get showUQTableSpinner(): boolean {
     return this.ui.showUqTableSpinner;
   }
-  buttonDisabled: boolean = true;
   currentSortParams: any = null; // Store current sort params to sync with table component
-  addButtonDisabled: boolean = false;
-  gptkeyVisible: boolean = false;
-  //analytics
-  // SHOW_TABLE: boolean = false;
   CURRENT_USER: any;
   CURRENT_USER_ID: string
   project: Project;
@@ -121,16 +103,14 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   kbFormUrl: FormGroup;
   kbFormContent: FormGroup;
 
-  // kbs: any;
-  kbsList: Array<any>;
+  kbsList: KbListItem[];
   kbsListCount: number = 0;
   refreshKbsList: boolean = true;
   numberPage: number = 0;
 
 
   kbid_selected: any;
-  interval_id;
-  ARE_NEW_KB: boolean
+  // ARE_NEW_KB removed: feature is always the new KB implementation.
 
   // messages
   msgSuccesUpdateKb: string; // 'KB modificato con successo';
@@ -143,13 +123,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   msgErrorAddUpdateKbLimit: string // = "Non è possibile superare il numero di risorse previste nel piano corrente";
   warningTitle: string;
 
-  allTemplatesCount: number;
-  allCommunityTemplatesCount: number;
-  customerSatisfactionTemplatesCount: number;
-  increaseSalesTemplatesCount: number;
-  customerSatisfactionBotsCount: number;
   myChatbotOtherCount: number;
-  increaseSalesBotsCount: number;
   kbCount: number;
   listSitesOfSitemap: any = [];
 
@@ -167,11 +141,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   hasChangedNameSpace: boolean = false;
 
   selectedNamespaceName: any;
-  // selectedNamespaceID: string;
-  // selectedNamespaceIsDefault: boolean = false;
-
-
-  is0penDropDown: boolean = false
   namespaces: KbNamespace[]; // [{ name: 'Namespaces_1', id: 111111, default: true }, { name: 'Namespaces_2', id: 222222, default: false }, { name: 'Namespaces_3', id: 333333, default: false }]
 
   namespaceIsEditable: boolean = false;
@@ -182,13 +151,9 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   msgNamespaceHasBeenSuccessfullyUpdated: string;
   hasRemovedKb: boolean = false
   hasUpdatedKb: boolean = false
-  // Stores the last search/filter params used by the table, so we can
-  // re-apply them after an update without causing loops
   lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
-  botid: string;
-  nameSpaceId: string;
   totalCount: Number;
   quotas: KbQuotas;
   isActiveHybrid: boolean = false;
@@ -198,7 +163,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
-  // Hook bot to dept
   dept_id: string;
   depts_length: any
   depts_without_bot_array = [];
@@ -209,7 +173,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   hasAlreadyVisitedKb: string = 'false'
 
   private dialogRefHookBoot: MatDialogRef<any>;
-  timer: number = 500;
   hasClickedAiSettingsModalBackdrop: boolean = false;
   hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
@@ -219,9 +182,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   hasDefaultRole: boolean;
   ROLE: string;
   PERMISSIONS: any;
-  // PERMISSION_TO_DELETE_CONTENTS: boolean;
-  // PERMISSION_TO_DELETE_NAMESPACE: boolean;
-  
   PERMISSION_TO_DELETE: boolean;
   PERMISSION_TO_ADD_KB: boolean;
   PERMISSION_TO_ADD_FLOWS: boolean;
@@ -229,7 +189,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   PERMISSION_TO_EXPORT_CONTENTS: boolean;
   PERMISSION_TO_EDIT_FLOWS:boolean
 
-  // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
   switchTab(tab: 'contents' | 'unanswered') {
     this.selectedTab = tab;
@@ -244,19 +203,11 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   isLoadingUnanswered = false;
   isLoadingMoreUnanswered: boolean = false;
   hasMoreUnansweredQuestions: boolean = false;
-  // Kept for template compatibility; prefer `ui.isLoadingNamespaces`.
   get isLoadingNamespaces(): boolean {
     return this.ui.isLoadingNamespaces;
   }
   pineconeReranking: boolean
 
-
-  fakeUnansered = [
-      { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
-      { _id: '68b92286f81418001303bfcf', question: 'What is the refund policy?' },
-      { _id: '68b92286f81418001303bfcf', question: 'How do I contact support?' },
-      { _id: '68b92286f81418001303bfcf', question: 'Where can I find my invoices?' }
-    ]
 
   constructor(
     private auth: AuthService,
@@ -267,7 +218,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     private projectService: ProjectService,
     private router: Router,
     public route: ActivatedRoute,
-    //private router: Router,
     public notify: NotifyService,
     private translate: TranslateService,
     private faqKbService: FaqKbService,
@@ -300,21 +250,19 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
 
-    // Misura il tempo dal click nella sidebar all'inizializzazione
+    // Measure time from sidebar click to init (if available)
     const clickTime = (window as any).kbNavigationStartTime;
     if (clickTime) {
       const currentTime = performance.now();
       const timeFromClick = currentTime - clickTime;
       this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
     } else {
-      // Fallback se non c'è il timestamp del click
+      // Fallback when click timestamp is missing
       const currentTime = performance.now();
       this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
     }
 
     this.kbsList = [];
-    // this.getBrowserVersion();
-    this.isChromeVerGreaterThan100 = this.checkChromeVersion();
 
     this.facade.user$.pipe(takeUntil(this.unsubscribe$)).subscribe((user: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
@@ -340,27 +288,39 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
     });
 
+    // Step: move namespaces state into facade
+    this.facade.namespaces$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((namespaces) => {
+        this.namespaces = namespaces;
+        this.kbCount = namespaces?.length || 0;
+      });
+
+    this.facade.totalCount$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((total) => {
+        this.totalCount = total;
+      });
+
+    this.facade.selectedNamespace$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((ns) => {
+        if (!ns) return;
+        this.selectedNamespace = ns;
+        this.selectedNamespaceName = ns.name;
+      });
+
     this.getProjectPlan();
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
-    // this.getAllNamespaces()
-    // this.getDeptsByProjectId()
-     // this.listenSidebarIsOpened();
-    // this.listenSidebarIsOpened();
-    // this.getTemplates();
-    // this.getCommunityTemplates()
-    // this.getOSCODE();
     this.getFaqKbByProjectId();
-    // this.trackPage();
-    // this.getTranslations();
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
-    // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
     this.loadUnansweredQuestions();
     this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
-    // const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
+
     setTimeout(() => {
       this.kbFormUrl = this.createConditionGroupUrl();
       this.kbFormContent = this.createConditionGroupContent();
@@ -371,7 +331,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.interval_id);
     this.unsubscribe$.next();   
     this.unsubscribe$.complete();
   }
@@ -390,23 +349,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.PERMISSION_TO_ADD_KB = perms.canAddKb;
         this.PERMISSION_TO_ADD_FLOWS = perms.canAddFlows;
         this.PERMISSION_TO_EDIT_FLOWS = perms.canEditFlows;
-
-          // PERMISSION_TO_DELETE_NAMESPACE
-          // if (status.role === 'owner' || status.role === 'admin') {
-          //   // Owner and Admin always has permission
-          //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
-  
-          // } else if (status.role === 'agent') {
-          //   // Agent never have permission
-          //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
-  
-          // } else {
-          //   // Custom roles: permission depends on matchedPermissions
-          //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
-          // }
 
         // PERMISSION_TO_ADD_CONTENTS
         if (status.role === 'owner' || status.role === 'admin') {
@@ -447,47 +389,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
   }
 
-  checkChromeVersion(): boolean {
-    const ua = navigator.userAgent;
-    const match = ua.match(/Chrome\/(\d+)/);
-    if (match && match[1]) {
-      return parseInt(match[1], 10) > 100;
-    }
-    return false;
-  }
-
-  // presentKBTour() {
-  //   const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
-  //   this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
-  //   if (!tourShowed) {
-  //     setTimeout(() => {
-  //       const addButtonEl = <HTMLElement>document.querySelector('#kb-add-content');
-  //       this.logger.log('[KNOWLEDGE-BASES-COMP] addButtonEl ', addButtonEl)
-  //       if (addButtonEl) {
-  //         this.shepherdService.defaultStepOptions = defaultStepOptions;
-  //         this.shepherdService.modal = true;
-  //         this.shepherdService.confirmCancel = false;
-  //         const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
-  //         if (!this.chatbotsUsingNamespace) {
-  //           steps.splice(3, 1);
-  //         } else {
-  //           steps.splice(4, 1);
-  //         }
-  //         this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-  //         this.shepherdService.start();
-
-  //         // this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
-  //         this.localDbService.setInStorage(`tour-shown-${this.CURRENT_USER_ID}`, 'true')
-  //       }
-  //     }, this.timer);
-  //   }
-  // }
-
-  // restartTour() {
-  //   this.timer = 0
-  //   this.localDbService.removeFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
-  //   this.presentKBTour()
-  // }
+  // KB tour removed: not used in knowledge-bases2.
 
   listenToOnSenSitemapEvent() {
     this.sitemapEvents.sitemap$
@@ -496,11 +398,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.onSendSitemap({ sitemap });
       });
   }
-
-
-  // Moved to KnowledgeBases2Facade subscriptions in ngOnInit()
-  getCurrentProject() {}
-
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
@@ -705,10 +602,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       .loadNamespaces(this.id_project, this.router.url)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(({ namespaces, selection }) => {
-        this.kbCount = namespaces.length;
-        this.namespaces = namespaces;
-        this.totalCount = namespaces.reduce((acc, ns: any) => acc + (ns.count || 0), 0);
-
         if (selection?.selected) {
           this.selectedNamespace = selection.selected;
           this.selectedNamespaceName = this.selectedNamespace.name;
@@ -729,30 +622,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       });
   }
 
-  selectLastUsedNamespaceAndGetKbList(namespaces) {
-    const storedNamespace = this.kbNamespaceSelection.getStoredNamespace(this.id_project);
-    const urlNamespaceId = this.kbNamespaceSelection.resolveNamespaceIdFromUrl(this.router.url);
-    const selection = this.kbNamespaceSelection.select(namespaces, storedNamespace, urlNamespaceId);
-
-    if (!selection.selected) {
-      return;
-    }
-
-    this.selectedNamespace = selection.selected;
-    this.selectedNamespaceName = this.selectedNamespace.name;
-
-    if (selection.shouldNavigateToSelected) {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-    }
-    if (selection.shouldPersistSelected) {
-      this.kbNamespaceSelection.persistNamespace(this.id_project, this.selectedNamespace);
-    }
-
-    this.getChatbotUsingNamespace(this.selectedNamespace.id)
-    this.paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
-    this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
-  }
-
   createNewNamespace(namespaceName: string, hybrid: boolean) {
     this.kbService.createNamespace(namespaceName, hybrid).subscribe((namespace: any) => {
       if (namespace) {
@@ -763,13 +632,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
         this.selectedNamespaceName = namespace['name']
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
-        // this.selectedNamespaceID = namespace['id'];
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
-
-        // this.selectedNamespaceIsDefault = namespace['default']; 
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
         this.namespaces.push(namespace)
@@ -795,9 +657,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
 
-      // Build safe message without using translate with parameters (to avoid XSS)
-      // const safeNamespaceName = this.sanitizeForNotification(this.selectedNamespace.name);
-      // const message = `The Knowledge Base ${safeNamespaceName} has been successfully created`;
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('TheKBHasBeenSuccessfullyCreated') , 2, 'done');
     });
   }
@@ -844,30 +703,13 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
 
 
-        // let storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
-        // if (storedNamespace) {
-        //   let storedNamespaceObjct = JSON.parse(storedNamespace)
-        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME storedNamespaceObjct', storedNamespaceObjct);
-        //   storedNamespaceObjct.name = updatedNameSpaceName
-        //   this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
-
-        // }
-
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE > NAMESPACES ', this.namespaces)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAMESPACES EL to update  ', this.namespaces[this.newNamespaceNameIndex])
-        // let namespaceItemToUpdate  = this.namespaces[this.newNamespaceNameIndex]
 
         if (calledBy !== 'modal-update-settings' && calledBy !== 'modal-update-settings-and-open-preview') {
           this.namespaces[this.newNamespaceNameIndex]['name'] = updatedNameSpaceName
         }
 
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
-        // this.selectedNamespaceID = namespace['namespace_id'];
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
-
-        // this.localDbService.setInStorage('last_kbnamespace', JSON.stringify(namespace))
-        // this.namespaces.push(namespace)
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME ERROR', error);
@@ -927,7 +769,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   }
 
   onMouseOver() {
-    // this.namespaceIsEditable = true
+
     this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOver namespace name namespaceIsEditable', this.namespaceIsEditable)
 
     let namespaceNameOutputEl = document.getElementById("namespace-name-output");
@@ -945,13 +787,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOut namespaceNameOutputEl', namespaceNameOutputEl)
       namespaceNameOutputEl.style.border = '1px solid transparent'
     }
-    // this.namespaceIsEditable = false
-    // this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOut namespace name namespaceIsEditable', this.namespaceIsEditable)
-    // if (this.namespaceValueOnFocus && this.selectedNamespaceName !== this.namespaceValueOnFocus) {
-    //   this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOut  selectedNamespaceName ', this.selectedNamespaceName, ' namespaceValueOnFocus ', this.namespaceValueOnFocus, ' RUN UPDATE')
-    // } else {
-    //   this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOut  selectedNamespaceName ', this.selectedNamespaceName, ' namespaceValueOnFocus ', this.namespaceValueOnFocus, ' NOTHING CHANGE')
-    // }
+
 
   }
 
@@ -960,21 +796,19 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
     if (namespace) {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + namespace.id]);
-      // this.getDeptsByProjectId()
+
       this.hasChangedNameSpace = true;
       this.selectedNamespace = namespace
       this.selectedNamespaceName = namespace['name']
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
-      // this.selectedNamespaceName = namespace['name']
+
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
       this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
-      // this.selectedNamespaceID = namespace['id']
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
 
-      // this.selectedNamespaceIsDefault = namespace['default']
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
+
+
 
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
       let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
@@ -999,8 +833,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
-      // let isArray = this.isArray(chatbots)
-      // if (isArray) {
       if (chatbots.length > 0) {
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
 
@@ -1011,18 +843,9 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
           let imgUrl = ''
           if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
-
-            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Firebase 
-            // ------------------------------------------------------------------------------
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
 
           } else {
-
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Native 
-            // ------------------------------------------------------------------------------
             imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
           this.checkImageExists(imgUrl, (existsImage) => {
@@ -1062,10 +885,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     };
     imageData.src = imageUrl;
   }
-
-  // isArray(what) {
-  //   return Object.prototype.toString.call(what) === '[object Array]';
-  // }
 
   createChatbotfromKbOfficialResponderTemplate() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
@@ -1115,8 +934,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       }
     })
   }
-  // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
-  // exportFaqToJsonBtnEl.blur();
+
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
@@ -1170,16 +988,12 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.getDeptsByProjectId(faqkb)
-        // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-
       }
 
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] -  IMPORT CHATBOT FROM JSON- ERROR', error);
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
-
-      // this.presentDialogChatbotSuccessfullyCreated()
 
     });
   }
@@ -1197,7 +1011,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT ', depts_length);
 
         if (depts_length === 1) {
-          // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
           this.dept_id = departments[0]['_id']
 
           this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
@@ -1206,48 +1019,27 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
             this.presentDialogChatbotSuccessfullyCreated()
 
             this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT ');
-            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
-            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
-
-            // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
-            // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           } else {
             this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
             this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
             this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept');
             this.presentDialogChatbotSuccessfullyCreated()
-
-
-            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
-            // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT botType selected ', this.botType);
-            // if (this.botType !== 'identity') {
-            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
           }
 
-          // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
         } else if (depts_length > 1) {
           this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
 
-          // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
           departments.forEach(dept => {
 
             if (dept.hasBot === true) {
               this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT HAS BOT ');
-
-              // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
             } else {
               this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
-              // this.logger.log('[BOT-CREATE] --->  DEPT botType selected ', this.botType);
-              // if (this.botType !== 'identity') {
-              //   this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-              // }
-              // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
               this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
 
               if (!this.dialogRefHookBoot) {
-                // this.openDialogHookBot(this.depts_without_bot_array, faqkb)
                 this.presentDialogChatbotSuccessfullyCreatedTheHookBot(this.depts_without_bot_array, faqkb)
               }
             }
@@ -1415,8 +1207,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
             error: (error) => {
               let errorMessage = ""
               if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
-                // console.log('[KB IMPORT] error.error.error :', error.error.error);
-                // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
                 const planLimit = error.error.plan_limit;
                 errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
               } else {
@@ -1455,270 +1245,34 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 }
 
 
-_presentDialogImportContents() {
-  Swal.fire({
-    title: this.translate.instant('Warning'),
-    html: `
-      <p>${this.translate.instant('KbPage.ImportWillDeleteAllContents')}</p>
-      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />
-    `,
-    icon: "info",
-    showCancelButton: true,
-    showConfirmButton: true,
-    confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
-    cancelButtonText: this.translate.instant('Cancel'),
-    reverseButtons: true,
-    didOpen: () => {
-      
-      const confirmBtn = Swal.getConfirmButton();
-      const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
 
-      // Clear previous event listeners to prevent duplicate handlers
-      const newFileInput = fileInput.cloneNode(true) as HTMLInputElement;
-      fileInput.parentNode?.replaceChild(newFileInput, fileInput);
-
-      confirmBtn.addEventListener('click', () => {
-        newFileInput.click();
-      });
-
-      newFileInput.addEventListener('change', () => {
-        const file = newFileInput.files?.[0];
-        if (!file) return;
-
-        if (file.type !== "application/json" && !file.name.endsWith('.json')) {
-          Swal.fire({
-            icon: 'error',
-            title: this.translate.instant('InvalidJSON'),
-            text: this.translate.instant('SorryFileTypeNotSupported')
-          });
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          const jsonText = reader.result as string;
-
-          if (containsXSS(jsonText)) {
-            Swal.fire({
-              icon: 'error',
-              title: this.translate.instant('InvalidJSON'),
-              text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
-            });
-            return;
-          }
-
-          try {
-            const jsonData = JSON.parse(jsonText);
-            this.logger.log('Parsed JSON:', jsonData);
-          } catch (error) {
-            Swal.fire({
-              icon: 'error',
-              title: this.translate.instant('InvalidJSON'),
-              text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
-            });
-            return;
-          }
-
-          const formData = new FormData();
-          formData.append('uploadFile', file, file.name);
-
-          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe({
-            next: (res) => {
-              this.logger.log('[KB IMPORT] Response:', res);
-            },
-            error: (error) => {
-              Swal.fire({
-                title: this.translate.instant('Oops') + '!',
-                text: this.translate.instant('HoursPage.ErrorOccurred'),
-                icon: "error",
-                confirmButtonText: this.translate.instant('Ok')
-              });
-              this.logger.error('[KB IMPORT ERROR]', error);
-            },
-            complete: () => {
-              this.logger.log('[KB IMPORT] * COMPLETE *');
-              const paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
-              this.getListOfKb(paramsDefault, 'onImportJSON');
-
-              Swal.fire({
-                title: this.translate.instant('Done') + "!",
-                text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
-                icon: "success",
-                confirmButtonText: this.translate.instant('Ok')
-              });
-            }
-          });
-        };
-
-        reader.readAsText(file);
-      });
-    }
-  });
-}
-
-
-
-  __presentDialogImportContents() {
-    Swal.fire({
-      title: this.translate.instant('Warning'),
-      // text: this.translate.instant('KbPage.ImportWillDeleteAllContents'),
-      html: `
-      <p> ${this.translate.instant('KbPage.ImportWillDeleteAllContents')}  <p> 
-      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />`,
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      showConfirmButton: true,
-      showDenyButton: false,
-      confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      focusConfirm: false,
-      reverseButtons: true,
-      // input: 'file',
-      // inputAttributes: {
-      //   accept: '.json', // allowed file types
-      //   'aria-label': 'Upload your file'
-      // },
-      didOpen: () => {
-        const confirmBtn = Swal.getConfirmButton();
-        const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
-
-        confirmBtn.addEventListener('click', () => {
-          fileInput.click();
-        });
-
-        fileInput.addEventListener('change', () => {
-          const file = fileInput.files?.[0];
-          this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', file);
-
-          const reader = new FileReader();
-
-          reader.onload = () => {
-            const jsonString = JSON.stringify(reader.result as string)
-            this.logger.log('jsonString :', jsonString);
-            try {
-              const jsonData = JSON.parse(reader.result as string);
-              this.logger.log('Parsed JSON:', jsonData);
-              // Handle JSON data here
-              // Swal.fire({
-              //   icon: 'success',
-              //   title: 'Import successful',
-              //   text: `Imported: ${file.name}`
-              // });
-            } catch (error) {
-              Swal.fire({
-                icon: 'error',
-                title: this.translate.instant('InvalidJSON'),
-                text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
-              });
-              return;
-            }
-
-            if (containsXSS(jsonString)) {
-              Swal.fire({
-                icon: 'error',
-                title: this.translate.instant('InvalidJSON'),
-                text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
-              });
-              return;
-            }
-          };
-          reader.readAsText(file);
-
-
-          if (!file) return;
-
-          if (file.type !== "application/json" && !file.name.endsWith('.json')) {
-            Swal.fire({
-              icon: 'error',
-              title: this.translate.instant('InvalidJSON'),
-              text: this.translate.instant('SorryFileTypeNotSupported')
-            });
-            return;
-          }
-
-          const formData = new FormData();
-          formData.append('uploadFile', file, file.name); // Backend should accept 'file' field
-
-          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe((res: any) => {
-            this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
-          }, (error) => {
-            Swal.fire({
-              title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('HoursPage.ErrorOccurred'),
-              icon: "error",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonText: this.translate.instant('Ok'),
-              // confirmButtonColor: "var(--primary-btn-background)",
-            });
-            this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
-          }, () => {
-            this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
-            let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
-            this.getListOfKb(paramsDefault, 'onImportJSON');
-            Swal.fire({
-              title: this.translate.instant('Done') + "!",
-              text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
-              icon: "success",
-              showCloseButton: false,
-              showCancelButton: false,
-              // confirmButtonColor: "var(--primary-btn-background)",
-              confirmButtonText: this.translate.instant('Ok'),
-
-
-            }).then((okpressed) => {
-
-            });
-          });
-        });
-      }
-
-    })
-
-  }
+ 
 
 
   presentDialogChatbotSuccessfullyCreated() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
 
     Swal.fire({
-      // title: this.translate.instant('Success'),
-      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
       title: this.translate.instant('AIAgentSuccessfullyCreated'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
-      // reverseButtons: true,
-      // buttons: [null, this.cancel],
-      // dangerMode: false
     })
-    // }
-
   }
 
   presentDialogNotExistThekbOfficialResponderTemplate() {
     Swal.fire({
-      // title: this.translate.instant('Success'),
-      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
       title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot'), //"It is not possible to create the chatbot",
       text: this.translate.instant('YourProjectIsMissingTheTemplateNeededToCreateTheChatbot') + ' !',
       icon: "error",
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
-      // reverseButtons: true,
-      // buttons: [null, this.cancel],
-      // dangerMode: false
     })
-    // }
-
   }
 
 
@@ -1726,18 +1280,13 @@ _presentDialogImportContents() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
 
     Swal.fire({
-      // title: this.translate.instant('Success'),
-      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
       title: this.translate.instant('AI Agent Successfully Created'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
-      // cancelButtonText: this.cancel,
-      // confirmButtonColor: "var(--blue-light)",
       reverseButtons: true,
-      // dangerMode: false
     }).then((result: any) => {
 
       if (result.isConfirmed) {
@@ -1763,8 +1312,6 @@ _presentDialogImportContents() {
     this.dialogRefHookBoot.afterClosed().subscribe(result => {
       this.dialogRefHookBoot = null;
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
-      // this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed getState:`,  dialogRef.getState());
-      // dialogRef.getState()
       if (result && result.deptId && result.botId) {
         this.hookBotToDept(result.deptId, result.botId)
       }
@@ -1780,31 +1327,14 @@ _presentDialogImportContents() {
 
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
-
-      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
-
-      // this.logger.error('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
       if (hookToDefaultDept === undefined) {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('BotSuccessfullyActivated'), 2, 'done');
       }
-      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
-      // this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
     });
   }
 
-
-  goToBotDetails() {
-    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
-    let faqkb = {
-      createdAt: new Date(),
-      _id: this.botid
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-  }
 
   presentDialogReachedChatbotLimit() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
@@ -1846,16 +1376,6 @@ _presentDialogImportContents() {
 
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
 
-      //   if (result && result.chatbot) {
-
-      //     let faqkb = {
-      //       createdAt: new Date(),
-      //       _id: chatbot._id
-      //     }
-      //     goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-
-      //   }
-
       if (result && result.chatbot && result.redirectTo === "block") {
 
         let faqkb = {
@@ -1874,13 +1394,6 @@ _presentDialogImportContents() {
 
     });
 
-    // ModalConfirmGotoCdsComponent
-    // this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
-    // let faqkb = {
-    //   createdAt: new Date(),
-    //   _id: chatbot._id
-    // }
-    // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
 
@@ -1911,7 +1424,6 @@ _presentDialogImportContents() {
   }
 
   onOpenBaseModalPreview(previedata?: any) {
-    // this.baseModalPreview = true;
     const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -1947,7 +1459,6 @@ _presentDialogImportContents() {
   }
 
   onOpenBaseModalPreviewSettings(previedata?: any) {
-    // this.baseModalPreviewSettings = true;
     //#191d2285;
     const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
       // backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -2007,7 +1518,6 @@ _presentDialogImportContents() {
     if (this.selectedNamespace.default && this.kbsList.length === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
     } else {
-      // this.showDeleteNamespaceModal = true;
       this.presentDeleteNamespaceModal()
     }
   }
@@ -2033,9 +1543,7 @@ _presentDialogImportContents() {
   }
 
   onOpenBaseModalDetail(kb, type) {
-    // this.kbid_selected = kb;
     this.logger.log('onOpenBaseModalDetail:: ', kb);
-    // this.baseModalDetail = true;
 
     const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -2055,7 +1563,6 @@ _presentDialogImportContents() {
     
      if (res) {
       if(res.method === 'update') {
-        //  let kb = res.kb.kb
         console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
         console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.updateKbContent(res.kb)
@@ -2066,15 +1573,6 @@ _presentDialogImportContents() {
         this.onOpenBaseModalDelete(res.kb)
       }
      }
-      // if (kb) {
-      //   this.onUpdateKb(kb)
-      // }
-      // if (typeof kb !== 'object') {
-      //   this.onUpdateKb(kb)
-      // } else {
-         
-      //   this.onOpenBaseModalDelete(kb.kb)
-      // }
     });
   }
 
@@ -2129,10 +1627,7 @@ _presentDialogImportContents() {
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
-      // buttons: ["Cancel", "Delete"],
-      // dangerMode: true,
     }).then((result) => {
-        // this.logger.log('XXXX ' , result) 
         if (result.isDenied) { 
           this.onDeleteKnowledgeBase(kb)
         } else {
@@ -2186,9 +1681,7 @@ _presentDialogImportContents() {
       });
       return;
     }
-    // Altrimenti, logica classica
     this.typeKnowledgeBaseModal = typeOrKb;
-    this.addKnowledgeBaseModal = 'block';
 
     if (typeOrKb === 'text-file') {
       this.presentModalAddContent()
@@ -2296,12 +1789,8 @@ _presentDialogImportContents() {
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
-      // if (body) {
-      //   this.onAddMultiKb(body)
-      // }
       if (body) {
         if (!body.hasOwnProperty('upgrade_plan')) {
-          // this.onAddMultiKb(body)
           this.importSitemap(body)
         } else {
           this.logger.log('Property "upgrade_plan" exist');
@@ -2319,9 +1808,6 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalUploadFileComponent, {
       autoFocus: false,
       width: '400px'
-      // data: {
-      //   calledBy: 'step1'
-      // },
     })
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP]  AFTER CLOSED MODAL UPLOAD FILE body:`, body);
@@ -2345,7 +1831,6 @@ _presentDialogImportContents() {
             this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
             this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 2 ')
           } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
-            // this.notify._displayContactUsModal(true, 'upgrade_plan');
             this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
             this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 3 ')
           }
@@ -2360,7 +1845,6 @@ _presentDialogImportContents() {
 
         ) {
           this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 4 ')
-          // this.presentModalFeautureAvailableOnlyWithPlanC()
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       } else {
@@ -2389,110 +1873,12 @@ _presentDialogImportContents() {
 
 
  
-
-  // No more used
-  // listenToKbVersion() {
-  //   this.kbService.newKb
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((newKb) => {
-  //       this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
-  //       this.ARE_NEW_KB = newKb;
-  //     })
-  // }
-
-  getTemplates() {
-    this.faqKbService.getTemplates().subscribe((res: any) => {
-
-      if (res) {
-        const templates = res
-        //  this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
-        this.allTemplatesCount = templates.length;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
-
-        // ---------------------------------------------------------------------
-        // Customer Satisfaction templates
-        // ---------------------------------------------------------------------
-        const customerSatisfactionTemplates = templates.filter((obj) => {
-          return obj.mainCategory === "Customer Satisfaction"
-        });
-        this.logger.log('KNOWLEDGE-BASES-COMP] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
-        if (customerSatisfactionTemplates) {
-          this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
-        }
-
-        // ---------------------------------------------------------------------
-        // Customer Increase Sales
-        // ---------------------------------------------------------------------
-        const increaseSalesTemplates = templates.filter((obj) => {
-          return obj.mainCategory === "Increase Sales"
-        });
-        //  this.logger.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
-        if (increaseSalesTemplates) {
-          this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
-        }
-      }
-
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] GET TEMPLATES ERROR ', error);
-
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] GET TEMPLATES COMPLETE');
-
-    });
-  }
-
-  getCommunityTemplates() {
-
-    this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
-      if (res) {
-        const communityTemplates = res
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET COMMUNITY TEMPLATES', communityTemplates);
-        this.allCommunityTemplatesCount = communityTemplates.length;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
-      }
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP]  GET COMMUNITY TEMPLATES ERROR ', error);
-
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP]  GET COMMUNITY TEMPLATES COMPLETE');
-
-    });
-  }
-
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
-        this.myChatbotOtherCount = faqKb.length
-
-        // ---------------------------------------------------------------------
-        // Bot forked from Customer Satisfaction templates
-        // ---------------------------------------------------------------------
-        let customerSatisfactionBots = faqKb.filter((obj) => {
-          return obj.mainCategory === "Customer Satisfaction"
-        });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction BOTS', customerSatisfactionBots);
-        if (customerSatisfactionBots) {
-          this.customerSatisfactionBotsCount = customerSatisfactionBots.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
-        }
-
-
-        // ---------------------------------------------------------------------
-        // Bot forked from Customer Increase Sales
-        // ---------------------------------------------------------------------
-        let increaseSalesBots = faqKb.filter((obj) => {
-          return obj.mainCategory === "Increase Sales"
-        });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS ', increaseSalesBots);
-        if (increaseSalesBots) {
-          this.increaseSalesBotsCount = increaseSalesBots.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
-        }
+        // Used to enforce chat-bot quota/limits in createChatbotfromKbOfficialResponderTemplate()
+        this.myChatbotOtherCount = faqKb.length;
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);
@@ -2513,13 +1899,10 @@ _presentDialogImportContents() {
     keys.forEach(key => {
       if (key.includes("PAY")) {
         let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          // this.logger.log("payIsVisible: ", this.payIsVisible)
         } else {
           this.payIsVisible = true;
-          // this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
     })
@@ -2542,8 +1925,6 @@ _presentDialogImportContents() {
 
     this.translate.get('Warning')
       .subscribe((text: string) => {
-        // this.deleteContact_msg = text;
-        // this.logger.log('+ + + BotsPage translation: ', text)
         this.warningTitle = text;
       });
 
@@ -2593,8 +1974,7 @@ _presentDialogImportContents() {
 
 
 
-  // Moved to KnowledgeBases2Facade subscriptions in ngOnInit()
-  getRouteParams() {}
+  // getRouteParams removed (handled by facade subscriptions)
 
   trackPage() {
     if (!isDevMode()) {
@@ -2603,42 +1983,12 @@ _presentDialogImportContents() {
           window['analytics'].page("Knowledge Bases Page", {
           });
         } catch (err) {
-          // this.logger.error('Knowledge page error', err);
         }
       }
     }
   }
 
-  // Moved to KnowledgeBases2Facade subscriptions in ngOnInit()
-  getLoggedUser() {}
-
-
-
-
-
-
-  // startPooling() {
-  //   this.interval_id = setInterval(() => {
-  //     this.checkAllStatuses();
-  //   }, 30000);
-  // }
-
-  // ----------------------
-  // UTILS FUNCTION - Start
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    })
-  }
-
-  listenSidebarIsOpened() {
-    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
-      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
-    });
-  }
-  // UTILS FUNCTION - End
-  // --------------------
+  // getLoggedUser/getBrowserVersion/listenSidebarIsOpened removed (not used in knowledge-bases2 template)
 
 
   // ---------------- SERVICE FUNCTIONS --------------- // 
@@ -2709,8 +2059,6 @@ _presentDialogImportContents() {
       direction: direction,
       timestamp: Date.now() // Add timestamp to force change detection
     };
-    // this.logger.log('onLoadByFilter:',searchParams);
-    // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
     // Show table spinner for table operations
@@ -2723,68 +2071,34 @@ _presentDialogImportContents() {
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' || calledby === 'after-add' ) {
-      this.kbsList = [];
-    }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
-    this.facade.loadKbList(params).pipe(takeUntil(this.unsubscribe$)).subscribe((resp: any) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
-      //this.kbs = resp;
-      this.kbsListCount = resp.count;
-      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
-      this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
-      
-      // If called after update or add, replace the entire list to maintain server order
-      if (calledby === 'after-update' || calledby === 'after-add') {
-        this.kbsList = [...resp.kbs];
-      } else {
-        resp.kbs.forEach((kb: any, i: number) => {
-          // this.kbsList.push(kb);
-          const index = this.kbsList.findIndex(objA => objA._id === kb._id);
-          if (index !== -1) {
-            this.kbsList[index] = kb;
-          } else {
-            if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-              this.kbsList.unshift(kb);
-            } else {
-              this.kbsList.push(kb);
-            }
-          }
-          this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
-          this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
-          if (i === this.kbsListCount - 1) {
-            this.getKbCompleted = true;
-            this.logger.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted)
-          }
-        });
-      }
-      
-      if (calledby === 'after-update' || calledby === 'after-add') {
-        this.getKbCompleted = true;
-      }
-
-      this.refreshKbsList = !this.refreshKbsList;
-
-    }, (error) => {
-      this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
-      this.ui.showSpinner = false;
-      this.ui.showKbTableSpinner = false;
-      this.getKbCompleted = false
-    }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
-      this.ui.showSpinner = false;
-      this.ui.showKbTableSpinner = false;
-
-      // this.presentKBTour()
-
-
-    })
+    this.facade
+      .fetchKbList(params, calledby, this.kbsList)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        ({ list, count }) => {
+          this.kbsList = list;
+          this.kbsListCount = count;
+          this.getKbCompleted = true;
+          this.refreshKbsList = !this.refreshKbsList;
+        },
+        (error) => {
+          this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
+          this.ui.showSpinner = false;
+          this.ui.showKbTableSpinner = false;
+          this.getKbCompleted = false;
+        },
+        () => {
+          this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
+          this.ui.showSpinner = false;
+          this.ui.showKbTableSpinner = false;
+        }
+      );
   }
 
 
 
   onSendSitemap(body) {
-    // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
@@ -2809,8 +2123,6 @@ _presentDialogImportContents() {
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
 
-      //this.onOpenErrorModal(error);
-
       Swal.fire({
         title: this.warningTitle,
         text: error,
@@ -2834,26 +2146,19 @@ _presentDialogImportContents() {
     this.logger.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
     this.logger.log("onAddKb body:", body);
-    // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addKb(body).subscribe((resp: any) => {
       this.logger.log("onAddKb:", resp);
       let kb = resp.value;
       if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
-        //this.logger.log("updatedExisting true:");
         const index = this.kbsList.findIndex(item => item._id === kb._id);
         if (index !== -1) {
           this.kbsList[index] = kb;
           this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
         }
       } else {
-        //this.kbsList.push(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-        // this.kbsListCount++;
         // Don't modify kbsList here - it will be reloaded from server
-        // this.kbsList.unshift(kb);
-        // this.kbsListCount = this.kbsListCount + 1;
-        // this.refreshKbsList = !this.refreshKbsList;
         
         // After adding a new content, reload the list with descending order by updatedAt
         // to show the newly added content at the top, regardless of current sorting
@@ -2870,19 +2175,10 @@ _presentDialogImportContents() {
         }, 300);
       }
       this.updateStatusOfKb(kb._id, -1);
-      // this.updateStatusOfKb(kb._id, 0);
-      // this.onLoadByFilter(searchParams);
-      // that.onRunIndexing(kb);
-      // setTimeout(() => {
-      //   this.checkStatusWithRetry(kb);
-      // }, 2000);
-      //that.onCloseBaseModal();
       if (doneCb) doneCb(true);
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
-      // this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
-        // this.logger.log('here 1 ')
         this.getTranslatedStringKbLimitReached(err.error.plan_limit);
         error = this.msgErrorAddUpdateKbLimit
       }
@@ -2998,7 +2294,6 @@ _presentDialogImportContents() {
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
-          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
         }).then((result: any) => {
 
@@ -3026,7 +2321,6 @@ _presentDialogImportContents() {
           focusConfirm: false
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        // this.logger.log('here 1')
         Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
@@ -3054,8 +2348,6 @@ _presentDialogImportContents() {
 
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
-    // this.onCloseBaseModal();
-    // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addMultiKb(body, this.selectedNamespace.id).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);
@@ -3069,7 +2361,6 @@ _presentDialogImportContents() {
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
 
-      //this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
         this.getTranslatedStringKbLimitReached(err.error.plan_limit);
         error = this.msgErrorAddUpdateKbLimit
@@ -3108,11 +2399,9 @@ _presentDialogImportContents() {
           showCloseButton: false,
           showCancelButton: false,
           confirmButtonText: this.cancel,
-          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        // this.logger.log('here 1')
         Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
@@ -3120,7 +2409,6 @@ _presentDialogImportContents() {
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
-          // confirmButtonColor: "var(--blue-light)",
           canecelButtonText: this.cancel,
           focusConfirm: false,
         }).then((result) => {
@@ -3146,16 +2434,11 @@ _presentDialogImportContents() {
       "id": kb._id,
       "namespace": kb.namespace
     }
-    // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
-    // this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
     this.kbService.deleteKb(data).subscribe((response: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
-        // this.updateStatusOfKb(kb._id, 0);
-
-        // this.onOpenErrorModal(error);
         Swal.fire({
           title: this.warningTitle,
           text: error,
@@ -3164,36 +2447,20 @@ _presentDialogImportContents() {
           showConfirmButton: false,
           cancelButtonText: this.cancel,
           focusConfirm: false,
-          // confirmButtonText: this.translate.instant('ContactUs'),
-          // confirmButtonColor: "var(--blue-light)",
-          // buttons: [null, this.cancel],
-          // dangerMode: false
         })
 
 
 
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
-        // let error = response.error?response.error:"Errore generico";
-        // this.onOpenErrorModal(error);
         this.removeKb(kb._id);
         this.kbsListCount = this.kbsListCount - 1;
         this.refreshKbsList = !this.refreshKbsList;
         this.hasRemovedKb = true;
-        // let searchParams = {
-        //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
-        //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
-        //   "status": '',
-        //   "search": '',
-        // }
-        // this.onLoadByFilter(searchParams);
       }
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
       kb.deleting = false;
-      //this.kbid_selected.deleting = false;
-
-      // this.onOpenErrorModal(error);
       Swal.fire({
         title: this.warningTitle,
         text: error,
@@ -3215,17 +2482,12 @@ _presentDialogImportContents() {
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace removeAlsoNamespace " + removeAlsoNamespace);
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaceIndex " + namespaceIndex);
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespace.id);
-    // let id_namespace = this.id_project;
-    // this.logger.log("delete namespace " + id_namespace);
     this.ui.showSpinner = true;
-    // this.closeDeleteNamespaceModal();
 
     this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
       .subscribe((response: any) => {
         this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
         this.ui.showSpinner = false;
-
-        // this.onLoadByFilter(this.paramsDefault);
 
       }, (error) => {
         this.logger.error("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ERROR ", error);
@@ -3244,7 +2506,6 @@ _presentDialogImportContents() {
           this.selectedNamespace = this.namespaces.find((el) => {
             return el.default === true
           });
-          // this.hasRemovednNamespace
           this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
           let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
@@ -3263,138 +2524,6 @@ _presentDialogImportContents() {
   }
 
 
-  // type: this.file_extension,
-  // source: downloadURL,
-  // content: "",
-  // name: this.uploadedFileName,
-
-  /** */
-  onUpdateKb(kb) {
-    console.log('onUpdateKb: ', kb);
-    // this.onCloseBaseModal();
-    let error = this.anErrorOccurredWhileUpdating
-    let dataDelete = {
-      "id": kb._id,
-      "namespace": kb.namespace
-    }
-    let dataAdd = {
-      'name': kb.name,
-      'source': kb.source,
-      'content': '',
-      'type': 'url',
-      "namespace": kb.namespace
-    };
-    if (kb.type === 'text') {
-      dataAdd.source = kb.name;
-      dataAdd.content = kb.content,
-        dataAdd.type = 'text'
-    }
-    if (kb.type === 'faq') {
-      dataAdd.source = kb.name;
-      dataAdd.content = kb.content,
-        dataAdd.type = 'faq'
-    }
-    if (kb.type === 'txt' || kb.type === 'docx' || kb.type === 'pdf') {
-      dataAdd.type = kb.type
-    }
-    //  this.logger.log('dataAdd: ', dataAdd);
-    kb.deleting = true;
-    this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
-      kb.deleting = false;
-      if (!response || (response.success && response.success === false)) {
-
-        // this.onOpenErrorModal(error);
-        Swal.fire({
-          title: this.warningTitle,
-          text: error,
-          showCloseButton: false,
-          showCancelButton: true,
-          showConfirmButton: false,
-          cancelButtonText: this.cancel,
-          focusConfirm: false,
-        })
-
-
-
-      } else {
-        this.kbService.addKb(dataAdd).subscribe((resp: any) => {
-          let kbNew = resp.value;
-          //  this.logger.log(' onUpdateKb ') 
-          if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
-            const index = this.kbsList.findIndex(item => item._id === kbNew._id);
-            if (index !== -1) {
-              this.kbsList[index] = kbNew;
-
-              this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
-            }
-          } else {
-    
-            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
-          }
-
-          const index = this.kbsList.findIndex(item => item.id === kb._id);
-          if (index > -1) {
-            this.kbsList[index] = kbNew;
-          }
-
-          // After an update/create, reload the list with descending order by updatedAt
-          // to show the updated content at the top
-          setTimeout(() => {
-            const refreshParams = {
-              sortField: 'updatedAt',
-              direction: -1, // descending order (most recent first)
-              page: 0,
-              status: this.lastKbSearchParams?.status || '',
-              search: this.lastKbSearchParams?.search || '',
-              type: this.lastKbSearchParams?.type || ''
-            };
-            this.onLoadByFilter(refreshParams, 'after-update');
-          }, 300);
-
-          this.refreshKbsList = !this.refreshKbsList;
-          // setTimeout(() => {
-          //   this.checkStatusWithRetry(kbNew);
-          // }, 2000);
-        }, (err) => {
-          this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
-
-          //this.onOpenErrorModal(error);
-          Swal.fire({
-            title: this.warningTitle,
-            text: error,
-            showCloseButton: false,
-            showCancelButton: true,
-            showConfirmButton: false,
-            cancelButtonText: this.cancel,
-            focusConfirm: false,
-          })
-
-
-
-        }, () => {
-          this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
-        })
-      }
-    }, (err) => {
-      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
-      kb.deleting = false;
-
-      // this.onOpenErrorModal(error);
-      Swal.fire({
-        title: this.warningTitle,
-        text: error,
-        showCloseButton: false,
-        showCancelButton: true,
-        showConfirmButton: false,
-        cancelButtonText: this.cancel,
-        focusConfirm: false,
-      })
-
-    }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
-      kb.deleting = false;
-    })
-  }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
 
 
@@ -3413,15 +2542,6 @@ _presentDialogImportContents() {
     var status_code = 2;
     var status_label = "done"
     this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
-
-      // this.logger.log('Risposta ricevuta:', response);
-      // if(response.status_code && response.status_code == -1){
-      //   // this.logger.log('risorsa non indicizzata');
-      //   // this.onRunIndexing(kb);
-      //   this.checkStatusWithRetry(kb);
-      // }  
-
-
       let resource_status: Number;
       if (response.status) {
         resource_status = response.status;
@@ -3447,30 +2567,17 @@ _presentDialogImportContents() {
         this.logger.log("Unrecognized status")
       }
 
-      /**
-       *    OLD STATUSES - START 
-       */
       if (response.status_code == -1 || response.status_code == 0 || response.status_code == 2) {
-        // this.logger.log('riprova tra 10 secondi...');
-        // this.updateStatusOfKb(kb._id, response.status_code);
-        // timer(20000).subscribe(() => {
-        //   this.checkStatusWithRetry(kb);
-        // });
-
         status_msg = "Indexing in progress: " + response.status_code;
         status_code = 3;
         status_label = "warning";
       } else if (response.status_code == 4) { // status == 3 || status == 4
-        // this.logger.log('Risposta corretta:', response.status_code);
         status_code = 4;
         status_label = "dangerous";
         status_msg = "The resource could not be indexed " + response.status_code;
       } else {
         //status_msg = "Indicizzazione in corso stato: "+response.status_code;
       }
-      /**   
-       *    OLD STATUSES - END 
-       */
 
       this.updateStatusOfKb(kb._id, resource_status);
       this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
@@ -3491,15 +2598,11 @@ _presentDialogImportContents() {
   private updateStatusOfKb(kb_id, status_code) {
     let kb = this.kbsList.find(item => item._id === kb_id);
     if (kb) kb.status = status_code;
-    // this.logger.log('AGGIORNO updateStatusOfKb:', kb_id, status_code, kb);
   }
 
   private removeKb(kb_id) {
-    //this.kbs = this.kbs.filter(item => item._id !== kb_id);
     this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
-    // this.logger.log('AGGIORNO kbsList:', this.kbsList);
     this.refreshKbsList = !this.refreshKbsList;
-    // this.logger.log('AGGIORNO kbsList:', this.kbsList);
   }
 
 
@@ -3530,7 +2633,6 @@ _presentDialogImportContents() {
         this.notify.showWidgetStyleUpdateNotification(this.msgErrorIndexingKb, 4, 'report_problem');
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesIndexingKb, 2, 'done');
-        // this.checkStatusWithRetry(kb);
       }
     }, (error) => {
       this.logger.error("error start scraping response: ", error);
@@ -3540,10 +2642,6 @@ _presentDialogImportContents() {
   }
 
 
-  onReloadKbs(params) {
-    params.namespace = this.selectedNamespace.id
-    this.getListOfKb(params, 'onReloadKbs');
-  }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
 
   createConditionGroupUrl(): FormGroup {
@@ -3563,22 +2661,6 @@ _presentDialogImportContents() {
     })
   }
 
-  onChangeInput(event, type): void {
-    if (type === 'url') {
-      if (this.kbFormUrl.valid) {
-        this.buttonDisabled = false;
-      } else {
-        this.buttonDisabled = true;
-      }
-    } else if (type === 'text') {
-      if (this.kbFormContent.valid) {
-        this.buttonDisabled = false;
-      } else {
-        this.buttonDisabled = true;
-      }
-    }
-  }
-
   trackUserActioOnKB(event: any) {
     if (!isDevMode()) {
       if (window['analytics']) {
@@ -3596,7 +2678,6 @@ _presentDialogImportContents() {
 
           });
         } catch (err) {
-          // this.logger.error('identify Invite Sent Profile error', err);
         }
         try {
           window['analytics'].track(event, {
@@ -3612,7 +2693,6 @@ _presentDialogImportContents() {
             }
           });
         } catch (err) {
-          // this.logger.error('track Invite Sent event error', err);
         }
         try {
           window['analytics'].group(this.id_project, {
@@ -3620,98 +2700,18 @@ _presentDialogImportContents() {
             plan: this.profile_name + ' plan',
           });
         } catch (err) {
-          // this.logger.error('group Invite Sent error', err);
         }
       }
     }
   }
 
-  /**
-   * 
-   */
-  checkAllStatuses() {
-    this.logger.log('[KNOWLEDGE BASES COMP] checkAllStatuses: ', this.kbsList);
-    this.kbsList.forEach(kb => {
-      //if(kb.status == -1){
-      //   this.onRunIndexing(kb);
-      //} else 
-      this.updateStatusOfKb(kb._id, 3);
-      // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-      //   this.checkStatusWithRetry(kb);
-      // }
-    });
-  }
+  
 
-
-
-  showHideSecret(target) {
-    this.gptkeyVisible = !this.gptkeyVisible;
-    // let el = <HTMLInputElement>document.getElementById(target);
-    // if (el.type === "password") {
-    //   this.gptkeyVisible = true;
-    //   el.type = "text";
-    // } else {
-    //   this.gptkeyVisible = false;
-    //   el.type = "password"
-    // }
-  }
-
-
-
-
-
-
-
-  openSecretsModal() {
-    this.missingGptkeyModal = 'none';
-    setTimeout(() => {
-      this.secretsModal = 'block';
-      // if (this.kbSettings.gptkey) {
-      //   let el = <HTMLInputElement>document.getElementById('gptkey-key');
-      //   el.type = "password"
-      //   this.gptkeyVisible = false;
-      // } else {
-      //   this.gptkeyVisible = true;
-      // }
-    }, 600);
-  }
-
-  openMissingGptkeyModal() {
-    this.missingGptkeyModal = 'block';
-  }
-
-  closeAddKnowledgeBaseModal() {
-    this.addKnowledgeBaseModal = 'none';
-    // this.newKb = { name: '', url: '' }
-  }
-
-  closeSecretsModal() {
-    this.secretsModal = 'none';
-  }
-
-  closeMissingGptkeyModal() {
-    this.missingGptkeyModal = 'none';
-  }
-
-  closeDeleteKnowledgeBaseModal() {
-    this.deleteKnowledgeBaseModal = 'none';
-    this.baseModalDelete = false;
-  }
-
-  // closeDeleteNamespaceModal() {
-  //   this.showDeleteNamespaceModal = false;
-  // }
-
-  contactSalesForChatGptKey() {
-    this.closeSecretsModal()
-    window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
-  }
 
 
   // ************** DELETE **************** //
   onDeleteKnowledgeBase(kb) {
     this.onDeleteKb(kb);
-    // this.baseModalDelete = false;
   }
 
 
@@ -3739,12 +2739,6 @@ _presentDialogImportContents() {
 
 
 
-
-
-  onOpenErrorModal(response) {
-    this.errorMessage = response;
-    this.baseModalError = true;
-  }
 
 
   // ************** CLOSE ALL MODAL **************** //
@@ -3881,17 +2875,6 @@ _presentDialogImportContents() {
   refreshUnansweredQuestions() {
     this.unansweredQuestionsPage = 0;
     this.loadUnansweredQuestions(0, false);
-  }
-
-  private sanitizeForNotification(value: string): string {
-    if (!value) return '';
-    // Escape HTML special characters for safe display in notifications
-    return value
-      .replace(/&/g, '&amp;')  // Must be first
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
   }
 
 }

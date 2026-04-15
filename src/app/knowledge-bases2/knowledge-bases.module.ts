@@ -56,6 +56,7 @@ import { KbSelectedNamespaceHeaderComponent } from './components/kb-selected-nam
 import { KbContentsTabComponent } from './components/kb-contents-tab/kb-contents-tab.component';
 import { KbUnansweredTabComponent } from './components/kb-unanswered-tab/kb-unanswered-tab.component';
 import { KbChatbotActionsPanelComponent } from './components/kb-chatbot-actions-panel/kb-chatbot-actions-panel.component';
+import { KbHeaderActionsComponent } from './components/kb-header-actions/kb-header-actions.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBases2Component},
@@ -68,6 +69,7 @@ const routes: Routes = [
     KnowledgeBases2Component,
     KbNamespaceSidebarComponent,
     KbSelectedNamespaceHeaderComponent,
+    KbHeaderActionsComponent,
     KbContentsTabComponent,
     KbUnansweredTabComponent,
     KbChatbotActionsPanelComponent,

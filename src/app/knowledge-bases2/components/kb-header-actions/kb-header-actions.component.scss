@@ -1,0 +1,35 @@
+.buttons-div {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: 8px;
+  }
+}
+
+// Tab switcher styles were previously scoped in the page stylesheet.
+.kb-switch-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.kb-switch-field input[type='radio'] {
+  display: none;
+}
+
+.kb-switch-field label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.kb-switch-field input[type='radio']:checked + label {
+  background: rgba(0, 0, 0, 0.06);
+}
+
