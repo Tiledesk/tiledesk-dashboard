@@ -1726,6 +1726,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Бағалау",
         "Requester": "Өтініш беруші",
         "Message": "Хабар",
         "NoRequests": "Сөйлесу жоқ",
@@ -2058,6 +2059,19 @@
         "LearnMoreAboutOH": "Жұмыс уақыты туралы көбірек біліңіз"
     },
     "KbPage": {
+        "KbStatsContents": "Мазмұны",
+        "KbStatsAnswered": "Жауап берілген",
+        "KbStatsUnanswered": "Жауап берілмеген",
+        "KbStatsAnswerRate": "Жауап беру деңгейі",
+        "QuestionsTextSearchPlaceholder": "Мәтіндік іздеу",
+        "Questions": "Сұрақтар",
+        "AnsweredQuestionsTab": "Жауап берілген",
+        "UnansweredQuestionsTab": "Жауап берілмеген",
+        "AnsweredQuestionsEmptyTitle": "Әлі жауап берілген сұрақтар жоқ",
+        "AnsweredQuestionsEmptyDesc": "Білім базаңыз келушілердің сұрақтарына жауап бергенде, олар осы тізімде пайда болады.",
+        "DeleteAnsweredQuestion": "Жою",
+        "DeleteAnsweredQuestionTitle": "Жауап берілген сұрақты жою",
+        "AreYouSureDeleteAnsweredQuestion": "Бұл жауап берілген сұрақты толығымен жойғыңыз келетініне сенімдісіз бе?",
         "YourKnowledgeBases": "Сіздің білім қорларыңыз",
         "NoKnowledgeBases": "Білім базасы жоқ",
         "LearnMoreAboutKB": "Білім қоры туралы көбірек біліңіз",

@@ -1727,6 +1727,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Betyg",
         "Requester": "Förfrågare",
         "Message": "Meddelande",
         "NoRequests": "Inget samtal",
@@ -2059,6 +2060,19 @@
         "LearnMoreAboutOH": "Läs mer om öppettider"
     },
     "KbPage": {
+        "KbStatsContents": "Innehåll",
+        "KbStatsAnswered": "Besvarade",
+        "KbStatsUnanswered": "Obegvarade",
+        "KbStatsAnswerRate": "Svarsfrekvens",
+        "QuestionsTextSearchPlaceholder": "Textsökning",
+        "Questions": "Frågor",
+        "AnsweredQuestionsTab": "Besvarade",
+        "UnansweredQuestionsTab": "Obegvarade",
+        "AnsweredQuestionsEmptyTitle": "Inga besvarade frågor ännu",
+        "AnsweredQuestionsEmptyDesc": "När din kunskapsbas svarar på besökarnas frågor kommer de att visas i den här listan.",
+        "DeleteAnsweredQuestion": "Radera",
+        "DeleteAnsweredQuestionTitle": "Radera besvarad fråga",
+        "AreYouSureDeleteAnsweredQuestion": "Är du säker på att du vill radera den här besvarade frågan permanent?",
         "YourKnowledgeBases": "Dina kunskapsbaser",
         "NoKnowledgeBases": "Inga kunskapsbaser",
         "LearnMoreAboutKB": "Läs mer om Knowledge Base",

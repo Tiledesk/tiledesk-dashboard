@@ -1710,6 +1710,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Baholash",
         "Requester": "So'rovchi",
         "Message": "Xabar",
         "NoRequests": "Suhbat yo'q",
@@ -2042,6 +2043,19 @@
         "LearnMoreAboutOH": "Ish vaqti haqida ko'proq bilib oling"
     },
     "KbPage": {
+        "KbStatsContents": "Tarkib",
+        "KbStatsAnswered": "Javob berilgan",
+        "KbStatsUnanswered": "Javob berilmagan",
+        "KbStatsAnswerRate": "Javob berish darajasi",
+        "QuestionsTextSearchPlaceholder": "Matn qidiruvi",
+        "Questions": "Savollar",
+        "AnsweredQuestionsTab": "Javob berilgan",
+        "UnansweredQuestionsTab": "Javob berilmagan",
+        "AnsweredQuestionsEmptyTitle": "Hali javob berilgan savollar yo'q",
+        "AnsweredQuestionsEmptyDesc": "Bilimlar bazangiz tashrif buyuruvchilarning savollariga javob berganda, ular ushbu ro'yxatda paydo bo'ladi.",
+        "DeleteAnsweredQuestion": "O'chirish",
+        "DeleteAnsweredQuestionTitle": "Javob berilgan savolni o'chirish",
+        "AreYouSureDeleteAnsweredQuestion": "Ushbu javob berilgan savolni butunlay o'chirib tashlamoqchi ekanligingizga ishonchingiz komilmi?",
         "YourKnowledgeBases": "Sizning bilim bazalaringiz",
         "NoKnowledgeBases": "Bilim bazalari yo'q",
         "LearnMoreAboutKB": "Bilimlar bazasi haqida ko'proq bilib oling",

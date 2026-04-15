@@ -1683,6 +1683,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Calificación",
         "Requester": "Solicitante",
         "Message": "Mensaje",
         "NoRequests": "Sin conversación",
@@ -2015,6 +2016,19 @@
          "LearnMoreAboutOH": "Obtenga más información sobre el horario de atención"
     },
     "KbPage": {
+        "KbStatsContents": "Contenidos",
+        "KbStatsAnswered": "Respondidas",
+        "KbStatsUnanswered": "No respondidas",
+        "KbStatsAnswerRate": "Tasa de respuesta",
+        "QuestionsTextSearchPlaceholder": "Búsqueda de texto",
+        "Questions": "Preguntas",
+        "AnsweredQuestionsTab": "Respondidas",
+        "UnansweredQuestionsTab": "No respondidas",
+        "AnsweredQuestionsEmptyTitle": "Aún no hay preguntas respondidas",
+        "AnsweredQuestionsEmptyDesc": "Cuando tu base de conocimiento responda preguntas de los visitantes, aparecerán en esta lista.",
+        "DeleteAnsweredQuestion": "Eliminar",
+        "DeleteAnsweredQuestionTitle": "Eliminar pregunta respondida",
+        "AreYouSureDeleteAnsweredQuestion": "¿Estás seguro de que quieres eliminar permanentemente esta pregunta respondida?",
         "YourKnowledgeBases": "Tus bases de conocimiento",
         "NoKnowledgeBases": "Sin bases de conocimiento",
         "LearnMoreAboutKB": "Obtenga más información sobre la base de conocimientos",

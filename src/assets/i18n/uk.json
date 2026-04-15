@@ -1727,6 +1727,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Оцінка",
         "Requester": "Запитувач",
         "Message": "повідомлення",
         "NoRequests": "Немає розмови",
@@ -2059,6 +2060,19 @@
         "LearnMoreAboutOH": "Дізнайтеся більше про години роботи"
     },
     "KbPage": {
+        "KbStatsContents": "Вміст",
+        "KbStatsAnswered": "З відповідями",
+        "KbStatsUnanswered": "Без відповідей",
+        "KbStatsAnswerRate": "Частота відповідей",
+        "QuestionsTextSearchPlaceholder": "Текстовий пошук",
+        "Questions": "Запитання",
+        "AnsweredQuestionsTab": "З відповідями",
+        "UnansweredQuestionsTab": "Без відповідей",
+        "AnsweredQuestionsEmptyTitle": "Ще немає запитань із відповідями",
+        "AnsweredQuestionsEmptyDesc": "Коли ваша база знань відповідатиме на запитання відвідувачів, вони з’являться в цьому списку.",
+        "DeleteAnsweredQuestion": "Видалити",
+        "DeleteAnsweredQuestionTitle": "Видалити питання з відповіддю",
+        "AreYouSureDeleteAnsweredQuestion": "Ви впевнені, що хочете назавжди видалити це питання з відповіддю?",
         "YourKnowledgeBases": "Ваші бази знань",
         "NoKnowledgeBases": "Баз знань немає",
         "LearnMoreAboutKB": "Дізнайтеся більше про базу знань",

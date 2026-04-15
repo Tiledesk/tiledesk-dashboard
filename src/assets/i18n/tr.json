@@ -1711,6 +1711,7 @@
         }
     },
     "HistoryPage": {
+        "Rating": "Değerlendirme",
         "Requester": "istekte bulunan",
         "Message": "İleti",
         "NoRequests": "Konuşma Yok",
@@ -2043,6 +2044,19 @@
         "LearnMoreAboutOH": "Çalışma saatleri hakkında daha fazla bilgi edinin"
     },
     "KbPage": {
+        "KbStatsContents": "İçerikler",
+        "KbStatsAnswered": "Cevaplananlar",
+        "KbStatsUnanswered": "Cevaplanmayanlar",
+        "KbStatsAnswerRate": "Yanıtlama oranı",
+        "QuestionsTextSearchPlaceholder": "Metin araması",
+        "Questions": "Sorular",
+        "AnsweredQuestionsTab": "Cevaplananlar",
+        "UnansweredQuestionsTab": "Cevaplanmayanlar",
+        "AnsweredQuestionsEmptyTitle": "Henüz cevaplanmış soru yok",
+        "AnsweredQuestionsEmptyDesc": "Bilgi tabanınız ziyaretçi sorularını yanıtladığında, bu listede görüneceklerdir.",
+        "DeleteAnsweredQuestion": "Sil",
+        "DeleteAnsweredQuestionTitle": "Cevaplanmış soruyu sil",
+        "AreYouSureDeleteAnsweredQuestion": "Bu cevaplanmış soruyu kalıcı olarak silmek istediğinizden emin misiniz?",
         "YourKnowledgeBases": "Bilgi Tabanlarınız",
         "NoKnowledgeBases": "Bilgi Tabanı Yok",
         "LearnMoreAboutKB": "Bilgi Tabanı hakkında daha fazla bilgi edinin",
