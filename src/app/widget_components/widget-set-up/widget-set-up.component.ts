@@ -420,7 +420,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   newExtension: string = '';
   extensions: string[] = [];
   allowedUploadExtentions: string;
-  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt,.mp3";
 
   isAuthorized = false;
   permissionChecked = false; // To avoid showing the content before check completes

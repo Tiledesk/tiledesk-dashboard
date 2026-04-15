@@ -1,20 +1,10 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { UnansweredQuestionsService } from 'app/services/unanswered-questions.service';
+import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { ModalConfirmActionComponent } from '../modal-confirm-action/modal-confirm-action.component';
 import { BrandService } from 'app/services/brand.service';
 import { TranslateService } from '@ngx-translate/core';
-
-/**
- * Interfaccia per una domanda senza risposta
- */
-export interface UnansweredQuestion {
-  id: string;
-  text: string;
-  _id?: string; 
-  createdAt?: any;
-}
 
 /**
  * Componente per la gestione delle domande senza risposta (unanswered questions)
@@ -25,7 +15,11 @@ export interface UnansweredQuestion {
   templateUrl: './modal-unanswered-questions.component.html',
   styleUrls: ['./modal-unanswered-questions.component.scss']
 })
-export class ModalUnansweredQuestionsComponent implements OnInit {
+export class ModalUnansweredQuestionsComponent implements OnInit, OnChanges, OnDestroy {
+  /** Anteprima risposta in lista; oltre → "…"; Mostra tutto / Mostra meno (come prima; Mostra tutto visibile in hover sulla riga via CSS). */
+  private static readonly ANSWER_PREVIEW_MAX_CHARS = 60;
+  /** `_id` delle righe answered con risposta espansa. */
+  private expandedAnswerIds = new Set<string>();
   /** Namespace attivo */
   @Input() namespace: any;
   /** ID del progetto */
@@ -40,6 +34,16 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
   @Input() isLoadingMore: boolean = false;
   /** Se mostrare lo spinner al posto della lista (refresh completo) */
   @Input() showUQTableSpinner: boolean = false;
+  /** answered: solo lettura (niente aggiungi a KB / scarta). unanswered: comportamento precedente. */
+  @Input() listMode: 'answered' | 'unanswered' = 'unanswered';
+  /** Direzione ordinamento data (-1 | 1), stessa convenzione di Activities. */
+  @Input() questionsSortDirection: number = -1;
+  /** Testo ricerca full-text della sotto-tab attiva (per messaggio “nessuna corrispondenza”). */
+  @Input() questionsSearchQuery = '';
+
+  get hasActiveQuestionsSearch(): boolean {
+    return (this.questionsSearchQuery || '').trim().length > 0;
+  }
   /** Evento per aprire la modale di aggiunta KB */
   @Output() openAddKnowledgeBaseModal = new EventEmitter<any>();
   /** Evento per aggiungere una FAQ dalla unanswered question */
@@ -47,6 +51,10 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
   @Output() refresh = new EventEmitter<void>();
   /** Evento per caricare più domande */
   @Output() loadMore = new EventEmitter<void>();
+  /** Apre la conversazione (lista KB Domande) */
+  @Output() openConversation = new EventEmitter<{ requestId: string; listMode: 'answered' | 'unanswered' }>();
+  /** Toggle ordinamento per data (gestito dal parent che richiama l’API). */
+  @Output() toggleQuestionsDateSort = new EventEmitter<void>();
 
   /** Domanda in fase di lavorazione */
   pendingQuestion: UnansweredQuestion | null = null;
@@ -57,7 +65,8 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
     private logger: LoggerService,
     private unansweredQuestionsService: UnansweredQuestionsService,
     public brandService: BrandService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cdr: ChangeDetectorRef
   ) {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -65,6 +74,92 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     // La lista delle domande viene fornita dal componente padre
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['listMode'] && !changes['listMode'].firstChange) {
+      this.clearExpandedAnswers();
+    }
+    if (changes['unansweredQuestions'] && !changes['unansweredQuestions'].firstChange) {
+      this.clearExpandedAnswers();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.clearExpandedAnswers();
+  }
+
+  private clearExpandedAnswers(): void {
+    this.expandedAnswerIds.clear();
+  }
+
+  getAnswerText(q: UnansweredQuestion): string {
+    const row = q as unknown as Record<string, unknown>;
+    let raw: unknown =
+      q.answer ??
+      row['Answer'] ??
+      row['response'] ??
+      row['responseText'];
+    if (raw == null && typeof row['text'] === 'string') {
+      raw = row['text'];
+    }
+    if (raw != null && typeof raw === 'object') {
+      const o = raw as Record<string, unknown>;
+      raw = o['text'] ?? o['content'] ?? o['body'];
+    }
+    if (raw == null) {
+      return '';
+    }
+    return String(raw).trim();
+  }
+
+  shouldTruncateAnswer(q: UnansweredQuestion): boolean {
+    const t = this.getAnswerText(q);
+    return t.length > ModalUnansweredQuestionsComponent.ANSWER_PREVIEW_MAX_CHARS;
+  }
+
+  /** Testo mostrato in lista: troncato se chiuso, intero se espanso. */
+  getAnswerDisplayText(q: UnansweredQuestion): string {
+    const full = this.getAnswerText(q);
+    if (!full) {
+      return '';
+    }
+    if (this.isAnswerExpanded(q)) {
+      return full;
+    }
+    const max = ModalUnansweredQuestionsComponent.ANSWER_PREVIEW_MAX_CHARS;
+    if (full.length <= max) {
+      return full;
+    }
+    return full.slice(0, max) + '…';
+  }
+
+  isAnswerExpanded(q: UnansweredQuestion): boolean {
+    const id = q._id;
+    return id != null && this.expandedAnswerIds.has(String(id));
+  }
+
+  shouldOfferAnswerToggle(q: UnansweredQuestion): boolean {
+    const t = this.getAnswerText(q);
+    if (!t) {
+      return false;
+    }
+    return t.length > ModalUnansweredQuestionsComponent.ANSWER_PREVIEW_MAX_CHARS || this.isAnswerExpanded(q);
+  }
+
+  toggleAnswerExpand(ev: MouseEvent, q: UnansweredQuestion): void {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const id = q._id != null ? String(q._id) : '';
+    if (!id) {
+      return;
+    }
+    if (this.expandedAnswerIds.has(id)) {
+      this.expandedAnswerIds.delete(id);
+    } else {
+      this.expandedAnswerIds.add(id);
+    }
+    this.cdr.detectChanges();
   }
 
   refreshList() {
@@ -75,6 +170,23 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
     if (!this.isLoadingMore && this.hasMore) {
       this.loadMore.emit();
     }
+  }
+
+  onToggleDateSort(ev?: Event): void {
+    ev?.preventDefault();
+    ev?.stopPropagation();
+    this.toggleQuestionsDateSort.emit();
+  }
+
+  onRowClick(ev: MouseEvent, q: UnansweredQuestion): void {
+    if ((ev.target as HTMLElement).closest('button')) {
+      return;
+    }
+    const requestId = q.request_id || q.requestId;
+    if (!requestId) {
+      return;
+    }
+    this.openConversation.emit({ requestId, listMode: this.listMode });
   }
 
   /**
@@ -116,6 +228,23 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
     });
   }
 
+  onDeleteAnsweredQuestion(q: UnansweredQuestion): void {
+    const dialogRef = this.dialog.open(ModalConfirmActionComponent, {
+      width: '400px',
+      data: {
+        title: this.translate.instant('KbPage.DeleteAnsweredQuestionTitle'),
+        message: this.translate.instant('KbPage.AreYouSureDeleteAnsweredQuestion'),
+        confirmText: this.translate.instant('Delete'),
+        cancelText: this.translate.instant('Cancel')
+      }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteAnsweredQuestionConfirmed(q);
+      }
+    });
+  }
+
   /**
    * Elimina la domanda senza popup di conferma (usata dopo salvataggio o conferma)
    * @param q domanda da eliminare
@@ -133,6 +262,26 @@ export class ModalUnansweredQuestionsComponent implements OnInit {
       },
       error: (err) => {
         this.logger.error('[ModalUnansweredQuestions] Error deleting question', err);
+        this.unansweredQuestions = prevQuestions;
+      }
+    });
+  }
+
+  deleteAnsweredQuestionConfirmed(q: UnansweredQuestion): void {
+    const id = q._id;
+    if (!id) {
+      this.logger.error('[ModalUnansweredQuestions] deleteAnsweredQuestion: missing _id', q);
+      return;
+    }
+    this.logger.log('[ModalUnansweredQuestions] Delete answered question:', id);
+    const prevQuestions = [...this.unansweredQuestions];
+    this.unansweredQuestionsService.deleteAnsweredQuestion(this.id_project, id).subscribe({
+      next: () => {
+        this.unansweredQuestions = this.unansweredQuestions.filter((item) => item._id !== id);
+        this.refresh.emit();
+      },
+      error: (err) => {
+        this.logger.error('[ModalUnansweredQuestions] Error deleting answered question', err);
         this.unansweredQuestions = prevQuestions;
       }
     });

@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, isDevMode, NgZone } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { Router, ActivatedRoute, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular/router';
 
 
 // USED FOR go back last page
@@ -46,7 +46,7 @@ type FormErrors = { [u in UserFields]: string };
   templateUrl: './project-edit-add.component.html',
   styleUrls: ['./project-edit-add.component.scss']
 })
-export class ProjectEditAddComponent implements OnInit, OnDestroy {
+export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit {
   private routerSubscription: Subscription;
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
@@ -69,6 +69,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   navScrollShowRight = false;
   private navScrollResizeObserver?: ResizeObserver;
   private navScrollResizeRafId: number | null = null;
+  /** After project-settings route change, hide right arrow briefly so ResizeObserver cannot flash it on. */
+  private projectNavSuppressRightArrowUntil = 0;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   // tparams = brand;
@@ -420,14 +422,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //this.checkCurrentStatus();
     this.listenSidebarIsOpened();
     this.buildCreditCardForm()
-    this.listenToProjectUser();
     this.listenToBottomNavScrollOnRoute();
     this.translateAvailableWithBusinessPlan()
+    this.listenToProjectUser();
   }
 
   ngAfterViewInit(): void {
     this.initProjectNavScrollObservers();
-    setTimeout(() => this.scrollActiveBottomNavTabIntoView(), 0);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.scrollActiveBottomNavTabIntoView());
+    });
   }
 
    ngOnDestroy() {
@@ -494,10 +498,47 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (!el) {
       return;
     }
-    const tol = 2;
+    // Wider edge tolerance: last tab + active border / subpixel scroll metrics otherwise flash the right arrow.
+    const edgeTol = 10;
     const { scrollLeft, scrollWidth, clientWidth } = el;
-    this.navScrollShowLeft = scrollLeft > tol;
-    this.navScrollShowRight = scrollLeft + clientWidth < scrollWidth - tol;
+    const maxScrollLeft = Math.max(0, scrollWidth - clientWidth);
+    // All tabs fit (or only subpixel overflow): never show scroll arrows — avoids stuck right arrow on last tab.
+    if (maxScrollLeft <= edgeTol) {
+      this.navScrollShowLeft = false;
+      this.navScrollShowRight = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    const vr = el.getBoundingClientRect();
+    const ul = el.querySelector('.bottom-nav') as HTMLElement | null;
+    const firstLi = ul?.firstElementChild as HTMLElement | null;
+    const lastLi = ul?.lastElementChild as HTMLElement | null;
+
+    // Prefer tab geometry over raw scrollWidth (avoids phantom space after the last tab / subpixel).
+    let showLeft = scrollLeft > edgeTol;
+    let showRight = scrollLeft + clientWidth < scrollWidth - edgeTol;
+    if (firstLi) {
+      showLeft = firstLi.getBoundingClientRect().left < vr.left - 2;
+    }
+    const activeLi = el.querySelector<HTMLElement>('.bottom-nav > li.li-active');
+    if (lastLi) {
+      const lastR = lastLi.getBoundingClientRect();
+      // Stricter than +2: borders / subpixel otherwise flash the right arrow on Advanced.
+      showRight = lastR.right > vr.right + 6;
+      if (activeLi === lastLi) {
+        if (scrollLeft >= maxScrollLeft - edgeTol) {
+          showRight = false;
+        } else if (lastR.right <= vr.right + 14) {
+          showRight = false;
+        }
+      }
+    }
+    if (typeof performance !== 'undefined' && performance.now() < this.projectNavSuppressRightArrowUntil) {
+      showRight = false;
+    }
+    this.navScrollShowLeft = showLeft;
+    this.navScrollShowRight = showRight;
     this.cdr.detectChanges();
   }
 
@@ -527,9 +568,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       if (!this.router.url.includes('/project-settings/')) {
         return;
       }
+      if (typeof performance !== 'undefined') {
+        this.projectNavSuppressRightArrowUntil = performance.now() + 200;
+      }
+      this.navScrollShowRight = false;
       this.getCurrentUrlAndSwitchView();
       this.cdr.detectChanges();
-      setTimeout(() => this.scrollActiveBottomNavTabIntoView(), 0);
+      // Snap scroll immediately so arrow state is not computed from stale scrollLeft (ResizeObserver rAF).
+      this.scrollActiveBottomNavTabIntoView();
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.scrollActiveBottomNavTabIntoView();
+          this.scheduleProjectNavScrollUpdate();
+        });
+      });
     });
   }
 
@@ -542,8 +594,52 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (!active) {
       return;
     }
-    active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    setTimeout(() => this.scheduleProjectNavScrollUpdate(), 400);
+    const ulForLast = scrollEl.querySelector('.bottom-nav');
+    const lastLi = ulForLast?.lastElementChild as HTMLElement | null;
+    if (lastLi && active === lastLi) {
+      const maxLeft = Math.max(0, scrollEl.scrollWidth - scrollEl.clientWidth);
+      scrollEl.scrollTo({ left: maxLeft, behavior: 'auto' });
+      if (typeof performance !== 'undefined') {
+        this.projectNavSuppressRightArrowUntil = Math.max(
+          this.projectNavSuppressRightArrowUntil,
+          performance.now() + 120
+        );
+      }
+      this.navScrollShowRight = false;
+      this.updateProjectNavScrollArrows();
+      return;
+    }
+    // Do not use scrollIntoView({ inline: 'center' }): it can scroll horizontal *ancestors*
+    // (e.g. main-panel), shifting the whole settings layout under the fixed app sidebar.
+    const tol = 2;
+    const rightPad = 10; // li-active / borders: last tab can extend slightly past the viewport edge
+    const parentRect = scrollEl.getBoundingClientRect();
+    const childRect = active.getBoundingClientRect();
+    const alreadyVisible =
+      childRect.left >= parentRect.left - tol && childRect.right <= parentRect.right + rightPad;
+    if (alreadyVisible) {
+      this.updateProjectNavScrollArrows();
+      return;
+    }
+
+    const visibleOffset = childRect.left - parentRect.left;
+    const delta =
+      visibleOffset - (scrollEl.clientWidth / 2 - childRect.width / 2);
+    const maxLeft = Math.max(0, scrollEl.scrollWidth - scrollEl.clientWidth);
+    const nextLeft = Math.max(0, Math.min(scrollEl.scrollLeft + delta, maxLeft));
+    if (Math.abs(nextLeft - scrollEl.scrollLeft) <= tol) {
+      this.updateProjectNavScrollArrows();
+      return;
+    }
+
+    // Small correction: instant scroll avoids intermediate frames (right arrow flash) during smooth scroll.
+    const useSmooth = Math.abs(nextLeft - scrollEl.scrollLeft) > 48;
+    scrollEl.scrollTo({ left: nextLeft, behavior: useSmooth ? 'smooth' : 'auto' });
+    if (useSmooth) {
+      setTimeout(() => this.scheduleProjectNavScrollUpdate(), 450);
+    } else {
+      this.scheduleProjectNavScrollUpdate();
+    }
   }
 
   listenToProjectUser() {
@@ -552,8 +648,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
         this.ROLE = status.role
-        console.log('[PRJCT-EDIT-ADD] - Role:', status.role);
-        console.log('[PRJCT-EDIT-ADD] - Permissions:', status.matchedPermissions);
+        this.logger.log('[PRJCT-EDIT-ADD] - Role:', status.role);
+        this.logger.log('[PRJCT-EDIT-ADD] - Permissions:', status.matchedPermissions);
 
 
         // PERMISSION_TO_VIEW_GENERAL
@@ -561,14 +657,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_READ)) {
             this.PERMISSION_TO_VIEW_GENERAL = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
           } else {
             this.PERMISSION_TO_UPDATE_GENERAL = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
           }
         } else {
           this.PERMISSION_TO_VIEW_GENERAL = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_GENERAL ', this.PERMISSION_TO_VIEW_GENERAL);
         }
 
         // PERMISSION TO UPDATE GENERAL
@@ -576,31 +672,31 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_UPDATE)) {
             this.PERMISSION_TO_UPDATE_GENERAL = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_UPDATE_GENERAL ', this.PERMISSION_TO_UPDATE_GENERAL);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_UPDATE_GENERAL ', this.PERMISSION_TO_UPDATE_GENERAL);
           } else {
             this.PERMISSION_TO_UPDATE_GENERAL = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_UPDATE_GENERAL ', this.PERMISSION_TO_UPDATE_GENERAL);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_UPDATE_GENERAL ', this.PERMISSION_TO_UPDATE_GENERAL);
           }
         } else {
           this.PERMISSION_TO_UPDATE_GENERAL = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_GENERAL ', this.PERMISSION_TO_UPDATE_GENERAL);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_GENERAL ', this.PERMISSION_TO_UPDATE_GENERAL);
         }
 
         // PERMISSION TO VIEW SUBSCRIPTION && status.role !== 'admin' && status.role !== 'agent'
         if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_VIEW_SUB = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_SUB:', this.PERMISSION_TO_VIEW_SUB);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_SUB:', this.PERMISSION_TO_VIEW_SUB);
 
         } else if (status.role === 'admin' || status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_VIEW_SUB = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_SUB:', this.PERMISSION_TO_VIEW_SUB);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_SUB:', this.PERMISSION_TO_VIEW_SUB);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_SUB = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_SUB:', this.PERMISSION_TO_VIEW_SUB);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_SUB:', this.PERMISSION_TO_VIEW_SUB);
         }
         // ------------------------------------------------------
         // PERMISSION TO VIEW DEVELOPER
@@ -609,14 +705,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ)) {
             this.PERMISSION_TO_VIEW_DEV = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_DEV ', this.PERMISSION_TO_VIEW_DEV);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_DEV ', this.PERMISSION_TO_VIEW_DEV);
           } else {
             this.PERMISSION_TO_VIEW_DEV = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_DEV ', this.PERMISSION_TO_VIEW_DEV);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_DEV ', this.PERMISSION_TO_VIEW_DEV);
           }
         } else {
           this.PERMISSION_TO_VIEW_DEV = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_DEV ', this.PERMISSION_TO_VIEW_DEV);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_DEV ', this.PERMISSION_TO_VIEW_DEV);
         }
         // ------------------------------------------------------
         // PERMISSION TO EDIT FEATURES AVAILABLE IN DEVELOPER TAB
@@ -625,14 +721,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_UPDATE)) {
             this.PERMISSION_TO_EDIT_DEV = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_DEV ', this.PERMISSION_TO_EDIT_DEV);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_DEV ', this.PERMISSION_TO_EDIT_DEV);
           } else {
             this.PERMISSION_TO_EDIT_DEV = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_DEV ', this.PERMISSION_TO_EDIT_DEV);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_DEV ', this.PERMISSION_TO_EDIT_DEV);
           }
         } else {
           this.PERMISSION_TO_EDIT_DEV = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_EDIT_DEV ', this.PERMISSION_TO_EDIT_DEV);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_EDIT_DEV ', this.PERMISSION_TO_EDIT_DEV);
         }
         // -------------------------------------
         // PERMISSION TO VIEW SMART ASSIGNMENT
@@ -641,14 +737,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ)) {
             this.PERMISSION_TO_VIEW_SMART_ASSIGN = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_SMART_ASSIGN ', this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_SMART_ASSIGN ', this.PERMISSION_TO_VIEW_SMART_ASSIGN);
           } else {
             this.PERMISSION_TO_VIEW_SMART_ASSIGN = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_SMART_ASSIGN ', this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_SMART_ASSIGN ', this.PERMISSION_TO_VIEW_SMART_ASSIGN);
           }
         } else {
           this.PERMISSION_TO_VIEW_SMART_ASSIGN = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_SMART_ASSIGN ', this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_SMART_ASSIGN ', this.PERMISSION_TO_VIEW_SMART_ASSIGN);
         }
 
         // -------------------------------------
@@ -658,14 +754,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_UPDATE)) {
             this.PERMISSION_TO_EDIT_SMART_ASSIGN = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_SMART_ASSIGN ', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_SMART_ASSIGN ', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
           } else {
             this.PERMISSION_TO_EDIT_SMART_ASSIGN = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_SMART_ASSIGN ', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_EDIT_SMART_ASSIGN ', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
           }
         } else {
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN ', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN ', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
         }
 
 
@@ -676,14 +772,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ)) {
             this.PERMISSION_TO_VIEW_NOTIFICATIONS = true
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_NOTIFICATIONS);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_NOTIFICATIONS);
           } else {
             this.PERMISSION_TO_VIEW_NOTIFICATIONS = false
-            console.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_NOTIFICATIONS);
+            this.logger.log('[PRJCT-EDIT-ADD] - PERMISSION_TO_VIEW_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_NOTIFICATIONS);
           }
         } else {
           this.PERMISSION_TO_VIEW_NOTIFICATIONS = true
-          console.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_NOTIFICATIONS);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_NOTIFICATIONS);
         }
 
         // ---------------------------------
@@ -692,17 +788,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_VIEW_SECURITY = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_SECURITY:', this.PERMISSION_TO_VIEW_SECURITY);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_SECURITY:', this.PERMISSION_TO_VIEW_SECURITY);
 
         } else if (status.role === 'admin' || status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_VIEW_SECURITY = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_SECURITY:', this.PERMISSION_TO_VIEW_SECURITY);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_SECURITY:', this.PERMISSION_TO_VIEW_SECURITY);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_SECURITY = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SECURITY_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_SECURITY:', this.PERMISSION_TO_VIEW_SECURITY);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_SECURITY:', this.PERMISSION_TO_VIEW_SECURITY);
         }
 
         // ---------------------------------
@@ -711,17 +807,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_VIEW_BANNED = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
 
         } else if (status.role === 'agent') {
          // Agent never have permission
           this.PERMISSION_TO_VIEW_BANNED = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_BANNED = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_BANNED_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
         }
 
         // ---------------------------------
@@ -730,17 +826,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_UNBAN_VISITOR = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
 
         } else if (status.role === 'agent') {
          // Agent never have permission
           this.PERMISSION_TO_UNBAN_VISITOR = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_UNBAN_VISITOR = status.matchedPermissions.includes(PERMISSIONS.LEAD_UNBAN);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
         }
 
         // --------------------------------
@@ -749,17 +845,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_VIEW_ADVANCED = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_VIEW_ADVANCED = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ADVANCED = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
         }
 
 
@@ -1325,85 +1421,85 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   async checkPermissionsForGeneral() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-general')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedGeneral = result === true;
     this.permissionCheckedGeneral = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-general isAuthorizedGeneral ', this.isAuthorizedGeneral)
-    console.log('[PRJCT-EDIT-ADD] project-settings-general permissionCheckedGeneral ', this.permissionCheckedGeneral)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-general isAuthorizedGeneral ', this.isAuthorizedGeneral)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-general permissionCheckedGeneral ', this.permissionCheckedGeneral)
   }
 
   async checkPermissionsForSubscrition() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-sub')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedSub = result === true;
     this.permissionCheckedSub = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-sub isAuthorizedSub ', this.isAuthorizedSub)
-    console.log('[PRJCT-EDIT-ADD] project-settings-sub permissionCheckedSub ', this.permissionCheckedSub)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-sub isAuthorizedSub ', this.isAuthorizedSub)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-sub permissionCheckedSub ', this.permissionCheckedSub)
   }
 
   async checkPermissionsForDev() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-dev')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedDev = result === true;
     this.permissionCheckedDev = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-dev isAuthorizedDev ', this.isAuthorizedDev)
-    console.log('[PRJCT-EDIT-ADD] project-settings-dev permissionCheckedDev ', this.permissionCheckedDev)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-dev isAuthorizedDev ', this.isAuthorizedDev)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-dev permissionCheckedDev ', this.permissionCheckedDev)
   }
 
 
   async checkPermissionsForSmartAssign() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-smart-assign')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedSmartAssign = result === true;
     this.permissionCheckedSmartAssign = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-smart-assign isAuthorizedSmartAssign ', this.isAuthorizedSmartAssign)
-    console.log('[PRJCT-EDIT-ADD] project-settings-smart-assign permissionCheckedSmartAssign ', this.permissionCheckedSmartAssign)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-smart-assign isAuthorizedSmartAssign ', this.isAuthorizedSmartAssign)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-smart-assign permissionCheckedSmartAssign ', this.permissionCheckedSmartAssign)
   }
 
   async checkPermissionsForNotifications() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-notifications')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedNotifications = result === true;
     this.permissionCheckedNotifications = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-notifications isAuthorizedNotifications ', this.isAuthorizedNotifications)
-    console.log('[PRJCT-EDIT-ADD] project-settings-notifications permissionCheckedNotifications ', this.permissionCheckedNotifications)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-notifications isAuthorizedNotifications ', this.isAuthorizedNotifications)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-notifications permissionCheckedNotifications ', this.permissionCheckedNotifications)
 
   }
 
   async checkPermissionsForSecurity() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-security')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedSecurity = result === true;
     this.permissionCheckedSecurity = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-notifications isAuthorizedSecurity ', this.isAuthorizedSecurity)
-    console.log('[PRJCT-EDIT-ADD] project-settings-notifications permissionCheckedSecurity ', this.permissionCheckedSecurity)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-notifications isAuthorizedSecurity ', this.isAuthorizedSecurity)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-notifications permissionCheckedSecurity ', this.permissionCheckedSecurity)
   }
 
   async checkPermissionsForBanned() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-banned')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedBanned = result === true;
     this.permissionCheckedBanned = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedBanned ', this.isAuthorizedBanned)
-    console.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedBanned ', this.permissionCheckedBanned)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedBanned ', this.isAuthorizedBanned)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedBanned ', this.permissionCheckedBanned)
   }
 
   async checkPermissionsForRetention () {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-retention')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedRetention = result === true;
     this.permissionCheckedRetention = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedRetention ', this.isAuthorizedRetention)
-    console.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedRetention ', this.permissionCheckedRetention)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedRetention ', this.isAuthorizedRetention)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedRetention ', this.permissionCheckedRetention)
   }
 
   async checkPermissionsForAdvanced() {
     const result = await this.roleService.checkRoleForCurrentProject('project-settings-advanced')
-    console.log('[PRJCT-EDIT-ADD] result ', result)
+    this.logger.log('[PRJCT-EDIT-ADD] result ', result)
     this.isAuthorizedAdvanced = result === true;
     this.permissionCheckedAdvanced = true;
-    console.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedAdvanced ', this.isAuthorizedAdvanced)
-    console.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedAdvanced ', this.permissionCheckedAdvanced)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-banned isAuthorizedAdvanced ', this.isAuthorizedAdvanced)
+    this.logger.log('[PRJCT-EDIT-ADD] project-settings-banned permissionCheckedAdvanced ', this.permissionCheckedAdvanced)
   }
 
 
@@ -1452,7 +1548,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.presentDialogNoPermissionToViewThisSection()
       return
     }
-    console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE !== 'agent') {
       
@@ -1580,7 +1676,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.presentDialogNoPermissionToViewThisSection()
       return
     }
-    console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.id_project + '/project-settings/retention'])
@@ -1590,7 +1686,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_Advanced() {
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      console.log('[PRJCT-EDIT-ADD] goToProjectSettings_Advanced USER_ROLE' , this.USER_ROLE, ' PERMISSION_TO_VIEW_ADVANCED ', this.PERMISSION_TO_VIEW_ADVANCED) 
+      this.logger.log('[PRJCT-EDIT-ADD] goToProjectSettings_Advanced USER_ROLE' , this.USER_ROLE, ' PERMISSION_TO_VIEW_ADVANCED ', this.PERMISSION_TO_VIEW_ADVANCED) 
       if ((this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_ADVANCED )) {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
@@ -1969,10 +2065,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
    managePlanRetentionAvailability(profileName, isActiveSubscription,  trialExpired, projectProfileType) {
-    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability profileName ', profileName);
-    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isActiveSubscription ', isActiveSubscription);
-    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability trialExpired ', trialExpired);
-    console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability projectProfileType ', projectProfileType);
+    this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability profileName ', profileName);
+    this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isActiveSubscription ', isActiveSubscription);
+    this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability trialExpired ', trialExpired);
+    this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability projectProfileType ', projectProfileType);
     this.isAvailableRetention = true;
      this.retention_t_params = { 'plan_name': PLAN_NAME.EE }
      if (projectProfileType === 'free') {
@@ -1980,14 +2076,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // Trial active
         if (profileName === 'free') {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
 
           // Pro (trial)
         } else if (profileName === 'Sandbox') {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
 
@@ -1996,12 +2092,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (profileName === 'free') {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         } else if (this.profile_name === 'Sandbox') {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
 
@@ -2012,38 +2108,38 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // Growth sub active
         if (profileName === PLAN_NAME.A) {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Scale sub active
         } else if (profileName === PLAN_NAME.B) {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Plus sub active
         } else if (profileName === PLAN_NAME.C) {
 
           this.isAvailableRetention = true;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Starter (ex Basic) sub active
         } else if (profileName === PLAN_NAME.D) {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Pro (ex Premium) sub active
         } else if (profileName === PLAN_NAME.E) {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Business (ex Team) sub active
         } else if (profileName === PLAN_NAME.EE) {
           this.isAvailableRetention = true;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Custom sub active
         } else if (profileName === PLAN_NAME.F) {
           this.isAvailableRetention = true;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
 
@@ -2051,42 +2147,42 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // Growth sub expired
         if (profileName === PLAN_NAME.A) {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Scale sub expired
         } else if (profileName === PLAN_NAME.B) {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Plus sub expired
         } else if (profileName === PLAN_NAME.C) {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         // Starter (ex Basic) sub expired
         } else if (profileName === PLAN_NAME.D) {
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         // Pro (ex Premium) sub expired
         } else if (profileName === PLAN_NAME.E) {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Business (ex Team) sub expired
         } else if (profileName === PLAN_NAME.EE) {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Custom sub expired
         } else if (profileName === PLAN_NAME.F) {
 
           this.isAvailableRetention = false;
-          console.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+          this.logger.log('[PRJCT-EDIT-ADD] managePlanRetentionAvailability  isAvailableRetention', this.isAvailableRetention, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
 
@@ -3287,7 +3383,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         }
 
-        console.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ', bannedVisitors)
+        this.logger.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ', bannedVisitors)
         projectObject['bannedVisitors'] = bannedVisitors
 
       })
@@ -3438,8 +3534,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // is_disabled_unavailable_status_section: boolean;
 
         if (project.settings) {
-          console.log('[PRJCT-EDIT-ADD] project.settings',  project.settings) 
-          console.log('[PRJCT-EDIT-ADD] allow_send_emoji ', project.settings.allow_send_emoji) 
+          this.logger.log('[PRJCT-EDIT-ADD] project.settings',  project.settings) 
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji ', project.settings.allow_send_emoji) 
           // Chat limit
           if (project.settings.max_agent_assigned_chat) {
             this.max_agent_assigned_chat = project.settings.max_agent_assigned_chat
@@ -3479,12 +3575,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allow_send_emoji !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
             this.isAllowedSendEmoji = project.settings.allow_send_emoji
-             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
+             this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
           } else {
             this.isAllowedSendEmoji = true;
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
           }
 
           if (project.settings.allowed_urls !== undefined) {
@@ -3497,7 +3593,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allowed_urls_list !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
             this.currentWhitelist = project.settings.allowed_urls_list
              this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist ', this.currentWhitelist) 
           } else {
@@ -3506,36 +3602,36 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allowed_upload_extentions !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
             
             if (project.settings.allowed_upload_extentions === '*/*') {
               this.selectedOption = 'all';
-              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
             } else {
               this.selectedOption = 'custom'
-              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
               this.extensions = project.settings.allowed_upload_extentions.split(',').map(v => v.trim());
-              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
+              this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
             }
           } else {
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
             this.selectedOption = 'custom'
             this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
-            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
+            this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
           }
 
          if (project.settings.retentionDays !== undefined && project.settings.retentionDays !== null) {
             const raw = project.settings.retentionDays;
-            console.log('[PRJCT-EDIT-ADD] ** retentionDays  project.settings.retentionDays', raw);
+            this.logger.log('[PRJCT-EDIT-ADD] ** retentionDays  project.settings.retentionDays', raw);
             const n = Number(raw);
             this.pendingRetentionSelection = Number.isNaN(n) ? -1 : n;
             this.retentionDaysLoadedFromServer = true;
-            console.log('[PRJCT-EDIT-ADD] ** retentionDays pendingRetentionSelection ', this.pendingRetentionSelection);
+            this.logger.log('[PRJCT-EDIT-ADD] ** retentionDays pendingRetentionSelection ', this.pendingRetentionSelection);
           } else {
             this.pendingRetentionSelection = null;
             this.retentionDaysLoadedFromServer = false;
-            console.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
+            this.logger.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
           }
           this.applyRetentionSelectionFromProjectAndPlan();
 
@@ -3573,8 +3669,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.pendingRetentionSelection = null;
           this.retentionDaysLoadedFromServer = false;
           this.applyRetentionSelectionFromProjectAndPlan();
-          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
-          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
+          this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
+          this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
@@ -3585,10 +3681,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ---------------------------
         if (project.widget) {
           this.widgetObj = project.widget;
-          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT', this.widgetObj) 
+          this.logger.log('[PRJCT-EDIT-ADD] WIDGET OBJECT', this.widgetObj) 
         } else {
           
-          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT IS UNDEFINED', this.widgetObj) 
+          this.logger.log('[PRJCT-EDIT-ADD] WIDGET OBJECT IS UNDEFINED', this.widgetObj) 
 
           this.widgetObj = {}
         }
@@ -3613,10 +3709,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
     if ($event.target.checked) {
       this.chat_limit_on = true;
-      console.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
     } else {
       this.chat_limit_on = false;
-      console.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
     }
   }
 
@@ -3629,10 +3725,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
     if ($event.target.checked) {
       this.reassignment_on = true;
-      console.log('[PRJCT-EDIT-ADD] - toggleReassignment_on ', this.reassignment_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleReassignment_on ', this.reassignment_on);
     } else {
       this.reassignment_on = false;
-      console.log('[PRJCT-EDIT-ADD] - toggleReassignment_on ', this.reassignment_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleReassignment_on ', this.reassignment_on);
     }
   }
 
@@ -3646,11 +3742,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if ($event.target.checked) {
 
       this.automatic_unavailable_status_on = true;
-      console.log('[PRJCT-EDIT-ADD]- toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
+      this.logger.log('[PRJCT-EDIT-ADD]- toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
     } else {
 
       this.automatic_unavailable_status_on = false;
-      console.log('[PRJCT-EDIT-ADD] - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
+      this.logger.log('[PRJCT-EDIT-ADD] - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
     }
   }
 
@@ -3660,17 +3756,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       return
     }
     const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn-edit-smart-assigment');
-    console.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
+    this.logger.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
-    console.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
 
-    console.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - chat_limit_on ', this.chat_limit_on, ' reassignment_on ', this.reassignment_on, ' automatic_unavailable_status_on ', this.automatic_unavailable_status_on);
+    this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - chat_limit_on ', this.chat_limit_on, ' reassignment_on ', this.reassignment_on, ' automatic_unavailable_status_on ', this.automatic_unavailable_status_on);
 
 
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
     this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
       .subscribe((prjct: Project) => {
-        console.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
+        this.logger.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
 
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // I call "this.auth.projectSelected" so that the project is republished and can have the updated data of the advanced options (smart assign) in the conversation list
@@ -3734,7 +3830,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleAllowSendEmoji(event) {
-    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
     this.isAllowedSendEmoji = event.target.checked;
     this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
       console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
@@ -3758,7 +3854,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleAllowedURLs(event){
-    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
     this.isEnabledAllowedURLs = event.target.checked;
     this.projectService.switchAllowedURLS(this.isEnabledAllowedURLs).then((result) => {
       console.log("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs RESULT: ", result)
@@ -3837,13 +3933,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.extensions.push(ext);
       this.newExtension = '';
     }
-     console.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
+     this.logger.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
       // this.getExtensionsForBackend()
   }
 
   removeExtension(index: number): void {
     this.extensions.splice(index, 1);
-    console.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
+    this.logger.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
     // if(this.extensions.length === 0) {
     //   this.selectedOption = 'all'
     // }
@@ -3851,15 +3947,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   saveAllowedExtensions() {
-    console.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
-    console.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
+    this.logger.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
+    this.logger.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
 
     if(this.selectedOption === 'all') { 
       this.allowed_upload_extentions = '*/*'
     } else {
       this.allowed_upload_extentions = this.extensions.join(',')
     }
-    console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
+    this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
 
     this.projectService.saveAgentsChatAllowedExtensions(this.allowed_upload_extentions).then((result) => {
       console.log("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS  RESULT: ", result)
@@ -3876,7 +3972,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   onSelectRetention(value: any): void {
     this.selectedRetention = value;
 
-    console.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
+    this.logger.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
     this.projectService.saveRetentionDays(this.selectedRetention).then((result) => {
       console.log("[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ", result)
 

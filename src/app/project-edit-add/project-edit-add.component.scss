@@ -476,7 +476,9 @@ button.close {
     align-items: stretch;
     width: auto !important;
     max-width: none !important;
-    min-width: 100%;
+    // Avoid min-width: 100%: it adds empty scrollable width after the last tab so the
+    // right arrow flickers on/off when the last tab is selected.
+    min-width: 0;
     box-sizing: border-box;
     margin-bottom: 0;
     box-shadow: none !important;

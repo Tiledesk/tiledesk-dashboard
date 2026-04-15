@@ -10,7 +10,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
@@ -108,6 +108,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // kbs: any;
   kbsList: Array<any>;
   kbsListCount: number = 0;
+  /** Totale contenuti nel namespace senza filtri lista (search/status/type); KPI e badge sidebar. */
+  kbsContentTotalCount = 0;
+  /** KPI sopra le main tab: conteggi domande (stesso namespace). */
+  kbStatsAnsweredCount = 0;
+  kbStatsUnansweredCount = 0;
   refreshKbsList: boolean = true;
   numberPage: number = 0;
 
@@ -215,19 +220,185 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
-  switchTab(tab: 'contents' | 'unanswered') {
-    this.selectedTab = tab;
-    if (tab === 'unanswered') {
-      this.loadUnansweredQuestions();
+  /** Sotto-tab dentro "Domande": default answered al primo ingresso */
+  questionsSubTab: 'answered' | 'unanswered' = 'answered';
+
+  /** true se la query GET /kb non applica filtri sui contenuti (count = totale namespace). */
+  private isKbListQueryWithoutListFilters(params: string | undefined): boolean {
+    if (params == null || params === '') {
+      return true;
+    }
+    const qs = params.trim().startsWith('?') ? params.trim().slice(1) : params.trim();
+    try {
+      const sp = new URLSearchParams(qs);
+      const meaningful = (key: string) => {
+        const v = sp.get(key);
+        return v != null && String(v).trim() !== '';
+      };
+      return !meaningful('search') && !meaningful('status') && !meaningful('type');
+    } catch {
+      return false;
     }
   }
-  
+
+  /** Allinea `count` sul namespace selezionato e nella lista sinistra (totale contenuti). */
+  private syncNamespaceContentCount(total: number): void {
+    if (!this.selectedNamespace?.id || !this.namespaces?.length) {
+      return;
+    }
+    const id = String(this.selectedNamespace.id);
+    const ns = this.namespaces.find((n: any) => String(n.id) === id);
+    if (ns) {
+      ns.count = total;
+    }
+    this.selectedNamespace.count = total;
+    this.totalCount = this.namespaces.reduce((acc: number, n: any) => acc + (Number(n.count) || 0), 0);
+  }
+
+  /** `count` / `total` dalle API answered/unanswered (liste paginate). */
+  private extractQuestionsApiCount(res: any): number {
+    if (!res || typeof res !== 'object') {
+      return 0;
+    }
+    if (typeof res['total'] === 'number') {
+      return res['total'];
+    }
+    if (typeof res['count'] === 'number') {
+      return res['count'];
+    }
+    return 0;
+  }
+
+  /** Allinea il campo `answer` per la UI (varianti API / serializzazione). */
+  private normalizeAnsweredQuestionItem(item: any): any {
+    if (!item || typeof item !== 'object') {
+      return item;
+    }
+    let raw =
+      item.answer ??
+      item.Answer ??
+      item.response ??
+      item.responseText;
+    if (raw != null && typeof raw === 'object') {
+      raw = raw.text ?? raw.content ?? raw.body ?? '';
+    }
+    const answerStr = raw != null ? String(raw).trim() : '';
+    return answerStr ? { ...item, answer: answerStr } : { ...item };
+  }
+
+  /** Percentuale answered / (answered + unanswered). */
+  get kbStatsAnswerRatePercent(): string {
+    const a = this.kbStatsAnsweredCount;
+    const u = this.kbStatsUnansweredCount;
+    const d = a + u;
+    if (d <= 0) {
+      return '0.0';
+    }
+    return ((100 * a) / d).toFixed(1);
+  }
+
+  /** Aggiorna i KPI domande (chiamate leggere: page 0, limit 1). */
+  loadKbStatsCounts(): void {
+    if (!this.id_project || !this.selectedNamespace?.id) {
+      this.kbStatsAnsweredCount = 0;
+      this.kbStatsUnansweredCount = 0;
+      return;
+    }
+    forkJoin({
+      answered: this.unansweredQuestionsService.getAnsweredQuestions(
+        this.id_project,
+        this.selectedNamespace.id,
+        1,
+        0,
+        'createdAt',
+        -1
+      ),
+      unanswered: this.unansweredQuestionsService.getUnansweredQuestions(
+        this.id_project,
+        this.selectedNamespace.id,
+        1,
+        0,
+        'createdAt',
+        -1
+      ),
+    })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (results) => {
+          this.kbStatsAnsweredCount = this.extractQuestionsApiCount(results.answered);
+          this.kbStatsUnansweredCount = this.extractQuestionsApiCount(results.unanswered);
+        },
+        error: (err) => {
+          this.logger.error('[KNOWLEDGE-BASES-COMP] loadKbStatsCounts', err);
+          this.kbStatsAnsweredCount = 0;
+          this.kbStatsUnansweredCount = 0;
+        },
+      });
+  }
+
+  switchTab(tab: 'contents' | 'unanswered') {
+    this.selectedTab = tab;
+    if (tab === 'contents') {
+      this.clearKbQuestionsDeepLinkQueryParams();
+    }
+    if (tab === 'unanswered') {
+      this.questionsSubTab = 'answered';
+      this.loadAnsweredQuestions(0, false);
+    }
+  }
+
+  /** Rimuove `tab` / `questionsSub` dall’URL (evita stato obsoleto vs tab Contenuti). */
+  private clearKbQuestionsDeepLinkQueryParams(): void {
+    const qpm = this.route.snapshot.queryParamMap;
+    if (!qpm.get('tab') && !qpm.get('questionsSub')) {
+      return;
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: null, questionsSub: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  /** Dopo import contenuti: resta su Contenuti e allinea URL (come su master). */
+  private afterKbContentsImportSuccess(): void {
+    this.selectedTab = 'contents';
+    this.clearKbQuestionsDeepLinkQueryParams();
+  }
+
+  switchQuestionsSubTab(sub: 'answered' | 'unanswered') {
+    if (this.questionsSubTab === sub) {
+      return;
+    }
+    this.questionsSubTab = sub;
+    if (sub === 'answered') {
+      this.loadAnsweredQuestions(0, false);
+    } else {
+      this.loadUnansweredQuestions(0, false);
+    }
+  }
+
   unansweredQuestions: UnansweredQuestion[] = [];
   unansweredQuestionsPage: number = 0;
   unansweredQuestionsCount: number = 0;
   isLoadingUnanswered = false;
   isLoadingMoreUnanswered: boolean = false;
   hasMoreUnansweredQuestions: boolean = false;
+
+  answeredQuestions: UnansweredQuestion[] = [];
+  answeredQuestionsPage: number = 0;
+  answeredQuestionsCount: number = 0;
+  isLoadingAnswered = false;
+  isLoadingMoreAnswered: boolean = false;
+  hasMoreAnsweredQuestions: boolean = false;
+  /** Ordinamento per data (API): -1 = più recenti prima, 1 = più vecchie prima — frecce come in Activities. */
+  answeredQuestionsDirection = -1;
+  unansweredQuestionsDirection = -1;
+  /** Ricerca full-text (`search` query) — stato separato per sotto-tab. */
+  answeredQuestionsSearch = '';
+  unansweredQuestionsSearch = '';
+  private questionsSearchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   isLoadingNamespaces = true;
   pineconeReranking: boolean
 
@@ -310,7 +481,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getTranslations();
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-    this.loadUnansweredQuestions();
     this.listenToProjectUser()
   }
 
@@ -327,6 +497,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
+    if (this.questionsSearchDebounceTimer != null) {
+      clearTimeout(this.questionsSearchDebounceTimer);
+      this.questionsSearchDebounceTimer = null;
+      this.showUQTableSpinner = false;
+    }
     this.unsubscribe$.next();   
     this.unsubscribe$.complete();
   }
@@ -778,7 +953,27 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     return true;
   };
 
+  /** Preserva tab Domande / sotto-tab nel navigate verso knowledge-bases (es. ritorno da conversazione). */
+  private buildKbDeepLinkNavExtras(): { queryParams: Record<string, string> } | undefined {
+    const qpm = this.route.snapshot.queryParamMap;
+    const tab = qpm.get('tab');
+    const questionsSub = qpm.get('questionsSub');
+    const qp: Record<string, string> = {};
+    if (tab === 'questions') {
+      qp.tab = 'questions';
+    }
+    if (questionsSub === 'answered' || questionsSub === 'unanswered') {
+      qp.questionsSub = questionsSub;
+    }
+    return Object.keys(qp).length ? { queryParams: qp } : undefined;
+  }
+
   selectLastUsedNamespaceAndGetKbList(namespaces) {
+    const qpmInit = this.route.snapshot.queryParamMap;
+    const deepTab = qpmInit.get('tab');
+    const deepQuestionsSub = qpmInit.get('questionsSub');
+    const kbNavExtras = this.buildKbDeepLinkNavExtras();
+
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
     //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
     if (!storedNamespace) {
@@ -792,7 +987,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
       currentUrlSegment.forEach(segment => {
         if (segment === 'knowledge-bases') {
-          this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
+          this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1).split('?')[0];
           // this.logger.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
           let nameSpaceIdisAlphaNumeric = this.isAlphaNumeric(this.nameSpaceId)
           // this.logger.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
@@ -818,7 +1013,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
           this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
 
-          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id], kbNavExtras);
           this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
           this.getChatbotUsingNamespace(this.selectedNamespace.id)
         }
@@ -831,10 +1026,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.selectedNamespace = namespaces.find((el) => {
             return el.default === true
           });
-          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id], kbNavExtras);
         }
         this.selectedNamespaceName = this.selectedNamespace.name
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id], kbNavExtras);
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
       }
@@ -855,22 +1050,50 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
         this.selectedNamespaceName = this.selectedNamespace.name
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id], kbNavExtras);
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
       } else {
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (NOT EXIST BETWEEN THE NASPACES A NASPACE  WITH THE ID GET FROM STORED NAMESPACE)', this.selectedNamespaceName)
         this.selectedNamespace = namespaces.find((el) => {
           return el.default === true
         });
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id], kbNavExtras);
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
         if (this.selectedNamespaceName) {
           this.selectedNamespaceName = this.selectedNamespace.name
         }
       }
     }
+    if (this.selectedNamespace) {
+      this.kbsContentTotalCount = Number(this.selectedNamespace.count) || 0;
+    }
     this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
+
+    if (deepTab === 'questions' && this.selectedNamespace) {
+      this.selectedTab = 'unanswered';
+      if (deepQuestionsSub === 'unanswered') {
+        this.questionsSubTab = 'unanswered';
+        this.loadUnansweredQuestions(0, false);
+      } else {
+        this.questionsSubTab = 'answered';
+        this.loadAnsweredQuestions(0, false);
+      }
+    }
+  }
+
+  onOpenQuestionConversation(event: { requestId: string; listMode: 'answered' | 'unanswered' }): void {
+    if (!event?.requestId || !this.id_project) {
+      return;
+    }
+    const calledby = event.listMode === 'answered' ? '4' : '5';
+    const ns = this.selectedNamespace?.id;
+    const path = 'project/' + this.id_project + '/wsrequest/' + event.requestId + '/' + calledby + '/messages';
+    if (ns) {
+      this.router.navigate([path], { queryParams: { kbns: ns } });
+    } else {
+      this.router.navigate([path]);
+    }
   }
 
   createNewNamespace(namespaceName: string, hybrid: boolean) {
@@ -1097,9 +1320,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
+      this.kbsContentTotalCount = Number(namespace?.count) || 0;
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
-      this.loadUnansweredQuestions();
+      if (this.selectedTab === 'unanswered') {
+        if (this.questionsSubTab === 'answered') {
+          this.loadAnsweredQuestions(0, false);
+        } else {
+          this.loadUnansweredQuestions(0, false);
+        }
+      }
 
     }
   }
@@ -1554,6 +1784,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             complete: () => {
               Swal.close();
               this.logger.log('[KB IMPORT] * COMPLETE *');
+              this.afterKbContentsImportSuccess();
 
               const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
               this.getListOfKb(paramsDefault, 'onImportJSON');
@@ -1657,6 +1888,7 @@ _presentDialogImportContents() {
             },
             complete: () => {
               this.logger.log('[KB IMPORT] * COMPLETE *');
+              this.afterKbContentsImportSuccess();
               const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
               this.getListOfKb(paramsDefault, 'onImportJSON');
 
@@ -1775,6 +2007,7 @@ _presentDialogImportContents() {
             this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
           }, () => {
             this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+            this.afterKbContentsImportSuccess();
             let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
             this.getListOfKb(paramsDefault, 'onImportJSON');
             Swal.fire({
@@ -2878,6 +3111,12 @@ _presentDialogImportContents() {
       //this.kbs = resp;
       this.kbsListCount = resp.count;
       this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
+      if (this.isKbListQueryWithoutListFilters(params)) {
+        const total = typeof resp.count === 'number' ? resp.count : Number(resp.count) || 0;
+        this.kbsContentTotalCount = total;
+        this.syncNamespaceContentCount(total);
+      }
+      this.loadKbStatsCounts();
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
       
       // If called after update or add, replace the entire list to maintain server order
@@ -3126,6 +3365,8 @@ _presentDialogImportContents() {
       this.getListOfKb(paramsDefault, 'onAddMultiKb');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
+      this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
+      this.syncNamespaceContentCount(this.kbsContentTotalCount);
       this.refreshKbsList = !this.refreshKbsList;
 
     }, (err) => { 
@@ -3211,6 +3452,8 @@ _presentDialogImportContents() {
       this.getListOfKb(paramsDefault, 'onAddMultiKb');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
+      this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
+      this.syncNamespaceContentCount(this.kbsContentTotalCount);
       this.refreshKbsList = !this.refreshKbsList;
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
@@ -3324,6 +3567,8 @@ _presentDialogImportContents() {
         // this.onOpenErrorModal(error);
         this.removeKb(kb._id);
         this.kbsListCount = this.kbsListCount - 1;
+        this.kbsContentTotalCount = Math.max(0, (Number(this.kbsContentTotalCount) || 0) - 1);
+        this.syncNamespaceContentCount(this.kbsContentTotalCount);
         this.refreshKbsList = !this.refreshKbsList;
         this.hasRemovedKb = true;
         // let searchParams = {
@@ -3909,7 +4154,62 @@ _presentDialogImportContents() {
     window.open(url, '_blank');
   }
 
+  onQuestionsTabRefresh() {
+    if (this.questionsSubTab === 'answered') {
+      this.refreshAnsweredQuestions();
+    } else {
+      this.refreshUnansweredQuestions();
+    }
+  }
+
+  onToggleQuestionsDateSort(): void {
+    if (this.questionsSubTab === 'answered') {
+      this.answeredQuestionsDirection = this.answeredQuestionsDirection === -1 ? 1 : -1;
+      this.refreshAnsweredQuestions();
+    } else {
+      this.unansweredQuestionsDirection = this.unansweredQuestionsDirection === -1 ? 1 : -1;
+      this.refreshUnansweredQuestions();
+    }
+  }
+
+  onAnsweredQuestionsSearchChange(): void {
+    this.scheduleQuestionsSearchReload();
+  }
+
+  onUnansweredQuestionsSearchChange(): void {
+    this.scheduleQuestionsSearchReload();
+  }
+
+  private scheduleQuestionsSearchReload(): void {
+    // Durante il debounce la query/ngModel è già aggiornata ma la lista no: senza spinner
+    // comparirebbe per un attimo il placeholder “nessuna domanda” (lista vuota + ricerca vuota).
+    this.showUQTableSpinner = true;
+    if (this.questionsSearchDebounceTimer != null) {
+      clearTimeout(this.questionsSearchDebounceTimer);
+    }
+    this.questionsSearchDebounceTimer = setTimeout(() => {
+      this.questionsSearchDebounceTimer = null;
+      if (this.questionsSubTab === 'answered') {
+        this.refreshAnsweredQuestions();
+      } else {
+        this.refreshUnansweredQuestions();
+      }
+    }, 400);
+  }
+
+  onQuestionsTabLoadMore() {
+    if (this.questionsSubTab === 'answered') {
+      this.loadMoreAnsweredQuestions();
+    } else {
+      this.loadMoreUnansweredQuestions();
+    }
+  }
+
   onAddFaqFromUnanswered(event: {q: any, done: (success: boolean) => void}) {
+    if (this.questionsSubTab === 'answered') {
+      event.done(false);
+      return;
+    }
     // Apre la modale FAQ con la domanda precompilata
     const question = event.q?.question;
     this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
@@ -3936,10 +4236,11 @@ _presentDialogImportContents() {
       // Se la modale è stata chiusa con successo (FAQ salvata)
       if (result && result.isSingle === "true" && result.body) {
         // Qui puoi anche attendere la risposta del servizio se serve
-        this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
-        // Update count when question is removed
-        if (this.unansweredQuestionsCount > 0) {
-          this.unansweredQuestionsCount--;
+        if (this.questionsSubTab === 'unanswered') {
+          this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
+          if (this.unansweredQuestionsCount > 0) {
+            this.unansweredQuestionsCount--;
+          }
         }
         this.onAddKb(result.body, event.done);
       } else {
@@ -3949,9 +4250,101 @@ _presentDialogImportContents() {
     });
   }
 
+  loadAnsweredQuestions(page: number = 0, append: boolean = false) {
+    if (!this.id_project || !this.selectedNamespace?.id) {
+      this.showUQTableSpinner = false;
+      this.isLoadingAnswered = false;
+      this.isLoadingMoreAnswered = false;
+      return;
+    }
+
+    if (page === 0 && !append) {
+      this.isLoadingAnswered = true;
+      this.showUQTableSpinner = true;
+      this.answeredQuestionsPage = 0;
+    } else {
+      this.isLoadingMoreAnswered = true;
+    }
+
+    this.unansweredQuestionsService
+      .getAnsweredQuestions(
+        this.id_project,
+        this.selectedNamespace.id,
+        KB_DEFAULT_PARAMS.LIMIT,
+        page,
+        'createdAt',
+        this.answeredQuestionsDirection,
+        this.answeredQuestionsSearch
+      )
+      .subscribe(
+        (res) => {
+          const rawQuestions = res['questions'] || [];
+          const questions = rawQuestions.map((item: any) => this.normalizeAnsweredQuestionItem(item));
+
+          if (append) {
+            this.answeredQuestions = [...this.answeredQuestions, ...questions];
+          } else {
+            this.answeredQuestions = questions;
+          }
+
+          if (res['total'] !== undefined) {
+            this.answeredQuestionsCount = res['total'];
+          } else if (res['count'] !== undefined) {
+            this.answeredQuestionsCount = res['count'];
+          } else {
+            this.answeredQuestionsCount = this.answeredQuestions.length;
+          }
+
+          const loadedCount = this.answeredQuestions.length;
+          this.hasMoreAnsweredQuestions = loadedCount < this.answeredQuestionsCount;
+
+          this.isLoadingAnswered = false;
+          this.showUQTableSpinner = false;
+          this.isLoadingMoreAnswered = false;
+          this.answeredQuestionsPage = page;
+
+          if (page === 0 && !append && !String(this.answeredQuestionsSearch || '').trim()) {
+            this.kbStatsAnsweredCount = this.extractQuestionsApiCount(res);
+          }
+
+          this.logger.log('[KnowledgeBasesComponent] Loaded answered questions:', {
+            page,
+            loaded: questions.length,
+            total: this.answeredQuestions.length,
+            count: this.answeredQuestionsCount,
+            hasMore: this.hasMoreAnsweredQuestions,
+          });
+        },
+        (err) => {
+          this.isLoadingAnswered = false;
+          this.showUQTableSpinner = false;
+          this.isLoadingMoreAnswered = false;
+          if (!append) {
+            this.answeredQuestions = [];
+          }
+          this.logger.error('[KnowledgeBasesComponent] Error loading answered questions', err);
+        }
+      );
+  }
+
+  loadMoreAnsweredQuestions() {
+    const nextPage = this.answeredQuestionsPage + 1;
+    this.loadAnsweredQuestions(nextPage, true);
+  }
+
+  refreshAnsweredQuestions() {
+    this.answeredQuestionsPage = 0;
+    this.loadAnsweredQuestions(0, false);
+  }
+
   loadUnansweredQuestions(page: number = 0, append: boolean = false) {
-    if (!this.id_project || !this.selectedNamespace?.id) return;
-    
+    if (!this.id_project || !this.selectedNamespace?.id) {
+      this.showUQTableSpinner = false;
+      this.isLoadingUnanswered = false;
+      this.isLoadingMoreUnanswered = false;
+      return;
+    }
+
     if (page === 0 && !append) {
       this.isLoadingUnanswered = true;
       this.showUQTableSpinner = true;
@@ -3966,7 +4359,8 @@ _presentDialogImportContents() {
       KB_DEFAULT_PARAMS.LIMIT,
       page,
       'createdAt',
-      -1
+      this.unansweredQuestionsDirection,
+      this.unansweredQuestionsSearch
     )
       .subscribe(
         (res) => {
@@ -3998,6 +4392,10 @@ _presentDialogImportContents() {
           this.showUQTableSpinner = false;
           this.isLoadingMoreUnanswered = false;
           this.unansweredQuestionsPage = page;
+
+          if (page === 0 && !append && !String(this.unansweredQuestionsSearch || '').trim()) {
+            this.kbStatsUnansweredCount = this.extractQuestionsApiCount(res);
+          }
           
           this.logger.log('[KnowledgeBasesComponent] Loaded unanswered questions:', {
             page,

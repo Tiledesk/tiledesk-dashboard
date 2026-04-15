@@ -199,7 +199,7 @@
       
       
     
-                    <div class="buttons-div">
+                    <div class="buttons-div" *ngIf="selectedTab === 'contents'">
       
                       <!-- Export Button  -->
                       <button *ngIf="PERMISSION_TO_EXPORT_CONTENTS" class="btn btn-blu-gray-outline" matTooltipClass="kb-custom-mat-tooltip"
@@ -314,8 +314,29 @@
                     </div> 
                          
                   </div>
+
+                  <div class="kb-stats-cards" *ngIf="selectedNamespace">
+                    <div class="kb-stats-card">
+                      <div class="kb-stats-card__label">{{ 'KbPage.KbStatsContents' | translate }}</div>
+                      <div class="kb-stats-card__value kb-stats-card__value--dark">{{ kbsContentTotalCount }}</div>
+                    </div>
+                    <div class="kb-stats-card">
+                      <div class="kb-stats-card__label">{{ 'KbPage.KbStatsAnswered' | translate }}</div>
+                      <div class="kb-stats-card__value kb-stats-card__value--answered">{{ kbStatsAnsweredCount }}</div>
+                    </div>
+                    <div class="kb-stats-card">
+                      <div class="kb-stats-card__label">{{ 'KbPage.KbStatsUnanswered' | translate }}</div>
+                      <div class="kb-stats-card__value kb-stats-card__value--unanswered">{{ kbStatsUnansweredCount }}</div>
+                    </div>
+                    <div class="kb-stats-card">
+                      <div class="kb-stats-card__label">{{ 'KbPage.KbStatsAnswerRate' | translate }}</div>
+                      <div class="kb-stats-card__value kb-stats-card__value--dark">{{ kbStatsAnswerRatePercent }}%</div>
+                    </div>
+                  </div>
       
                   <!-- TAB SWITCHER START -->
+                  <!-- Vecchio switch a radio (segmented); sostituito da tab come in Domande -->
+                  <!--
                   <div class="kb-switch-field">
                     <input type="radio" id="tab-contents" name="kb-tab-switch" [checked]="selectedTab === 'contents'" (change)="switchTab('contents')">
                     <label for="tab-contents">
@@ -323,8 +344,25 @@
                     </label>
                     <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
                     <label for="tab-unanswered">
-                      <span>{{'KbPage.UnansweredQuestions' | translate }}</span>
+                      <span>{{'KbPage.Questions' | translate }}</span>
                     </label>
+                  </div>
+                  -->
+                  <div class="kb-main-tabs">
+                    <div class="kb-main-tabs__row" role="tablist">
+                      <button type="button" role="tab" class="kb-main-tab"
+                        [class.kb-main-tab--active]="selectedTab === 'contents'"
+                        [attr.aria-selected]="selectedTab === 'contents'"
+                        (click)="switchTab('contents')">
+                        <span>{{'KbPage.Contents' | translate }}</span>
+                      </button>
+                      <button type="button" role="tab" class="kb-main-tab"
+                        [class.kb-main-tab--active]="selectedTab === 'unanswered'"
+                        [attr.aria-selected]="selectedTab === 'unanswered'"
+                        (click)="switchTab('unanswered')">
+                        <span>{{'KbPage.Questions' | translate }}</span>
+                      </button>
+                    </div>
                   </div>
                   <!-- TAB SWITCHER END -->
       
@@ -349,17 +387,73 @@
                     </knowledge-base-table>
                   </div>
                   <div [@fadeInOut] *ngIf="selectedTab === 'unanswered'">
-                    <modal-unanswered-questions 
-                      [unansweredQuestions]="unansweredQuestions"
-                      [unansweredQuestionsCount]="unansweredQuestionsCount"
-                      [hasMore]="hasMoreUnansweredQuestions"
-                      [isLoadingMore]="isLoadingMoreUnanswered"
+                    <div class="kb-questions-subtabs">
+                      <div class="kb-questions-subtabs__main">
+                        <!-- <div *ngIf="questionsSubTab === 'answered'" class="question-icon-wpr" style="display: flex;align-items: center;">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#8796af" style="margin-right: 18px;margin-top: 7px;">
+                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                            <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM20 4v13.17L18.83 16H4V4h16zM6 12h12v2H6zm0-3h12v2H6zm0-3h12v2H6z"/>
+                          </svg>
+                        </div>
+                        <div *ngIf="questionsSubTab === 'unanswered'" class="question-icon-wpr" style="display: flex;align-items: center;">
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#8796af" style="margin-right: 18px;margin-top: 7px;">
+                            <rect fill="none" height="24" width="24"/>
+                            <path d="M18.83,16H20V4H6.83l-2-2H20c1.1,0,2,0.9,2,2l0,15.17L18.83,16z M18,6H8.83l2,2H18V6z M18,9h-6.17l2,2H18V9z M18,14v-2 h-3.17l2,2H18z M21.9,21.9l-1.41,1.41L15.17,18H4c-1.1,0-2-0.9-2-2V4.83L0.69,3.51L2.1,2.1L21.9,21.9z M13.17,16l-2-2H6v-2h3.17 l-1-1H6V9h0.17L4,6.83V16H13.17z"/>
+                          </svg>
+                        </div> -->
+                        <div class="kb-questions-subtabs__tabs-row" role="tablist">
+                          <button type="button" role="tab" class="kb-questions-subtab"
+                            [class.kb-questions-subtab--active]="questionsSubTab === 'answered'"
+                            [attr.aria-selected]="questionsSubTab === 'answered'"
+                            (click)="switchQuestionsSubTab('answered')">
+                            {{'KbPage.AnsweredQuestionsTab' | translate }}
+                          </button>
+                          <button type="button" role="tab" class="kb-questions-subtab"
+                            [class.kb-questions-subtab--active]="questionsSubTab === 'unanswered'"
+                            [attr.aria-selected]="questionsSubTab === 'unanswered'"
+                            (click)="switchQuestionsSubTab('unanswered')">
+                            {{'KbPage.UnansweredQuestionsTab' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="kb-questions-subtabs__search">
+                        <div class="fake-input" style="border-radius: 5px;">
+                          <input *ngIf="questionsSubTab === 'answered'"
+                            type="text"
+                            [(ngModel)]="answeredQuestionsSearch"
+                            (ngModelChange)="onAnsweredQuestionsSearchChange()"
+                            [placeholder]="'KbPage.QuestionsTextSearchPlaceholder' | translate"
+                            [attr.aria-label]="'KbPage.QuestionsTextSearchPlaceholder' | translate"
+                            autocomplete="off"
+                            style="font-size: 14px;">
+                          <input *ngIf="questionsSubTab === 'unanswered'"
+                            type="text"
+                            [(ngModel)]="unansweredQuestionsSearch"
+                            (ngModelChange)="onUnansweredQuestionsSearchChange()"
+                            [placeholder]="'KbPage.QuestionsTextSearchPlaceholder' | translate"
+                            [attr.aria-label]="'KbPage.QuestionsTextSearchPlaceholder' | translate"
+                            autocomplete="off"
+                            style="font-size: 14px;">
+                          <span class="material-icons-outlined">search</span>
+                        </div>
+                      </div>
+                    </div>
+                    <modal-unanswered-questions
+                      [listMode]="questionsSubTab"
+                      [unansweredQuestions]="questionsSubTab === 'answered' ? answeredQuestions : unansweredQuestions"
+                      [unansweredQuestionsCount]="questionsSubTab === 'answered' ? answeredQuestionsCount : unansweredQuestionsCount"
+                      [hasMore]="questionsSubTab === 'answered' ? hasMoreAnsweredQuestions : hasMoreUnansweredQuestions"
+                      [isLoadingMore]="questionsSubTab === 'answered' ? isLoadingMoreAnswered : isLoadingMoreUnanswered"
                       [showUQTableSpinner]="showUQTableSpinner"
                       [namespace]="selectedNamespace"
                       [id_project]="id_project"
-                      (refresh)="refreshUnansweredQuestions()"
-                      (loadMore)="loadMoreUnansweredQuestions()"
-                      (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)">
+                      [questionsSortDirection]="questionsSubTab === 'answered' ? answeredQuestionsDirection : unansweredQuestionsDirection"
+                      [questionsSearchQuery]="questionsSubTab === 'answered' ? answeredQuestionsSearch : unansweredQuestionsSearch"
+                      (toggleQuestionsDateSort)="onToggleQuestionsDateSort()"
+                      (refresh)="onQuestionsTabRefresh()"
+                      (loadMore)="onQuestionsTabLoadMore()"
+                      (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)"
+                      (openConversation)="onOpenQuestionConversation($event)">
                     </modal-unanswered-questions>
                   </div>
                   <!-- END TABLE -->

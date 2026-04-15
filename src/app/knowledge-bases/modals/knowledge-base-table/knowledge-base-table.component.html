@@ -224,19 +224,18 @@
 <!-- ------------------------------ -->
 
 <div *ngIf="SHOW_TABLE == true" class="card-wpr">
-    <div class="card filters-card">
-        <div class="card-content">
+    <div class="card filters-card" style="border:unset !important">
+        <div class="card-content" style="padding: 0px;">
             <div class="search-filters-card-header">
 
                 <div class="filters">
-                    <!-- <span class="material-icons-outlined filter-icon">filter_list</span> -->
-                    <span>
+                    <!-- <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="none">
                             <path d="M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z" />
                         </svg>
 
-                    </span>
+                    </span> -->
 
                     <div class="selector status-selector">
                         <ng-select class="custom--input" editable="false" [clearable]='false' [editable]='false'
@@ -297,7 +296,7 @@
 
                 </div>
 
-                <div class="fake-input">
+                <div class="fake-input" style="border-radius: 5px;">
                     <!-- <label for="search">{{ 'KbPage.TextSearch' | translate }}</label> -->
                     <!-- <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}"> -->
                     <input (keyup)="onLoadByFilter($event.target.value, 'name')"
@@ -309,7 +308,7 @@
     </div>
 
     <div class="card contents-card" style="margin: 16px 0;">
-        <div class="card-header card-header-custom-bkgrnd" style="    padding-top: 10px !important;padding-left: 15px;padding-right: 15px;padding-bottom: 3px !important;">
+        <div class="card-header card-header-custom-bkgrnd" style="padding-top: 10px !important;padding-left: 15px;padding-right: 15px;padding-bottom: 3px !important;border-bottom:unset">
             <div class="form-group preview-count-n">
                 <div class="preview-count-left">
                     <div>
@@ -434,7 +433,6 @@
                         </th> 
 
                         <th class="column-th-span" style="width:150px;white-space: nowrap;" (click)="onOrderBy('updatedAt')">
-                            <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
                             <span style="margin: 0px;">{{'LastUpdated' | translate }}</span>
                             <span *ngIf="directionDesc === 1" id="expand_more"
                                 class="th-label material-icons-outlined icon-direction">expand_more</span>

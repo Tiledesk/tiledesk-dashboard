@@ -1770,6 +1770,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getRequestMsg(request) {
+  //  console.log('[HISTORY & NORT-CONVS] -  GET REQUESTS MSGS - request.request_id: ', request.request_id);
     this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
       this.logger.log('[HISTORY & NORT-CONVS] -  GET REQUESTS MSGS - RES: ', msgs);
       if (msgs) {

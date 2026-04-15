@@ -24,12 +24,17 @@
             <!-- ------------------------------------ -->
             <!-- Use cese URL -->
             <!-- ------------------------------------ -->
-            <div *ngIf="kb.type === 'url'">
+             <div *ngIf="kb.type === 'url'">
                 <span *ngIf="!kb.sitemap_origin" class="input-label">{{ 'KbPage.Url' | translate }}</span>
                 <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span>
-                <a class="input-label link-page" [href]="kb.sitemap_origin" target="_blank" style="text-decoration: none;">
+                <a *ngIf="!kb.sitemap_origin" class="input-label link-page" [href]="source" target="_blank" style="text-decoration: none;">
                     <span class="material-icons-outlined">
                         open_in_new
+                    </span>
+                </a>
+                <a *ngIf="kb.sitemap_origin" class="input-label link-page" [href]="kb.sitemap_origin" target="_blank" style="text-decoration: none;">
+                    <span class="material-icons-outlined">
+                       open_in_new
                     </span>
                 </a>
 

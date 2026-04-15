@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.173-AR
+- Improves the Knowledge Bases page with KPI cards (contents, answered, unanswered, answer rate)
+- Adds the ability to view questions asked to AI agents and to search by text (ITDELSDAM-5099)
+- Adds the ability to search by text for unanswered questions
+- Adds the rating column to the History table (ITDELSDAM-5097)
+- Adds the quotas reset date (ITDELSDAM-5136)
+- Adds a column to the Answered Questions and Unanswered Questions tables that displays the creation date (ITDELSDAM-5161)
+
 ### 2.7.172-AR
 - Adds the ability to change availability status on every project the lodded user belongs to
 

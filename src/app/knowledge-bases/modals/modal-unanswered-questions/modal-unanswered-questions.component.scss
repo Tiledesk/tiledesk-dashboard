@@ -1,4 +1,19 @@
-/* Styles for modal-unanswered-questions component */ 
+/* Styles for modal-unanswered-questions component */
+
+/* Come `knowledge-base-table`: td > .ellipsis-text con inline center/padding/font 14px */
+.uq-no-kb-match-params {
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  display: inline-block;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  line-height: 1.6;
+  white-space: normal;
+}
+
 .add-header-container {
   display: flex;
   flex-direction: column;
@@ -90,6 +105,37 @@
   text-align: center;
 }
 
+.uq-list-header-date-sort {
+  cursor: pointer;
+  color: #1e293b;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  outline: none;
+
+  /* Come knowledge-base-table: icone ordinamento visibili in hover (e con focus tastiera). */
+  .th-label {
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    font-size: 16px;
+    line-height: 1;
+    vertical-align: middle;
+    color: var(--table-thead-color, #3c4858);
+  }
+
+  &:hover .th-label,
+  &:focus-visible .th-label {
+    opacity: 1;
+  }
+}
+
+.uq-list-header-date-sort:focus-visible {
+  text-decoration: underline;
+}
+
 .uq-list-header-actions {
   flex: 0 0 120px;
   text-align: right;
@@ -103,16 +149,153 @@
   font-size: 14px;
   background: none;
 }
+
+.uq-list-item--answered-with-answer {
+  align-items: flex-start;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.uq-list-item-main {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 12px;
+}
+
+.uq-answer-block {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-top: 3px;
+  box-sizing: border-box;
+}
+
+.uq-answer-block--expanded {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.uq-answer-text {
+  font-size: 13px;
+  color: #5c6b7a;
+  line-height: 1.45;
+  min-width: 0;
+}
+
+.uq-answer-text--clamped {
+  flex: 0 1 auto;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uq-answer-block--expanded .uq-answer-text {
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.uq-answer-toggle {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #3c4858;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.uq-answer-toggle:hover {
+  color: #0056b3;
+}
+
+.uq-answer-toggle:focus-visible {
+  outline: 2px solid var(--primary-btn-background, #006cff);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* «Mostra tutto» compatto: visibile in hover sulla riga o con focus (tastiera); sempre visibile su touch. */
+.uq-answer-more-wrap {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .uq-list-item:not(:hover):not(:focus-within) .uq-answer-more-wrap {
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .uq-list-item:hover .uq-answer-more-wrap,
+  .uq-list-item:focus-within .uq-answer-more-wrap {
+    visibility: visible;
+    opacity: 1;
+    width: auto;
+    max-width: none;
+    pointer-events: auto;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .uq-answer-more-wrap {
+    visibility: visible;
+    opacity: 1;
+    width: auto;
+    max-width: none;
+    pointer-events: auto;
+  }
+}
+
 .uq-list-item:last-child {
   border-bottom: none;
 }
+
+.uq-list-item--clickable {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: -6px;
+  margin-right: -6px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.uq-list-item--clickable:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
 .uq-question-text {
-  flex: 1 1 0;
+  flex: 0 1 auto;
+  width: 100%;
   color: #3c4858;
   font-size: 14px;
   font-family: var(--header-font-family);
   line-height: 17px;
-  padding-right: 20px;
+  padding-right: 8px;
 }
 .uq-date-text {
   flex: 0 0 180px;

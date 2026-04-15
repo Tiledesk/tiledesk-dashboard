@@ -86,15 +86,15 @@
                   </li>
 
                 </ul>
-                <button type="button"
+
+            </div>
+              <button type="button"
                 class="bottom-nav-scroll-arrow bottom-nav-scroll-arrow--right"
                 *ngIf="navScrollShowRight"
                 (click)="scrollProjectNavStep(1)"
                 [attr.aria-label]="'ProjectEditPage.NavScrollRight' | translate">
                 <span class="material-icons" aria-hidden="true">keyboard_arrow_right</span>
               </button>
-
-            </div>
   
           </div>
         </div>
@@ -1820,7 +1820,7 @@
                           </p>
                         </div>
                       </div>
-<!-- automatic_unavailable_status_on === false || -->
+                    <!-- automatic_unavailable_status_on === false || -->
                       <div class="input-wrapper" style="max-width: 992px;"
                         [ngClass]="{'section-disabled' :  reassignment_on === false}">
 
@@ -1905,6 +1905,9 @@
                 </ng-container>
                 <!-- /. Smart Assignment ROUTE -->
 
+                <!-- -------------------------------------------------------- -->
+                <!-- Retention -->
+                <!-- -------------------------------------------------------- -->
                 <ng-container *ngIf="PROJECT_SETTINGS_RETENTION">
                   <ng-container *ngIf="permissionCheckedRetention">
                     <ng-container *ngIf="isAuthorizedRetention; else unauthorizedTplRetention">

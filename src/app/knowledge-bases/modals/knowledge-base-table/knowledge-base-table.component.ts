@@ -463,14 +463,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
     console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
     console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
     console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
-    
-    // If called without parameters (manual refresh), reset page to 0
-    if (filterValue === undefined && column === undefined) {
-      this.searchParams.page = 0;
-      this.numberPage = 0;
-      this.logger.log('[KB TABLE] >>> onLoadByFilter - Manual refresh: reset page to 0');
-    }
-    
+
+    // Dopo "load more" searchParams.page > 0: ogni nuovo filtro/ricerca/refresh deve ripartire da pagina 0
+    this.searchParams.page = 0;
+    this.numberPage = 0;
+
     if (column == 'status') {
       this.searchParams.status = filterValue;
     }
