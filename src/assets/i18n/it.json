@@ -2059,6 +2059,8 @@
         "DeleteAnsweredQuestion": "Elimina",
         "DeleteAnsweredQuestionTitle": "Elimina domanda risposta",
         "AreYouSureDeleteAnsweredQuestion": "Sei sicuro di voler eliminare definitivamente questa domanda risposta?",
+        "AnswerShowMore": "Mostra tutto",
+        "AnswerShowLess": "Mostra meno",
         "YourKnowledgeBases": "Le tue Knowledge Bases",
         "NoKnowledgeBases": "Nessuna Knowledge Bases",
         "LearnMoreAboutKB": "Scopri di più sulla Knowledge Base",

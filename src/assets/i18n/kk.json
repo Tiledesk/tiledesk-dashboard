@@ -2072,6 +2072,8 @@
         "DeleteAnsweredQuestion": "Жою",
         "DeleteAnsweredQuestionTitle": "Жауап берілген сұрақты жою",
         "AreYouSureDeleteAnsweredQuestion": "Бұл жауап берілген сұрақты толығымен жойғыңыз келетініне сенімдісіз бе?",
+        "AnswerShowMore": "Толығырақ көрсету",
+        "AnswerShowLess": "Қысқарту",
         "YourKnowledgeBases": "Сіздің білім қорларыңыз",
         "NoKnowledgeBases": "Білім базасы жоқ",
         "LearnMoreAboutKB": "Білім қоры туралы көбірек біліңіз",

@@ -2073,6 +2073,8 @@
         "DeleteAnsweredQuestion": "Radera",
         "DeleteAnsweredQuestionTitle": "Radera besvarad fråga",
         "AreYouSureDeleteAnsweredQuestion": "Är du säker på att du vill radera den här besvarade frågan permanent?",
+        "AnswerShowMore": "Visa mer",
+        "AnswerShowLess": "Visa mindre",
         "YourKnowledgeBases": "Dina kunskapsbaser",
         "NoKnowledgeBases": "Inga kunskapsbaser",
         "LearnMoreAboutKB": "Läs mer om Knowledge Base",

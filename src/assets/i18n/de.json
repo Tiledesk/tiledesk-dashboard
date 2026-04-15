@@ -2057,6 +2057,8 @@
     	"DeleteAnsweredQuestion": "Löschen",
     	"DeleteAnsweredQuestionTitle": "Beantwortete Frage löschen",
     	"AreYouSureDeleteAnsweredQuestion": "Sind Sie sicher, dass Sie diese beantwortete Frage dauerhaft löschen möchten?",
+		"AnswerShowMore": "Mehr anzeigen",
+		"AnswerShowLess": "Weniger anzeigen",
 		"YourKnowledgeBases": "Ihre Wissensdatenbanken",
         "NoKnowledgeBases": "Keine Wissensdatenbanken",
 		"LearnMoreAboutKB": "Erfahren Sie mehr über die Knowledge Base",

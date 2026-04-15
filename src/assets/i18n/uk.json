@@ -2073,6 +2073,8 @@
         "DeleteAnsweredQuestion": "Видалити",
         "DeleteAnsweredQuestionTitle": "Видалити питання з відповіддю",
         "AreYouSureDeleteAnsweredQuestion": "Ви впевнені, що хочете назавжди видалити це питання з відповіддю?",
+        "AnswerShowMore": "Показати більше",
+        "AnswerShowLess": "Показати менше",
         "YourKnowledgeBases": "Ваші бази знань",
         "NoKnowledgeBases": "Баз знань немає",
         "LearnMoreAboutKB": "Дізнайтеся більше про базу знань",

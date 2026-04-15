@@ -2058,6 +2058,8 @@
         "DeleteAnsweredQuestion": "Delete",
         "DeleteAnsweredQuestionTitle": "Delete answered question",
         "AreYouSureDeleteAnsweredQuestion": "Are you sure you want to permanently delete this answered question?",
+        "AnswerShowMore": "Show more",
+        "AnswerShowLess": "Show less",
         "YourKnowledgeBases": "Your Knowledge Bases",
         "NoKnowledgeBases": "No Knowledge Bases",
         "LearnMoreAboutKB": "Learn more about Knowledge Base",

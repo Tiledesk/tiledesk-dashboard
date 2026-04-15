@@ -2057,6 +2057,8 @@
         "DeleteAnsweredQuestion": "Удалить",
         "DeleteAnsweredQuestionTitle": "Удалить отвеченный вопрос",
         "AreYouSureDeleteAnsweredQuestion": "Вы уверены, что хотите навсегда удалить этот отвеченный вопрос?",
+        "AnswerShowMore": "Показать полностью",
+        "AnswerShowLess": "Свернуть",
         "YourKnowledgeBases": "Ваши базы знаний",
         "NoKnowledgeBases": "Без баз знаний",
         "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",

@@ -2057,6 +2057,8 @@
         "DeleteAnsweredQuestion": "Sil",
         "DeleteAnsweredQuestionTitle": "Cevaplanmış soruyu sil",
         "AreYouSureDeleteAnsweredQuestion": "Bu cevaplanmış soruyu kalıcı olarak silmek istediğinizden emin misiniz?",
+        "AnswerShowMore": "Daha fazla göster",
+        "AnswerShowLess": "Daha az göster",
         "YourKnowledgeBases": "Bilgi Tabanlarınız",
         "NoKnowledgeBases": "Bilgi Tabanı Yok",
         "LearnMoreAboutKB": "Bilgi Tabanı hakkında daha fazla bilgi edinin",

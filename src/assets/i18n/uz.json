@@ -2056,6 +2056,8 @@
         "DeleteAnsweredQuestion": "O'chirish",
         "DeleteAnsweredQuestionTitle": "Javob berilgan savolni o'chirish",
         "AreYouSureDeleteAnsweredQuestion": "Ushbu javob berilgan savolni butunlay o'chirib tashlamoqchi ekanligingizga ishonchingiz komilmi?",
+        "AnswerShowMore": "Ko'proq ko'rsatish",
+        "AnswerShowLess": "Kamroq ko'rsatish",
         "YourKnowledgeBases": "Sizning bilim bazalaringiz",
         "NoKnowledgeBases": "Bilim bazalari yo'q",
         "LearnMoreAboutKB": "Bilimlar bazasi haqida ko'proq bilib oling",
