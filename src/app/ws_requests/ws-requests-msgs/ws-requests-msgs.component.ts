@@ -297,6 +297,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   resolutionBotCount: number;
   previousUrl: string;
+  /** Namespace KB per tornare a Domande (query kbns quando calledby 4/5) */
+  kbReturnNamespaceId: string | null = null;
   hasSearchedBy: string;
   isOpenedAdvancedSearch: string;
   selectedDept: string;
@@ -1239,47 +1241,76 @@ updateTagContainerHeight() {
       }
 
       if (params.calledby === '2') {
-        this.previousUrl = 'history',
+        this.previousUrl = 'history';
           console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
-        this.previousUrl = 'all-conversations',
+        this.previousUrl = 'all-conversations';
           console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
         this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
 
+       if (params.calledby === '4') {
+        this.previousUrl = 'kb_answered';
+        this.kbReturnNamespaceId = this.route.snapshot.queryParamMap.get('kbns');
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl);
+        this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy);
+      } else if (params.calledby === '5') {
+        this.previousUrl = 'kb_unanswered';
+        this.kbReturnNamespaceId = this.route.snapshot.queryParamMap.get('kbns');
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl);
+        this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy);
+      } else {
+        this.kbReturnNamespaceId = null;
+      }
+
       if (!params.calledby) {
-        this.previousUrl = undefined
+        this.previousUrl = undefined;
       }
 
     })
   }
 
-  goBack() {
-    this.logger.log('[WS-REQUESTS-MSGS] goBack')
+   goBack() {
+    this.logger.log('[WS-REQUESTS-MSGS] goBack');
     if (this.previousUrl === 'wsrequests') {
       if (!this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
       } else if (this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
       }
+      return;
     }
 
     if (this.previousUrl === 'all-conversations' && this.queryParams) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams });
+      return;
     }
 
     if (this.previousUrl === 'history' && this.queryParams) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams });
+      return;
+    }
+
+    if (this.previousUrl === 'kb_answered' || this.previousUrl === 'kb_unanswered') {
+      const ns = this.kbReturnNamespaceId;
+      const questionsSub = this.previousUrl === 'kb_answered' ? 'answered' : 'unanswered';
+      if (ns && this.id_project) {
+        this.router.navigate(['project/' + this.id_project + '/knowledge-bases/' + ns], {
+          queryParams: { tab: 'questions', questionsSub },
+        });
+      } else {
+        this._location.back();
+      }
+      return;
     }
 
     if (this.previousUrl === undefined) {
       this._location.back();
     }
-
   }
 
 

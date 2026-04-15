@@ -1,4 +1,19 @@
-/* Styles for modal-unanswered-questions component */ 
+/* Styles for modal-unanswered-questions component */
+
+/* Come `knowledge-base-table`: td > .ellipsis-text con inline center/padding/font 14px */
+.uq-no-kb-match-params {
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  display: inline-block;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  line-height: 1.6;
+  white-space: normal;
+}
+
 .add-header-container {
   display: flex;
   flex-direction: column;
@@ -60,7 +75,7 @@
   background: none;
   border-radius: 0;
   box-shadow: none;
-  // padding: 0 12px;
+  padding: 0 12px;
   margin: 0;
   margin-top: 12px;
 }
@@ -71,18 +86,65 @@
   font-size: 14px;
   font-weight: var(--table-thead-font-weight);
   color: var(--table-thead-color);
-  padding: 0px 0px 8px;
+  padding: 0 0 12px 0;
   border-bottom: 1px solid #f0f4f8;
-  width: 100%;
+
+  font-size: 14px;
+  font-weight: var(--table-thead-font-weight);
+  margin: auto 10px;
+  color: var(--table-thead-color);
+  vertical-align: middle;
 }
 .uq-list-header-question {
   flex: 1 1 0;
   text-align: left;
 }
+
 .uq-list-header-date {
   flex: 0 0 180px;
   text-align: center;
 }
+
+.uq-list-header-date-sort {
+  cursor: pointer;
+  color: #1e293b;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // gap: 2px;
+  outline: none;
+}
+
+.uq-list-header-date-sort:focus-visible {
+  text-decoration: underline;
+}
+
+/* Stesse icone / logica di activities (FontAwesome) */
+.sorting:before {
+  content: "\f0de";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+  position: relative;
+  right: -7.9px;
+}
+
+.sorting_asc:before {
+  opacity: 0.5;
+}
+
+.sorting:after {
+  content: "\f0dd";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+}
+
+.sorting_desc:after {
+  opacity: 0.5;
+}
+
 .uq-list-header-actions {
   flex: 0 0 120px;
   text-align: right;
@@ -96,33 +158,160 @@
   font-size: 14px;
   background: none;
 }
+
+.uq-list-item--answered-with-answer {
+  align-items: flex-start;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.uq-list-item-main {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 12px;
+}
+
+.uq-answer-block {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-top: 3px;
+  box-sizing: border-box;
+}
+
+.uq-answer-block--expanded {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.uq-answer-text {
+  font-size: 13px;
+  color: #5c6b7a;
+  line-height: 1.45;
+  min-width: 0;
+}
+
+.uq-answer-text--clamped {
+  flex: 0 1 auto;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uq-answer-block--expanded .uq-answer-text {
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.uq-answer-toggle {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #3c4858;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.uq-answer-toggle:hover {
+  color: #0056b3;
+}
+
+.uq-answer-toggle:focus-visible {
+  outline: 2px solid var(--primary-btn-background, #006cff);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* «Mostra tutto» compatto: visibile in hover sulla riga o con focus (tastiera); sempre visibile su touch. */
+.uq-answer-more-wrap {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .uq-list-item:not(:hover):not(:focus-within) .uq-answer-more-wrap {
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .uq-list-item:hover .uq-answer-more-wrap,
+  .uq-list-item:focus-within .uq-answer-more-wrap {
+    visibility: visible;
+    opacity: 1;
+    width: auto;
+    max-width: none;
+    pointer-events: auto;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .uq-answer-more-wrap {
+    visibility: visible;
+    opacity: 1;
+    width: auto;
+    max-width: none;
+    pointer-events: auto;
+  }
+}
+
 .uq-list-item:last-child {
   border-bottom: none;
 }
-.uq-question-text {
-  flex: 1 1 0;
-  color: #3c4858;
-  // font-size: 15px;
-  font-family: var(--header-font-family);
-  font-size: 14px;
-  line-height: 17px;
-  padding-right: 20px;
-}
-.uq-date-text {
-  flex: 0 0 180px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+.uq-list-item--clickable {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: -6px;
+  margin-right: -6px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
+.uq-list-item--clickable:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.uq-question-text {
+  flex: 0 1 auto;
+  width: 100%;
+  color: #3c4858;
+  font-size: 14px;
+  font-family: var(--header-font-family);
+  line-height: 17px;
+  padding-right: 8px;
+}
 .uq-date-text {
   flex: 0 0 180px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
 }
 
 .uq-actions {
@@ -198,36 +387,6 @@
 .uq-btn-icon[mat-icon-button]:hover mat-icon.add-icon {
   color: #2196f3;
 }
-
-.btn-more {
-    text-align: center;
-    margin: 10px auto 10px;
-    display: block;
-    width: fit-content;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 24px;
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 2px 12px;
-    min-width: auto;
-    border-radius: 9999px;
-  transition: all 0.2s;
-}
-
-.btn--default:hover {
-    background-color: #eff2f6;
-    border: 1px solid #acb8cb;
-    color: #333;
-}
-
-.btn--default {
-  background-color: transparent;
-    border: 1px solid #d1d9e0;
-    color: #333;
-    box-shadow: none;
-    text-transform: none;
-} 
 
 .btn-more {
     text-align: center;

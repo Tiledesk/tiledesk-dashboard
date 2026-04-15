@@ -8,10 +8,14 @@ import { LoggerService } from './logger/logger.service';
 
 export interface UnansweredQuestion {
   id: string;
-  text: string;
-  question?: string; // alias per text, usato nel template
-  _id?: string; // opzionale per compatibilità con backend
-  createdAt?: any; // data di creazione
+  text?: string;
+  question?: string;
+  /** Testo risposta (API kb/answered, campo `answer` sugli elementi di `questions`). */
+  answer?: string;
+  _id?: string;
+  request_id?: string;
+  requestId?: string;
+  createdAt?: any;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -63,7 +67,8 @@ export class UnansweredQuestionsService {
     limit?: number,
     page?: number,
     sortField?: string,
-    direction?: number
+    direction?: number,
+    search?: string
   ): Observable<UnansweredQuestion[]> {
     let url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}`;
 
@@ -80,11 +85,57 @@ export class UnansweredQuestionsService {
     if (direction !== undefined) {
       params.push(`direction=${direction}`);
     }
+    const searchTrimmed = search != null && String(search).trim() !== '' ? String(search).trim() : '';
+    if (searchTrimmed) {
+      params.push(`search=${encodeURIComponent(searchTrimmed)}`);
+    }
     if (params.length > 0) {
       url += '?' + params.join('&');
     }
     
-    this.logger.log('getUnansweredQuestions URL ', url)
+    console.log('getUnansweredQuestions URL ', url)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    return this._httpClient.get<UnansweredQuestion[]>(url, httpOptions);
+  }
+
+  getAnsweredQuestions(
+    id_project: string,
+    namespace_id: string,
+    limit?: number,
+    page?: number,
+    sortField?: string,
+    direction?: number,
+    search?: string
+  ): Observable<UnansweredQuestion[]> {
+    let url = `${this.SERVER_BASE_PATH}${id_project}/kb/answered/${namespace_id}`;
+
+    const params: string[] = [];
+    if (limit !== undefined) {
+      params.push(`limit=${limit}`);
+    }
+    if (page !== undefined) {
+      params.push(`page=${page}`);
+    }
+    if (sortField !== undefined) {
+      params.push(`sortField=${encodeURIComponent(sortField)}`);
+    }
+    if (direction !== undefined) {
+      params.push(`direction=${direction}`);
+    }
+    const searchTrimmed = search != null && String(search).trim() !== '' ? String(search).trim() : '';
+    if (searchTrimmed) {
+      params.push(`search=${encodeURIComponent(searchTrimmed)}`);
+    }
+    if (params.length > 0) {
+      url += '?' + params.join('&');
+    }
+    
+    console.log('getAnsweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -116,6 +167,20 @@ export class UnansweredQuestionsService {
     };
     return this._httpClient.delete<any>(url, httpOptions);
   }
+
+  /** DELETE /:projectid/kb/answered/:id — elimina una AnsweredQuestion per `_id`. */
+  deleteAnsweredQuestion(id_project: string, answered_id: string): Observable<any> {
+    const url = `${this.SERVER_BASE_PATH}${id_project}/kb/answered/${answered_id}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    return this._httpClient.delete<any>(url, httpOptions);
+  }
+
+
 } 
 
 
