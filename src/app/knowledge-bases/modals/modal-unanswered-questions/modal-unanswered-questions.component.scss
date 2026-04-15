@@ -112,37 +112,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  // gap: 2px;
+  gap: 4px;
   outline: none;
+
+  /* Come knowledge-base-table: icone ordinamento visibili in hover (e con focus tastiera). */
+  .th-label {
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    font-size: 16px;
+    line-height: 1;
+    vertical-align: middle;
+    color: var(--table-thead-color, #3c4858);
+  }
+
+  &:hover .th-label,
+  &:focus-visible .th-label {
+    opacity: 1;
+  }
 }
 
 .uq-list-header-date-sort:focus-visible {
   text-decoration: underline;
-}
-
-/* Stesse icone / logica di activities (FontAwesome) */
-.sorting:before {
-  content: "\f0de";
-  font-family: FontAwesome;
-  display: inline-block;
-  font-weight: 900;
-  position: relative;
-  right: -7.9px;
-}
-
-.sorting_asc:before {
-  opacity: 0.5;
-}
-
-.sorting:after {
-  content: "\f0dd";
-  font-family: FontAwesome;
-  display: inline-block;
-  font-weight: 900;
-}
-
-.sorting_desc:after {
-  opacity: 0.5;
 }
 
 .uq-list-header-actions {

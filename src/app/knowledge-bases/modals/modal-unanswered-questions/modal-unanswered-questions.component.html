@@ -22,9 +22,13 @@
         tabindex="0"
         role="button">
         {{'KbPage.CreationDate' | translate}}
-        <span
+       <!-- <span
           class="sorting"
-          [ngClass]="{ 'sorting_desc': questionsSortDirection === 1, 'sorting_asc': questionsSortDirection === -1 }"></span>
+          [ngClass]="{ 'sorting_desc': questionsSortDirection === 1, 'sorting_asc': questionsSortDirection === -1 }"></span> -->
+        <span *ngIf="questionsSortDirection === 1"
+          class="th-label material-icons-outlined icon-direction">expand_more</span>
+        <span *ngIf="questionsSortDirection === -1"
+          class="th-label material-icons-outlined icon-direction">expand_less</span>
       </span>
     </span>
     <span class="uq-list-header-actions" *ngIf="listMode === 'unanswered' || listMode === 'answered'">{{'Actions' | translate}}</span>
