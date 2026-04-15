@@ -1292,6 +1292,19 @@ updateTagContainerHeight() {
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
     }
 
+    if (this.previousUrl === 'kb_answered' || this.previousUrl === 'kb_unanswered') {
+      const ns = this.kbReturnNamespaceId;
+      if (this.id_project && ns) {
+        const questionsSub = this.previousUrl === 'kb_answered' ? 'answered' : 'unanswered';
+        this.router.navigate(['project/' + this.id_project + '/knowledge-bases/' + ns], {
+          queryParams: { tab: 'questions', questionsSub },
+        });
+      } else {
+        this._location.back();
+      }
+      return;
+    }
+
     if (this.previousUrl === undefined) {
       this._location.back();
     }
