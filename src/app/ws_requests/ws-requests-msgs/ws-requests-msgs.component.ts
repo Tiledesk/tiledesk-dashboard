@@ -296,6 +296,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   resolutionBotCount: number;
   previousUrl: string;
+  /** Namespace KB per tornare a Domande (query kbns quando calledby 4/5) */
+  kbReturnNamespaceId: string | null = null;
   hasSearchedBy: string;
   isOpenedAdvancedSearch: string;
   selectedDept: string;
@@ -1214,20 +1216,34 @@ updateTagContainerHeight() {
       }
 
       if (params.calledby === '2') {
-        this.previousUrl = 'history',
+        this.previousUrl = 'history';
           console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
-        this.previousUrl = 'all-conversations',
+        this.previousUrl = 'all-conversations';
           console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
         this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
 
+      if (params.calledby === '4') {
+        this.previousUrl = 'kb_answered';
+        this.kbReturnNamespaceId = this.route.snapshot.queryParamMap.get('kbns');
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl);
+        this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy);
+      } else if (params.calledby === '5') {
+        this.previousUrl = 'kb_unanswered';
+        this.kbReturnNamespaceId = this.route.snapshot.queryParamMap.get('kbns');
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl);
+        this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy);
+      } else {
+        this.kbReturnNamespaceId = null;
+      }
+
       if (!params.calledby) {
-        this.previousUrl = undefined
+        this.previousUrl = undefined;
       }
 
     })

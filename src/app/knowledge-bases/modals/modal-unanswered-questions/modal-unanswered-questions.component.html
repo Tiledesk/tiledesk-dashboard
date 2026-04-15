@@ -11,10 +11,23 @@
   </div>
 
   <!-- *ngIf="!showUQTableSpinner" -->
-  <div class="uq-list-header" *ngIf="unansweredQuestions.length > 0">
+  <div class="uq-list-header" *ngIf="unansweredQuestions.length > 0 || unansweredQuestionsCount > 0">
     <span class="uq-list-header-question">{{'FaqPage.Question' | translate}}</span>
-    <span class="uq-list-header-date">{{'KbPage.CreationDate' | translate}}</span>
-    <span class="uq-list-header-actions">{{'Actions' | translate}}</span>
+    <span class="uq-list-header-date">
+      <span
+        class="uq-list-header-date-sort"
+        (click)="onToggleDateSort($event)"
+        (keydown.enter)="onToggleDateSort($event)"
+        (keydown.space)="onToggleDateSort($event)"
+        tabindex="0"
+        role="button">
+        {{'KbPage.CreationDate' | translate}}
+        <span
+          class="sorting"
+          [ngClass]="{ 'sorting_desc': questionsSortDirection === 1, 'sorting_asc': questionsSortDirection === -1 }"></span>
+      </span>
+    </span>
+    <span class="uq-list-header-actions" *ngIf="listMode === 'unanswered' || listMode === 'answered'">{{'Actions' | translate}}</span>
   </div>
 
   <loading-spinner *ngIf="showUQTableSpinner"></loading-spinner>
@@ -22,24 +35,61 @@
   <ng-container *ngIf="!showUQTableSpinner">
     <ng-container *ngIf="unansweredQuestions.length > 0; else noQuestions">
       <div class="uq-list">
-        <div *ngFor="let q of unansweredQuestions" class="uq-list-item">
-          <span class="uq-question-text">{{ q.question }}</span>
-            <span class="uq-date-text" *ngIf="q.createdAt">
+        <div *ngFor="let q of unansweredQuestions" class="uq-list-item uq-list-item--clickable"
+          [class.uq-list-item--answered-with-answer]="listMode === 'answered' && getAnswerText(q)"
+          (click)="onRowClick($event, q)">
+          <div class="uq-list-item-main">
+            <span class="uq-question-text">{{ q.question }}</span>
+            <div
+              class="uq-answer-block"
+              *ngIf="listMode === 'answered' && getAnswerText(q)"
+              [class.uq-answer-block--expanded]="isAnswerExpanded(q)">
+              <div
+                class="uq-answer-text"
+                [class.uq-answer-text--clamped]="!isAnswerExpanded(q)">{{ getAnswerDisplayText(q) }}</div>
+              <button
+                type="button"
+                class="uq-answer-toggle"
+                *ngIf="shouldOfferAnswerToggle(q)"
+                (click)="toggleAnswerExpand($event, q)"
+                [attr.aria-expanded]="isAnswerExpanded(q)">
+                {{ (isAnswerExpanded(q) ? 'KbPage.AnswerShowLess' : 'KbPage.AnswerShowMore') | translate }}
+              </button>
+            </div>
+          </div>
+          <span class="uq-date-text" *ngIf="q.createdAt">
             <div>{{ q.createdAt | amTimeAgo }}</div>
-            <div style="font-size: 0.85em; color: #666;">{{ q.createdAt | date: 'd/M/y HH:mm:ss' }}</div>
+            <div style="font-size: 0.85em; color: #666;margin-top: 3px;">{{ q.createdAt | date: 'd/M/y HH:mm:ss' }}</div>
           </span>
           <span class="uq-date-text" *ngIf="!q.createdAt">-</span>
-          <span class="uq-actions">
+          <span class="uq-actions" *ngIf="listMode === 'unanswered'">
             <button class="uq-btn uq-btn-icon" mat-icon-button 
               matTooltipClass="kb-custom-mat-tooltip" 
               [matTooltip]="'AddQuestionToKB' | translate" 
+              #tooltip="matTooltip" 
+              matTooltipPosition='before' 
+              matTooltipHideDelay="100"
               (click)="onOpenAddKnowledgeBaseModal(q)">
               <mat-icon class="add-icon">add_circle_outline</mat-icon>
             </button>
             <button class="uq-btn uq-btn-icon" mat-icon-button 
               matTooltipClass="kb-custom-mat-tooltip" 
               [matTooltip]="'DiscardQuestion' | translate" 
+               #tooltip="matTooltip" 
+              matTooltipPosition='before' 
+              matTooltipHideDelay="100"
               (click)="onDiscardQuestion(q)">
+              <mat-icon class="delete-icon">delete_outline</mat-icon>
+            </button>
+          </span>
+          <span class="uq-actions uq-actions--answered" *ngIf="listMode === 'answered'">
+            <button class="uq-btn uq-btn-icon" mat-icon-button
+              matTooltipClass="kb-custom-mat-tooltip"
+              [matTooltip]="'KbPage.DeleteAnsweredQuestion' | translate"
+               #tooltip="matTooltip" 
+              matTooltipPosition='before' 
+              matTooltipHideDelay="100"
+              (click)="onDeleteAnsweredQuestion(q)">
               <mat-icon class="delete-icon">delete_outline</mat-icon>
             </button>
           </span>
@@ -55,13 +105,27 @@
       </div>
     </ng-container>
     <ng-template #noQuestions>
-      <!-- <div class="uq-no-questions">There are no unanswered questions</div> -->
-      <div class="add-header-container">
-        <div class="upgrade-title">{{'KbPage.UnansweredQuestions' | translate }}</div>
-        <span class="span-6"></span>
-        <!-- <div class="upgrade-subtitle">These are the questions that users asked but your knowledge base could not answer. You can add them to your KB or discard them.</div> -->
-        <div class="upgrade-subtitle">{{'KbPage.UnansweredQuestionsDesc' | translate }}</div>
-        <span class="span-32"></span>
+      <div class="add-header-container" *ngIf="listMode === 'answered'">
+        <ng-container *ngIf="hasActiveQuestionsSearch; else answeredInitialEmpty">
+          <div class="uq-no-kb-match-params">{{ 'KbPage.NoKbMatchParams' | translate }}</div>
+        </ng-container>
+        <ng-template #answeredInitialEmpty>
+          <div class="upgrade-title">{{'KbPage.AnsweredQuestionsEmptyTitle' | translate }}</div>
+          <span class="span-6"></span>
+          <div class="upgrade-subtitle">{{'KbPage.AnsweredQuestionsEmptyDesc' | translate }}</div>
+          <span class="span-32"></span>
+        </ng-template>
+      </div>
+      <div class="add-header-container" *ngIf="listMode === 'unanswered'">
+        <ng-container *ngIf="hasActiveQuestionsSearch; else unansweredInitialEmpty">
+          <div class="uq-no-kb-match-params">{{ 'KbPage.NoKbMatchParams' | translate }}</div>
+        </ng-container>
+        <ng-template #unansweredInitialEmpty>
+          <div class="upgrade-title">{{'KbPage.UnansweredQuestions' | translate }}</div>
+          <span class="span-6"></span>
+          <div class="upgrade-subtitle">{{'KbPage.UnansweredQuestionsDesc' | translate }}</div>
+          <span class="span-32"></span>
+        </ng-template>
       </div>
     </ng-template>
   </ng-container>
