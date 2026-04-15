@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 @Component({
   selector: 'appdashboard-kb-chatbot-actions-panel',
   templateUrl: './kb-chatbot-actions-panel.component.html',
+  styleUrls: ['./kb-chatbot-actions-panel.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KbChatbotActionsPanelComponent {

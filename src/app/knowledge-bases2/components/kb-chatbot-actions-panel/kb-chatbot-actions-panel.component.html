@@ -6,10 +6,9 @@
   <div
     *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
     id="kb-chatbot"
-    class="served-by-cb-wpr"
-    style="margin-left: 8px"
+    class="served-by-cb-wpr served-by-cb-wpr--spaced"
   >
-    <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; flex-wrap: wrap">
+    <div class="served-by-cb-row">
       <ng-container *ngFor="let chatbot of chatbotsUsingNamespace; let i = index">
         <div
           class="served-by-cb-b"
@@ -69,7 +68,6 @@
     <button
       *ngIf="permissionToAddFlows"
       class="custom-button xs"
-      style="font-size: 12px"
       (click)="createChatbotOneClick.emit()"
     >
       <span *ngIf="!exportingTemplate">

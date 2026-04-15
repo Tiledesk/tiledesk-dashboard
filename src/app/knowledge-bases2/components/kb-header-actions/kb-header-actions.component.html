@@ -41,7 +41,6 @@
     class="btn btn-red"
     [disabled]="!permissionToDelete"
     aria-label="Delete"
-    style="text-transform: capitalize;"
     (click)="deleteNamespace.emit()"
   >
     <span *ngIf="selectedNamespaceIsDefault === false">
@@ -52,29 +51,3 @@
     </span>
   </button>
 </div>
-
-<!-- TAB SWITCHER START -->
-<div class="kb-switch-field">
-  <input
-    type="radio"
-    id="tab-contents"
-    name="kb-tab-switch"
-    [checked]="selectedTab === 'contents'"
-    (change)="onTabChange('contents')"
-  />
-  <label for="tab-contents">
-    <span>{{ 'KbPage.Contents' | translate }}</span>
-  </label>
-  <input
-    type="radio"
-    id="tab-unanswered"
-    name="kb-tab-switch"
-    [checked]="selectedTab === 'unanswered'"
-    (change)="onTabChange('unanswered')"
-  />
-  <label for="tab-unanswered">
-    <span>{{ 'KbPage.UnansweredQuestions' | translate }}</span>
-  </label>
-</div>
-<!-- TAB SWITCHER END -->
-

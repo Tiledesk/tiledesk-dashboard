@@ -245,18 +245,23 @@
                             <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
                             <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
                             <ng-option value="-1"> 
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--not-started">hourglass_empty</span>
                                 {{ 'KbPage.StatusNotStarted' | translate }}
                             </ng-option>
                             <ng-option value="100"> 
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--queued">schedule</span>
                                 {{ 'KbPage.StatusQueued' | translate }}
                             </ng-option>
                             <ng-option value="200"> 
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--started">autorenew</span>
                                 {{ 'KbPage.StatusStarted' | translate }}
                             </ng-option>
                             <ng-option value="300"> 
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--finished">check_circle</span>
                                 {{ 'KbPage.StatusFinished' | translate }}
                             </ng-option>
                             <ng-option value="400"> 
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--error">error</span>
                                 {{ 'KbPage.StatusError' | translate }}
                             </ng-option>
                         </ng-select>

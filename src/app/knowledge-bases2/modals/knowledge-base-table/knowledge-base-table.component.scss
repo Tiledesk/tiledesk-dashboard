@@ -228,6 +228,45 @@ td.mat-footer-cell:last-of-type {
     color: gray;
 }
 
+:host ::ng-deep {
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ng-select .ng-select-container .ng-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.kb-status-option__icon {
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.kb-status-option__icon--not-started {
+  color: #9aa7b5;
+}
+
+.kb-status-option__icon--queued {
+  color: #62778c;
+}
+
+.kb-status-option__icon--started {
+  color: #006cff;
+}
+
+.kb-status-option__icon--finished {
+  color: #18e32c;
+}
+
+.kb-status-option__icon--error {
+  color: #f44336;
+}
+
 
 table {
     max-width: 100%;
