@@ -186,7 +186,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   newExtension: string = '';
   extensions: string[] = [];
   allowed_upload_extentions: string;
-  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt,.mp3";
 
   // unavailable_status_on: boolean;
 
