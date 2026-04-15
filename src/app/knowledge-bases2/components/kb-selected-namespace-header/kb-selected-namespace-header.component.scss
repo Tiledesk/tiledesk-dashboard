@@ -1,0 +1,80 @@
+.selected-namespace-content {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+  height: 35px;
+}
+
+.selected-namespace-content > .selected-namespace-name {
+  font-size: 24px;
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.namespace-name-output {
+  padding: 8px 6px;
+  border-radius: 4px !important;
+  border: 1px solid transparent;
+  color: var(--text-color);
+}
+
+.namespace-name-input {
+  border-radius: 4px !important;
+  padding: 1px 6px;
+  border: 1px solid #0b57d0 !important;
+  color: var(--text-color);
+}
+
+.namespace-name-input.edit-mode {
+  border: 1px solid #d3dbe5;
+}
+
+.kb-bottom-badge-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.kb-default-badge {
+  background-color: #677693ab;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 400;
+  position: relative;
+  top: 1px;
+  width: fit-content;
+}
+
+.hybrid-search-badge {
+  font-weight: 400;
+  font-size: 10px;
+  color: #fff;
+  padding: 0 8px;
+  background-color: #c065a8;
+  margin-right: 8px;
+  position: relative;
+  top: 1px;
+  border-radius: 9999px;
+}
+
+.standard-search-badge {
+  font-weight: 400;
+  font-size: 10px;
+  color: #fff;
+  padding: 3px 8px;
+  background-color: #747eaa;
+  margin-right: 8px;
+  position: relative;
+  top: 1px;
+  border-radius: 9999px;
+}
+

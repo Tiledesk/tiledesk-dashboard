@@ -19,9 +19,9 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { FaqService } from 'app/services/faq.service';
-import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
+import { ModalHookBotComponent } from 'app/knowledge-bases2/modals/modal-hook-bot/modal-hook-bot.component';
 import { DepartmentService } from 'app/services/department.service';
-import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotNameComponent } from 'app/knowledge-bases2/modals/modal-chatbot-name/modal-chatbot-name.component';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-home-kb',

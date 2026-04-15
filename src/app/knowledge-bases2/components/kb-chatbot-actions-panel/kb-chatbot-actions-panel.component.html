@@ -1,0 +1,84 @@
+<div class="chatbot-using-current-namespace-wpr">
+  <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0" class="chatbot-using-current-namespace">
+    {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:
+  </div>
+
+  <div
+    *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
+    id="kb-chatbot"
+    class="served-by-cb-wpr"
+    style="margin-left: 8px"
+  >
+    <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; flex-wrap: wrap">
+      <ng-container *ngFor="let chatbot of chatbotsUsingNamespace; let i = index">
+        <div
+          class="served-by-cb-b"
+          [ngClass]="{ 'first-served-by': i === 0, 'disable-link-if-is-agent': userRole === 'agent' }"
+        >
+          <div
+            class="served-by-cb-c"
+            (click)="openChatbot.emit(chatbot)"
+            matTooltipClass="kb-custom-mat-tooltip"
+            matTooltip=" {{ 'ViewOption' | translate }}"
+            #tooltip="matTooltip"
+            matTooltipPosition="below"
+            matTooltipHideDelay="100"
+          >
+            <div class="served-by-cb-d">
+              <div size="32" class="served-by-cb-e">
+                <!-- USECASE uploadEngine Firebase -->
+                <img
+                  *ngIf="uploadEngineIsFirebase"
+                  [ngClass]="{ 'bot-img-gray-bckgrnd': chatbot.hasImage === false }"
+                  src="https://firebasestorage.googleapis.com/v0/b/{{ storageBucket }}/o/profiles%2F{{ chatbot?._id }}%2Fphoto.jpg?alt=media"
+                  alt=""
+                  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                />
+                <!-- USECASE uploadEngine Native -->
+                <img
+                  *ngIf="!uploadEngineIsFirebase"
+                  [ngClass]="{ 'bot-img-gray-bckgrnd': chatbot.hasImage === false }"
+                  src="{{ baseUrl }}files?path=uploads%2Fusers%2F{{ chatbot?._id }}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                  alt=""
+                  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                />
+              </div>
+              <div class="served-by-cb-name">
+                {{ chatbot.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <sat-popover #cbPopover horizontalAlign="center" verticalAlign="below" panelClass="cb-details-popover">
+    <div class="cbPopover-cbname">
+      {{ hoveredChatbot?.name }}
+    </div>
+
+    <div class="cbPopover-cbtext">
+      {{ 'ViewInTheDesignStudio' | translate }}
+    </div>
+  </sat-popover>
+
+  <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
+    {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
+
+    <button
+      *ngIf="permissionToAddFlows"
+      class="custom-button xs"
+      style="font-size: 12px"
+      (click)="createChatbotOneClick.emit()"
+    >
+      <span *ngIf="!exportingTemplate">
+        {{ 'CreateYourAIAgentWithOneClick' | translate }}
+      </span>
+      <span *ngIf="exportingTemplate">
+        {{ 'Processing' | translate }}
+      </span>
+    </button>
+  </div>
+</div>
+

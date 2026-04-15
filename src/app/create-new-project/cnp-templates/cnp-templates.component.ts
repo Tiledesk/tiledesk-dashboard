@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotNameComponent } from 'app/knowledge-bases2/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
 import { LocalDbService } from 'app/services/users-local-db.service';

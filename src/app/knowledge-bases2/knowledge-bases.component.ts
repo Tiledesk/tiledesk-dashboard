@@ -20,34 +20,41 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
-import { ModalAddNamespaceComponent } from '../knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
+import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ModalUploadFileComponent } from '../knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
-import { ModalPreviewSettingsComponent } from '../knowledge-bases/modals/modal-preview-settings/modal-preview-settings.component';
-import { ModalPreviewKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
-import { ModalDeleteNamespaceComponent } from '../knowledge-bases/modals/modal-delete-namespace/modal-delete-namespace.component';
-import { ModalDetailKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
-import { ModalTextFileComponent } from '../knowledge-bases/modals/modal-text-file/modal-text-file.component';
-import { ModalUrlsKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
-import { ModalSiteMapComponent } from '../knowledge-bases/modals/modal-site-map/modal-site-map.component';
-import { ModalDeleteKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
+import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
+import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
+import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
+import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
+import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
+import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
+import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
+import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
-import { ModalChatbotNameComponent } from '../knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
 import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
-import { ModalHookBotComponent } from '../knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
-import { ModalNsLimitReachedComponent } from '../knowledge-bases/modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
-import { ModalConfirmGotoCdsComponent } from '../knowledge-bases/modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
+import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
+import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 // import { ShepherdService } from 'angular-shepherd';
 // import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
 // import Step from 'shepherd.js/src/types/step';
-import { ModalFaqsComponent } from '../knowledge-bases/modals/modal-faqs/modal-faqs.component';
-import { ModalAddContentComponent } from '../knowledge-bases/modals/modal-add-content/modal-add-content.component';
+import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
+import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { KnowledgeBases2Facade } from './facade/knowledge-bases2.facade';
+import { KbPermissionsService } from './services/kb-permissions.service';
+import { KbNamespaceSelectionService } from './services/kb-namespace-selection.service';
+import { KbVisitedService } from './services/kb-visited.service';
+import { KbSitemapEventsService } from './services/kb-sitemap-events.service';
+import type { KbNamespace, KbQuotas } from './models/kb-types';
+import { KB2_UI_INITIAL_STATE, type KnowledgeBases2UiState } from './models/kb-ui-state';
 
 const Swal = require('sweetalert2')
 
@@ -77,9 +84,18 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
   secretsModal = 'none';
   missingGptkeyModal = 'none';
-  showSpinner: boolean = true;
-  showKBTableSpinner: boolean = false;
-  showUQTableSpinner: boolean = false;
+  ui: KnowledgeBases2UiState = { ...KB2_UI_INITIAL_STATE };
+
+  // Template compatibility layer: gradually migrate bindings to `ui.*`.
+  get showSpinner(): boolean {
+    return this.ui.showSpinner;
+  }
+  get showKBTableSpinner(): boolean {
+    return this.ui.showKbTableSpinner;
+  }
+  get showUQTableSpinner(): boolean {
+    return this.ui.showUqTableSpinner;
+  }
   buttonDisabled: boolean = true;
   currentSortParams: any = null; // Store current sort params to sync with table component
   addButtonDisabled: boolean = false;
@@ -147,7 +163,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   upgrade: string;
   cancel: string;
   paramsDefault: string // = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-  selectedNamespace: any;
+  selectedNamespace: KbNamespace;
   hasChangedNameSpace: boolean = false;
 
   selectedNamespaceName: any;
@@ -156,7 +172,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
 
   is0penDropDown: boolean = false
-  namespaces: any; // [{ name: 'Namespaces_1', id: 111111, default: true }, { name: 'Namespaces_2', id: 222222, default: false }, { name: 'Namespaces_3', id: 333333, default: false }]
+  namespaces: KbNamespace[]; // [{ name: 'Namespaces_1', id: 111111, default: true }, { name: 'Namespaces_2', id: 222222, default: false }, { name: 'Namespaces_3', id: 333333, default: false }]
 
   namespaceIsEditable: boolean = false;
   newNamespaceName: string;
@@ -174,7 +190,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   botid: string;
   nameSpaceId: string;
   totalCount: Number;
-  quotas: any;
+  quotas: KbQuotas;
   isActiveHybrid: boolean = false;
 
 
@@ -228,7 +244,10 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   isLoadingUnanswered = false;
   isLoadingMoreUnanswered: boolean = false;
   hasMoreUnansweredQuestions: boolean = false;
-  isLoadingNamespaces = true;
+  // Kept for template compatibility; prefer `ui.isLoadingNamespaces`.
+  get isLoadingNamespaces(): boolean {
+    return this.ui.isLoadingNamespaces;
+  }
   pineconeReranking: boolean
 
 
@@ -263,7 +282,12 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     private unansweredQuestionsService: UnansweredQuestionsService,
     private quotasService: QuotesService,
     private roleService: RoleService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private facade: KnowledgeBases2Facade,
+    private kbPermissions: KbPermissionsService,
+    private kbNamespaceSelection: KbNamespaceSelectionService,
+    private kbVisited: KbVisitedService,
+    private sitemapEvents: KbSitemapEventsService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -291,10 +315,31 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     this.kbsList = [];
     // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
-   
-    this.getLoggedUser();
-    this.getCurrentProject();
-    this.getRouteParams();
+
+    this.facade.user$.pipe(takeUntil(this.unsubscribe$)).subscribe((user: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
+      if (user) {
+        this.CURRENT_USER = user
+        this.CURRENT_USER_ID = user._id
+      }
+    });
+
+    this.facade.project$.pipe(takeUntil(this.unsubscribe$)).subscribe((project: any) => {
+      this.project = project
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT ', this.project)
+      if (this.project) {
+        this.project_name = project.name;
+        this.id_project = project._id;
+        this.getProjectById(this.id_project)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+      }
+    });
+
+    this.facade.callingPage$.pipe(takeUntil(this.unsubscribe$)).subscribe((callingPage) => {
+      this.callingPage = callingPage;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+    });
+
     this.getProjectPlan();
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
@@ -339,30 +384,12 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
-        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
-        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
-
-    
-
-
-        // PERMISSION_TO_DELETE
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and Admin always has permission
-          this.PERMISSION_TO_DELETE = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_DELETE = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
-        }
+        const perms = this.kbPermissions.resolve(status.role, status.matchedPermissions);
+        this.hasDefaultRole = perms.hasDefaultRole;
+        this.PERMISSION_TO_DELETE = perms.canDelete;
+        this.PERMISSION_TO_ADD_KB = perms.canAddKb;
+        this.PERMISSION_TO_ADD_FLOWS = perms.canAddFlows;
+        this.PERMISSION_TO_EDIT_FLOWS = perms.canEditFlows;
 
           // PERMISSION_TO_DELETE_NAMESPACE
           // if (status.role === 'owner' || status.role === 'admin') {
@@ -380,59 +407,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
           //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
           //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
           // }
-
-        // PERMISSION_TO_ADD_KB
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and Admin always has permission
-          this.PERMISSION_TO_ADD_KB = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_ADD_KB = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
-        }
-
-        // ---------------------------------
-        // PERMISSION TO VIEW FLOWS
-        // ---------------------------------
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and admin always has permission
-          this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
-        }
-
-        // PERMISSION_TO_ADD_FLOWS
-        if (status.role === 'owner' || status.role === 'admin') {
-          // Owner and Admin always has permission
-          this.PERMISSION_TO_ADD_FLOWS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
-
-        } else if (status.role === 'agent') {
-          // Agent never have permission
-          this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
-
-        } else {
-          // Custom roles: permission depends on matchedPermissions
-          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
-        }
 
         // PERMISSION_TO_ADD_CONTENTS
         if (status.role === 'owner' || status.role === 'admin') {
@@ -516,34 +490,16 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   // }
 
   listenToOnSenSitemapEvent() {
-    document.addEventListener(
-      "on-send-sitemap", (e: CustomEvent) => {
-        // this.logger.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap :", e);
-
-        // this.logger.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap sitemap:", e.detail.sitemap);
-        if (e.detail && e.detail) {
-          let sitemap = e.detail.sitemap
-          let body = { 'sitemap': sitemap }
-          this.onSendSitemap(body)
-        }
-      }
-    );
+    this.sitemapEvents.sitemap$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((sitemap) => {
+        this.onSendSitemap({ sitemap });
+      });
   }
 
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT ', this.project)
-      if (this.project) {
-        this.project_name = project.name;
-        this.id_project = project._id;
-        this.getProjectById(this.id_project)
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
-      }
-    });
-  }
+  // Moved to KnowledgeBases2Facade subscriptions in ngOnInit()
+  getCurrentProject() {}
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
@@ -567,12 +523,12 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
       if (currentUrl.indexOf('/knowledge-bases') !== -1) {
         this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
-        const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
-        if (storedHasAlreadyVisitedKb) {
+        const hasAlreadyVisited = this.kbVisited.getVisited(this.id_project);
+        if (hasAlreadyVisited) {
           this.hasAlreadyVisitedKb = 'true'
         }
         this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
-        this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
+        this.kbVisited.markVisited(this.id_project);
 
         this.getAllNamespaces()
         this.getQuotas();
@@ -744,132 +700,56 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
 
   getAllNamespaces() {
-    this.isLoadingNamespaces = true;
-    this.kbService.getAllNamespaces().subscribe((res: any) => {
-      if (res) {
-        this.kbCount = res.length
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
-        this.namespaces = res
-      }
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP]  GET GET ALL NAMESPACES ERROR ', error);
-      this.isLoadingNamespaces = false; 
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
-      if (this.namespaces) {
-        this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
-        this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
-        this.isLoadingNamespaces = false;
-      }
-    });
+    this.ui.isLoadingNamespaces = true;
+    this.facade
+      .loadNamespaces(this.id_project, this.router.url)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(({ namespaces, selection }) => {
+        this.kbCount = namespaces.length;
+        this.namespaces = namespaces;
+        this.totalCount = namespaces.reduce((acc, ns: any) => acc + (ns.count || 0), 0);
+
+        if (selection?.selected) {
+          this.selectedNamespace = selection.selected;
+          this.selectedNamespaceName = this.selectedNamespace.name;
+
+          if (selection.shouldNavigateToSelected) {
+            this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+          }
+          if (selection.shouldPersistSelected) {
+            this.kbNamespaceSelection.persistNamespace(this.id_project, this.selectedNamespace);
+          }
+
+          this.getChatbotUsingNamespace(this.selectedNamespace.id);
+          this.paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
+          this.getListOfKb(this.paramsDefault, 'getAllNamespaces');
+        }
+
+        this.ui.isLoadingNamespaces = false;
+      });
   }
 
-  isAlphaNumeric(str) {
-    var code, i, len;
-
-    for (i = 0, len = str.length; i < len; i++) {
-      code = str.charCodeAt(i);
-      if (!(code > 47 && code < 58) && // numeric (0-9)
-        !(code > 64 && code < 91) && // upper alpha (A-Z)
-        !(code > 96 && code < 123)) { // lower alpha (a-z)
-        return false;
-      }
-    }
-    return true;
-  };
-
   selectLastUsedNamespaceAndGetKbList(namespaces) {
-    const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
-    //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
-    if (!storedNamespace) {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
+    const storedNamespace = this.kbNamespaceSelection.getStoredNamespace(this.id_project);
+    const urlNamespaceId = this.kbNamespaceSelection.resolveNamespaceIdFromUrl(this.router.url);
+    const selection = this.kbNamespaceSelection.select(namespaces, storedNamespace, urlNamespaceId);
 
-      const currentUrl = this.router.url;
-
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
-      let currentUrlSegment = currentUrl.split('/');
-
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
-      currentUrlSegment.forEach(segment => {
-        if (segment === 'knowledge-bases') {
-          this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
-          // this.logger.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
-          let nameSpaceIdisAlphaNumeric = this.isAlphaNumeric(this.nameSpaceId)
-          // this.logger.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
-          if (nameSpaceIdisAlphaNumeric === false) {
-            this.nameSpaceId = '0'
-          }
-        }
-
-      });
-
-
-
-      // const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
-      //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
-
-      if (this.nameSpaceId === '0') {
-        this.selectedNamespace = namespaces.find((el) => {
-          return el.default === true
-        });
-        if (this.selectedNamespace) {
-          this.selectedNamespaceName = this.selectedNamespace.name
-
-          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
-          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
-
-          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-          this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-          this.getChatbotUsingNamespace(this.selectedNamespace.id)
-        }
-      } else {
-        this.selectedNamespace = namespaces.find((el) => {
-          return el.id === this.nameSpaceId;
-        });
-        if (!this.selectedNamespace) {
-          // Fall back to default
-          this.selectedNamespace = namespaces.find((el) => {
-            return el.default === true
-          });
-          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        }
-        this.selectedNamespaceName = this.selectedNamespace.name
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
-      }
-
-    } else {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
-      const storedNamespaceObjct = JSON.parse(storedNamespace)
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace storedNamespaceObjct ', storedNamespaceObjct),
-
-
-        this.selectedNamespace = namespaces.find((el) => {
-          return el.id === storedNamespaceObjct['id'];
-        });
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
-
-
-      if (this.selectedNamespace) {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
-        this.selectedNamespaceName = this.selectedNamespace.name
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
-      } else {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (NOT EXIST BETWEEN THE NASPACES A NASPACE  WITH THE ID GET FROM STORED NAMESPACE)', this.selectedNamespaceName)
-        this.selectedNamespace = namespaces.find((el) => {
-          return el.default === true
-        });
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
-        if (this.selectedNamespaceName) {
-          this.selectedNamespaceName = this.selectedNamespace.name
-        }
-      }
+    if (!selection.selected) {
+      return;
     }
-    this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+
+    this.selectedNamespace = selection.selected;
+    this.selectedNamespaceName = this.selectedNamespace.name;
+
+    if (selection.shouldNavigateToSelected) {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+    }
+    if (selection.shouldPersistSelected) {
+      this.kbNamespaceSelection.persistNamespace(this.id_project, this.selectedNamespace);
+    }
+
+    this.getChatbotUsingNamespace(this.selectedNamespace.id)
+    this.paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
@@ -895,7 +775,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.namespaces.push(namespace)
         this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
 
-        let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+        let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
         this.getListOfKb(paramsDefault, 'createNewNamespace');
       }
     }, (error) => {
@@ -1097,7 +977,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+      let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
       this.loadUnansweredQuestions();
 
@@ -1555,7 +1435,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
               Swal.close();
               this.logger.log('[KB IMPORT] * COMPLETE *');
 
-              const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
+              const paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
               this.getListOfKb(paramsDefault, 'onImportJSON');
 
               Swal.fire({
@@ -1657,7 +1537,7 @@ _presentDialogImportContents() {
             },
             complete: () => {
               this.logger.log('[KB IMPORT] * COMPLETE *');
-              const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
+              const paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
               this.getListOfKb(paramsDefault, 'onImportJSON');
 
               Swal.fire({
@@ -1775,7 +1655,7 @@ _presentDialogImportContents() {
             this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
           }, () => {
             this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
-            let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+            let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
             this.getListOfKb(paramsDefault, 'onImportJSON');
             Swal.fire({
               title: this.translate.instant('Done') + "!",
@@ -2203,7 +2083,7 @@ _presentDialogImportContents() {
     this.kbService.updateKbContent(kb).subscribe((response: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] updateKbContent response', response);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
-      const paramsDefault = '?limit=' + KB_DEFAULT_PARAMS.LIMIT + '&page=' + KB_DEFAULT_PARAMS.NUMBER_PAGE + '&sortField=' + KB_DEFAULT_PARAMS.SORT_FIELD + '&direction=' + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      const paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
       this.getListOfKb(paramsDefault, 'after-update');
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] updateKbContent error', error);
@@ -2300,7 +2180,7 @@ _presentDialogImportContents() {
             this.onAddKb(result.body)
           }
         } else if (result && result.isSingle === "false") {
-          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+          let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
           this.getListOfKb(paramsDefault, 'add-multi-faq')
         }
       });
@@ -2361,7 +2241,7 @@ _presentDialogImportContents() {
           this.onAddKb(result.body)
         }
       } else if (result && result.isSingle === "false") {
-        let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+        let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
         this.getListOfKb(paramsDefault, 'add-multi-faq')
       }
     });
@@ -2713,18 +2593,8 @@ _presentDialogImportContents() {
 
 
 
-  getRouteParams() {
-    this.route.params.subscribe((params) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS ', params);
-      if (params.calledby && params.calledby === 'h') {
-        this.callingPage = 'Home'
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
-      } else if (!params.calledby) {
-        this.callingPage = 'Knowledge Bases'
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
-      }
-    })
-  }
+  // Moved to KnowledgeBases2Facade subscriptions in ngOnInit()
+  getRouteParams() {}
 
   trackPage() {
     if (!isDevMode()) {
@@ -2739,15 +2609,8 @@ _presentDialogImportContents() {
     }
   }
 
-  getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
-      if (user) {
-        this.CURRENT_USER = user
-        this.CURRENT_USER_ID = user._id
-      }
-    });
-  }
+  // Moved to KnowledgeBases2Facade subscriptions in ngOnInit()
+  getLoggedUser() {}
 
 
 
@@ -2783,8 +2646,6 @@ _presentDialogImportContents() {
 
   onLoadPage(searchParams?: any, calledby?: string) {
     console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
-    let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     
     // Use page from searchParams if provided, otherwise increment numberPage
@@ -2798,34 +2659,23 @@ _presentDialogImportContents() {
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
-    params += "&page=" + this.numberPage;
-    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
-   
-    this.logger.log('onLoadNextPage searchParams > search (2):', searchParams?.search);
-    if (searchParams?.status) {
-      params += "&status=" + searchParams.status;
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage status:', params);
-    }
-    if (searchParams?.type) {
-      params += "&type=" + searchParams.type;
-    }
-    if (searchParams?.search) {
-      params += "&search=" + searchParams.search;
-    }
-    if (searchParams?.sortField) {
-      params += "&sortField=" + searchParams.sortField;
-    } else {
-      params += "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD;
-    }
-    if (searchParams?.direction) {
-      params += "&direction=" + searchParams.direction;
-    } else {
-      params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-    }
+
+    const params = this.facade.buildKbListParams({
+      namespace: this.selectedNamespace.id,
+      page: this.numberPage,
+      status: searchParams?.status,
+      type: searchParams?.type,
+      search: searchParams?.search,
+      sortField: searchParams?.sortField,
+      // legacy direction can be numeric; facade builder normalizes
+      direction: searchParams?.direction,
+    } as any);
+
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage params:', params, 'searchParams', searchParams);
     // Show table spinner only for initial load or refresh (page 0 or empty list), not for load more
     const isLoadMore = searchParams && searchParams.page !== undefined && searchParams.page > 0 && this.kbsList.length > 0;
     if (!isLoadMore) {
-      this.showKBTableSpinner = true;
+      this.ui.showKbTableSpinner = true;
     }
     this.getListOfKb(params, calledby || 'onLoadPage');
   }
@@ -2842,9 +2692,13 @@ _presentDialogImportContents() {
       direction = searchParams.direction;
     } else {
       // If not provided in searchParams, use last known or defaults
-      sortField = searchParams.sortField || this.lastKbSearchParams?.sortField || KB_DEFAULT_PARAMS.SORT_FIELD;
-      direction = searchParams.direction !== undefined ? searchParams.direction : 
-                 (this.lastKbSearchParams?.direction !== undefined ? this.lastKbSearchParams.direction : KB_DEFAULT_PARAMS.DIRECTION);
+      sortField = searchParams.sortField || this.lastKbSearchParams?.sortField || this.facade.getDefaultKbListSortField();
+      direction =
+        searchParams.direction !== undefined
+          ? searchParams.direction
+          : this.lastKbSearchParams?.direction !== undefined
+            ? this.lastKbSearchParams.direction
+            : this.facade.getDefaultKbListDirection();
       // Also update searchParams to ensure they are passed to onLoadPage
       searchParams.sortField = sortField;
       searchParams.direction = direction;
@@ -2860,7 +2714,7 @@ _presentDialogImportContents() {
     this.numberPage = -1;
     this.kbsList = [];
     // Show table spinner for table operations
-    this.showKBTableSpinner = true;
+    this.ui.showKbTableSpinner = true;
     this.onLoadPage(searchParams, calledby);
   }
 
@@ -2873,7 +2727,7 @@ _presentDialogImportContents() {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
-    this.kbService.getListOfKb(params).subscribe((resp: any) => {
+    this.facade.loadKbList(params).pipe(takeUntil(this.unsubscribe$)).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
@@ -2913,13 +2767,13 @@ _presentDialogImportContents() {
 
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
-      this.showSpinner = false
-      this.showKBTableSpinner = false;
+      this.ui.showSpinner = false;
+      this.ui.showKbTableSpinner = false;
       this.getKbCompleted = false
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
-      this.showSpinner = false;
-      this.showKBTableSpinner = false;
+      this.ui.showSpinner = false;
+      this.ui.showKbTableSpinner = false;
 
       // this.presentKBTour()
 
@@ -3122,7 +2976,7 @@ _presentDialogImportContents() {
 
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
       this.getListOfKb(paramsDefault, 'onAddMultiKb');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
@@ -3207,7 +3061,7 @@ _presentDialogImportContents() {
       this.logger.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
       this.getListOfKb(paramsDefault, 'onAddMultiKb');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
@@ -3363,22 +3217,22 @@ _presentDialogImportContents() {
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespace.id);
     // let id_namespace = this.id_project;
     // this.logger.log("delete namespace " + id_namespace);
-    this.showSpinner = true;
+    this.ui.showSpinner = true;
     // this.closeDeleteNamespaceModal();
 
     this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
       .subscribe((response: any) => {
         this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
-        this.showSpinner = false;
+        this.ui.showSpinner = false;
 
         // this.onLoadByFilter(this.paramsDefault);
 
       }, (error) => {
         this.logger.error("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ERROR ", error);
-        this.showSpinner = false;
+        this.ui.showSpinner = false;
       }, () => {
         this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace COMPLETE ");
-        this.showSpinner = false;
+        this.ui.showSpinner = false;
         if (removeAlsoNamespace) {
           this.localDbService.removeFromStorage(`last_kbnamespace-${this.id_project}`)
 
@@ -3393,13 +3247,13 @@ _presentDialogImportContents() {
           // this.hasRemovednNamespace
           this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
-          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+          let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
 
           this.getListOfKb(paramsDefault, 'deleteNamespace');
 
           this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace)
         } else {
-          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+          let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
 
           this.getListOfKb(paramsDefault, 'deleteNamespace');
           this.getAllNamespaces()
@@ -3954,7 +3808,7 @@ _presentDialogImportContents() {
     
     if (page === 0 && !append) {
       this.isLoadingUnanswered = true;
-      this.showUQTableSpinner = true;
+      this.ui.showUqTableSpinner = true;
       this.unansweredQuestionsPage = 0;
     } else {
       this.isLoadingMoreUnanswered = true;
@@ -3995,7 +3849,7 @@ _presentDialogImportContents() {
           this.hasMoreUnansweredQuestions = loadedCount < this.unansweredQuestionsCount;
           
           this.isLoadingUnanswered = false;
-          this.showUQTableSpinner = false;
+          this.ui.showUqTableSpinner = false;
           this.isLoadingMoreUnanswered = false;
           this.unansweredQuestionsPage = page;
           
@@ -4009,7 +3863,7 @@ _presentDialogImportContents() {
         },
         (err) => {
           this.isLoadingUnanswered = false;
-          this.showUQTableSpinner = false;
+          this.ui.showUqTableSpinner = false;
           this.isLoadingMoreUnanswered = false;
           if (!append) {
             this.unansweredQuestions = [];

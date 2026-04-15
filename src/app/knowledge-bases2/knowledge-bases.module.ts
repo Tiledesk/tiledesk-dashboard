@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { KnowledgeBases2Component } from './knowledge-bases.component';
-import { AddContentMenuComponent } from '../knowledge-bases/menu/add-content-menu/add-content-menu.component';
-import { KnowledgeBaseTableComponent } from '../knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
-import { ModalDeleteKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
-import { ModalDetailKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
-import { ModalErrorComponent } from '../knowledge-bases/modals/modal-error/modal-error.component';
-import { ModalGptKeyComponent } from '../knowledge-bases/modals/modal-gpt-key/modal-gpt-key.component';
-import { ModalPageUrlComponent } from '../knowledge-bases/modals/modal-page-url/modal-page-url.component';
-import { ModalPreviewKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
-import { ModalSiteMapComponent } from '../knowledge-bases/modals/modal-site-map/modal-site-map.component';
-import { ModalTextFileComponent } from '../knowledge-bases/modals/modal-text-file/modal-text-file.component';
-import { ModalUrlsKnowledgeBaseComponent } from '../knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
+import { AddContentMenuComponent } from './menu/add-content-menu/add-content-menu.component';
+import { KnowledgeBaseTableComponent } from './modals/knowledge-base-table/knowledge-base-table.component';
+import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
+import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
+import { ModalErrorComponent } from './modals/modal-error/modal-error.component';
+import { ModalGptKeyComponent } from './modals/modal-gpt-key/modal-gpt-key.component';
+import { ModalPageUrlComponent } from './modals/modal-page-url/modal-page-url.component';
+import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
+import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
+import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from 'app/shared/shared.module';
@@ -22,35 +22,40 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MomentModule } from 'ngx-moment';
-import { ModalDeleteNamespaceComponent } from '../knowledge-bases/modals/modal-delete-namespace/modal-delete-namespace.component';
-import { ModalPreviewSettingsComponent } from '../knowledge-bases/modals/modal-preview-settings/modal-preview-settings.component';
+import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
+import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ModalAddNamespaceComponent } from '../knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
-import { ModalUploadFileComponent } from '../knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
-import { ModalChatbotNameComponent } from '../knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
+import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
+import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ModalHookBotComponent } from '../knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
+import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ModalNsLimitReachedComponent } from '../knowledge-bases/modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
-import { ModalConfirmGotoCdsComponent } from '../knowledge-bases/modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
+import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
-import { ModalFaqsComponent } from '../knowledge-bases/modals/modal-faqs/modal-faqs.component';
-import { ModalAddContentComponent } from '../knowledge-bases/modals/modal-add-content/modal-add-content.component';
+import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
+import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { MatRippleModule } from '@angular/material/core';
-import { ModalUnansweredQuestionsComponent } from '../knowledge-bases/modals/modal-unanswered-questions/modal-unanswered-questions.component';
+import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-questions/modal-unanswered-questions.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ModalConfirmActionComponent } from '../knowledge-bases/modals/modal-confirm-action/modal-confirm-action.component';
+import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AutoWidthInputDirective } from '../_directives/auto-width-input.directive';
 import { HtmlTagPipe } from '../html-tag.pipe';
 import { MatTabsModule } from '@angular/material/tabs';
+import { KbNamespaceSidebarComponent } from './components/kb-namespace-sidebar/kb-namespace-sidebar.component';
+import { KbSelectedNamespaceHeaderComponent } from './components/kb-selected-namespace-header/kb-selected-namespace-header.component';
+import { KbContentsTabComponent } from './components/kb-contents-tab/kb-contents-tab.component';
+import { KbUnansweredTabComponent } from './components/kb-unanswered-tab/kb-unanswered-tab.component';
+import { KbChatbotActionsPanelComponent } from './components/kb-chatbot-actions-panel/kb-chatbot-actions-panel.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBases2Component},
@@ -61,6 +66,11 @@ const routes: Routes = [
     AutoWidthInputDirective,
     HtmlTagPipe,
     KnowledgeBases2Component,
+    KbNamespaceSidebarComponent,
+    KbSelectedNamespaceHeaderComponent,
+    KbContentsTabComponent,
+    KbUnansweredTabComponent,
+    KbChatbotActionsPanelComponent,
     AddContentMenuComponent,
     KnowledgeBaseTableComponent,
     ModalDeleteKnowledgeBaseComponent,

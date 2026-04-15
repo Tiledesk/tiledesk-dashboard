@@ -41,7 +41,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { BrandService } from 'app/services/brand.service';
-import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotNameComponent } from 'app/knowledge-bases2/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
