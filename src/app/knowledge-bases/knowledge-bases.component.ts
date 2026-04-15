@@ -338,10 +338,33 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   switchTab(tab: 'contents' | 'unanswered') {
     this.selectedTab = tab;
+    if (tab === 'contents') {
+      this.clearKbQuestionsDeepLinkQueryParams();
+    }
     if (tab === 'unanswered') {
       this.questionsSubTab = 'answered';
       this.loadAnsweredQuestions(0, false);
     }
+  }
+
+  /** Rimuove `tab` / `questionsSub` dall’URL (stato obsoleto rispetto alla tab Contenuti). */
+  private clearKbQuestionsDeepLinkQueryParams(): void {
+    const qpm = this.route.snapshot.queryParamMap;
+    if (!qpm.get('tab') && !qpm.get('questionsSub')) {
+      return;
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: null, questionsSub: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  /** Dopo import JSON contenuti: resta su Contenuti e allinea URL (evita riapertura tab Domande da ?tab=questions). */
+  private afterKbContentsImportSuccess(): void {
+    this.selectedTab = 'contents';
+    this.clearKbQuestionsDeepLinkQueryParams();
   }
 
   switchQuestionsSubTab(sub: 'answered' | 'unanswered') {
@@ -1761,6 +1784,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             complete: () => {
               Swal.close();
               this.logger.log('[KB IMPORT] * COMPLETE *');
+              this.afterKbContentsImportSuccess();
 
               const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
               this.getListOfKb(paramsDefault, 'onImportJSON');
@@ -1864,6 +1888,7 @@ _presentDialogImportContents() {
             },
             complete: () => {
               this.logger.log('[KB IMPORT] * COMPLETE *');
+              this.afterKbContentsImportSuccess();
               const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
               this.getListOfKb(paramsDefault, 'onImportJSON');
 
@@ -1982,6 +2007,7 @@ _presentDialogImportContents() {
             this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
           }, () => {
             this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+            this.afterKbContentsImportSuccess();
             let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
             this.getListOfKb(paramsDefault, 'onImportJSON');
             Swal.fire({
