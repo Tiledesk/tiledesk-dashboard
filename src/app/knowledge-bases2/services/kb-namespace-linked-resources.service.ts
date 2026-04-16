@@ -10,6 +10,14 @@ import type { KbNamespace } from '../models/kb-types';
 type ProvisioningResult = { bot?: any; department?: any };
 type TagString = string;
 
+export type KbProvisioningStepId = 'chatbot' | 'department' | 'tags';
+export type KbProvisioningStepStatus = 'running' | 'success' | 'error';
+export interface KbProvisioningProgressEvent {
+  step: KbProvisioningStepId;
+  status: KbProvisioningStepStatus;
+  error?: any;
+}
+
 /**
  * Ensure KB-linked resources (chatbot + department) exist and stay in sync with a namespace.
  *
@@ -32,6 +40,59 @@ export class KbNamespaceLinkedResourcesService {
     private faqService: FaqService,
     private departmentService: DepartmentService,
   ) {}
+
+  /**
+   * Same contract as `ensureOnCreate()`, but allows the caller to receive progress updates.
+   * Designed for onboarding-style UIs (step-by-step status with checks).
+   *
+   * The core behavior is unchanged and remains idempotent.
+   */
+  ensureOnCreateWithProgress(
+    input: { projectId: string; namespace: KbNamespace },
+    onProgress: (ev: KbProvisioningProgressEvent) => void,
+  ): Observable<ProvisioningResult> {
+    const namespaceId = input.namespace?.id as string;
+    const namespaceName = input.namespace?.name as string;
+    if (!namespaceId || !namespaceName) {
+      return throwError(() => new Error('Missing namespace id or name'));
+    }
+
+    onProgress({ step: 'chatbot', status: 'running' });
+    return this.ensureChatbotForNamespace({ namespaceId, namespaceName }).pipe(
+      tap(() => onProgress({ step: 'chatbot', status: 'success' })),
+      catchError((err) => {
+        onProgress({ step: 'chatbot', status: 'error', error: err });
+        return throwError(() => err);
+      }),
+      switchMap((bot) => {
+        onProgress({ step: 'department', status: 'running' });
+        return this.ensureDepartmentForNamespace({ namespaceName, bot }).pipe(
+          tap(() => onProgress({ step: 'department', status: 'success' })),
+          map((department) => ({ bot, department })),
+          catchError((err) => {
+            onProgress({ step: 'department', status: 'error', error: err });
+            return throwError(() => err);
+          }),
+        );
+      }),
+      switchMap(({ bot, department }) => {
+        const botId = bot?._id ?? bot?.id;
+        const deptId = department?._id ?? department?.id;
+        const tags = this.buildOwnershipTags({ namespaceId, botId, deptId });
+
+        onProgress({ step: 'tags', status: 'running' });
+        return this.patchTagsOnBot({ bot, tags }).pipe(
+          switchMap(() => this.patchTagsOnDepartment({ department, tags })),
+          tap(() => onProgress({ step: 'tags', status: 'success' })),
+          map(() => ({ bot, department })),
+          catchError((err) => {
+            onProgress({ step: 'tags', status: 'error', error: err });
+            return throwError(() => err);
+          }),
+        );
+      }),
+    );
+  }
 
   ensureOnCreate(input: { projectId: string; namespace: KbNamespace }): Observable<ProvisioningResult> {
     const namespaceId = input.namespace?.id as string;
