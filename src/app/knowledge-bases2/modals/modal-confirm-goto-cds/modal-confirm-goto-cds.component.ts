@@ -21,9 +21,12 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   panelOpenState = false;
   WIDGET_URL: string;
   projectId: string;
+  departmentId: string;
+  participants: string;
   has_copied = false;
   hasClickedInstallBtn: boolean = false
   hasClickedEditBtn: boolean = false
+  installOnly: boolean = false
 
 
 
@@ -44,11 +47,19 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
       this.chatbotName = this.chatbot.name
       this.logger.log('[MODAL-CONFIRM-GOTO-CDS] data > chatbotName', this.chatbotName)
     }
+    this.installOnly = !!data?.installOnly;
+    this.departmentId = data?.departmentId;
+    const botId = data?.botId || this.chatbot?._id;
+    this.participants = botId ? `bot_${botId}` : undefined;
   }
 
   ngOnInit(): void {
     this.getCurrentProject();
     this.getWidgetUrl()
+    if (this.installOnly) {
+      this.hasClickedInstallBtn = true;
+      this.hasClickedEditBtn = false;
+    }
   }
 
   getCurrentProject() {
@@ -99,7 +110,9 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
       `<script type="application/javascript">
         window.tiledeskSettings= 
         {
-            projectid: ${this.projectId}
+            projectid: "${this.projectId}",
+            departmentID: "${this.departmentId}",
+            participants: "${this.participants}"
         };
         (function(d, s, id) { 
             var w=window; var d=document; var i=function(){i.c(arguments);};

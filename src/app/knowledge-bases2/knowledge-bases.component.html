@@ -49,6 +49,7 @@
                     <appdashboard-kb-selected-namespace-header
                       [selectedNamespace]="selectedNamespace"
                       [namespaceIsEditable]="namespaceIsEditable"
+                      (installOnWebsite)="onOpenInstallOnWebsiteModal()"
                       (mouseOverName)="onMouseOver()"
                       (mouseOutName)="onMouseOut()"
                       (clickName)="hasClickedNamespaceName()"
@@ -62,12 +63,15 @@
     
                     <appdashboard-kb-header-actions
                       [permissionToExportContents]="PERMISSION_TO_EXPORT_CONTENTS"
+                      [hasContents]="(kbsListCount || 0) > 0"
                       [permissionToAddContents]="PERMISSION_TO_ADD_CONTENTS"
                       [permissionToDelete]="PERMISSION_TO_DELETE"
+                      [permissionToSyncLinkedResources]="PERMISSION_TO_ADD_FLOWS"
                       [selectedNamespaceIsDefault]="selectedNamespace?.default"
                       (exportContents)="presentDialogExportContents()"
                       (importContents)="presentDialogImportContents()"
                       (deleteNamespace)="onOpenDeleteNamespaceModal()"
+                      (syncLinkedResources)="onSyncKbLinkedResources()"
                     ></appdashboard-kb-header-actions>
                   </div>
       

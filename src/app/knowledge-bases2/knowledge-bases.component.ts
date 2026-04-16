@@ -50,6 +50,7 @@ import { KbPermissionsService } from './services/kb-permissions.service';
 import { KbNamespaceSelectionService } from './services/kb-namespace-selection.service';
 import { KbVisitedService } from './services/kb-visited.service';
 import { KbSitemapEventsService } from './services/kb-sitemap-events.service';
+import { KbNamespaceLinkedResourcesService } from './services/kb-namespace-linked-resources.service';
 import type { KbNamespace, KbQuotas } from './models/kb-types';
 import { KB2_UI_INITIAL_STATE, type KnowledgeBases2UiState } from './models/kb-ui-state';
 import type { KbListItem } from './models/kb-types';
@@ -237,7 +238,8 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     private kbPermissions: KbPermissionsService,
     private kbNamespaceSelection: KbNamespaceSelectionService,
     private kbVisited: KbVisitedService,
-    private sitemapEvents: KbSitemapEventsService
+    private sitemapEvents: KbSitemapEventsService,
+    private kbLinkedResources: KbNamespaceLinkedResourcesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -627,6 +629,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
+        const createdNamespace = namespace as KbNamespace;
         this.selectedNamespace = namespace;
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
@@ -639,6 +642,22 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
         let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
         this.getListOfKb(paramsDefault, 'createNewNamespace');
+
+        // New required behavior: always create/ensure chatbot + department linked to this KB.
+        this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: createdNamespace }).subscribe({
+          next: () => {
+            // refresh to show created bot association if needed
+            this.getChatbotUsingNamespace(this.selectedNamespace.id);
+          },
+          error: (err) => {
+            this.logger.error('[KNOWLEDGE-BASES-COMP] - KB LINKED RESOURCES ensureOnCreate ERROR', err);
+            this.notify.showWidgetStyleUpdateNotification(
+              this.translate.instant('AnErrorOccurredWhileUpdating'),
+              4,
+              'report_problem'
+            );
+          },
+        });
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ERROR', error);
@@ -682,6 +701,64 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     });
   }
 
+  onOpenInstallOnWebsiteModal() {
+    if (!this.selectedNamespace?.id) {
+      return;
+    }
+    this.ui.showSpinner = true;
+    this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: this.selectedNamespace }).subscribe({
+      next: ({ bot, department }) => {
+        const botId = bot?._id ?? bot?.id;
+        const deptId = department?._id ?? department?.id;
+
+        this.dialog.open(ModalConfirmGotoCdsComponent, {
+          width: '700px',
+          data: {
+            chatbot: { name: this.selectedNamespace?.name, _id: botId },
+            botId: botId,
+            departmentId: deptId,
+            installOnly: true,
+          },
+        });
+      },
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] onOpenInstallOnWebsiteModal ensureOnCreate ERROR', err);
+        this.notify.showWidgetStyleUpdateNotification(
+          this.translate.instant('AnErrorOccurredWhileUpdating'),
+          4,
+          'report_problem'
+        );
+      },
+      complete: () => {
+        this.ui.showSpinner = false;
+      },
+    });
+  }
+
+  onSyncKbLinkedResources() {
+    if (!this.selectedNamespace?.id) {
+      return;
+    }
+    this.ui.showSpinner = true;
+    this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: this.selectedNamespace }).subscribe({
+      next: () => {
+        this.getChatbotUsingNamespace(this.selectedNamespace.id);
+        this.notify.showWidgetStyleUpdateNotification('Sync completed', 2, 'done');
+      },
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] onSyncKbLinkedResources ERROR', err);
+        this.notify.showWidgetStyleUpdateNotification(
+          this.translate.instant('AnErrorOccurredWhileUpdating'),
+          4,
+          'report_problem'
+        );
+      },
+      complete: () => {
+        this.ui.showSpinner = false;
+      },
+    });
+  }
+
 
 
   onChangeNamespaceName(event) {
@@ -693,6 +770,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE calledBy ', calledBy);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
+    const prevName = this.selectedNamespace?.name;
 
     this.kbService.updateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
@@ -710,6 +788,28 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
           this.namespaces[this.newNamespaceNameIndex]['name'] = updatedNameSpaceName
         }
 
+        // New required behavior: keep chatbot + department names in sync.
+        if (body?.name && typeof body.name === 'string') {
+          this.kbLinkedResources
+            .syncOnRename({
+              namespaceId: this.selectedNamespace.id,
+              oldName: prevName,
+              newName: body.name,
+            })
+            .subscribe({
+              next: () => {
+                this.getChatbotUsingNamespace(this.selectedNamespace.id);
+              },
+              error: (err) => {
+                this.logger.error('[KNOWLEDGE-BASES-COMP] - KB LINKED RESOURCES syncOnRename ERROR', err);
+                this.notify.showWidgetStyleUpdateNotification(
+                  this.translate.instant('AnErrorOccurredWhileUpdating'),
+                  4,
+                  'report_problem'
+                );
+              },
+            });
+        }
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME ERROR', error);
@@ -2484,42 +2584,55 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespace.id);
     this.ui.showSpinner = true;
 
-    this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
-      .subscribe((response: any) => {
-        this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
-        this.ui.showSpinner = false;
+    const namespaceId = this.selectedNamespace?.id;
+    const namespaceName = this.selectedNamespace?.name;
 
-      }, (error) => {
-        this.logger.error("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ERROR ", error);
-        this.ui.showSpinner = false;
-      }, () => {
-        this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace COMPLETE ");
-        this.ui.showSpinner = false;
-        if (removeAlsoNamespace) {
-          this.localDbService.removeFromStorage(`last_kbnamespace-${this.id_project}`)
+    // New required behavior: cleanup linked resources before deleting the KB (best effort).
+    this.kbLinkedResources.cleanupOnDelete({ namespaceId, namespaceName }).subscribe({
+      next: () => {},
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] - KB LINKED RESOURCES cleanupOnDelete ERROR', err);
+        // Continue deletion to avoid blocking the user, but show a warning.
+        this.notify.showWidgetStyleUpdateNotification(
+          this.translate.instant('AnErrorOccurredWhileUpdating'),
+          4,
+          'report_problem'
+        );
+      },
+      complete: () => {
+        this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace).subscribe(
+          (response: any) => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ', response);
+            this.ui.showSpinner = false;
+          },
+          (error) => {
+            this.logger.error('[KNOWLEDGE-BASES-COMP] onDeleteNamespace ERROR ', error);
+            this.ui.showSpinner = false;
+          },
+          () => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace COMPLETE ');
+            this.ui.showSpinner = false;
+            if (removeAlsoNamespace) {
+              this.localDbService.removeFromStorage(`last_kbnamespace-${this.id_project}`);
 
+              this.namespaces.splice(namespaceIndex, 1);
+              this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaces after splice', this.namespaces);
 
-          this.namespaces.splice(namespaceIndex, 1);
-          this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaces after splice', this.namespaces)
+              this.selectedNamespace = this.namespaces.find((el) => el.default === true);
+              this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
-
-          this.selectedNamespace = this.namespaces.find((el) => {
-            return el.default === true
-          });
-          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-
-          let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
-
-          this.getListOfKb(paramsDefault, 'deleteNamespace');
-
-          this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace)
-        } else {
-          let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
-
-          this.getListOfKb(paramsDefault, 'deleteNamespace');
-          this.getAllNamespaces()
-        }
-      })
+              let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
+              this.getListOfKb(paramsDefault, 'deleteNamespace');
+              this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace);
+            } else {
+              let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
+              this.getListOfKb(paramsDefault, 'deleteNamespace');
+              this.getAllNamespaces();
+            }
+          },
+        );
+      },
+    });
 
   }
 

@@ -13,6 +13,9 @@
     padding-top: 7px;
     background: #333;
     color: #ddd;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 #copy-js-code-btn {

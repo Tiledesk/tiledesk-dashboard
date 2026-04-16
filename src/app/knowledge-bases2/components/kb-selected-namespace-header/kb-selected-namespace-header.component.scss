@@ -35,11 +35,22 @@
   border: 1px solid #d3dbe5;
 }
 
+.kb-install-on-website-wpr {
+  margin-top: 6px;
+}
+
+/* Duplicate the sidebar "+ New Knowledge Base" button styles (no plus icon here). */
+.kb-install-on-website-btn {
+  color: var(--blue-20);
+  height: 24px;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  border: 0px solid transparent;
+}
+
 .kb-bottom-badge-wpr {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
+  display: none;
 }
 
 .kb-default-badge {

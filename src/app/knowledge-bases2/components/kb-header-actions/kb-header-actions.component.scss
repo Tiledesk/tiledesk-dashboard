@@ -15,3 +15,8 @@
   text-transform: capitalize;
 }
 
+/* Hide specific buttons (kept in DOM for rollback). */
+.kb-header-actions__hidden {
+  display: none;
+}
+

@@ -57,6 +57,8 @@ import { KbContentsTabComponent } from './components/kb-contents-tab/kb-contents
 import { KbUnansweredTabComponent } from './components/kb-unanswered-tab/kb-unanswered-tab.component';
 import { KbChatbotActionsPanelComponent } from './components/kb-chatbot-actions-panel/kb-chatbot-actions-panel.component';
 import { KbHeaderActionsComponent } from './components/kb-header-actions/kb-header-actions.component';
+import { ModalInstallOnWebsiteComponent } from './modals/modal-install-on-website/modal-install-on-website.component';
+import { CodeInstallationModule } from 'app/components/widget-installations/code-installation/code-installation.module';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBases2Component},
@@ -95,7 +97,8 @@ const routes: Routes = [
     ModalConfirmGotoCdsComponent,
     ModalAddContentComponent,
     ModalUnansweredQuestionsComponent,
-    ModalConfirmActionComponent
+    ModalConfirmActionComponent,
+    ModalInstallOnWebsiteComponent
   ],
   imports: [
     ClipboardModule,
@@ -125,6 +128,8 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     OverlayModule,
     MatTabsModule
+    ,
+    CodeInstallationModule
   ]
   // ,
   // providers: [

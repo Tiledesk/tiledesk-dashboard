@@ -14,7 +14,7 @@
 <div mat-dialog-content>
 
 
-    <div class="back-to-btns" *ngIf="hasClickedInstallBtn || hasClickedEditBtn" (click)="hasClickedBackFromInstall()">
+    <div class="back-to-btns" *ngIf="(hasClickedInstallBtn || hasClickedEditBtn) && !installOnly" (click)="hasClickedBackFromInstall()">
         <span class="material-icons-outlined" >
             chevron_left
         </span>
@@ -30,7 +30,7 @@
     <div class="mat-dialog-content-row">
         
 
-        <div class="mat-dialog-content-item" (click)="hasClickedInstall()"
+        <div class="mat-dialog-content-item" (click)="installOnly ? null : hasClickedInstall()"
          [ngClass]="{'expand-install-column': hasClickedInstallBtn , 'collapse-install-column': hasClickedEditBtn, 'mat-dialog-content-item-first-state': !hasClickedInstallBtn}">
 
          
@@ -55,7 +55,9 @@
                     <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
                     <span>   window.tiledeskSettings=</span>
                     <span>   {{'{'}}</span>
-                    <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+                    <span>	 projectid: &quot;{{ projectId }}&quot;,</span>
+                    <span>	 departmentID: &quot;{{ departmentId }}&quot;,</span>
+                    <span>	 participants: &quot;{{ participants }}&quot;</span>
                     <span>   {{'};'}}</span>
                     <span>   (function(d, s, id) {{'{'}}</span>
                     <span>      var w=window; var d=document; var i=function(){{'{'}}i.c(arguments);{{'};'}} </span>
@@ -79,7 +81,7 @@
             </div>
         </div>
         <!-- (click)="onOkPresssed()" -->
-        <div *ngIf="!hasClickedEditBtn" class="mat-dialog-content-item" (click)="hasClickedEdit()"
+        <div *ngIf="!installOnly && !hasClickedEditBtn" class="mat-dialog-content-item" (click)="hasClickedEdit()"
             [ngClass]="{'collapse-edit-column': hasClickedInstallBtn, 'expand-edit-column': hasClickedEditBtn, 'mat-dialog-content-item-first-state': !hasClickedInstallBtn }">
 
             <div  class="mat-dialog-content-item-title"> {{'Edit' | translate}} </div> 

@@ -8,13 +8,16 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class KbHeaderActionsComponent {
   @Input() permissionToExportContents = false;
+  @Input() hasContents = false;
   @Input() permissionToAddContents = false;
   @Input() permissionToDelete = false;
+  @Input() permissionToSyncLinkedResources = false;
 
   @Input() selectedNamespaceIsDefault = false;
 
   @Output() exportContents = new EventEmitter<void>();
   @Output() importContents = new EventEmitter<void>();
   @Output() deleteNamespace = new EventEmitter<void>();
+  @Output() syncLinkedResources = new EventEmitter<void>();
 }
 

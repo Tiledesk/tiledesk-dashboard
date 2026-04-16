@@ -1,9 +1,5 @@
 .chatbot-using-current-namespace-wpr {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 6px;
-  min-height: 24px;
+  display: none;
 }
 
 .chatbot-using-current-namespace {

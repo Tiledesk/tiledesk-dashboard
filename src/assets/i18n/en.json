@@ -2962,6 +2962,7 @@
     "CreateNewApp": "Create a new app",
     "LearnMore": "Learn more",
     "OtherIntegrationsAreAvailableOnInstallationsPage": "Other integrations are available on Installations page",
+  "KbInstall.CopyScriptSubtitle": "Copy the following script and insert it into the HTML source between the <head> tags.",
     "Install": "Install",
     "Manage": "Manage",
     "Uninstall": "Uninstall",

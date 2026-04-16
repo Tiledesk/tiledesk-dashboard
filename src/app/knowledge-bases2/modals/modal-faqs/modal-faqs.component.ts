@@ -156,9 +156,12 @@ export class ModalFaqsComponent implements OnInit {
   onSaveKnowledgeBase(isSingle) {
     this.logger.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb, 'isSingle ', isSingle )
     const content = this.kb.name + "\n" + this.kb.content
+    // Prevent server-side upsert collisions across namespaces:
+    // keep the visible "name" as-is, but make "source" namespace-scoped for FAQs.
+    const source = this.namespaceid ? `faq:${this.namespaceid}:${this.kb.name}` : this.kb.name;
     let body = {
       'name': this.kb.name,
-      'source': this.kb.name,
+      'source': source,
       'content': content, // this.kb.content,
       'type': 'faq',
       'tags': this.kbTagsArray

@@ -10,8 +10,6 @@ import { URL_hybrid_search_doc, URL_standard_search_doc } from 'app/utils/util';
 })
 export class ModalAddNamespaceComponent implements OnInit {
   public namespaceName: string;
-  selectedNamespaceType: string = "standard";
-  hybridActive: boolean = false;
   salesEmail: string;
   hideHelpLink: boolean;
 
@@ -20,8 +18,6 @@ export class ModalAddNamespaceComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalAddNamespaceComponent>,
     public brandService: BrandService,
   ) { 
-    this.hybridActive = data.hybridActive;
-
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     this.hideHelpLink= brand['DOCS'];
@@ -34,10 +30,10 @@ export class ModalAddNamespaceComponent implements OnInit {
     window.open(`mailto:${this.salesEmail}?subject=Increase quotas`);
   }
 
-  onOkPresssed(namespaceName, selectedNamespaceType){
+  onOkPresssed(namespaceName: string, _selectedNamespaceType?: string){
     this.dialogRef.close({
       'namespaceName': namespaceName,
-      'hybrid': selectedNamespaceType !== 'standard'
+      'hybrid': false
     });
   }
 
@@ -45,14 +41,15 @@ export class ModalAddNamespaceComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  // Keep existing methods to avoid breaking external references, even if not used by the simplified UI.
   goToHybridSearchDoc() {
-      const url = URL_hybrid_search_doc;
-      window.open(url, '_blank');
+    const url = URL_hybrid_search_doc;
+    window.open(url, '_blank');
   }
 
   goToStandardSearchDoc(){
-      const url = URL_standard_search_doc;
-      window.open(url, '_blank');
+    const url = URL_standard_search_doc;
+    window.open(url, '_blank');
   }
 
 }

@@ -919,6 +919,16 @@ table {
     align-items: center;
 }
 
+/* Temporarily hidden UI elements (kept in DOM for rollback) */
+.kb-link-to-docs-wpr,
+.kb-link-to-docs {
+    display: none !important;
+}
+
+.chatbot-using-current-namespace-wpr {
+    display: none !important;
+}
+
 .chatbot-using-current-namespace {
     font-weight: 400;
     font-size: 12px;

@@ -2961,6 +2961,7 @@
     "LearnMore": "Scopri di più",
     "Install": "Installa",
     "OtherIntegrationsAreAvailableOnInstallationsPage": "Altre integrazioni sono disponibili nella pagina Installazioni",
+  "KbInstall.CopyScriptSubtitle": "Copia il seguente script e inseriscilo nel sorgente HTML tra le tag <head>.",
     "Manage": "Gestisci",
     "Uninstall": "Disinstalla",
     "Start": "Esegui",

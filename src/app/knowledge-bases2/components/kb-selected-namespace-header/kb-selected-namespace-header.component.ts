@@ -11,6 +11,7 @@ export class KbSelectedNamespaceHeaderComponent {
   @Input() selectedNamespace: KbNamespace | null = null;
   @Input() namespaceIsEditable = false;
 
+  @Output() installOnWebsite = new EventEmitter<void>();
   @Output() mouseOverName = new EventEmitter<void>();
   @Output() mouseOutName = new EventEmitter<void>();
   @Output() clickName = new EventEmitter<void>();
@@ -46,6 +47,10 @@ export class KbSelectedNamespaceHeaderComponent {
 
   onBlur(event: FocusEvent): void {
     this.nameBlur.emit(event);
+  }
+
+  onInstallOnWebsite(): void {
+    this.installOnWebsite.emit();
   }
 }
 

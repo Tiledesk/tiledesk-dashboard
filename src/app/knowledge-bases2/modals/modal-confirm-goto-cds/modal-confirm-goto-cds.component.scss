@@ -50,6 +50,9 @@
     color: #fafafa;
     border-radius: 12px !important;
     font-size: 12px;
+    max-height: 330px;
+    max-width: stretch;
+    overflow: hidden;
 
 
     span {

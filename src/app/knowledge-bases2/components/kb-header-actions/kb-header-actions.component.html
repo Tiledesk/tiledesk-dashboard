@@ -1,7 +1,7 @@
 <div class="buttons-div">
   <!-- Export Button -->
   <button
-    *ngIf="permissionToExportContents"
+    *ngIf="permissionToExportContents && hasContents"
     class="btn btn-blu-gray-outline"
     matTooltipClass="kb-custom-mat-tooltip"
     matTooltip="{{ 'KbPage.ExportContents' | translate }}"
@@ -31,6 +31,24 @@
     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
       <path
         d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"
+      />
+    </svg>
+  </button>
+
+  <!-- Sync KB linked resources (chatbot + department) -->
+  <button
+    *ngIf="permissionToSyncLinkedResources"
+    class="btn btn-blu-gray-outline kb-header-actions__hidden"
+    matTooltipClass="kb-custom-mat-tooltip"
+    matTooltip="Sync chatbot & department"
+    #tooltip="matTooltip"
+    matTooltipPosition="below"
+    matTooltipHideDelay="100"
+    (click)="syncLinkedResources.emit()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+      <path
+        d="M440-80q-83 0-156-31.5T156-198q-54-54-85-127T40-480q0-83 31.5-156T156-762q54-54 127-85t157-31q68 0 128.5 20T696-802v-78h80v240H536v-80h108q-42-38-94-58t-110-20q-133 0-226.5 93.5T120-480q0 133 93.5 226.5T440-160q114 0 199-70.5T760-412h82q-18 154-131 243T440-80Zm328-280-56-56 64-64H600v-80h176l-64-64 56-56 160 160-160 160Z"
       />
     </svg>
   </button>
