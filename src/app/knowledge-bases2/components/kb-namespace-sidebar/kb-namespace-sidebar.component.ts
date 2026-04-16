@@ -9,6 +9,7 @@ import type { KbNamespace } from '../../models/kb-types';
 })
 export class KbNamespaceSidebarComponent {
   @Input() permissionToAddKb = false;
+  @Input() isAgentsPage = false;
   @Input() isLoadingNamespaces = false;
   @Input() namespaces: KbNamespace[] | null = null;
   @Input() selectedNamespace: KbNamespace | null = null;

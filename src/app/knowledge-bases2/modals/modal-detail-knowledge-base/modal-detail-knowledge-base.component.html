@@ -203,7 +203,7 @@
     <ng-container *ngIf="!showSpinner" >
         <!-- TODO: remove condition sitemap -->
         <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
-            <div class="content-tags-title-wpr" [ngStyle]="{'margin-top': kb.type === 'url' ? '18px' : '12px'}" style="display: flex;vertical-align: middle;">
+            <!-- <div class="content-tags-title-wpr" [ngStyle]="{'margin-top': kb.type === 'url' ? '18px' : '12px'}" style="display: flex;vertical-align: middle;">
                 
                 <div class="content-tags-title" >
                     {{'Tags.Tags' | translate}}
@@ -220,27 +220,16 @@
                     help_outline
                     </span>
                 </div>
-            </div>
+            </div> -->
    
 
+        <!-- KB2: tags disabled (retro-compatible with KB legacy) -->
+        <!--
         <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
                 [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
                 [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
-               
-                <!--  
-               <div class="kb-tags-help"
-                style="position: relative;top: 3px;"
-                #trigger="cdkOverlayOrigin"
-                cdkOverlayOrigin
-                (mouseenter)="open()"
-                (mouseleave)="scheduleClose()"> 
-
-                <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
-                help_outline
-                </span> 
-            </div> -->
         </div>
         <ng-template
             cdk-connected-overlay
@@ -283,6 +272,7 @@
                 </span>
 
             </div>
+        -->
             
         </div>
     </ng-container>

@@ -1255,6 +1255,16 @@ const routes: Routes = [
 
   {
     path: 'project/:projectid/knowledge-bases',
+    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard]
+  },
+
+  // ---------------------------------------
+  // AGENTS (Knowledge Bases v2) - NEW URL
+  // Keep knowledge-bases routes for retrocompatibility.
+  // ---------------------------------------
+  {
+    path: 'project/:projectid/agents',
     loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard]
   },
@@ -1268,6 +1278,12 @@ const routes: Routes = [
   // },
   {
     path: 'project/:projectid/knowledge-bases/:namespaceid',
+    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'project/:projectid/agents/:namespaceid',
     loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard]
   },
@@ -1282,6 +1298,12 @@ const routes: Routes = [
 
   {
     path: 'project/:projectid/knowledge-bases/:calledby',
+    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'project/:projectid/agents/:calledby',
     loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard],
   },

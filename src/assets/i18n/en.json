@@ -2061,6 +2061,12 @@
         "ErrorOccurred": "An error occurred",
         "LearnMoreAboutOH": "Learn more about operating hours"
     },
+    "AgentsPage": {
+        "YourAgents": "Your Agents",
+        "NewAgent": "New Agent",
+        "CreateNewAgent": "Create a new Agent",
+        "AgentName": "Agent name"
+    },
     "KbPage": {
         "YourKnowledgeBases": "Your Knowledge Bases",
         "NoKnowledgeBases": "No Knowledge Bases",
@@ -2320,6 +2326,9 @@
         "NoAIChatbotTourText": "Create your advanced AI chatbot connected to your contents ready to reply timely and precise to your users' answers and questions",
         "LastStepText": "You're ready to start adding your contents. If you need help,",
         "LastStepContactUs": "CONTACT US"
+    },
+    "Kb2": {
+        "NoContentAdded": "Train your agent"
     },
     "Never":"Never",
     "Daily":"Daily",

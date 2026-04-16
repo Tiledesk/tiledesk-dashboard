@@ -61,7 +61,7 @@ export class Onboarding2Component implements OnInit {
 
   goToKnowledgeBases(): void {
     if (!this.projectId) return;
-    this.router.navigate([`/project/${this.projectId}/knowledge-bases`]);
+    this.router.navigate([`/project/${this.projectId}/agents`]);
   }
 
   goToDashboard(): void {
@@ -240,8 +240,8 @@ export class Onboarding2Component implements OnInit {
 
     const namespaceId = this.createdNamespace?.id;
     const target = namespaceId
-      ? [`/project/${this.projectId}/knowledge-bases/${namespaceId}`]
-      : [`/project/${this.projectId}/knowledge-bases`];
+      ? [`/project/${this.projectId}/agents/${namespaceId}`]
+      : [`/project/${this.projectId}/agents`];
 
     setTimeout(() => {
       this.router.navigate(target);

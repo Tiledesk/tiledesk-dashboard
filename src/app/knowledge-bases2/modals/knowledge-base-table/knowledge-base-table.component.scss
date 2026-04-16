@@ -233,18 +233,27 @@ td.mat-footer-cell:last-of-type {
     display: flex;
     align-items: center;
     gap: 10px;
+    line-height: 20px;
   }
 
   .ng-select .ng-select-container .ng-value {
     display: flex;
     align-items: center;
     gap: 10px;
+    line-height: 20px;
   }
 }
 
 .kb-status-option__icon {
   font-size: 18px;
   line-height: 18px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  vertical-align: middle;
 }
 
 .kb-status-option__icon--not-started {
@@ -256,11 +265,11 @@ td.mat-footer-cell:last-of-type {
 }
 
 .kb-status-option__icon--started {
-  color: #006cff;
+  color: #62778c;
 }
 
 .kb-status-option__icon--finished {
-  color: #18e32c;
+  color: #00a8ff;
 }
 
 .kb-status-option__icon--error {

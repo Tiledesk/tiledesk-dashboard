@@ -413,6 +413,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.currentTitle = 'Flows';
         } else if (callingPage === 'kb') {
           this.currentTitle = 'KnowledgeBases';
+        } else if (callingPage === 'agents') {
+          this.currentTitle = 'Agents';
         } else if (callingPage === 'flow-webhook') {
           this.currentTitle = 'Webhooks';
         } else if (callingPage === 'analytics') {
@@ -438,6 +440,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     if (cleanUrl.indexOf('/home') !== -1) {
       this.currentTitle = 'Home';
     } 
+    else if (cleanUrl.indexOf('/agents') !== -1) {
+      this.currentTitle = 'Agents';
+    }
     else if (cleanUrl.indexOf('/knowledge-bases') !== -1) {
       this.currentTitle = 'KnowledgeBases';
     }

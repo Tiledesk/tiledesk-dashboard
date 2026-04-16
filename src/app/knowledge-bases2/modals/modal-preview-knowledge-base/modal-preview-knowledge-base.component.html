@@ -36,7 +36,8 @@
         (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
   </div>
 
-    <!-- KB Tags --> 
+    <!-- KB2: tags disabled (retro-compatible with KB legacy) -->
+    <!--
    <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
       <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
           [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
@@ -98,6 +99,7 @@
       </span>
 
   </div>
+  -->
 
   <div *ngIf="searching" class="search-placeholder">
     <div class="fake-input">

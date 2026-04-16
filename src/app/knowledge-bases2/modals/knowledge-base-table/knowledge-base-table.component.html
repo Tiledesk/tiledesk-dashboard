@@ -12,7 +12,7 @@
                     <div class="add-content-container ">
 
                         <div class="upgrade-title">
-                            {{'KbPage.NoContentAdded' | translate }}
+                            {{'Kb2.NoContentAdded' | translate }}
                             <!-- You don't have any contents yet -->
                         </div>
                         <span class="span-6"> </span>
@@ -245,19 +245,19 @@
                             <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
                             <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
                             <ng-option value="-1"> 
-                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--not-started">hourglass_empty</span>
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--not-started">done</span>
                                 {{ 'KbPage.StatusNotStarted' | translate }}
                             </ng-option>
                             <ng-option value="100"> 
-                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--queued">schedule</span>
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--queued">done_all</span>
                                 {{ 'KbPage.StatusQueued' | translate }}
                             </ng-option>
                             <ng-option value="200"> 
-                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--started">autorenew</span>
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--started">cached</span>
                                 {{ 'KbPage.StatusStarted' | translate }}
                             </ng-option>
                             <ng-option value="300"> 
-                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--finished">check_circle</span>
+                                <span class="material-icons-outlined kb-status-option__icon kb-status-option__icon--finished">done_all</span>
                                 {{ 'KbPage.StatusFinished' | translate }}
                             </ng-option>
                             <ng-option value="400"> 

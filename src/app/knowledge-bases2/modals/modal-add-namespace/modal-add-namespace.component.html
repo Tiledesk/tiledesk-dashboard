@@ -1,10 +1,14 @@
-<h1 mat-dialog-title> {{ 'KbPage.CreateNewNamespace' | translate }} </h1>
+<h1 mat-dialog-title>
+  {{ (isAgentsPage ? 'AgentsPage.CreateNewAgent' : 'KbPage.CreateNewNamespace') | translate }}
+</h1>
 
 <div mat-dialog-content>
 
     <div class="add-namespace-mat-form-field-wrapper">
         <mat-form-field appearance="outline" class="cc-mat-form-field custom-namespace-mat-form-field" style="width: 465px; font-size: 14px;">
-            <mat-label>{{ 'KbPage.NamespaceName' | translate }}</mat-label>
+            <mat-label>
+              {{ (isAgentsPage ? 'AgentsPage.AgentName' : 'KbPage.NamespaceName') | translate }}
+            </mat-label>
             <input matInput [(ngModel)]="namespaceName">
         </mat-form-field>
     </div>

@@ -5,6 +5,7 @@
       <!-- Left sidebar -->
         <appdashboard-kb-namespace-sidebar
           [permissionToAddKb]="PERMISSION_TO_ADD_KB"
+          [isAgentsPage]="isAgentsPage"
           [isLoadingNamespaces]="isLoadingNamespaces"
           [namespaces]="namespaces"
           [selectedNamespace]="selectedNamespace"
@@ -90,7 +91,7 @@
                   ></appdashboard-kb-chatbot-actions-panel>
 
                   <!-- TAB SWITCHER START -->
-                  <div class="kb-switch-field">
+                  <div class="kb-switch-field" *ngIf="(kbsListCount || 0) > 0">
                     <input
                       type="radio"
                       id="tab-contents"

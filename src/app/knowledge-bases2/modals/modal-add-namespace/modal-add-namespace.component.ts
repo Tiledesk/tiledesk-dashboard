@@ -12,6 +12,7 @@ export class ModalAddNamespaceComponent implements OnInit {
   public namespaceName: string;
   salesEmail: string;
   hideHelpLink: boolean;
+  isAgentsPage = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,6 +22,7 @@ export class ModalAddNamespaceComponent implements OnInit {
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     this.hideHelpLink= brand['DOCS'];
+    this.isAgentsPage = !!data?.isAgentsPage;
   }
 
   ngOnInit(): void {

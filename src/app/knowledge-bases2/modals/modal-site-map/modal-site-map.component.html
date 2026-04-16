@@ -196,7 +196,8 @@
                 [disabled]="!refreshRateIsEnabled" style="margin-top: 3px;">
         </div>
 
-        <!-- KB Tags -->
+        <!-- KB2: tags disabled (retro-compatible with KB legacy) -->
+        <!--
         <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
             <input id="kb-tags" class="adds-kb-input" name="kb-tags"
                 [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
@@ -257,6 +258,7 @@
             </span>
 
         </div>
+        -->
        
         <ng-container *ngIf="payIsVisible">
             <div *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled" class="upsell-for-refresh-rate">

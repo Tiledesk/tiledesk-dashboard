@@ -1,6 +1,6 @@
 <div class="kb-sidebar">
   <div class="sidebar-title">
-    {{ 'KbPage.YourKnowledgeBases' | translate }}
+    {{ (isAgentsPage ? 'AgentsPage.YourAgents' : 'KbPage.YourKnowledgeBases') | translate }}
   </div>
 
   <button
@@ -9,7 +9,9 @@
     (click)="onAddNamespaceClick()"
   >
     <mat-icon class="sidebar-add-icon">add</mat-icon>
-    <span class="sidebar-add-label">{{ 'KbPage.NewNamespace' | translate }}</span>
+    <span class="sidebar-add-label">
+      {{ (isAgentsPage ? 'AgentsPage.NewAgent' : 'KbPage.NewNamespace') | translate }}
+    </span>
   </button>
 
   <!-- SKELETON LOADER -->

@@ -60,6 +60,7 @@ declare interface RouteInfo {
 type SidebarItemKey =
   | 'chat'
   | 'home'
+  | 'agents'
   | 'knowledgeBases'
   | 'flows'
   | 'monitor'
@@ -105,6 +106,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   private readonly sidebarItemsConfig: SidebarItemsConfig = (environment as any)?.sidebarItems ?? {};
 
   isSidebarItemEnabled(key: SidebarItemKey): boolean {
+    // `agents` is a new sidebar item: show it only when explicitly enabled.
+    if (key === 'agents') {
+      return this.sidebarItemsConfig[key] === true;
+    }
     // Default: enabled, to preserve backward compatibility when the env key is missing.
     return this.sidebarItemsConfig[key] !== false;
   }
@@ -264,6 +269,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE_NO_AUTH: boolean;
+  AGENTS_ROUTE_IS_ACTIVE: boolean;
   CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
   SUPPORT_ROUTE_IS_ACTIVE: boolean;
   NORT_CONV_ROUTE_IS_ACTIVE: boolean;
@@ -2225,6 +2231,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/agents') !== -1) {
+          this.AGENTS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - AGENTS_ROUTE_IS_ACTIVE ', this.AGENTS_ROUTE_IS_ACTIVE);
+        } else {
+          this.AGENTS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - AGENTS_ROUTE_IS_ACTIVE ', this.AGENTS_ROUTE_IS_ACTIVE);
+        }
+
         if (event.url.indexOf('/kb/no-auth') !== -1) {
           this.KB_ROUTE_IS_ACTIVE_NO_AUTH = true;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE_NO_AUTH ', this.KB_ROUTE_IS_ACTIVE_NO_AUTH);
@@ -2811,6 +2825,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
     } else {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
+    }
+  }
+
+  goToAgents() {
+    if (!this.PERMISSION_TO_VIEW_KB) {
+      this.notify.presentDialogNoPermissionToViewThisSection();
+      return;
+    }
+    if (this.kbNameSpaceid !== '') {
+      this.router.navigate(['project/' + this.project._id + '/agents/' + this.kbNameSpaceid]);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/agents/0']);
     }
   }
 

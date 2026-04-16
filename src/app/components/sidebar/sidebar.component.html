@@ -99,9 +99,21 @@
     <!-- -------------------------------------------------------- -->
     <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_KB && isSidebarItemEnabled('knowledgeBases')"> 
+    <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
       <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
-        <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip"
+        <!-- NEW: Agents (KB2) -->
+        <div id="agents-anchor-wpr" *ngIf="project && isSidebarItemEnabled('agents')" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Agents' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="AGENTS_ROUTE_IS_ACTIVE">
+          <a id="agents-anchor" (click)="goToAgents()">
+            <span>
+              <span class="material-symbols-outlined sidebar-symbol">smart_toy</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Legacy/compat: Knowledge Bases -->
+        <div id="bot-anchor-wpr" *ngIf="project && isSidebarItemEnabled('knowledgeBases')" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'KnowledgeBases' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="KB_ROUTE_IS_ACTIVE || KB_ROUTE_IS_ACTIVE_NO_AUTH">
           <a id="bot-anchor" #botbtn (click)="goToNewKnowledgeBases()">

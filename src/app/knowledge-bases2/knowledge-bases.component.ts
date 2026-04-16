@@ -11,7 +11,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -40,6 +40,7 @@ import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/mo
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { ModalInstallOnWebsiteComponent } from './modals/modal-install-on-website/modal-install-on-website.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
@@ -54,6 +55,7 @@ import { KbNamespaceLinkedResourcesService } from './services/kb-namespace-linke
 import type { KbNamespace, KbQuotas } from './models/kb-types';
 import { KB2_UI_INITIAL_STATE, type KnowledgeBases2UiState } from './models/kb-ui-state';
 import type { KbListItem } from './models/kb-types';
+import type { Department } from 'app/models/department-model';
 
 const Swal = require('sweetalert2')
 
@@ -209,6 +211,16 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   }
   pineconeReranking: boolean
 
+  /**
+   * Cached install parameters for the current KB namespace.
+   * Populated when selecting a namespace (page entry), so the "Install on your website"
+   * button can be a pure UI action (no side effects).
+   */
+  private selectedNamespaceInstallParams: { botId: string; departmentId: string } | null = null;
+  private installParamsRequestSeq = 0;
+  private departmentsAllStatus: Department[] | null = null;
+  private isLoadingDepartmentsAllStatus = false;
+
 
   constructor(
     private auth: AuthService,
@@ -280,6 +292,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
+        this.loadDepartmentsAllStatusOnce();
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -420,8 +433,8 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
       const currentUrl = this.router.url;
       this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
-      if (currentUrl.indexOf('/knowledge-bases') !== -1) {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
+      if (currentUrl.indexOf('/knowledge-bases') !== -1 || currentUrl.indexOf('/agents') !== -1) {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - is KB2 route')
         const hasAlreadyVisited = this.kbVisited.getVisited(this.id_project);
         if (hasAlreadyVisited) {
           this.hasAlreadyVisitedKb = 'true'
@@ -433,6 +446,15 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.getQuotas();
       }
     });
+  }
+
+  private kb2BaseSegment(): string {
+    const url = this.router?.url ?? '';
+    return url.includes('/agents') ? 'agents' : 'knowledge-bases';
+  }
+
+  get isAgentsPage(): boolean {
+    return (this.router?.url ?? '').includes('/agents');
   }
 
   async getQuotas() {
@@ -609,7 +631,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
           this.selectedNamespaceName = this.selectedNamespace.name;
 
           if (selection.shouldNavigateToSelected) {
-            this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+            this.router.navigate(['project/' + this.project._id + '/' + this.kb2BaseSegment() + '/' + this.selectedNamespace.id]);
           }
           if (selection.shouldPersistSelected) {
             this.kbNamespaceSelection.persistNamespace(this.id_project, this.selectedNamespace);
@@ -634,7 +656,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.selectedNamespaceName = namespace['name']
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.router.navigate(['project/' + this.project._id + '/' + this.kb2BaseSegment() + '/' + this.selectedNamespace.id]);
 
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
         this.namespaces.push(namespace)
@@ -643,21 +665,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
         this.getListOfKb(paramsDefault, 'createNewNamespace');
 
-        // New required behavior: always create/ensure chatbot + department linked to this KB.
-        this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: createdNamespace }).subscribe({
-          next: () => {
-            // refresh to show created bot association if needed
-            this.getChatbotUsingNamespace(this.selectedNamespace.id);
-          },
-          error: (err) => {
-            this.logger.error('[KNOWLEDGE-BASES-COMP] - KB LINKED RESOURCES ensureOnCreate ERROR', err);
-            this.notify.showWidgetStyleUpdateNotification(
-              this.translate.instant('AnErrorOccurredWhileUpdating'),
-              4,
-              'report_problem'
-            );
-          },
-        });
+        // Install params will be resolved when chatbots+departments are loaded for this namespace.
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ERROR', error);
@@ -705,34 +713,94 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     if (!this.selectedNamespace?.id) {
       return;
     }
-    this.ui.showSpinner = true;
-    this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: this.selectedNamespace }).subscribe({
-      next: ({ bot, department }) => {
-        const botId = bot?._id ?? bot?.id;
-        const deptId = department?._id ?? department?.id;
 
-        this.dialog.open(ModalConfirmGotoCdsComponent, {
-          width: '700px',
-          data: {
-            chatbot: { name: this.selectedNamespace?.name, _id: botId },
-            botId: botId,
-            departmentId: deptId,
-            installOnly: true,
-          },
-        });
-      },
-      error: (err) => {
-        this.logger.error('[KNOWLEDGE-BASES-COMP] onOpenInstallOnWebsiteModal ensureOnCreate ERROR', err);
-        this.notify.showWidgetStyleUpdateNotification(
-          this.translate.instant('AnErrorOccurredWhileUpdating'),
-          4,
-          'report_problem'
-        );
-      },
-      complete: () => {
-        this.ui.showSpinner = false;
-      },
-    });
+    const params = this.selectedNamespaceInstallParams;
+    if (params?.botId && params?.departmentId) {
+      this.dialog.open(ModalInstallOnWebsiteComponent, {
+        width: '700px',
+        data: {
+          projectId: this.id_project,
+          botId: params.botId,
+          departmentId: params.departmentId,
+        },
+      });
+      return;
+    }
+
+    // If bot is not available (no chatbot linked), open the modal with projectId only.
+    const firstBot = this.chatbotsUsingNamespace?.[0];
+    const botId = firstBot?._id ?? firstBot?.id;
+    if (!botId) {
+      this.dialog.open(ModalInstallOnWebsiteComponent, {
+        width: '700px',
+        data: {
+          projectId: this.id_project,
+        },
+      });
+      return;
+    }
+
+    this.ui.showSpinner = true;
+    const tryOpenWithDepartments = (departments: any[]) => {
+      const dept = (departments || []).find((d) => d?.status === 1 && d?.id_bot === botId);
+      const departmentId = dept?._id ?? dept?.id;
+          if (!departmentId) {
+            // No department linked: open modal without department/participants.
+            this.dialog.open(ModalInstallOnWebsiteComponent, {
+              width: '700px',
+              data: {
+                projectId: this.id_project,
+              },
+            });
+            return true;
+          }
+
+          // Persist resolved params for subsequent opens within the same selection.
+          this.selectedNamespaceInstallParams = { botId, departmentId };
+
+          this.dialog.open(ModalInstallOnWebsiteComponent, {
+            width: '700px',
+            data: {
+              projectId: this.id_project,
+              botId,
+              departmentId,
+            },
+          });
+          return true;
+    };
+
+    // Prefer already loaded departments (loaded once on page enter).
+    if (Array.isArray(this.departmentsAllStatus) && this.departmentsAllStatus.length > 0) {
+      tryOpenWithDepartments(this.departmentsAllStatus);
+      this.ui.showSpinner = false;
+      return;
+    }
+
+    // Departments not ready yet: trigger the single load (if not already in progress) and wait once.
+    this.loadDepartmentsAllStatusOnce();
+    this.departmentService
+      .getDeptsByProjectId()
+      .pipe(take(1))
+      .subscribe({
+        next: (departments: any[]) => {
+          // Ensure memory cache is populated even if this path runs first.
+          if (!this.departmentsAllStatus) {
+            this.departmentsAllStatus = Array.isArray(departments) ? departments : [];
+          }
+          tryOpenWithDepartments(departments);
+        },
+        error: (err) => {
+          this.logger.error('[KNOWLEDGE-BASES-COMP] onOpenInstallOnWebsiteModal getDeptsByProjectId ERROR', err);
+          this.notify.showWidgetStyleUpdateNotification(
+            this.translate.instant('AnErrorOccurredWhileUpdating'),
+            4,
+            'report_problem'
+          );
+        },
+        complete: () => {
+          this.ui.showSpinner = false;
+        },
+      });
   }
 
   onSyncKbLinkedResources() {
@@ -895,7 +963,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
 
     if (namespace) {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + namespace.id]);
+      this.router.navigate(['project/' + this.project._id + '/' + this.kb2BaseSegment() + '/' + namespace.id]);
 
       this.hasChangedNameSpace = true;
       this.selectedNamespace = namespace
@@ -918,6 +986,54 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     }
   }
 
+  private resolveInstallParamsFromDepartments(botId: string, namespaceId: string): void {
+    this.selectedNamespaceInstallParams = null;
+    const reqSeq = ++this.installParamsRequestSeq;
+
+    const departments = this.departmentsAllStatus;
+    if (!departments || departments.length === 0) {
+      // Departments are loaded once when entering Agents; if not ready yet, do nothing here.
+      // The install button has an on-demand fallback that will wait for the load to complete.
+      return;
+    }
+
+    if (reqSeq !== this.installParamsRequestSeq) {
+      return;
+    }
+
+    const dept = (departments || []).find((d: any) => d?.status === 1 && d?.id_bot === botId);
+    const departmentId = (dept?._id ?? (dept as any)?.id) as string | undefined;
+    if (!departmentId) {
+      return;
+    }
+    if (this.selectedNamespace?.id !== namespaceId) {
+      return;
+    }
+    this.selectedNamespaceInstallParams = { botId, departmentId };
+  }
+
+  private loadDepartmentsAllStatusOnce(): void {
+    if (this.departmentsAllStatus || this.isLoadingDepartmentsAllStatus) {
+      return;
+    }
+    this.isLoadingDepartmentsAllStatus = true;
+    this.departmentService
+      .getDeptsByProjectId()
+      .pipe(take(1), takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (departments: Department[]) => {
+          this.departmentsAllStatus = Array.isArray(departments) ? departments : [];
+        },
+        error: (err) => {
+          this.logger.error('[KNOWLEDGE-BASES-COMP] loadDepartmentsAllStatusOnce getDeptsByProjectId ERROR', err);
+          this.departmentsAllStatus = [];
+        },
+        complete: () => {
+          this.isLoadingDepartmentsAllStatus = false;
+        },
+      });
+  }
+
   getChatbotUsingNamespace(selectedNamespaceid: string) {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
@@ -930,6 +1046,8 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
     }
 
     this.chatbotsUsingNamespace = []
+    // Install params will be resolved after chatbots load for the selected namespace.
+    this.selectedNamespaceInstallParams = null;
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
 
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
@@ -962,6 +1080,13 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
 
         this.chatbotsUsingNamespace = chatbots;
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbotsUsingNamespace', this.chatbotsUsingNamespace);
+
+        // Minimal workflow: one chatbot per KB namespace. Use the first.
+        const firstBot = this.chatbotsUsingNamespace?.[0];
+        const botId = firstBot?._id ?? firstBot?.id;
+        if (botId && this.selectedNamespace?.id === selectedNamespaceid) {
+          this.resolveInstallParamsFromDepartments(botId, selectedNamespaceid);
+        }
 
       } else {
         this.chatbotsUsingNamespace = undefined
@@ -1507,7 +1632,8 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       width: '600px',
       data: {
         pay: this.payIsVisible,
-        hybridActive: this.isActiveHybrid
+        hybridActive: this.isActiveHybrid,
+        isAgentsPage: this.isAgentsPage,
       },
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -2619,7 +2745,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
               this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaces after splice', this.namespaces);
 
               this.selectedNamespace = this.namespaces.find((el) => el.default === true);
-              this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+              this.router.navigate(['project/' + this.project._id + '/' + this.kb2BaseSegment() + '/' + this.selectedNamespace.id]);
 
               let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
               this.getListOfKb(paramsDefault, 'deleteNamespace');

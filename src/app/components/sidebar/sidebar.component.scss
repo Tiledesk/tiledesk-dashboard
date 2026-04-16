@@ -144,6 +144,13 @@ div > a > i {
   color: var(--sidebar-icon-color);
 }
 
+div > a > span > .material-symbols-outlined {
+  font-size: 24px;
+  line-height: 24px;
+  color: var(--sidebar-icon-color);
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
 .sidebar-separator > svg > path {
   fill: var(--sidebar-inactive-icon);
 }
@@ -166,6 +173,11 @@ div:hover > a > i {
   // background-color: #eee;
   color: var(--sidebar-hover-icon-color);
 }
+
+div:hover > a > span > .material-symbols-outlined {
+  color: var(--sidebar-hover-icon-color);
+}
+
 div.item-active > a > i {
   color: var(--sidebar-active-icon) !important;
 }
@@ -173,6 +185,12 @@ div.item-active > a > i {
 div.is-active > a > i {
   color: var(--sidebar-active-icon) !important;
 }
+
+div.item-active > a > span > .material-symbols-outlined,
+div.is-active > a > span > .material-symbols-outlined {
+  color: var(--sidebar-active-icon) !important;
+}
+
 
 
 
@@ -1589,6 +1607,10 @@ button.close {
   }
 }
 
+
+.sidebar-symbol{
+  color: #fff;
+}
 
 
 // ::ng-deep {
