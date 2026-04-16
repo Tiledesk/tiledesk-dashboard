@@ -51,6 +51,9 @@ import { browserRefresh } from 'app/app.component';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { DepartmentService } from 'app/services/department.service';
+import type { Department } from 'app/models/department-model';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -107,6 +110,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   project: Project;
   projectUser_id: string;
   route: string;
+
+  // Simulate visitor: dropdown chatbots
+  simulateVisitorChatbots: any[] = [];
+  isLoadingSimulateVisitorChatbots = false;
+  private lastLoadedSimulateVisitorProjectId: string | null = null;
+  defaultDepartmentId: string | null = null;
+  private lastLoadedDefaultDepartmentProjectId: string | null = null;
 
   DETECTED_CHAT_PAGE = false;
   // DETECTED_PROJECT_PAGE = false;
@@ -269,7 +279,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private sleekplanService: SleekplanService,
     public rolesService: RolesService,
     private navSvc: NavigationService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private faqKbService: FaqKbService,
+    private departmentService: DepartmentService
   ) {
 
     super(prjctPlanService, notifyService);
@@ -869,8 +881,71 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
 
         this.getProjects()
+        // Minimal dashboard only: preload dropdown dependencies (chatbots + default department).
+        if (this.isMinimalDashboard()) {
+          this.loadSimulateVisitorChatbotsIfNeeded()
+          this.loadDefaultDepartmentIfNeeded()
+        }
       }
     });
+  }
+
+  isMinimalDashboard(): boolean {
+    const cfg = this.appConfigService.getConfig?.() as any;
+    const dashboardType = cfg?.dashboardType ?? cfg?.knowledgeBasesPage?.dashboardType;
+    return dashboardType === 'minimal';
+  }
+
+  private loadSimulateVisitorChatbotsIfNeeded(): void {
+    if (!this.projectId) {
+      return;
+    }
+    if (this.lastLoadedSimulateVisitorProjectId === this.projectId) {
+      return;
+    }
+    this.lastLoadedSimulateVisitorProjectId = this.projectId;
+    this.isLoadingSimulateVisitorChatbots = true;
+    this.faqKbService.getFaqKbByProjectId().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (bots: any[]) => {
+        const list = Array.isArray(bots) ? bots : [];
+        // Keep only real chatbots (exclude automations/copilots) to match bot list behavior.
+        const chatbots = list.filter((b) => !b?.subtype || b?.subtype === 'chatbot' || b?.subtype === 'voice' || b?.subtype === 'voice_twilio');
+        chatbots.sort((a, b) => (a?.name || '').toLowerCase().localeCompare((b?.name || '').toLowerCase()));
+        this.simulateVisitorChatbots = chatbots;
+        this.isLoadingSimulateVisitorChatbots = false;
+      },
+      (err) => {
+        this.logger.error('[NAVBAR] loadSimulateVisitorChatbotsIfNeeded error', err);
+        this.simulateVisitorChatbots = [];
+        this.isLoadingSimulateVisitorChatbots = false;
+      }
+    );
+  }
+
+  private loadDefaultDepartmentIfNeeded(): void {
+    if (!this.projectId) {
+      return;
+    }
+    if (this.lastLoadedDefaultDepartmentProjectId === this.projectId) {
+      return;
+    }
+    this.lastLoadedDefaultDepartmentProjectId = this.projectId;
+
+    this.departmentService
+      .getDeptsByProjectId()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (depts: Department[]) => {
+          const list = Array.isArray(depts) ? depts : [];
+          const active = list.filter((d) => (d?.status ?? 1) === 1);
+          const defaultDept = active.find((d) => d?.default === true) ?? active[0] ?? list[0];
+          this.defaultDepartmentId = (defaultDept as any)?._id ?? (defaultDept as any)?.id ?? null;
+        },
+        (err) => {
+          this.logger.error('[NAVBAR] loadDefaultDepartmentIfNeeded error', err);
+          this.defaultDepartmentId = null;
+        }
+      );
   }
 
 
@@ -2088,6 +2163,54 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // + '&isOpen=true'
     const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + encodeURIComponent(this.projectName) + '&role=' + this.USER_ROLE
     window.open(url, '_blank');
+  }
+
+  simulateVisitorWithChatbot(bot: any) {
+    const simulateVisitorBtnElem = <HTMLElement>document.querySelector('.simulate-visitor-btn');
+    simulateVisitorBtnElem?.blur();
+
+    const botId = bot?._id ?? bot?.id;
+    if (!botId) {
+      // Fallback: open with minimal extra params (no participants) if minimal; otherwise keep classic behavior.
+      if (!this.isMinimalDashboard()) {
+        this.testWidgetPage();
+        return;
+      }
+      const url = this.buildMinimalWidgetTestUrl();
+      window.open(url, '_blank');
+      return;
+    }
+
+    const url = this.buildMinimalWidgetTestUrl(botId);
+
+    window.open(url, '_blank');
+  }
+
+  private buildMinimalWidgetTestUrl(botId?: string): string {
+    const base =
+      this.TESTSITE_BASE_URL +
+      '?tiledesk_projectid=' +
+      this.projectId +
+      '&project_name=' +
+      encodeURIComponent(this.projectName) +
+      '&role=' +
+      this.USER_ROLE +
+      '&tiledesk_singleConversation=true' +
+      '&tiledesk_restartConversation=true';
+
+    const parts: string[] = [base];
+
+    // participants: bot_<botId>
+    if (botId) {
+      parts.push('&tiledesk_participants=' + encodeURIComponent(`bot_${botId}`));
+    }
+
+    // default department
+    if (this.defaultDepartmentId) {
+      parts.push('&tiledesk_departmentID=' + encodeURIComponent(this.defaultDepartmentId));
+    }
+
+    return parts.join('');
   }
 
 
