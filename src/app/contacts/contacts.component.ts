@@ -593,8 +593,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   decreasePageNumber() {
-    const decreasePageNumberBtn = <HTMLElement>document.querySelector('.decrease-page-number-btn');
-    decreasePageNumberBtn.blur()
+    // const decreasePageNumberBtn = <HTMLElement>document.querySelector('.decrease-page-number-btn');
+    // decreasePageNumberBtn.blur()
 
     this.pageNo -= 1;
 

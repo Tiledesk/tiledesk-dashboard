@@ -93,7 +93,7 @@ export class UnansweredQuestionsService {
       url += '?' + params.join('&');
     }
     
-    console.log('getUnansweredQuestions URL ', url)
+    this.logger.log('getUnansweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export class UnansweredQuestionsService {
       url += '?' + params.join('&');
     }
     
-    console.log('getAnsweredQuestions URL ', url)
+    this.logger.log('getAnsweredQuestions URL ', url)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

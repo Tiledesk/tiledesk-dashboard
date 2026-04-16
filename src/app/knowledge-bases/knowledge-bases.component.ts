@@ -514,10 +514,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
-        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
 
     
 
@@ -526,51 +526,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_DELETE = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_DELETE = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
 
           // PERMISSION_TO_DELETE_NAMESPACE
           // if (status.role === 'owner' || status.role === 'admin') {
           //   // Owner and Admin always has permission
           //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
   
           // } else if (status.role === 'agent') {
           //   // Agent never have permission
           //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
   
           // } else {
           //   // Custom roles: permission depends on matchedPermissions
           //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
           // }
 
         // PERMISSION_TO_ADD_KB
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_KB = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_KB = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
         }
 
         // ---------------------------------
@@ -579,51 +579,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
         // PERMISSION_TO_ADD_FLOWS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_FLOWS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
 
         // PERMISSION_TO_ADD_CONTENTS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_CONTENTS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_CONTENTS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
         }
 
 
@@ -631,17 +631,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_EXPORT_CONTENTS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EXPORT_CONTENTS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EXPORT_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_EXPORT);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
         }
 
       });
@@ -1765,8 +1765,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             error: (error) => {
               let errorMessage = ""
               if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
-                // console.log('[KB IMPORT] error.error.error :', error.error.error);
-                // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
+                // this.logger.log('[KB IMPORT] error.error.error :', error.error.error);
+                // this.logger.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
                 const planLimit = error.error.plan_limit;
                 errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
               } else {
@@ -2404,18 +2404,18 @@ _presentDialogImportContents() {
     });
     dialogRef.afterClosed().subscribe(res => {
 
-     console.log('[Modal KB DETAILS] Dialog afterClosed res : ', res);
+     this.logger.log('[Modal KB DETAILS] Dialog afterClosed res : ', res);
     
      if (res) {
       if(res.method === 'update') {
         //  let kb = res.kb.kb
-        console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
-        console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.updateKbContent(res.kb)
       } else if (res.method === 'delete') {
         
-        console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
-        console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.onOpenBaseModalDelete(res.kb)
       }
      }
@@ -3015,9 +3015,9 @@ _presentDialogImportContents() {
 
 
   onLoadPage(searchParams?: any, calledby?: string) {
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     
     // Use page from searchParams if provided, otherwise increment numberPage
@@ -3027,7 +3027,7 @@ _presentDialogImportContents() {
       this.numberPage++;
     }
     
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams?.search);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams?.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
@@ -3099,8 +3099,8 @@ _presentDialogImportContents() {
 
 
   getListOfKb(params?: any, calledby?: any) {
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' || calledby === 'after-add' ) {
       this.kbsList = [];
@@ -3661,7 +3661,7 @@ _presentDialogImportContents() {
 
   /** */
   onUpdateKb(kb) {
-    console.log('onUpdateKb: ', kb);
+    this.logger.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
