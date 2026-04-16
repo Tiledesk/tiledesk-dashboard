@@ -166,6 +166,7 @@ import { CreateProjectComponent } from './create-project-wizard/create-project/c
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
+import { Onboarding2Component } from './create-project-wizard/onboarding2/onboarding2.component';
 import { WelcomeMessageConfigurationComponent } from './create-project-wizard/onboarding/welcome-message-configuration/welcome-message-configuration.component';
 import { ChatbotConfigurationComponent } from './create-project-wizard/onboarding/chatbot-configuration/chatbot-configuration.component';
 import { HumanConfigurationComponent } from './create-project-wizard/onboarding/human-configuration/human-configuration.component';
@@ -634,6 +635,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TilebotSidebarComponent,
     TilebotComponent,
     OnboardingComponent,
+    Onboarding2Component,
     WelcomeMessageConfigurationComponent,
     ChatbotConfigurationComponent,
     HumanConfigurationComponent,

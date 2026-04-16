@@ -1,0 +1,35 @@
+.onboarding2-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.onboarding2-card {
+  max-width: 640px;
+  width: 100%;
+  padding: 24px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.onboarding2-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.84);
+}
+
+.onboarding2-subtitle {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+.onboarding2-cta {
+  min-width: 220px;
+}
+

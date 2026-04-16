@@ -20,6 +20,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { FaqService } from 'app/services/faq.service';
 import { WidgetService } from 'app/services/widget.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { getPostProjectCreationNavigation } from 'app/utils/post-project-creation-navigation';
 import { UsersService } from 'app/services/users.service';
 
 
@@ -610,6 +611,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.getProjectsAndSaveLastProject(this.newProject._id)
 
       // this.getProjectsAndSaveInStorage();
+      const commands = getPostProjectCreationNavigation(this.appConfigService, this.newProject?._id, []);
+      if (commands.length > 0) {
+        this.router.navigate(commands);
+        return;
+      }
       this.callback('createNewProject');
     });
   }
@@ -779,6 +785,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
         // this.goToExitOnboarding();
         // this.goToOnbordingTemplates()
+        const projectId = this.getCreatedProjectId();
+        const commands = getPostProjectCreationNavigation(this.appConfigService, projectId, []);
+        if (commands.length > 0) {
+          this.router.navigate(commands);
+          return;
+        }
         if (this.arrayOfSteps.length === 1) {
           this.logger.log('[ONBOARDING-D] - this.arrayOfSteps ', this.arrayOfSteps);
           this.goToHome()
@@ -787,12 +799,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       });
   }
 
+  private getCreatedProjectId(): string {
+    return this.newProject?._id || this.newProject?.id;
+  }
+
   goToHome() {
-    this.router.navigate(['project/' + this.newProject.id + '/home'])
+    const projectId = this.getCreatedProjectId();
+    this.router.navigate([`project/${projectId}/home`])
   }
 
   goToOnbordingTemplates() {
-    this.router.navigate(['project/' + this.newProject.id + '/onboarding-templates'])
+    const projectId = this.getCreatedProjectId();
+    this.router.navigate([`project/${projectId}/onboarding-templates`])
 
   }
 
@@ -807,10 +825,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   goToExitOnboarding() {
+    const projectId = this.getCreatedProjectId();
     if (this.isMobile === false) {
-      this.router.navigate(['project/' + this.newProject.id + '/home'])
+      this.router.navigate([`project/${projectId}/home`])
     } else {
-      this.router.navigate(['project/' + this.newProject.id + '/desktop-access'])
+      this.router.navigate([`project/${projectId}/desktop-access`])
     }
   }
 

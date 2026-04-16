@@ -1,4 +1,5 @@
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
+import { Onboarding2Component } from './create-project-wizard/onboarding2/onboarding2.component';
 // import { MapRequestComponent } from './map-request/map-request.component'; // now lazy
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
@@ -1550,6 +1551,7 @@ const routes: Routes = [
   { path: 'onboarding', component: OnboardingWelcomeComponent, canActivate: [AuthGuard] }, // wizard
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/onboarding2', component: Onboarding2Component, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/desktop--access/:namespaceid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-templates', component: CnpTemplatesComponent, canActivate: [AuthGuard] }, // wizard 

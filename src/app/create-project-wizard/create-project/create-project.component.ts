@@ -17,6 +17,7 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
+import { getPostProjectCreationNavigation } from 'app/utils/post-project-creation-navigation';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -150,6 +151,16 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
           this.new_project = project;
 
           this.getProjectsAndSaveInStorageLastProject(this.id_project)
+
+
+
+          const commands = getPostProjectCreationNavigation(this.appConfigService, this.new_project?._id, []);
+          if (commands.length > 0) {
+            this.router.navigate(commands);
+            return;
+          }
+          this.continueToNextStep();
+  
 
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
           // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION

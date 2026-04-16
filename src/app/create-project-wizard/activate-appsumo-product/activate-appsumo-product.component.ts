@@ -4,6 +4,7 @@ import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { AppConfigService } from 'app/services/app-config.service';
 import { ProjectService } from 'app/services/project.service';
 import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATier2, appSumoHighlightedFeaturesPlanATier3, appSumoHighlightedFeaturesPlanATier4, APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, emailDomainWhiteList, featuresPlanA, highlightedFeaturesPlanA, highlightedFeaturesPlanB, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +12,7 @@ import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/wi
 import { WidgetService } from 'app/services/widget.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
+import { getPostProjectCreationNavigation } from 'app/utils/post-project-creation-navigation';
 const swal = require('sweetalert');
 
 @Component({
@@ -54,6 +56,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     private router: Router,
     private route: ActivatedRoute,
     private logger: LoggerService,
+    public appConfigService: AppConfigService,
     public brandService: BrandService,
     public translate: TranslateService,
     private widgetService: WidgetService,
@@ -316,6 +319,12 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
         // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
         // of the new project resolve the bug  'the auth service not find the project in the storage'
         this.getProjectsAndSaveInStorage();
+
+        const commands = getPostProjectCreationNavigation(this.appConfigService, this.new_project?._id, []);
+        if (commands.length > 0) {
+          this.router.navigate(commands);
+          return;
+        }
       });
   }
 

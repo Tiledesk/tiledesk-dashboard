@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { NotifyService } from '../../core/notify.service';
 import { AppConfigService } from '../../services/app-config.service';
+import { getPostProjectCreationNavigation } from 'app/utils/post-project-creation-navigation';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
@@ -755,7 +756,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           this.auth.projectSelected(this.new_project, 'sign-up')
           localStorage.setItem(this.new_project._id, JSON.stringify(project));
-          this.router.navigate(['/projects']);
+          this.router.navigate(
+            getPostProjectCreationNavigation(this.appConfigService, this.new_project._id, ['/projects'])
+          );
 
 
 
