@@ -12,6 +12,8 @@ import { AuthGuard } from './core/auth.guard';
 import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
+import { MinimalDashboardGuard } from './core/minimal-dashboard.guard';
+import { ClassicDashboardGuard } from './core/classic-dashboard.guard';
 import { CoreModule } from './core/core.module';
 
 // import { HomeComponent } from './home/home.component'; // now lazy
@@ -251,7 +253,14 @@ const routes: Routes = [
   {
     path: 'project/:projectid/home',
     loadChildren: () => import('app/home2/home2.module').then(m => m.Home2Module),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    canMatch: [MinimalDashboardGuard],
+  },
+  {
+    path: 'project/:projectid/home',
+    loadChildren: () => import('app/home/home.module').then(m => m.HomeModule),
+    canActivate: [AuthGuard],
+    canMatch: [ClassicDashboardGuard],
   },
   // { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] }, // now Lazy
 

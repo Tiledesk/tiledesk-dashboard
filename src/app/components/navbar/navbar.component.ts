@@ -892,8 +892,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   isMinimalDashboard(): boolean {
     const cfg = this.appConfigService.getConfig?.() as any;
-    const dashboardType = cfg?.dashboardType ?? cfg?.knowledgeBasesPage?.dashboardType;
-    return dashboardType === 'minimal';
+    return cfg?.dashboardType === 'minimal';
   }
 
   private loadSimulateVisitorChatbotsIfNeeded(): void {

@@ -2,8 +2,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 
 export function isMinimalDashboard(appConfigService: AppConfigService): boolean {
   const cfg: any = appConfigService.getConfig?.();
-  const dashboardType = cfg?.dashboardType ?? cfg?.knowledgeBasesPage?.dashboardType;
-  return dashboardType === 'minimal';
+  return cfg?.dashboardType === 'minimal';
 }
 
 export function getPostProjectCreationNavigation(
