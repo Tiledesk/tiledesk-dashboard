@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.166
+- Adds the ability to create custom roles
+- Improves the Knowledge Bases page with KPI cards (contents, answered, unanswered, answer rate)
+- Adds the ability to view questions asked to AI agents and to search by text
+- Adds the ability to search by text for unanswered questions
+- Adds the rating column to the History table
+- Adds the quotas reset date
+
 ### 2.7.166-rc2
 - Adds the ability to create custom roles (improvements)
 
