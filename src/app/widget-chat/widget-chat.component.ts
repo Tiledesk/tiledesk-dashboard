@@ -48,7 +48,7 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    console.log('[WIDGET-CHAT-COMP] primaryColor', this.primaryColor)
+    //console.log('[WIDGET-CHAT-COMP] primaryColor', this.primaryColor)
     const current_url = this.router.url
     if (current_url.indexOf('onboarding') > -1) {
       this.IS_ONBOARDING_PAGE = true;
@@ -149,7 +149,7 @@ translateHardcodedStrings(selectedLangCode) {
     // console.log('[WIDGET-CHAT-COMP] primaryColorRGBA_050', this.primaryColorRGBA_050)
 
     this.linearGradient = 'linear-gradient( 180grad, ' + this.primaryColorRGBA_1 + ', ' + this.primaryColorRGBA_050 + ')';
-    console.log('[WIDGET-CHAT-COMP] linearGradient', this.linearGradient)
+    //console.log('[WIDGET-CHAT-COMP] linearGradient', this.linearGradient)
   }
 
 
