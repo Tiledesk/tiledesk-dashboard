@@ -61,7 +61,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   showSpinner = true;
   firebase_token: any;
   currentUserID: string;
-  ONLY_MY_REQUESTS: boolean = true;
+  /** In TEST allineato a lista unserved: `false` = niente filtro agent/participant. */
+  ONLY_MY_REQUESTS: boolean = false;
   ROLE_IS_AGENT: boolean;
   // displayBtnLabelSeeYourRequets = false;
 
@@ -186,11 +187,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('unserved-for-panel')
-    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] result ', result)
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] isAuthorized ', this.isAuthorized)
-    console.log('[WS-REQUESTS-UNSERVED-X-PANEL] permissionChecked ', this.permissionChecked)
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] isAuthorized ', this.isAuthorized)
+    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] permissionChecked ', this.permissionChecked)
   }
 
   listenToProjectUser() {
@@ -199,40 +200,40 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
         
 
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
             
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
             this.PERMISSION_TO_ARCHIVE_REQUEST = false
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
           }
         } else {
           this.PERMISSION_TO_ARCHIVE_REQUEST = true
-          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // PERMISSION_TO_JOIN_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
             
             this.PERMISSION_TO_JOIN_REQUEST = true
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
           } else {
             this.PERMISSION_TO_JOIN_REQUEST = false
-            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
+            this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
           }
         } else {
           this.PERMISSION_TO_JOIN_REQUEST = true
-          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
+          this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
         }
 
         // You can also check status.role === 'owner' if needed
@@ -529,7 +530,9 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       .subscribe((user_role) => {
         this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET PROJECT-USER ROLE user_role ', user_role);
 
-        this.ONLY_MY_REQUESTS = true
+        // TEST: come lista unserved — mostra tutta la coda da wsRequestsList$ (niente filtro agent/participant).
+        // this.ONLY_MY_REQUESTS = true;
+        this.ONLY_MY_REQUESTS = false;
         this.getWsRequests$();
         // if (user_role) {
         //   if (user_role === 'agent') {
@@ -570,7 +573,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         takeUntil(this.unsubscribe$)
       )
       .subscribe((totalrequests: number) => {
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
 
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
@@ -703,16 +706,17 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
             this.ws_requests = wsrequests;
           }
 
-          if (this.ONLY_MY_REQUESTS === true) {
-            this.ws_requests = [];
-            wsrequests.forEach(wsrequest => {
-              if (wsrequest !== null && wsrequest !== undefined) {
-                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
-                  this.ws_requests.push(wsrequest);
-                }
-              }
-            });
-          }
+          // Filtro "solo le mie" (agent / participant): disabilitato in TEST — per unassigned spesso esclude la coda.
+          // if (this.ONLY_MY_REQUESTS === true) {
+          //   this.ws_requests = [];
+          //   wsrequests.forEach(wsrequest => {
+          //     if (wsrequest !== null && wsrequest !== undefined) {
+          //       if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+          //         this.ws_requests.push(wsrequest);
+          //       }
+          //     }
+          //   });
+          // }
         }
         if (this.ws_requests) {
           this.ws_requests.forEach((request) => {
