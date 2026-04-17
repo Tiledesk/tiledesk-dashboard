@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.167
+- Fixes bug: The number of unassigned conversations in the panel does not match the number of unassigned conversations displayed in the chat
+
 ### 2.7.166
 - Adds the ability to create custom roles
 - Improves the Knowledge Bases page with KPI cards (contents, answered, unanswered, answer rate)
