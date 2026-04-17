@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.168
+- Fixes the bug: teammates with the Agent role in the chat cannot access unassigned conversations
+
 ### 2.7.167
 - Fixes bug: The number of unassigned conversations in the panel does not match the number of unassigned conversations displayed in the chat
 
