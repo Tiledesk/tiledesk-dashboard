@@ -1,0 +1,60 @@
+/* Bootstrap 5 toast — unserved chat. Main colors are set inline in NotifyService.paintUnservedToastDom (reliable after ng serve). */
+
+/* Unassigned chat toast (legacy bootstrap-notify minimalist-pooled look: amber header + cream body) */
+#tiledesk-unserved-toast-stack .tiledesk-unserved-toast.toast {
+    /* BS 5.3 uses these on .toast; children read var(--bs-toast-header-*) etc. */
+    --bs-toast-max-width: 380px;
+    --bs-toast-bg: transparent;
+    --bs-toast-border-width: 0;
+    --bs-toast-border-color: transparent;
+    --bs-toast-box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.4);
+    --bs-toast-header-bg: #f0ad4e;
+    --bs-toast-header-color: #fff;
+    --bs-toast-header-border-color: transparent;
+
+    max-width: 380px;
+    width: var(--bs-toast-max-width);
+    background-color: transparent;
+    border: none;
+    box-shadow: var(--bs-toast-box-shadow);
+
+    .toast-header {
+        background-color: #f0ad4e;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        border-bottom: none;
+        padding: 0.65rem 1rem;
+        cursor: default;
+    }
+
+    .toast-body {
+        background-color: #fcf8e3;
+        border-top: none;
+        padding: 1rem 1.1rem;
+    }
+
+    .toast-body.tiledesk-unserved-toast__body--clickable {
+        cursor: pointer;
+        outline: none;
+
+        &:focus-visible {
+            box-shadow: inset 0 0 0 2px rgba(199, 124, 17, 0.45);
+        }
+    }
+
+    .tiledesk-unserved-toast__sender {
+        font-weight: 700;
+        color: #212529;
+        font-size: 1rem;
+        line-height: 1.35;
+    }
+
+    .tiledesk-unserved-toast__msg {
+        margin-top: 0.35rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: #6c757d;
+        line-height: 1.4;
+    }
+}
