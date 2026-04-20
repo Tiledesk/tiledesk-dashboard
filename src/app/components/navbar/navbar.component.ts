@@ -52,6 +52,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
+import { DepartmentService } from 'app/services/department.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -169,6 +170,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // Minimal dashboard only: simulate visitor with selected chatbot
   simulateVisitorChatbots: any[] = [];
   isLoadingSimulateVisitorChatbots = false;
+  defaultDepartmentId: string | null = null;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
@@ -276,6 +278,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private sleekplanService: SleekplanService,
     public rolesService: RolesService,
     private navSvc: NavigationService,
+    private departmentService: DepartmentService,
     private sanitizer: DomSanitizer
   ) {
 
@@ -864,6 +867,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectName = project.name;
           if (this.isMinimalDashboard()) {
             this.loadSimulateVisitorChatbots();
+            this.loadDefaultDepartmentId();
           }
           // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           // this.getProjectQuotes();
@@ -881,6 +885,24 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.getProjects()
       }
     });
+  }
+
+  private loadDefaultDepartmentId(): void {
+    if (!this.projectId) return;
+    this.departmentService
+      .getDeptsByProjectId()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (departments: any[]) => {
+          const list = Array.isArray(departments) ? departments : [];
+          const def = list.find((d) => d?.default === true);
+          this.defaultDepartmentId = def?._id || def?.id || null;
+        },
+        error: (err) => {
+          this.logger.error('[NAVBAR] loadDefaultDepartmentId error', err);
+          this.defaultDepartmentId = null;
+        },
+      });
   }
 
   private loadSimulateVisitorChatbots(): void {
@@ -911,17 +933,24 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     simulateVisitorBtnElem?.blur();
 
     if (!this.TESTSITE_BASE_URL || !this.projectId) return;
-    const baseUrl =
+    let url =
       this.TESTSITE_BASE_URL +
       '?tiledesk_projectid=' +
       this.projectId +
       '&project_name=' +
       encodeURIComponent(this.projectName) +
       '&role=' +
-      this.USER_ROLE;
+      this.USER_ROLE +
+      '&tiledesk_singleConversation=true' +
+      '&tiledesk_restartConversation=true';
 
     const botId = bot?._id || bot?.id;
-    const url = botId ? baseUrl + '&tiledesk_participants=' + encodeURIComponent('bot_' + botId) : baseUrl;
+    if (botId) {
+      url += '&tiledesk_participants=' + encodeURIComponent('bot_' + botId);
+    }
+    if (this.defaultDepartmentId) {
+      url += '&tiledesk_departmentID=' + encodeURIComponent(this.defaultDepartmentId);
+    }
     window.open(url, '_blank');
   }
 
