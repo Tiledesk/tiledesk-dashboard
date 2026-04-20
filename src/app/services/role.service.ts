@@ -63,7 +63,8 @@ export class RoleService {
             calledby === 'wsrequest-detail-history' ||
             calledby === 'contacts' ||
             calledby === 'contact-details' ||
-            calledby === 'history') {
+            calledby === 'history' ||
+            calledby === 'unserved-for-panel') {
             this.logger.log('hey i am an agent !!!!! RETURN PLEASE')
             return true
           }
@@ -665,7 +666,8 @@ export class RoleService {
             calledby === 'wsrequest-detail-history' ||
             calledby === 'contacts' ||
             calledby === 'contact-details' ||
-            calledby === 'history') {
+            calledby === 'history' ||
+            calledby === 'unserved-for-panel') {
             return true
           }
 
