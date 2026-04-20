@@ -51,6 +51,7 @@ import { browserRefresh } from 'app/app.component';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
+import { FaqKbService } from 'app/services/faq-kb.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -165,6 +166,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   TESTSITE_BASE_URL: string;
   projectName: string;
 
+  // Minimal dashboard only: simulate visitor with selected chatbot
+  simulateVisitorChatbots: any[] = [];
+  isLoadingSimulateVisitorChatbots = false;
+
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   flag_url: string;
@@ -264,6 +269,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public localDbService: LocalDbService,
     private logger: LoggerService,
     private quotesService: QuotesService,
+    private faqKbService: FaqKbService,
     private sleekplanApi: SleekplanApiService,
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
@@ -289,6 +295,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.logger.log('[NAVBAR] IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
+  }
+
+  isMinimalDashboard(): boolean {
+    const cfg: any = this.appConfigService.getConfig?.();
+    return cfg?.dashboardType === 'minimal';
   }
 
 
@@ -851,6 +862,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
           this.projectId = project._id;
           this.projectName = project.name;
+          if (this.isMinimalDashboard()) {
+            this.loadSimulateVisitorChatbots();
+          }
           // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           // this.getProjectQuotes();
           // this.getQuotasCount()
@@ -867,6 +881,48 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.getProjects()
       }
     });
+  }
+
+  private loadSimulateVisitorChatbots(): void {
+    if (!this.projectId) return;
+    if (this.isLoadingSimulateVisitorChatbots) return;
+
+    this.isLoadingSimulateVisitorChatbots = true;
+    this.faqKbService
+      .getFaqKbByProjectId()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (bots: any[]) => {
+          this.simulateVisitorChatbots = Array.isArray(bots) ? bots : [];
+        },
+        error: (err) => {
+          this.logger.error('[NAVBAR] loadSimulateVisitorChatbots error', err);
+          this.simulateVisitorChatbots = [];
+          this.isLoadingSimulateVisitorChatbots = false;
+        },
+        complete: () => {
+          this.isLoadingSimulateVisitorChatbots = false;
+        },
+      });
+  }
+
+  simulateVisitorWithChatbot(bot: any | null): void {
+    const simulateVisitorBtnElem = document.querySelector('.simulate-visitor-btn') as HTMLElement | null;
+    simulateVisitorBtnElem?.blur();
+
+    if (!this.TESTSITE_BASE_URL || !this.projectId) return;
+    const baseUrl =
+      this.TESTSITE_BASE_URL +
+      '?tiledesk_projectid=' +
+      this.projectId +
+      '&project_name=' +
+      encodeURIComponent(this.projectName) +
+      '&role=' +
+      this.USER_ROLE;
+
+    const botId = bot?._id || bot?.id;
+    const url = botId ? baseUrl + '&tiledesk_participants=' + encodeURIComponent('bot_' + botId) : baseUrl;
+    window.open(url, '_blank');
   }
 
 
