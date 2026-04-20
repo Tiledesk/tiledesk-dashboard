@@ -151,6 +151,12 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
           this.getProjectsAndSaveInStorageLastProject(this.id_project)
 
+          // Minimal dashboard: after creating a project always use the new onboarding flow.
+          if (this.appConfigService?.getConfig?.()?.dashboardType === 'minimal') {
+            this.router.navigate([`/project/${this.id_project}/onboarding2`]);
+            return;
+          }
+
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
           // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
           // const newproject: Project = {
@@ -301,6 +307,10 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   // }
 
   continueToNextStep() {
+    if (this.appConfigService?.getConfig?.()?.dashboardType === 'minimal') {
+      this.router.navigate([`/project/${this.id_project}/onboarding2`]);
+      return;
+    }
     if (this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION === false) {
       // this.goToWidgetOnBoading()
       this.goToConfigureWidget()

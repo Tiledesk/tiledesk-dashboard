@@ -1,0 +1,41 @@
+<div class="onboarding2-page">
+  <div class="step-header">
+    <img *ngIf="companyLogo" [src]="companyLogo" class="logo" />
+  </div>
+
+  <div class="onboarding2-center">
+    <div class="onboarding2-title">{{ 'MinimalOnboarding2.Title' | translate }}</div>
+    <div class="onboarding2-subtitle">{{ 'MinimalOnboarding2.Subtitle' | translate }}</div>
+
+    <div class="onboarding2-steps">
+      <div class="onboarding2-step" *ngFor="let step of steps">
+        <span class="material-icons-round onboarding2-step-icon"
+          [ngClass]="{
+            'is-pending': step.status === 'pending',
+            'is-running': step.status === 'running',
+            'is-success': step.status === 'success',
+            'is-error': step.status === 'error'
+          }">
+          {{ step.status === 'success' ? 'check_circle' : (step.status === 'error' ? 'error' : 'radio_button_unchecked') }}
+        </span>
+        <span *ngIf="step.status === 'running'" class="onboarding2-step-loader" aria-hidden="true"></span>
+        <div class="onboarding2-step-texts">
+          <div class="onboarding2-step-title">{{ step.labelKey | translate }}</div>
+          <div class="onboarding2-step-detail" *ngIf="step.detail">{{ step.detail }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="provisioningError" class="onboarding2-error">
+      <div class="onboarding2-error-title">{{ 'MinimalOnboarding2.ProvisioningErrorTitle' | translate }}</div>
+      <div class="onboarding2-error-body">{{ provisioningError }}</div>
+      <button class="btn btn-secondary onboarding2-retry" type="button" (click)="retryProvisioning()">
+        {{ 'MinimalOnboarding2.Retry' | translate }}
+      </button>
+      <button class="btn btn-primary onboarding2-cta" type="button" (click)="goToDashboard()">
+        {{ 'MinimalOnboarding2.GoToDashboard' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+

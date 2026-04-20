@@ -1,4 +1,10 @@
 {
+    "MinimalOnboarding2.DefaultKbName": "My Agent",
+    "Kb2.NoContentAdded": "Addestra il tuo agente",
+    "AgentsPage.CreateNewAgent": "Crea un nuovo Agente",
+    "AgentsPage.AgentName": "nome Agente",
+    "AgentsPage.NewAgent": "nuovo Agente",
+    "AgentsPage.YourAgents": "i tuoi agenti",
     "ChangeDashboardLanguage": "Cambia lingua dashboard",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Questo è il pannello di monitoraggio delle conversazioni in tempo reale. Per gestire le tue conversazioni usa lo",
     "chatTool": "strumento chat",

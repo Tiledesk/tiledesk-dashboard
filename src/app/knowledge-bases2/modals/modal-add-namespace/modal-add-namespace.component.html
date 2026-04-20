@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>
+  {{ (isAgentsPage ? 'AgentsPage.CreateNewAgent' : 'KbPage.CreateNewNamespace') | translate }}
+</h1>
+
+<div mat-dialog-content>
+
+    <div class="add-namespace-mat-form-field-wrapper">
+        <mat-form-field appearance="outline" class="cc-mat-form-field custom-namespace-mat-form-field" style="width: 465px; font-size: 14px;">
+            <mat-label>
+              {{ (isAgentsPage ? 'AgentsPage.AgentName' : 'KbPage.NamespaceName') | translate }}
+            </mat-label>
+            <input matInput [(ngModel)]="namespaceName">
+        </mat-form-field>
+    </div>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button [disabled]="namespaceName?.length < 2" class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPresssed(namespaceName)" cdkFocusInitial>
+        <!-- Create namespace -->
+        {{ "Create" | translate }}
+        
+    </button>
+</div>

@@ -1,0 +1,158 @@
+.kb-sidebar {
+  padding: 6px 0;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  border-right: 1px solid #e0e0e0;
+  width: 260px;
+  min-width: 200px;
+  max-width: 320px;
+}
+
+.sidebar-title {
+  color: var(--settings-sidebar-color);
+  padding-left: 12px;
+  font-size: var(--settings-sidebar-group-name-font-size);
+  font-weight: 500;
+  line-height: 14px;
+  text-transform: var(--settings-sidebar-group-name-text-transform);
+  cursor: default;
+  margin-bottom: 12px;
+}
+
+.custom-button {
+  color: #fff;
+  border: none;
+  height: 36px;
+  border-radius: 999px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+}
+
+.custom-button.xs {
+  color: var(--blue-20);
+  height: 24px;
+  font-size: 14px;
+  background: transparent;
+  left: -5px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.custom-button.xs > span {
+  text-transform: none;
+}
+
+.kb-list {
+  list-style: none !important;
+  padding: 0;
+  margin: 0;
+}
+
+.kb-list li {
+  cursor: pointer;
+  padding: 9px 0 9px 9px;
+  border-left: 4px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+  height: 42px;
+}
+
+.counter-badge {
+  font-size: 14px;
+}
+
+.standard-search-icon {
+  font-weight: 600;
+  color: #747eaa;
+  margin-right: 8px;
+  position: relative;
+  top: 1px;
+  font-size: 14px;
+}
+
+.hybrid-search-icon {
+  font-weight: 600;
+  color: #c065a8;
+  margin-right: 8px;
+  position: relative;
+  top: 1px;
+  font-size: 14px;
+}
+
+.sidebar-add-btn {
+  margin: 9px 9px 0 9px;
+  width: calc(100% - 48px);
+  position: relative;
+  left: -10px;
+  height: 42px;
+}
+
+.sidebar-add-icon {
+  vertical-align: middle;
+}
+
+.sidebar-add-label {
+  vertical-align: middle;
+}
+
+.skeleton-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.skeleton-text {
+  flex: 1;
+  height: 42px;
+  background: #eee;
+}
+
+.kb-list-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.kb-list-icons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  margin-bottom: 2px;
+}
+
+.default-kb-icon {
+  font-size: 18px;
+  color: #d9b100;
+  margin-right: 6px;
+}
+
+.kb-list-name {
+  flex: 1 1 0;
+  font-size: 14px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--header-font-family);
+}
+
+.kb-list-chevron {
+  flex: 0 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+}
+
+.sidebar-total {
+  text-transform: none;
+  font-weight: 400;
+  font-size: 13px;
+  margin-top: 30px;
+}
+

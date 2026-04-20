@@ -65,6 +65,7 @@
     "jquery": "^3.5.0",
     "keycloak-js": "^21.1.1",
     "leaflet": "^1.7.1",
+    "libphonenumber-js": "^1.12.41",
     "marked": "^5.1.0",
     "material-icons": "^1.11.2",
     "moment": "^2.29.4",
@@ -91,8 +92,7 @@
     "ua-parser-js": "^0.7.33",
     "uuid": "^3.4.0",
     "web-animations-js": "^2.3.2",
-    "zone.js": "^0.11.4",
-    "libphonenumber-js": "^1.12.10"
+    "zone.js": "^0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.2",

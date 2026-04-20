@@ -11,6 +11,9 @@ import { AuthGuard } from './core/auth.guard';
 import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
+import { MinimalDashboardGuard } from 'app/core/minimal-dashboard.guard';
+import { ClassicDashboardGuard } from 'app/core/classic-dashboard.guard';
+import { SidebarAgentsEnabledGuard } from 'app/core/sidebar-agents-enabled.guard';
 import { CoreModule } from './core/core.module';
 
 // import { HomeComponent } from './home/home.component'; // now lazy
@@ -131,6 +134,7 @@ import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/nati
 // import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component'; // No more used
 // import { TilebotComponent } from './bots/tilebot/tilebot.component'; // No more used
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
+import { Onboarding2Component } from './create-project-wizard/onboarding2/onboarding2.component';
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 // import { ContactsComponent } from './contacts/contacts.component'; // now lazy
@@ -243,8 +247,15 @@ const routes: Routes = [
   // Home
   {
     path: 'project/:projectid/home',
+    loadChildren: () => import('app/home2/home2.module').then(m => m.Home2Module),
+    canActivate: [AuthGuard],
+    canMatch: [MinimalDashboardGuard],
+  },
+  {
+    path: 'project/:projectid/home',
     loadChildren: () => import('app/home/home.module').then(m => m.HomeModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    canMatch: [ClassicDashboardGuard],
   },
   // { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] }, // now Lazy
 
@@ -1279,6 +1290,28 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy // when called from home
 
+  // ---------------------------------------
+  // AGENTS (KB2)
+  // ---------------------------------------
+  {
+    path: 'project/:projectid/agents',
+    loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
+    canActivate: [AuthGuard],
+    canMatch: [SidebarAgentsEnabledGuard],
+  },
+  {
+    path: 'project/:projectid/agents/:namespaceid',
+    loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
+    canActivate: [AuthGuard],
+    canMatch: [SidebarAgentsEnabledGuard],
+  },
+  {
+    path: 'project/:projectid/agents/:calledby',
+    loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
+    canActivate: [AuthGuard],
+    canMatch: [SidebarAgentsEnabledGuard],
+  },
+
   // ---------------------------
   // Chatbots
   // ---------------------------
@@ -1555,6 +1588,7 @@ const routes: Routes = [
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
+  { path: 'project/:projectid/onboarding2', component: Onboarding2Component, canActivate: [AuthGuard], canMatch: [MinimalDashboardGuard] }, // wizard (minimal)
   { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] },
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]

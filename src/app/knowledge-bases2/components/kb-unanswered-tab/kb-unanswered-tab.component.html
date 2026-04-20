@@ -1,0 +1,14 @@
+<modal-unanswered-questions
+  [unansweredQuestions]="unansweredQuestions"
+  [unansweredQuestionsCount]="unansweredQuestionsCount"
+  [hasMore]="hasMore"
+  [isLoadingMore]="isLoadingMore"
+  [showUQTableSpinner]="showUQTableSpinner"
+  [namespace]="namespace"
+  [id_project]="id_project"
+  (refresh)="refresh.emit()"
+  (loadMore)="loadMore.emit()"
+  (addFaqFromUnanswered)="addFaqFromUnanswered.emit($event)"
+>
+</modal-unanswered-questions>
+

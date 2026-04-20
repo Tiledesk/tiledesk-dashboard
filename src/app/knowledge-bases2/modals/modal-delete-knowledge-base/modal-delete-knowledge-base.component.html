@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>  {{ 'KbPage.DeleteKb' | translate }} </h1>
+
+<div mat-dialog-content>
+
+  <div class="info-container">
+    <i class="material-icons-outlined info-icon" style="margin-top: -2px;">help_outline</i>
+    <div class="info-text">
+      <p>{{ 'KbPage.DeleteKbInfoFirstText' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <p [innerHTML]="'KbPage.SureToDelete' | translate: { name: kb?.name }"></p>
+    <!--- <p>{{ 'KbPage.SureToDelete' | translate: { name: kbid_selected?.name } }}</p> --->
+  </div>
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+  
+    <button  class="mat-dialog-ko-btn" mat-button
+        (click)="onDeleteKnowledgeBase(kb)" >
+    
+        {{ 'Delete' | translate }}
+        
+    </button>
+</div>

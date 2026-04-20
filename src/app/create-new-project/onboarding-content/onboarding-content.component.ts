@@ -788,10 +788,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   goToHome() {
+    if (this.appConfigService?.getConfig?.()?.dashboardType === 'minimal') {
+      this.router.navigate([`/project/${this.newProject.id}/onboarding2`]);
+      return;
+    }
     this.router.navigate(['project/' + this.newProject.id + '/home'])
   }
 
   goToOnbordingTemplates() {
+    if (this.appConfigService?.getConfig?.()?.dashboardType === 'minimal') {
+      this.router.navigate([`/project/${this.newProject.id}/onboarding2`]);
+      return;
+    }
     this.router.navigate(['project/' + this.newProject.id + '/onboarding-templates'])
 
   }
@@ -807,6 +815,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   goToExitOnboarding() {
+    if (this.appConfigService?.getConfig?.()?.dashboardType === 'minimal') {
+      this.router.navigate([`/project/${this.newProject.id}/onboarding2`]);
+      return;
+    }
     if (this.isMobile === false) {
       this.router.navigate(['project/' + this.newProject.id + '/home'])
     } else {

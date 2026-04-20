@@ -1,0 +1,89 @@
+<div class="kb-sidebar">
+  <div class="sidebar-title">
+    {{ (isAgentsPage ? 'AgentsPage.YourAgents' : 'KbPage.YourKnowledgeBases') | translate }}
+  </div>
+
+  <button
+    *ngIf="permissionToAddKb"
+    class="custom-button xs sidebar-add-btn"
+    (click)="onAddNamespaceClick()"
+  >
+    <mat-icon class="sidebar-add-icon">add</mat-icon>
+    <span class="sidebar-add-label">
+      {{ (isAgentsPage ? 'AgentsPage.NewAgent' : 'KbPage.NewNamespace') | translate }}
+    </span>
+  </button>
+
+  <!-- SKELETON LOADER -->
+  <ul *ngIf="isLoadingNamespaces" class="kb-list">
+    <li *ngFor="let skeleton of [1]">
+      <div class="skeleton-item">
+        <div class="skeleton-text"></div>
+      </div>
+    </li>
+  </ul>
+
+  <ul class="kb-list" *ngIf="!isLoadingNamespaces && namespaces?.length">
+    <li
+      *ngFor="let ns of namespaces; trackBy: trackByNamespaceId"
+      (click)="onSelectNamespace(ns)"
+      [ngClass]="{ active: ns === selectedNamespace }"
+      [style.background]="ns === selectedNamespace ? '#e3e9f6' : 'transparent'"
+      [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'"
+      [style.fontWeight]="ns === selectedNamespace ? '400' : '300'"
+    >
+      <div class="kb-list-row">
+        <div class="kb-list-icons">
+          <span
+            *ngIf="ns?.hybrid === true"
+            class="hybrid-search-icon"
+            matTooltipClass="kb-custom-mat-tooltip"
+            matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}"
+            #tooltip="matTooltip"
+            matTooltipPosition="after"
+            matTooltipShowDelay="600"
+            matTooltipHideDelay="100"
+            >H</span
+          >
+          <span
+            *ngIf="!ns?.hybrid"
+            class="standard-search-icon"
+            matTooltipClass="kb-custom-mat-tooltip"
+            matTooltip="{{ 'KbPage.ThisKBUsesSemanticSearch' | translate }}"
+            #tooltip="matTooltip"
+            matTooltipPosition="after"
+            matTooltipShowDelay="600"
+            matTooltipHideDelay="100"
+            >S</span
+          >
+          <span
+            *ngIf="ns?.default"
+            class="material-icons-round default-kb-icon"
+            matTooltipClass="kb-custom-mat-tooltip"
+            matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}"
+            #tooltip="matTooltip"
+            matTooltipPosition="after"
+            matTooltipShowDelay="600"
+            matTooltipHideDelay="100"
+            >grade</span
+          >
+        </div>
+
+        <div class="kb-list-name">
+          {{ ns?.name }}
+        </div>
+
+        <div class="counter-badge">{{ ns?.count || 0 }}</div>
+
+        <div class="kb-list-chevron">
+          <mat-icon *ngIf="ns === selectedNamespace" style="color: #0f62ff">chevron_right</mat-icon>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div *ngIf="!isLoadingNamespaces" class="sidebar-total">
+    {{ 'KbPage.TotalContents' | translate }}: {{ totalCount || 0 }}/{{ quotasKbs || 0 }}
+  </div>
+</div>
+

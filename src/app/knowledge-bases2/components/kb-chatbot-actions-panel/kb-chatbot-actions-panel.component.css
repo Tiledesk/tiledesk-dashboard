@@ -1,0 +1,31 @@
+.chatbot-using-current-namespace-wpr {
+  display: none;
+}
+
+.chatbot-using-current-namespace {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 12px;
+  min-width: 278px;
+}
+
+.served-by-cb-wpr {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.served-by-cb-wpr--spaced {
+  margin-left: 8px;
+}
+
+.served-by-cb-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.custom-button.xs {
+  font-size: 12px;
+}
+

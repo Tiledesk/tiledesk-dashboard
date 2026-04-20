@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
+import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATier2, appSumoHighlightedFeaturesPlanATier3, appSumoHighlightedFeaturesPlanATier4, APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, emailDomainWhiteList, featuresPlanA, highlightedFeaturesPlanA, highlightedFeaturesPlanB, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
@@ -55,6 +56,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     private route: ActivatedRoute,
     private logger: LoggerService,
     public brandService: BrandService,
+    public appConfigService: AppConfigService,
     public translate: TranslateService,
     private widgetService: WidgetService,
     private notify: NotifyService,
@@ -281,6 +283,10 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
         this.updateProject()
 
         this.projectService.newProjectCreated(true);
+        if (this.appConfigService?.getConfig?.()?.dashboardType === 'minimal') {
+          this.router.navigate([`/project/${this.new_project._id}/onboarding2`]);
+          return;
+        }
         if (!isDevMode()) {
           if (window['analytics']) {
             try {

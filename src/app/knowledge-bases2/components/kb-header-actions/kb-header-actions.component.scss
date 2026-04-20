@@ -1,0 +1,22 @@
+.buttons-div {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: 8px;
+  }
+}
+
+.btn {
+  text-transform: none;
+}
+
+.btn.btn-red {
+  text-transform: capitalize;
+}
+
+/* Hide specific buttons (kept in DOM for rollback). */
+.kb-header-actions__hidden {
+  display: none;
+}
+

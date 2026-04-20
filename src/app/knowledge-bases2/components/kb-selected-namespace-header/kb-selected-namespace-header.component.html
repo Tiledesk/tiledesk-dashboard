@@ -1,0 +1,85 @@
+<div style="display: flex; flex-direction: column;">
+  <div class="selected-namespace-content">
+    <div
+      id="selected-namespace-name"
+      class="selected-namespace-name"
+      (mouseover)="onMouseOver()"
+      (mouseout)="onMouseOut()"
+    >
+      <div
+        *ngIf="!namespaceIsEditable"
+        id="namespace-name-output"
+        class="namespace-name-output"
+        style="padding: 0px;"
+        (click)="onClickName()"
+        matTooltipClass="kb-custom-mat-tooltip"
+        matTooltip="{{ 'Rename' | translate }}"
+        #tooltip="matTooltip"
+        matTooltipPosition="after"
+        matTooltipHideDelay="100"
+      >
+        <div class="selected-namespace">
+          {{ selectedNamespace?.name }}
+        </div>
+      </div>
+
+      <input
+        *ngIf="namespaceIsEditable"
+        id="namespace-name-input"
+        class="namespace-name-input"
+        type="text"
+        style="min-width: 220px; width: 300px; max-width: 450;"
+        [(ngModel)]="selectedNamespace.name"
+        (keypress)="onKeypress($event)"
+        (focus)="onFocus($any($event.target).value)"
+        (ngModelChange)="onChange($event)"
+        (blur)="onBlur($event)"
+      />
+    </div>
+  </div>
+
+  <div class="kb-install-on-website-wpr">
+    <button class="custom-button xs kb-install-on-website-btn" (click)="onInstallOnWebsite()">
+      Installa sul tuo sito web
+    </button>
+  </div>
+
+  <div class="kb-bottom-badge-wpr">
+    <div
+      *ngIf="selectedNamespace?.default"
+      class="kb-default-badge"
+      matTooltipClass="kb-custom-mat-tooltip"
+      matTooltip="{{ 'KbPage.ThisIsTheDefaultKB' | translate }}"
+      #tooltip="matTooltip"
+      matTooltipPosition="after"
+      matTooltipHideDelay="100"
+    >
+      {{ 'KbPage.Default' | translate }}
+    </div>
+
+    <div
+      class="hybrid-search-badge"
+      *ngIf="selectedNamespace?.hybrid === true"
+      matTooltipClass="kb-custom-mat-tooltip"
+      matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}"
+      #tooltip="matTooltip"
+      matTooltipPosition="right"
+      matTooltipHideDelay="100"
+    >
+      {{ 'KbPage.Hybrid' | translate }}
+    </div>
+
+    <div
+      class="standard-search-badge"
+      *ngIf="!selectedNamespace?.hybrid"
+      matTooltipClass="kb-custom-mat-tooltip"
+      matTooltip="{{ 'KbPage.ThisKBUsesSemanticSearch' | translate }}"
+      #tooltip="matTooltip"
+      matTooltipPosition="after"
+      matTooltipHideDelay="100"
+    >
+      {{ 'KbPage.Standard' | translate }}
+    </div>
+  </div>
+</div>
+

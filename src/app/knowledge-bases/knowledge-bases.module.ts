@@ -48,8 +48,7 @@ import { ModalUnansweredQuestionsComponent } from './modals/modal-unanswered-que
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal-confirm-action.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { AutoWidthInputDirective } from '../_directives/auto-width-input.directive';
-import { HtmlTagPipe } from '../html-tag.pipe';
+import { KbSharedModule } from '../shared/kb-shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
 
 
@@ -59,8 +58,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AutoWidthInputDirective,
-    HtmlTagPipe,
     KnowledgeBasesComponent,
     AddContentMenuComponent,
     KnowledgeBaseTableComponent,
@@ -94,6 +91,7 @@ const routes: Routes = [
     ReactiveFormsModule ,
     NgSelectModule,
     BotsSidebarModule,
+    KbSharedModule,
     SharedModule,
     TranslateModule,
     MatMenuModule,

@@ -293,6 +293,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   areVisibleChatbot: boolean;
   isVisibleKNB: boolean;
+  isAgentsSidebarItemEnabled = false;
   ARE_NEW_KB: boolean;
   kbNameSpaceid: string = '';
   currentProjectUser: any;
@@ -389,6 +390,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.subscribeToMyAvailibilityCount();
     this.getCurrentRoute();
     this.getOSCODE();
+    this.updateSidebarItemsVisibilityFromConfig();
     // this.getDahordBaseUrlThenOSCODE()
     this.brandLog();
     // this.getHasOpenBlogKey()
@@ -405,6 +407,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
     this.listenToProjectUser()
+  }
+
+  private updateSidebarItemsVisibilityFromConfig() {
+    const cfg: any = this.appConfigService.getConfig?.();
+    this.isAgentsSidebarItemEnabled = cfg?.sidebarItems?.agents === true;
   }
 
   ngAfterViewInit() {

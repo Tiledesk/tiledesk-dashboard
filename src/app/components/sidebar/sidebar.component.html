@@ -116,6 +116,27 @@
       </ng-container>
     </ng-container>
 
+    <!-- ------------------------------------------- -->
+    <!-- Agents (KB2) -->
+    <!-- ------------------------------------------- -->
+    <ng-container *ngIf="project && isAgentsSidebarItemEnabled">
+      <div id="agents-anchor-wpr"
+        matTooltipClass="sb-mat-tooltip"
+        matTooltip="Agents"
+        #tooltip="matTooltip"
+        matTooltipPosition="right"
+        matTooltipHideDelay="100"
+        routerLinkActive="item-active">
+        <a class="customAncor" routerLink="project/{{ project._id }}/agents">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+              <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-80q0-54 27-99t73-70q66-36 220-36t220 36q46 25 73 70t27 99v80H160Zm80-80h480v-8q0-29-14.5-53T668-338q-54-27-188-27t-188 27q-23 13-37.5 37T240-248v8Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Z"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </ng-container>
+
     <!-- ---------------------------------- -->
     <!-- Bot  (click)="goToBots()"   KB_ROUTE_IS_ACTIVE ||-->
     <!-- ---------------------------------- -->

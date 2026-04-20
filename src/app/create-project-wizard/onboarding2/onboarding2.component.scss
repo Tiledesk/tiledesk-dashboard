@@ -1,0 +1,182 @@
+@import "../../../assets/sass/md/_variables.scss";
+@import "./src/assets/sass/_spinner-section.scss";
+
+.onboarding2-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #ffffff;
+  position: relative;
+}
+
+.onboarding2-center {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  min-height: calc(100vh - 48px - 70px);
+  padding-top: 70px;
+}
+
+.step-header {
+  position: fixed;
+  width: 100%;
+  height: 70px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 31;
+  border-bottom: 0px solid rgba(0, 0, 0, 0.06);
+}
+
+.step-header .logo {
+  position: absolute;
+  width: 150px;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.step-header .close-wizard-page {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 9999;
+}
+
+.step-header .close-wizard-page .close-btn {
+  font-size: 44px;
+  font-weight: 100;
+  color: rgba(0, 0, 0, 0.62);
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.step-header .close-wizard-page .close-btn:hover {
+  opacity: 0.55;
+}
+
+.onboarding2-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.84);
+}
+
+.onboarding2-subtitle {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+.onboarding2-steps {
+  margin: 16px auto 0 auto;
+  text-align: left;
+  max-width: 560px;
+}
+
+.onboarding2-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.onboarding2-step:first-child {
+  border-top: none;
+}
+
+.onboarding2-step-icon {
+  font-size: 20px;
+  line-height: 20px;
+  margin-top: 2px;
+}
+
+.onboarding2-step-loader {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.14);
+  border-top-color: rgba(0, 0, 0, 0.52);
+  margin-top: 3px;
+  animation: onboarding2-step-spin 0.9s linear infinite;
+  flex: 0 0 auto;
+}
+
+@keyframes onboarding2-step-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.onboarding2-step-icon.is-pending {
+  color: rgba(0, 0, 0, 0.22);
+}
+
+.onboarding2-step-icon.is-running {
+  color: rgba(0, 0, 0, 0.48);
+}
+
+.onboarding2-step-icon.is-success {
+  color: #4caf50;
+}
+
+.onboarding2-step-icon.is-error {
+  color: #d84315;
+}
+
+.onboarding2-step-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.84);
+}
+
+.onboarding2-step-detail {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.62);
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+.onboarding2-error {
+  margin: 20px auto 0 auto;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(216, 67, 21, 0.25);
+  background: rgba(216, 67, 21, 0.06);
+  max-width: 560px;
+  text-align: left;
+}
+
+.onboarding2-error-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: rgba(0, 0, 0, 0.84);
+}
+
+.onboarding2-error-body {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.72);
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+
+.onboarding2-retry {
+  min-width: 140px;
+}
+
+.onboarding2-cta {
+  min-width: 220px;
+  margin-left: 8px;
+}
