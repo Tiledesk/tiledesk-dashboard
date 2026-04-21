@@ -41,6 +41,7 @@ import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/mo
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { ModalInstallOnWebsiteComponent } from './modals/modal-install-on-website/modal-install-on-website.component';
+import { ModalChatbotWelcomeMessageComponent } from './modals/modal-chatbot-welcome-message/modal-chatbot-welcome-message.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
@@ -831,6 +832,24 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       });
   }
 
+  onOpenChatbotWelcomeMessageModal(): void {
+    if (!this.selectedNamespace?.id) {
+      return;
+    }
+
+    // Minimal workflow: one chatbot per KB namespace. Use the first.
+    const firstBot = this.chatbotsUsingNamespace?.[0];
+
+    this.dialog.open(ModalChatbotWelcomeMessageComponent, {
+      width: '560px',
+      data: {
+        namespace: this.selectedNamespace,
+        chatbot: firstBot ?? null,
+        welcomeMessage: '',
+      },
+    });
+  }
+
   onSyncKbLinkedResources() {
     if (!this.selectedNamespace?.id) {
       return;
@@ -1239,7 +1258,6 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
-
         this.getDeptsByProjectId(faqkb)
       }
 

@@ -31,6 +31,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
 import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotWelcomeMessageComponent } from './modals/modal-chatbot-welcome-message/modal-chatbot-welcome-message.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
@@ -89,6 +90,7 @@ const routes: Routes = [
     ModalAddNamespaceComponent,
     ModalUploadFileComponent,
     ModalChatbotNameComponent,
+    ModalChatbotWelcomeMessageComponent,
     ModalHookBotComponent,
     ModalNsLimitReachedComponent,
     ModalConfirmGotoCdsComponent,
