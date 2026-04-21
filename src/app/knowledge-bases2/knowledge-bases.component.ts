@@ -665,6 +665,34 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         let paramsDefault = this.facade.buildKbListParams({ namespace: this.selectedNamespace.id });
         this.getListOfKb(paramsDefault, 'createNewNamespace');
 
+        // Agents page requirement: every "agent" namespace must have a linked chatbot + department with same name.
+        // This call is idempotent and safe to re-run (it will reuse existing linked resources if already provisioned).
+        if (this.isAgentsPage && this.id_project && createdNamespace?.id) {
+          this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: createdNamespace }).subscribe({
+            next: () => {
+              this.getChatbotUsingNamespace(createdNamespace.id);
+              this.loadDepartmentsAllStatusOnce();
+              // Notify navbar "simulate visitor" dropdown to refresh chatbots list immediately.
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(
+                  new CustomEvent('kb2-agent-provisioned', {
+                    detail: { projectId: this.id_project, namespaceId: createdNamespace.id },
+                  }),
+                );
+              }
+            },
+            error: (err) => {
+              this.logger.error('[KNOWLEDGE-BASES-COMP] createNewNamespace provisioning linked resources ERROR', err);
+              // Keep namespace created; allow deterministic recovery via existing "sync" action.
+              this.notify.showWidgetStyleUpdateNotification(
+                this.translate.instant('AnErrorOccurredWhileUpdating'),
+                4,
+                'report_problem'
+              );
+            },
+          });
+        }
+
         // Install params will be resolved when chatbots+departments are loaded for this namespace.
       }
     }, (error) => {

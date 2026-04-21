@@ -30,6 +30,8 @@ export class KbNamespaceSelectionService {
     // We expect URLs like: /project/<pid>/knowledge-bases/<namespaceId>
     // Fallback to '0' when the last segment isn't alphanumeric.
     const last = url.substring(url.lastIndexOf('/') + 1);
+    // Root routes like `/agents` or `/knowledge-bases` shouldn't be treated as namespace ids.
+    if (last === 'agents' || last === 'knowledge-bases') return '0';
     return this.isAlphaNumeric(last) ? last : '0';
   }
 
@@ -40,7 +42,7 @@ export class KbNamespaceSelectionService {
 
     if (stored?.id) {
       const found = namespaces.find((n) => n.id === stored.id);
-      const fallback = found ?? namespaces.find((n) => n.default === true);
+      const fallback = found ?? namespaces.find((n) => n.default === true) ?? namespaces[0];
       return {
         selected: fallback,
         shouldNavigateToSelected: Boolean(fallback),
@@ -49,7 +51,8 @@ export class KbNamespaceSelectionService {
     }
 
     if (urlNamespaceId === '0') {
-      const fallback = namespaces.find((n) => n.default === true);
+      // Root entrypoint: default selection must be the first namespace in the list.
+      const fallback = namespaces[0];
       return {
         selected: fallback,
         shouldNavigateToSelected: Boolean(fallback),
@@ -58,7 +61,7 @@ export class KbNamespaceSelectionService {
     }
 
     const found = namespaces.find((n) => n.id === urlNamespaceId);
-    const fallback = found ?? namespaces.find((n) => n.default === true);
+    const fallback = found ?? namespaces.find((n) => n.default === true) ?? namespaces[0];
     return {
       selected: fallback,
       shouldNavigateToSelected: Boolean(fallback),

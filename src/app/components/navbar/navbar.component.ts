@@ -29,7 +29,7 @@ import { AppConfigService } from '../../services/app-config.service';
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
 // import { environment } from '../../../environments/environment';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { filter, skip, takeUntil, throttleTime } from 'rxjs/operators'
 import { Subscription } from 'rxjs'
 
@@ -373,6 +373,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.listenToProjectUser()
     this.getPageTitle()
      this.listenSidebarIsOpened()
+    this.listenKb2AgentProvisioned();
+  }
+
+  private listenKb2AgentProvisioned(): void {
+    if (typeof window === 'undefined') return;
+    fromEvent<CustomEvent>(window, 'kb2-agent-provisioned')
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((ev) => {
+        const projectId = (ev as any)?.detail?.projectId;
+        if (!projectId || projectId !== this.projectId) return;
+        if (!this.isMinimalDashboard()) return;
+        this.loadSimulateVisitorChatbots();
+      });
   }
 
   listenSidebarIsOpened() {
@@ -2132,7 +2145,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     if (id_project !== this.projectId) {
 
       this.auth.projectSelected(project, 'navbar')
-      this.router.navigate([`/project/${id_project}/home`]);
+      const landing = this.isMinimalDashboard() ? 'agents' : 'home';
+      this.router.navigate([`/project/${id_project}/${landing}`]);
       // this.logger.log('[NAVBAR] goToHome prjct ', project )
       this.quotesService.resetFetchStatus()
     }
