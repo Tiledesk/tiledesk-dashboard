@@ -737,7 +737,9 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
       this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project.id_project)
       setTimeout(() => {
-        this.router.navigate([`/project/${project_id}/home`]);
+        const cfg: any = this.appConfigService.getConfig?.();
+        const landing = cfg?.dashboardType === 'minimal' ? 'agents' : 'home';
+        this.router.navigate([`/project/${project_id}/${landing}`]);
       }, 0);
     }
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()

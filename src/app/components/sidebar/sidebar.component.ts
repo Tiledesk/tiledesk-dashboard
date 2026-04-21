@@ -293,7 +293,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   areVisibleChatbot: boolean;
   isVisibleKNB: boolean;
-  isAgentsSidebarItemEnabled = false;
+  private sidebarItems: any = null;
   ARE_NEW_KB: boolean;
   kbNameSpaceid: string = '';
   currentProjectUser: any;
@@ -411,7 +411,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   private updateSidebarItemsVisibilityFromConfig() {
     const cfg: any = this.appConfigService.getConfig?.();
-    this.isAgentsSidebarItemEnabled = cfg?.sidebarItems?.agents === true;
+    this.sidebarItems = cfg?.sidebarItems ?? null;
+  }
+
+  isSidebarItemEnabled(key: string): boolean {
+    // Default behavior: keep existing sidebar unchanged unless config explicitly hides items.
+    if (!this.sidebarItems || typeof this.sidebarItems !== 'object') return true;
+    const value = this.sidebarItems?.[key];
+    return value !== false; // treat undefined as enabled for backward compatibility
   }
 
   ngAfterViewInit() {
@@ -2773,7 +2780,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
   goToHome() {
-    this.router.navigate(['/project/' + this.projectId + '/home']);
+    const cfg: any = this.appConfigService.getConfig?.();
+    const landing = cfg?.dashboardType === 'minimal' ? 'agents' : 'home';
+    this.router.navigate([`/project/${this.projectId}/${landing}`]);
   }
 
 
