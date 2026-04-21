@@ -1,0 +1,43 @@
+<div class="kb2-welcome-modal">
+  <h2 mat-dialog-title class="kb2-welcome-modal__title">Messaggio di benvenuto</h2>
+
+  <div mat-dialog-content class="kb2-welcome-modal__content">
+    <div class="kb2-welcome-modal__desc">
+      Stai configurando il messaggio che il chatbot associato a <b>{{ data?.namespace?.name }}</b> mostrerà all'avvio della conversazione.
+    </div>
+
+    <mat-form-field appearance="fill" class="kb2-welcome-modal__field">
+      <mat-label>Testo del messaggio</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        [(ngModel)]="welcomeMessage"
+        (keydown.enter)="onEnter($event)"
+        placeholder="Es. Ciao! Come posso aiutarti?"
+      ></textarea>
+    </mat-form-field>
+
+    <!--
+    <mat-form-field appearance="fill" class="kb2-welcome-modal__field">
+      <mat-label>Chatbot collegato (JSON)</mat-label>
+      <div class="kb2-welcome-modal__json-wrap">
+        <mat-progress-spinner
+          *ngIf="isLoadingChatbotJson"
+          class="kb2-welcome-modal__json-spinner"
+          mode="indeterminate"
+          diameter="22"
+        ></mat-progress-spinner>
+        <textarea matInput rows="10" [value]="chatbotJson" readonly></textarea>
+      </div>
+    </mat-form-field>
+    -->
+  </div>
+
+  <div mat-dialog-actions align="end" class="kb2-welcome-modal__actions">
+    <button mat-button type="button" (click)="onCancel()">Annulla</button>
+    <button mat-flat-button color="primary" type="button" (click)="onSave()" [disabled]="isSaving">
+      Salva
+    </button>
+  </div>
+</div>
+

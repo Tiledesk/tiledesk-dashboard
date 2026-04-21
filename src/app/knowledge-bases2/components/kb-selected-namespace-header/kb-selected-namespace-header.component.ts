@@ -12,6 +12,7 @@ export class KbSelectedNamespaceHeaderComponent {
   @Input() namespaceIsEditable = false;
 
   @Output() installOnWebsite = new EventEmitter<void>();
+  @Output() configureWelcomeMessage = new EventEmitter<void>();
   @Output() mouseOverName = new EventEmitter<void>();
   @Output() mouseOutName = new EventEmitter<void>();
   @Output() clickName = new EventEmitter<void>();
@@ -51,6 +52,10 @@ export class KbSelectedNamespaceHeaderComponent {
 
   onInstallOnWebsite(): void {
     this.installOnWebsite.emit();
+  }
+
+  onConfigureWelcomeMessage(): void {
+    this.configureWelcomeMessage.emit();
   }
 }
 

@@ -1,0 +1,29 @@
+.kb2-welcome-modal__title {
+  margin: 0;
+}
+
+.kb2-welcome-modal__desc {
+  margin: 8px 0 14px 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.72);
+  line-height: 1.35;
+}
+
+.kb2-welcome-modal__field {
+  width: 100%;
+}
+
+.kb2-welcome-modal__actions {
+  margin-top: 6px;
+}
+
+.kb2-welcome-modal__json-wrap {
+  position: relative;
+}
+
+.kb2-welcome-modal__json-spinner {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
