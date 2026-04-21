@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
@@ -28,7 +28,7 @@ import { IntegrationService } from 'app/services/integration.service';
   styleUrls: ['./modal-preview-settings.component.scss']
 })
 
-export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
+export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('aiModel') aiModel: SatPopover;
   @ViewChild('aiModelDx') aiModelDx: SatPopover;
   @ViewChild('maxTokens') maxTokens: SatPopover;
@@ -51,7 +51,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   @ViewChild('rerankdx') rerankdx: SatPopover;
   @ViewChild('rerankingMultiplier') rerankingMultiplier: SatPopover;
   @ViewChild('rerankingMultiplierDx') rerankingMultiplierDx: SatPopover;
-  
+
+  /** Delay before closing help popover so the pointer can move from the label into the panel (links). */
+  private static readonly SETTINGS_HELP_POPOVER_CLOSE_DELAY_MS = 200;
+  private settingsHelpPopoverCloseTimer: ReturnType<typeof setTimeout> | null = null;
+
   private savedScrollData: { scrollTop: number, selector: string, activeElementId?: string } | null = null;
 
 
@@ -426,6 +430,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
 
     this.namespaceid = this.selectedNamespace.id
+  }
+
+  ngOnDestroy(): void {
+    this.cancelDelayedHelpPopoverClose();
   }
 
   /**
@@ -1054,8 +1062,38 @@ private restoreDialogScrollPosition(): void {
     this.closeAllSettingsPopovers();
   }
 
+  cancelDelayedHelpPopoverClose(): void {
+    if (this.settingsHelpPopoverCloseTimer != null) {
+      clearTimeout(this.settingsHelpPopoverCloseTimer);
+      this.settingsHelpPopoverCloseTimer = null;
+    }
+  }
+
+  /** Schedula la chiusura del popover dopo uscita da label o pannello (tempo per attraversare il gap). */
+  scheduleDelayedHelpPopoverClose(popover: SatPopover): void {
+    this.cancelDelayedHelpPopoverClose();
+    this.settingsHelpPopoverCloseTimer = setTimeout(() => {
+      this.settingsHelpPopoverCloseTimer = null;
+      popover?.close();
+    }, ModalPreviewSettingsComponent.SETTINGS_HELP_POPOVER_CLOSE_DELAY_MS);
+  }
+
+  /**
+   * Apre un help popover dopo hover sulla label (chiude gli altri e annulla chiusure differite).
+   * Se questo popover è già aperto, non esegue chiudi+riapri (es. ritorno label ↔ pannello).
+   */
+  openHelpPopover(popover: SatPopover): void {
+    this.cancelDelayedHelpPopoverClose();
+    if (popover?.isOpen()) {
+      return;
+    }
+    this.closeAllSettingsPopovers();
+    popover.open();
+  }
+
   /** Chiude tutte le varianti popover (sinistra + destra per preview KB). */
   closeAllSettingsPopovers(): void {
+    this.cancelDelayedHelpPopoverClose();
     this.aiModel?.close();
     this.aiModelDx?.close();
     this.maxTokens?.close();
