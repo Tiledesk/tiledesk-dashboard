@@ -363,7 +363,8 @@ export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
         this.logger.log('[SIDEBAR-USER-DETAILS] project from $ubscription', this.project);
         this.destructureProjectAndBuildProjectPlanName(this.project)
 
-        if(this.projects){
+        if (this.projects) {
+          this.sortProjectsWithCurrentFirst();
           this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
           console.log('[SIDEBAR-USER-DETAILS] project.teammateStatus ', this.project.teammateStatus);
         }
@@ -384,6 +385,7 @@ export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
         this.projects.forEach((prj: ProjectUser) => {
           prj.teammateStatus = getUserStatusFromProjectUser(prj as any);
         });
+        this.sortProjectsWithCurrentFirst();
         this.project.teammateStatus = this.projects.find((prj: ProjectUser) => prj?.id_project?.id === this.projectId)?.teammateStatus;
         this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.projects ', this.project);
       }
@@ -394,6 +396,35 @@ export class SidebarUserDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Mette in testa alla lista il progetto corrispondente a projectId / progetto corrente */
+  private sortProjectsWithCurrentFirst(): void {
+    if (!this.projects?.length) {
+      return;
+    }
+    const currentId = this.projectId || this.project?._id;
+    if (!currentId) {
+      return;
+    }
+    this.projects.sort((a, b) => {
+      const aMatch = this.isProjectUserForProjectId(a, currentId);
+      const bMatch = this.isProjectUserForProjectId(b, currentId);
+      if (aMatch && !bMatch) {
+        return -1;
+      }
+      if (!aMatch && bMatch) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+  private isProjectUserForProjectId(prj: ProjectUser, projectId: string): boolean {
+    const pid = prj?.id_project;
+    if (!pid || !projectId) {
+      return false;
+    }
+    return pid._id === projectId || pid.id === projectId;
+  }
 
   destructureProjectAndBuildProjectPlanName(project: Project) {
     this.is_active_subscription = project.isActiveSubscription;

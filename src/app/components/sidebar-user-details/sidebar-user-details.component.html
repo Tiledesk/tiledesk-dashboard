@@ -87,7 +87,7 @@
     <section class="availability-section">
        
         <!--  -->
-        <ng-container *ngIf="!isVisibleMPA" id="availability_dropdown_container">
+        <ng-container *ngIf="!isVisibleMPA || (isVisibleMPA && projects?.length === 1)" id="availability_dropdown_container">
             <ng-select style="text-align: left;width: 100%;" 
             (change)="changeAvailabilityStateInUserDetailsSidebar(selectedStatus)"
             [(ngModel)]="selectedStatus" 
@@ -114,9 +114,9 @@
             </ng-select>
         </ng-container>
 
-        <ng-container *ngIf="isVisibleMPA && projects?.length > 0" id="projects_dropdown_container">
+        <ng-container *ngIf="isVisibleMPA && projects?.length > 1" id="projects_dropdown_container">
             <div class="projects-dropdown-wrapper">
-                <button class="btn projects-dropdown-toggle" (click)="toggleProjectsDropdown()">
+                <button type="button" class="btn projects-dropdown-toggle" (click)="toggleProjectsDropdown()">
                     <span class="projects-dropdown-toggle-label">
                         {{ project?.name || 'Progetti' }}
                         <img *ngIf="project?.teammateStatus" style="width: 15px; height: 15px; position: relative; top: 1px; cursor: pointer;" height="15" width="15" [src]="project?.teammateStatus?.avatar" />

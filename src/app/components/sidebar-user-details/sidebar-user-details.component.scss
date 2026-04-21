@@ -273,6 +273,26 @@ button.user-details-btn-close {
             justify-content: space-between;
             color: inherit;
             font-size: inherit;
+            -webkit-tap-highlight-color: transparent;
+            will-change: auto;
+            box-shadow: none !important;
+            margin: 0 !important;
+            transition: none;
+
+            &:hover,
+            &:focus,
+            &:focus-visible,
+            &:active,
+            &:active:focus {
+                box-shadow: none !important;
+                transform: none !important;
+                outline: none;
+            }
+
+            .ripple-container,
+            .mat-ripple-element {
+                display: none !important;
+            }
         }
 
         .projects-dropdown-toggle-label {
