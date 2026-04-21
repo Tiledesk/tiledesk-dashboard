@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.169
+- Improve AI settings dialog tooltips
+
 ### 2.7.168
 - Fixes the bug: teammates with the Agent role in the chat cannot access unassigned conversations
 
