@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.170
+- Improves knowledge base statistics cards with clickable functionality
+- Fixes a bug: the default maximum token value for the GPT-40 template is 256 instead of 10000
+- Increases the line height for the text area of ​​the FAQ, URL, and Text dialog window
+- Adds an arrow to the unanswered and answered questions tables for  the navigation to the conversation
+- Implements teammate carousel in conversation page
+
 ### 2.7.169
 - Improve AI settings dialog tooltips
 
