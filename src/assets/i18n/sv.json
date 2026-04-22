@@ -2104,6 +2104,8 @@
         "LearnMoreAboutOH": "Läs mer om öppettider"
     },
     "KbPage": {
+        "GoToConversation": "Gå till konversationen",
+        "ClickToViewConversation": "Klicka för att se konversationen",
         "KbStatsContents": "Innehåll",
         "KbStatsAnswered": "Besvarade",
         "KbStatsUnanswered": "Obegvarade",

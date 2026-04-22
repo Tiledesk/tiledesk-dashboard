@@ -2088,6 +2088,8 @@
          "LearnMoreAboutOH": "تعرف على المزيد حول ساعات العمل"
     },
     "KbPage": {
+        "GoToConversation": "انتقل إلى المحادثة",   
+        "ClickToViewConversation": "انقر لعرض المحادثة",
         "KbStatsContents": "المحتويات",
         "KbStatsAnswered": "تم الرد عليها",
         "KbStatsUnanswered": "لم يتم الرد عليها",

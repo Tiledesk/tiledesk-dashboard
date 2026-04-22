@@ -2103,6 +2103,8 @@
         "LearnMoreAboutOH": "Жұмыс уақыты туралы көбірек біліңіз"
     },
     "KbPage": {
+        "GoToConversation": "Өтінішке өту",
+        "ClickToViewConversation": "Өтінішті көру үшін басыңыз",
         "KbStatsContents": "Мазмұны",
         "KbStatsAnswered": "Жауап берілген",
         "KbStatsUnanswered": "Жауап берілмеген",

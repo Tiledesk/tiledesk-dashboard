@@ -23,9 +23,13 @@
 </div>
 <div mat-dialog-content (click)="handleClickInside($event)">
 
-  <div class="form--container">
+  <div class="form--container question-preview-form">
      <div class="question-header-row">
       <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+    </div>
+     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      <div class="preview-stream-toggle-row">
       <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle"
        matTooltipClass="kb-custom-mat-tooltip" 
         matTooltip="{{'ResponseInStreaming' | translate }}" 
@@ -34,13 +38,11 @@
         matTooltipHideDelay="100">
         {{ 'KbPage.PreviewStream' | translate }}
       </mat-slide-toggle>
-    </div>
-     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      </div>
 
-        <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;margin-top: -4px;">
+        <!-- <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;margin-top: -4px;">
           {{'QuestionIsRequired' | translate}}
-        </div>
+        </div> -->
   </div>
 
   <!-- KB Tags --> 

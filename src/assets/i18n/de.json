@@ -2088,6 +2088,8 @@
 		 "LearnMoreAboutOH": "Erfahren Sie mehr über die Öffnungszeiten"
 	},
 	"KbPage": {
+		"GoToConversation": "Zur Konversation gehen",
+		"ClickToViewConversation": "Klicken Sie, um die Konversation anzuzeigen",
 		"KbStatsContents": "Inhalte",
     	"KbStatsAnswered": "Beantwortet",
     	"KbStatsUnanswered": "Unbeantwortet",

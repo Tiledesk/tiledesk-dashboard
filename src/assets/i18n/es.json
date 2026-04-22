@@ -2064,6 +2064,8 @@
          "LearnMoreAboutOH": "Obtenga más información sobre el horario de atención"
     },
     "KbPage": {
+        "GoToConversation": "Ir a la conversación",
+        "ClickToViewConversation": "Haz clic para ver la conversación",
         "KbStatsContents": "Contenidos",
         "KbStatsAnswered": "Respondidas",
         "KbStatsUnanswered": "No respondidas",

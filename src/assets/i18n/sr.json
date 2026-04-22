@@ -2088,6 +2088,8 @@
         "LearnMoreAboutOH": "Сазнајте више о радном времену"
     },
     "KbPage": {
+        "GoToConversation": "Иди на разговор",
+        "ClickToViewConversation": "Кликните да видите разговор",
         "KbStatsContents": "Садржај",
         "KbStatsAnswered": "Одговорена",
         "KbStatsUnanswered": "Неодговорена",

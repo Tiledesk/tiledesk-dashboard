@@ -310,7 +310,48 @@
   display: flex;
   gap: 2px;
   justify-content: flex-end;
+  align-items: center;
 }
+
+/* Freccia hint “apri conversazione”: sempre visibile (bassa opacità), più leggibile in hover riga o sull’hint. */
+/* Stessa box 36×36 e glyph 24px delle `.uq-btn` / `.uq-btn-icon mat-icon` per allineamento orizzontale. */
+.uq-open-conversation-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-right: 0;
+  color: rgba(60, 72, 88, 0.26);
+  transition: color 0.15s ease;
+  outline: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.uq-open-conversation-hint__icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(2px);
+}
+
+.uq-list-item--clickable:hover .uq-open-conversation-hint,
+.uq-open-conversation-hint:hover {
+  color: rgba(60, 72, 88, 0.52);
+}
+
+.uq-open-conversation-hint:focus-visible {
+  color: rgba(60, 72, 88, 0.62);
+  outline: 2px solid rgba(0, 108, 255, 0.35);
+  outline-offset: 1px;
+}
+
 .uq-btn {
   border: none;
   background: none;

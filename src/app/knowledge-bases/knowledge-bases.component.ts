@@ -347,6 +347,26 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
   }
 
+  /** KPI contenuti: apre il tab Contenuti. */
+  onKbStatsContentsClick(): void {
+    this.switchTab('contents');
+  }
+
+  /** KPI conteggio risposte: apre Domande → Risposte (stessa logica del tab principale). */
+  onKbStatsAnsweredClick(): void {
+    this.switchTab('unanswered');
+  }
+
+  /** KPI senza risposta: apre Domande → Non risposte. */
+  onKbStatsUnansweredClick(): void {
+    this.selectedTab = 'unanswered';
+    if (this.questionsSubTab !== 'unanswered') {
+      this.switchQuestionsSubTab('unanswered');
+    } else {
+      this.loadUnansweredQuestions(0, false);
+    }
+  }
+
   /** Rimuove `tab` / `questionsSub` dall’URL (stato obsoleto rispetto alla tab Contenuti). */
   private clearKbQuestionsDeepLinkQueryParams(): void {
     const qpm = this.route.snapshot.queryParamMap;

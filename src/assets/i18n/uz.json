@@ -2087,6 +2087,8 @@
         "LearnMoreAboutOH": "Ish vaqti haqida ko'proq bilib oling"
     },
     "KbPage": {
+        "GoToConversation": "Suhbatga o'tish",
+        "ClickToViewConversation": "Suhbatni ko'rish uchun bosing",
         "KbStatsContents": "Вміст",
         "KbStatsAnswered": "З відповідями",
         "KbStatsUnanswered": "Без відповідей",

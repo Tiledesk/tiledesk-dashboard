@@ -132,7 +132,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   project_user_length: number;
   display_teammates_in_scroll_div = false;
-  showRealTeammates = false
+  showRealTeammates = false;
+
+  /** Skeleton count quando `project_user_length` non è ancora valorizzato (prima della risposta API). */
+  readonly teammateCarouselSkeletonFallback = 20;
 
   projectUserAndLeadsArray = []
   projectUserBotsAndDeptsArray = []
@@ -426,16 +429,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   
   
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    if (this.projectId) {
-      this.router.navigate(['project', this.projectId, 'conversation-detail']);
-    } else {
-      this.router.navigate(['conversation-detail']);
-    }
+    // if (this.projectId) {
+    //   this.router.navigate(['project', this.projectId, 'conversation-detail']);
+    // } else {
+    //   this.router.navigate(['conversation-detail']);
+    // }
 
-    // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    // let url = baseUrl
-    // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    // myWindow.focus();
+    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
   }
 
   getProjectPlan() {
@@ -750,8 +753,8 @@ getProjectUserRole() {
             }
           });
 
-          // this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
-          // this.listenToAllProjectUsersOfProject$(projectuser)
+          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+          this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
 
@@ -981,11 +984,25 @@ getProjectUserRole() {
   }
 
   public generateFake(count: number): Array<number> {
-    const indexes = [];
-    for (let i = 0; i < count; i++) {
+    const n = Math.max(0, Math.floor(Number(count)) || 0);
+    const indexes: number[] = [];
+    for (let i = 0; i < n; i++) {
       indexes.push(i);
     }
     return indexes;
+  }
+
+  /** Numero di slot skeleton: coincide con i teammate quando noto, altrimenti fallback finché non arriva l’API. */
+  get teammateSkeletonSlotCount(): number {
+    const raw = this.project_user_length as unknown;
+    if (raw === undefined || raw === null) {
+      return this.teammateCarouselSkeletonFallback;
+    }
+    const n = Math.floor(Number(raw));
+    if (!Number.isFinite(n) || n < 1) {
+      return 0;
+    }
+    return n;
   }
 
   getLoggedUser() {

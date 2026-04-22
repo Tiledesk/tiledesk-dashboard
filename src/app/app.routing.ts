@@ -1589,20 +1589,20 @@ const routes: Routes = [
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
 
-  // { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
-  // { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
+  { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
 
 
     
   // Conversation detail iframe
-  { path: 'conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'conversation-detail/:IDConv', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'conversation-detail/:IDConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'conversation-detail/:IDConv/:FullNameConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/conversation-detail/:IDConv', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/conversation-detail/:IDConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/conversation-detail/:IDConv/:FullNameConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'conversation-detail/:IDConv', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'conversation-detail/:IDConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'conversation-detail/:IDConv/:FullNameConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/conversation-detail', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/conversation-detail/:IDConv', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/conversation-detail/:IDConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/conversation-detail/:IDConv/:FullNameConv/:Convtype', component: ConversationDetailIframeComponent, canActivate: [AuthGuard] },
 
 
 

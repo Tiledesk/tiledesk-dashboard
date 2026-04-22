@@ -2087,6 +2087,8 @@
         "LearnMoreAboutOH": "Saiba mais sobre o horário de funcionamento"
     },
     "KbPage": {
+        "GoToConversation": "Ir para a conversa",
+        "ClickToViewConversation": "Clique para ver a conversa",
         "KbStatsContents": "Conteúdos",
         "KbStatsAnswered": "Respondidas",
         "KbStatsUnanswered": "Não respondidas",

@@ -95,17 +95,17 @@ export class HomeGoToChatComponent implements OnInit {
     
     localStorage.setItem('last_project', JSON.stringify(this.current_prjct))
 
-    const projectId = this.current_prjct?.id_project?.id;
-    if (projectId) {
-      this.router.navigate(['project', projectId, 'conversation-detail']);
-    } else {
-      this.router.navigate(['conversation-detail']);
-    }
+    // const projectId = this.current_prjct?.id_project?.id;
+    // if (projectId) {
+    //   this.router.navigate(['project', projectId, 'conversation-detail']);
+    // } else {
+    //   this.router.navigate(['conversation-detail']);
+    // }
 
-    // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    // let url = baseUrl
-    // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    // myWindow.focus();
+    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
 
 
   }

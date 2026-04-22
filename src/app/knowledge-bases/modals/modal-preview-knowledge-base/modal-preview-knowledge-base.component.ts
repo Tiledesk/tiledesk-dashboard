@@ -33,6 +33,8 @@ import {
 
 
 export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
+  private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -275,7 +277,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     const clamp = (v: number) => Math.min(Math.max(v, max_tokens_min), max_tokens_max);
     const raw = this.maxTokens;
     if (raw != null && !Number.isNaN(Number(raw))) {
-      this.maxTokens = clamp(Number(raw));
+      let v = Number(raw);
+      const modelNorm = (modelValue || '').trim().toLowerCase();
+      if (modelNorm === 'gpt-4o' && v === ModalPreviewKnowledgeBaseComponent.SERVER_LEGACY_MAX_TOKENS_SENTINEL) {
+        v = getLlmModelDefaultMaxTokens('gpt-4o');
+      }
+      this.maxTokens = clamp(v);
     } else {
       this.maxTokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
     }

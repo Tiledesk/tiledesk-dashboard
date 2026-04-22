@@ -2088,6 +2088,8 @@
         "LearnMoreAboutOH": "Çalışma saatleri hakkında daha fazla bilgi edinin"
     },
     "KbPage": {
+        "GoToConversation": "Görüşmeye git",
+        "ClickToViewConversation": "Görüşmeyi görüntülemek için tıklayın",
         "KbStatsContents": "İçerikler",
         "KbStatsAnswered": "Cevaplananlar",
         "KbStatsUnanswered": "Cevaplanmayanlar",

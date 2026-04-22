@@ -3104,11 +3104,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.project['role'] = this.USER_ROLE
       localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
       // Navigate to conversation-detail iframe component
-      this.router.navigate(['project/' + this.project._id + '/conversation-detail']);
-    } else {
-      // Fallback if no project is selected
-      this.router.navigate(['/conversation-detail']);
-    }
+      // this.router.navigate(['project/' + this.project._id + '/conversation-detail']);
+    } 
+    // else {
+    //   // Fallback if no project is selected
+    //   this.router.navigate(['/conversation-detail']);
+    // }
   }
 
   redirectToPricing(projectUser) {

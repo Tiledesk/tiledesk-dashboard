@@ -1110,13 +1110,15 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   chatWithAgent() {
     this.logger.log("[CONTACTS-DTLS] CHAT WITH AGENT > CONTACT: ", this.contact_details);
 
-    // const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.contact_details._id + '/' + this.contact_details.fullname + '/new'
-    // this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url);
-    // this.logger.log("[CONTACTS-DTLS] - CHAT URL ", url);
-    // window.open(url, '_blank');
-    const fullname = (this.contact_details.fullname || '').replace(/#/g, '%23').trim();
-    this.router.navigate(['project', this.projectId, 'conversation-detail', this.contact_details._id, fullname, 'new']);
-    this.logger.log("[CONTACTS-DTLS] - navigazione a conversation-detail ", this.contact_details._id, fullname, 'new');
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + this.contact_details._id + '/' + this.contact_details.fullname + '/new'
+    this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url);
+    this.logger.log("[CONTACTS-DTLS] - CHAT URL ", url);
+    window.open(url, '_blank');
+
+    // new navigation with iframe in the same page
+    // const fullname = (this.contact_details.fullname || '').replace(/#/g, '%23').trim();
+    // this.router.navigate(['project', this.projectId, 'conversation-detail', this.contact_details._id, fullname, 'new']);
+    // this.logger.log("[CONTACTS-DTLS] - navigazione a conversation-detail ", this.contact_details._id, fullname, 'new');
 
   }
 

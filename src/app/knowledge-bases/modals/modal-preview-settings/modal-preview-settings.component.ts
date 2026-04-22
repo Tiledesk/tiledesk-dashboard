@@ -97,7 +97,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   wasOpenedFromThePreviewKBModal: boolean
 
   private modelDefaultValue = "gpt-4o";
-  private maxTokensDefaultValue = 256;
+  /** Valore errato ancora restituito dal server per max_tokens con gpt-4o (workaround sotto). */
+  private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+  private maxTokensDefaultValue = 10000;
   private temperatureDefaultValue = 0.7
   private alphaDefaultValue = 0.5
 
@@ -212,7 +214,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
 
       if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
         this.temperature_slider_disabled = true;
-        console.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
+        this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
       } else { 
         // this.temperature = this.selectedNamespace.preview_settings.temperature
         this.temperature_slider_disabled = false;
@@ -464,7 +466,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     if (options?.resetMaxTokensToDefault) {
       this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
     } else if (this.max_tokens != null && !Number.isNaN(this.max_tokens as number)) {
-      this.max_tokens = clamp(this.max_tokens);
+      let v = Number(this.max_tokens);
+      // Workaround server: gpt-4o + max_tokens=256 (non confrontare con maxTokensDefaultValue: può essere 10000).
+      const modelNorm = (modelValue || '').trim().toLowerCase();
+      if (modelNorm === 'gpt-4o' && v === ModalPreviewSettingsComponent.SERVER_LEGACY_MAX_TOKENS_SENTINEL) {
+        v = getLlmModelDefaultMaxTokens('gpt-4o');
+      }
+      this.max_tokens = clamp(v);
     } else {
       this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
     }

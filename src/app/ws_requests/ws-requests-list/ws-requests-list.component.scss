@@ -697,6 +697,79 @@ span .switch-agent-admin-requests-btn {
   // height: 60px;
 }
 
+/* Striscia teammate: freccia dx non dentro .middle-nw (evita discesa in basso con float). */
+.teammates-carousel__strip {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.middle-nw.middle-nw--teammates {
+  float: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto !important;
+  max-width: none;
+}
+
+.scroll-div-side-btn--teammates {
+  margin-top: 0;
+  flex: 0 0 auto;
+}
+
+.scroll-div-side-btn--teammates .material-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.scroll-div-side-btn--right {
+  margin-right: 6px;
+}
+
+.teammates-carousel-skeleton {
+  min-height: 48px;
+  align-items: center;
+}
+
+/* Stesso passo visivo dei teammate reali: niente margine extra (demo.scss ha margin-right su .served-by-conv-b commentato). */
+.teammates-carousel-skeleton__row {
+  flex: 0 0 auto;
+  margin-right: 0;
+}
+
+.teammates-carousel-skeleton__cell {
+  cursor: default;
+  flex: 0 0 42px !important;
+  max-width: 42px;
+  min-width: 42px;
+  padding: 0;
+}
+
+.teammates-carousel-skeleton__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+  background: linear-gradient(90deg, #e4e9ed 0%, #f1f4f7 45%, #e4e9ed 90%);
+  background-size: 220% 100%;
+  animation: teammates-carousel-skeleton-shimmer 1.25s ease-in-out infinite;
+}
+
+@keyframes teammates-carousel-skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 // .teammates-with-picture-assigned-requests-count {
 //   position: absolute;
 //   display: -webkit-box;
@@ -787,7 +860,7 @@ span .switch-agent-admin-requests-btn {
   align-items: center;
   justify-content: center;
   display: flex;
-  margin-top: 9px;
+  // margin-top: 9px;
   background: #e4e6eb;
   border-radius: 50%;
   padding: 2px;

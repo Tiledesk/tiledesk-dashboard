@@ -197,7 +197,6 @@
 .question-header-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
     margin-bottom: 3px;
@@ -205,6 +204,18 @@
     .answer-title {
         margin-bottom: 0;
     }
+}
+
+.question-preview-form.form--container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.preview-stream-toggle-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
 }
 
 .preview-stream-toggle {

@@ -316,15 +316,27 @@
                   </div>
 
                   <div class="kb-stats-cards" *ngIf="selectedNamespace">
-                    <div class="kb-stats-card">
+                    <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
+                      [attr.aria-label]="('KbPage.KbStatsContents' | translate) + ' — ' + ('KbPage.Contents' | translate)"
+                      (click)="onKbStatsContentsClick()"
+                      (keydown.enter)="onKbStatsContentsClick()"
+                      (keydown.space)="$event.preventDefault(); onKbStatsContentsClick()">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsContents' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--dark">{{ kbsContentTotalCount }}</div>
                     </div>
-                    <div class="kb-stats-card">
+                    <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
+                      [attr.aria-label]="('KbPage.KbStatsAnswered' | translate) + ' — ' + ('KbPage.AnsweredQuestionsTab' | translate)"
+                      (click)="onKbStatsAnsweredClick()"
+                      (keydown.enter)="onKbStatsAnsweredClick()"
+                      (keydown.space)="$event.preventDefault(); onKbStatsAnsweredClick()">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsAnswered' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--answered">{{ kbStatsAnsweredCount }}</div>
                     </div>
-                    <div class="kb-stats-card">
+                    <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
+                      [attr.aria-label]="('KbPage.KbStatsUnanswered' | translate) + ' — ' + ('KbPage.UnansweredQuestionsTab' | translate)"
+                      (click)="onKbStatsUnansweredClick()"
+                      (keydown.enter)="onKbStatsUnansweredClick()"
+                      (keydown.space)="$event.preventDefault(); onKbStatsUnansweredClick()">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsUnanswered' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--unanswered">{{ kbStatsUnansweredCount }}</div>
                     </div>

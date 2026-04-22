@@ -174,12 +174,11 @@
         border: 1px solid #ccc;
         padding: 10px 10px;
         color: #3c4858 !important;
-        // line-height: 35px;
         font-weight: 300;
-        line-height: inherit;
+        line-height: 1.4;
         white-space: pre;
         resize: block;
-        font-size: 14px;
+        font-size: 13px;
 
         &.invalid {
             border: 2px solid red !important;

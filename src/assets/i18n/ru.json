@@ -2088,6 +2088,8 @@
         "LearnMoreAboutOH": "Узнать больше о часах работы"
     },
     "KbPage": {
+        "GoToConversation": "Перейти к разговору",
+        "ClickToViewConversation": "Нажмите, чтобы просмотреть разговор",
         "KbStatsContents": "Содержимое",
         "KbStatsAnswered": "Отвеченные",
         "KbStatsUnanswered": "Неотвеченные",

@@ -470,14 +470,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
    onLoadByFilter(filterValue?: string, column?: string) {
     this.hasFiltered = true;
-    console.log('[KB TABLE] >>>  onLoadByFilter hasFiltered ', this.hasFiltered)
-    console.log('[KB TABLE] >>> onLoadByFilter filterStatus ', this.filterStatus)
-    console.log('[KB TABLE] >>> onLoadByFilter filterType ', this.filterType)
+    this.logger.log('[KB TABLE] >>>  onLoadByFilter hasFiltered ', this.hasFiltered)
+    this.logger.log('[KB TABLE] >>> onLoadByFilter filterStatus ', this.filterStatus)
+    this.logger.log('[KB TABLE] >>> onLoadByFilter filterType ', this.filterType)
     // let status = '';
     // let search = '';
-    console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
-    console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
-    console.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter searchParams: ", this.searchParams)
 
     // Dopo "load more" searchParams.page > 0: ogni nuovo filtro/ricerca/refresh deve ripartire da pagina 0
     this.searchParams.page = 0;
