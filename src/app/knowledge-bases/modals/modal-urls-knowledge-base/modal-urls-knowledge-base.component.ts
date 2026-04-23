@@ -32,8 +32,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   htmlTagsPanelExpanded = false;
   /** Stato espansione pannello import da sitemap (accordion separato). */
   sitemapImportPanelExpanded = false;
-  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
-  automaticContentExtraction = false;
+  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. Default on. */
+  automaticContentExtraction = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   scrape_types: Array<any> = [
     // { name: "Full HTML page", value: 1 },

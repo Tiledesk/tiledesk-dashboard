@@ -33,8 +33,8 @@ export class ModalSiteMapComponent implements OnInit {
 
   /** Chiuso di default; si chiude quando si attiva Automatic content extraction. */
   htmlTagsPanelExpanded = false;
-  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
-  automaticContentExtraction = false;
+  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. Default on. */
+  automaticContentExtraction = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // scrape_types: Array<any> = [
   //   { name: "Full HTML page", value: 1 },

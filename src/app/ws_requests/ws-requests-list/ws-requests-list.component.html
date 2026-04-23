@@ -346,9 +346,10 @@
                     <div #widgetsContent class="middle-nw middle-nw--teammates">
                       <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
                         <ng-container class="all-teammates">
-                          <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
+                          <div class="served-by-conv-b" *ngFor="let agent of displayedTeammatesForCarousel">
+
                             <div class="served-by-conv-c" matTooltipClass="conv-custom-mat-tooltip"
-                              matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
+                              [matTooltip]="agent | teammateCarouselTooltip"
                               #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
                               (click)='goToEditUser(agent?._id)'>
                               <div class="served-by-conv-d">
@@ -371,7 +372,10 @@
                                   'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                   'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                   'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
-                                  </div>
+                              </div>
+                              <div *ngIf="agent?.status === 'disabled'" class="teammates-with-picture-disabled-icon">
+                                <i class="material-icons" aria-hidden="true">person_off</i>
+                              </div>
                                 </div>
 
                             
@@ -383,11 +387,15 @@
                                       {{ agent?.id_user?.fullname_initial }}
                                     </span>
                                
+                                   
                                     <div class="teammates-no-picture-status-icon"
-                                       [ngClass]="{
+                                      [ngClass]="{
                                         'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                         'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
                                         'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
+                                    </div>
+                                    <div *ngIf="agent?.status === 'disabled'" class="teammates-no-picture-disabled-icon">
+                                      <i class="material-icons" aria-hidden="true">person_off</i>
                                     </div>
 
                                   </div>
@@ -397,6 +405,20 @@
                             </div>
                           </div>
                         </ng-container>
+                        <div *ngIf="teammatesCarouselOverflowChipVisible" class="served-by-conv-b teammates-carousel__overflow"
+                          role="button" tabindex="0"
+                          matTooltipClass="conv-custom-mat-tooltip"
+                          [matTooltip]="'TeammatesCarouselShowAll' | translate"
+                          matTooltipPosition="above" matTooltipHideDelay="100"
+                          (click)="expandTeammatesCarousel($event)"
+                          (keydown.enter)="expandTeammatesCarousel($event)"
+                          (keydown.space)="expandTeammatesCarousel($event)">
+                          <div class="served-by-conv-c teammates-carousel__overflow-cell">
+                            <div class="teammates-carousel__overflow-face">
+                              +{{ teammatesCarouselOverflowCount }}
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                   

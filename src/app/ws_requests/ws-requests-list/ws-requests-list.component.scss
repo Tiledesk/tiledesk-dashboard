@@ -730,6 +730,38 @@ span .switch-agent-admin-requests-btn {
   margin-right: 6px;
 }
 
+/* Chip +N / collassa: stile vicino a home `other-teammates`, allineato agli avatar 42px. */
+.teammates-carousel__overflow {
+  flex: 0 0 auto;
+  align-items: center;
+  margin-left: 2px;
+}
+
+.teammates-carousel__overflow-cell {
+  cursor: pointer;
+  padding: 0 2px;
+  flex: 0 0 auto !important; /* override demo .served-by-conv-c flex: 1 1 32px */
+  max-width: none;
+}
+
+.teammates-carousel__overflow-face {
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  background: rgb(33, 150, 243);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  line-height: 1;
+  user-select: none;
+}
+
 .teammates-carousel-skeleton {
   min-height: 48px;
   align-items: center;
@@ -792,6 +824,11 @@ span .switch-agent-admin-requests-btn {
 //   background-color: #039be5;
 //   color: #fff;
 // }
+/* Ancoraggio badge avatar teammate (foto): pallino in basso a destra, person_off in alto a destra. */
+.teammates-carousel .served-by-conv-e {
+  position: relative;
+}
+
 .teammates-with-picture-status-icon {
   width: 10px;
   height: 10px;
@@ -802,6 +839,7 @@ span .switch-agent-admin-requests-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
   // top: 39px;
   // left: 38px;
   top: 30px;
@@ -842,10 +880,41 @@ span .switch-agent-admin-requests-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
   // top: 39px;
   // left: 38px;
   top: 29px;
   left: 29px;
+}
+
+/* Teammate disabled: person_off in alto a destra; pallino disponibilità resta in basso a destra come gli altri. */
+.teammates-with-picture-disabled-icon,
+.teammates-no-picture-disabled-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background-color: #78909c;
+  color: #fff;
+  box-sizing: border-box;
+  z-index: 2;
+  top: -2px;
+  left: auto;
+  right: -3px;
+}
+
+.teammates-with-picture-disabled-icon .material-icons {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.teammates-no-picture-disabled-icon .material-icons {
+  font-size: 12px;
+  line-height: 1;
 }
 
 .is-user-online {

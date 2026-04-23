@@ -14,6 +14,7 @@ import { FormatColLabelsPipe } from 'app/format-col-labels-pipe';
 import { FormatPhonePipe } from 'app/format-phone.pipe';
 import { HighlightTemplateVariablesPipe } from 'app/highlight-template-variables.pipe';
 import { FormatParamBadgesPipe } from 'app/format-param-badges.pipe';
+import { TeammateCarouselTooltipPipe } from 'app/teammate-carousel-tooltip.pipe';
 
 
 
@@ -34,7 +35,8 @@ import { FormatParamBadgesPipe } from 'app/format-param-badges.pipe';
     FormatColLabelsPipe,
     FormatPhonePipe,
     HighlightTemplateVariablesPipe,
-           FormatParamBadgesPipe
+           FormatParamBadgesPipe,
+    TeammateCarouselTooltipPipe
          ],
   exports: [
     LoadingSpinnerComponent,
@@ -49,6 +51,7 @@ import { FormatParamBadgesPipe } from 'app/format-param-badges.pipe';
     FormatPhonePipe,
     HighlightTemplateVariablesPipe,
            FormatParamBadgesPipe,
+           TeammateCarouselTooltipPipe,
            ColorPickerModule
   ],
   providers: [ 
