@@ -28,6 +28,7 @@ export class ModalChatbotWelcomeMessageComponent {
   isLoadingChatbotJson = false;
   genWelcomeQuestion: string | null = null;
   welcomeStaticText: string | null = null;
+  startLinkedMode: 'static' | 'dynamic' | null = null;
   isSaving = false;
   private loadedChatbot: any = null;
 
@@ -68,6 +69,7 @@ export class ModalChatbotWelcomeMessageComponent {
             this.welcomeMessage = extracted;
           }
           this.computeAiMyAgentWelcomeValues(fullBot);
+          this.startLinkedMode = this.computeStartLinkedMode(fullBot);
         },
         error: () => {
         },
@@ -75,6 +77,118 @@ export class ModalChatbotWelcomeMessageComponent {
           this.isLoadingChatbotJson = false;
         },
       });
+  }
+
+  private computeStartLinkedMode(fullBot: any): 'static' | 'dynamic' | null {
+    const targetIntentId = this.extractStartTargetIntentId(fullBot);
+    if (!targetIntentId) return null;
+
+    const intents: any[] = Array.isArray(fullBot?.intents) ? fullBot.intents : [];
+    const target = intents.find((i) => String(i?.intent_id ?? '').replace(/^#/, '') === targetIntentId);
+    const display = String(target?.intent_display_name ?? '').trim().toLowerCase();
+
+    if (display === KB_CHATBOT_INTENTS.GEN_WELCOME) return 'dynamic';
+    if (display === KB_CHATBOT_INTENTS.WELCOME_STATIC) return 'static';
+    return null;
+  }
+
+  private extractStartTargetIntentId(fullBot: any): string | undefined {
+    const intents: any[] = Array.isArray(fullBot?.intents) ? fullBot.intents : [];
+    if (!intents.length) return undefined;
+
+    const startLike = intents.find((i) => String(i?.intent_display_name ?? '').trim().toLowerCase() === 'start');
+    const source = startLike ?? intents[0];
+
+    const actions: any[] = Array.isArray(source?.actions) ? source.actions : [];
+    const intentAction = actions.find((a) => String(a?._tdActionType ?? '').toLowerCase() === 'intent' && typeof a?.intentName === 'string');
+    const intentName = intentAction?.intentName ?? source?.attributes?.nextBlockAction?.intentName;
+    if (typeof intentName !== 'string') return undefined;
+    return String(intentName).replace(/^#/, '').trim();
+  }
+
+  isStartLinked(mode: 'static' | 'dynamic'): boolean {
+    return this.startLinkedMode === mode;
+  }
+
+  onToggleStartLinked(target: 'static' | 'dynamic'): void {
+    if (this.isSaving) return;
+    const chatbot = this.loadedChatbot ?? this.data?.chatbot ?? null;
+    if (!chatbot) return;
+
+    const botId =
+      chatbot?._id ??
+      chatbot?.id ??
+      chatbot?.id_faq_kb ??
+      this.data?.chatbot?._id ??
+      this.data?.chatbot?.id ??
+      this.data?.chatbot?.id_faq_kb;
+    if (!botId) {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorOccurredWhileUpdating'), 4, 'report_problem');
+      return;
+    }
+
+    const updated = JSON.parse(JSON.stringify(chatbot ?? {}));
+    updated._id = updated?._id ?? botId;
+    updated.id = updated?.id ?? botId;
+    updated.id_faq_kb = updated?.id_faq_kb ?? botId;
+    const ok = this.patchStartLinkedIntent(updated, target);
+    if (!ok) {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorOccurredWhileUpdating'), 4, 'report_problem');
+      return;
+    }
+
+    this.startLinkedMode = target;
+    this.loadedChatbot = updated;
+    this.chatbotJson = JSON.stringify(updated ?? {}, null, 2);
+
+    this.isSaving = true;
+    this.chatbotPatcher
+      .updateChatbot(updated)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.notify.showWidgetStyleUpdateNotification('Saved successfully', 2, 'done');
+        },
+        error: () => {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorOccurredWhileUpdating'), 4, 'report_problem');
+          // Recompute from the persisted bot on next open; keep local state as-is.
+        },
+        complete: () => {
+          this.isSaving = false;
+        },
+      });
+  }
+
+  private patchStartLinkedIntent(bot: any, target: 'static' | 'dynamic'): boolean {
+    const intents: any[] = Array.isArray(bot?.intents) ? bot.intents : [];
+    if (!intents.length) return false;
+
+    const startIdx = intents.findIndex((i) => String(i?.intent_display_name ?? '').trim().toLowerCase() === 'start');
+    if (startIdx === -1) return false;
+
+    const targetDisplay =
+      target === 'dynamic' ? KB_CHATBOT_INTENTS.GEN_WELCOME : KB_CHATBOT_INTENTS.WELCOME_STATIC;
+    const targetIntent = intents.find(
+      (i) => String(i?.intent_display_name ?? '').trim().toLowerCase() === targetDisplay,
+    );
+    const targetIntentId = String(targetIntent?.intent_id ?? '').trim();
+    if (!targetIntentId) return false;
+
+    const startIntent = { ...(intents[startIdx] ?? {}) };
+    const actions = Array.isArray(startIntent.actions) ? [...startIntent.actions] : [];
+    const idxAction = actions.findIndex((a) => String(a?._tdActionType ?? '').toLowerCase() === 'intent');
+    const nextName = `#${targetIntentId.replace(/^#/, '')}`;
+
+    if (idxAction >= 0) {
+      actions[idxAction] = { ...(actions[idxAction] ?? {}), intentName: nextName };
+      startIntent.actions = actions;
+    }
+
+    // Do NOT touch `attributes.nextBlockAction.intentName` for the "start" intent.
+
+    intents[startIdx] = startIntent;
+    bot.intents = intents;
+    return true;
   }
 
   /**

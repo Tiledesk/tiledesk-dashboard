@@ -16,6 +16,7 @@
     "Kb2.WelcomeModal.StaticField.Placeholder": "Es. Ciao! Come posso aiutarti?",
     "Kb2.WelcomeModal.DynamicField.Label": "Prompt",
     "Kb2.WelcomeModal.DynamicField.Placeholder": "Es. Genera un messaggio di benvenuto breve e amichevole...",
+    "Kb2.WelcomeModal.StartLinkedSwitchAria": "Collegato allo start del chatbot",
     "ChangeDashboardLanguage": "Cambia lingua dashboard",
     "ThisIsTheRealTimeConversationsMonitoringPanel": "Questo è il pannello di monitoraggio delle conversazioni in tempo reale. Per gestire le tue conversazioni usa lo",
     "chatTool": "strumento chat",

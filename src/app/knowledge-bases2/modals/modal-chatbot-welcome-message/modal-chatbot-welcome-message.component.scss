@@ -63,16 +63,15 @@
   padding: 14px 16px;
   cursor: pointer;
   text-align: left;
+  position: relative;
 }
 
 .kb2-welcome-modal__card:hover {
-  border: 2px solid var(--blue-20);
-  outline: var(--blue-20) solid 1px;
+  border: 3px solid var(--blue-20);
 }
 
 .kb2-welcome-modal__card--active {
-  border: 2px solid var(--blue-20);
-  outline: var(--blue-20) solid 1px;
+  border: 3px solid var(--blue-20);
 }
 
 .kb2-welcome-modal__card-title {
@@ -91,6 +90,36 @@
   letter-spacing: -0.01em;
   color: rgb(100, 116, 145);
   text-align: left;
+}
+
+.kb2-welcome-modal__start-switch {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid rgb(226, 232, 239);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.kb2-welcome-modal__start-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgb(148, 163, 184);
+  transform: translateX(0px);
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+
+.kb2-welcome-modal__start-dot--on {
+  background: var(--blue-light);
+  transform: translateX(14px);
 }
 
 .kb2-welcome-modal__field {

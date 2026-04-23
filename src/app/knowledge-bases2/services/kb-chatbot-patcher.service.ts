@@ -23,7 +23,7 @@ export class KbChatbotPatcherService {
   }
 
   updateChatbot(chatbot: any): Observable<any> {
-    const botId = chatbot?._id ?? chatbot?.id;
+    const botId = chatbot?._id ?? chatbot?.id ?? chatbot?.id_faq_kb;
     if (!botId) {
       throw new Error('chatbot id is required');
     }
@@ -39,7 +39,7 @@ export class KbChatbotPatcherService {
     }
 
     const intents: any[] = Array.isArray(chatbot?.intents) ? chatbot.intents : [];
-    const wanted = new Set<string>([KB_CHATBOT_INTENTS.WELCOME_STATIC, KB_CHATBOT_INTENTS.GEN_WELCOME]);
+    const wanted = new Set<string>([KB_CHATBOT_INTENTS.WELCOME_STATIC, KB_CHATBOT_INTENTS.GEN_WELCOME, 'start']);
 
     const operations = intents
       .filter((i) => wanted.has(String(i?.intent_display_name ?? '').trim().toLowerCase()))
