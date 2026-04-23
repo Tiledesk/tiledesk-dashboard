@@ -1,42 +1,93 @@
 <div class="kb2-welcome-modal">
-  <h2 mat-dialog-title class="kb2-welcome-modal__title">Messaggio di benvenuto</h2>
+  <div class="m-header">
+    <h1 mat-dialog-title style="margin-bottom: 0px;">
+      {{ 'Kb2.WelcomeModal.Title' | translate }}
+    </h1>
+    <div class="m-top-right-icon">
+      <span class="material-icons-outlined" (click)="onCancel()">
+        close
+      </span>
+    </div>
+  </div>
 
   <div mat-dialog-content class="kb2-welcome-modal__content">
-    <div class="kb2-welcome-modal__desc">
-      Stai configurando il messaggio che il chatbot associato a <b>{{ data?.namespace?.name }}</b> mostrerà all'avvio della conversazione.
+    <div
+      class="kb2-welcome-modal__desc"
+      [innerHTML]="'Kb2.WelcomeModal.DescriptionHtml' | translate: { namespace: (data?.namespace?.name ?? '') }"
+    ></div>
+
+    <div class="kb2-welcome-modal__mode">
+      <div class="kb2-welcome-modal__mode-title">
+        {{ 'Kb2.WelcomeModal.ModeTitle' | translate }}
+      </div>
+
+      <div class="kb2-welcome-modal__cards">
+        <button
+          type="button"
+          class="kb2-welcome-modal__card"
+          [class.kb2-welcome-modal__card--active]="mode === 'static'"
+          (click)="setMode('static')"
+          [attr.aria-label]="'Kb2.WelcomeModal.StaticCard.Title' | translate"
+        >
+          <div class="kb2-welcome-modal__card-title">{{ 'Kb2.WelcomeModal.StaticCard.Title' | translate }}</div>
+          <div class="kb2-welcome-modal__card-desc">{{ 'Kb2.WelcomeModal.StaticCard.Description' | translate }}</div>
+        </button>
+
+        <button
+          type="button"
+          class="kb2-welcome-modal__card"
+          [class.kb2-welcome-modal__card--active]="mode === 'dynamic'"
+          (click)="setMode('dynamic')"
+          [attr.aria-label]="'Kb2.WelcomeModal.DynamicCard.Title' | translate"
+        >
+          <div class="kb2-welcome-modal__card-title">{{ 'Kb2.WelcomeModal.DynamicCard.Title' | translate }}</div>
+          <div class="kb2-welcome-modal__card-desc">{{ 'Kb2.WelcomeModal.DynamicCard.Description' | translate }}</div>
+        </button>
+      </div>
     </div>
 
-    <mat-form-field appearance="fill" class="kb2-welcome-modal__field">
-      <mat-label>Testo del messaggio</mat-label>
+    <mat-form-field *ngIf="mode === 'static'" appearance="fill" class="kb2-welcome-modal__field">
+      <mat-label>{{ 'Kb2.WelcomeModal.StaticField.Label' | translate }}</mat-label>
       <textarea
         matInput
         rows="5"
         [(ngModel)]="welcomeMessage"
         (keydown.enter)="onEnter($event)"
-        placeholder="Es. Ciao! Come posso aiutarti?"
+        [placeholder]="'Kb2.WelcomeModal.StaticField.Placeholder' | translate"
       ></textarea>
     </mat-form-field>
 
-    <!--
-    <mat-form-field appearance="fill" class="kb2-welcome-modal__field">
+    <mat-form-field *ngIf="mode === 'dynamic'" appearance="fill" class="kb2-welcome-modal__field">
+      <mat-label>{{ 'Kb2.WelcomeModal.DynamicField.Label' | translate }}</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        [(ngModel)]="dynamicPrompt"
+        (keydown.enter)="onEnter($event)"
+        [placeholder]="'Kb2.WelcomeModal.DynamicField.Placeholder' | translate"
+      ></textarea>
+    </mat-form-field>
+
+    <!-- <mat-form-field appearance="fill" class="kb2-welcome-modal__field">
       <mat-label>Chatbot collegato (JSON)</mat-label>
       <div class="kb2-welcome-modal__json-wrap">
         <mat-progress-spinner
-          *ngIf="isLoadingChatbotJson"
           class="kb2-welcome-modal__json-spinner"
           mode="indeterminate"
           diameter="22"
         ></mat-progress-spinner>
         <textarea matInput rows="10" [value]="chatbotJson" readonly></textarea>
       </div>
-    </mat-form-field>
-    -->
+    </mat-form-field> -->
+
   </div>
 
-  <div mat-dialog-actions align="end" class="kb2-welcome-modal__actions">
-    <button mat-button type="button" (click)="onCancel()">Annulla</button>
-    <button mat-flat-button color="primary" type="button" (click)="onSave()" [disabled]="isSaving">
-      Salva
+  <div mat-dialog-actions class="kb2-welcome-modal__actions">
+    <button class="mat-dialog-close-btn" mat-button type="button" (click)="onCancel()">
+      {{ 'Cancel' | translate }}
+    </button>
+    <button class="mat-dialog-ok-btn" mat-button type="button" (click)="onSave()" [disabled]="isSaving">
+      {{ 'Save' | translate }}
     </button>
   </div>
 </div>
