@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.171
+- Improves the teammates list in the conversation list
+- Sets the default automatic content extraction available for knowledge base web content to true
+- Bug fixing
+
+
 ### 2.7.170
 - Improves knowledge base statistics cards with clickable functionality
 - Fixes a bug: the default maximum token value for the GPT-40 template is 256 instead of 10000
