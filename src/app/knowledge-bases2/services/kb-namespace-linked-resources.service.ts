@@ -29,7 +29,7 @@ export interface KbProvisioningProgressEvent {
  */
 @Injectable({ providedIn: 'root' })
 export class KbNamespaceLinkedResourcesService {
-  private readonly kbOfficialResponderTag = 'kb-official-responder';
+  private readonly kbOfficialResponderTag = 'kb-official-responder-v2';
   private readonly tagNamespaceIdKey = 'kb_namespace_id';
   private readonly tagBotIdKey = 'kb_bot_id';
   private readonly tagDeptIdKey = 'kb_dept_id';
@@ -254,10 +254,30 @@ export class KbNamespaceLinkedResourcesService {
         if (!template?._id) {
           return throwError(() => new Error('kb-official-responder template not found'));
         }
-        return this.faqKbService.exportChatbotToJSON(template._id);
+        const parentTemplateMeta = {
+          id: template._id,
+          slug: template?.slug,
+          name: template?.name,
+        };
+        return this.faqKbService.exportChatbotToJSON(template._id).pipe(
+          map((chatbotJson: any) => ({ chatbotJson, parentTemplateMeta })),
+        );
       }),
-      map((chatbotJson: any) => {
+      map(({ chatbotJson, parentTemplateMeta }: any) => {
         const edited = { ...chatbotJson, name: namespaceName };
+
+        // Persist parent template metadata on the cloned chatbot.
+        // We keep it under `attributes.parentTemplate` to avoid interfering with backend validation.
+        const currAttributes = edited?.attributes && typeof edited.attributes === 'object' ? edited.attributes : {};
+        edited.attributes = {
+          ...currAttributes,
+          parentTemplate: {
+            id: parentTemplateMeta?.id,
+            slug: parentTemplateMeta?.slug,
+            name: parentTemplateMeta?.name,
+          },
+        };
+
         const intents: any[] = Array.isArray(edited?.intents) ? edited.intents : [];
         for (const intent of intents) {
           const actions: any[] = Array.isArray(intent?.actions) ? intent.actions : [];

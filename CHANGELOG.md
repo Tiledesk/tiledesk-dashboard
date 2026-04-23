@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.168-minimal-2
+- Added welcome message and prompt
+
 ### 2.7.168-minimal
 - Fixes the bug: create new agent with chatbot and department
 

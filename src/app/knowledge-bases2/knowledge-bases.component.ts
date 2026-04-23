@@ -170,7 +170,7 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   dept_id: string;
   depts_length: any
   depts_without_bot_array = [];
-  kbOfficialResponderTag = "kb-official-responder"
+  kbOfficialResponderTag = "kb-official-responder-v2"
 
   public hoveredChatbot: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -1206,6 +1206,8 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       }
     })
   }
+
+
 
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {

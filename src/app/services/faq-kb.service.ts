@@ -664,6 +664,29 @@ export class FaqKbService {
     return this._httpClient.put(url, JSON.stringify(chatbot), httpOptions)
   }
 
+  /**
+   * Updates a chatbot using the OPS endpoint (`/faq/ops_update`).
+   * This endpoint is required by some flows (e.g. KB2 welcome message updates).
+   */
+  public opsUpdateChatbot(chatbot: Chatbot | any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project._id + '/faq/ops_update';
+    this.logger.log('ops_update BOT - URL ', url);
+    const id_faq_kb = chatbot?._id ?? chatbot?.id;
+    const body = chatbot?.id_faq_kb ? chatbot : { ...(chatbot ?? {}), id_faq_kb };
+    this.logger.log('[FAQ-KB.SERV] opsUpdateChatbot - BODY ', body);
+
+    // `ops_update` expects an operations payload; POST is the supported verb for this endpoint.
+    return this._httpClient.post(url, JSON.stringify(body), httpOptions)
+  }
+
   public getJWT(id: string) {
     const httpOptions = {
       headers: new HttpHeaders({
