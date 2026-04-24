@@ -293,7 +293,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   areVisibleChatbot: boolean;
   isVisibleKNB: boolean;
-  private sidebarItems: any = null;
   ARE_NEW_KB: boolean;
   kbNameSpaceid: string = '';
   currentProjectUser: any;
@@ -390,7 +389,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.subscribeToMyAvailibilityCount();
     this.getCurrentRoute();
     this.getOSCODE();
-    this.updateSidebarItemsVisibilityFromConfig();
     // this.getDahordBaseUrlThenOSCODE()
     this.brandLog();
     // this.getHasOpenBlogKey()
@@ -407,18 +405,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
     this.listenToProjectUser()
-  }
-
-  private updateSidebarItemsVisibilityFromConfig() {
-    const cfg: any = this.appConfigService.getConfig?.();
-    this.sidebarItems = cfg?.sidebarItems ?? null;
-  }
-
-  isSidebarItemEnabled(key: string): boolean {
-    // Default behavior: keep existing sidebar unchanged unless config explicitly hides items.
-    if (!this.sidebarItems || typeof this.sidebarItems !== 'object') return true;
-    const value = this.sidebarItems?.[key];
-    return value !== false; // treat undefined as enabled for backward compatibility
   }
 
   ngAfterViewInit() {
@@ -1405,6 +1391,48 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
+  }
+
+  /**
+   * Returns whether a feature code is enabled in the OSCODE token (aka `public_Key`).
+   * Example: `isItemEnabled('ANA')` checks a segment like `...-ANA:T-...` and returns true/false.
+   * - If the code is missing, returns false.
+   * - If the code is present with `:F`, returns false.
+   * - Otherwise returns true.
+   */
+  isItemEnabled(code: string): boolean {
+    const public_Key: string = this.appConfigService.getConfig()?.t2y12PruGU9wUtEGzBJfolMIgK ?? '';
+    const wanted = String(code ?? '').trim().toUpperCase();
+    if (!public_Key || !wanted) return false;
+
+    const segments = String(public_Key)
+      .split('-')
+      .map((s) => String(s ?? '').trim())
+      .filter(Boolean);
+
+    for (const seg of segments) {
+      // Format 1: CODE:T | CODE:F  (e.g. AGN:T)
+      if (seg.includes(':')) {
+        const [rawCode, rawValue] = seg.split(':');
+        const segCode = String(rawCode ?? '').trim().toUpperCase();
+        if (segCode !== wanted) continue;
+        return String(rawValue ?? '').trim().toUpperCase() !== 'F';
+      }
+
+      // Format 2: T-CODE | F-CODE (e.g. T-ANA, F-TOW)
+      const segUpper = seg.toUpperCase();
+      if (segUpper.startsWith('T-') || segUpper.startsWith('F-')) {
+        const prefix = segUpper.slice(0, 2); // "T-" | "F-"
+        const segCode = segUpper.slice(2);
+        if (segCode !== wanted) continue;
+        return prefix === 'T-';
+      }
+
+      // Format 3: bare CODE (treated as enabled if present)
+      if (segUpper === wanted) return true;
+    }
+
+    return false;
   }
 
   getOSCODE() {
