@@ -62,7 +62,7 @@
     <!-- ------------------------------------------- -->
     <!-- CHAT  -->
     <!-- ------------------------------------------- -->
-    <div *ngIf="isSidebarItemEnabled('chat')" matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+    <div *ngIf="isItemEnabled('CHT')" matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" routerLinkActive="item-active" 
       [class.item-active]="CONVERSATION_DETAIL_ROUTE_IS_ACTIVE">
 
@@ -83,7 +83,7 @@
     <!-- ------------------------------------------- -->
     <!-- HOME   (click)="goToHome()"" -->
     <!-- ------------------------------------------- -->
-    <div *ngIf="PERMISSION_TO_VIEW_HOME && isSidebarItemEnabled('home')" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+    <div *ngIf="PERMISSION_TO_VIEW_HOME && isItemEnabled('HOM')" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
       <a target="_self" routerLink="project/{{ project?._id }}/home" class="customAncor">
         <span>
@@ -99,8 +99,8 @@
     <!-- -------------------------------------------------------- -->
     <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_KB && isSidebarItemEnabled('knowledgeBases')"> 
-      <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
+      <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB && isItemEnabled('KNB')">
         <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'KnowledgeBases' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="KB_ROUTE_IS_ACTIVE || KB_ROUTE_IS_ACTIVE_NO_AUTH">
@@ -119,7 +119,7 @@
     <!-- ------------------------------------------- -->
     <!-- Agents (KB2) -->
     <!-- ------------------------------------------- -->
-    <ng-container *ngIf="project && isSidebarItemEnabled('agents')">
+    <ng-container *ngIf="project && isItemEnabled('AGN')">
       <div id="agents-anchor-wpr"
         matTooltipClass="sb-mat-tooltip"
         matTooltip="Agents"
@@ -144,8 +144,8 @@
     <!-- Bot  (click)="goToBots()"   KB_ROUTE_IS_ACTIVE ||-->
     <!-- ---------------------------------- -->
      
-    <ng-container *ngIf="PERMISSION_TO_VIEW_FLOWS && isSidebarItemEnabled('flows')">
-      <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_FLOWS">
+      <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot && isItemEnabled('FLW')">
         <div id="bot-anchor-wpr" *ngIf="project" 
           matTooltipClass="sb-mat-tooltip" 
           matTooltip="{{'Flows' | translate}}" 
@@ -177,8 +177,8 @@
     <!-- ------------------------------------------- -->
     <!-- Conversations (MONITOR)   [class.item-active]="MONITOR_ROUTE_IS_ACTIVE || CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE"-->
     <!-- ------------------------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_MONITOR && isSidebarItemEnabled('monitor')"> 
-      <ng-container *ngIf="isVisibleMON">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_MONITOR"> 
+      <ng-container *ngIf="isVisibleMON && isItemEnabled('MON')">
         <div id="monitor" *ngIf="project" 
           routerLinkActive="item-active" matTooltipClass="sb-mat-tooltip"
           matTooltip="Monitor" 
@@ -232,8 +232,8 @@
       <!-- ----------------------------- -->
       <!-- WA broadcasts  -->
       <!-- ----------------------------- -->
-      <ng-container *ngIf="PERMISSION_TO_VIEW_WA_BRODCAST && isSidebarItemEnabled('waBroadcasts')"> 
-        <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleAUT">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_WA_BRODCAST"> 
+        <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleAUT && isItemEnabled('AUT')">
           <!-- routerLinkActive="item-active"  -->
           <div id="bot-anchor-wpr" *ngIf="project" 
             matTooltipClass="sb-mat-tooltip"
@@ -260,8 +260,8 @@
     <!-- CONTACTS (LEADS)  -->
     <!-- ----------------------------- -->
      
-    <ng-container *ngIf="PERMISSION_TO_VIEW_CONTACTS && isSidebarItemEnabled('contacts')">
-      <ng-container *ngIf="isVisibleCNT">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_CONTACTS">
+      <ng-container *ngIf="isVisibleCNT && isItemEnabled('CNT')">
         <div id="contacts" *ngIf="project" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100"
@@ -300,8 +300,8 @@
     <!-- ----------------------------- -->
     <!-- ANALYTICS -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS && isSidebarItemEnabled('analytics')">
-      <ng-container *ngIf="isVisibleANA">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+      <ng-container *ngIf="isVisibleANA && isItemEnabled('ANA')">
         <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
           [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -351,8 +351,8 @@
     <!-- ----------------------------- -->
     <!-- ACTIVITIES -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_ACTVITIES && isSidebarItemEnabled('activities')">
-      <ng-container *ngIf="isVisibleACT">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ACTVITIES">
+      <ng-container *ngIf="isVisibleACT && isItemEnabled('ACT')">
         <div id="activities" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active"
           [class.item-active]="ACTIVITIES_DEMO_ROUTE_IS_ACTIVE" (click)="stopScroll()" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -376,7 +376,7 @@
     <!-- REQUESTS HISTORY  routerLink="project/{{ project._id }}/history" -->
     <!-- ----------------------------- -->
      
-    <ng-container *ngIf="PERMISSION_TO_VIEW_HISTORY && isSidebarItemEnabled('history')">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_HISTORY && isItemEnabled('HIS')">
       <div id="history" *ngIf="project" routerLinkActive="item-active" (click)="stopScroll()"
         matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100"
@@ -400,7 +400,7 @@
     </ng-container> 
 
     <!-- AUTOMATIONS_ROUTE_IS_ACTIVE || -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_SETTING && isSidebarItemEnabled('settings')">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_SETTING">
       <div id="settings" *ngIf="project && USER_ROLE !== 'agent'" [class.item-active]=" 
           TRIGGER_ROUTE_IS_ACTIVE || 
           TAG_ROUTE_IS_ACTIVE || 
@@ -460,7 +460,7 @@
     <!-- ---------------------------------------- -->
     <!-- @ Support   matTooltip="{{companyName}}" -->
     <!-- ---------------------------------------- -->
-    <div *ngIf="isSidebarItemEnabled('support')" class="sb-last-item" [class.item-active]="SUPPORT_ROUTE_IS_ACTIVE" id="support"
+    <div class="sb-last-item" [class.item-active]="SUPPORT_ROUTE_IS_ACTIVE" id="support"
       matTooltipClass="sb-mat-tooltip"
       [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : (companyName + ' - ver. ' + version)" #tooltip="matTooltip"
       matTooltipPosition='right' matTooltipHideDelay="100" routerLinkActive="active" (click)="stopScroll()">

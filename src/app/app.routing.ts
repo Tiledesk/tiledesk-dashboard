@@ -13,7 +13,6 @@ import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { MinimalDashboardGuard } from 'app/core/minimal-dashboard.guard';
 import { ClassicDashboardGuard } from 'app/core/classic-dashboard.guard';
-import { SidebarAgentsEnabledGuard } from 'app/core/sidebar-agents-enabled.guard';
 import { CoreModule } from './core/core.module';
 
 // import { HomeComponent } from './home/home.component'; // now lazy
@@ -1297,19 +1296,16 @@ const routes: Routes = [
     path: 'project/:projectid/agents',
     loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard],
-    canMatch: [SidebarAgentsEnabledGuard],
   },
   {
     path: 'project/:projectid/agents/:namespaceid',
     loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard],
-    canMatch: [SidebarAgentsEnabledGuard],
   },
   {
     path: 'project/:projectid/agents/:calledby',
     loadChildren: () => import('app/knowledge-bases2/knowledge-bases.module').then(m => m.KnowledgeBases2Module),
     canActivate: [AuthGuard],
-    canMatch: [SidebarAgentsEnabledGuard],
   },
 
   // ---------------------------
