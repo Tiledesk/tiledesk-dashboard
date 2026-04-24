@@ -3040,11 +3040,20 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   background-color: rgba(30, 33, 41, 0.8) !important;
 }
 
-// removes the blu google blue border
-.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-  background-color: #2d323e;
-  box-shadow: unset;
+// Focus ng-select: tema recente usa border-color + box-shadow blu (oltre all’ombra)
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened) {
+  outline: none !important;
+  box-shadow: none !important;
 }
+
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  background-color: #2d323e !important;
+  border: 1px solid #2d323e !important;
+  border-color: #2d323e !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 
 // ng-select add tags
 .ng-select.ng-select-tags {

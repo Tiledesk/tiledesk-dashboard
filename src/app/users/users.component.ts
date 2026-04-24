@@ -1877,7 +1877,8 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
       (has_changed_availability) => {
         // this.logger.log('[USERS] - SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
         if (has_changed_availability === true) {
-          this.getAllUsersOfCurrentProject(this.storageBucket)
+          // this.getAllUsersOfCurrentProject(this.storageBucket)
+          this.getUploadEgineAndProjectUsers()
         }
       },
     )

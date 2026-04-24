@@ -190,18 +190,326 @@ button.user-details-btn-close {
 }
 
 .availability-section {
-    top: 324px;
     text-align: center;
     background-color: #2d323e;
-    // padding: 4px 0px;
-    width: 192px;
     border-radius: 4px;
+    // width: 192px;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     left: 50%;
     margin: auto;
     position: absolute;
     font-size: 14px;
+    z-index: 2;
+
+    &.availability-section--no-mpa {
+        top: 320px;
+        padding: 0;
+    }
+
+    &.availability-section--mpa {
+        top: 324px;
+        padding: 4px 0;
+    }
+
+    .btn{
+        display: flex;
+        position: relative;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+    
+        border: 1px solid transparent;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        margin: 0px;
+        box-shadow: none;
+    }
+
+    .dropdown-toggle{
+        background-color: transparent;
+        color: inherit;
+        padding: 0px 15px;
+    }
+    
+    .project-dropdown,
+    .projects-dropdown-toggle {
+        // max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: var(--header-font-family);
+    
+        .material-icons{
+            font-size: 20px;
+        }
+    }
+    
+    button.btn.project-dropdown,
+    button.btn.projects-dropdown-toggle {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        background-color: var(--sidebar-user-detail-select-background);
+        color: var(--sidebar-user-detail-select-color);
+        border: 1px solid var(--sidebar-user-detail-select-background);
+    }
+
+    .teammate-status-in-drawer {
+        width: 190px;
+    }
+
+    /* projects-dropdown-wrapper - stile come ng-select .ng-select-container (teammate-status-in-drawer) */
+    .projects-dropdown-wrapper {
+        position: relative;
+        min-height: 36px;
+        padding: 6px 12px;
+        background-color: var(--sidebar-user-detail-select-background);
+        color: var(--sidebar-user-detail-select-color);
+        border: 1px solid var(--sidebar-user-detail-select-background);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        font-size: 14px;
+        line-height: 1.4;
+        width: 250px;
+
+        .projects-dropdown-toggle {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            min-height: auto;
+            flex: 1;
+            justify-content: space-between;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .projects-dropdown-toggle-label {
+            text-transform: capitalize;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-menu {
+            left: 0;
+            right: 0;
+            min-width: 100%;
+        }
+    }
+
+    li{
+        position: relative;
+        display: block
+    }
+
+    /* projects_dropdown - stessi colori ng-select (.ng-dropdown-panel) */
+    .dropdown-menu {
+        border-radius: 4px;
+        border: 1px solid var(--sidebar-user-detail-select-background);
+        box-shadow: 0 2px 5px 0 rgb(0, 0, 0, 0.26);
+    
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: auto;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 8px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: var(--sidebar-user-detail-select-background);
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        color: var(--sidebar-user-detail-select-color);
+        max-height: 250px;
+        overflow-y: auto;
+    }
+    
+    .dropdown-menu:not(.open){
+        margin-top: -20px;
+        opacity: 0;
+        visibility: hidden;
+        display: block;
+    }
+    
+    .dropdown-menu.open{
+        margin-top: 12px; //0;
+        opacity: 1;
+        visibility: visible;
+        display: block;
+        transition: all 150ms linear;
+    }
+
+    .dropdown-menu li {
+        position: relative;
+    
+        .li-selected{
+            color: var(--sidebar-user-detail-select-color);
+            background-color: var(--sidebar-user-detail-select-hover-background);
+        }
+    
+        &.section-title{
+            padding-left: 24px;
+            font-size: 12px; 
+            color: var(--sidebar-user-detail-color);
+            font-weight: 400
+        }
+    }
+    
+    
+    .dropdown-menu li>a{
+        font-size: 13px;
+        padding: 10px 12px;
+        border-radius: 2px;
+        transition: all 150ms linear;
+    
+        display: block;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.42857143;
+        color: var(--sidebar-user-detail-select-color);
+        white-space: nowrap;
+        text-decoration: none;
+        margin: 0px;
+        cursor: auto;
+    
+        img {
+            width: 15px;
+            height: 15px;
+            position: relative;
+            top: 1px;
+        }
+        .material-icons {
+            vertical-align: middle;
+        }
+    
+        &:hover{
+            background-color: var(--sidebar-user-detail-select-hover-background);
+            color: var(--sidebar-user-detail-select-color);
+            box-shadow: none;
+        }
+    
+        &.project-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+    
+            .project-item-name {
+                flex: 1;
+                min-width: 0;
+                text-align: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+    
+            .project-item-status {
+                cursor: pointer;
+                flex: 0 0 10%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+    
+                &.project-item-status-wrapper {
+                    position: relative;
+
+                    .project-item-status-name {
+                        margin-right: 4px;
+                        color: #a9afbb;
+                        font-size: 9px;
+
+                    }
+                }
+    
+                .status-dropdown {
+                    position: absolute;
+                    right: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-right: 4px;
+                    min-width: 140px;
+                    padding: 4px 0;
+                    background-color: var(--sidebar-user-detail-select-background);
+                    border: 1px solid var(--sidebar-user-detail-select-background);
+                    border-radius: 4px;
+                    box-shadow: 0 2px 5px 0 rgb(0, 0, 0, 0.26);
+                    z-index: 1001;
+                    list-style: none;
+    
+                    &.status-dropdown-fixed {
+                        right: auto;
+                        left: auto;
+                        margin-right: 0;
+                        transform: translateY(-50%);
+                    }
+    
+                    .status-dropdown-option {
+                        display: flex;
+                        align-items: center;
+                        padding: 8px 16px;
+                        font-size: 13px;
+                        color: var(--sidebar-user-detail-select-color);
+                        cursor: pointer;
+                        white-space: nowrap;
+    
+                        &:hover {
+                            background-color: var(--sidebar-user-detail-select-hover-background);
+                            color: var(--sidebar-user-detail-select-color);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Status dropdown fuori da #user-details - stessi colori ng-select */
+.status-dropdown-outside {
+    position: fixed !important;
+    z-index: 1100;
+    min-width: 140px;
+    padding: 4px 0;
+    background-color: var(--sidebar-user-detail-select-background);
+    border: 1px solid var(--sidebar-user-detail-select-background);
+    border-radius: 4px;
+    box-shadow: 0 2px 5px 0 rgb(0, 0, 0, 0.26);
+    list-style: none;
+
+    /* Triangolino in alto a sinistra, fuori dal container, con leggero gap in basso */
+    &::before {
+        content: '';
+        position: absolute;
+        left: -7px;
+        top: 10px;
+        width: 0;
+        height: 0;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+        border-right: 7px solid var(--sidebar-user-detail-select-background);
+    }
+
+    .status-dropdown-option {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        font-size: 13px;
+        color: var(--sidebar-user-detail-select-color);
+        cursor: pointer;
+        white-space: nowrap;
+
+        &:hover {
+            background-color: var(--sidebar-user-detail-select-hover-background);
+            color: var(--sidebar-user-detail-select-color);
+        }
+    }
 }
 
 .first-divider {
