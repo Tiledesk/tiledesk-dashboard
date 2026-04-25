@@ -2306,6 +2306,11 @@
         "ContactUsToEnableIt": "Uni yoqish uchun biz bilan bog'laning",
         "ImportFromWebsites": "Websites-dan import qilish",
         "AutomaticContentExtraction": "Kontentni avtomatik ajratish",
+        "Hyde": "HyDE",
+        "HydeDesc": "Retrieval sifatini yaxshilash uchun faraziy javoblar yaratadi (yuqori token iste'moli).",
+        "SituatedContext": "Situatsion kontekst",
+        "SituatedContextDescription": "Aniqroq retrieval uchun chunk'laringizga situatsion kontekst qo'shadi (yuqori token iste'moli va faqat Avtomatik tarkib chiqarish bilan mavjud).",
+        "SituatedContextDescriptionFaq": "Aniqroq retrieval uchun chunk'laringizga situatsion kontekst qo'shadi (yuqori token iste'moli).",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ana xolos"
     },

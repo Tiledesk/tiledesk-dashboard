@@ -2306,6 +2306,11 @@
     	"ContactUsToEnableIt": "Kontaktieren Sie uns, um sie zu aktivieren",
 		"ImportFromWebsites": "Import von Websites",
 		"AutomaticContentExtraction": "Automatische Inhaltsextraktion",
+		"Hyde": "HyDE",
+    	"HydeDesc": "Generiert hypothetische Antworten, um die Abrufqualität zu verbessern (höherer Token-Verbrauch).",
+    	"SituatedContext": "Situativer Kontext",
+    	"SituatedContextDescription": "Fügt Ihren Chunks situativen Kontext für genaueren Abruf hinzu (höherer Token-Verbrauch und nur mit automatischer Textextraktion verfügbar).",
+    	"SituatedContextDescriptionFaq": "Fügt Ihren Chunks situativen Kontext für genaueren Abruf hinzu (höherer Token-Verbrauch).",
 		"-----------------------------": "-----------------------------",
         "ThatsIsAll": "Das ist alles"
 	},
