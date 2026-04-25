@@ -2354,6 +2354,11 @@
         "ContactUsToEnableIt": "Etkinleştirmek için bizimle iletişime geçin",
         "ImportFromWebsites": "Websites'tan içe aktar",
         "AutomaticContentExtraction": "Otomatik içerik çıkarma",
+        "Hyde": "HyDE",
+        "HydeDesc": "Alma kalitesini iyileştirmek için varsayımsal yanıtlar oluşturur (daha yüksek token tüketimi).",
+        "SituatedContext": "Durumsal Bağlam",
+        "SituatedContextDescription": "Daha doğru alma için parçalarınıza durumsal bağlam ekler (daha yüksek token tüketimi ve yalnızca Otomatik içerik çıkarma ile kullanılabilir).",
+        "SituatedContextDescriptionFaq": "Daha doğru alma için parçalarınıza durumsal bağlam ekler (daha yüksek token tüketimi).",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hepsi bu kadar"
     },

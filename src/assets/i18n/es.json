@@ -2330,6 +2330,11 @@
         "ContactUsToEnableIt": "Contáctanos para activarla",
         "ImportFromWebsites": "Importar desde Websites",
         "AutomaticContentExtraction": "Extracción automática de contenido",
+        "Hyde": "HyDE",
+        "HydeDesc": "Genera respuestas hipotéticas para mejorar la calidad de la recuperación (mayor consumo de tokens).",
+        "SituatedContext": "Contexto situado",
+        "SituatedContextDescription": "Añade contexto situacional a sus fragmentos para una recuperación más precisa (mayor consumo de tokens y solo disponible con extracción automática de contenido).",
+        "SituatedContextDescriptionFaq": "Añade contexto situacional a sus fragmentos para una recuperación más precisa (mayor consumo de tokens).",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Eso es todo"
     },
