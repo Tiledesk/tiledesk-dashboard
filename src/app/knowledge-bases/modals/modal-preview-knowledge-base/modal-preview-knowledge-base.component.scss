@@ -67,6 +67,21 @@
     color: rgb(28, 30, 33)
 }
 
+ // Custom styles for question textarea
+    .question-textarea {
+    width: 100%;
+    min-height: 37px;
+    max-height: 132px; /* 6 righe */
+    resize: none;
+    overflow-y: hidden;
+
+    line-height: 18px;
+    font-size: 14px;
+    padding: 8px 12px;
+        
+    border: solid 1px #ccc;
+    border-radius: 6px;
+    }
 
 .fake-input {
     height: 37px;
@@ -76,6 +91,7 @@
     align-items: center;
     padding: 12px;
     cursor: text;
+    font-size: 14px;
 
     .fake-input-inner {
         width: 100%;
@@ -164,6 +180,8 @@
     overflow: auto; // nk
     transition: max-height 0.5s ease-out;
     margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.3;
 }
 
 .answer-loading {
@@ -179,7 +197,6 @@
 .question-header-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
     margin-bottom: 3px;
@@ -187,6 +204,18 @@
     .answer-title {
         margin-bottom: 0;
     }
+}
+
+.question-preview-form.form--container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.preview-stream-toggle-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
 }
 
 .preview-stream-toggle {
@@ -220,6 +249,7 @@
 
     .input-label {
         font-weight: 400;
+        font-size: 14px;
         // letter-spacing: 0.5px;
     }
 
@@ -233,6 +263,7 @@
         line-height: 35px;
         font-weight: 400;
         margin-bottom: 10px;
+        font-size: 14px;
 
         // letter-spacing: 0.5px;
         &.invalid {
@@ -625,4 +656,7 @@ mat-expansion-panel ::ng-deep {
     // margin-bottom: 4px;
 }
 
-
+// class="mat-slide-toggle preview-stream-toggle mat-primary ng-pristine ng-valid mat-checked ng-touched"
+//  ::ng-deep .preview-stream-toggle.mat-checked > .mat-slide-toggle-bar {
+//     background-color: rgba(33,150,243,.54) !important;
+// }

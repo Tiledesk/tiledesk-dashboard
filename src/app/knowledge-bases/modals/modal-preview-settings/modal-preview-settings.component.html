@@ -23,52 +23,60 @@
 </div>
 
 <!-- (mousemove)="onMouseMove($event)" (mouseenter)="onMouseEnter($event)"-->
-<div mat-dialog-content (click)="handleClickInside($event)" >
+<div mat-dialog-content (click)="handleClickInside($event)" style="overscroll-behavior: contain;">
     <!-- ----------------------------------------------- -->
     <!-- AI Model -->
     <!-- ----------------------------------------------- -->
     <div class="row-container" style="margin-top: 0px;">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="closeAllSettingsPopovers(); aiModel.open()"
+            (mouseenter)="openHelpPopover(aiModel)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiModel)"
             (click)="closeAllSettingsPopovers()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
             [satPopoverAnchor]="aiModelDx"
-            (mouseenter)="closeAllSettingsPopovers(); aiModelDx.open()"
+            (mouseenter)="openHelpPopover(aiModelDx)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiModelDx)"
             (click)="closeAllSettingsPopovers()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
 
+        <div class="ai-models-wpr" style="font-size: 14px;"> 
+        
+            <ng-select
+                class="select-llm-model"
+                appendTo="body"
+                [items]="flattenedModels"
+                bindLabel="name"
+                bindValue="value"
+                [groupBy]="'providerName'"
+                [virtualScroll]="true"
+                [searchable]="true"
+                placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+                [(ngModel)]="selectedModel"
+                (change)="onSelectModel(selectedModel)"
+                [clearable]="false">
 
-        <ng-select
-            appendTo="body"
-            [items]="flattenedModels"
-            bindLabel="name"
-            bindValue="value"
-            [groupBy]="'providerName'"
-            [virtualScroll]="true"
-            [searchable]="true"
-            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
-            [(ngModel)]="selectedModel"
-            (change)="onSelectModel(selectedModel)"
-            [clearable]="false">
-
-            <ng-template ng-option-tmp let-item="item">
-                <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
-                 {{ item.name }}
-                    <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
-                    {{ item.multiplier }}
-                    </span>
-                </div>
-            </ng-template>
-        </ng-select>
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;font-family: var(--header-font-family) ;">
+                    {{ item.name }}
+                        <span *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
+                        {{ item.multiplier }}
+                        </span>
+                    </div>
+                </ng-template>
+            </ng-select>
+        </div>
 
     </div>
 
     <sat-popover id="ai-settings-label" #aiModel horizontalAlign="before" verticalAlign="center"
         panelClass="cb-details-popover" (opened)="aiModelPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiModel)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -80,10 +88,14 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover id="ai-settings-label-ai-model-dx" #aiModelDx horizontalAlign="after" verticalAlign="center"
         panelClass="cb-details-popover-dx" (opened)="aiModelPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiModelDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -92,6 +104,7 @@
             <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToAIModelDoc()">
                 {{'LearnMore' | translate}}
             </div>
+        </div>
         </div>
     </sat-popover>
 
@@ -104,20 +117,22 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="closeAllSettingsPopovers(); maxTokens.open()"
+                    (mouseenter)="openHelpPopover(maxTokens)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(maxTokens)"
                     (click)="closeAllSettingsPopovers()">
                    
                     {{ 'KbPage.MaxTokens'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="maxTokensDx"
-                    (mouseenter)="closeAllSettingsPopovers(); maxTokensDx.open()"
+                    (mouseenter)="openHelpPopover(maxTokensDx)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(maxTokensDx)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.MaxTokens'| translate}}
                 </label>
             </div>
             <div class="slider-value">
-                {{max_tokens}}
+               {{max_tokens}}
                 <!-- <input type="text" class="slider-output" value="{{max_tokens}}" disabled> -->
             </div>
         </div>
@@ -137,6 +152,9 @@
 
     <sat-popover #maxTokens horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
         (opened)="maxTokenPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(maxTokens)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -149,10 +167,14 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover #maxTokensDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
         (opened)="maxTokenPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(maxTokensDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -161,6 +183,7 @@
             <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToMaxTokenDoc()">
                 {{'LearnMore' | translate}}
             </div>
+        </div>
         </div>
     </sat-popover>
 
@@ -174,14 +197,16 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="closeAllSettingsPopovers(); aiModeltemperature.open()"
+                    (mouseenter)="openHelpPopover(aiModeltemperature)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(aiModeltemperature)"
                     (click)="closeAllSettingsPopovers()">
                    
                     {{ 'KbPage.Temperature'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperatureDx"
-                    (mouseenter)="closeAllSettingsPopovers(); aiModeltemperatureDx.open()"
+                    (mouseenter)="openHelpPopover(aiModeltemperatureDx)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(aiModeltemperatureDx)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.Temperature'| translate}}
                 </label>
@@ -215,6 +240,9 @@
 
     <sat-popover #aiModeltemperature horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
         (opened)="temperaturePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiModeltemperature)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -227,10 +255,14 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover #aiModeltemperatureDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
         (opened)="temperaturePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiModeltemperatureDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -239,6 +271,7 @@
             <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
                 {{'LearnMore' | translate}}
             </div>
+        </div>
         </div>
     </sat-popover>
 
@@ -252,7 +285,8 @@
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                     [satPopoverAnchor]="aiSearchType"
-                    (mouseenter)="closeAllSettingsPopovers(); aiSearchType.open()"
+                    (mouseenter)="openHelpPopover(aiSearchType)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(aiSearchType)"
                     (click)="closeAllSettingsPopovers()">
                    
                     {{ 'KbPage.HybridSearch'| translate}}
@@ -260,7 +294,8 @@
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="aiSearchTypeDx"
-                    (mouseenter)="closeAllSettingsPopovers(); aiSearchTypeDx.open()"
+                    (mouseenter)="openHelpPopover(aiSearchTypeDx)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(aiSearchTypeDx)"
                     (click)="closeAllSettingsPopovers()">
                    {{ 'KbPage.HybridSearch'| translate}}
                     <!-- Search type -->
@@ -296,29 +331,34 @@
 
     <sat-popover #aiSearchType horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
         (opened)="searchTypePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiSearchType)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
                
             {{'KbPage.HybridSearchDescr' | translate }}
-            <!-- Controls how results are retrieved by combining semantic similarity with exact keyword matching. -->
-
-               
             </div>
 
             <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
                 {{'LearnMore' | translate}}
             </div> -->
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover #aiSearchTypeDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
         (opened)="searchTypePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(aiSearchTypeDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
             {{'KbPage.HybridSearchDescr' | translate }}
             </div>
+        </div>
         </div>
     </sat-popover>
 
@@ -332,13 +372,15 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)="closeAllSettingsPopovers(); chunkLimit.open()"
+                    (mouseenter)="openHelpPopover(chunkLimit)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(chunkLimit)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="chunkLimitDx"
-                    (mouseenter)="closeAllSettingsPopovers(); chunkLimitDx.open()"
+                    (mouseenter)="openHelpPopover(chunkLimitDx)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(chunkLimitDx)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
@@ -361,6 +403,9 @@
 
     <sat-popover #chunkLimit horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
         (opened)="chunkLimitPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(chunkLimit)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -376,10 +421,14 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover #chunkLimitDx horizontalAlign="after" verticalAlign="center" panelClass="cb-details-popover-dx"
         (opened)="chunkLimitPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(chunkLimitDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -390,6 +439,7 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <!-- ----------------------------- -->
@@ -398,8 +448,10 @@
     <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider || pineconeReranking">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="rerank"
-            (mouseenter)="closeAllSettingsPopovers(); rerank.open()"
-            (click)="closeAllSettingsPopovers()">
+            (mouseenter)="openHelpPopover(rerank)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(rerank)"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+            <!-- (click)="onCheckboxClick($event)" -->
             <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
             <span class="setting-label">
                     {{'KbPage.ReRanking' | translate}}
@@ -408,19 +460,23 @@
 
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
             [satPopoverAnchor]="rerankdx"
-            (mouseenter)="closeAllSettingsPopovers(); rerankdx.open()"
-            (click)="closeAllSettingsPopovers()">
+            (mouseenter)="openHelpPopover(rerankdx)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(rerankdx)"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
             <input type="checkbox" name="re-ranking" [(ngModel)]="reRanking" (change)="changeReranking($event)">
             <span class="setting-label">
                 {{'KbPage.ReRanking' | translate}}
             </span> 
         </label>
     </div>
-    <sat-popover id="ai-settings-label-rerank"
-        #rerank
+    <sat-popover id="ai-settings-label" 
+        #rerank 
         horizontalAlign="before"
         verticalAlign="center"
         panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(rerank)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -430,6 +486,7 @@
         <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
             {{'LearnMore' | translate}}
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover id="ai-settings-label-rerank-preview"
@@ -437,7 +494,9 @@
         horizontalAlign="after"
         verticalAlign="center"
         panelClass="cb-details-popover-dx"  closeTransition="1ms ease-in">
-        <!-- Freccia fuori da content-wpr così il centro verticale è sull’intero popover (anche con Learn more). -->
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(rerankdx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -446,6 +505,7 @@
         </div>
         <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
             {{'LearnMore' | translate}}
+        </div>
         </div>
     </sat-popover>
 
@@ -459,13 +519,15 @@
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                     [satPopoverAnchor]="rerankingMultiplier"
-                    (mouseenter)="closeAllSettingsPopovers(); rerankingMultiplier.open()"
+                    (mouseenter)="openHelpPopover(rerankingMultiplier)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(rerankingMultiplier)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.RerankingMultiplier'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="rerankingMultiplierDx"
-                    (mouseenter)="closeAllSettingsPopovers(); rerankingMultiplierDx.open()"
+                    (mouseenter)="openHelpPopover(rerankingMultiplierDx)"
+                    (mouseleave)="scheduleDelayedHelpPopoverClose(rerankingMultiplierDx)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.RerankingMultiplier'| translate}}
                 </label>
@@ -477,16 +539,16 @@
         <div class="field-box" style="margin-bottom: 6px !important;">
             <div class="action-wait-slider">
                 <div class="action-wait-range">2</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="22" [(ngModel)]="reRankingMultipler"
+                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="50" [(ngModel)]="reRankingMultipler"
                     (change)="updateSliderValue($event.value, 're_ranking_multipler')" aria-label="units">
                 </mat-slider>
-                <div class="action-wait-range">22</div>
+                <div class="action-wait-range">50</div>
             </div>
             <!-- <input type="text" class="slider-output" value="{{topK}}" disabled> -->
         </div>
          <div class="max-token-slider-description-wpr">
             <div class="max-token-slider-description">
-                {{'KbPage.TotalRetrievedChunksForReRanking' | translate}}: {{ reRankingMultipler * topK }}
+                {{'KbPage.TotalRetrievedChunksForReRanking' | translate}}: {{ reRankingMultipler * topK }}{{ (reRankingMultipler * topK) > 100 ? ' (max 100)' : '' }}
             </div>
             <!-- <div class="max-token-slider-description">
                 {{'KbPage.Random' | translate }}
@@ -498,15 +560,20 @@
         horizontalAlign="before"
         verticalAlign="center"
         panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(rerankingMultiplier)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
-                Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering.
+                <!-- Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering. -->
+                 {{'KbPage.ReRankingMultiplierDesc' | translate}}
             </div>
         </div>
         <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToRerankingDoc()">
             {{'LearnMore' | translate}}
         </div> -->
+        </div>
     </sat-popover>
 
     <sat-popover id="ai-settings-label-rerank-multiplier-dx"
@@ -514,44 +581,53 @@
         horizontalAlign="after"
         verticalAlign="center"
         panelClass="cb-details-popover-dx"  closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(rerankingMultiplierDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
-                Adjusts the intensity of the re-ranking process. Higher values prioritize the most contextually relevant chunks more aggressively, while lower values apply a lighter reordering.
+                 {{'KbPage.ReRankingMultiplierDesc' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
-
+    
 
     <!-- ------------------------- -->
     <!-- System Context -->
     <!-- ------------------------- -->
-    <div class="form-container">
+    <div class="form-container" [ngStyle]="{'margin-top':!reRanking  ? '16px' : '0px' }">
         <div class="label-wpr">
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="closeAllSettingsPopovers(); systemContext.open()"
+                (mouseenter)="openHelpPopover(systemContext)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(systemContext)"
                 (click)="closeAllSettingsPopovers()">
                
                 {{ 'KbPage.SystemContext'| translate}}
             </label>
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
                 [satPopoverAnchor]="systemContextDx"
-                (mouseenter)="closeAllSettingsPopovers(); systemContextDx.open()"
+                (mouseenter)="openHelpPopover(systemContextDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(systemContextDx)"
                 (click)="closeAllSettingsPopovers()">
                 {{ 'KbPage.SystemContext'| translate}}
             </label>
         </div>
 
         <textarea class="context-texarea" [(ngModel)]="context" rows="2" placeholder="You are an awesome assistant"
-            (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+            (ngModelChange)="onChangeTextInContex($event)" style="font-size: 14px;">  </textarea>
     </div>
 
 
 
     <sat-popover id="ai-settings-label" #systemContext horizontalAlign="before" verticalAlign="center"
         panelClass="cb-details-popover" (opened)="systemContextPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(systemContext)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -565,10 +641,14 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <sat-popover id="ai-settings-label-system-context-dx" #systemContextDx horizontalAlign="after" verticalAlign="center"
         panelClass="cb-details-popover-dx" (opened)="systemContextPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(systemContextDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -578,19 +658,21 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
     </sat-popover>
 
     <div class="checkbox-container">
-        
+     
+
         <!-- ------------------- -->
         <!-- Advanced Context -->
         <!-- ------------------- -->
-        <div class="checkbox" id="advanced-context" [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal === false ? '0px' : '5px'}">
-          
+        <div class="checkbox" id="advanced-context"  [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal === false ? '0px' : '5px'}">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContext"
-            (mouseenter)="closeAllSettingsPopovers(); advancedContext.open()"
+            (mouseenter)="openHelpPopover(advancedContext)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(advancedContext)"
             (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
@@ -600,20 +682,17 @@
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContextDx"
-            (mouseenter)="closeAllSettingsPopovers(); advancedContextDx.open()"
+            (mouseenter)="openHelpPopover(advancedContextDx)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(advancedContextDx)"
             (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.AdvancedContext' | translate}}
                 </span> 
-                 <!-- <span *ngIf="hideHelpLink" class="material-icons-outlined help-icon" (click)="goToAdvancedContextDoc(); $event.stopPropagation(); $event.preventDefault()"
-                    matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'LearnMore' | translate }}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='above' matTooltipHideDelay="100">
-                 help_outline
-                </span> -->
             </label>
+            <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToAdvancedContextDoc()">
+                {{'LearnMore' | translate}}
+            </div> -->
         </div>
 
         <sat-popover id="ai-settings-label" 
@@ -621,6 +700,9 @@
             horizontalAlign="before"
             verticalAlign="center"
             panelClass="cb-details-popover" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(advancedContext)">
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content">
@@ -633,6 +715,7 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
         </sat-popover>
 
         <sat-popover id="ai-settings-label-advanced-dx"
@@ -640,6 +723,9 @@
             horizontalAlign="after"
             verticalAlign="center"
             panelClass="cb-details-popover-dx" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
+        <div class="settings-help-popover-hover-zone"
+            (mouseenter)="cancelDelayedHelpPopoverClose()"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(advancedContextDx)">
         <div class="sat-popover-arrow"></div>
         <div class="sat-popover-content-wpr">
             <div class="sat-popover-content">
@@ -650,46 +736,40 @@
                 {{'LearnMore' | translate}}
             </div>
         </div>
+        </div>
         </sat-popover>
-
 
         <!-- --------------------- -->
         <!-- Get Contents Sources -->
         <!-- --------------------- -->
-        <div class="checkbox" id="contents-sources" [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal ? '5px' : '5px',  'margin-top': !wasOpenedFromThePreviewKBModal ? '0px' : '5px'}">
-             
+        <div  class="checkbox" id="contents-sources" [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal ? '5px' : '5px',  'margin-top': !wasOpenedFromThePreviewKBModal ? '0px' : '5px'}">
+         
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="contentsSources"
-            (mouseenter)="closeAllSettingsPopovers(); contentsSources.open()"
+            (mouseenter)="openHelpPopover(contentsSources)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(contentsSources)"
             (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
-                    
                     {{'KbPage.GetContentsSources' | translate}}
-                </span>   
+                </span>
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
                 [satPopoverAnchor]="contentsSourcesDx"
-                (mouseenter)="closeAllSettingsPopovers(); contentsSourcesDx.open()"
+                (mouseenter)="openHelpPopover(contentsSourcesDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(contentsSourcesDx)"
                 (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
                     {{'KbPage.GetContentsSources' | translate}}
                 </span>
-                <!-- <span *ngIf="hideHelpLink" class="material-icons-outlined help-icon" (click)="goToContentsSourcesDoc(); $event.stopPropagation(); $event.preventDefault()"
-                    matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'LearnMore' | translate }}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='above' matTooltipHideDelay="100">
-                 help_outline
-                </span> -->
-
             </label>
-           <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
+
+            <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
                 {{'LearnMore' | translate}}
-            </div>  -->
+            </div> -->
         </div>
 
         <sat-popover id="ai-settings-label" 
@@ -697,6 +777,9 @@
             horizontalAlign="before"
             verticalAlign="center"
             panelClass="cb-details-popover" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(contentsSources)">
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-arrow"></div>
                 <div class="sat-popover-content">
@@ -710,13 +793,18 @@
                     {{'LearnMore' | translate}}
                 </div>
             </div>
+            </div>
         </sat-popover>
 
         <sat-popover id="ai-settings-label-contents-dx"
             #contentsSourcesDx
             horizontalAlign="after"
             verticalAlign="center"
+            [forceAlignment]="true"
             panelClass="cb-details-popover-dx" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(contentsSourcesDx)">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-content">
@@ -728,6 +816,7 @@
                     {{'LearnMore' | translate}}
                 </div>
             </div>
+            </div>
         </sat-popover>
 
         <!-- ----------------------------- -->
@@ -736,9 +825,11 @@
         <div id="chunk-only" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal === false ? '0px' : '0px' }">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="chunkonly"
-            (mouseenter)="closeAllSettingsPopovers(); chunkonly.open()"
-            (click)="closeAllSettingsPopovers()">
-                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
+            (mouseenter)="openHelpPopover(chunkonly)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(chunkonly)"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <!-- (click)="onCheckboxClick($event)" -->
+                <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)" >
                 <span class="setting-label">
                     {{'KbPage.ChunksOnly' | translate}}
                 </span> 
@@ -746,8 +837,9 @@
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
              [satPopoverAnchor]="chunkonlyDx"
-            (mouseenter)="closeAllSettingsPopovers(); chunkonlyDx.open()"
-            (click)="closeAllSettingsPopovers()">
+            (mouseenter)="openHelpPopover(chunkonlyDx)"
+            (mouseleave)="scheduleDelayedHelpPopoverClose(chunkonlyDx)"
+            (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
                 <input type="checkbox" name="chunk-only" [(ngModel)]="chunkOnly" (change)="changeChunkOnly($event)">
                 <span class="setting-label">
                     {{'KbPage.ChunksOnly' | translate}}
@@ -758,13 +850,16 @@
             #chunkonly 
             horizontalAlign="before"
             verticalAlign="center"
-            panelClass="cb-details-popover"  closeTransition="1ms ease-in">
+            panelClass="cb-details-popover" (opened)="chunkOnlyIsOpened()" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(chunkonly)">
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-arrow"></div>
                 <div class="sat-popover-content">
-                  <!-- Bypasses the AI synthesis. When enabled, the system will return only the raw text passages (chunks) retrieved from your contents, without generating an answer. Ideal for verifying source accuracy or debugging. --> 
-                     {{'KbPage.ChunksOnlyDesc' | translate}}
+                    {{'KbPage.ChunksOnlyDesc' | translate}}
                 </div>
+            </div>
             </div>
         </sat-popover>
 
@@ -772,16 +867,83 @@
             #chunkonlyDx
             horizontalAlign="after"
             verticalAlign="center"
-            panelClass="cb-details-popover-dx"  closeTransition="1ms ease-in">
+            panelClass="cb-details-popover-dx" (opened)="chunkOnlyIsOpened()" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(chunkonlyDx)">
             <div class="sat-popover-arrow"></div>
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-content">
-                     {{'KbPage.ChunksOnlyDesc' | translate}}
+                    {{'KbPage.ChunksOnlyDesc' | translate}}
                 </div>
+            </div>
             </div>
         </sat-popover>
 
-       
+        <!-- ----------------------------- -->
+        <!-- Hyde -->
+        <!-- ----------------------------- -->
+        <div id="use-hyde" class="checkbox">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
+                [satPopoverAnchor]="hydePopover"
+                (mouseenter)="openHelpPopover(hydePopover)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-hyde" [(ngModel)]="useHyde" (change)="changeUseHyde($event)">
+                <span class="setting-label">
+                    {{'KbPage.Hyde' | translate}}
+                </span>
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
+                [satPopoverAnchor]="hydePopoverDx"
+                (mouseenter)="openHelpPopover(hydePopoverDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-hyde" [(ngModel)]="useHyde" (change)="changeUseHyde($event)">
+                <span class="setting-label">
+                    {{'KbPage.Hyde' | translate}}
+                </span>
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label"
+            #hydePopover
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    {{'KbPage.HydeDesc' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+        <sat-popover id="ai-settings-label-hyde-dx"
+            #hydePopoverDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-content">
+                    {{'KbPage.HydeDesc' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+
+
+
+
 
     </div>
 

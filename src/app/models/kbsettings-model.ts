@@ -29,4 +29,5 @@ export interface KB {
         unwanted_tags?: string[];
         unwanted_classnames?: string[];
     };
+    situated_context?: boolean;
 }

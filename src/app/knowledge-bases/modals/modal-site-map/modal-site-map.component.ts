@@ -36,7 +36,9 @@ export class ModalSiteMapComponent implements OnInit {
   /** Chiuso di default; si chiude quando si attiva Automatic content extraction. */
   htmlTagsPanelExpanded = false;
   /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
-  automaticContentExtraction = false;
+  automaticContentExtraction = true;
+  /** Solo se automatic extraction è on; sempre inviato nel body come `situated_context` (false se disattivo / non applicabile). */
+  situatedContextEnabled = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // scrape_types: Array<any> = [
   //   { name: "Full HTML page", value: 1 },
@@ -333,7 +335,8 @@ export class ModalSiteMapComponent implements OnInit {
           "namespace": this.selectedNamespace['id'],
           "refresh_rate": this.selectedRefreshRate,
           "scrape_type": scrapeType,
-          "tags": this.kbTagsArray
+          "tags": this.kbTagsArray,
+          "situated_context": this.situatedContextEnabled
         }
 
       // scrape_options inviate anche con scrape_type 0; il server le ignora in modalità automatica.
@@ -354,8 +357,17 @@ export class ModalSiteMapComponent implements OnInit {
     const checked = event.checked;
     if (checked) {
       this.htmlTagsPanelExpanded = false;
+    } else {
+      this.situatedContextEnabled = false;
     }
     this.automaticContentExtraction = checked;
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    if (!this.automaticContentExtraction) {
+      return;
+    }
+    this.situatedContextEnabled = event.checked;
   }
 
   onSelectScrapeType(selectedType) {

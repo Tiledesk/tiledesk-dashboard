@@ -36,6 +36,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   panelOpenState = true;
    /** URL only: when true, `scrape_type` 0 and no custom HTML tag rules. */
   automaticContentExtraction = false;
+  /**
+   * Sent to the server as `situated_context` on update.
+   * URL type: only meaningful when automatic extraction is on (mirrors modal-urls-knowledge-base behavior).
+   * Other types: always applicable (mirrors modal-faqs/text-file/upload-file).
+   */
+  situatedContextEnabled = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   extract_tags: string[] = ['body'];
   unwanted_tags: string[] = [];
@@ -121,6 +127,9 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
       // Popola le tag del contenuto con quelle già esistenti sul kb
       this.kbTagsArray = this.kb.tags && Array.isArray(this.kb.tags) ? [...this.kb.tags] : [];
+
+      // Initialize Situated Context from server value (defaults to false when absent).
+      this.situatedContextEnabled = Boolean(this.kb.situated_context);
 
       // Recupera i chunks solo se esiste _id
       if (this.kb._id && this.kb.type !== 'sitemap') {
@@ -260,6 +269,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         this.kb.scrape_type = this.automaticContentExtraction ? 0 : 4;
       }
       this.kb.refresh_rate = this.selectedRefreshRate;
+    }
+
+    // URL type mirrors the creation modal: situated_context is meaningful only with automatic extraction on.
+    if (this.kb.type === 'url') {
+      this.kb.situated_context = this.automaticContentExtraction && this.situatedContextEnabled;
+    } else {
+      this.kb.situated_context = this.situatedContextEnabled;
     }
 
     this.dialogRef.close({'kb': this.kb, 'method': 'update'});
@@ -416,8 +432,17 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     const checked = event.checked;
     if (checked) {
       this.htmlTagsPanelExpanded = false;
+    } else {
+      this.situatedContextEnabled = false;
     }
     this.automaticContentExtraction = checked;
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    if (this.kb?.type === 'url' && !this.automaticContentExtraction) {
+      return;
+    }
+    this.situatedContextEnabled = event.checked;
   }
 
    /** Aggiorna this.kb.scrape_options con i valori correnti delle tag. */

@@ -6,6 +6,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BrandService } from 'app/services/brand.service';
 import { URL_kb_contents_tags } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'modal-text-file',
@@ -27,6 +28,9 @@ export class ModalTextFileComponent implements OnInit {
     url: '',
     content: ''
   }
+
+  /** Sent to the server as `situated_context`; always included in the body (default false). */
+  situatedContextEnabled = false;
 
   // KB Tags
   kbTag: string = '';
@@ -143,12 +147,17 @@ export class ModalTextFileComponent implements OnInit {
       'source': this.kb.name,
       'content': this.kb.content,
       'type': 'text',
-      "tags": this.kbTagsArray
+      "tags": this.kbTagsArray,
+      "situated_context": this.situatedContextEnabled
     }
     // this.saveKnowledgeBase.emit(body);
     // console.log('MODAL-TEXT-FILE body ', body ) 
     this.dialogRef.close(body);
 
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    this.situatedContextEnabled = event.checked;
   }
 
   onCloseBaseModal() {

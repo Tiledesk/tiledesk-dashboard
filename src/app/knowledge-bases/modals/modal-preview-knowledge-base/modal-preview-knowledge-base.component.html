@@ -23,9 +23,13 @@
 </div>
 <div mat-dialog-content (click)="handleClickInside($event)">
 
-  <div class="form--container">
-    <div class="question-header-row">
+  <div class="form--container question-preview-form">
+     <div class="question-header-row">
       <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+    </div>
+     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      <div class="preview-stream-toggle-row">
       <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle"
        matTooltipClass="kb-custom-mat-tooltip" 
         matTooltip="{{'ResponseInStreaming' | translate }}" 
@@ -34,25 +38,35 @@
         matTooltipHideDelay="100">
         {{ 'KbPage.PreviewStream' | translate }}
       </mat-slide-toggle>
-    </div>
-    <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      </div>
 
-        <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;
-    margin-top: -4px;">
+        <!-- <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;margin-top: -4px;">
           {{'QuestionIsRequired' | translate}}
-        </div>
+        </div> -->
   </div>
 
+  <!-- KB Tags --> 
   <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;margin-top: 4px;">
     <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
         [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
         [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
         [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
-        #trigger="cdkOverlayOrigin"
-        cdkOverlayOrigin
-        (mouseenter)="open()"
-        (mouseleave)="scheduleClose()">
+          #trigger="cdkOverlayOrigin"
+          cdkOverlayOrigin
+          (mouseenter)="open()"
+          (mouseleave)="scheduleClose()">
+
+        <!-- <div class="kb-tags-help"
+          style="position: relative;top: 6px;"
+          #trigger="cdkOverlayOrigin"
+          cdkOverlayOrigin
+          (mouseenter)="open()"
+          (mouseleave)="scheduleClose()">
+
+          <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
+          help_outline
+          </span>
+        </div> -->
     
   </div>
 
@@ -105,6 +119,7 @@
    
       <span *ngIf="qa?.ai_model && !searching"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
       <span  *ngIf="searching"> ({{ 'KbPage.GeneratingUsing' | translate: {ai_model_name: selectedModel } }}) </span>
+      
     </p>
     <div id="answer" class="answer">
 
@@ -122,7 +137,7 @@
       <!-- <span *ngIf="aiQuotaExceeded">
        -> {{ answer }}
        </span> -->
-      <span *ngIf="qa && (!answer || answer === '') && (!qa.answer || qa.answer === '')">
+      <span *ngIf="!searching && (!answer || answer === '') && (!qa?.answer || qa.answer === '')">
         {{ 'KbPage.NoAnswerFound' | translate }}
       </span>
       </ng-template>
@@ -259,7 +274,7 @@
   </button>
 
   <button class="mat-dialog-ok-btn" mat-button type="button" (click)="submitQuestion()"
-   [disabled]="!question?.trim()">
+    [disabled]="!question?.trim()">
      {{ "Send" | translate }}
   </button>
 
