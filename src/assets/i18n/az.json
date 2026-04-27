@@ -2303,6 +2303,11 @@
         "WantToTryThisNewFeature": "Bu yeni xüsusiyyəti sınamaq istəyirsiniz?",
         "ImportFromWebsites": "Websites-dən idxal et",
         "AutomaticContentExtraction": "Avtomatik məzmun çıxarılması",
+        "Hyde": "HyDE",
+        "HydeDesc": "Retrieval keyfiyyətini yaxşılaşdırmaq üçün hipotetik cavablar yaradır (daha yüksək token istehlakı).",
+        "SituatedContext": "Vəziyyət Konteksti",
+        "SituatedContextDescription": "Daha dəqiq retrieval üçün hissələrinizə situasiya konteksti əlavə edir (daha yüksək token istehlakı və yalnız Avtomatik məzmun çıxarılması ilə mövcuddur).",
+        "SituatedContextDescriptionFaq": "Daha dəqiq retrieval üçün hissələrinizə situasiya konteksti əlavə edir (daha yüksək token istehlakı).",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hamısı budur"
     },

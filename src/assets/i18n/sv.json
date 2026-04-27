@@ -2319,6 +2319,11 @@
         "WantToTryThisNewFeature": "Vill du prova den här nya funktionen?",
         "ImportFromWebsites": "Importera från Websites",
         "AutomaticContentExtraction": "Automatisk innehållsextraktion",
+        "Hyde": "HyDE",
+        "HydeDesc": "Genererar hypotetiska svar för att förbättra hämtningskvaliteten (högre tokenförbrukning).",
+        "SituatedContext": "Situationsanpassad kontext",
+        "SituatedContextDescription": "Lägger till situationsanpassad kontext till dina segment för mer exakt hämtning (högre tokenförbrukning och endast tillgängligt med automatisk textextrahering).",
+        "SituatedContextDescriptionFaq": "Lägger till situationsanpassad kontext till dina segment för mer exakt hämtning (högre tokenförbrukning).",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

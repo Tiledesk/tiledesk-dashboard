@@ -888,7 +888,6 @@
     "MessageRetention": "Чување порука",
     "ResponseInStreaming": "Када је стриминг омогућен, видећете одговор у реалном времену док се генерише",
     "QuestionIsRequired": "Питање је обавезно",
-    "AutomaticContentExtraction": "Аутоматска екстракција садржаја",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2303,6 +2302,12 @@
         "Websites": "Websites",
         "WantToTryThisNewFeature": "Желите ли да испробате ову нову функцију?",
         "ImportFromWebsites": "Увоз са Websites",
+        "AutomaticContentExtraction": "Аутоматска екстракција садржаја",
+        "Hyde": "HyDE",
+        "HydeDesc": "Генерише хипотетичке одговоре да би се побољшао квалитет преузимања (већа потрошња токена).",
+        "SituatedContext": "Ситуациони контекст",
+        "SituatedContextDescription": "Додаје ситуациони контекст вашим деловима за прецизније преузимање (већа потрошња токена и доступно само са аутоматским издвајањем садржаја).",
+        "SituatedContextDescriptionFaq": "Додаје ситуациони контекст вашим деловима за прецизније преузимање (већа потрошња токена).",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "То је све"
     },
