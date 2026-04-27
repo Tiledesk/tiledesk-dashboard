@@ -1,7 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.201-stage
+- Adds "situated context" feature to modal windows for adding content to the knowledge base
+- Adds in the AI settings modal the option the HyDE (Hypothetical Document Embeddings)
+
 ### 2.7.200-stage
--  Improves the Knowledge Bases page with KPI cards (contents, answered, unanswered, answer rate)
+- Improves the Knowledge Bases page with KPI cards (contents, answered, unanswered, answer rate)
 - Adds the ability to view questions asked to AI agents and to search by text (ITDELSDAM-5099)
 - Adds the ability to search by text for unanswered questions
 - Adds the rating column to the History table (ITDELSDAM-5097)
