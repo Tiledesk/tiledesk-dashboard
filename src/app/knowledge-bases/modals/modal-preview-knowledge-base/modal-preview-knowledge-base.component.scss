@@ -83,6 +83,10 @@
     border-radius: 6px;
     }
 
+    .question-textarea.required {
+        border: solid 1px #c62445 !important;
+    }
+
 .fake-input {
     height: 37px;
     border-radius: 6px;

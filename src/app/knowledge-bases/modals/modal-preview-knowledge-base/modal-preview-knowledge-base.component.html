@@ -25,13 +25,13 @@
 
   <div class="form--container question-preview-form">
      <div class="question-header-row">
-      <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+      <p class="answer-title">{{ 'FaqPage.Question' | translate }}<span  [style.color]="!question?.trim() ? '#c62445' : 'transparent'">*</span></p>
     </div>
-     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+     <textarea #questionTextarea class="question-textarea" [ngClass]="{'required': !question?.trim()}" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
         (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
       <div class="preview-stream-toggle-row">
       <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle"
-       matTooltipClass="kb-custom-mat-tooltip" 
+        matTooltipClass="kb-custom-mat-tooltip" 
         matTooltip="{{'ResponseInStreaming' | translate }}" 
         #tooltip="matTooltip"
         matTooltipPosition='left' 

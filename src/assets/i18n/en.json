@@ -2327,7 +2327,7 @@
         "AdvancedContextDesc2": "Make sure to instruct your prompt to respond with <NOANS> when it doesn't find a satisfactory answer and always close with {context}",
         "GetContentsSources": "Get contents sources",
         "GetContentsSourcesDesc1": "Use this option to get accurate sources of documents used to generate the reply.",
-        "GetContentsSourcesDesc2": "Keep in mind that this consumes more tokens then regular KB retrieving.",
+        "GetContentsSourcesDesc2": "Keep in mind that this consumes more tokens and increases response latency compared to regular KB retrieving.",
         "GetContentsSourcesDesc3": "Max-tokens quota will be automatically adjusted to get the citations if needed.",
         "ChunksOnly": "Chunks only",
         "ChunksOnlyDesc": "Bypasses the AI synthesis. When enabled, the system will return only the raw text passages (chunks) retrieved from your contents, without generating an answer. Ideal for verifying source accuracy or debugging.",

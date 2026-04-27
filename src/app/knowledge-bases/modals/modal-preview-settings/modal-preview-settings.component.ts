@@ -769,20 +769,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   changeCitations(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations event ", event.target.checked)
     this.citations = event.target.checked;
-    const modelValue = this.selectedNamespace.preview_settings.model || this.selectedModel;
-
-    if (this.citations === true) {
-      this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: false });
-      this.max_tokens = Math.max(1024, this.max_tokens_min);
-    } else {
-      this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: false });
-      this.max_tokens = getLlmModelDefaultMaxTokens(modelValue);
-    }
-
-    const clamp = (v: number) => Math.min(Math.max(v, this.max_tokens_min), this.max_tokens_max);
-    this.max_tokens = clamp(this.max_tokens);
-    this.selectedNamespace.preview_settings.max_tokens = this.max_tokens;
-    this.aiSettingsObject[0].maxTokens = this.max_tokens;
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.citations = this.citations
