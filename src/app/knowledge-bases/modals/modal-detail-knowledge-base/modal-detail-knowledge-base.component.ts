@@ -36,6 +36,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   htmlTagsPanelExpanded = false;
   /** URL only: when true, `scrape_type` 0 and no custom HTML tag rules. */
   automaticContentExtraction = false;
+  /**
+   * Sent to the server as `situated_context` on update.
+   * URL type: only meaningful when automatic extraction is on (mirrors modal-urls-knowledge-base behavior).
+   * Other types: always applicable (mirrors modal-faqs/text-file/upload-file).
+   */
+  situatedContextEnabled = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   /** Default when il KB non ha ancora `tags_to_extract` (il costruttore non deve sovrascriverlo con []). */
   extract_tags: string[] = ['body'];
@@ -120,6 +126,9 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         if (data.isAvailableRefreshRateFeature !== undefined) this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature;
         if (data.payIsVisible !== undefined) this.payIsVisible = data.payIsVisible;
       }
+
+      // Initialize Situated Context from server value (defaults to false when absent).
+      this.situatedContextEnabled = Boolean(this.kb.situated_context);
 
       // Popola le tag del contenuto con quelle già esistenti sul kb
       this.kbTagsArray = this.kb.tags && Array.isArray(this.kb.tags) ? [...this.kb.tags] : [];
@@ -254,6 +263,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         this.kb.scrape_type = this.automaticContentExtraction ? 0 : 4;
       }
       this.kb.refresh_rate = this.selectedRefreshRate;
+    }
+
+    // URL type mirrors the creation modal: situated_context is meaningful only with automatic extraction on.
+    if (this.kb.type === 'url') {
+      this.kb.situated_context = this.automaticContentExtraction && this.situatedContextEnabled;
+    } else {
+      this.kb.situated_context = this.situatedContextEnabled;
     }
 
     this.dialogRef.close({'kb': this.kb, 'method': 'update'});
@@ -409,12 +425,21 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   /** Chiude il pannello prima di applicare automatic (evita race con [disabled] sul panel). */
-  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
+   onAutomaticSlideToggle(event: MatSlideToggleChange): void {
     const checked = event.checked;
     if (checked) {
       this.htmlTagsPanelExpanded = false;
+    } else {
+      this.situatedContextEnabled = false;
     }
     this.automaticContentExtraction = checked;
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    if (this.kb?.type === 'url' && !this.automaticContentExtraction) {
+      return;
+    }
+    this.situatedContextEnabled = event.checked;
   }
 
   /** Aggiorna this.kb.scrape_options con i valori correnti delle tag. */

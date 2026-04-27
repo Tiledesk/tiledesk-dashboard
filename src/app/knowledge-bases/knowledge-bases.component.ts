@@ -2291,6 +2291,8 @@ _presentDialogImportContents() {
       disableClose: true,
       width: '400px',
       id: 'kb-test',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         askBody: previedata
@@ -2328,6 +2330,8 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '360px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         pineconeReranking: this.pineconeReranking
@@ -2415,6 +2419,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         kb: kb,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2540,6 +2545,8 @@ _presentDialogImportContents() {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
         width: '600px',
+        autoFocus: false,
+        position: { top: '60px' },
         data: {
           selectedNamespace: this.selectedNamespace,
           prefillKb: typeOrKb
@@ -2586,6 +2593,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
@@ -2601,6 +2610,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
       },
@@ -2626,6 +2637,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2657,6 +2669,7 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       width: '600px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2691,6 +2704,7 @@ _presentDialogImportContents() {
     this.logger.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
     const dialogRef = this.dialog.open(ModalUploadFileComponent, {
       autoFocus: false,
+      position: { top: '60px' },
       width: '400px'
       // data: {
       //   calledBy: 'step1'
@@ -4237,6 +4251,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         prefillKb: {

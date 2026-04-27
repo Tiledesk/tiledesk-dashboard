@@ -34,6 +34,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   sitemapImportPanelExpanded = false;
   /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. Default on. */
   automaticContentExtraction = true;
+  /** Only meaningful when automatic extraction is on; always sent in body as `situated_context` (false when off / not applicable). */
+  situatedContextEnabled = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   scrape_types: Array<any> = [
     // { name: "Full HTML page", value: 1 },
@@ -262,7 +264,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       list: arrayURLS,
       scrape_type: scrapeType,
       refresh_rate: this.selectedRefreshRate,
-      tags: this.kbTagsArray
+      tags: this.kbTagsArray,
+      situated_context: this.situatedContextEnabled
     }
 
     // Con scrape_type 0 il server ignora scrape_options; le inviamo comunque così restano salvate lato client/API per quando l’utente torna in manuale.
@@ -282,12 +285,21 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     // this.logger.log("onSelectScrapeType: ", selectedType);
   }
 
-  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
+    onAutomaticSlideToggle(event: MatSlideToggleChange): void {
     const checked = event.checked;
     if (checked) {
       this.htmlTagsPanelExpanded = false;
+    } else {
+      this.situatedContextEnabled = false;
     }
     this.automaticContentExtraction = checked;
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    if (!this.automaticContentExtraction) {
+      return;
+    }
+    this.situatedContextEnabled = event.checked;
   }
 
   addTag(type, event: MatChipInputEvent): void {

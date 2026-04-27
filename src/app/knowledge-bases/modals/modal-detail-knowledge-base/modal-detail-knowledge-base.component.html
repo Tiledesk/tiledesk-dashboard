@@ -88,6 +88,22 @@
                     {{ 'KbPage.AutomaticContentExtraction' | translate }}
                 </mat-slide-toggle>
             </div>
+
+             <div class="situated-context-row"
+                style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 12px; max-width: 640px;">
+                <mat-slide-toggle
+                    [checked]="situatedContextEnabled"
+                    [disabled]="!automaticContentExtraction"
+                    (change)="onSituatedContextSlideToggle($event)"
+                    color="primary">
+                    {{ 'KbPage.SituatedContext' | translate }}
+                </mat-slide-toggle>
+                <p class="situated-context-row__desc" style="margin: 0; font-size: 13px; line-height: 1.4; color: rgba(0,0,0,0.65);">
+                    {{ 'KbPage.SituatedContextDescription' | translate }}
+                </p>
+            </div>
+
+
             <mat-accordion class="scrape-options-accordion">
                 <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
                     [disabled]="automaticContentExtraction"
@@ -210,24 +226,19 @@
    <ng-container *ngIf="!showSpinner" >
         <!-- TODO: remove condition sitemap -->
         <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
-            <!-- <div class="content-tags-title-wpr" [ngStyle]="{'margin-top': kb.type === 'url' ? '18px' : '12px'}" style="display: flex;vertical-align: middle;">
-                
-                <div class="content-tags-title" >
-                    {{'Tags.Tags' | translate}}
-                </div>
-              
-
-                <div class="kb-tags-help"
-                    style="margin-left: 4px;"
-                    #trigger="cdkOverlayOrigin"
-                    cdkOverlayOrigin
-                    (mouseenter)="open()"
-                    (mouseleave)="scheduleClose()">
-                    <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
-                    help_outline
-                    </span>
-                </div>
-            </div> -->
+            
+            <div *ngIf="kb.type !== 'url'" class="situated-context-row"
+                style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin: 8px 0 12px; max-width: 640px;">
+                <mat-slide-toggle
+                    [checked]="situatedContextEnabled"
+                    (change)="onSituatedContextSlideToggle($event)"
+                    color="primary">
+                    {{ 'KbPage.SituatedContext' | translate }}
+                </mat-slide-toggle>
+                <p class="situated-context-row__desc" style="margin: 0; font-size: 13px; line-height: 1.4; color: rgba(0,0,0,0.65);">
+                    {{ 'KbPage.SituatedContextDescriptionFaq' | translate }}
+                </p>
+            </div>
    
 
             <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">

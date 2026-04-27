@@ -752,9 +752,8 @@
             (click)="closeAllSettingsPopovers()">
                 <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)" [disabled]="chunkOnly">
                 <span class="setting-label">
-                    
                     {{'KbPage.GetContentsSources' | translate}}
-                </span>   
+                </span>
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
@@ -767,6 +766,7 @@
                     {{'KbPage.GetContentsSources' | translate}}
                 </span>
             </label>
+
             <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
                 {{'LearnMore' | translate}}
             </div> -->
@@ -800,6 +800,7 @@
             #contentsSourcesDx
             horizontalAlign="after"
             verticalAlign="center"
+            [forceAlignment]="true"
             panelClass="cb-details-popover-dx" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
             <div class="settings-help-popover-hover-zone"
                 (mouseenter)="cancelDelayedHelpPopoverClose()"
@@ -874,6 +875,66 @@
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-content">
                     {{'KbPage.ChunksOnlyDesc' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+        <!-- ----------------------------- -->
+        <!-- Hyde -->
+        <!-- ----------------------------- -->
+        <div id="use-hyde" class="checkbox">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
+                [satPopoverAnchor]="hydePopover"
+                (mouseenter)="openHelpPopover(hydePopover)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-hyde" [(ngModel)]="useHyde" (change)="changeUseHyde($event)">
+                <span class="setting-label">
+                    {{'KbPage.Hyde' | translate}}
+                </span>
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
+                [satPopoverAnchor]="hydePopoverDx"
+                (mouseenter)="openHelpPopover(hydePopoverDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-hyde" [(ngModel)]="useHyde" (change)="changeUseHyde($event)">
+                <span class="setting-label">
+                    {{'KbPage.Hyde' | translate}}
+                </span>
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label"
+            #hydePopover
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    {{'KbPage.HydeDesc' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+        <sat-popover id="ai-settings-label-hyde-dx"
+            #hydePopoverDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-content">
+                    {{'KbPage.HydeDesc' | translate}}
                 </div>
             </div>
             </div>

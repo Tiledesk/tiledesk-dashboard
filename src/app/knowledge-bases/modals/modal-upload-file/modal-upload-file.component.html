@@ -85,6 +85,19 @@
         </mat-tab>
     </mat-tab-group>
 
+    <div class="situated-context-row"
+        style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin: 8px 0 12px; max-width: 640px;">
+        <mat-slide-toggle
+            [checked]="situatedContextEnabled"
+            (change)="onSituatedContextSlideToggle($event)"
+            color="primary">
+            {{ 'KbPage.SituatedContext' | translate }}
+        </mat-slide-toggle>
+        <p class="situated-context-row__desc" style="margin: 0; font-size: 13px; line-height: 1.4; color: rgba(0,0,0,0.65);">
+            {{ 'KbPage.SituatedContextDescriptionFaq' | translate }}
+        </p>
+    </div>
+
     <!-- KB Tags -->
     <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
         <input id="kb-tags" class="adds-kb-input" name="kb-tags"

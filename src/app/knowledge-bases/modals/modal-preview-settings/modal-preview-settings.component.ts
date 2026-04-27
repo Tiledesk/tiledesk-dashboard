@@ -51,6 +51,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   @ViewChild('rerankdx') rerankdx: SatPopover;
   @ViewChild('rerankingMultiplier') rerankingMultiplier: SatPopover;
   @ViewChild('rerankingMultiplierDx') rerankingMultiplierDx: SatPopover;
+  @ViewChild('hydePopover') hydePopover: SatPopover;
+  @ViewChild('hydePopoverDx') hydePopoverDx: SatPopover;
 
   /** Delay before closing help popover so the pointer can move from the label into the panel (links). */
   private static readonly SETTINGS_HELP_POPOVER_CLOSE_DELAY_MS = 200;
@@ -94,6 +96,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   public reRankingMultipler: number
   public advancedPrompt: boolean // = false;
   public citations: boolean // = false;
+  public useHyde: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
   private modelDefaultValue = "gpt-4o";
@@ -110,6 +113,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   private chunksOnlyDefaultValue = false
   private reRankigDefaultValue = false
   private reRankigMultiplerDefaultValue = 2
+  private useHydeDefaultValue = false
 
   public countOfOverrides = 0
 
@@ -124,6 +128,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   private hasAlreadyOverrideReRanking: boolean;
   private hasAlreadyOverrideReRankingMultipler: boolean;
   private hasAlreadyOverrideCitations: boolean;
+  private hasAlreadyOverrideUseHyde: boolean;
 
   public hideHelpLink: boolean;
 
@@ -144,6 +149,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     reRankingMultipler: null,
     advancedPrompt: null,
     citations: null,
+    useHyde: null,
   }]
 
   pineconeReranking: boolean
@@ -278,6 +284,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       } else {
         this.citations = this.selectedNamespace.preview_settings.citations;
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_hyde) {
+        this.useHyde = false
+        this.selectedNamespace.preview_settings.use_hyde = this.useHyde
+      } else {
+        this.useHyde = this.selectedNamespace.preview_settings.use_hyde;
+        this.logger.log("[MODAL PREVIEW SETTINGS] useHyde ", this.useHyde)
       }
 
 
@@ -802,6 +816,32 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
+  changeUseHyde(event) {
+    this.saveDialogScrollPosition();
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeUseHyde event ", event.target.checked)
+    this.useHyde = event.target.checked
+
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.use_hyde = this.useHyde
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeUseHyde this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Notify "modal-preview-k-b" about the change of the use_hyde flag
+    this.aiSettingsObject[0].useHyde = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.useHyde !== this.selectedNamespace.preview_settings.use_hyde) {
+      if (this.hasAlreadyOverrideUseHyde !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideUseHyde = true
+    } else if (this.useHyde === this.selectedNamespace.preview_settings.use_hyde) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideUseHyde = false
+    }
+    this.restoreDialogScrollPosition();
+  }
+
   /**
  * Salva la posizione corrente dello scroll del dialog
  */
@@ -924,6 +964,7 @@ private restoreDialogScrollPosition(): void {
     this.hasAlreadyOverrideCitations = false;
     this.hasAlreadyOverrideChunckOnly = false;
     this.hasAlreadyOverrideReRanking = false;
+    this.hasAlreadyOverrideUseHyde = false;
     //this.hasAlreadyOverrideReRankingMultipler = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
@@ -968,6 +1009,9 @@ private restoreDialogScrollPosition(): void {
     this.citations = this.selectedNamespaceClone.preview_settings.citations;
     this.logger.log('Reset this.citations ', this.citations)
 
+    this.useHyde = this.selectedNamespaceClone.preview_settings.use_hyde;
+    this.logger.log('Reset this.useHyde ', this.useHyde)
+
     this.applyMaxTokenSliderFromUtil(this.selectedModel, { resetMaxTokensToDefault: false });
 
     this.aiSettingsObject[0].model = this.selectedModel;
@@ -980,6 +1024,7 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
     this.aiSettingsObject[0].reRanking = this.reRanking;
     this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
+    this.aiSettingsObject[0].useHyde = this.useHyde;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -1018,6 +1063,9 @@ private restoreDialogScrollPosition(): void {
     this.reRankingMultipler = this.reRankigMultiplerDefaultValue;
     this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankigMultiplerDefaultValue
 
+    this.useHyde = this.useHydeDefaultValue;
+    this.selectedNamespace.preview_settings.use_hyde = this.useHydeDefaultValue;
+
     this.applyMaxTokenSliderFromUtil(this.modelDefaultValue, { resetMaxTokensToDefault: true });
 
     this.aiSettingsObject[0].model = this.modelDefaultValue;
@@ -1027,6 +1075,7 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].context = this.contextDefaultValue;
     this.aiSettingsObject[0].chunkOnly = this.chunksOnlyDefaultValue;
     this.aiSettingsObject[0].reRanking = this.reRankigDefaultValue;
+    this.aiSettingsObject[0].useHyde = this.useHydeDefaultValue;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -1087,8 +1136,8 @@ private restoreDialogScrollPosition(): void {
   }
 
   /**
-   * Apre un help popover dopo hover sulla label (chiude gli altri e annulla chiusure differite).
-   * Se questo popover è già aperto, non esegue chiudi+riapri (es. ritorno label ↔ pannello).
+   * Open a help popover on label hover (closes the others and cancels deferred closes).
+   * If this popover is already open, do not perform close+reopen (e.g. label ↔ panel return).
    */
   openHelpPopover(popover: SatPopover): void {
     this.cancelDelayedHelpPopoverClose();
@@ -1124,6 +1173,8 @@ private restoreDialogScrollPosition(): void {
     this.contentsSourcesDx?.close();
     this.chunkonly?.close();
     this.chunkonlyDx?.close();
+    this.hydePopover?.close();
+    this.hydePopoverDx?.close();
   }
 
   // onMouseEnter(event: MouseEvent): void {

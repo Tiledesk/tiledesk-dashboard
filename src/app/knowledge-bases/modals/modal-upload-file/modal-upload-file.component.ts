@@ -5,6 +5,7 @@ import { UploadImageNativeService } from 'app/services/upload-image-native.servi
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BrandService } from 'app/services/brand.service';
 import { URL_kb_contents_tags} from 'app/utils/util';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'appdashboard-modal-upload-file',
@@ -35,6 +36,9 @@ export class ModalUploadFileComponent implements OnInit {
 
   fileUrlInput = '';
   urlImportInvalid = false;
+
+  /** Sent to the server as `situated_context`; always included in the body (default false). */
+  situatedContextEnabled = false;
 
   // KB Tags
   kbTag: string = '';
@@ -374,22 +378,22 @@ export class ModalUploadFileComponent implements OnInit {
     this.urlImportInvalid = this.parseUrlImportSpec(raw) === null;
   }
 
-  onOkPresssed(): void {
+ onOkPresssed(): void {
     const raw = (this.fileUrlInput || '').trim();
     /** URL field wins over a prior browse upload so wrong extension (e.g. .png) is validated and shown. */
-    if (raw) {
-      if (!this.tryBuildBodyFromUrl(raw)) {
-        return;
-      }
-      this.body.tags = [...this.kbTagsArray];
-      this.dialogRef.close(this.body);
+    if (raw && !this.tryBuildBodyFromUrl(raw)) {
       return;
     }
-    if (this.body) {
-      this.body.tags = [...this.kbTagsArray];
-      this.dialogRef.close(this.body);
+    if (!this.body) {
       return;
     }
+    this.body.tags = [...this.kbTagsArray];
+    this.body.situated_context = this.situatedContextEnabled;
+    this.dialogRef.close(this.body);
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    this.situatedContextEnabled = event.checked;
   }
 
   /** Validates URL in UI (scheme, path extension); backend receives `source` as the URL. */
