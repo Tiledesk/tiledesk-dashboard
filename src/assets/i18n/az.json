@@ -2279,7 +2279,7 @@
         "AdvancedContextDesc2":"Qənaətbəxş cavab tapmayanda <NOANS> ilə cavab verməyi əmr etdiyinizə əmin olun və həmişə {context} ilə bağlayın.",
         "GetContentsSources": "Məzmun mənbələrini əldə edin",
         "GetContentsSourcesDesc1":"Cavab yaratmaq üçün istifadə olunan sənədlərin dəqiq mənbələrini əldə etmək üçün bu seçimdən istifadə edin.",
-        "GetContentsSourcesDesc2":"Nəzərə alın ki, bu, adi KB axtarışından daha çox token sərf edir.",
+       "GetContentsSourcesDesc2": "Nəzərə alın ki, bu, adi KB axtarışı ilə müqayisədə daha çox token sərf edir və cavab gecikməsini artırır.",
         "GetContentsSourcesDesc3":"Lazım gələrsə, sitatları əldə etmək üçün maksimum nişan kvotaları avtomatik tənzimlənəcək.",
         "ChunksOnly": "Yalnız parçalar",
         "ChunksOnlyDesc": "AI sintezini atlayır. Aktivləşdirildikdə, sistem yalnız məzmunlarınızdan alınan xam mətn parçalarını (parçalar) qaytaracaq, cavab yaratmadan. Mənbə dəqiqliyini yoxlamaq və ya debug etmək üçün idealdır.",

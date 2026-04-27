@@ -2279,7 +2279,7 @@
         "AdvancedContextDesc2":"Обавезно упутите свој упит да одговори са <NOANS> када не нађе задовољавајући одговор и увек затворите са {context}",
         "GetContentsSources": "Набавите изворе садржаја",
         "GetContentsSourcesDesc1": "Користите ову опцију да бисте добили тачне изворе докумената који се користе за генерисање одговора.",
-        "GetContentsSourcesDesc2":"Имајте на уму да ово троши више токена од редовног преузимања КБ-а.",
+        "GetContentsSourcesDesc2": "Imajte na umu da ovo troši više tokena i povećava kašnjenje odgovora u poređenju sa redovnim preuzimanjem iz baze znanja.",
         "GetContentsSourcesDesc3":"Максимална квота токена ће се аутоматски прилагодити да би се добили цитати ако је потребно.",
         "ChunksOnly": "Само делови",
         "ChunksOnlyDesc": "Заобилази AI синтезу. Када је омогућено, систем ће вратити само сирове текстуалне пасусе (делове) преузете из ваших садржаја, без генерисања одговора. Идеално за проверу тачности извора или за отклањање грешака.",
