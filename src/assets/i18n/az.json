@@ -2308,6 +2308,8 @@
         "SituatedContext": "Vəziyyət Konteksti",
         "SituatedContextDescription": "Daha dəqiq retrieval üçün hissələrinizə situasiya konteksti əlavə edir (daha yüksək token istehlakı və yalnız Avtomatik məzmun çıxarılması ilə mövcuddur).",
         "SituatedContextDescriptionFaq": "Daha dəqiq retrieval üçün hissələrinizə situasiya konteksti əlavə edir (daha yüksək token istehlakı).",
+        "UseCache": "Keşdən istifadə et",
+        "ImprovesPerformanceByReducingResponseTimes": "Cavab müddətlərini azaltmaqla performansı yaxşılaşdırır",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hamısı budur"
     },

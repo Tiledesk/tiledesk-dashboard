@@ -35,7 +35,8 @@
         matTooltip="{{'ResponseInStreaming' | translate }}" 
         #tooltip="matTooltip"
         matTooltipPosition='left' 
-        matTooltipHideDelay="100">
+        matTooltipHideDelay="100"
+        [disabled]="useCache">
         {{ 'KbPage.PreviewStream' | translate }}
       </mat-slide-toggle>
       </div>

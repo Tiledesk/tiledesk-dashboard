@@ -2307,6 +2307,8 @@
         "SituatedContext": "Situatsion kontekst",
         "SituatedContextDescription": "Aniqroq retrieval uchun chunk'laringizga situatsion kontekst qo'shadi (yuqori token iste'moli va faqat Avtomatik tarkib chiqarish bilan mavjud).",
         "SituatedContextDescriptionFaq": "Aniqroq retrieval uchun chunk'laringizga situatsion kontekst qo'shadi (yuqori token iste'moli).",
+        "UseCache": "Keshdan foydalanish",
+        "ImprovesPerformanceByReducingResponseTimes": "Javob vaqtlarini qisqartirish orqali ishlashni yaxshilaydi",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ana xolos"
     },

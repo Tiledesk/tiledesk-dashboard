@@ -53,6 +53,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   @ViewChild('rerankingMultiplierDx') rerankingMultiplierDx: SatPopover;
   @ViewChild('hydePopover') hydePopover: SatPopover;
   @ViewChild('hydePopoverDx') hydePopoverDx: SatPopover;
+  @ViewChild('useCachePopover') useCachePopover: SatPopover;
+  @ViewChild('useCachePopoverDx') useCachePopoverDx: SatPopover;
 
   /** Delay before closing help popover so the pointer can move from the label into the panel (links). */
   private static readonly SETTINGS_HELP_POPOVER_CLOSE_DELAY_MS = 200;
@@ -97,6 +99,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   public advancedPrompt: boolean // = false;
   public citations: boolean // = false;
   public useHyde: boolean // = false;
+  public useCache: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
   private modelDefaultValue = "gpt-4o";
@@ -114,6 +117,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   private reRankigDefaultValue = false
   private reRankigMultiplerDefaultValue = 2
   private useHydeDefaultValue = false
+  private useCacheDefaultValue = false
 
   public countOfOverrides = 0
 
@@ -129,6 +133,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   private hasAlreadyOverrideReRankingMultipler: boolean;
   private hasAlreadyOverrideCitations: boolean;
   private hasAlreadyOverrideUseHyde: boolean;
+  private hasAlreadyOverrideUseCache: boolean;
 
   public hideHelpLink: boolean;
 
@@ -150,6 +155,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     advancedPrompt: null,
     citations: null,
     useHyde: null,
+    useCache: null,
   }]
 
   pineconeReranking: boolean
@@ -292,6 +298,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       } else {
         this.useHyde = this.selectedNamespace.preview_settings.use_hyde;
         this.logger.log("[MODAL PREVIEW SETTINGS] useHyde ", this.useHyde)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_cache) {
+        this.useCache = false
+        this.selectedNamespace.preview_settings.use_cache = this.useCache
+      } else {
+        this.useCache = this.selectedNamespace.preview_settings.use_cache;
+        this.logger.log("[MODAL PREVIEW SETTINGS] useCache ", this.useCache)
       }
 
 
@@ -828,6 +842,32 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.restoreDialogScrollPosition();
   }
 
+  changeUseCache(event) {
+    this.saveDialogScrollPosition();
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeUseCache event ", event.target.checked)
+    this.useCache = event.target.checked
+
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.use_cache = this.useCache
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeUseCache this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Notify "modal-preview-k-b" about the change of the use_cache flag
+    this.aiSettingsObject[0].useCache = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.useCache !== this.selectedNamespace.preview_settings.use_cache) {
+      if (this.hasAlreadyOverrideUseCache !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideUseCache = true
+    } else if (this.useCache === this.selectedNamespace.preview_settings.use_cache) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideUseCache = false
+    }
+    this.restoreDialogScrollPosition();
+  }
+
   /**
  * Salva la posizione corrente dello scroll del dialog
  */
@@ -998,6 +1038,9 @@ private restoreDialogScrollPosition(): void {
     this.useHyde = this.selectedNamespaceClone.preview_settings.use_hyde;
     this.logger.log('Reset this.useHyde ', this.useHyde)
 
+    this.useCache = this.selectedNamespaceClone.preview_settings.use_cache;
+    this.logger.log('Reset this.useCache ', this.useCache)
+
     this.applyMaxTokenSliderFromUtil(this.selectedModel, { resetMaxTokensToDefault: false });
 
     this.aiSettingsObject[0].model = this.selectedModel;
@@ -1011,6 +1054,7 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].reRanking = this.reRanking;
     this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
     this.aiSettingsObject[0].useHyde = this.useHyde;
+    this.aiSettingsObject[0].useCache = this.useCache;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -1052,6 +1096,9 @@ private restoreDialogScrollPosition(): void {
     this.useHyde = this.useHydeDefaultValue;
     this.selectedNamespace.preview_settings.use_hyde = this.useHydeDefaultValue;
 
+    this.useCache = this.useCacheDefaultValue;
+    this.selectedNamespace.preview_settings.use_cache = this.useCacheDefaultValue;
+
     this.applyMaxTokenSliderFromUtil(this.modelDefaultValue, { resetMaxTokensToDefault: true });
 
     this.aiSettingsObject[0].model = this.modelDefaultValue;
@@ -1062,6 +1109,7 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].chunkOnly = this.chunksOnlyDefaultValue;
     this.aiSettingsObject[0].reRanking = this.reRankigDefaultValue;
     this.aiSettingsObject[0].useHyde = this.useHydeDefaultValue;
+    this.aiSettingsObject[0].useCache = this.useCacheDefaultValue;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -1161,6 +1209,8 @@ private restoreDialogScrollPosition(): void {
     this.chunkonlyDx?.close();
     this.hydePopover?.close();
     this.hydePopoverDx?.close();
+    this.useCachePopover?.close();
+    this.useCachePopoverDx?.close();
   }
 
   // onMouseEnter(event: MouseEvent): void {
