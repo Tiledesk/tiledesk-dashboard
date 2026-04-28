@@ -2359,6 +2359,8 @@
         "SituatedContext": "Durumsal Bağlam",
         "SituatedContextDescription": "Daha doğru alma için parçalarınıza durumsal bağlam ekler (daha yüksek token tüketimi ve yalnızca Otomatik içerik çıkarma ile kullanılabilir).",
         "SituatedContextDescriptionFaq": "Daha doğru alma için parçalarınıza durumsal bağlam ekler (daha yüksek token tüketimi).",
+        "UseCache": "Önbellek kullan",
+        "ImprovesPerformanceByReducingResponseTimes": "Yanıt sürelerini azaltarak performansı iyileştirir",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hepsi bu kadar"
     },

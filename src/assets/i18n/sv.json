@@ -2375,6 +2375,8 @@
         "SituatedContext": "Situationsanpassad kontext",
         "SituatedContextDescription": "Lägger till situationsanpassad kontext till dina segment för mer exakt hämtning (högre tokenförbrukning och endast tillgängligt med automatisk textextrahering).",
         "SituatedContextDescriptionFaq": "Lägger till situationsanpassad kontext till dina segment för mer exakt hämtning (högre tokenförbrukning).",
+        "UseCache": "Använd cache",
+        "ImprovesPerformanceByReducingResponseTimes": "Förbättrar prestandan genom att minska svarstiderna",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

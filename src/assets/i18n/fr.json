@@ -2358,6 +2358,8 @@
         "SituatedContext": "Contexte situé",
         "SituatedContextDescription": "Ajoute un contexte situationnel à vos fragments pour une récupération plus précise (consommation de jetons plus élevée et disponible uniquement avec l'extraction automatique de contenu).",
         "SituatedContextDescriptionFaq": "Ajoute un contexte situationnel à vos fragments pour une récupération plus précise (consommation de jetons plus élevée).",
+        "UseCache": "Utiliser le cache",
+        "ImprovesPerformanceByReducingResponseTimes": "Améliore les performances en réduisant les temps de réponse",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "C'est tout"
     },

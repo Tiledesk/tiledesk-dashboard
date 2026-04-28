@@ -940,6 +940,66 @@
             </div>
         </sat-popover>
 
+        <!-- ----------------------------- -->
+        <!-- Use cache -->
+        <!-- ----------------------------- -->
+        <div id="use-cache" class="checkbox">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
+                [satPopoverAnchor]="useCachePopover"
+                (mouseenter)="openHelpPopover(useCachePopover)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopover)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-cache" [(ngModel)]="useCache" (change)="changeUseCache($event)">
+                <span class="setting-label">
+                    {{'KbPage.UseCache' | translate}}
+                </span>
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
+                [satPopoverAnchor]="useCachePopoverDx"
+                (mouseenter)="openHelpPopover(useCachePopoverDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopoverDx)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-cache" [(ngModel)]="useCache" (change)="changeUseCache($event)">
+                <span class="setting-label">
+                    {{'KbPage.UseCache' | translate}}
+                </span>
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label"
+            #useCachePopover
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopover)">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    {{'KbPage.ImprovesPerformanceByReducingResponseTimes' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+        <sat-popover id="ai-settings-label-use-cache-dx"
+            #useCachePopoverDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopoverDx)">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-content">
+                    {{'KbPage.ImprovesPerformanceByReducingResponseTimes' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
 
 
 

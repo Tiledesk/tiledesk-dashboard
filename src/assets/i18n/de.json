@@ -2358,6 +2358,8 @@
     	"SituatedContext": "Situativer Kontext",
     	"SituatedContextDescription": "Fügt Ihren Chunks situativen Kontext für genaueren Abruf hinzu (höherer Token-Verbrauch und nur mit automatischer Textextraktion verfügbar).",
     	"SituatedContextDescriptionFaq": "Fügt Ihren Chunks situativen Kontext für genaueren Abruf hinzu (höherer Token-Verbrauch).",
+		"UseCache": "Cache verwenden",
+	    "ImprovesPerformanceByReducingResponseTimes": "Verbessert die Leistung durch kürzere Antwortzeiten",
 		"-----------------------------": "-----------------------------",
         "ThatsIsAll": "Das ist alles"
 	},

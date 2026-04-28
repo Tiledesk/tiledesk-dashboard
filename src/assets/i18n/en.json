@@ -2360,6 +2360,8 @@
         "SituatedContext": "Situated Context",
         "SituatedContextDescription": "Adds situational context to your chunks for more accurate retrieval (higher token consumption and only available with Automatic content extraction).",
         "SituatedContextDescriptionFaq": "Adds situational context to your chunks for more accurate retrieval (higher token consumption).",
+        "UseCache": "Use cache",
+        "ImprovesPerformanceByReducingResponseTimes": "Improves performance by reducing response times",
         "-----------------------------": "-----------------------------",
         "Next": "Next",
         "Back": "Back",

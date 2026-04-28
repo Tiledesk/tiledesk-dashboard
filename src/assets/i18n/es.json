@@ -2335,6 +2335,8 @@
         "SituatedContext": "Contexto situado",
         "SituatedContextDescription": "Añade contexto situacional a sus fragmentos para una recuperación más precisa (mayor consumo de tokens y solo disponible con extracción automática de contenido).",
         "SituatedContextDescriptionFaq": "Añade contexto situacional a sus fragmentos para una recuperación más precisa (mayor consumo de tokens).",
+        "UseCache": "Usar caché",
+        "ImprovesPerformanceByReducingResponseTimes": "Mejora el rendimiento reduciendo los tiempos de respuesta",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Eso es todo"
     },

@@ -2358,6 +2358,8 @@
         "SituatedContext": "Contesto situato",
         "SituatedContextDescription": "Aggiunge contesto situazionale ai tuoi chunk per un recupero più accurato (maggiore consumo di token e disponibile solo con estrazione automatica del contenuto).",
         "SituatedContextDescriptionFaq": "Aggiunge contesto situazionale ai tuoi chunk per un recupero più accurato (maggiore consumo di token).",
+        "UseCache": "Usa cache",
+        "ImprovesPerformanceByReducingResponseTimes": "Migliora le performance riducendo i tempi di risposta",
         "-----------------------------": "-----------------------------",
         "Next": "Avanti",
         "Back": "Indietro",

@@ -48,6 +48,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     advancedPrompt: null,
     citations: null,
     useHyde: null,
+    useCache: null,
     reRanking: null,
     reRankingMultipler: null,
   }]
@@ -101,6 +102,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
   public useHyde: boolean // = false;
+  public useCache: boolean // = false;
   contentChunks: string[] = [];
   contentSources: { value: string; isUrl: boolean }[] = [];
 
@@ -197,6 +199,18 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         this.useHyde = this.selectedNamespace.preview_settings.use_hyde
         this.logger.log("[MODAL-PREVIEW-KB] useHyde ", this.useHyde)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_cache) {
+        this.useCache = false
+        this.selectedNamespace.preview_settings.use_cache = this.useCache
+      } else {
+        this.useCache = this.selectedNamespace.preview_settings.use_cache
+        this.logger.log("[MODAL-PREVIEW-KB] useCache ", this.useCache)
+      }
+      // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
+      if (this.useCache === true) {
+        this.previewUseStream = false;
       }
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
@@ -539,6 +553,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.useHyde = this.selectedNamespace.preview_settings.use_hyde;
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from selectedNamespace ', this.useHyde)
         }
+
+        if (editedAiSettings && editedAiSettings[0]['useCache'] === true) {
+          this.useCache = editedAiSettings[0]['useCache']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from editedAiSettings 1', this.useCache)
+        } else if (editedAiSettings && editedAiSettings[0]['useCache'] === false) {
+          this.useCache = editedAiSettings[0]['useCache']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from editedAiSettings 2', this.useCache)
+        } else if (editedAiSettings && editedAiSettings[0]['useCache'] === null) {
+          this.useCache = this.selectedNamespace.preview_settings.use_cache;
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from selectedNamespace ', this.useCache)
+        }
+        // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
+        if (this.useCache === true) {
+          this.previewUseStream = false;
+        }
       } else {
         this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings are empty')
       }
@@ -597,6 +626,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
       'use_hyde': this.useHyde,
+      'use_cache': this.useCache,
       'llm': this.selectedNamespace.preview_settings.llm,
       'tags':this.kbTagsArray
     }
