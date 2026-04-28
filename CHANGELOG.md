@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.202-stage 
+- Adds in the AI settings modal the option Use cache
+
 ### 2.7.201-stage
 - Adds "situated context" feature to modal windows for adding content to the knowledge base
 - Adds in the AI settings modal the option the HyDE (Hypothetical Document Embeddings)
