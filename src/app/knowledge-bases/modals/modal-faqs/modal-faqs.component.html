@@ -1,4 +1,4 @@
-<div class="m-header">
+<div class="m-header" style="margin-bottom: 20px;">
   <h1 mat-dialog-title style="margin-bottom: 0px;">
     {{ 'FaqPage.AddFaqs' | translate }}
 
@@ -103,7 +103,7 @@
 
   <div class="info-container">
     <i class="material-icons-outlined info-icon">help_outline</i>
-    <div class="info-text">
+    <div class="info-text" style="line-height: 1.3;">
       <p>{{ 'KbPage.AddKbInfoTextContent' | translate }}</p>
       <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
       <p [innerHTML]="'KbPage.AddKbInfoTextContentMsg1' | translate" style="margin-top: 8px;"></p>
@@ -242,7 +242,7 @@
 
     <div class="upload-from-csv-container">
 
-      <div class="info-container">
+      <div class="info-container" style="line-height: 1.3;">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
           <p>{{ 'KbPage.TheFileMustContainTheQAColumns' | translate }}</p>

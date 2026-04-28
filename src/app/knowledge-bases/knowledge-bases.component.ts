@@ -2635,7 +2635,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
       position: { top: '60px' },
       data: {
@@ -2667,7 +2667,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalSiteMapComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
       position: { top: '60px' },
       data: {

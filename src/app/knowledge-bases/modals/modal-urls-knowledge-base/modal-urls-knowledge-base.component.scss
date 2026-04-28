@@ -1,5 +1,51 @@
 .modal {
-    font-family: 'Poppins';
+    font-family: var(--header-font-family);;
+}
+
+// Header layout (title + settings/remove/close icons), mirrors `modal-preview-knowledge-base`
+// with a slightly larger gap and explicit vertical centering against the title.
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#settings {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#settings:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+#close {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#close:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+.close-ai-settings {
+    color: var(--blue-20) !important;
 }
 
 .modal-header {
@@ -400,7 +446,7 @@
     flex-direction: row;
     align-items: center;
     // justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
     gap: 24px
 }
 
@@ -435,6 +481,8 @@
     text-align: center;
     font-size: 12px;
     font-weight: 400;
+    line-height: 1.4;
+    margin-top: 20px;
 }
 
 .contact-sales-to-enable-feature>div {
