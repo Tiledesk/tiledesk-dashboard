@@ -735,3 +735,14 @@
     background-color: var(--only-text-btn-hover-background);
 }
 
+.csv-file-delimiter-value {
+    input {
+        font-weight: 400;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-width: 50px;
+        text-align: center;
+        color: #22272d;
+    }
+}

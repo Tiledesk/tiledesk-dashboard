@@ -50,6 +50,8 @@ import { ModalConfirmActionComponent } from './modals/modal-confirm-action/modal
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AutoWidthInputDirective } from '../_directives/auto-width-input.directive';
 import { MatTabsModule } from '@angular/material/tabs';
+import { KbScrapeSettingsComponent } from './modals/kb-scrape-settings/kb-scrape-settings.component';
+import { ModalKbScrapeSettingsComponent } from './modals/modal-kb-scrape-settings/modal-kb-scrape-settings.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -81,7 +83,9 @@ const routes: Routes = [
     ModalConfirmGotoCdsComponent,
     ModalAddContentComponent,
     ModalUnansweredQuestionsComponent,
-    ModalConfirmActionComponent
+    ModalConfirmActionComponent,
+    KbScrapeSettingsComponent,
+    ModalKbScrapeSettingsComponent
   ],
   imports: [
     ClipboardModule,

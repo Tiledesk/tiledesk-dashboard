@@ -1,3 +1,49 @@
+// Header layout (title + settings/remove/close icons), mirrors `modal-preview-knowledge-base`
+// with a slightly larger gap and explicit vertical centering against the title.
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#settings {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#settings:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+#close {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#close:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+.close-ai-settings {
+    color: var(--blue-20) !important;
+}
+
 .modal-header {
     .modal-title {
         font-weight: 400;
