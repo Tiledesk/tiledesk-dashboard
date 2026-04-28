@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject, 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KB_LIMIT_CONTENT, URL_kb_contents_tags, URL_kb_synced_Sitemap } from 'app/utils/util';
-import { MAT_DIALOG_DATA, MatDialog MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 //import { COMMA, ENTER } from '@angular/cdk/keycodes';
 //import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
