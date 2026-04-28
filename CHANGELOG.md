@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.203-stage 
+- Refactors web content knowledge base modals to improve layout and user experience
+
 ### 2.7.202-stage 
 - Adds in the AI settings modal the option Use cache
 
