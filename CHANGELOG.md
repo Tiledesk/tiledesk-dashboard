@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.204-stage 
+- Improves the disable state of the HTML tag accordion
+
 ### 2.7.203-stage 
 - Refactors web content knowledge base modals to improve layout and user experience
 
