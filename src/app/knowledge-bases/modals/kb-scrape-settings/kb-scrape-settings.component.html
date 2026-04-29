@@ -19,12 +19,19 @@
 </div>
 
 <mat-accordion>
-    <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
+    <!--
+        We do NOT use `[disabled]` on the panel: Material removes the chevron from the
+        DOM when disabled (`*ngIf="_showToggle()"` internally). To preserve the chevron
+        we keep the panel "enabled" but force it collapsed and block all interaction
+        through CSS (`pointer-events: none`) when automatic extraction is on.
+    -->
+    <mat-expansion-panel
+        [expanded]="!config.automaticContentExtraction && htmlTagsPanelExpanded"
+        (expandedChange)="onHtmlTagsExpandedChange($event)"
         class="html-tags--expansion-panel"
-        [disabled]="config.automaticContentExtraction"
         [ngClass]="{'expansion-panel-disabled': config.automaticContentExtraction}">
         <mat-expansion-panel-header class="disable_ripple">
-            <mat-panel-title> {{ 'HtmlTags' | translate }} </mat-panel-title>
+            <mat-panel-title> {{ 'KbPage.AdvancedExtractionRules' | translate }} </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="expansion-panel-content">
             <div *ngIf="config.selectedScrapeType === 4" class="option-box" style="width: 100%; padding: 0px 10px 10px 15px;">
@@ -131,3 +138,8 @@
         </div>
     </mat-expansion-panel>
 </mat-accordion>
+
+<!-- Helper text shown right below the accordion, only when automatic extraction is on. -->
+<p *ngIf="config.automaticContentExtraction" class="advanced-extraction-disabled-hint">
+    {{ 'KbPage.AvailableWhenAutomaticExtractionIsOff' | translate }}
+</p>

@@ -53,6 +53,18 @@ export class KbScrapeSettingsComponent implements OnInit {
     this.config.situatedContextEnabled = event.checked;
   }
 
+  /**
+   * Mirrors `[(expanded)]` two-way binding but blocks state changes while
+   * automatic extraction is on. We can't use `[disabled]` on the panel because
+   * Material removes the chevron from the DOM in that mode.
+   */
+  onHtmlTagsExpandedChange(expanded: boolean): void {
+    if (this.config.automaticContentExtraction) {
+      return;
+    }
+    this.htmlTagsPanelExpanded = expanded;
+  }
+
   addTag(type: 'extract_tags' | 'unwanted_tags' | 'unwanted_classnames', event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {

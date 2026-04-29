@@ -2288,6 +2288,8 @@
         "NoScrapingRulesConfigured": "Правила скрапінгу не налаштовані",
         "ScrapingRulesDesc": "Визначте, які HTML-елементи слід витягувати або виключати під час скрапінгу сторінки",
         "ScrapingRulesSubtitle": "Сторінки повністю відображаються та виконуються в екземплярі headless Chromium перед вилученням тексту",
+        "AdvancedExtractionRules": "Розширені правила вилучення",
+        "AvailableWhenAutomaticExtractionIsOff": "Доступно лише коли автоматичне вилучення вимкнено",
         "PasteScrapingRules": "Вставити правила скрапінгу",
         "NoScrapingRulesToPaste": "Немає правил скрапінгу для вставки",
         "AdvancedContext": "Розширений контекст",
