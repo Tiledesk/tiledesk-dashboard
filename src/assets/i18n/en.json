@@ -2320,6 +2320,8 @@
         "NoScrapingRulesConfigured": "No scraping rules configured",
         "ScrapingRulesDesc": "Define which HTML elements should be extracted or excluded when scraping the page",
         "ScrapingRulesSubtitle": "The pages are fully rendered and executed in a headless Chromium instance before text extraction",
+        "AdvancedExtractionRules": "Advanced extraction rules",
+        "AvailableWhenAutomaticExtractionIsOff": "Available only when automatic extraction is off",
         "PasteScrapingRules": "Paste scraping rules",
         "NoScrapingRulesToPaste": "No scraping rules to paste",
         "AdvancedContext":"Advanced context",

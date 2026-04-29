@@ -2335,6 +2335,8 @@
         "NoScrapingRulesConfigured": "Inga scrapingregler konfigurerade",
         "ScrapingRulesDesc": "Definiera vilka HTML-element som ska extraheras eller uteslutas vid scraping av sidan",
         "ScrapingRulesSubtitle": "Sidorna renderas och exekveras helt i en headless Chromium-instans före textextrahering",
+        "AdvancedExtractionRules": "Avancerade extraheringsregler",
+        "AvailableWhenAutomaticExtractionIsOff": "Endast tillgängligt när automatisk extrahering är avstängd",
         "PasteScrapingRules": "Klistra in scrapingregler",
         "NoScrapingRulesToPaste": "Inga scrapingregler att klistra in",
         "AdvancedContext":"Avancerat sammanhang",
