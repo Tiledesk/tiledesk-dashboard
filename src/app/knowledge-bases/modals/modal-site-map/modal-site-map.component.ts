@@ -332,8 +332,13 @@ export class ModalSiteMapComponent implements OnInit {
     return
    } 
    
+      // `scrape_type: 0` means automatic content extraction; any other value
+      // (currently only 4 = "Advanced") means manual rules. We always send
+      // `scrape_options` regardless of the mode so the server can persist
+      // the user's manual rules and reuse them when they switch back to
+      // manual extraction in the future.
       const scrapeType = this.scrapeConfig.automaticContentExtraction ? 0 : this.scrapeConfig.selectedScrapeType;
-      let body  = {
+      const body: any = {
           "name":   this.siteMap,
           "source": this.siteMap,
           "content": "",
@@ -342,17 +347,13 @@ export class ModalSiteMapComponent implements OnInit {
           "refresh_rate": this.selectedRefreshRate,
           "scrape_type": scrapeType,
           "tags": this.kbTagsArray,
-          "situated_context": this.scrapeConfig.situatedContextEnabled
+          "situated_context": this.scrapeConfig.situatedContextEnabled,
+          "scrape_options": {
+            tags_to_extract: this.scrapeConfig.extract_tags,
+            unwanted_tags: this.scrapeConfig.unwanted_tags,
+            unwanted_classnames: this.scrapeConfig.unwanted_classnames,
+          },
         }
-
-      // Send scrape_options even when scrape_type is 0 so the server can persist them and reuse on manual mode.
-      if (this.scrapeConfig.selectedScrapeType === 4) {
-        body['scrape_options'] = {
-          tags_to_extract: this.scrapeConfig.extract_tags,
-          unwanted_tags: this.scrapeConfig.unwanted_tags,
-          unwanted_classnames: this.scrapeConfig.unwanted_classnames
-        }
-      }
       this.closeScrapeSettingsDialog();
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);

@@ -87,4 +87,23 @@ export class KbScrapeSummaryComponent {
       });
     }
   }
+
+  /**
+   * Format an HTML-tag list for display inside the Manual chip popover:
+   * each value is wrapped in angle brackets (`body` → `<body>`) and the
+   * items are joined by a comma. Returns "—" when the list is empty so
+   * the popover never shows a blank value. Mirrors the visual treatment
+   * applied by the `htmlTag` pipe inside `<app-kb-scrape-settings>`; we
+   * use a method here instead of the pipe because the pipe operates on
+   * a single value while this output spans an entire array.
+   *
+   * Note: do NOT use this for `unwanted_classnames` — those are CSS
+   * class names, not HTML tags, so they must be rendered as-is.
+   */
+  formatHtmlTagList(tags: string[] | undefined): string {
+    if (!tags || tags.length === 0) {
+      return '—';
+    }
+    return tags.map(tag => `<${tag}>`).join(', ');
+  }
 }

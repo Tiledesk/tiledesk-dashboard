@@ -85,9 +85,12 @@
                     </span>
                     <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                         <mat-chip-list #extractTags aria-label="Tag selection">
+                            <!-- `htmlTag` pipe wraps the value in angle brackets (`body` → `<body>`)
+                                 to make it visually unambiguous that these are HTML tags, not arbitrary strings.
+                                 The stored value remains unwrapped — the pipe runs at render time only. -->
                             <mat-chip *ngFor="let tag of config.extract_tags"
                                 (removed)="removeTag('extract_tags', tag)">
-                                {{ tag }}
+                                {{ tag | htmlTag }}
                                 <button matChipRemove>
                                     <mat-icon>cancel</mat-icon>
                                 </button>
@@ -108,9 +111,10 @@
                     </span>
                     <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
                         <mat-chip-list #unwantedTags aria-label="Tag selection">
+                            <!-- See note on `htmlTag` pipe above (Tags to extract). -->
                             <mat-chip *ngFor="let tag of config.unwanted_tags"
                                 (removed)="removeTag('unwanted_tags', tag)">
-                                {{ tag }}
+                                {{ tag | htmlTag }}
                                 <button matChipRemove>
                                     <mat-icon>cancel</mat-icon>
                                 </button>

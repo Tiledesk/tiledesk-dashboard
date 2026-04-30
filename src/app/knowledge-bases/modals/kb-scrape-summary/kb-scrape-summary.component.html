@@ -58,12 +58,12 @@
                     <div class="scrape-summary-popover__grid">
                         <span class="scrape-summary-popover__label">{{ 'KbPage.ExtractTagsNoMandatory' | translate }}:</span>
                         <span class="scrape-summary-popover__value">
-                            {{ config.extract_tags?.length ? config.extract_tags.join(', ') : '—' }}
+                            {{ formatHtmlTagList(config.extract_tags) }}
                         </span>
 
                         <span class="scrape-summary-popover__label">{{ 'KbPage.UnwantedTags' | translate }}:</span>
                         <span class="scrape-summary-popover__value">
-                            {{ config.unwanted_tags?.length ? config.unwanted_tags.join(', ') : '—' }}
+                            {{ formatHtmlTagList(config.unwanted_tags) }}
                         </span>
 
                         <span class="scrape-summary-popover__label">{{ 'KbPage.UnwantedClassnames' | translate }}:</span>

@@ -232,7 +232,7 @@
     </button> -->
 
     <!-- [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" -->
-    <button class="mat-dialog-ok-btn" mat-button  (click)="onSaveKnowledgeBase()" [disabled]="!siteMap || scrapeConfig.selectedScrapeType === 4 && scrapeConfig.extract_tags.length === 0">
+    <button class="mat-dialog-ok-btn" mat-button  (click)="onSaveKnowledgeBase()" [disabled]="!siteMap || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)">
         {{ 'KbPage.Import' | translate }} 
         <!-- {{countSitemap}} URL -->
     </button>

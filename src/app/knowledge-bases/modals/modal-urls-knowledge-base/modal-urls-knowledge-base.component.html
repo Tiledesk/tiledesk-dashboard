@@ -213,13 +213,12 @@
 </div>
 
 
-
 <div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">
     <!-- <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
         {{ "Cancel" | translate }}
     </button> -->
     <button
-        [disabled]="buttonDisabled || listOfUrls.length === 0 || scrapeConfig.selectedScrapeType === 4 && scrapeConfig.extract_tags.length === 0 "
+        [disabled]="buttonDisabled || listOfUrls.length === 0 || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)"
         class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()">
         {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
 

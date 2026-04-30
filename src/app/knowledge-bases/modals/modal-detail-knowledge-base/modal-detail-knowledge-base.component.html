@@ -145,10 +145,10 @@
             <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
             <div class="refresh-rate-wpr" *ngIf="(kb.type === 'url' )" style="margin-bottom: 0px;">
                 <div class="refresh-rate-select">
-                    <span class="input-label" style="white-space: nowrap; font-weight: 400;">
+                    <span class="input-label" style="white-space: nowrap; font-weight: 400; font-size: 14px; ;">
 
                         {{'KbPage.RefreshRate' | translate}}
-                        <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 5px;cursor: pointer; color: #566787;"
+                        <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 4px;cursor: pointer; color: #566787;"
                                 matTooltipClass="kb-custom-mat-tooltip"
                                 matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
                                 matTooltipPosition="above"
@@ -157,17 +157,18 @@
                         </span>
 
                     </span>
-
-                    <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
-                        appendTo="body"
-                        [items]="refresh_rate | selectOptionsTranslate"
-                        bindLabel="name" bindValue="value"
-                        placeholder="Refresh rate"
-                        [clearable]="false" [searchable]="false"
-                        [(ngModel)]="selectedRefreshRate"
-                        (change)="onSelectRefreshRate(selectedRefreshRate)"
-                        [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible">
-                    </ng-select>
+                    <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 3px;"> 
+                        <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+                            appendTo="body"
+                            [items]="refresh_rate | selectOptionsTranslate"
+                            bindLabel="name" bindValue="value"
+                            placeholder="Refresh rate"
+                            [clearable]="false" [searchable]="false"
+                            [(ngModel)]="selectedRefreshRate"
+                            (change)="onSelectRefreshRate(selectedRefreshRate)"
+                            [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible">
+                        </ng-select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -350,7 +351,7 @@
 
       <!-- || kb._id && kb.type === 'sitemap' -->
     <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn"
-        [disabled]="name.length < 3 || !source || scrapeConfig.extract_tags.length === 0"
+        [disabled]="name.length < 3 || !source || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
