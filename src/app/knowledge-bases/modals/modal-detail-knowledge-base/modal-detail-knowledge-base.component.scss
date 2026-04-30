@@ -1,3 +1,52 @@
+// Header layout aligned with `modal-urls-knowledge-base` / `modal-site-map`:
+// title on the left, action icons (settings + close) on the right. The settings
+// icon is gated to `kb.type === 'url'` in the template; the close icon replaces
+// the bottom "Cancel" button for visual consistency across the side-by-side
+// modal family.
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#settings {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#settings:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+#close {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#close:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+.close-ai-settings {
+    color: var(--blue-20) !important;
+}
+
 .modal-header {
     .modal-title {
         font-weight: 400;
@@ -294,6 +343,55 @@
     vertical-align: middle;
 }
 
+// ─────────────────────────────────────────────────────────
+// Chunks accordion — mirrors `modal-preview-knowledge-base`:
+// transparent background, no shadow, slim 38px header. Scoped
+// to the chunks accordion only via the `.mat-accordion--wpr`
+// + `.custom-expansion-panel` parent so other expansion panels
+// in the page (e.g. `app-kb-scrape-settings`) are unaffected.
+// ─────────────────────────────────────────────────────────
+.mat-accordion--wpr .custom-expansion-panel {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.mat-accordion--wpr ::ng-deep mat-expansion-panel {
+    background-color: transparent;
+    box-shadow: none;
+    font-family: var(--header-font-family) !important;
+
+    .mat-expansion-panel-header {
+        padding: 0;
+        height: 38px;
+
+        &:hover {
+            background-color: transparent !important;
+        }
+    }
+
+    .mat-expansion-panel-header.mat-expanded {
+        height: 38px;
+    }
+
+    .mat-expansion-panel-header-title {
+        font-weight: 400;
+        font-size: 14px;
+    }
+
+    .mat-expansion-panel-header-description,
+    .mat-expansion-indicator:after {
+        margin: 5px;
+    }
+
+    .disable_ripple:hover {
+        background: transparent !important;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 !important;
+    }
+}
+
 .scrape-options-wpr {
     margin-bottom: 12px;
     margin-top: -6px;
@@ -397,40 +495,8 @@
     min-height: 25px !important;
 }
 
-.copied-message {
-    position: absolute;
-    // top: -30px;
-    // right: 0;
-    top: -3px;
-    right: -70px;
-    background-color: #2b3239;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-    animation: fadeInOut 2s ease-in-out;
-}
-
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    20% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    80% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-}
+// `.copied-message` and `@keyframes fadeInOut` were moved to
+// `kb-scrape-settings.component.scss` together with the Copy logic.
 
 .html-tags--expansion-panel {
     box-shadow: none;
@@ -466,7 +532,7 @@
 
     .mat-expansion-panel-header-title {
         color: #000000de !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
     }
 
     .mat-expansion-indicator::after {

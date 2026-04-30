@@ -1,0 +1,164 @@
+// Read-only summary of the active scrape configuration. Only chips for ENABLED
+// options are rendered (decision: a chip represents current state, not a list
+// of available options — settings discovery is handled by the gear icon in the
+// modal header). Visual style is aligned with the AI Settings chip row already
+// used elsewhere in the dashboard. Each chip is the anchor for a SatPopover
+// that shows details and a button to open / close the side-by-side settings dialog.
+//
+// The popover panel itself (`<sat-popover>` overlay) is rendered outside this
+// component's view by the CDK, so we style it through `::ng-deep` against its
+// `panelClass` — same pattern already used by `cb-details-popover-dx` in
+// `modal-preview-settings.component.scss`.
+//
+// Note about class naming: we deliberately namespace the inner popover classes
+// with `scrape-summary-popover__*` (BEM) instead of generic names like
+// `.popover-title` or `.popover-content`, because the global stylesheet
+// `assets/sass/md/_popups.scss` ships legacy Bootstrap rules for those names
+// (white background on `.popover-title`, padding on `.popover-content`).
+
+.scrape-summary {
+    margin-bottom: 16px;
+    padding-top: 0px;
+    // border-top: 1px solid #e5e7eb;
+}
+
+.scrape-summary__title {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    font-family: var(--header-font-family);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.scrape-summary__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+}
+
+// ─────────────────────────────────────────────────────────
+// Chip
+// ─────────────────────────────────────────────────────────
+.scrape-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: var(--header-font-family);
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease, filter 0.15s ease;
+
+    mat-icon {
+        font-size: 12px;
+        width: 12px;
+        height: 12px;
+        line-height: 12px;
+    }
+
+    &--active {
+        background-color: var(--blue-20, #2858e0);
+        color: #ffffff;
+
+        &:hover {
+            filter: brightness(1.08);
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+// Popover panel — dark, Material elevation 24, mirrors `cb-details-popover-dx`.
+// ─────────────────────────────────────────────────────────
+::ng-deep .scrape-summary-popover {
+    background-color: #2d323e !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    padding: 8px !important;
+    margin-top: 3px;
+    font-family: var(--header-font-family);
+    max-width: 200px;
+    box-shadow:
+        0 11px 15px -7px rgba(0, 0, 0, 0.2),
+        0 24px 38px 3px rgba(0, 0, 0, 0.14),
+        0 9px 46px 8px rgba(0, 0, 0, 0.12);
+}
+
+// ─────────────────────────────────────────────────────────
+// Popover inner content — namespaced to avoid collisions with the legacy
+// global `.popover-content` / `.popover-title` rules in `_popups.scss`.
+// ─────────────────────────────────────────────────────────
+.scrape-summary-popover__content {
+    width: 100%;
+}
+
+.scrape-summary-popover__title {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 1.35;
+    background: transparent;
+}
+
+.scrape-summary-popover__desc {
+    margin: 0 0 12px 0;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.4;
+}
+
+.scrape-summary-popover__grid {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    row-gap: 6px;
+    column-gap: 8px;
+    margin-bottom: 12px;
+}
+
+.scrape-summary-popover__label {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.3;
+}
+
+.scrape-summary-popover__value {
+    font-size: 11.5px;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    color: #ffffff;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.scrape-summary-popover__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 7px 12px;
+    background: #525963;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 12.5px;
+    font-weight: 400;
+    cursor: pointer;
+    font-family: var(--header-font-family);
+    transition: filter 0.15s ease;
+
+    mat-icon {
+        font-size: 15px;
+        width: 15px;
+        height: 15px;
+        line-height: 15px;
+    }
+
+    &:hover {
+        background: rgba(82, 89, 99, .8);
+    }
+}

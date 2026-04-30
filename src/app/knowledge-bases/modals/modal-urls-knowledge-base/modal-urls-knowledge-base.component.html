@@ -37,6 +37,17 @@
         </div>
     </div>
 
+    <!-- 
+    Scrape configuration summary: blue/grey chips with popovers, mirrors live the
+    settings the user has applied. Sits at the bottom of the content so it is the
+    last thing the user sees before clicking "Import". -->
+    <app-kb-scrape-summary
+        [config]="scrapeConfig"
+        [isSettingsOpen]="isScrapeSettingsOpen"
+        (openSettings)="openScrapeSettings()"
+        (closeSettings)="closeScrapeSettingsDialog()">
+    </app-kb-scrape-summary>
+
     <mat-accordion>
         <!-- custom--expansion-panel  -->
        <mat-expansion-panel [(expanded)]="sitemapImportPanelExpanded"
@@ -198,13 +209,15 @@
             </span>
         </div>
     </div>
+
+
 </div>
 
 
 
 <div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">
     <button
-        [disabled]="buttonDisabled || listOfUrls.length === 0 || scrapeConfig.selectedScrapeType === 4 && scrapeConfig.extract_tags.length === 0 "
+        [disabled]="buttonDisabled || listOfUrls.length === 0 || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)"
         class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()">
         {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
 

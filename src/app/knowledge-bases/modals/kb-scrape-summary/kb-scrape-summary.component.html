@@ -1,0 +1,113 @@
+<div class="scrape-summary">
+    <p class="scrape-summary__title">
+        {{ titleKey | translate }}
+    </p>
+
+    <div class="scrape-summary__chips">
+
+        <!-- ============================================================
+             AUTOMATIC chip — visible only when automatic extraction is on.
+             ============================================================ -->
+        <ng-container *ngIf="config.automaticContentExtraction">
+            <span class="scrape-chip scrape-chip--active"
+                [satPopoverAnchor]="automaticPopover"
+                (click)="onChipClick(automaticPopover)">
+                <mat-icon>auto_awesome</mat-icon>
+                {{ 'KbPage.Automatic' | translate }}
+            </span>
+            <sat-popover #automaticPopover
+                [forceAlignment]="true"
+                verticalAlign="below"
+                horizontalAlign="start"
+                panelClass="scrape-summary-popover">
+                <div class="scrape-summary-popover__content">
+                    <p class="scrape-summary-popover__title">
+                        {{ 'KbPage.AutomaticContentExtractionEnabled' | translate }}
+                    </p>
+                    <p class="scrape-summary-popover__desc">
+                        {{ 'KbPage.AutomaticContentExtractionEnabledDesc' | translate }}
+                    </p>
+                    <button class="scrape-summary-popover__btn" (click)="onSettingsButtonClick(automaticPopover)">
+                        <mat-icon>{{ isSettingsOpen ? 'remove' : 'tune' }}</mat-icon>
+                        {{ (isSettingsOpen ? 'KbPage.CloseSettings' : 'KbPage.OpenSettings') | translate }}
+                    </button>
+                </div>
+            </sat-popover>
+        </ng-container>
+
+        <!-- ============================================================
+             MANUAL chip — visible only when automatic extraction is off.
+             Popover lists the actual extract / unwanted / classnames values.
+             ============================================================ -->
+        <ng-container *ngIf="!config.automaticContentExtraction">
+            <span class="scrape-chip scrape-chip--active"
+                [satPopoverAnchor]="manualPopover"
+                (click)="onChipClick(manualPopover)">
+                <mat-icon>rule</mat-icon>
+                {{ 'KbPage.Manual' | translate }}
+            </span>
+            <sat-popover #manualPopover
+                [forceAlignment]="true"
+                verticalAlign="below"
+                horizontalAlign="start"
+                panelClass="scrape-summary-popover">
+                <div class="scrape-summary-popover__content">
+                    <p class="scrape-summary-popover__title">
+                        {{ 'KbPage.ManualExtractionRulesEnabled' | translate }}
+                    </p>
+                    <div class="scrape-summary-popover__grid">
+                        <span class="scrape-summary-popover__label">{{ 'KbPage.ExtractTagsNoMandatory' | translate }}:</span>
+                        <span class="scrape-summary-popover__value">
+                            {{ config.extract_tags?.length ? config.extract_tags.join(', ') : '—' }}
+                        </span>
+
+                        <span class="scrape-summary-popover__label">{{ 'KbPage.UnwantedTags' | translate }}:</span>
+                        <span class="scrape-summary-popover__value">
+                            {{ config.unwanted_tags?.length ? config.unwanted_tags.join(', ') : '—' }}
+                        </span>
+
+                        <span class="scrape-summary-popover__label">{{ 'KbPage.UnwantedClassnames' | translate }}:</span>
+                        <span class="scrape-summary-popover__value">
+                            {{ config.unwanted_classnames?.length ? config.unwanted_classnames.join(', ') : '—' }}
+                        </span>
+                    </div>
+                    <button class="scrape-summary-popover__btn" (click)="onSettingsButtonClick(manualPopover)">
+                        <mat-icon>{{ isSettingsOpen ? 'remove' : 'tune' }}</mat-icon>
+                        {{ (isSettingsOpen ? 'KbPage.CloseSettings' : 'KbPage.OpenSettings') | translate }}
+                    </button>
+                </div>
+            </sat-popover>
+        </ng-container>
+
+        <!-- ============================================================
+             SITUATED CONTEXT chip — visible only when situated context is on.
+             ============================================================ -->
+        <ng-container *ngIf="config.situatedContextEnabled">
+            <span class="scrape-chip scrape-chip--active"
+                [satPopoverAnchor]="situatedPopover"
+                (click)="onChipClick(situatedPopover)">
+                <mat-icon>psychology</mat-icon>
+                {{ 'KbPage.SituatedContext' | translate }}
+            </span>
+            <sat-popover #situatedPopover
+                [forceAlignment]="true"
+                verticalAlign="below"
+                horizontalAlign="start"
+                panelClass="scrape-summary-popover">
+                <div class="scrape-summary-popover__content">
+                    <p class="scrape-summary-popover__title">
+                        {{ 'KbPage.SituatedContextEnabled' | translate }}
+                    </p>
+                    <p class="scrape-summary-popover__desc">
+                        {{ 'KbPage.SituatedContextEnabledDesc' | translate }}
+                    </p>
+                    <button class="scrape-summary-popover__btn" (click)="onSettingsButtonClick(situatedPopover)">
+                        <mat-icon>{{ isSettingsOpen ? 'remove' : 'tune' }}</mat-icon>
+                        {{ (isSettingsOpen ? 'KbPage.CloseSettings' : 'KbPage.OpenSettings') | translate }}
+                    </button>
+                </div>
+            </sat-popover>
+        </ng-container>
+
+    </div>
+</div>

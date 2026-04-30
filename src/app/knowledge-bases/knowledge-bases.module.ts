@@ -52,6 +52,8 @@ import { AutoWidthInputDirective } from '../_directives/auto-width-input.directi
 import { MatTabsModule } from '@angular/material/tabs';
 import { KbScrapeSettingsComponent } from './modals/kb-scrape-settings/kb-scrape-settings.component';
 import { ModalKbScrapeSettingsComponent } from './modals/modal-kb-scrape-settings/modal-kb-scrape-settings.component';
+import { KbScrapeSummaryComponent } from './modals/kb-scrape-summary/kb-scrape-summary.component';
+import { HtmlTagPipe } from '../html-tag.pipe';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -85,7 +87,9 @@ const routes: Routes = [
     ModalUnansweredQuestionsComponent,
     ModalConfirmActionComponent,
     KbScrapeSettingsComponent,
-    ModalKbScrapeSettingsComponent
+    ModalKbScrapeSettingsComponent,
+    KbScrapeSummaryComponent,
+    HtmlTagPipe
   ],
   imports: [
     ClipboardModule,

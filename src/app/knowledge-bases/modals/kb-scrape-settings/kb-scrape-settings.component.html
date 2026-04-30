@@ -49,7 +49,8 @@
                         </span>
                     </div>
 
-                    <div class="mat-icon-wpr"
+                    <!-- Paste button: visible in create flows (default actionMode). -->
+                    <div *ngIf="actionMode === 'paste'" class="mat-icon-wpr"
                         (click)="pasteAllScrapeOptions()"
                         matTooltipClass="kb-custom-mat-tooltip"
                         [matTooltip]="stored_scrape_option ? ('KbPage.PasteScrapingRules' | translate) : ('KbPage.NoScrapingRulesToPaste' | translate)"
@@ -58,6 +59,18 @@
                         [ngStyle]="{'cursor': stored_scrape_option ? 'pointer' : 'not-allowed' }"
                         [ngClass]="{'no-scrape-option-to-paste': !stored_scrape_option}">
                         <mat-icon>content_paste</mat-icon>
+                    </div>
+
+                    <!-- Copy button: visible in detail/edit flow. Snapshots current rules to localStorage + clipboard. -->
+                    <div *ngIf="actionMode === 'copy'" class="mat-icon-wpr"
+                        style="position: relative; cursor: pointer;"
+                        (click)="copyAllScrapeOptions()"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        [matTooltip]="'CopyScrapingRulesToPasteThemWebContentType' | translate"
+                        matTooltipPosition="above"
+                        matTooltipHideDelay="100">
+                        <mat-icon>content_copy</mat-icon>
+                        <span *ngIf="showCopiedMessage" class="copied-message">{{ 'Copied' | translate }}!</span>
                     </div>
                 </div>
 

@@ -72,6 +72,19 @@
         </div>
     </div>
 
+    <!--
+    Scrape configuration summary: chips with popovers showing the rules that
+    will be applied at scrape time. Mirrors `<app-kb-scrape-summary>` usage in
+    `modal-urls-knowledge-base`, but here it is gated by `refreshRateIsEnabled`
+    because in the sitemap flow the scraping settings only apply when refresh
+    rate is enabled (same condition that gates the header `tune` icon). -->
+    <app-kb-scrape-summary *ngIf="refreshRateIsEnabled"
+        [config]="scrapeConfig"
+        [isSettingsOpen]="isScrapeSettingsOpen"
+        (openSettings)="openScrapeSettings()"
+        (closeSettings)="closeScrapeSettingsDialog()">
+    </app-kb-scrape-summary>
+
     <!-- <div class="form-container">
         <div class="input-container">
         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
@@ -270,7 +283,7 @@
 <!-- *ngIf="isSitemapLoaded" -->
 <div  mat-dialog-actions style="justify-content: center;">  
     <!-- [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" -->
-    <button class="mat-dialog-ok-btn" mat-button  (click)="onSaveKnowledgeBase()" [disabled]="!siteMap || scrapeConfig.selectedScrapeType === 4 && scrapeConfig.extract_tags.length === 0">
+    <button class="mat-dialog-ok-btn" mat-button  (click)="onSaveKnowledgeBase()" [disabled]="!siteMap || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)">
         {{ 'KbPage.Import' | translate }} 
         <!-- {{countSitemap}} URL -->
     </button>

@@ -1,4 +1,37 @@
-<h1 mat-dialog-title> {{ 'RequestMsgsPage.Details' | translate }} </h1>
+<!--
+    Header pattern aligned with `modal-urls-knowledge-base` / `modal-site-map`:
+    the title sits next to the side-by-side icons. The `tune` ↔ `remove` swap
+    drives the open/close state of `ModalKbScrapeSettingsComponent` and is
+    visible only for `kb.type === 'url'` (the only type with scraping settings;
+    sitemap detail is read-only here, and faq / text / pdf have no scrape rules).
+    The `close` icon replaces the bottom "Cancel" button for visual consistency.
+-->
+<div class="m-header" style="margin-bottom: 20px !important;">
+    <h1 mat-dialog-title style="font-family: var(--header-font-family); margin-bottom: 0px !important;">
+        {{ 'RequestMsgsPage.Details' | translate }}
+    </h1>
+    <div class="m-top-right-icon">
+        <span *ngIf="kb.type === 'url' && !isScrapeSettingsOpen" id="settings" class="material-icons-outlined"
+            matTooltipClass="kb-custom-mat-tooltip"
+            [matTooltip]="'Settings' | translate"
+            matTooltipPosition="below"
+            matTooltipHideDelay="100"
+            (click)="openScrapeSettings()">
+            tune
+        </span>
+        <span *ngIf="kb.type === 'url' && isScrapeSettingsOpen" id="settings" class="material-icons-outlined close-ai-settings"
+            matTooltipClass="kb-custom-mat-tooltip"
+            [matTooltip]="'Settings' | translate"
+            matTooltipPosition="below"
+            matTooltipHideDelay="100"
+            (click)="closeScrapeSettingsDialog()">
+            remove
+        </span>
+        <span id="close" class="material-icons-outlined" (click)="onCloseBaseModal()">
+            close
+        </span>
+    </div>
+</div>
 
 <div mat-dialog-content>
 
@@ -67,124 +100,47 @@
       <ng-container *ngIf="!showSpinner">
         <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
         <div class="scrape-options-wpr" *ngIf="kb.type === 'url'">
-            <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
-                <mat-slide-toggle [checked]="automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
-                    {{ 'KbPage.AutomaticContentExtraction' | translate }}
-                </mat-slide-toggle>
-            </div>
 
-            <div class="situated-context-row"
-                style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 12px; max-width: 640px;">
-                <mat-slide-toggle
-                    [checked]="situatedContextEnabled"
-                    [disabled]="!automaticContentExtraction"
-                    (change)="onSituatedContextSlideToggle($event)"
-                    color="primary">
-                    {{ 'KbPage.SituatedContext' | translate }}
-                </mat-slide-toggle>
-                <p class="situated-context-row__desc" style="margin: 0; font-size: 13px; line-height: 1.4; color: rgba(0,0,0,0.65);">
-                    {{ 'KbPage.SituatedContextDescription' | translate }}
-                </p>
-            </div>
+            <!--
+                Scrape configuration summary: blue chips for the active rules, each
+                anchoring a SatPopover with details and an "Open settings" button
+                that opens the side-by-side `ModalKbScrapeSettingsComponent`.
+                In the detail/edit flow we use the past-tense title because the
+                rules shown are the ones already saved on the KB and currently
+                applied at scrape time.
+            -->
+            <app-kb-scrape-summary
+                [config]="scrapeConfig"
+                [isSettingsOpen]="isScrapeSettingsOpen"
+                titleKey="KbPage.TheFollowingScrapingRulesHaveBeenApplied"
+                (openSettings)="openScrapeSettings()"
+                (closeSettings)="closeScrapeSettingsDialog()">
+            </app-kb-scrape-summary>
 
-            <mat-accordion class="scrape-options-accordion">
-                 <mat-expansion-panel [(expanded)]="htmlTagsPanelExpanded"
-                    class="html-tags--expansion-panel"
-                    [disabled]="automaticContentExtraction"
-                    [ngClass]="{'expansion-panel-disabled': automaticContentExtraction}">
-                    <mat-expansion-panel-header class="disable_ripple">
-                        <mat-panel-title>{{'HtmlTags' | translate}}</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div class="expansion-panel-content">
-                        <div class="option-box" style="padding: 0px 10px 10px 15px;">
-                            <div class="scrape-options-header">
-                                <div class="scrape-options-title">
-                                    {{'KbPage.ScrapingRules' | translate}}
-                                </div>
-                                <div class="mat-icon-wpr" style="position: relative;">
-                                    <div class="mat-icon-wpr"
-                                         (click)="copyAllScrapeOptions(); $event.stopPropagation()"
-                                         matTooltipClass="kb-custom-mat-tooltip"
-                                         matTooltip="{{'CopyScrapingRulesToPasteThemWebContentType' | translate}}"
-                                         matTooltipPosition="above"
-                                         matTooltipHideDelay="100">
-                                        <mat-icon>content_copy</mat-icon>
-                                    </div>
-                                    <span *ngIf="showCopiedMessage" class="copied-message">{{'Copied' | translate}}!</span>
-                                </div>
-                            </div>
-                          
-                        <!-- TAGS TO EXTRACT -->
-                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                            <span class="input-label">{{'KbPage.ExtractTags' | translate}}</span>
-                            <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
-                                <mat-chip-list #extractTags aria-label="Tag selection">
-                                    <mat-chip *ngFor="let tag of extract_tags" (removed)="removeTag('extract_tags', tag)">
-                                        {{ tag }}
-                                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
-                                    </mat-chip>
-                                    <input style="font-size: 13px; background-color: white; border: none;"
-                                        [matChipInputFor]="extractTags"
-                                        placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
-                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                        (matChipInputTokenEnd)="addTag('extract_tags', $event)">
-                                </mat-chip-list>
-                            </mat-form-field>
-                        </div>
-                        <!-- UNWANTED TAGS -->
-                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                            <span class="input-label">{{'KbPage.UnwantedTags' | translate}}</span>
-                            <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
-                                <mat-chip-list #unwantedTags aria-label="Tag selection">
-                                    <mat-chip *ngFor="let tag of unwanted_tags" (removed)="removeTag('unwanted_tags', tag)">
-                                        {{ tag }}
-                                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
-                                    </mat-chip>
-                                    <input style="font-size: 13px; background-color: white; border: none;"
-                                        [matChipInputFor]="unwantedTags"
-                                        placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
-                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                        (matChipInputTokenEnd)="addTag('unwanted_tags', $event)">
-                                </mat-chip-list>
-                            </mat-form-field>
-                        </div>
-                         <!-- UNWANTED CLASSNAMES -->
-                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                            <span class="input-label">{{'KbPage.UnwantedClassnames' | translate}}</span>
-                            <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
-                                <mat-chip-list #unwantedClassnames aria-label="Tag selection">
-                                    <mat-chip *ngFor="let tag of unwanted_classnames" (removed)="removeTag('unwanted_classnames', tag)">
-                                        {{ tag }}
-                                        <button matChipRemove><mat-icon>cancel</mat-icon></button>
-                                    </mat-chip>
-                                    <input style="font-size: 13px; background-color: white; border: none;"
-                                        [matChipInputFor]="unwantedClassnames"
-                                        placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
-                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                        (matChipInputTokenEnd)="addTag('unwanted_classnames', $event)">
-                                </mat-chip-list>
-                            </mat-form-field>
-                        </div>
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-            </mat-accordion>
-
-            <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
+            <!--
+                Refresh rate styling kept in sync with `modal-urls-knowledge-base`:
+                - label uses `white-space: nowrap` (no inline font overrides),
+                - help icon is rendered in the same neutral grey (`#566787`)
+                  so it doesn't inherit the surrounding blue link color,
+                - the ng-select width/margins mirror the create modal so the
+                  control aligns visually with the rest of the inputs.
+            -->
             <div class="refresh-rate-wpr" *ngIf="(kb.type === 'url' )" style="margin-bottom: 0px;">
                 <div class="refresh-rate-select">
-                    <!-- <div class="refresh-rate-label-wpr"> </div> -->
-                    <span class="input-label" style="font-weight: 400;font-size: 14px;margin-bottom: 3px;">{{'KbPage.RefreshRate' | translate}}
-                        <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 5px;cursor: pointer;"
+                    <span class="input-label" style="white-space: nowrap; font-weight: 400;">
+
+                        {{'KbPage.RefreshRate' | translate}}
+                        <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 5px;cursor: pointer; color: #566787;"
                                 matTooltipClass="kb-custom-mat-tooltip"
                                 matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
                                 matTooltipPosition="above"
                                 matTooltipHideDelay="100">
                                 help_outline
                         </span>
+
                     </span>
- 
-                    <ng-select class="scrape-types-select refresh-rate-select-ng"
+
+                    <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
                         appendTo="body"
                         [items]="refresh_rate | selectOptionsTranslate"
                         bindLabel="name" bindValue="value"
@@ -194,7 +150,6 @@
                         (change)="onSelectRefreshRate(selectedRefreshRate)"
                         [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible">
                     </ng-select>
-                    <!-- <span class="input-label input-label-on-bottom">{{'KbPage.URLsSyncFrequency' | translate}}</span> -->
                 </div>
             </div>
         </div>
@@ -289,34 +244,46 @@
         </div>
     </ng-container>
    
-    <ng-container *ngIf="kb.type !== 'sitemap'  && kb.status === 300"> 
-        <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr">
-            <div class="chunk-title-and-count">
-                <div class="chunk-title">
-                    Chunks
-                </div>
-                <div class="chunk-count">
-                    {{chunksCount}}
-                </div>
-            </div>
+    <ng-container *ngIf="kb.type !== 'sitemap'  && kb.status === 300">
+        <!--
+            Chunks are wrapped in a `mat-accordion` so the user can pull them up
+            on demand without cluttering the modal. The accordion style mirrors
+            the one in `modal-preview-knowledge-base` (transparent background,
+            no shadow, slim 38px header) for visual consistency. Collapsed by
+            default — that's the whole point of using the accordion here.
+        -->
+        <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr mat-accordion--wpr" style="margin-top: 3px;">
 
-            <div class="chunk-error" *ngIf="getChunksError"> 
+            <div class="chunk-error" *ngIf="getChunksError">
                 <span class="material-icons-outlined">
                     error
                 </span>
                 {{ 'AnErrorHasOccurred' | translate }}
             </div>
-            
-            <div class="content-chunks" style="display: flex; flex-wrap: nowrap; flex-direction: column; gap: 12px">
-                
-                <div class="chunk-wpr" *ngFor="let chunk of chunks">
-                    <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
-                    <article class="chunk" >
-                        {{ chunk.text}}
-                    </article>
-                </div>
 
-            </div>
+            <mat-accordion>
+                <mat-expansion-panel class="custom-expansion-panel">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="display: flex; align-items: center; flex-wrap: nowrap; flex-direction: row; justify-content: space-between;">
+                            <div class="chunck-panel-title">
+                                Chunks
+                            </div>
+                            <div class="chunck-panel-count">
+                                {{chunksCount}}
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="content-chunks" style="display: flex; flex-wrap: nowrap; flex-direction: column; gap: 12px">
+                        <div class="chunk-wpr" *ngFor="let chunk of chunks">
+                            <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
+                            <article class="chunk">
+                                {{ chunk.text}}
+                            </article>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </ng-container>
 
@@ -367,9 +334,10 @@
 </div>
 
 <div mat-dialog-actions style="justify-content: center;">
-    <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
-        {{ "Cancel" | translate }}
-    </button>
+    <!--
+        Cancel button removed: the close affordance moved to the header `X` icon,
+        matching the pattern in `modal-urls-knowledge-base` / `modal-site-map`.
+    -->
 
     <button *ngIf="kb._id && (kb.type === 'text' || kb.type === 'faq')" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
@@ -377,8 +345,9 @@
     </button>
 
       <!-- || kb._id && kb.type === 'sitemap' -->
-    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
-        mat-button (click)="onUpdateKnowledgeBase()" [disabled]="extract_tags.length === 0">
+    <button *ngIf="kb._id && kb.type === 'url'" class="mat-dialog-ok-btn"
+        [disabled]="name.length < 3 || !source || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)"
+        mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
 
