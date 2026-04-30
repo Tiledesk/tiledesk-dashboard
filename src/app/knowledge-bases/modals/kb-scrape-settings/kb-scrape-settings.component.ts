@@ -19,6 +19,14 @@ import { KbScrapeConfig } from 'app/models/kb-scrape-config-model';
 export class KbScrapeSettingsComponent implements OnInit {
   /** Mandatory: the parent must pass a config object reference. The component mutates it in place. */
   @Input() config!: KbScrapeConfig;
+  /**
+   * Action button shown next to the "Scraping rules" title.
+   * - `paste` (default): used by create flows (URL / Sitemap). Reads stored
+   *   options from localStorage and writes them into `config`.
+   * - `copy`: used by the detail/edit flow. Snapshots the current `config`
+   *   tag arrays into localStorage so they can be pasted into another KB.
+   */
+  @Input() actionMode: 'paste' | 'copy' = 'paste';
 
   /** Chip input separators (Enter and comma) shared across the three chip lists. */
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -26,6 +34,8 @@ export class KbScrapeSettingsComponent implements OnInit {
   htmlTagsPanelExpanded = false;
   /** Local UI state: enables "Paste" button only when localStorage has stored options. */
   stored_scrape_option = false;
+  /** Local UI state: short-lived "Copied!" tooltip after a successful copy. */
+  showCopiedMessage = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -51,6 +61,18 @@ export class KbScrapeSettingsComponent implements OnInit {
       return;
     }
     this.config.situatedContextEnabled = event.checked;
+  }
+
+  /**
+   * Mirrors `[(expanded)]` two-way binding but blocks state changes while
+   * automatic extraction is on. We can't use `[disabled]` on the panel because
+   * Material removes the chevron from the DOM in that mode.
+   */
+  onHtmlTagsExpandedChange(expanded: boolean): void {
+    if (this.config.automaticContentExtraction) {
+      return;
+    }
+    this.htmlTagsPanelExpanded = expanded;
   }
 
   addTag(type: 'extract_tags' | 'unwanted_tags' | 'unwanted_classnames', event: MatChipInputEvent): void {
@@ -121,6 +143,70 @@ export class KbScrapeSettingsComponent implements OnInit {
     } catch (error) {
       this.logger.error('[KB-SCRAPE-SETTINGS] Error reading scrape options from storage:', error);
       this.stored_scrape_option = false;
+    }
+  }
+
+  /**
+   * Snapshot the current `config` tag arrays into localStorage and copy a JSON
+   * representation to the clipboard, so the user can paste these rules in
+   * another KB via `pasteAllScrapeOptions()`. Used in `actionMode === 'copy'`.
+   */
+  copyAllScrapeOptions(): void {
+    const scrapeOptions = {
+      extract_tags: [...(this.config.extract_tags || [])],
+      unwanted_tags: [...(this.config.unwanted_tags || [])],
+      unwanted_classnames: [...(this.config.unwanted_classnames || [])],
+    };
+    const jsonString = JSON.stringify(scrapeOptions);
+    try {
+      localStorage.setItem('scrape_options', jsonString);
+    } catch (error) {
+      this.logger.error('[KB-SCRAPE-SETTINGS] Error saving scrape options to storage:', error);
+    }
+    this.refreshStoredScrapeOptionFlag();
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(jsonString).then(
+        () => this.flashCopiedMessage(),
+        (error) => {
+          this.logger.error('[KB-SCRAPE-SETTINGS] Error copying to clipboard:', error);
+          if (this.fallbackCopyToClipboard(jsonString)) {
+            this.flashCopiedMessage();
+          }
+        },
+      );
+    } else if (this.fallbackCopyToClipboard(jsonString)) {
+      this.flashCopiedMessage();
+    }
+  }
+
+  /** Show "Copied!" feedback for ~2s after a successful copy. */
+  private flashCopiedMessage(): void {
+    this.showCopiedMessage = true;
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.showCopiedMessage = false;
+      this.cdr.detectChanges();
+    }, 2000);
+  }
+
+  /** Fallback copy-to-clipboard for environments without `navigator.clipboard`. */
+  private fallbackCopyToClipboard(text: string): boolean {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      return document.execCommand('copy');
+    } catch (error) {
+      this.logger.error('[KB-SCRAPE-SETTINGS] Fallback copy failed:', error);
+      return false;
+    } finally {
+      document.body.removeChild(textArea);
     }
   }
 }

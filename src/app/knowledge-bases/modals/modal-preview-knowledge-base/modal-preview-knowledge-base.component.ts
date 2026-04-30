@@ -82,6 +82,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   question: string = "";
   /** Preview: risposta in streaming (default) vs risposta completa in un’unica richiesta. */
   previewUseStream = true;
+   /**
+   * Snapshot of `previewUseStream` taken right before `useCache` is turned on,
+   * so we can restore it when the user turns cache off again. Cache and
+   * streaming are mutually exclusive at the API level, so we force stream off
+   * while cache is on; without this snapshot the stream toggle would stay off
+   * after disabling cache, even though the UI re-enables it.
+   * `null` means "no pending restore".
+   */
+  private previewUseStreamBeforeCache: boolean | null = null;
   answer: string = "";
   source_url: any;
   responseTime: number | null = null;
@@ -209,9 +218,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.logger.log("[MODAL-PREVIEW-KB] useCache ", this.useCache)
       }
       // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
-      if (this.useCache === true) {
-        this.previewUseStream = false;
-      }
+      //if (this.useCache === true) {
+      //  this.previewUseStream = false;
+      // }
+
+      // Cache and streaming are mutually exclusive: cached responses cannot be
+      // streamed. The helper forces stream off when cache is on and restores
+      // the previous stream value when cache is turned off.
+      this.syncStreamWithCache();
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace preview_settings', this.selectedNamespace.preview_settings)
@@ -292,6 +306,25 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    }
+  }
+
+   /**
+   * Keep `previewUseStream` in sync with `useCache`. Cache and streaming are
+   * mutually exclusive at the API level: when cache turns ON we snapshot the
+   * current stream value and force stream OFF; when cache turns OFF we restore
+   * the snapshotted value so the UI reflects what the user previously had.
+   * Idempotent on repeated calls with the same `useCache` state.
+   */
+  private syncStreamWithCache(): void {
+    if (this.useCache === true) {
+      if (this.previewUseStreamBeforeCache === null) {
+        this.previewUseStreamBeforeCache = this.previewUseStream;
+      }
+      this.previewUseStream = false;
+    } else if (this.previewUseStreamBeforeCache !== null) {
+      this.previewUseStream = this.previewUseStreamBeforeCache;
+      this.previewUseStreamBeforeCache = null;
     }
   }
 
@@ -565,9 +598,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from selectedNamespace ', this.useCache)
         }
         // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
-        if (this.useCache === true) {
-          this.previewUseStream = false;
-        }
+        //if (this.useCache === true) {
+        //  this.previewUseStream = false;
+        // }
+
+        // Cache and streaming are mutually exclusive: cached responses cannot
+        // be streamed. The helper forces stream off when cache is on and
+        // restores the previous stream value when cache is turned off again.
+        this.syncStreamWithCache();
       } else {
         this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings are empty')
       }

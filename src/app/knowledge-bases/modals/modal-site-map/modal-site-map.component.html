@@ -39,6 +39,19 @@
         </div>
     </div>
 
+    <!--
+    Scrape configuration summary: chips with popovers showing the rules that
+    will be applied at scrape time. Mirrors `<app-kb-scrape-summary>` usage in
+    `modal-urls-knowledge-base`, but here it is gated by `refreshRateIsEnabled`
+    because in the sitemap flow the scraping settings only apply when refresh
+    rate is enabled (same condition that gates the header `tune` icon). -->
+    <app-kb-scrape-summary *ngIf="refreshRateIsEnabled"
+        [config]="scrapeConfig"
+        [isSettingsOpen]="isScrapeSettingsOpen"
+        (openSettings)="openScrapeSettings()"
+        (closeSettings)="closeScrapeSettingsDialog()">
+    </app-kb-scrape-summary>
+
 
     <div class="form--container" style="margin-bottom:4px;">
       

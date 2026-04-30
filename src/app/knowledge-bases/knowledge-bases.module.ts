@@ -53,6 +53,7 @@ import { HtmlTagPipe } from '../html-tag.pipe';
 import { MatTabsModule } from '@angular/material/tabs';
 import { KbScrapeSettingsComponent } from './modals/kb-scrape-settings/kb-scrape-settings.component';
 import { ModalKbScrapeSettingsComponent } from './modals/modal-kb-scrape-settings/modal-kb-scrape-settings.component';
+import { KbScrapeSummaryComponent } from './modals/kb-scrape-summary/kb-scrape-summary.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -87,7 +88,8 @@ const routes: Routes = [
     ModalUnansweredQuestionsComponent,
     ModalConfirmActionComponent,
     KbScrapeSettingsComponent,
-    ModalKbScrapeSettingsComponent
+    ModalKbScrapeSettingsComponent,
+    KbScrapeSummaryComponent
   ],
   imports: [
     ClipboardModule,

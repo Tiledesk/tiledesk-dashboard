@@ -1,21 +1,21 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { BrandService } from 'app/services/brand.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { URL_kb_contents_tags } from 'app/utils/util';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { KbScrapeConfig, buildDefaultKbScrapeConfig } from 'app/models/kb-scrape-config-model';
+import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
+
 
 @Component({
   selector: 'modal-detail-knowledge-base',
   templateUrl: './modal-detail-knowledge-base.component.html',
   styleUrls: ['./modal-detail-knowledge-base.component.scss']
 })
-
 export class ModalDetailKnowledgeBaseComponent implements OnInit {
   // @Input() kb: KB;
   @Output() closeBaseModal = new EventEmitter();
@@ -30,23 +30,29 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   chunksCount: number;
   showSpinner: boolean = true;
   getChunksError: boolean = false;
-  showCopiedMessage: boolean = false;
-
-  /** Pannello HTML tags: chiuso di default; si chiude se si attiva l’estrazione automatica. */
-  htmlTagsPanelExpanded = false;
-  /** URL only: when true, `scrape_type` 0 and no custom HTML tag rules. */
-  automaticContentExtraction = false;
   /**
-   * Sent to the server as `situated_context` on update.
-   * URL type: only meaningful when automatic extraction is on (mirrors modal-urls-knowledge-base behavior).
-   * Other types: always applicable (mirrors modal-faqs/text-file/upload-file).
+   * Scraping configuration for `kb.type === 'url'`. Built in the constructor
+   * from the existing `kb.scrape_options` / `kb.scrape_type` so the side-by-side
+   * settings dialog opens already populated with the user's previous choices.
+   * Mutated in place by `<app-kb-scrape-settings>` (via the side-by-side dialog)
+   * and by `<app-kb-scrape-summary>` chip popovers; read at save time inside
+   * `onUpdateKnowledgeBase()`.
+   *
+   * For non-URL KBs (faq / text / pdf / etc.) this stays at the default values
+   * but is never displayed nor sent to the server.
+   */
+  scrapeConfig: KbScrapeConfig = buildDefaultKbScrapeConfig();
+  /** Reference to the side-by-side scrape settings dialog (URL only). */
+  scrapeSettingsDialogRef: MatDialogRef<ModalKbScrapeSettingsComponent> | null = null;
+  /** Drives the header `tune` ↔ `remove` icon swap and the popover button label. */
+  isScrapeSettingsOpen = false;
+  /**
+   * Sent to the server as `situated_context` on update for non-URL types
+   * (faq / text / pdf / file). For URL the equivalent flag lives in
+   * `scrapeConfig.situatedContextEnabled` and is owned by the side-by-side
+   * settings dialog.
    */
   situatedContextEnabled = false;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  /** Default when il KB non ha ancora `tags_to_extract` (il costruttore non deve sovrascriverlo con []). */
-  extract_tags: string[] = ['body'];
-  unwanted_tags: string[] = [];
-  unwanted_classnames: string[] = [];
   refresh_rate: Array<{ name: string; value: string }> = [
     { name: "Never", value: 'never' },
     { name: 'Daily', value: 'daily' },
@@ -84,23 +90,23 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     }
   ];
 
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalDetailKnowledgeBaseComponent>,
     private logger: LoggerService,
     private kbService: KnowledgeBaseService,
-    public brandService: BrandService
-  ) { 
-    if (data && data.kb) 
+    public brandService: BrandService,
+    private dialog: MatDialog,
+  ) {
+     if (data && data.kb)
       this.kb = data.kb
-      // console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+     console.log('[MODAL-DETAIL-KB] kb ', this.kb)
 
       this.name = this.kb.name;
       this.source = this.kb.source;
       this.logger.log('[MODAL-DETAIL-KB] source ', this.source)
       this.content = this.kb.content;
-      this.logger.log('[MODAL-DETAIL-KB] content ', this.content)
+      console.log('[MODAL-DETAIL-KB] content ', this.content)
 
       if (this.kb.type === 'faq') {
        this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
@@ -110,15 +116,21 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
           this.refresh_rate.splice(0, 1);
       }
 
-      if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
+     if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
+        // Build the shared `scrapeConfig` from the values already saved on the
+        // KB so the side-by-side settings dialog reflects the user's previous
+        // choices on first open.
         const tagsFromKb = this.kb.scrape_options?.tags_to_extract;
-        this.extract_tags = tagsFromKb?.length ? [...tagsFromKb] : ['body'];
-        this.unwanted_tags = [...(this.kb.scrape_options?.unwanted_tags || [])];
-        this.unwanted_classnames = [...(this.kb.scrape_options?.unwanted_classnames || [])];
-        // Automatic: scrape_type 0 (il backend può restituire anche scrape_options conservate).
-        if (this.kb.type === 'url') {
-          this.automaticContentExtraction = Number(this.kb.scrape_type) === 0;
-        }
+        this.scrapeConfig = {
+          // Automatic = scrape_type 0; only meaningful for `url` type.
+          automaticContentExtraction: this.kb.type === 'url' ? Number(this.kb.scrape_type) === 0 : false,
+          situatedContextEnabled: Boolean(this.kb.situated_context),
+          // `KbScrapeSettings` exposes the manual chip lists when `selectedScrapeType === 4`.
+          selectedScrapeType: 4,
+          extract_tags: tagsFromKb?.length ? [...tagsFromKb] : ['body'],
+          unwanted_tags: [...(this.kb.scrape_options?.unwanted_tags || [])],
+          unwanted_classnames: [...(this.kb.scrape_options?.unwanted_classnames || [])],
+        };
         const savedRate = this.kb.refresh_rate;
         const validRate = this.refresh_rate.some(r => r.value === savedRate);
         this.selectedRefreshRate = validRate ? savedRate : (this.refresh_rate[1]?.value || 'weekly');
@@ -127,11 +139,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         if (data.payIsVisible !== undefined) this.payIsVisible = data.payIsVisible;
       }
 
-      // Initialize Situated Context from server value (defaults to false when absent).
-      this.situatedContextEnabled = Boolean(this.kb.situated_context);
-
       // Popola le tag del contenuto con quelle già esistenti sul kb
       this.kbTagsArray = this.kb.tags && Array.isArray(this.kb.tags) ? [...this.kb.tags] : [];
+
+      // Non-URL types (faq / text / pdf / file) keep the situated context flag
+      // as a flat property because they don't expose the side-by-side settings
+      // dialog. URL type reads/writes through `scrapeConfig.situatedContextEnabled`.
+      this.situatedContextEnabled = Boolean(this.kb.situated_context);
 
       // Recupera i chunks solo se esiste _id
       if (this.kb._id && this.kb.type !== 'sitemap') {
@@ -140,12 +154,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         this.showSpinner = false;
       }
 
-      const brand = brandService.getBrand();
-      // this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-      this.hideHelpLink = brand['DOCS'];
+    const brand = brandService.getBrand();
+    // this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
+    
     this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
       if (chunks) {
         
@@ -185,12 +200,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.initTagContainerObserver();
   }
 
-  ngOnDestroy() { 
+  ngOnDestroy() {
     this.logger.log('[MODALS-URLS] ngOnDestroy called');
-    // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
       this.observer.disconnect();
     }
+    this.closeScrapeSettingsDialog();
   }
 
   // CDK methods
@@ -209,6 +224,11 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     clearTimeout(this.closeTimeout);
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+  // }
+
+
   onChangeInput(event): void {
     // if (this.kbForm.valid) {
     //   this.buttonDisabled = false;
@@ -218,11 +238,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   onCloseBaseModal() {
+    this.closeScrapeSettingsDialog();
     // this.closeBaseModal.emit();
     this.dialogRef.close();
   }
 
-   // KB TAGS
+  // KB TAGS
   addsKbTag(kbTag) {
     if (kbTag && kbTag.trim() !== '') {
       const trimmedTag = kbTag.trim();
@@ -245,6 +266,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 
+
+ 
   onUpdateKnowledgeBase(){
     if (this.kb.type === 'faq') {
       this.content = this.name + "\n" + this.content
@@ -256,199 +279,83 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
     if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
       this.kb.scrape_options = this.kb.scrape_options || {};
-      this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
-      this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
-      this.kb.scrape_options.unwanted_classnames = [...this.unwanted_classnames];
+      this.kb.scrape_options.tags_to_extract = [...this.scrapeConfig.extract_tags];
+      this.kb.scrape_options.unwanted_tags = [...this.scrapeConfig.unwanted_tags];
+      this.kb.scrape_options.unwanted_classnames = [...this.scrapeConfig.unwanted_classnames];
       if (this.kb.type === 'url') {
-        this.kb.scrape_type = this.automaticContentExtraction ? 0 : 4;
+        this.kb.scrape_type = this.scrapeConfig.automaticContentExtraction ? 0 : 4;
       }
       this.kb.refresh_rate = this.selectedRefreshRate;
     }
 
-    // URL type mirrors the creation modal: situated_context is meaningful only with automatic extraction on.
+    // URL type mirrors the creation modal: situated_context is meaningful only
+    // with automatic extraction on. URL reads from `scrapeConfig`; the other
+    // types (faq / text / pdf / ...) read from the inline flat flag.
     if (this.kb.type === 'url') {
-      this.kb.situated_context = this.automaticContentExtraction && this.situatedContextEnabled;
+      this.kb.situated_context = this.scrapeConfig.automaticContentExtraction && this.scrapeConfig.situatedContextEnabled;
     } else {
       this.kb.situated_context = this.situatedContextEnabled;
     }
 
+    this.closeScrapeSettingsDialog();
     this.dialogRef.close({'kb': this.kb, 'method': 'update'});
     // this.updateKnowledgeBase.emit(this.kb);
   }
 
   onDeleteKnowledgeBase() {
+    this.closeScrapeSettingsDialog();
     this.dialogRef.close({'kb': this.kb, 'method': 'delete'})
-  }
-
-  /**
-   * Copy all scrape options to localStorage and clipboard
-   */
- /**
-   * Copy all scrape options to localStorage and clipboard
-   */
-  copyAllScrapeOptions(): void {
-    const extract_tags = this.extract_tags?.length ? this.extract_tags : (this.kb.scrape_options?.tags_to_extract || []);
-    const unwanted_tags = this.unwanted_tags?.length ? this.unwanted_tags : (this.kb.scrape_options?.unwanted_tags || []);
-    const unwanted_classnames = this.unwanted_classnames?.length ? this.unwanted_classnames : (this.kb.scrape_options?.unwanted_classnames || []);
-    
-    this.logger.log('[MODAL-DETAIL-KB] copyAllScrapeOptions called');
-    this.logger.log('[MODAL-DETAIL-KB] Current extract_tags:', extract_tags);
-    this.logger.log('[MODAL-DETAIL-KB] Current unwanted_tags:', unwanted_tags);
-    this.logger.log('[MODAL-DETAIL-KB] Current unwanted_classnames:', unwanted_classnames);
-    
-    const scrapeOptions = {
-      extract_tags: [...extract_tags],
-      unwanted_tags: [...unwanted_tags],
-      unwanted_classnames: [...unwanted_classnames]
-    };
-    this.logger.log('[MODAL-DETAIL-KB] Scrape options object to save:', scrapeOptions);
-    
-    try {
-      const jsonString = JSON.stringify(scrapeOptions);
-      this.logger.log('[MODAL-DETAIL-KB] JSON string to save:', jsonString);
-      
-      // Save to localStorage
-      localStorage.setItem('scrape_options', jsonString);
-      
-      // Copy to clipboard
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(jsonString).then(() => {
-          this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to clipboard successfully');
-          this.showCopiedMessage = true;
-          setTimeout(() => {
-            this.showCopiedMessage = false;
-          }, 2000);
-        }).catch((err) => {
-          this.logger.error('[MODAL-DETAIL-KB] Error copying to clipboard:', err);
-          // Fallback to execCommand
-          const success = this.fallbackCopyToClipboard(jsonString);
-          if (success) {
-            this.showCopiedMessage = true;
-            setTimeout(() => {
-              this.showCopiedMessage = false;
-            }, 2000);
-          }
-        });
-      } else {
-        // Fallback for older browsers
-        const success = this.fallbackCopyToClipboard(jsonString);
-        if (success) {
-          this.showCopiedMessage = true;
-          setTimeout(() => {
-            this.showCopiedMessage = false;
-          }, 2000);
-        }
-      }
-      
-      // Verify it was saved
-      const saved = localStorage.getItem('scrape_options');
-      this.logger.log('[MODAL-DETAIL-KB] Verified saved value:', saved);
-      this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to storage successfully');
-    } catch (error) {
-      this.logger.error('[MODAL-DETAIL-KB] Error saving scrape options to storage:', error);
-    }
-  }
-
-  /**
-   * Fallback method to copy text to clipboard for older browsers
-   */
-  private fallbackCopyToClipboard(text: string): boolean {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      const successful = document.execCommand('copy');
-      if (successful) {
-        this.logger.log('[MODAL-DETAIL-KB] Scrape options copied to clipboard using fallback method');
-        return true;
-      } else {
-        this.logger.error('[MODAL-DETAIL-KB] Fallback copy command failed');
-        return false;
-      }
-    } catch (err) {
-      this.logger.error('[MODAL-DETAIL-KB] Error in fallback copy:', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
-
- /**
-   * Check if KB has scrape options to copy
-   */
-  hasScrapeOptions(): boolean {
-    if (!this.kb) return false;
-    const et = this.extract_tags?.length ? this.extract_tags : (this.kb.scrape_options?.tags_to_extract || []);
-    const ut = this.unwanted_tags?.length ? this.unwanted_tags : (this.kb.scrape_options?.unwanted_tags || []);
-    const uc = this.unwanted_classnames?.length ? this.unwanted_classnames : (this.kb.scrape_options?.unwanted_classnames || []);
-    return et.length > 0 || ut.length > 0 || uc.length > 0;
-  }
-
-    addTag(type: 'extract_tags' | 'unwanted_tags' | 'unwanted_classnames', event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      if (type === 'extract_tags') this.extract_tags.push(value);
-      if (type === 'unwanted_tags') this.unwanted_tags.push(value);
-      if (type === 'unwanted_classnames') this.unwanted_classnames.push(value);
-      this.syncScrapeOptionsToKb();
-      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
-    }
-    if (event.input) event.input.value = '';
-  }
-
-  removeTag(arrayName: 'extract_tags' | 'unwanted_tags' | 'unwanted_classnames', tag: string): void {
-    if (arrayName === 'extract_tags') {
-      const i = this.extract_tags.indexOf(tag);
-      if (i !== -1) this.extract_tags.splice(i, 1);
-    }
-    if (arrayName === 'unwanted_tags') {
-      const i = this.unwanted_tags.indexOf(tag);
-      if (i !== -1) this.unwanted_tags.splice(i, 1);
-    }
-    if (arrayName === 'unwanted_classnames') {
-      const i = this.unwanted_classnames.indexOf(tag);
-      if (i !== -1) this.unwanted_classnames.splice(i, 1);
-    }
-    this.syncScrapeOptionsToKb();
-    this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
   }
 
   onSelectRefreshRate(value: string): void {
     this.selectedRefreshRate = value;
     this.kb.refresh_rate = value;
-    this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
+    console.log('[MODAL-DETAIL-KB] kb ', this.kb);
   }
 
-  /** Chiude il pannello prima di applicare automatic (evita race con [disabled] sul panel). */
-   onAutomaticSlideToggle(event: MatSlideToggleChange): void {
-    const checked = event.checked;
-    if (checked) {
-      this.htmlTagsPanelExpanded = false;
-    } else {
-      this.situatedContextEnabled = false;
-    }
-    this.automaticContentExtraction = checked;
-  }
-
+  /**
+   * Situated context toggle for non-URL types (faq / text / pdf / file). The
+   * URL type reads/writes through `scrapeConfig.situatedContextEnabled` inside
+   * the side-by-side scrape settings dialog, so no handler is needed here.
+   */
   onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
-    if (this.kb?.type === 'url' && !this.automaticContentExtraction) {
-      return;
-    }
     this.situatedContextEnabled = event.checked;
   }
 
-  /** Aggiorna this.kb.scrape_options con i valori correnti delle tag. */
-  private syncScrapeOptionsToKb(): void {
-    if (!this.kb || (this.kb.type !== 'url' && this.kb.type !== 'sitemap')) return;
-    this.kb.scrape_options = this.kb.scrape_options || {};
-    this.kb.scrape_options.tags_to_extract = [...this.extract_tags];
-    this.kb.scrape_options.unwanted_tags = [...this.unwanted_tags];
-    this.kb.scrape_options.unwanted_classnames = [...this.unwanted_classnames];
+  /**
+   * Open the side-by-side scrape settings dialog (URL only). Mirrors the
+   * pattern already in use by `modal-urls-knowledge-base` /
+   * `modal-site-map`, but passes `actionMode: 'copy'` so the inner panel
+   * shows a Copy button (snapshot current rules to clipboard) instead of the
+   * default Paste button used by the create flows.
+   */
+  openScrapeSettings(): void {
+    if (this.scrapeSettingsDialogRef) {
+      return;
+    }
+    this.isScrapeSettingsOpen = true;
+    this.scrapeSettingsDialogRef = this.dialog.open(ModalKbScrapeSettingsComponent, {
+      width: '380px',
+      position: { left: 'calc(50% + 260px)', top: '60px' },
+      autoFocus: false,
+      hasBackdrop: false,
+      data: {
+        config: this.scrapeConfig,
+        actionMode: 'copy',
+      },
+    });
+    this.scrapeSettingsDialogRef.afterClosed().subscribe(() => {
+      this.scrapeSettingsDialogRef = null;
+      this.isScrapeSettingsOpen = false;
+    });
+  }
+
+  closeScrapeSettingsDialog(): void {
+    if (this.scrapeSettingsDialogRef) {
+      this.scrapeSettingsDialogRef.close();
+      this.scrapeSettingsDialogRef = null;
+    }
+    this.isScrapeSettingsOpen = false;
   }
 
     /**
@@ -497,9 +404,11 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.tagContainerElementHeight = naturalHeight > 0 ? naturalHeight + 'px' : '20px';
   }
   
-  goToKbTagsDoc() {
+ goToKbTagsDoc() {
     const docsUrl = URL_kb_contents_tags;
     window.open(docsUrl, '_blank');
   }
 
 }
+
+
