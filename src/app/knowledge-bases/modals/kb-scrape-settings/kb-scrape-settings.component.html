@@ -74,7 +74,7 @@
                         <mat-chip-list #extractTags aria-label="Tag selection">
                             <mat-chip *ngFor="let tag of config.extract_tags"
                                 (removed)="removeTag('extract_tags', tag)">
-                                {{ tag }}
+                                {{ tag | htmlTag }}
                                 <button matChipRemove>
                                     <mat-icon>cancel</mat-icon>
                                 </button>
@@ -97,7 +97,7 @@
                         <mat-chip-list #unwantedTags aria-label="Tag selection">
                             <mat-chip *ngFor="let tag of config.unwanted_tags"
                                 (removed)="removeTag('unwanted_tags', tag)">
-                                {{ tag }}
+                                {{ tag | htmlTag }}
                                 <button matChipRemove>
                                     <mat-icon>cancel</mat-icon>
                                 </button>
