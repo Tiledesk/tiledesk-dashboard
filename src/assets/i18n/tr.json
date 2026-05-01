@@ -2165,6 +2165,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated":"Bilgi Bankası başarıyla güncellendi",
         "NewNamespace": "Yeni Bilgi Tabanı",
         "NamespaceName": "Bilgi Bankası adı",
+        "NamespaceID": "Bilgi Bankası Kimliği",
         "NewNamespaceCreatedSuccessfully": "{{namespace_name}} Bilgi Bankası başarıyla oluşturuldu",
         "CreateNewNamespace":"Yeni bir Bilgi Bankası oluşturun",
         "MaxTokens": "Maksimum Belirteçler",

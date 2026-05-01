@@ -2137,6 +2137,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated": "La base de conocimientos se ha actualizado correctamente.",
         "NewNamespace": "Nueva base de conocimientos",
         "NamespaceName": "Nombre de la base de conocimientos",
+        "NamespaceID": "ID de la base de conocimiento",
         "NewNamespaceCreatedSuccessfully": "La base de conocimientos {{namespace_name}} se ha creado correctamente",
         "CreateNewNamespace": "Crear una nueva base de conocimientos",
         "MaxTokens": "Tokens máximos",

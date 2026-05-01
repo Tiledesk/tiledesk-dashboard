@@ -2164,6 +2164,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated":"Bilimlar bazasi muvaffaqiyatli yangilandi",
         "NewNamespace": "Yangi bilimlar bazasi",
         "NamespaceName": "Bilimlar bazasi nomi",
+        "NamespaceID": "Bilimlar Bazasi ID-si",
         "NewNamespaceCreatedSuccessfully": "{{namespace_name}} bilimlar bazasi muvaffaqiyatli yaratildi",
         "CreateNewNamespace":"Yangi bilimlar bazasini yarating",
         "MaxTokens": "Maks tokenlar",

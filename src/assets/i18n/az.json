@@ -2165,6 +2165,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated":"Bilik bazası uğurla yeniləndi",
         "NewNamespace": "Yeni Bilik Bazası", 
         "NamespaceName": "Bilik Bazası adı",
+        "NamespaceID": "Bilik Bazasının ID-si",
         "NewNamespaceCreatedSuccessfully": "{{namespace_name}} Bilik Bazası uğurla yaradıldı",
         "CreateNewNamespace":"Yeni Bilik Bazasını yaradın",
         "MaxTokens": "Max Tokens",

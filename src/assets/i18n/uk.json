@@ -2181,6 +2181,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated": "Базу знань успішно оновлено",
         "NewNamespace": "Нова база знань",
         "NamespaceName": "Назва бази знань",
+        "NamespaceID": "ID бази знань",
         "NewNamespaceCreatedSuccessfully": "Базу знань {{namespace_name}} успішно створено",
         "CreateNewNamespace": "Створіть нову базу знань",
         "MaxTokens": "Макс жетонів",

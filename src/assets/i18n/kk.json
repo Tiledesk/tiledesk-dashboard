@@ -2180,6 +2180,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated": "Білім қоры сәтті жаңартылды",
         "NewNamespace": "Жаңа білім базасы",
         "NamespaceName": "Білім базасының атауы",
+        "NamespaceID": "Білім базасының ID-і",
         "NewNamespaceCreatedSuccessfully": "{{namespace_name}} білім қоры сәтті жасалды",
         "CreateNewNamespace": "Жаңа білім қорын жасаңыз",
         "MaxTokens": "Макс токендері",

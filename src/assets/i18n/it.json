@@ -2165,6 +2165,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated":"La Knowledge Base è stata aggiornata con successo",
         "NewNamespace": "Nuova Knowledge Base",
         "NamespaceName": "Nome della Knowledge Base",
+        "NamespaceID": "ID della Knowledge Base",
         "NewNamespaceCreatedSuccessfully": "La Knowledge Base {{namespace_name}} è stata creata con successo",
         "CreateNewNamespace":"Crea una nuova Knowledge Base",
         "MaxTokens": "Token massimi",

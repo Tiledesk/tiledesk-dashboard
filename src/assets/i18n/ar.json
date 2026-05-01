@@ -2165,6 +2165,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated": "تم تحديث قاعدة المعارف بنجاح",
         "NewNamespace": "قاعدة المعرفة الجديدة",
         "NamespaceName": "اسم قاعدة المعرفة",
+        "NamespaceID": "معرف قاعدة المعرفة",
         "NewNamespaceCreatedSuccessfully": "تم إنشاء قاعدة المعرفة {{namespace_name}} بنجاح",
         "CreateNewNamespace": "إنشاء قاعدة معارف جديدة",
         "MaxTokens": "ماكس الرموز",

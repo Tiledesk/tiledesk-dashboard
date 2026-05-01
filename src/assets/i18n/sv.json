@@ -2181,6 +2181,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated": "Knowledge Base har uppdaterats framgångsrikt",
         "NewNamespace": "Ny kunskapsbas",
         "NamespaceName": "Namn på kunskapsbasen",
+        "NamespaceID": "Kunskapsbas-ID",
         "NewNamespaceCreatedSuccessfully": "Kunskapsbasen {{namespace_name}} har skapats framgångsrikt",
         "CreateNewNamespace": "Skapa en ny kunskapsbas",
         "MaxTokens": "Max Tokens",

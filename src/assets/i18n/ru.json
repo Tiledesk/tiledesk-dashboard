@@ -2164,6 +2164,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated":"База знаний успешно обновлена",
         "NewNamespace": "Новая база знаний",
         "NamespaceName": "Название базы знаний",
+        "NamespaceID": "ID базы знаний",
         "NewNamespaceCreatedSuccessfully": "База знаний {{namespace_name}} успешно создана",
         "CreateNewNamespace":"Создать новую базу знаний",
         "MaxTokens": "Макс. жетонов",

@@ -2165,6 +2165,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated":"База знања је успешно ажурирана",
         "NewNamespace": "Нев Кновледге Басе",
         "NamespaceName": "Име Базе знања",
+        "NamespaceID": "ID базе знања",
         "NewNamespaceCreatedSuccessfully": "База знања {{namespace_name}} је успешно креирана",
         "CreateNewNamespace":"Направите нову базу знања",
         "MaxTokens": "Мак Токенс",
