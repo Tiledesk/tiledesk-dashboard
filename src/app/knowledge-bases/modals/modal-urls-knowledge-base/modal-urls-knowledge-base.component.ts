@@ -262,7 +262,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
         this.siteMap = '';
      }
 
-  })
+    })
+  }
 
   _fetchSiteMap() {
     this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
