@@ -2187,6 +2187,7 @@
         "titleUrls": "Importar de URLs",
         "helpUrls": "Insira páginas da web de URLs públicos na área de texto abaixo, separadas por um retorno.",
         "titleTextareaUrls": "Lista de URLs",
+        "AddUrlsFromSitemap": "Adicionar URLs de um sitemap",
         "placeholderUrls": "Insira URLs",
         "infoUrls": "Um URL por linha.",
         "NoKbMatchParams": "Nenhuma correspondência para os parâmetros especificados",
