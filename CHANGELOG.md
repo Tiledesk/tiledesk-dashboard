@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.206-stage 
+- Improves the " Import URLs from sitemap" UX with an inline link that toggles a fetch panel under the URLs textarea
+- Replaces the "Refresh rate" help icon with a hover popover on the label
+- Improves Translations
+
 ### 2.7.205-stage 
 - Adds a chip-based summary of the active scraping rules (Automatic / Manual / Situated context) with a shortcut to open the settings, in the "Import from Website", "Import from Sitemap", and "Details" knowledge base dialogs
 - Improves the layout of the "Details" knowledge base dialog (header icons, side-by-side scraping settings, collapsible chunks)
