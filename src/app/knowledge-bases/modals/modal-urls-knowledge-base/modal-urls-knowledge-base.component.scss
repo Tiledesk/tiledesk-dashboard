@@ -532,6 +532,7 @@
     color: var(--blue-20);
     cursor: pointer;
     user-select: none;
+    text-decoration: none;
 
     &:hover {
         text-decoration: underline;
