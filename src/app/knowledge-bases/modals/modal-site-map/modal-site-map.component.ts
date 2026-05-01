@@ -118,6 +118,9 @@ export class ModalSiteMapComponent implements OnInit {
     }
   ];
 
+  isRefreshRateHelpOpen = false;
+  private refreshRateHelpCloseTimeout: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
@@ -187,6 +190,22 @@ export class ModalSiteMapComponent implements OnInit {
 
   cancelClose() {
     clearTimeout(this.closeTimeout);
+  }
+
+  // ---- Refresh-rate help popover handlers (CDK-overlay) ----
+  openRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
+    this.isRefreshRateHelpOpen = true;
+  }
+
+  scheduleCloseRefreshRateHelp() {
+    this.refreshRateHelpCloseTimeout = setTimeout(() => {
+      this.isRefreshRateHelpOpen = false;
+    }, 150);
+  }
+
+  cancelCloseRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
   }
 
   listenToOnSenSitemapSiteListEvent() {
