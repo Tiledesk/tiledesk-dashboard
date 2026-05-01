@@ -30,6 +30,17 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   /** Stato espansione pannello import da sitemap (accordion separato). */
   sitemapImportPanelExpanded = false;
 
+  /**
+   * Controls the visibility of the inline sitemap fetch mini-panel
+   * (the lightweight replacement for the legacy `mat-expansion-panel`).
+   * Toggled by the "Add URLs from a sitemap" link in the textarea label
+   * row; auto-set back to `false` by `fetchSiteMap()` on a successful
+   * sitemap fetch (i.e. when at least one URL is loaded into the textarea).
+   * On error or empty result the panel stays open so the user can correct
+   * the URL without re-opening.
+   */
+  sitemapInputOpen = false;
+
     // -----------------------------------------------------------------------
   // Scrape settings — data flow between components
   // -----------------------------------------------------------------------
@@ -112,6 +123,16 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     }
   ];
 
+  // ---------------------------------------------------------------
+  // Refresh-rate help popover (replaces the legacy mat-tooltip).
+  // Mirrors the kb-tags hover-popover pattern: isolated state so the
+  // two popovers don't share the same `isOpen` flag, but reuses the
+  // same `positions` array (popover to the left of the trigger, arrow
+  // on its right edge) for visual consistency with kb-tags.
+  // ---------------------------------------------------------------
+  isRefreshRateHelpOpen = false;
+  private refreshRateHelpCloseTimeout: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
@@ -184,6 +205,42 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     clearTimeout(this.closeTimeout);
   }
 
+  // ---- Refresh-rate help popover handlers (CDK-overlay) ----
+  openRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
+    this.isRefreshRateHelpOpen = true;
+  }
+
+  scheduleCloseRefreshRateHelp() {
+    this.refreshRateHelpCloseTimeout = setTimeout(() => {
+      this.isRefreshRateHelpOpen = false;
+    }, 150);
+  }
+
+  cancelCloseRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
+  }
+
+  /**
+   * Toggle the inline sitemap fetch mini-panel. The panel itself uses an
+   * `*ngIf` so the input/button DOM is created on demand.
+   */
+  toggleSitemapInput(): void {
+    this.sitemapInputOpen = !this.sitemapInputOpen;
+  }
+
+  /**
+   * Explicit dismiss for the sitemap fetch mini-panel: closes the panel
+   * but DOES NOT clear `siteMap`. Used by the "X" button so that a user
+   * who changes their mind can later re-open the panel and find the URL
+   * they had previously typed still there. Different from the auto-hide
+   * branch in `fetchSiteMap()`, which clears the input as part of the
+   * post-success "clean state" transition.
+   */
+  closeSitemapInput(): void {
+    this.sitemapInputOpen = false;
+  }
+
   fetchSiteMap() {
     this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
     const body = {sitemap: this.siteMap, tags: this.kbTagsArray}
@@ -205,6 +262,13 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
           this.errorLimit = false;
           this.buttonDisabled = false;
         }
+
+        // Conditional auto-hide: only when the fetch actually populated the
+        // textarea. On error / empty sitemap the panel stays open so the user
+        // can correct the URL without re-opening. The siteMap input is also
+        // cleared so a subsequent re-open starts from a clean state.
+        this.sitemapInputOpen = false;
+        this.siteMap = '';
      }
       // this.listOfUrls = resp.sites;
     //   let listSitesOfSitemap = resp.sites.split("\n").filter(function(row) {

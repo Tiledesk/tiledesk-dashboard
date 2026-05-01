@@ -90,6 +90,15 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     }
   ];
 
+  // ---------------------------------------------------------------
+  // Refresh-rate help popover (replaces the legacy mat-tooltip).
+  // Mirrors the kb-tags hover-popover pattern: isolated state so the
+  // two popovers don't share the same `isOpen` flag, but reuses the
+  // same `positions` array for visual consistency with kb-tags.
+  // ---------------------------------------------------------------
+  isRefreshRateHelpOpen = false;
+  private refreshRateHelpCloseTimeout: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalDetailKnowledgeBaseComponent>,
@@ -222,6 +231,22 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
   cancelClose() {
     clearTimeout(this.closeTimeout);
+  }
+
+  // ---- Refresh-rate help popover handlers (CDK-overlay) ----
+  openRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
+    this.isRefreshRateHelpOpen = true;
+  }
+
+  scheduleCloseRefreshRateHelp() {
+    this.refreshRateHelpCloseTimeout = setTimeout(() => {
+      this.isRefreshRateHelpOpen = false;
+    }, 150);
+  }
+
+  cancelCloseRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
   }
 
   // ngOnChanges(changes: SimpleChanges): void {

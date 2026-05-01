@@ -47,15 +47,22 @@
     </app-kb-scrape-summary>
 
 
+    <!--
+        Replaced by the inline link "Add URLs from a sitemap" + toggleable
+        mini-panel below (see `.urls-label-row` and `*ngIf="sitemapInputOpen"`).
+        The accordion was visually heavy and competed with the URL textarea
+        for attention; the link variant keeps the same fetch flow but in a
+        leaner layout. Kept here commented for archaeological reference.
+    -->
+    <!--
     <mat-accordion>
-        <!-- custom--expansion-panel  -->
         <mat-expansion-panel [(expanded)]="sitemapImportPanelExpanded"
             class="html-tags--expansion-panel" style="margin-bottom: 8px;">
             <mat-expansion-panel-header class="disable_ripple">
                 <mat-panel-title> {{'ImportURLsFromSitemap' | translate}} </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
-                <div class="expansion-panel-wpr-input-btn" style=" padding: 0px 10px 10px 15px; display: flex;"> 
+                <div class="expansion-panel-wpr-input-btn" style=" padding: 0px 10px 10px 15px; display: flex;">
                     <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
                         <input matInput type="url" [(ngModel)]="siteMap">
                     </mat-form-field>
@@ -64,16 +71,24 @@
                         {{'Fetch' | translate }}
                     </button>
                 </div>
-                
-
             </div>
         </mat-expansion-panel>
     </mat-accordion>
+    -->
 
     <div class="form-container" style="margin-bottom: 8px;">
         <!-- <form [formGroup]="kbForm"> -->
         <div class="input-container" style="margin-bottom: 6px;">
-            <span class="textarea-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
+            <!-- Label row: title on the left, "Add URLs from a sitemap" link on
+                 the right. Uses flex with wrap so on narrow viewports / long
+                 translations the link drops onto its own row instead of
+                 overlapping the title. -->
+            <div class="urls-label-row">
+                <span class="textarea-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
+                <a class="urls-label-row__link" (click)="toggleSitemapInput()">
+                    {{ 'KbPage.AddUrlsFromSitemap' | translate }}
+                </a>
+            </div>
             <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
                 rows="4" style="margin-top: 3px;"></textarea>
@@ -86,6 +101,32 @@
             <div *ngIf="errorLimit" class="input-label-error" style="margin-top: -3px;">
                 {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
             </div>
+
+            <!-- Sitemap fetch mini-panel: visible only when the user clicks the
+                 "Add URLs from a sitemap" link. On a successful fetch the panel
+                 auto-hides and `siteMap` is cleared (see `fetchSiteMap()` in TS);
+                 on error / empty result the panel stays open so the user can
+                 correct the URL without re-opening. -->
+            <div *ngIf="sitemapInputOpen" class="sitemap-fetch-row">
+                <mat-form-field class="chip-list" appearance="outline" style="flex: 1 1 auto; font-size: 13px;">
+                    <input matInput type="url" [(ngModel)]="siteMap"
+                        placeholder="https://example.com/sitemap.xml">
+                </mat-form-field>
+                <button class="fetch-button" (click)="fetchSiteMap()">
+                    {{ 'Fetch' | translate }}
+                </button>
+                <!-- Explicit dismiss action: closes the panel without
+                     clearing `siteMap`, so a later re-open keeps the value
+                     the user had typed (vs. the auto-hide on successful
+                     fetch which clears the input as part of its "done"
+                     state transition). -->
+                <button class="sitemap-fetch-row__close"
+                    type="button"
+                    aria-label="Close"
+                    (click)="closeSitemapInput()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
         </div>
         <!-- </form> -->
     </div>
@@ -95,17 +136,33 @@
     <!-- ----------------------------------------------- -->
     <div class="refresh-rate-wpr">
         <div class="refresh-rate-select">
-            <span class="input-label" style="white-space: nowrap;">
-               
+            <!-- Refresh-rate help popover: same hover-popover pattern
+                 and styling as kb-tags below (CDK overlay + .cdk-popover).
+                 The label itself acts as the trigger; the legacy help_outline
+                 icon + mat-tooltip combo has been removed for a cleaner UI. -->
+            <span class="input-label" style="white-space: nowrap;"
+                #refreshRateHelpTrigger="cdkOverlayOrigin"
+                cdkOverlayOrigin
+                (mouseenter)="openRefreshRateHelp()"
+                (mouseleave)="scheduleCloseRefreshRateHelp()">
                 {{'KbPage.RefreshRate' | translate}}
-                 <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 4px;cursor: pointer; color: #566787;"
-                    matTooltipClass="kb-custom-mat-tooltip"
-                    matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
-                    matTooltipPosition="above"
-                    matTooltipHideDelay="100">
-                    help_outline
-                </span>
             </span>
+            <ng-template
+                cdk-connected-overlay
+                [cdkConnectedOverlayOrigin]="refreshRateHelpTrigger"
+                [cdkConnectedOverlayOpen]="isRefreshRateHelpOpen"
+                [cdkConnectedOverlayPositions]="positions"
+                [cdkConnectedOverlayHasBackdrop]="false"
+                (detach)="isRefreshRateHelpOpen = false">
+                <div class="cdk-popover"
+                    (mouseenter)="cancelCloseRefreshRateHelp()"
+                    (mouseleave)="scheduleCloseRefreshRateHelp()">
+                    <div class="cdk-popover-arrow"></div>
+                    <div class="cdk-popover-content">
+                        {{'KbPage.URLsSyncFrequency' | translate}}
+                    </div>
+                </div>
+            </ng-template>
             <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 6px;"> 
                 <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
                     appendTo="body" 

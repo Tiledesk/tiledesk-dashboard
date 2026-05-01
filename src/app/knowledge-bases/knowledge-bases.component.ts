@@ -2561,7 +2561,12 @@ _presentDialogImportContents() {
           }
         } else if (result && result.isSingle === "false") {
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-          this.getListOfKb(paramsDefault, 'add-multi-faq')
+          // FIXED(load-more-after-multi-add): switched from 'add-multi-faq' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add')
         }
       });
       return;
@@ -2626,7 +2631,12 @@ _presentDialogImportContents() {
         }
       } else if (result && result.isSingle === "false") {
         let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-        this.getListOfKb(paramsDefault, 'add-multi-faq')
+        // FIXED(load-more-after-multi-add): switched from 'add-multi-faq' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add')
       }
     });
   }
@@ -3163,11 +3173,19 @@ _presentDialogImportContents() {
           if (index !== -1) {
             this.kbsList[index] = kb;
           } else {
-            if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-              this.kbsList.unshift(kb);
-            } else {
-              this.kbsList.push(kb);
-            }
+            // FIXED(load-more-after-multi-add): the four call sites that used
+            // to pass 'add-multi-faq' / 'onAddMultiKb' now pass 'after-add',
+            // which is handled by the spread-replace branch above. The
+            // `unshift` path below therefore became dead code after the fix
+            // and is kept commented for archaeological reference (it can be
+            // safely deleted in a follow-up cleanup).
+            //
+            // if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
+            //   this.kbsList.unshift(kb);
+            // } else {
+            //   this.kbsList.push(kb);
+            // }
+            this.kbsList.push(kb);
           }
           this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
           this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
@@ -3396,7 +3414,12 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+      // FIXED(load-more-after-multi-add): switched from 'onAddMultiKb' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
@@ -3483,7 +3506,12 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+      // FIXED(load-more-after-multi-add): switched from 'onAddMultiKb' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;

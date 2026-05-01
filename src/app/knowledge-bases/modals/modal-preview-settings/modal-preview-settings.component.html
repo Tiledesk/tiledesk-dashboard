@@ -943,7 +943,7 @@
         <!-- ----------------------------- -->
         <!-- Use cache -->
         <!-- ----------------------------- -->
-        <div id="use-cache" class="checkbox">
+        <div id="use-cache" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal ? '3px' : '3px' }">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                 [satPopoverAnchor]="useCachePopover"
                 (mouseenter)="openHelpPopover(useCachePopover)"

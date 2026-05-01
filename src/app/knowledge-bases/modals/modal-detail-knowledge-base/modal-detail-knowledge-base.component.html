@@ -145,18 +145,34 @@
             <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
             <div class="refresh-rate-wpr" *ngIf="(kb.type === 'url' )" style="margin-bottom: 0px;">
                 <div class="refresh-rate-select">
-                    <span class="input-label" style="white-space: nowrap; font-weight: 400; font-size: 14px; ;">
-
+                    <!-- Refresh-rate help popover: same hover-popover pattern
+                         and styling as kb-tags below (CDK overlay + .cdk-popover).
+                         The label itself acts as the trigger; the legacy help_outline
+                         icon + mat-tooltip combo has been removed for a cleaner UI. -->
+                    <span class="input-label"
+                        style="white-space: nowrap; font-weight: 400; font-size: 14px;"
+                        #refreshRateHelpTrigger="cdkOverlayOrigin"
+                        cdkOverlayOrigin
+                        (mouseenter)="openRefreshRateHelp()"
+                        (mouseleave)="scheduleCloseRefreshRateHelp()">
                         {{'KbPage.RefreshRate' | translate}}
-                        <span class="material-icons-outlined" style="font-size: 18px;position: relative;top: 4px;cursor: pointer; color: #566787;"
-                                matTooltipClass="kb-custom-mat-tooltip"
-                                matTooltip="{{'KbPage.URLsSyncFrequency' | translate}}"
-                                matTooltipPosition="above"
-                                matTooltipHideDelay="100">
-                                help_outline
-                        </span>
-
                     </span>
+                    <ng-template
+                        cdk-connected-overlay
+                        [cdkConnectedOverlayOrigin]="refreshRateHelpTrigger"
+                        [cdkConnectedOverlayOpen]="isRefreshRateHelpOpen"
+                        [cdkConnectedOverlayPositions]="positions"
+                        [cdkConnectedOverlayHasBackdrop]="false"
+                        (detach)="isRefreshRateHelpOpen = false">
+                        <div class="cdk-popover"
+                            (mouseenter)="cancelCloseRefreshRateHelp()"
+                            (mouseleave)="scheduleCloseRefreshRateHelp()">
+                            <div class="cdk-popover-arrow"></div>
+                            <div class="cdk-popover-content">
+                                {{'KbPage.URLsSyncFrequency' | translate}}
+                            </div>
+                        </div>
+                    </ng-template>
                     <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 3px;"> 
                         <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
                             appendTo="body"
