@@ -2141,6 +2141,7 @@
         "titleUrls": "Import from URLs",
         "helpUrls": "Insert web pages from public URLs into the text area below, separated by a return.",
         "titleTextareaUrls": "List of URLs",
+        "AddUrlsFromSitemap": "Add URLs from a sitemap",
         "placeholderUrls": "Enter URLs",
         "infoUrls": "One url per line.",
         "NoKbMatchParams": "No match for the specified parameters",

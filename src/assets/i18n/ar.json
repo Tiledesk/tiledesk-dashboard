@@ -2141,6 +2141,7 @@
         "titleUrls": "الاستيراد من عناوين URL",
         "helpUrls": "قم بإدراج صفحات الويب من عناوين URL العامة في منطقة النص أدناه، مفصولة بإرجاع",
         "titleTextareaUrls": "قائمة عناوين URL",
+        "AddUrlsFromSitemap": "إضافة عناوين URL من خريطة الموقع",
         "placeholderUrls": "أدخل عناوين URL",
         "infoUrls": "عنوان URL واحد لكل سطر.",
         "NoKbMatchParams": "لا يوجد تطابق للمعلمات المحددة",

@@ -2141,6 +2141,7 @@
         "titleUrls": "URL'lerden içe aktar",
         "helpUrls": "Genel URL'lerdeki web sayfalarını aşağıdaki metin alanına bir dönüş işaretiyle ayırarak ekleyin.",
         "titleTextareaUrls": "URL'lerin listesi",
+        "AddUrlsFromSitemap": "Sitemap'ten URL'ler ekleyin",
         "placeholderUrls": "URL'leri girin",
         "infoUrls": "Satır başına bir URL.",
         "NoKbMatchParams": "Ingen matchning för de angivna parametrarna",

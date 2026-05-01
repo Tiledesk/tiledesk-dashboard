@@ -2157,6 +2157,7 @@
         "titleUrls": "Importera från webbadresser",
         "helpUrls": "Infoga webbsidor från offentliga webbadresser i textområdet nedan, åtskilda av en retur.",
         "titleTextareaUrls": "Lista över webbadresser",
+        "AddUrlsFromSitemap": "Lägg till webbadresser från en webbplatskarta",
         "placeholderUrls": "Ange webbadresser",
         "infoUrls": "En webbadress per rad.",
         "NoKbMatchParams": "Ingen matchning för de angivna parametrarna",
