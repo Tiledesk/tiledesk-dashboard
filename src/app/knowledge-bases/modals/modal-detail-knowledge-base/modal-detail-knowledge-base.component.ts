@@ -109,13 +109,13 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) {
      if (data && data.kb)
       this.kb = data.kb
-     console.log('[MODAL-DETAIL-KB] kb ', this.kb)
+     this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb)
 
       this.name = this.kb.name;
       this.source = this.kb.source;
       this.logger.log('[MODAL-DETAIL-KB] source ', this.source)
       this.content = this.kb.content;
-      console.log('[MODAL-DETAIL-KB] content ', this.content)
+      this.logger.log('[MODAL-DETAIL-KB] content ', this.content)
 
       if (this.kb.type === 'faq') {
        this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
@@ -335,7 +335,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   onSelectRefreshRate(value: string): void {
     this.selectedRefreshRate = value;
     this.kb.refresh_rate = value;
-    console.log('[MODAL-DETAIL-KB] kb ', this.kb);
+    this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb);
   }
 
   /**

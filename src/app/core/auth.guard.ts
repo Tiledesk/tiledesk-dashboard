@@ -411,7 +411,7 @@ export class AuthGuard implements CanActivate {
       }
     } else {
       // JWT presente -> naviga autologin
-      console.log('[AUTH-GUARD] SSO Navigazione autologin');
+      this.logger.log('[AUTH-GUARD] SSO Navigazione autologin');
       this.router.navigate(
         ['/autologin', route, token],
         { queryParams: { tiledesk_logOut: persistentLogOut } }
