@@ -143,6 +143,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   listSitesOfSitemap: any = [];
 
   payIsVisible: boolean = false;
+  hybridIsVisible: boolean = false;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   anErrorOccurredWhileUpdating: string;
@@ -2266,6 +2267,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
       data: {
+        hybridIsVisible: this.hybridIsVisible,
         pay: this.payIsVisible,
         hybridActive: this.isActiveHybrid
       },
@@ -2919,7 +2921,29 @@ _presentDialogImportContents() {
           // this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
+
+      if (key.includes("HYB")) {
+        let hybrid = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - hybrid key&value', hybrid);
+        if (hybrid[1] === "F") {
+          this.hybridIsVisible = false;
+          // this.logger.log("hybridIsVisible: ", this.hybridIsVisible)
+        } else {
+          this.hybridIsVisible = true;
+          // this.logger.log("hybridIsVisible: ", this.hybridIsVisible)
+        }
+      }
     })
+
+    if (!public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - pay isVisible', this.payIsVisible);
+    }
+
+    if (!public_Key.includes("HYB")) {
+      this.hybridIsVisible = false;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - hybrid isVisible', this.hybridIsVisible);
+    }
   }
 
 
