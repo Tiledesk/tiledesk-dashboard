@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.7.172
+- Adds “Situated Context" feature to modal windows for adding content to the knowledge base
+- Adds in the AI settings modal the option HyDE (Hypothetical Document Embeddings) and Use cache
+- Refactors web content knowledge base modals to improve layout and user experience
+- Adds a chip-based summary of the active scraping rules with a shortcut to open the settings, in the "Import from Website", "Import from Sitemap", and "Details" knowledge base dialogs
+- Improves the layout of the "Details" knowledge base dialog (header icons, side-by-side scraping settings, collapsible chunks)
+- Fixes the bug: the streaming preview not being re-enabled after disabling the "Use cache" option in the AI Settings dialog
+- Improves the " Import URLs from sitemap" UX with an inline link that toggles a fetch panel under the URLs textarea
+- Replaces the "Refresh rate" help icon with a hover popover on the label
+
+
 ### 2.7.171
 - Improves the teammates list in the conversation list
 - Sets the default automatic content extraction available for knowledge base web content to true
