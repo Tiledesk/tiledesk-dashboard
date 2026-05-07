@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.173
+- Migrates remaining Bootstrap 3 classes to Bootstrap 5
+- Removes permission HOME_READ
+- Moves in the knowledge bases page the Adds contents button on left 
+- Replaces the accordion for retrieving the Urls from a sitemap in the URL modal window with a popover
+- Updates documentation links
+- Fixes the bug: two scroll bars appear in the unassigned conversations list
+- Adds seconds to the timestamp of admin chat messages
+
 ### 2.7.172
 - Adds “Situated Context" feature to modal windows for adding content to the knowledge base
 - Adds in the AI settings modal the option HyDE (Hypothetical Document Embeddings) and Use cache
