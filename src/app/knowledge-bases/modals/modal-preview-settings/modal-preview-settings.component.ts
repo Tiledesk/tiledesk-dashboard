@@ -15,7 +15,9 @@ import {
   loadTokenMultiplier,
   getLlmModelTokenBounds,
   getLlmModelDefaultMaxTokens,
-  LLM_MAX_TOKENS_SLIDER_UI_CAP
+  LLM_MAX_TOKENS_SLIDER_UI_CAP,
+  URL_hyde_doc,
+  URL_use_cache_doc
 } from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
@@ -1319,6 +1321,16 @@ private restoreDialogScrollPosition(): void {
 
   goToContentsSourcesDoc() {
     const url = URL_contents_sources_doc;
+    window.open(url, '_blank');
+  }
+
+  goToHyDEDoc() {
+    const url = URL_hyde_doc;
+    window.open(url, '_blank');
+  }
+
+  goToUseCacheDoc() {
+    const url = URL_use_cache_doc;
     window.open(url, '_blank');
   }
 

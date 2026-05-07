@@ -182,17 +182,17 @@ export class UsersNewRoleComponent implements OnInit {
     //   ]
     // },
 
-    {
-      key: 'homePage',
-      title: 'Home Page',
-      parentLabel: 'Select all',
-      type: 'checkbox',
-      expanded: false,
-      children: [
-        { key: PERMISSIONS.HOME_READ, label: 'Able to view' },
+    // {
+    //   key: 'homePage',
+    //   title: 'Home Page',
+    //   parentLabel: 'Select all',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: PERMISSIONS.HOME_READ, label: 'Able to view' },
 
-      ]
-    },
+    //   ]
+    // },
 
 
 

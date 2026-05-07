@@ -49,9 +49,13 @@ select.select-status {
     justify-content: space-between;
     align-items: center;
 
+    // Switched to `center` (was `baseline`) because we now host the
+    // "Add" CTA button alongside the counter; baseline alignment with
+    // a button + an icon button looks visually off (icons sit above
+    // the text baseline).
     .preview-count-left {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         font-size: 14px;
     }
 }
@@ -68,8 +72,23 @@ select.select-status {
     font-size: 14px;
 }
 
+// Reserve a stable horizontal slot for the count digits so the
+// adjacent "Add" CTA does not shift left/right as the number grows
+// (1 → 173 → 1234 → ...). 60px comfortably hosts up to 6 digits at
+// 14px font size; left-aligned so single-digit counts do not appear
+// awkwardly centered.
 .contents-count>.contents-count-num {
     font-weight: 500;
+    display: inline-block;
+    min-width: 20px;
+    text-align: left;
+}
+
+// Fixed gap from the counter for the "Add" CTA hosted inside
+// `.preview-count-left`. No vertical offset is needed since the
+// parent uses `align-items: center`.
+.preview-count-left > .btn-tdblu-no-boxshadow {
+    margin-left: 16px;
 }
 
 .filter-icon {

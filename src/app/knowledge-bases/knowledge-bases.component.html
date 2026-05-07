@@ -24,9 +24,26 @@
       <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
         <!-- Sidebar sinistra -->
         <div class="kb-sidebar">
-          <div class="sidebar-title" >
-         
-            {{ 'KbPage.YourKnowledgeBases' | translate }}
+          <!-- Sidebar header: title + alphabetical sort toggle. The toggle
+               cycles between A->Z (default) and Z->A; the chosen direction
+               is persisted in localStorage so it survives reloads. The
+               default KB (starred) is always pinned on top regardless of
+               the chosen direction (see `sortNamespacesInPlace()` in TS). -->
+          <div class="sidebar-title kb-sidebar-title">
+            <span>{{ 'KbPage.YourKnowledgeBases' | translate }}</span>
+            <button *ngIf="!isLoadingNamespaces && namespaces?.length > 1"
+              type="button"
+              class="kb-sort-toggle"
+              [attr.aria-label]="(kbSortOrder === 'asc' ? 'KbPage.SortAZ' : 'KbPage.SortZA') | translate"
+              matTooltipClass="kb-custom-mat-tooltip"
+              [matTooltip]="(kbSortOrder === 'asc' ? 'KbPage.SortAZ' : 'KbPage.SortZA') | translate"
+              matTooltipPosition="below"
+              matTooltipHideDelay="100"
+              (click)="toggleKbSortOrder()">
+              <mat-icon class="kb-sort-toggle__icon">
+                {{ kbSortOrder === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
+              </mat-icon>
+            </button>
           </div>
 
           <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">

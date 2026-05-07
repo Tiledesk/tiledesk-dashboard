@@ -124,6 +124,34 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   ];
 
   // ---------------------------------------------------------------
+  // Sitemap fetch popover positions (CDK overlay).
+  // Trigger is the "Add URLs from a sitemap" link, sitting at the
+  // top-right of the URL textarea label row. Primary placement is
+  // BELOW the link, right-aligned (origin end/bottom <-> overlay
+  // end/top) so the popover hangs from the link and doesn't cover
+  // the textarea title. Fallback is ABOVE the link with a flipped
+  // arrow when there isn't enough room below.
+  // ---------------------------------------------------------------
+  sitemapPopoverPositions: ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: -2,
+      offsetY: 6,
+    },
+    {
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'bottom',
+      offsetX: -2,
+      offsetY: -6,
+    },
+  ];
+
+  // ---------------------------------------------------------------
   // Refresh-rate help popover (replaces the legacy mat-tooltip).
   // Mirrors the kb-tags hover-popover pattern: isolated state so the
   // two popovers don't share the same `isOpen` flag, but reuses the
@@ -222,23 +250,41 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggle the inline sitemap fetch mini-panel. The panel itself uses an
-   * `*ngIf` so the input/button DOM is created on demand.
+   * Toggle the sitemap fetch popover (CDK overlay). The overlay is
+   * anchored to the "Add URLs from a sitemap" link; its content
+   * (input + Fetch + ✕) is created on demand via `*cdkConnectedOverlay`.
    */
   toggleSitemapInput(): void {
     this.sitemapInputOpen = !this.sitemapInputOpen;
   }
 
   /**
-   * Explicit dismiss for the sitemap fetch mini-panel: closes the panel
-   * but DOES NOT clear `siteMap`. Used by the "X" button so that a user
-   * who changes their mind can later re-open the panel and find the URL
-   * they had previously typed still there. Different from the auto-hide
-   * branch in `fetchSiteMap()`, which clears the input as part of the
+   * Explicit dismiss for the sitemap fetch popover: closes the overlay
+   * but DOES NOT clear `siteMap`. Used by the ✕ button, the transparent
+   * backdrop click, and the Esc key so that a user who changes their
+   * mind can later re-open the popover and find the URL they had
+   * previously typed still there. Different from the auto-hide branch
+   * in `fetchSiteMap()`, which clears the input as part of the
    * post-success "clean state" transition.
    */
   closeSitemapInput(): void {
     this.sitemapInputOpen = false;
+  }
+
+  /**
+   * Auto-focus the sitemap URL input once the CDK overlay attaches.
+   * The input is rendered inside an `ng-template` and only exists in
+   * the DOM after attach, so we defer the focus to a microtask. We
+   * scope the query to the freshly-attached `.sitemap-popover` to
+   * avoid stale matches if multiple overlays were ever opened.
+   */
+  onSitemapPopoverAttach(): void {
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>(
+        '.sitemap-popover input[type="url"]'
+      );
+      input?.focus();
+    });
   }
 
   fetchSiteMap() {

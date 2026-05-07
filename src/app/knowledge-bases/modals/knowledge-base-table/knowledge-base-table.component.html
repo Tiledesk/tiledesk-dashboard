@@ -284,8 +284,36 @@
                         </button>
                     </div>
                     <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: 
+                        <!-- Reserve a fixed slot for the count digits via CSS
+                             (`.contents-count-num` has `min-width`) so the
+                             "Add" button below stays at a stable X position
+                             regardless of how many contents are loaded
+                             (1, 173, 12345...). Avoids the button "jumping"
+                             after every add/import. -->
                         <span class="contents-count-num">{{ kbsListCount }}</span>
                     </div>
+
+                    <!-- ---------------------------------------- -->
+                    <!-- Add Content (moved next to the counter) -->
+                    <!-- ---------------------------------------- -->
+                    <!-- Action-near-context: the primary CTA sits next to the
+                         "Total contents" counter so the trigger to add a new
+                         entry is right where the user reads the collection
+                         size. Sibling layout uses a fixed left margin (see
+                         `.preview-count-left .btn-tdblu-no-boxshadow` in scss)
+                         to keep its position stable as the counter grows. -->
+                    <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                        (click)="$event.stopPropagation(); onOpenAddContent()"
+                        matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
+                        #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                width="24px" fill="#fff" style="vertical-align: middle;">
+                                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                            </svg>
+                        </span>
+                        <span> {{ 'Add' | translate }} </span>
+                    </button>
                 </div>
 
                 <div class="preview-settings">
@@ -326,23 +354,6 @@
                                 </svg>
                             </span>
                             <span class="preview-text"> {{'Preview' | translate}} </span>
-                        </button>
-
-                        <!-- ---------------------------------------- -->
-                        <!-- Add Content -->
-                        <!-- ---------------------------------------- -->
-                        <!-- custom--button add-content -->
-                        <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
-                            (click)="$event.stopPropagation(); onOpenAddContent()"
-                            matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="#fff" style="vertical-align: middle;">
-                                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                                </svg>
-                            </span>
-                            <span> {{ 'Add' | translate }} </span> 
                         </button>
                     </div>
                 </div>

@@ -6498,3 +6498,31 @@ label {
   font-size: 14px;
 }
 
+// Email reply-chain progressive disclosure
+// Toggle that appears under inbound email message bubbles when the body
+// contains a hidden reply chain (Da:/Inviato:/On wrote:/forward markers).
+.email-thread-toggle {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 6px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2196f3;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover {
+    background-color: rgba(33, 150, 243, 0.08);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+    background-color: rgba(33, 150, 243, 0.12);
+  }
+}
+

@@ -205,7 +205,7 @@
                             <!-- -------------------------------------------------------------- -->
                             <!--  -->
                             <p *ngIf="(message?.type === 'text' || message?.type === 'file') && (!message?.metadata?.type?.includes('audio'))"
-                              class="message ow" [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
+                              class="message ow" [innerHTML]="message?.text | cleanEmailBody:request?.channel?.name:cleanEmailModeFor(message) | htmlEntitiesEncode | marked ">
                             </p>
 
                             <div
@@ -215,7 +215,7 @@
                                 id="audio_msg">
                                 <source [src]="message.metadata?.src" [type]="message.metadata?.type">
                               </audio>
-                              <p [innerHTML]="message?.text | htmlEntitiesEncode | marked"
+                              <p [innerHTML]="message?.text | cleanEmailBody:request?.channel?.name:cleanEmailModeFor(message) | htmlEntitiesEncode | marked"
                                 style="font-size: 12px; margin-bottom: 0px;"></p>
                             </div>
 
@@ -225,12 +225,20 @@
                                 (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
                                 <!-- message >   {{message | json}} -->
-                                <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
+                                <p *ngIf="message?.text" [innerHTML]="message?.text | cleanEmailBody:request?.channel?.name:cleanEmailModeFor(message) | htmlEntitiesEncode | marked ">
                                 </p>
                               </div>
                             </div>
+
+                            <button *ngIf="hasHiddenReplyChain(message?.text, request?.channel?.name)"
+                              type="button"
+                              class="email-thread-toggle"
+                              (click)="toggleMessageExpansion(message)">
+                              {{ (isMessageExpanded(message) ? 'RequestMsgsPage.HideQuotedText' : 'RequestMsgsPage.ShowOriginalMessage') | translate }}
+                            </button>
+
                             <span class="timestamp">
-                              {{ message?.createdAt | amDateFormat: 'LLL'}}
+                              {{ message?.createdAt | amDateFormat: 'LL LTS'}}
                               <!-- {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
                               message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}} -->
                             </span>
@@ -364,7 +372,7 @@
                             </div>
 
                             <span class="timestamp">
-                              {{ message?.createdAt | amDateFormat: 'LLL'}}
+                              {{ message?.createdAt | amDateFormat: 'LL LTS'}}
                               <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}
                               {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
                               message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}-->

@@ -1184,16 +1184,15 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation
+export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // NOT USED 
 export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
 export const URL_hybrid_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/hybrid-search'
 export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
 export const URL_understanding_default_roles = 'https://guide.tiledesk.com/understanding-default-roles' // 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-// export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
-export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
-export const URL_getting_started_with_email_ticketing = "https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
-export const URL_canned_responses_doc = "https://gethelp.tiledesk.com/articles/canned-responses-in-the-agent-chat/"
-export const URL_tag_doc = "https://gethelp.tiledesk.com/articles/tag-chats-and-requests/"
+export const URL_creating_groups = 'https://guide.tiledesk.com/creating-groups' // 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
+export const URL_getting_started_with_email_ticketing = "https://guide.tiledesk.com/getting-started-with-email-ticketing-in-tiledesk" //"https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
+export const URL_canned_responses_doc = 'https://guide.tiledesk.com/canned-responses-in-the-agent-chat' // "https://gethelp.tiledesk.com/articles/canned-responses-in-the-agent-chat/"
+export const URL_tag_doc = 'https://guide.tiledesk.com/tag-chats-and-requests' // "https://gethelp.tiledesk.com/articles/tag-chats-and-requests/"
 export const URL_microlanguage_for_dialogflow_images_videos = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
 export const URL_dialogflow_connector_handoff_to_human_agent_example = 'https://gethelp.tiledesk.com/articles/dialogflow-connector-handoff-to-human-agent-example/' // 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/'
 export const URL_styling_your_chatbot_replies = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/'  // https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/ 
@@ -1207,32 +1206,41 @@ export const URL_external_chatbot_connect_your_own_chatbot = 'https://developer.
 
 export const URL_getting_started_for_admins = 'https://gethelp.tiledesk.com/categories/getting-started-for-admins/' // https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/
 export const URL_getting_started_for_agents = 'https://gethelp.tiledesk.com/categories/getting-started-for-agents/' //'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/'
-export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/' // NOT FOUND on gethelp
+export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://guide.tiledesk.com/manage-your-workspace/google-tag-manager-add-tiledesk-to-your-sites' // NOT FOUND on gethelp
 export const URL_setting_up_automatic_assignment = 'https://gethelp.tiledesk.com/articles/setting-up-automatic-assignment/' // https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/
 export const URL_dialogflow_connector = 'https://gethelp.tiledesk.com/articles/dialogflow-connector/'
 
 
 
 
-export const URL_web_integrations = 'https://gethelp.tiledesk.com/categories/web-integrations/'
-export const URL_install_tiledesk_on_website = 'https://gethelp.tiledesk.com/articles/install-widget-on-your-website/'
-export const URL_install_tiledesk_on_shopify = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-shopify/'
-export const URL_install_tiledesk_on_wordpress = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-wordpress/'
-export const URL_install_tiledesk_on_prestashop = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-prestashop/'
-export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
-export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
-export const URL_install_tiledesk_on_wix = "https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
-export const URL_install_tiledesk_on_magento = "https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
+export const URL_web_integrations = 'https://guide.tiledesk.com/web-integrations' // 'https://gethelp.tiledesk.com/categories/web-integrations/'
+export const URL_install_tiledesk_on_website = "https://guide.tiledesk.com/install-widget-on-your-website" //'https://gethelp.tiledesk.com/articles/install-widget-on-your-website/'
+export const URL_install_tiledesk_on_shopify = "https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-shopify "//'https://gethelp.tiledesk.com/articles/install-tiledesk-on-shopify/'
+export const URL_install_tiledesk_on_wordpress = "https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-wordpress" // 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-wordpress/'
+export const URL_install_tiledesk_on_prestashop = 'https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-prestashop' //'https://gethelp.tiledesk.com/articles/install-tiledesk-on-prestashop/'
+export const URL_install_tiledesk_on_joomla = 'https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-joomla' //'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
+export const URL_install_tiledesk_on_bigcommerce = 'https://guide.tiledesk.com/web-integrations/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website' //'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
+export const URL_install_tiledesk_on_wix = 'https://guide.tiledesk.com/web-integrations/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website' //"https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
+export const URL_install_tiledesk_on_magento = "https://guide.tiledesk.com/web-integrations/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website" //"https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';
 
-export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#1-ai-models';
-export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
-export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
-export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+// export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#1-ai-models';
+// export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
+// export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
+// export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+// export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
+// export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
+// export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
+export const URL_AI_model_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-1.-ai-models';
+export const URL_max_tokens_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-2.-maximum-number-of-tokens';
+export const URL_temperature_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-3.-temperature';
+export const URL_chunk_Limit_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-4.-chunks';
+export const URL_system_context_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-5.-system-context';
+export const URL_advanced_context_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-6.-advanced-context';
 export const URL_reranking_doc = "https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/re-ranking";
-export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
-export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
-export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
+export const URL_contents_sources_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-7.-get-contents-sources';
+export const URL_hyde_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-8.-hyde-hypothetical-document-embeddings';
+export const URL_use_cache_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-9.-use-cache';
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"

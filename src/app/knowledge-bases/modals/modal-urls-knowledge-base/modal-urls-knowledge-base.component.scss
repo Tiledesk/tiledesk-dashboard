@@ -508,7 +508,7 @@
     border: unset;
     border-radius: 4px;
     position: relative;
-    top: -2px;
+    top: 0px;
     padding: 0 8px;
     font-size: 12px;
 }
@@ -540,20 +540,33 @@
 }
 
 /*
- * Inline sitemap fetch mini-panel: shown via *ngIf when the user toggles
- * the link above. Replaces the legacy mat-expansion-panel with a leaner
- * single-row layout (input + Fetch button + Close icon).
+ * Sitemap fetch popover: rendered by a CDK overlay anchored to the
+ * "Add URLs from a sitemap" link. Replaces the previous inline
+ * mini-panel (`.sitemap-fetch-row`) with a floating panel that doesn't
+ * push the textarea down on open. The single-row layout (input +
+ * Fetch + ✕) is preserved; widths are sized to host a typical sitemap
+ * URL plus the actions without wrapping.
  */
-.sitemap-fetch-row {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
+.sitemap-popover {
+    background: #ffffff;
+    border: 1px solid #e0e3e8;
+    border-radius: 6px;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12);
+    padding: 10px 12px;
+    min-width: 448px;
+    max-width: 480px;
+    box-sizing: border-box;
 }
 
-.sitemap-fetch-row__close {
+.sitemap-popover__row {
+    display: flex;
+    align-items: center;
+}
+
+.sitemap-popover__close {
     background: #f7f8fc;
     border: none;
-    padding: 8px;
+    padding: 6px;
     margin-left: 4px;
     cursor: pointer;
     color: #566787;
@@ -562,7 +575,9 @@
     justify-content: center;
     border-radius: 4px;
     position: relative;
-    top: -2px;
+    top: 0px;
+    height: 34px;
+    width: 34px;
 
     &:hover {
         background: rgba(0, 0, 0, 0.05);
@@ -574,6 +589,19 @@
         width: 18px;
         height: 18px;
     }
+}
+
+// Tighten the mat-form-field bottom space inside the popover so the
+// row doesn't get unnecessarily tall (mat-form-field reserves room for
+// hint/error text we don't use here).
+.sitemap-popover ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.sitemap-popover ::ng-deep .mat-form-field-underline,
+.sitemap-popover ::ng-deep .mat-form-field-subscript-wrapper {
+    display: none;
 }
 
 .html-tags--expansion-panel {

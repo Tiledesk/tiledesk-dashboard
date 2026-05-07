@@ -766,10 +766,6 @@
                     {{'KbPage.GetContentsSources' | translate}}
                 </span>
             </label>
-
-            <!-- <div class="help--link" *ngIf="hideHelpLink &&  wasOpenedFromThePreviewKBModal" (click)="goToContentsSourcesDoc()">
-                {{'LearnMore' | translate}}
-            </div> -->
         </div>
 
         <sat-popover id="ai-settings-label" 
@@ -881,7 +877,7 @@
         </sat-popover>
 
         <!-- ----------------------------- -->
-        <!-- Hyde -->
+        <!-- HyDE -->
         <!-- ----------------------------- -->
         <div id="use-hyde" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal ? '3px' : '3px' }">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
@@ -914,12 +910,15 @@
             <div class="settings-help-popover-hover-zone"
                 (mouseenter)="cancelDelayedHelpPopoverClose()"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)">
-            <div class="sat-popover-content-wpr">
-                <div class="sat-popover-arrow"></div>
-                <div class="sat-popover-content">
-                    {{'KbPage.HydeDesc' | translate}}
+                <div class="sat-popover-content-wpr">
+                    <div class="sat-popover-arrow"></div>
+                    <div class="sat-popover-content">
+                        {{'KbPage.HydeDesc' | translate}}
+                    </div>
+                     <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToHyDEDoc()">
+                        {{'LearnMore' | translate}}
+                    </div>
                 </div>
-            </div>
             </div>
         </sat-popover>
 
@@ -935,6 +934,9 @@
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-content">
                     {{'KbPage.HydeDesc' | translate}}
+                </div>
+                 <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToHyDEDoc()">
+                    {{'LearnMore' | translate}}
                 </div>
             </div>
             </div>
@@ -979,6 +981,9 @@
                 <div class="sat-popover-content">
                     {{'KbPage.ImprovesPerformanceByReducingResponseTimes' | translate}}
                 </div>
+                <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToUseCacheDoc()">
+                    {{'LearnMore' | translate}}
+                </div>
             </div>
             </div>
         </sat-popover>
@@ -995,6 +1000,9 @@
             <div class="sat-popover-content-wpr">
                 <div class="sat-popover-content">
                     {{'KbPage.ImprovesPerformanceByReducingResponseTimes' | translate}}
+                </div>
+                <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToUseCacheDoc()">
+                    {{'LearnMore' | translate}}
                 </div>
             </div>
             </div>

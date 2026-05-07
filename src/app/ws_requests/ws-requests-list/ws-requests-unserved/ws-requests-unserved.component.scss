@@ -1,5 +1,25 @@
 @import "./src/assets/sass/md/_variables.scss";
 
+/* Bootstrap 5's `.table-responsive` sets `overflow-x: auto`. Per the CSS
+ * spec, when one overflow axis is non-`visible` and the other is left at
+ * its default `visible`, the `visible` value is implicitly promoted to
+ * `auto`. The unserved table accumulates a 1-px subpixel-rounding delta
+ * (40+ rows with fractional row heights → `scrollHeight` rounds up,
+ * `clientHeight` rounds down), which is enough to trigger the implicit
+ * y-axis scrollbar inside the card.
+ *
+ * Setting `overflow-y: hidden` *explicitly* prevents the implicit
+ * promotion (the rule only fires when the other axis is `visible`),
+ * clips that 1-px subpixel overflow harmlessly, and leaves
+ * `overflow-x: auto` from `.table-responsive` untouched — so the table
+ * still scrolls horizontally on narrow viewports.
+ *
+ * The served sibling has no subpixel issue (its row count is small),
+ * so we scope the fix to the unserved component. */
+.card-content.table-responsive {
+  overflow-y: hidden;
+}
+
 /* TABLE CONTENT VERTICAL ALIGNMENT */
 .table td,
 .table th {

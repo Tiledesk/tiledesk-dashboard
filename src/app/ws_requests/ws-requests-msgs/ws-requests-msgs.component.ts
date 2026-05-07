@@ -102,6 +102,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // messagesList: WsMessage[] = [];
   messagesList: any;
+
+  /**
+   * Tracks which inbound email messages have been expanded by the user
+   * to reveal the full reply chain.
+   * Keyed by the message reference itself so that entries are auto-collected
+   * by the GC when the conversation is reloaded — no need to rely on _id.
+   */
+  private expandedEmailMessages: WeakMap<object, boolean> = new WeakMap();
+
+  /**
+   * Pre-compiled markers used by hasHiddenReplyChain() to decide whether
+   * to render the "Show original message / Hide quoted text" toggle button
+   * next to an inbound email message bubble.
+   */
+  private readonly EMAIL_REPLY_CHAIN_MARKERS: RegExp[] = [
+    /^(?:From|Da|De|Von):\s+[\s\S]*?(?:Sent|Inviato|Envoyé|Gesendet|Enviado):/im,
+    /^(?:On|Il|Le|Am|El)\s.+(?:wrote|ha scritto|a écrit|schrieb|escribió):/im,
+    /^-{2,}\s*(?:Original Message|Forwarded message|Messaggio originale|Messaggio inoltrato|Message d'origine|Message transféré|Ursprüngliche Nachricht|Weitergeleitete Nachricht)\s*-{2,}/im
+  ];
   showSpinner = true;
   showViewedPages: boolean = false;
   showTicketAdvanced: boolean = false;
@@ -3157,7 +3176,7 @@ updateTagContainerHeight() {
         if (wsmsgs) {
           this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ WSMSGS lenght', wsmsgs.length)
           this.messagesList = wsmsgs;
-          this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+          console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
 
 
           this.messagesList.forEach(message => {
@@ -8213,5 +8232,57 @@ extractUrls(text: string): string[] {
   // closeModalDeleteNote() {
   //   this.displayModalDeleteNote = 'none'
   // }
+
+  // -----------------------------------------------------------------------
+  // Email reply-chain progressive disclosure
+  //
+  // Inbound email messages can carry the full reply chain inside the body
+  // (especially when the customer forwards a thread that did not originate
+  // in Tiledesk, e.g. PEC correspondence). The body is rendered cleaned by
+  // default through the cleanEmailBody pipe; these helpers wire up an
+  // expand/collapse toggle so the agent can reveal the full thread on demand.
+  // -----------------------------------------------------------------------
+
+  /**
+   * Returns true when the given inbound email message contains a reply
+   * chain that the cleanEmailBody pipe would hide in 'cleaned' mode and
+   * therefore deserves a "Show original message" toggle.
+   */
+  hasHiddenReplyChain(text: string, channelName: string): boolean {
+    if (!text || channelName !== 'email') {
+      return false;
+    }
+    return this.EMAIL_REPLY_CHAIN_MARKERS.some(rx => rx.test(text));
+  }
+
+  /**
+   * Returns the current expanded/collapsed state of an inbound email
+   * message. Defaults to false (collapsed = cleaned view).
+   */
+  isMessageExpanded(message: any): boolean {
+    if (!message) {
+      return false;
+    }
+    return this.expandedEmailMessages.get(message) === true;
+  }
+
+  /**
+   * Resolves the cleanEmailBody pipe mode for the given message based on
+   * its current expanded state. Used directly inside the template.
+   */
+  cleanEmailModeFor(message: any): 'cleaned' | 'full' {
+    return this.isMessageExpanded(message) ? 'full' : 'cleaned';
+  }
+
+  /**
+   * Flips the expanded/collapsed state of an inbound email message.
+   */
+  toggleMessageExpansion(message: any): void {
+    if (!message) {
+      return;
+    }
+    const next = !this.isMessageExpanded(message);
+    this.expandedEmailMessages.set(message, next);
+  }
 
 }
