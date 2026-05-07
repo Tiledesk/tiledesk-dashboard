@@ -1656,6 +1656,8 @@
         "Open": "فتح"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "إظهار الرسالة الأصلية",
+        "HideQuotedText": "إخفاء النص المقتبس",
         "ConversationUpdatedSuccessfully": "تم تحديث المحادثة بنجاح",
         "ThereWasProblemUpdatingTheConversation": "حدثت مشكلة أثناء تحديث المحادثة",
         "MessagesOfTheRequest": "رسائل المحادثة",

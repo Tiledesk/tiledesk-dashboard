@@ -1656,6 +1656,8 @@
         "Open": "Açıq"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Orijinal mesajı göstər",
+        "HideQuotedText": "Sitatlanmış mətni gizlət",
         "ConversationUpdatedSuccessfully": "Söhbət uğurla yeniləndi",
         "ThereWasProblemUpdatingTheConversation": "Söhbəti yeniləyərkən problem yaşandı",
         "MessagesOfTheRequest": "Söhbətin mesajları",

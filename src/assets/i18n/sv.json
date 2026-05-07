@@ -1672,6 +1672,8 @@
         "Open": "Öppen"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Visa originalmeddelande",
+        "HideQuotedText": "Dölj citerad text",
         "ConversationUpdatedSuccessfully": "Konversation uppdaterades framgångsrikt",
         "ThereWasProblemUpdatingTheConversation": "Det uppstod ett problem vid uppdatering av konversationen",
         "MessagesOfTheRequest": "Meddelanden från konversationen",

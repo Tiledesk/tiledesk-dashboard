@@ -1656,6 +1656,8 @@
         "Open": "Ochiq"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Показати оригінальне повідомлення",
+        "HideQuotedText": "Приховати цитований текст",
         "ConversationUpdatedSuccessfully": "Suhbat muvaffaqiyatli yangilandi",
         "ThereWasProblemUpdatingTheConversation": "Suhbatni yangilashda muammo yuzaga keldi",
         "MessagesOfTheRequest": "Suhbat xabarlari",

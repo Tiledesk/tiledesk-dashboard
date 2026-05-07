@@ -1656,6 +1656,8 @@
         "Open": "Açık"
     },
     "RequestMsgsPage": {
+       "ShowOriginalMessage": "Orijinal mesajı göster",
+        "HideQuotedText": "Alıntı metnini gizle",
         "ConversationUpdatedSuccessfully": "Konuşma başarıyla güncellendi",
         "ThereWasProblemUpdatingTheConversation": "Konuşmayı güncellerken bir sorun oluştu",
         "MessagesOfTheRequest": "Konuşmanın mesajları",

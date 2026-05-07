@@ -1671,6 +1671,8 @@
         "Open": "Ашық"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Түпнұсқа хабарламаны көрсету",
+        "HideQuotedText": "Дәйексөз мәтінін жасыру",
         "ConversationUpdatedSuccessfully": "Сөйлесу сәтті жаңартылды",
         "ThereWasProblemUpdatingTheConversation": "Сөйлесуді жаңарту кезінде мәселе туындады",
         "MessagesOfTheRequest": "Әңгімелесу хабарламалары",

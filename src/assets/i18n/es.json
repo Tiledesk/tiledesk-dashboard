@@ -1633,6 +1633,8 @@
         "Open": "Abrir"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Mostrar mensaje original",
+        "HideQuotedText": "Ocultar texto citado",
         "ConversationUpdatedSuccessfully": "Conversación actualizada correctamente",
         "ThereWasProblemUpdatingTheConversation": "Hubo un problema al actualizar la conversación",
         "MessagesOfTheRequest": "Mensajes de la conversación",

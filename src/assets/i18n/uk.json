@@ -1672,6 +1672,8 @@
         "Open": "відчинено"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Показати оригінальне повідомлення",
+        "HideQuotedText": "Приховати цитований текст",
         "ConversationUpdatedSuccessfully": "Розмову успішно оновлено",
         "ThereWasProblemUpdatingTheConversation": "Виникла проблема під час оновлення розмови",
         "MessagesOfTheRequest": "Повідомлення розмови",

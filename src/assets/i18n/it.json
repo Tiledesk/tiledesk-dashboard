@@ -1656,6 +1656,8 @@
         "Open": "Apri"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Mostra messaggio originale",
+        "HideQuotedText": "Nascondi testo citato",
         "ConversationUpdatedSuccessfully": "Conversazione aggiornata con successo",
         "ThereWasProblemUpdatingTheConversation": "Si è verificato un problema durante l'aggiornamento della conversazione",
         "MessagesOfTheRequest": "Messaggi della conversazione",
@@ -2107,6 +2109,8 @@
         "AnswerShowMore": "Mostra tutto",
         "AnswerShowLess": "Mostra meno",
         "YourKnowledgeBases": "Le tue Knowledge Bases",
+        "SortAZ": "Ordina A-Z",
+        "SortZA": "Ordina Z-A",
         "NoKnowledgeBases": "Nessuna Knowledge Bases",
         "LearnMoreAboutKB": "Scopri di più sulla Knowledge Base",
         "WelcomeToKB": "Benvenuto nella Knowledge Base di {{company_name}}",

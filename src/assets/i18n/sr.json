@@ -1656,6 +1656,8 @@
         "Open": "Отвори"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Прикажи оригиналну поруку",
+        "HideQuotedText": "Сакриј цитирани текст",
         "ConversationUpdatedSuccessfully": "Разговор је успешно ажуриран",
         "ThereWasProblemUpdatingTheConversation": "Дошло је до проблема при ажурирању разговора",
         "MessagesOfTheRequest": "Поруке разговора",

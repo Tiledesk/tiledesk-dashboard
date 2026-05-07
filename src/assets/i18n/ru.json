@@ -1656,6 +1656,8 @@
         "Open": "Открытым"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Показать исходное сообщение",
+        "HideQuotedText": "Скрыть цитируемый текст",
         "ConversationUpdatedSuccessfully": "Разговор успешно обновлен",
         "ThereWasProblemUpdatingTheConversation": "Возникла проблема при обновлении разговора",
         "MessagesOfTheRequest": "Сообщения беседы",
