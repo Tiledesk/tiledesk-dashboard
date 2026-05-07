@@ -2141,6 +2141,7 @@
         "titleUrls": "URL-lərdən idxal",
         "helpUrls": "İctimai URL-lərdən veb səhifələri geri dönüşlə ayrılaraq aşağıdakı mətn sahəsinə daxil edin.",
         "titleTextareaUrls": "URL-lərin siyahısı",
+        "AddUrlsFromSitemap": "Sitemap-dən URL-lər əlavə edin",
         "placeholderUrls": "URL-ləri daxil edin",
         "infoUrls": "Hər sətir üçün bir url.",
         "NoKbMatchParams": "Göstərilən parametrlər üçün uyğunluq yoxdur",

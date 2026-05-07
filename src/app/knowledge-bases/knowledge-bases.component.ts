@@ -402,6 +402,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isLoadingNamespaces = true;
   pineconeReranking: boolean
 
+  private readonly KB_SORT_ORDER_STORAGE_KEY = 'tiledesk-kb-sort-order';
+  /** Current sort direction for the namespace list in the sidebar. */
+  kbSortOrder: 'asc' | 'desc' = 'asc';
+
 
   fakeUnansered = [
       { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
@@ -447,6 +451,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
 
+     
+    this.restoreKbSortOrderPreference();
     // Misura il tempo dal click nella sidebar all'inizializzazione
     const clickTime = (window as any).kbNavigationStartTime;
     if (clickTime) {
@@ -932,12 +938,81 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
+        this.sortNamespacesInPlace();
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
         this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
         this.isLoadingNamespaces = false;
       }
     });
   }
+
+    // ---------------------------------------------------------------
+  // KB sidebar sort: toggle + sort + persistence helpers.
+  // ---------------------------------------------------------------
+
+  /**
+   * Toggle the namespace list between A->Z and Z->A, persist the
+   * choice and re-sort in place. Triggered by the arrow icon next to
+   * the "Your Knowledge Bases" sidebar title.
+   */
+  toggleKbSortOrder(): void {
+    this.kbSortOrder = this.kbSortOrder === 'asc' ? 'desc' : 'asc';
+    this.persistKbSortOrderPreference();
+    this.sortNamespacesInPlace();
+  }
+
+  /**
+   * Sort `this.namespaces` in place according to `kbSortOrder`.
+   * Pinning rule: the default KB (`default === true`, the starred one
+   * in the sidebar) is always kept at index 0 regardless of direction.
+   * Comparison uses `localeCompare` with `sensitivity: 'base'` so the
+   * order is locale-aware and case-/accent-insensitive (e.g. "École"
+   * sits next to "ecole", not after "Z").
+   */
+  private sortNamespacesInPlace(): void {
+    if (!Array.isArray(this.namespaces) || this.namespaces.length < 2) {
+      return;
+    }
+    const direction = this.kbSortOrder === 'asc' ? 1 : -1;
+    this.namespaces.sort((a: any, b: any) => {
+      // Pin the default KB on top regardless of the chosen direction.
+      if (a?.default && !b?.default) return -1;
+      if (!a?.default && b?.default) return 1;
+      const nameA = (a?.name ?? '').toString();
+      const nameB = (b?.name ?? '').toString();
+      return direction * nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+    });
+  }
+
+  /**
+   * Read the persisted sort preference from localStorage (if any).
+   * Defensive: ignores invalid values so a corrupted entry doesn't
+   * throw and just falls back to the default 'asc'.
+   */
+  private restoreKbSortOrderPreference(): void {
+    try {
+      const stored = localStorage.getItem(this.KB_SORT_ORDER_STORAGE_KEY);
+      if (stored === 'asc' || stored === 'desc') {
+        this.kbSortOrder = stored;
+      }
+    } catch (_) {
+      // localStorage may be unavailable (private mode, restricted
+      // contexts): silently keep the default direction.
+    }
+  }
+
+  /**
+   * Persist the user's sort preference to localStorage. Failures are
+   * swallowed so a quota / privacy error never breaks the UI flow.
+   */
+  private persistKbSortOrderPreference(): void {
+    try {
+      localStorage.setItem(this.KB_SORT_ORDER_STORAGE_KEY, this.kbSortOrder);
+    } catch (_) {
+      // No-op: persistence is a nice-to-have, not a hard requirement.
+    }
+  }
+
 
   isAlphaNumeric(str) {
     var code, i, len;

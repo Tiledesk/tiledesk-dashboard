@@ -447,14 +447,106 @@
 .fetch-button {
     height: 34px;
     vertical-align: middle;
-    margin-left: 12px;
+    margin-left: 8px;
     background: var(--blue-20);
     color: #fff;
     border: unset;
     border-radius: 4px;
     position: relative;
-    top: 4px;
+    top: 0px;
     padding: 0 8px;
+    font-size: 12px;
+}
+
+/*
+ * Label row for the URL textarea: title on the left, "Add URLs from a sitemap"
+ * link on the right. Uses flex with wrap so on narrow viewports / long
+ * translations the link gracefully drops onto its own line instead of
+ * overlapping the title.
+ */
+.urls-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.urls-label-row__link {
+    font-size: 12px;
+    color: var(--blue-20);
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/*
+ * Sitemap fetch popover: rendered by a CDK overlay anchored to the
+ * "Add URLs from a sitemap" link. Replaces the previous inline
+ * mini-panel (`.sitemap-fetch-row`) with a floating panel that doesn't
+ * push the textarea down on open. The single-row layout (input +
+ * Fetch + ✕) is preserved; widths are sized to host a typical sitemap
+ * URL plus the actions without wrapping.
+ */
+.sitemap-popover {
+    background: #ffffff;
+    border: 1px solid #e0e3e8;
+    border-radius: 6px;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12);
+    padding: 10px 12px;
+    min-width: 448px;
+    max-width: 480px;
+    box-sizing: border-box;
+}
+
+.sitemap-popover__row {
+    display: flex;
+    align-items: center;
+}
+
+.sitemap-popover__close {
+    background: #f7f8fc;
+    border: none;
+    padding: 6px;
+    margin-left: 4px;
+    cursor: pointer;
+    color: #566787;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    position: relative;
+    top: 0px;
+    height: 34px;
+    width: 34px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: #1d2939;
+    }
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+}
+
+// Tighten the mat-form-field bottom space inside the popover so the
+// row doesn't get unnecessarily tall (mat-form-field reserves room for
+// hint/error text we don't use here).
+.sitemap-popover ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.sitemap-popover ::ng-deep .mat-form-field-underline,
+.sitemap-popover ::ng-deep .mat-form-field-subscript-wrapper {
+    display: none;
 }
 
 .html-tags--expansion-panel {

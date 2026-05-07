@@ -2140,6 +2140,7 @@
 		"titleUrls": "Von URLs importieren",
 		"helpUrls": "Fügen Sie Webseiten von öffentlichen URLs in den Textbereich unten ein, getrennt durch einen Zeilenumbruch.",
 		"titleTextareaUrls": "Liste der URLs",
+		"AddUrlsFromSitemap": "URLs aus einer Sitemap hinzufügen",
 		"placeholderUrls": "Geben Sie URLs ein",
 		"infoUrls": "Eine URL pro Zeile.",
 		"NoKbMatchParams": "Keine Übereinstimmung für die angegebenen Parameter",

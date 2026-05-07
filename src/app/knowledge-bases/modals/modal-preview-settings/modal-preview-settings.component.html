@@ -656,6 +656,138 @@
             </div>
         </sat-popover>
 
+               <!-- ----------------------------- -->
+        <!-- HyDE -->
+        <!-- ----------------------------- -->
+        <div id="use-hyde" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal ? '3px' : '3px' }">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
+                [satPopoverAnchor]="hydePopover"
+                (mouseenter)="openHelpPopover(hydePopover)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-hyde" [(ngModel)]="useHyde" (change)="changeUseHyde($event)">
+                <span class="setting-label">
+                    {{'KbPage.Hyde' | translate}}
+                </span>
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
+                [satPopoverAnchor]="hydePopoverDx"
+                (mouseenter)="openHelpPopover(hydePopoverDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-hyde" [(ngModel)]="useHyde" (change)="changeUseHyde($event)">
+                <span class="setting-label">
+                    {{'KbPage.Hyde' | translate}}
+                </span>
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label"
+            #hydePopover
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)">
+                <div class="sat-popover-content-wpr">
+                    <div class="sat-popover-arrow"></div>
+                    <div class="sat-popover-content">
+                        {{'KbPage.HydeDesc' | translate}}
+                    </div>
+                     <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToHyDEDoc()">
+                        {{'LearnMore' | translate}}
+                    </div>
+                </div>
+            </div>
+        </sat-popover>
+
+        <sat-popover id="ai-settings-label-hyde-dx"
+            #hydePopoverDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-content">
+                    {{'KbPage.HydeDesc' | translate}}
+                </div>
+                 <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToHyDEDoc()">
+                    {{'LearnMore' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+        <!-- ----------------------------- -->
+        <!-- Use cache -->
+        <!-- ----------------------------- -->
+        <div id="use-cache" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal ? '3px' : '3px' }">
+            <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
+                [satPopoverAnchor]="useCachePopover"
+                (mouseenter)="openHelpPopover(useCachePopover)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopover)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-cache" [(ngModel)]="useCache" (change)="changeUseCache($event)">
+                <span class="setting-label">
+                    {{'KbPage.UseCache' | translate}}
+                </span>
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
+                [satPopoverAnchor]="useCachePopoverDx"
+                (mouseenter)="openHelpPopover(useCachePopoverDx)"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopoverDx)"
+                (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
+                <input type="checkbox" name="use-cache" [(ngModel)]="useCache" (change)="changeUseCache($event)">
+                <span class="setting-label">
+                    {{'KbPage.UseCache' | translate}}
+                </span>
+            </label>
+        </div>
+        <sat-popover id="ai-settings-label"
+            #useCachePopover
+            horizontalAlign="before"
+            verticalAlign="center"
+            panelClass="cb-details-popover" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopover)">
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-arrow"></div>
+                <div class="sat-popover-content">
+                    {{'KbPage.ImprovesPerformanceByReducingResponseTimes' | translate}}
+                </div>
+                <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToUseCacheDoc()">
+                    {{'LearnMore' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
+        <sat-popover id="ai-settings-label-use-cache-dx"
+            #useCachePopoverDx
+            horizontalAlign="after"
+            verticalAlign="center"
+            panelClass="cb-details-popover-dx" closeTransition="1ms ease-in">
+            <div class="settings-help-popover-hover-zone"
+                (mouseenter)="cancelDelayedHelpPopoverClose()"
+                (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopoverDx)">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content-wpr">
+                <div class="sat-popover-content">
+                    {{'KbPage.ImprovesPerformanceByReducingResponseTimes' | translate}}
+                </div>
+                <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToUseCacheDoc()">
+                    {{'LearnMore' | translate}}
+                </div>
+            </div>
+            </div>
+        </sat-popover>
+
        
 
     </div>

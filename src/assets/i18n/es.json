@@ -2113,6 +2113,7 @@
         "titleUrls": "Importar desde URL",
         "helpUrls": "Inserte páginas web desde URL públicas en el área de texto a continuación, separadas por un retorno.",
         "titleTextareaUrls": "Lista de URL",
+        "AddUrlsFromSitemap": "Añadir URLs desde un sitemap",
         "placeholderUrls": "Ingrese las URL",
         "infoUrls": "Una URL por línea.",
         "NoKbMatchParams": "No hay coincidencia con los parámetros especificados",

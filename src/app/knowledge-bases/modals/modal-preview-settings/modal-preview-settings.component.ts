@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { LLM_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_max_tokens_doc, URL_reranking_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util'; // TYPE_GPT_MODEL,
+import { LLM_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_hyde_doc, URL_max_tokens_doc, URL_reranking_doc, URL_system_context_doc, URL_temperature_doc, URL_use_cache_doc, loadTokenMultiplier } from 'app/utils/util'; // TYPE_GPT_MODEL,
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -1051,6 +1051,16 @@ private restoreDialogScrollPosition(): void {
 
   goToContentsSourcesDoc() {
     const url = URL_contents_sources_doc;
+    window.open(url, '_blank');
+  }
+
+  goToHyDEDoc() {
+    const url = URL_hyde_doc;
+    window.open(url, '_blank');
+  }
+
+  goToUseCacheDoc() {
+    const url = URL_use_cache_doc;
     window.open(url, '_blank');
   }
 

@@ -321,6 +321,19 @@
                             {{ kbsListCount }}
                         </span>
                     </div>
+
+                    <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                        (click)="$event.stopPropagation(); onOpenAddContent()"
+                        matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
+                        #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                width="24px" fill="#fff" style="vertical-align: middle;">
+                                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                            </svg>
+                        </span>
+                        <span> {{ 'Add' | translate }} </span>
+                    </button>
                 </div>
 
                 <div class="preview-settings">
@@ -370,8 +383,7 @@
                         <!-- ---------------------------------------- -->
                         <!-- Add Content -->
                         <!-- ---------------------------------------- -->
-                        <!-- custom--button add-content -->
-                        <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                        <!-- <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
                             [disabled]="!PERMISSION_TO_ADD_CONTENTS"
                             (click)="$event.stopPropagation(); onOpenAddContent()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
@@ -383,7 +395,7 @@
                                 </svg>
                             </span>
                             <span> {{ 'Add' | translate }} </span> 
-                        </button>
+                        </button>  -->
                     </div>
                 </div>
             </div>

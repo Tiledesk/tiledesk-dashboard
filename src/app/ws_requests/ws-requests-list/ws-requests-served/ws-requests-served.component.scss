@@ -1,5 +1,24 @@
 @import "./src/assets/sass/md/_variables.scss";
 
+/* Preventive: mirror of the unserved sibling fix. Bootstrap 5's
+ * `.table-responsive` sets `overflow-x: auto`, and per CSS spec a
+ * `visible` overflow-y is implicitly promoted to `auto` when the other
+ * axis is non-`visible`. Even a 1-px subpixel/structural overflow
+ * inside a row (e.g., a future badge with a vertical `transform`, or
+ * an absolutely-positioned helper sticking above the row) would then
+ * trigger an unwanted inner vertical scrollbar.
+ *
+ * Setting `overflow-y: hidden` *explicitly* prevents the implicit
+ * promotion (the rule fires only from `visible`), keeps `overflow-x: auto`
+ * intact for horizontal scrolling, and harmlessly clips any future
+ * 1-px stray overflow. Currently the served table doesn't manifest the
+ * bug because it lacks the abandoned-chat badge cluster, but this
+ * preserves immunity for future markup changes. */
+.card-content.table-responsive {
+  overflow-y: hidden;
+}
+
+
 /* TABLE CONTENT VERTICAL ALIGNMENT */
 .table td,
 .table th {

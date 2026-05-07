@@ -49,9 +49,15 @@ select.select-status {
     justify-content: space-between;
     align-items: center;
 
-    .preview-count-left {
+   /* .preview-count-left {
         display: flex;
         align-items: baseline;
+        font-size: 14px;
+    } */
+
+    .preview-count-left {
+        display: flex;
+        align-items: center;
         font-size: 14px;
     }
 }
@@ -62,15 +68,20 @@ select.select-status {
 }
 
 
-.contents-count {
-    color: var(--text-color);
-    margin-left: 8px;
-    font-size: 14px;
-}
-
 .contents-count>.contents-count-num {
     font-weight: 500;
+    display: inline-block;
+    min-width: 20px;
+    text-align: left;
 }
+
+// Fixed gap from the counter for the "Add" CTA hosted inside
+// `.preview-count-left`. No vertical offset is needed since the
+// parent uses `align-items: center`.
+.preview-count-left > .btn-tdblu-no-boxshadow {
+    margin-left: 16px;
+}
+
 
 .filter-icon {
     margin-right: 12px;

@@ -2141,6 +2141,7 @@
         "titleUrls": "Импорт из URL-адресов",
         "helpUrls": "Вставьте веб-страницы с общедоступных URL-адресов в текстовую область ниже, разделив их возвратом.",
         "titleTextareaUrls": "Список URL-адресов",
+        "AddUrlsFromSitemap": "Добавить URL-адреса из sitemap",
         "placeholderUrls": "Введите URL-адреса",
         "infoUrls": "Один URL в каждой строке.",
         "NoKbMatchParams": "Нет соответствия указанным параметрам",

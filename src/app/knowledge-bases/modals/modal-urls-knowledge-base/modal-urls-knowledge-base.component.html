@@ -169,8 +169,7 @@
         </mat-expansion-panel>
     </mat-accordion>
 
-    <mat-accordion>
-        <!-- custom--expansion-panel  -->
+    <!-- <mat-accordion>
         <mat-expansion-panel [(expanded)]="sitemapImportPanelExpanded"
             class="html-tags--expansion-panel" style="margin-bottom: 8px;">
             <mat-expansion-panel-header class="disable_ripple">
@@ -186,11 +185,9 @@
                         {{'Fetch' | translate }}
                     </button>
                 </div>
-                
-
             </div>
         </mat-expansion-panel>
-    </mat-accordion>
+    </mat-accordion> -->
 
     
 
@@ -198,6 +195,20 @@
         <!-- <form [formGroup]="kbForm"> -->
         <div class="input-container">
             <span class="textarea-label" style="font-size: 14px;font-weight: 400;">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
+            <div class="urls-label-row">
+               <!--  <span class="textarea-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> -->
+                <!-- 
+               "Add URLs from a sitemap" link: trigger of the sitemap fetch
+                popover (CDK overlay anchored to this anchor). Click toggles
+                `sitemapInputOpen`; the popover renders the URL input + Fetch
+                 + ✕ button (see ng-template below). -->
+                <a class="urls-label-row__link"
+                    #sitemapTrigger="cdkOverlayOrigin"
+                    cdkOverlayOrigin
+                    (click)="toggleSitemapInput()">
+                    {{ 'KbPage.AddUrlsFromSitemap' | translate }}
+                </a>
+            </div>
             <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
                 rows="4" style="margin-top: 3px;"></textarea>
@@ -210,7 +221,49 @@
             <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }}
                 {{KB_LIMIT_CONTENT}}
             </span>
+
+
+            <!-- Sitemap fetch popover: anchored to the "Add URLs from a sitemap"
+                 link (cdkOverlayOrigin = #sitemapTrigger). Opens on click of the
+                 link (toggleSitemapInput) and closes via:
+                   - the in-popover ✕ button (closeSitemapInput),
+                   - clicking the transparent backdrop,
+                   - pressing Esc inside the input,
+                   - or auto-hide on a successful `fetchSiteMap()` (which also
+                     clears `siteMap`). On error / empty result the popover stays
+                     open so the user can correct the URL without re-opening. -->
+            <ng-template
+                cdk-connected-overlay
+                [cdkConnectedOverlayOrigin]="sitemapTrigger"
+                [cdkConnectedOverlayOpen]="sitemapInputOpen"
+                [cdkConnectedOverlayPositions]="sitemapPopoverPositions"
+                [cdkConnectedOverlayHasBackdrop]="true"
+                cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+                (backdropClick)="closeSitemapInput()"
+                (attach)="onSitemapPopoverAttach()"
+                (detach)="sitemapInputOpen = false">
+                <div class="sitemap-popover" (keydown.escape)="closeSitemapInput()">
+                    <div class="sitemap-popover__row">
+                        <mat-form-field class="chip-list" appearance="outline" style="flex: 1 1 auto; font-size: 13px;">
+                            <input matInput type="url" [(ngModel)]="siteMap"
+                                #sitemapUrlInput
+                                placeholder="https://example.com/sitemap.xml"
+                                (keydown.enter)="fetchSiteMap()">
+                        </mat-form-field>
+                        <button class="fetch-button" (click)="fetchSiteMap()">
+                            {{ 'Fetch' | translate }}
+                        </button>
+                        <button class="sitemap-popover__close"
+                            type="button"
+                            aria-label="Close"
+                            (click)="closeSitemapInput()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
         </div>
+    </div>
         <!-- </form> -->
 
         <!-- KB Tags -->

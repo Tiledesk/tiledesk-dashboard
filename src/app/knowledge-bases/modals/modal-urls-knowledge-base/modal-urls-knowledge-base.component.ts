@@ -91,6 +91,34 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     }
   ];
 
+  // ---------------------------------------------------------------
+  // Sitemap fetch popover positions (CDK overlay).
+  // Trigger is the "Add URLs from a sitemap" link, sitting at the
+  // top-right of the URL textarea label row. Primary placement is
+  // BELOW the link, right-aligned (origin end/bottom <-> overlay
+  // end/top) so the popover hangs from the link and doesn't cover
+  // the textarea title. Fallback is ABOVE the link with a flipped
+  // arrow when there isn't enough room below.
+  // ---------------------------------------------------------------
+  sitemapPopoverPositions: ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: -2,
+      offsetY: 6,
+    },
+    {
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'bottom',
+      offsetX: -2,
+      offsetY: -6,
+    },
+  ];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
