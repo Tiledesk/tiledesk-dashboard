@@ -1673,6 +1673,8 @@
         "Open": "Açıq"
     },
     "RequestMsgsPage": {
+        "ShowOriginalMessage": "Show original message",
+        "HideQuotedText": "Hide quoted text",
         "ConversationUpdatedSuccessfully": "Conversation updated successfully",
         "ThereWasProblemUpdatingTheConversation": "There was a problem updating the conversation",
         "MessagesOfTheRequest": "Söhbətin mesajları",
@@ -2124,6 +2126,8 @@
         "AnswerShowMore": "Show more",
         "AnswerShowLess": "Show less",
         "YourKnowledgeBases": "Your Knowledge Bases",
+        "SortAZ": "Sort A-Z",
+        "SortZA": "Sort Z-A",
         "NoKnowledgeBases": "No Knowledge Bases",
         "LearnMoreAboutKB": "Learn more about Knowledge Base",
         "WelcomeToKB": "Welcome to {{company_name}} Knowledge Base",
