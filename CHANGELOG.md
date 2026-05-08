@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.210-stage 
+- Adds new analytics
+
 ### 2.7.209-stage 
 - Adds OpenAI GPT-5.5 model
 
