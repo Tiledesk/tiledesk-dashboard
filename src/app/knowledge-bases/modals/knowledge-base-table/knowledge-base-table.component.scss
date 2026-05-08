@@ -49,12 +49,10 @@ select.select-status {
     justify-content: space-between;
     align-items: center;
 
-   /* .preview-count-left {
-        display: flex;
-        align-items: baseline;
-        font-size: 14px;
-    } */
-
+    // Switched to `center` (was `baseline`) because we now host the
+    // "Add" CTA button alongside the counter; baseline alignment with
+    // a button + an icon button looks visually off (icons sit above
+    // the text baseline).
     .preview-count-left {
         display: flex;
         align-items: center;
@@ -68,6 +66,17 @@ select.select-status {
 }
 
 
+.contents-count {
+    color: var(--text-color);
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+// Reserve a stable horizontal slot for the count digits so the
+// adjacent "Add" CTA does not shift left/right as the number grows
+// (1 → 173 → 1234 → ...). 60px comfortably hosts up to 6 digits at
+// 14px font size; left-aligned so single-digit counts do not appear
+// awkwardly centered.
 .contents-count>.contents-count-num {
     font-weight: 500;
     display: inline-block;
@@ -81,7 +90,6 @@ select.select-status {
 .preview-count-left > .btn-tdblu-no-boxshadow {
     margin-left: 16px;
 }
-
 
 .filter-icon {
     margin-right: 12px;
@@ -315,7 +323,7 @@ td.kb-name-cell .ellipsis-text {
     font-size: 12px;
     line-height: 24px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 9999px;
     padding: 2px 12px;
     min-width: auto;
     border-radius: 9999px;

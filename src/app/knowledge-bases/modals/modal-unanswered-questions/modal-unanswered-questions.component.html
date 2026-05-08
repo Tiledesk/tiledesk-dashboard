@@ -22,6 +22,9 @@
         tabindex="0"
         role="button">
         {{'KbPage.CreationDate' | translate}}
+       <!-- <span
+          class="sorting"
+          [ngClass]="{ 'sorting_desc': questionsSortDirection === 1, 'sorting_asc': questionsSortDirection === -1 }"></span> -->
         <span *ngIf="questionsSortDirection === 1"
           class="th-label material-icons-outlined icon-direction">expand_more</span>
         <span *ngIf="questionsSortDirection === -1"
@@ -74,6 +77,16 @@
           </span>
           <span class="uq-date-text" *ngIf="!q.createdAt">-</span>
           <span class="uq-actions" *ngIf="listMode === 'unanswered'">
+            <span
+              class="uq-open-conversation-hint"
+              matTooltipClass="kb-custom-mat-tooltip"
+              [matTooltip]="'KbPage.GoToConversation' | translate"
+              matTooltipPosition="before"
+              matTooltipHideDelay="100"
+              tabindex="0"
+              [attr.aria-label]="'KbPage.GoToConversation' | translate">
+              <mat-icon class="uq-open-conversation-hint__icon" aria-hidden="true">chevron_right</mat-icon>
+            </span>
             <button class="uq-btn uq-btn-icon" mat-icon-button 
               matTooltipClass="kb-custom-mat-tooltip" 
               [matTooltip]="'AddQuestionToKB' | translate" 
@@ -94,6 +107,16 @@
             </button>
           </span>
           <span class="uq-actions uq-actions--answered" *ngIf="listMode === 'answered'">
+            <span
+              class="uq-open-conversation-hint"
+              matTooltipClass="kb-custom-mat-tooltip"
+              [matTooltip]="'KbPage.ClickToViewConversation' | translate"
+              matTooltipPosition="before"
+              matTooltipHideDelay="100"
+              tabindex="0"
+              [attr.aria-label]="'KbPage.ClickToViewConversation' | translate">
+              <mat-icon class="uq-open-conversation-hint__icon" aria-hidden="true">chevron_right</mat-icon>
+            </span>
             <button class="uq-btn uq-btn-icon" mat-icon-button
               matTooltipClass="kb-custom-mat-tooltip"
               [matTooltip]="'KbPage.DeleteAnsweredQuestion' | translate"

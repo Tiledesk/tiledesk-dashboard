@@ -23,10 +23,12 @@ export interface KB {
     refresh_rate?: string;
     tags?: string[];
     sitemap_origin?: string;
+    /** 0 = automatic content extraction; 4 = advanced with custom HTML tags, etc. */
     scrape_type?: number;
     scrape_options?: {
         tags_to_extract?: string[];
         unwanted_tags?: string[];
         unwanted_classnames?: string[];
     };
+    situated_context?: boolean;
 }

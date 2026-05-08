@@ -1,0 +1,162 @@
+<div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
+    <mat-slide-toggle [checked]="config.automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
+        {{ 'KbPage.AutomaticContentExtraction' | translate }}
+    </mat-slide-toggle>
+</div>
+
+<div class="situated-context-row"
+    style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 12px; max-width: 640px;">
+    <mat-slide-toggle
+        [checked]="config.situatedContextEnabled"
+        [disabled]="!config.automaticContentExtraction"
+        (change)="onSituatedContextSlideToggle($event)"
+        color="primary">
+        {{ 'KbPage.SituatedContext' | translate }}
+    </mat-slide-toggle>
+    <p class="situated-context-row__desc" style="margin: 0; font-size: 13px; line-height: 1.4; color: rgba(0,0,0,0.65);">
+        {{ 'KbPage.SituatedContextDescription' | translate }}
+    </p>
+</div>
+
+<mat-accordion>
+    <!--
+        We do NOT use `[disabled]` on the panel: Material removes the chevron from the
+        DOM when disabled (`*ngIf="_showToggle()"` internally). To preserve the chevron
+        we keep the panel "enabled" but force it collapsed and block all interaction
+        through CSS (`pointer-events: none`) when automatic extraction is on.
+    -->
+    <mat-expansion-panel
+        [expanded]="!config.automaticContentExtraction && htmlTagsPanelExpanded"
+        (expandedChange)="onHtmlTagsExpandedChange($event)"
+        class="html-tags--expansion-panel"
+        [ngClass]="{'expansion-panel-disabled': config.automaticContentExtraction}">
+        <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title> {{ 'KbPage.AdvancedExtractionRules' | translate }} </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="expansion-panel-content">
+            <div *ngIf="config.selectedScrapeType === 4" class="option-box" style="width: 100%; padding: 0px 10px 10px 15px;">
+
+                <!-- COPY/PASTE OPTIONS -->
+                <div class="scrape-options-header">
+                    <div class="scrape-options-title">
+                        {{ 'KbPage.ScrapingRules' | translate }}
+                        <span class="material-icons-outlined"
+                            matTooltipClass="kb-custom-mat-tooltip"
+                            [matTooltip]="'KbPage.ScrapingRulesDesc' | translate"
+                            matTooltipPosition="above"
+                            matTooltipHideDelay="100">
+                            help_outline
+                        </span>
+                    </div>
+
+                    <!-- Paste button: visible in create flows (default actionMode). -->
+                    <div *ngIf="actionMode === 'paste'" class="mat-icon-wpr"
+                        (click)="pasteAllScrapeOptions()"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        [matTooltip]="stored_scrape_option ? ('KbPage.PasteScrapingRules' | translate) : ('KbPage.NoScrapingRulesToPaste' | translate)"
+                        matTooltipPosition="above"
+                        matTooltipHideDelay="100"
+                        [ngStyle]="{'cursor': stored_scrape_option ? 'pointer' : 'not-allowed' }"
+                        [ngClass]="{'no-scrape-option-to-paste': !stored_scrape_option}">
+                        <mat-icon>content_paste</mat-icon>
+                    </div>
+
+                    <!-- Copy button: visible in detail/edit flow. Snapshots current rules to localStorage + clipboard. -->
+                    <div *ngIf="actionMode === 'copy'" class="mat-icon-wpr"
+                        style="position: relative; cursor: pointer;"
+                        (click)="copyAllScrapeOptions()"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        [matTooltip]="'CopyScrapingRulesToPasteThemWebContentType' | translate"
+                        matTooltipPosition="above"
+                        matTooltipHideDelay="100">
+                        <mat-icon>content_copy</mat-icon>
+                        <span *ngIf="showCopiedMessage" class="copied-message">{{ 'Copied' | translate }}!</span>
+                    </div>
+                </div>
+
+                <div class="scrape-options-subtitle">
+                    {{ 'KbPage.ScrapingRulesSubtitle' | translate }}
+                </div>
+
+                <!-- TAGS TO EXTRACT -->
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span class="input-label">
+                        {{ 'KbPage.ExtractTags' | translate }}
+                    </span>
+                    <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
+                        <mat-chip-list #extractTags aria-label="Tag selection">
+                            <!-- `htmlTag` pipe wraps the value in angle brackets (`body` → `<body>`)
+                                 to make it visually unambiguous that these are HTML tags, not arbitrary strings.
+                                 The stored value remains unwrapped — the pipe runs at render time only. -->
+                            <mat-chip *ngFor="let tag of config.extract_tags"
+                                (removed)="removeTag('extract_tags', tag)">
+                                {{ tag | htmlTag }}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                            <input style="font-size: 13px; background-color: white; border: none;"
+                                [matChipInputFor]="extractTags"
+                                placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="addTag('extract_tags', $event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+
+                <!-- UNWANTED TAGS -->
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span class="input-label">
+                        {{ 'KbPage.UnwantedTags' | translate }}
+                    </span>
+                    <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
+                        <mat-chip-list #unwantedTags aria-label="Tag selection">
+                            <!-- See note on `htmlTag` pipe above (Tags to extract). -->
+                            <mat-chip *ngFor="let tag of config.unwanted_tags"
+                                (removed)="removeTag('unwanted_tags', tag)">
+                                {{ tag | htmlTag }}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                            <input style="font-size: 13px; background-color: white; border: none;"
+                                [matChipInputFor]="unwantedTags"
+                                placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="addTag('unwanted_tags', $event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+
+                <!-- UNWANTED CLASSNAMES -->
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span class="input-label">
+                        {{ 'KbPage.UnwantedClassnames' | translate }}
+                    </span>
+                    <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
+                        <mat-chip-list #unwantedClassnames aria-label="Tag selection">
+                            <mat-chip *ngFor="let tag of config.unwanted_classnames"
+                                (removed)="removeTag('unwanted_classnames', tag)">
+                                {{ tag }}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                            <input style="font-size: 13px; background-color: white; border: none;"
+                                [matChipInputFor]="unwantedClassnames"
+                                placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="addTag('unwanted_classnames', $event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<!-- Helper text shown right below the accordion, only when automatic extraction is on. -->
+<p *ngIf="config.automaticContentExtraction" class="advanced-extraction-disabled-hint">
+    {{ 'KbPage.AvailableWhenAutomaticExtractionIsOff' | translate }}
+</p>

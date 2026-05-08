@@ -1,0 +1,38 @@
+<div id="menu_div" class="actions-drawer" #panel_menu_div >
+ 
+    <div *ngIf="menuTitle" class="menu-title truncate">
+        {{menuTitle}}
+    </div>
+
+    <div class="menu-box" *ngFor="let item of items">
+        <div class="menu-btns-wpr" (click)="onOpenAddKnowledgeBaseModal(item.type)">
+            <!-- 
+            <div class="menu-btn-icon">
+                <span class="material-icons-outlined" *ngIf="!item.localIcon">{{item.icon}}</span>
+                <img class="icon" *ngIf="item.localIcon" [src]="item.icon"/>
+            </div> 
+            -->
+            <div class="menu-btn-text truncate">{{ item.label }}</div>
+        </div>
+    </div>
+
+        <!-- <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('url-page')">
+          <mat-icon>link</mat-icon>
+          <span>{{ 'KbPage.AddKbURL' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('text-file')">
+          <mat-icon>description</mat-icon>
+          <span>{{ 'KbPage.AddKbText' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('urls')">
+          <span>URL(s)</span>
+        </button>
+        <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('site-map')">
+          <mat-icon>lan</mat-icon>
+          <span>{{ 'add site map' | translate }}</span>
+        </button>  -->
+
+
+
+
+</div>

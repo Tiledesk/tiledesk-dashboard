@@ -93,6 +93,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
 
     p.header-title {
         font-size: 24px;
@@ -720,7 +721,7 @@ table {
     background-color: #2d323e !important;
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     color: #fff !important;
@@ -1128,6 +1129,7 @@ table {
     gap: 0px;
     padding: 0 20px;
     font-size: 14px;
+    // font-weight: 500;
     color: #3c4858;
     background: transparent;
     cursor: pointer;
@@ -1193,6 +1195,21 @@ table {
     text-align: left;
 }
 
+.kb-stats-card--clickable {
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+        border-color: #cfd6de;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus-visible {
+        outline: 2px solid #006cff;
+        outline-offset: 2px;
+    }
+}
+
 .kb-stats-card__label {
     display: block;
     font-size: 13px;
@@ -1252,7 +1269,7 @@ table {
     margin: 0;
     padding: 8px 8px;
     margin-bottom: -1px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 400;
     line-height: 1.2;
     color: var(--secondary-text-color, #7695a5);
@@ -1300,7 +1317,7 @@ table {
     background: transparent;
     border: none;
     margin: 0;
-    padding: 7px 12px;
+    padding: 8px 12px;
     margin-bottom: -1px;
     font-size: 14px;
     font-weight: 400;

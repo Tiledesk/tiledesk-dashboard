@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from './logger/logger.service';
 import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,122 @@ export class OpenaiService {
     //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/qa";
     this.logger.debug('[OPENAI.SERVICE] - ask gpt URL: ', url);
     return this.httpClient.post(url, data, httpOptions);
+  }
+
+    /**
+   * Chunk stream KB/QA: `text` = delta da concatenare; `fullAnswer` = risposta completa (sostituisce lo stream).
+   * Il backend può mandare `content` in streaming e poi un evento con `answer` piena: non vanno concatenate.
+   */
+  askGptStream(data: any): Observable<{
+    text?: string;
+    fullAnswer?: string;
+    done?: boolean;
+    response?: any;
+  }> {
+    this.logger.log('[OPENAI.SERVICE] askGptStream', data);
+    const url = this.SERVER_BASE_PATH + this.project_id + '/kb/qa';
+    this.logger.debug('[OPENAI.SERVICE] - ask gpt stream URL: ', url);
+    const body = { ...data, stream: true };
+
+    const emitParsed = (
+      parsed: any,
+      lastStreamMeta: { value: any },
+      observer: { next: (v: any) => void; error: (e: any) => void }
+    ): boolean => {
+      if (parsed.success === false && parsed.error) {
+        observer.error({ error: parsed.error, success: false });
+        return false;
+      }
+      lastStreamMeta.value = parsed;
+      if (parsed.answer !== undefined) {
+        observer.next({ fullAnswer: String(parsed.answer), response: parsed });
+      } else if (parsed.delta !== undefined) {
+        observer.next({ text: String(parsed.delta), response: parsed });
+      } else if (parsed.content !== undefined) {
+        observer.next({ text: String(parsed.content), response: parsed });
+      } else if (parsed.choices?.[0]?.delta?.content) {
+        observer.next({ text: String(parsed.choices[0].delta.content), response: parsed });
+      } else {
+        observer.next({ response: parsed });
+      }
+      return true;
+    };
+
+    return new Observable((observer) => {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.TOKEN || ''
+        },
+        body: JSON.stringify(body)
+      }).then((res) => {
+        if (!res.ok) {
+          res.text().then((errText) => {
+            try {
+              const err = JSON.parse(errText);
+              observer.error(err);
+            } catch {
+              observer.error({ error: errText, status: res.status });
+            }
+          }).catch(() => observer.error({ status: res.status }));
+          return;
+        }
+        const reader = res.body?.getReader();
+        if (!reader) {
+          observer.error(new Error('No response body'));
+          return;
+        }
+        const decoder = new TextDecoder();
+        let buffer = '';
+        const lastStreamMeta = { value: null as any };
+
+        const read = (): Promise<void> => {
+          return reader.read().then(({ done, value }) => {
+            if (done) {
+              if (buffer.trim()) {
+                try {
+                  const parsed = JSON.parse(buffer);
+                  if (!emitParsed(parsed, lastStreamMeta, observer)) {
+                    return;
+                  }
+                } catch (_) {}
+              }
+              observer.next({ done: true, response: lastStreamMeta.value });
+              observer.complete();
+              return;
+            }
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split(/\r?\n/);
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith('data:')) {
+                const dataStr = trimmed.slice(5).trim();
+                if (dataStr === '[DONE]') continue;
+                try {
+                  const parsed = JSON.parse(dataStr);
+                  if (!emitParsed(parsed, lastStreamMeta, observer)) {
+                    return;
+                  }
+                } catch (_) {}
+              } else if (trimmed) {
+                try {
+                  const parsed = JSON.parse(trimmed);
+                  if (!emitParsed(parsed, lastStreamMeta, observer)) {
+                    return;
+                  }
+                } catch (_) {}
+              }
+            }
+            return read();
+          });
+        };
+
+        read().catch((err) => observer.error(err));
+      }).catch((err) => observer.error(err));
+    });
   }
 
   askGptPrev(data) {

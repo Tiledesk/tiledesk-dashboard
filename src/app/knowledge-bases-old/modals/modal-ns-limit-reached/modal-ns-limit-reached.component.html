@@ -1,0 +1,24 @@
+<h1 mat-dialog-title style="text-align: center;">
+    {{ "Pricing.PlanChange" | translate }}
+</h1>
+
+<div mat-dialog-content>
+    <div class="kb-exceeds-plan-msg"> 
+
+        {{ 'NumberOfKBExceedsThePlan' | translate: { plan_name: planName,  allowed_ns_num: allowedNamespaceNum} }}
+    </div>
+</div>
+
+<div  mat-dialog-actions style="justify-content: center;">
+    <button  class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+    </button>
+   
+    <button *ngIf="planType === 'payment'"  class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+        {{'ContactUs' | translate}}
+    </button>
+    <button *ngIf="planType === 'free'"  class="mat-dialog-ok-btn" mat-button (click)="onUpgradePlan()">
+        {{'Pricing.UpgradePlan' | translate}}
+    </button>
+    
+</div>

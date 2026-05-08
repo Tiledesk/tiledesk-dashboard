@@ -143,6 +143,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   listSitesOfSitemap: any = [];
 
   payIsVisible: boolean = false;
+  hybridIsVisible: boolean = false;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   anErrorOccurredWhileUpdating: string;
@@ -347,7 +348,27 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
   }
 
-  /** Rimuove `tab` / `questionsSub` dall’URL (evita stato obsoleto vs tab Contenuti). */
+  /** KPI contenuti: apre il tab Contenuti. */
+  onKbStatsContentsClick(): void {
+    this.switchTab('contents');
+  }
+
+  /** KPI conteggio risposte: apre Domande → Risposte (stessa logica del tab principale). */
+  onKbStatsAnsweredClick(): void {
+    this.switchTab('unanswered');
+  }
+
+  /** KPI senza risposta: apre Domande → Non risposte. */
+  onKbStatsUnansweredClick(): void {
+    this.selectedTab = 'unanswered';
+    if (this.questionsSubTab !== 'unanswered') {
+      this.switchQuestionsSubTab('unanswered');
+    } else {
+      this.loadUnansweredQuestions(0, false);
+    }
+  }
+
+  /** Rimuove `tab` / `questionsSub` dall’URL (stato obsoleto rispetto alla tab Contenuti). */
   private clearKbQuestionsDeepLinkQueryParams(): void {
     const qpm = this.route.snapshot.queryParamMap;
     if (!qpm.get('tab') && !qpm.get('questionsSub')) {
@@ -361,7 +382,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
-  /** Dopo import contenuti: resta su Contenuti e allinea URL (come su master). */
+  /** Dopo import JSON contenuti: resta su Contenuti e allinea URL (evita riapertura tab Domande da ?tab=questions). */
   private afterKbContentsImportSuccess(): void {
     this.selectedTab = 'contents';
     this.clearKbQuestionsDeepLinkQueryParams();
@@ -402,6 +423,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isLoadingNamespaces = true;
   pineconeReranking: boolean
 
+  // ---------------------------------------------------------------
+  // KB sidebar — alphabetical sort toggle.
+  // The user can flip the namespace list between A->Z (default) and
+  // Z->A via the icon next to the "Your Knowledge Bases" title.
+  // The chosen direction is persisted in localStorage so it survives
+  // reloads. The default KB (the one with `default: true`, shown with
+  // a star in the sidebar) is always pinned on top regardless of the
+  // direction (see `sortNamespacesInPlace()`); only the remaining
+  // KBs follow the alphabetical order.
+  // ---------------------------------------------------------------
+  /** Persisted localStorage key for the sort direction. Global (not
+   * scoped per project) because users typically want one stable
+   * preference across all projects. */
   private readonly KB_SORT_ORDER_STORAGE_KEY = 'tiledesk-kb-sort-order';
   /** Current sort direction for the namespace list in the sidebar. */
   kbSortOrder: 'asc' | 'desc' = 'asc';
@@ -451,8 +485,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
 
-     
+    // Restore the user's preferred KB sort direction from localStorage.
+    // Done in ngOnInit (instead of constructor) to keep the constructor
+    // free of side effects (and matching the pattern of other init logic
+    // here). Falls back to the default 'asc' if missing or malformed.
     this.restoreKbSortOrderPreference();
+
     // Misura il tempo dal click nella sidebar all'inizializzazione
     const clickTime = (window as any).kbNavigationStartTime;
     if (clickTime) {
@@ -520,10 +558,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       .subscribe(status => {
         this.ROLE = status.role;
         this.PERMISSIONS = status.matchedPermissions;
-        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
-        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
-        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
 
     
 
@@ -532,51 +570,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_DELETE = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_DELETE = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
 
           // PERMISSION_TO_DELETE_NAMESPACE
           // if (status.role === 'owner' || status.role === 'admin') {
           //   // Owner and Admin always has permission
           //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
   
           // } else if (status.role === 'agent') {
           //   // Agent never have permission
           //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
   
           // } else {
           //   // Custom roles: permission depends on matchedPermissions
           //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
-          //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
           // }
 
         // PERMISSION_TO_ADD_KB
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_KB = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_KB = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
         }
 
         // ---------------------------------
@@ -585,51 +623,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and admin always has permission
           this.PERMISSION_TO_EDIT_FLOWS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EDIT_FLOWS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user agent (2)', 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_FLOWS:', this.PERMISSION_TO_EDIT_FLOWS);
         }
 
         // PERMISSION_TO_ADD_FLOWS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_FLOWS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_FLOWS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
         }
 
         // PERMISSION_TO_ADD_CONTENTS
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_ADD_CONTENTS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_ADD_CONTENTS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
         }
 
 
@@ -637,17 +675,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner and Admin always has permission
           this.PERMISSION_TO_EXPORT_CONTENTS = true;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
 
         } else if (status.role === 'agent') {
           // Agent never have permission
           this.PERMISSION_TO_EXPORT_CONTENTS = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EXPORT_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_EXPORT);
-          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
         }
 
       });
@@ -938,6 +976,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
+        // Apply the persisted sort BEFORE selecting the "last used" KB so
+        // both the rendered order in the sidebar and any default selection
+        // logic agree on the same canonical ordering.
         this.sortNamespacesInPlace();
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
         this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
@@ -946,7 +987,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
-    // ---------------------------------------------------------------
+  // ---------------------------------------------------------------
   // KB sidebar sort: toggle + sort + persistence helpers.
   // ---------------------------------------------------------------
 
@@ -1012,7 +1053,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // No-op: persistence is a nice-to-have, not a hard requirement.
     }
   }
-
 
   isAlphaNumeric(str) {
     var code, i, len;
@@ -1840,8 +1880,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             error: (error) => {
               let errorMessage = ""
               if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
-                // console.log('[KB IMPORT] error.error.error :', error.error.error);
-                // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
+                // this.logger.log('[KB IMPORT] error.error.error :', error.error.error);
+                // this.logger.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
                 const planLimit = error.error.plan_limit;
                 errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
               } else {
@@ -2321,6 +2361,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
       data: {
+        hybridIsVisible: this.hybridIsVisible,
         pay: this.payIsVisible,
         hybridActive: this.isActiveHybrid
       },
@@ -2346,6 +2387,8 @@ _presentDialogImportContents() {
       disableClose: true,
       width: '400px',
       id: 'kb-test',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         askBody: previedata
@@ -2383,6 +2426,8 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '360px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         pineconeReranking: this.pineconeReranking
@@ -2468,8 +2513,9 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         kb: kb,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2479,18 +2525,18 @@ _presentDialogImportContents() {
     });
     dialogRef.afterClosed().subscribe(res => {
 
-     console.log('[Modal KB DETAILS] Dialog afterClosed res : ', res);
+     this.logger.log('[Modal KB DETAILS] Dialog afterClosed res : ', res);
     
      if (res) {
       if(res.method === 'update') {
         //  let kb = res.kb.kb
-        console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
-        console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.updateKbContent(res.kb)
       } else if (res.method === 'delete') {
         
-        console.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
-        console.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
+        this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.onOpenBaseModalDelete(res.kb)
       }
      }
@@ -2595,6 +2641,8 @@ _presentDialogImportContents() {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
         width: '600px',
+        autoFocus: false,
+        position: { top: '60px' },
         data: {
           selectedNamespace: this.selectedNamespace,
           prefillKb: typeOrKb
@@ -2609,7 +2657,12 @@ _presentDialogImportContents() {
           }
         } else if (result && result.isSingle === "false") {
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-          this.getListOfKb(paramsDefault, 'add-multi-faq')
+          // FIXED(load-more-after-multi-add): switched from 'add-multi-faq' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add')
         }
       });
       return;
@@ -2641,6 +2694,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
@@ -2656,6 +2711,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
       },
@@ -2670,7 +2727,12 @@ _presentDialogImportContents() {
         }
       } else if (result && result.isSingle === "false") {
         let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-        this.getListOfKb(paramsDefault, 'add-multi-faq')
+        // FIXED(load-more-after-multi-add): switched from 'add-multi-faq' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add')
       }
     });
   }
@@ -2679,8 +2741,9 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2710,8 +2773,9 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalSiteMapComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2746,6 +2810,7 @@ _presentDialogImportContents() {
     this.logger.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
     const dialogRef = this.dialog.open(ModalUploadFileComponent, {
       autoFocus: false,
+      position: { top: '60px' },
       width: '400px'
       // data: {
       //   calledBy: 'step1'
@@ -2950,7 +3015,29 @@ _presentDialogImportContents() {
           // this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
+
+      if (key.includes("HYB")) {
+        let hybrid = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - hybrid key&value', hybrid);
+        if (hybrid[1] === "F") {
+          this.hybridIsVisible = false;
+          // this.logger.log("hybridIsVisible: ", this.hybridIsVisible)
+        } else {
+          this.hybridIsVisible = true;
+          // this.logger.log("hybridIsVisible: ", this.hybridIsVisible)
+        }
+      }
     })
+
+    if (!public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - pay isVisible', this.payIsVisible);
+    }
+
+    if (!public_Key.includes("HYB")) {
+      this.hybridIsVisible = false;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - hybrid isVisible', this.hybridIsVisible);
+    }
   }
 
 
@@ -3090,9 +3177,9 @@ _presentDialogImportContents() {
 
 
   onLoadPage(searchParams?: any, calledby?: string) {
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     
     // Use page from searchParams if provided, otherwise increment numberPage
@@ -3102,7 +3189,7 @@ _presentDialogImportContents() {
       this.numberPage++;
     }
     
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams?.search);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams?.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
@@ -3174,8 +3261,8 @@ _presentDialogImportContents() {
 
 
   getListOfKb(params?: any, calledby?: any) {
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' || calledby === 'after-update' || calledby === 'after-add' ) {
       this.kbsList = [];
@@ -3204,11 +3291,19 @@ _presentDialogImportContents() {
           if (index !== -1) {
             this.kbsList[index] = kb;
           } else {
-            if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-              this.kbsList.unshift(kb);
-            } else {
-              this.kbsList.push(kb);
-            }
+            // FIXED(load-more-after-multi-add): the four call sites that used
+            // to pass 'add-multi-faq' / 'onAddMultiKb' now pass 'after-add',
+            // which is handled by the spread-replace branch above. The
+            // `unshift` path below therefore became dead code after the fix
+            // and is kept commented for archaeological reference (it can be
+            // safely deleted in a follow-up cleanup).
+            //
+            // if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
+            //   this.kbsList.unshift(kb);
+            // } else {
+            //   this.kbsList.push(kb);
+            // }
+            this.kbsList.push(kb);
           }
           this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
           this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
@@ -3437,7 +3532,12 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+      // FIXED(load-more-after-multi-add): switched from 'onAddMultiKb' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
@@ -3524,7 +3624,12 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+      // FIXED(load-more-after-multi-add): switched from 'onAddMultiKb' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
@@ -3736,7 +3841,7 @@ _presentDialogImportContents() {
 
   /** */
   onUpdateKb(kb) {
-    console.log('onUpdateKb: ', kb);
+    this.logger.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
@@ -4292,6 +4397,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         prefillKb: {

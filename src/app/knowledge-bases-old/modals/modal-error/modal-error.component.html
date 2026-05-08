@@ -1,0 +1,35 @@
+<div class="modal" tabindex="-1" role="dialog"
+  style="background-color: rgba(90,90,90,0.5); display:block">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+        <button style="color:#ffffff" type="button" class="close" aria-label="Close" (click)="onCloseBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "KbPage.AProblemOccurred" | translate }}
+          </span>
+        </h4>
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+          {{ "messaggio" | translate }}
+        </h4> -->
+      </div>
+      <div class="modal-body" style="min-height: 135px;">
+
+          <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
+            {{ errorMessage }}:
+            <!-- <span style="color:#212121">
+              <strong> {{ id_project }}</strong>
+            </span> -->
+          </label>
+      </div>
+      <div class="modal-footer">
+        <button (click)="onCloseBaseModal()" style="margin-top:0px" class="btn btn-danger">
+          {{ "Close" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

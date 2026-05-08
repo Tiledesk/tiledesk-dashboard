@@ -4,7 +4,8 @@
 
     <span *ngIf="!isopenasetting" id="settings" class="material-icons-outlined"
       (click)="presentDialogAiSettings(isopenasetting = !isopenasetting)">
-      settings
+     <!-- settings -->
+      tune
     </span>
     <span *ngIf="isopenasetting" id="settings" class="material-icons-outlined close-ai-settings"
       (click)="closeDialogAiSettings(isopenasetting = !isopenasetting)">
@@ -23,51 +24,66 @@
 </div>
 <div mat-dialog-content (click)="handleClickInside($event)">
 
-  <div class="form--container">
-    <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
-      <!-- <div class="fake-input">
-     <div class="fake-input-inner">
-        <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-          (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()" style="font-size: 14px;">
-        <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
-      </div> 
-    </div> -->
-     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+  <div class="form--container question-preview-form">
+     <div class="question-header-row">
+      <p class="answer-title">{{ 'FaqPage.Question' | translate }}<span  [style.color]="!question?.trim() ? '#c62445' : 'transparent'">*</span></p>
+    </div>
+     <textarea #questionTextarea class="question-textarea" [ngClass]="{'required': !question?.trim()}" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
         (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      <div class="preview-stream-toggle-row">
+      <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle"
+        matTooltipClass="kb-custom-mat-tooltip" 
+        matTooltip="{{'ResponseInStreaming' | translate }}" 
+        #tooltip="matTooltip"
+        matTooltipPosition='left' 
+        matTooltipHideDelay="100"
+        [disabled]="useCache">
+        {{ 'KbPage.PreviewStream' | translate }}
+      </mat-slide-toggle>
+      </div>
+
+        <!-- <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;margin-top: -4px;">
+          {{'QuestionIsRequired' | translate}}
+        </div> -->
   </div>
 
-    <!-- KB Tags --> 
-   <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;">
-      <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
-          [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
-          [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-          [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15">
-     
-          <div class="kb-tags-help"
-            style="position: relative;top: 2px;"
-            #trigger="cdkOverlayOrigin"
-            cdkOverlayOrigin
-            (mouseenter)="open()"
-            (mouseleave)="scheduleClose()">
+  <!-- KB Tags --> 
+  <div class="kb-tags-input-wpr" style="display: flex;vertical-align: middle;margin-top: 4px;">
+    <input id="kb-tags" class="adds-kb-input" name="kb-tags" 
+        [placeholder]="('AddTagsToSearchBy' | translate)" type="text"
+        [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
+          #trigger="cdkOverlayOrigin"
+          cdkOverlayOrigin
+          (mouseenter)="open()"
+          (mouseleave)="scheduleClose()">
 
-            <span class="material-icons-outlined" style="cursor: pointer;font-size: 20px;color:#566787">
-              help_outline
-            </span>
-          </div>
-    </div>
+        <!-- <div class="kb-tags-help"
+          style="position: relative;top: 6px;"
+          #trigger="cdkOverlayOrigin"
+          cdkOverlayOrigin
+          (mouseenter)="open()"
+          (mouseleave)="scheduleClose()">
 
-    <ng-template
-      cdk-connected-overlay
-      [cdkConnectedOverlayOrigin]="trigger"
-      [cdkConnectedOverlayOpen]="isOpen"
-      [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayHasBackdrop]="false"
-      (detach)="isOpen = false">
-      <div class="cdk-popover"
+          <span class="material-icons-outlined" style="cursor: pointer;font-size: 18px;color:#566787">
+          help_outline
+          </span>
+        </div> -->
+    
+  </div>
+
+  <ng-template
+    cdk-connected-overlay
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="isOpen"
+    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayHasBackdrop]="false"
+    (detach)="isOpen = false">
+      <div class="cdk-popover kb-preview-tags-help-popover"
       (mouseenter)="cancelClose()"
       (mouseleave)="scheduleClose()">
 
-          <div class="cdk-popover-arrow"></div>
+          <div class="cdk-popover-arrow" aria-hidden="true"></div>
 
           <div class="cdk-popover-content">
             {{'ResultsWillIncludeOnlyContentsThatMatchAllSelectedTags'  | translate}}
@@ -79,8 +95,7 @@
           </div>
 
       </div>
-    </ng-template>
- 
+  </ng-template>
 
   <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
 
@@ -99,31 +114,35 @@
 
   </div>
 
-  <div *ngIf="searching" class="search-placeholder">
-    <div class="fake-input">
-      <loading-spinner class="custom-spinner"></loading-spinner>
-      <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span>
-    </div>
-  </div>
-
   <div *ngIf="show_answer" class="form--container" style="margin-bottom: 0px;">
-    <p *ngIf="answer" class="answer-title">
+    <p class="answer-title">
       {{ 'KbPage.Answer' | translate }}
 
    
-      <span *ngIf="qa?.ai_model"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      <span *ngIf="qa?.ai_model && !searching"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      <span  *ngIf="searching"> ({{ 'KbPage.GeneratingUsing' | translate: {ai_model_name: selectedModel } }}) </span>
+      
     </p>
     <div id="answer" class="answer">
 
+      <ng-container *ngIf="searching && !answer; else answerBody">
+        <div class="answer-loading">
+          <div class="ai-thinking">
+            <div class="dot"></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #answerBody>
       <!-- <span *ngIf="!aiQuotaExceeded">  -->
       {{ answer }}
       <!-- </span>  -->
       <!-- <span *ngIf="aiQuotaExceeded">
        -> {{ answer }}
        </span> -->
-      <span *ngIf="qa && (!qa.answer || qa.answer == '')">
+      <span *ngIf="!searching && (!answer || answer === '') && (!qa?.answer || qa.answer === '')">
         {{ 'KbPage.NoAnswerFound' | translate }}
       </span>
+      </ng-template>
       <!-- <hr *ngIf="qa && qa.source">
       
       <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
@@ -135,51 +154,112 @@
     <!-- ----------------------------- -->
     <!-- Chunks Accordion -->
     <!-- ----------------------------- -->
-  <div class="mat-accordion--wpr" style="margin-top: 3px;">
-    <mat-accordion>
-      <mat-expansion-panel  class="custom-expansion-panel" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-           {{ 'KbPage.ChunksUsedForTheAnswer' | translate }} ({{contentChunks?.length}})
-          </mat-panel-title>
-          <!-- <mat-panel-description>
-        Currently I am {{panelOpenState ? 'open' : 'closed'}}
-      </mat-panel-description> -->
-        </mat-expansion-panel-header>
-        <div class="chunk--wpr" *ngFor="let chunk of contentChunks">
-        
-          <article class="chunk">
-            {{ chunk}}
-          </article>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <div class="mat-accordion--wpr" style="margin-top: 3px;">
+      <mat-accordion>
+        <mat-expansion-panel class="custom-expansion-panel" (opened)="chunksPanelOpen = true; panelOpenState = true" (closed)="chunksPanelOpen = false; panelOpenState = sourcesPanelOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title style="display: flex; align-items: center;    flex-wrap: nowrap;    flex-direction: row;justify-content: space-between;">
+              <div class="chunck-panel-title">
+                {{ 'KbPage.ChunksUsedForTheAnswer' | translate }} 
+              </div>
+              <div class="chunck-panel-count">
+                {{contentChunks?.length}}
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="chunk--wpr" *ngFor="let chunk of contentChunks">
+          
+            <article class="chunk">
+              {{ chunk}}
+            </article>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
 
-    <hr class="horizontal-line" *ngIf="qa && qa.source">
+    <!-- ----------------------------- -->
+    <!-- Source Accordion -->
+    <!-- ----------------------------- -->
+    <div  class="mat-accordion--wpr" style="margin-top: 3px;">
+      <mat-accordion>
+        <mat-expansion-panel class="custom-expansion-panel" (opened)="sourcesPanelOpen = true; panelOpenState = true" (closed)="sourcesPanelOpen = false; panelOpenState = chunksPanelOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title style="display: flex; align-items: center; flex-wrap: nowrap; flex-direction: row; justify-content: space-between;">
+              <div class="chunck-panel-title">{{ 'KbPage.Sources' | translate }}</div>
+              <div class="chunck-panel-count">{{ contentSources?.length }}</div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="source--wpr">
 
-    <p *ngIf="qa && qa.source" class="answer-title">{{ 'KbPage.Source' | translate }}</p>
-    <div *ngIf="qa && qa.source" id="answer" class="answer">
-      <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
-        <a *ngIf="source_url" href="{{source_url}}" target="_blank" style="font-size: 12px;">{{ source_url }}</a>
-        <span *ngIf="!source_url" style="font-size: 12px;line-height: 1.3;">{{ qa.source }}</span>
-      </span>
+            <div class="sources">
+              <span class="source-item" *ngFor="let src of contentSources">
 
+                <a *ngIf="src.isUrl"
+                  [href]="src.value"
+                  target="_blank"
+                  class="source-link">
+
+                  <span class="material-icons-outlined icon">
+                    arrow_outward
+                  </span>
+
+                  <span class="text">{{ src.value }}</span>
+
+                </a>
+
+                <span *ngIf="!src.isUrl" class="source-text">
+                  {{ src.value }}
+                </span>
+
+              </span>
+            </div>
+
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
-    <label *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
-      <!-- {{ 'KbPage.LabelResponseTime' | translate: translateparam }} -->
-      <span *ngIf="responseTime">
+
+    <hr class="horizontal-line" [class.accordion-open]="panelOpenState">
+    <!-- Response time -->
+    <div *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
+       <div class="kb-preview-footer-wpr" style="display: flex; justify-content: space-between;">
+          <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
+            {{ 'Analytics.Metrics.ResponseTime' | translate }}
+          </div>
+          <div *ngIf="responseTime != null" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
+            {{ 'KbPage.AIResponseTime' | translate: translateparam }}
+          </div>
+          <div *ngIf="responseTime == null && searching" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
+            {{ 'Processing' | translate }}
+          </div>
+
+       </div> 
+      <!-- <span *ngIf="responseTime">
         {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate:
           translateparam }} </span>
-      </span>
-    </label>
-    <label *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
-      <!-- {{ 'KbPage.TotalTokensUsage' | translate: {prompt_token_size: prompt_token_size } }} -->
-      <span *ngIf="prompt_token_size">
+      </span> -->
+    </div>
+
+    <!-- Prompt size -->
+    <div *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
+      <div class="kb-preview-footer-wpr" style="display: flex; justify-content: space-between;">
+          <div class="kb-preview-footer-label" style="font-size: 12px; font-family: var( --header-font-family); color: #656d75; font-weight: 400;"> 
+            {{ 'KbPage.PromptSize' | translate }}
+          </div>
+          <div *ngIf="prompt_token_size != null" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #1a1e23; font-weight: 500;"> 
+            {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: formattedPromptTokenSize } }}
+          </div>
+          <div *ngIf="prompt_token_size == null && searching" class="kb-preview-footer-value" style="font-size: 12px; font-family: var( --header-font-family); color: #aaa; font-weight: 500;"> 
+            {{ 'Processing' | translate }}
+          </div>
+
+       </div>
+     
+      <!-- <span *ngIf="prompt_token_size">
         {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size:
           prompt_token_size } }} </span>
-      </span>
-    </label>
+      </span> -->
+    </div>
   </div>
 
 
@@ -195,8 +275,9 @@
 
   </button>
 
-  <button class="mat-dialog-ok-btn" mat-button  (click)="submitQuestion()">
-        {{ "Send" | translate }}
+  <button class="mat-dialog-ok-btn" mat-button type="button" (click)="submitQuestion()"
+    [disabled]="!question?.trim()">
+     {{ "Send" | translate }}
   </button>
 
 </div>

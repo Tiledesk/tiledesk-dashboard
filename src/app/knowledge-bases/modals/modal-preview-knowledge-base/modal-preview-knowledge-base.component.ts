@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -14,7 +14,14 @@ import { NavigationEnd, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { URL_kb_contents_tags } from 'app/utils/util';
+import {
+  URL_kb_contents_tags,
+  getLlmModelDefaultMaxTokens,
+  getLlmModelTokenBounds,
+  LLM_MAX_TOKENS_SLIDER_UI_CAP,
+} from 'app/utils/util';
+
+
 
 
 @Component({
@@ -23,7 +30,11 @@ import { URL_kb_contents_tags } from 'app/utils/util';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit {
+
+
+export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
+  private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -36,11 +47,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
-    chunkOnly: null,
+    useHyde: null,
+    useCache: null,
     reRanking: null,
     reRankingMultipler: null,
   }]
-  panelOpenState = false; 
+  panelOpenState = false;
+  chunksPanelOpen = false;
+  sourcesPanelOpen = false; 
   selectedNamespace: any;
   namespaceid: string;
   selectedModel: string;
@@ -54,6 +68,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   private dialogRefAiSettings: MatDialogRef<any>;
   @ViewChild('questionTextarea', { static: false }) questionTextarea: ElementRef<HTMLTextAreaElement>;
 
+
   // models_list = [
   //   { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
   //   { name: "GPT-4 (ChatGPT)", value: "gpt-4" },
@@ -65,11 +80,24 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   qa: any;
 
   question: string = "";
+  /** Preview: risposta in streaming (default) vs risposta completa in un’unica richiesta. */
+  previewUseStream = true;
+   /**
+   * Snapshot of `previewUseStream` taken right before `useCache` is turned on,
+   * so we can restore it when the user turns cache off again. Cache and
+   * streaming are mutually exclusive at the API level, so we force stream off
+   * while cache is on; without this snapshot the stream toggle would stay off
+   * after disabling cache, even though the UI re-enables it.
+   * `null` means "no pending restore".
+   */
+  private previewUseStreamBeforeCache: boolean | null = null;
   answer: string = "";
   source_url: any;
-  responseTime: number = 0;
+  responseTime: number | null = null;
 
   searching: boolean = false;
+  /** Evita doppio finalize; sostituisce il guard su searching (stream vuoto può lasciare stati incoerenti). */
+  private kbStreamFinalized = false;
   show_answer: boolean = false;
   // error_answer: boolean = false;
   translateparam: any;
@@ -79,10 +107,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   prompt_token_size: number;
   public chunkOnly: boolean
   public reRanking: boolean;
-  public reRankingMultipler: number
+  public reRankingMultipler: number;
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
+  public useHyde: boolean // = false;
+  public useCache: boolean // = false;
   contentChunks: string[] = [];
+  contentSources: { value: string; isUrl: boolean }[] = [];
 
   // KB Tags
   kbTag: string = '';
@@ -101,9 +132,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -8
+      offsetX: -30
     }
   ];
+  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -118,12 +150,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     public notify: NotifyService,
     private router: Router,
     private brandService: BrandService,
+    private cdr: ChangeDetectorRef,
     private appConfigService: AppConfigService
   ) {
     super(prjctPlanService, notify);
-    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
+    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
@@ -169,10 +202,38 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
       }
 
+      if (!this.selectedNamespace.preview_settings.use_hyde) {
+        this.useHyde = false
+        this.selectedNamespace.preview_settings.use_hyde = this.useHyde
+      } else {
+        this.useHyde = this.selectedNamespace.preview_settings.use_hyde
+        this.logger.log("[MODAL-PREVIEW-KB] useHyde ", this.useHyde)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_cache) {
+        this.useCache = false
+        this.selectedNamespace.preview_settings.use_cache = this.useCache
+      } else {
+        this.useCache = this.selectedNamespace.preview_settings.use_cache
+        this.logger.log("[MODAL-PREVIEW-KB] useCache ", this.useCache)
+      }
+      // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
+      //if (this.useCache === true) {
+      //  this.previewUseStream = false;
+      // }
+
+      // Cache and streaming are mutually exclusive: cached responses cannot be
+      // streamed. The helper forces stream off when cache is on and restores
+      // the previous stream value when cache is turned off.
+      this.syncStreamWithCache();
+
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace preview_settings', this.selectedNamespace.preview_settings)
       this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
+
+      // Stessi limiti dello slider in modal-preview-settings: evita payload con max_tokens fuori range (es. valore vecchio sul namespace).
+      this.applyPreviewMaxTokensClamp();
     }
     if (data && data.askBody) {
       this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
@@ -192,7 +253,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.initTagContainerObserver();
   }
 
-   ngOnDestroy() { 
+  ngOnDestroy() { 
     this.logger.log('[MODALS-URLS] ngOnDestroy called');
     // Disconnettere l'observer per evitare memory leaks
     if (this.observer) {
@@ -216,6 +277,88 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     clearTimeout(this.closeTimeout);
   }
 
+  /**
+   * Helper method per controllare e parsare la question salvata
+   * Gestisce sia il formato JSON che il formato vecchio
+   */
+  private checkStoredQuestion(): void {
+    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+    if (storedQuestion) {
+      this.hasStoredQuestion = true;
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion storedQuestion: ", storedQuestion);
+      try {
+        // Try to parse as JSON first (for new format)
+        let parsed = JSON.parse(storedQuestion);
+        // Even after JSON.parse, if the original string had literal \n, they might still be literal
+        // Replace any remaining literal \n with real newlines
+        this.storedQuestionNoDoubleQuote = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
+      } catch (e) {
+        // If parsing fails, it might be an old format or already a string with literal \n
+        // Replace literal \n with real newlines
+        let cleaned = storedQuestion.replace(/\\n/g, '\n');
+        // Remove surrounding quotes if present
+        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+          cleaned = cleaned.substring(1, cleaned.length - 1);
+        }
+        this.storedQuestionNoDoubleQuote = cleaned;
+      }
+    } else {
+      this.hasStoredQuestion = false;
+      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    }
+  }
+
+   /**
+   * Keep `previewUseStream` in sync with `useCache`. Cache and streaming are
+   * mutually exclusive at the API level: when cache turns ON we snapshot the
+   * current stream value and force stream OFF; when cache turns OFF we restore
+   * the snapshotted value so the UI reflects what the user previously had.
+   * Idempotent on repeated calls with the same `useCache` state.
+   */
+  private syncStreamWithCache(): void {
+    if (this.useCache === true) {
+      if (this.previewUseStreamBeforeCache === null) {
+        this.previewUseStreamBeforeCache = this.previewUseStream;
+      }
+      this.previewUseStream = false;
+    } else if (this.previewUseStreamBeforeCache !== null) {
+      this.previewUseStream = this.previewUseStreamBeforeCache;
+      this.previewUseStreamBeforeCache = null;
+    }
+  }
+
+  /**
+   * Stessi limiti dello slider in modal-preview-settings (`applyMaxTokenSliderFromUtil`), senza reset al default del modello.
+   */
+  private applyPreviewMaxTokensClamp(): void {
+    if (!this.selectedNamespace?.preview_settings || !this.selectedModel) {
+      return;
+    }
+    const modelValue = this.selectedModel;
+    const bounds = getLlmModelTokenBounds(modelValue);
+    const utilMin = bounds?.min_tokens ?? 1;
+    const max_tokens_min = this.citations ? Math.max(utilMin, 1024) : utilMin;
+    const catalogMax = bounds?.max_output_tokens ?? LLM_MAX_TOKENS_SLIDER_UI_CAP;
+    let max_tokens_max = Math.min(catalogMax, LLM_MAX_TOKENS_SLIDER_UI_CAP);
+    if (max_tokens_min > max_tokens_max) {
+      max_tokens_max = max_tokens_min;
+    }
+    const clamp = (v: number) => Math.min(Math.max(v, max_tokens_min), max_tokens_max);
+    const raw = this.maxTokens;
+    if (raw != null && !Number.isNaN(Number(raw))) {
+      let v = Number(raw);
+      const modelNorm = (modelValue || '').trim().toLowerCase();
+      if (modelNorm === 'gpt-4o' && v === ModalPreviewKnowledgeBaseComponent.SERVER_LEGACY_MAX_TOKENS_SENTINEL) {
+        v = getLlmModelDefaultMaxTokens('gpt-4o');
+      }
+      this.maxTokens = clamp(v);
+    } else {
+      this.maxTokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    }
+    this.selectedNamespace.preview_settings.max_tokens = this.maxTokens;
+  }
+
   listenToCurrentURL() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -236,62 +379,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   }
 
 
-
-  /**
-   * Helper method per controllare e parsare la question salvata
-   * Gestisce sia il formato JSON che il formato vecchio
-   * Non considera stringhe vuote come question valide
-   */
-  private checkStoredQuestion(): void {
-    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
-    if (storedQuestion) {
-      try {
-        // Try to parse as JSON first (for new format)
-        let parsed = JSON.parse(storedQuestion);
-        // Even after JSON.parse, if the original string had literal \n, they might still be literal
-        // Replace any remaining literal \n with real newlines
-        const parsedQuestion = typeof parsed === 'string' ? parsed.replace(/\\n/g, '\n') : parsed;
-        
-        // Verifica che la question non sia vuota o solo spazi
-        if (parsedQuestion && parsedQuestion.trim() !== '') {
-          this.storedQuestionNoDoubleQuote = parsedQuestion;
-          this.hasStoredQuestion = true;
-          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion storedQuestion: ", storedQuestion);
-          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion parsed question: ", parsedQuestion);
-        } else {
-          // La question è vuota, rimuovila dallo storage
-          this.localDbService.removeFromStorage(`last_question-${this.namespaceid}`);
-          this.hasStoredQuestion = false;
-          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion: stored question is empty, removed from storage");
-        }
-      } catch (e) {
-        // If parsing fails, it might be an old format or already a string with literal \n
-        // Replace literal \n with real newlines
-        let cleaned = storedQuestion.replace(/\\n/g, '\n');
-        // Remove surrounding quotes if present
-        if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
-          cleaned = cleaned.substring(1, cleaned.length - 1);
-        }
-        
-        // Verifica che la question non sia vuota o solo spazi
-        if (cleaned && cleaned.trim() !== '') {
-          this.storedQuestionNoDoubleQuote = cleaned;
-          this.hasStoredQuestion = true;
-          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion (fallback) hasStoredQuestion: ", this.hasStoredQuestion);
-        } else {
-          // La question è vuota, rimuovila dallo storage
-          this.localDbService.removeFromStorage(`last_question-${this.namespaceid}`);
-          this.hasStoredQuestion = false;
-          this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion (fallback): stored question is empty, removed from storage");
-        }
-      }
-    } else {
-      this.hasStoredQuestion = false;
-      this.logger.log("[MODAL-PREVIEW-KB] checkStoredQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-    }
-  }
-
   presentDialogAiSettings(isopenasetting) {
 
     this.logger.log('[MODAL-PREVIEW-KB] window.innerWidth', window.innerWidth);
@@ -309,8 +396,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
     this.isopenasetting = isopenasetting
     this.dialogRefAiSettings = this.dialog.open(ModalPreviewSettingsComponent, {
-      width: '300px',
-      position: { left: 'calc(50% + 215px)', top: '138px' },
+      width: '320px',
+      position: { left: 'calc(50% + 210px)', top: '60px' },
+      autoFocus: false,
       hasBackdrop: false,
       data: {
         selectedNamespace: this.selectedNamespace,
@@ -341,24 +429,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
 
-  _reuseLastQuestion() {
-    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
-    if (storedQuestion) {
-      this.hasStoredQuestion = true;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
-      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-
-    } else {
-      this.hasStoredQuestion = false;
-      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-    }
-    this.question = this.storedQuestionNoDoubleQuote;
-    // this.submitQuestion()
-    this.onInputPreviewChange()
-  }
-
-   reuseLastQuestion() {
+  reuseLastQuestion() {
     const textarea = this.questionTextarea.nativeElement;
     setTimeout(() => {
       this.onTextareaInput(textarea);
@@ -367,7 +438,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     // Usa la funzione helper per controllare e parsare la question salvata
     this.checkStoredQuestion();
     
-    // Imposta la question nel textarea solo se è valida
+    // Imposta la question nel textarea
     if (this.hasStoredQuestion && this.storedQuestionNoDoubleQuote) {
       this.question = this.storedQuestionNoDoubleQuote;
     }
@@ -408,8 +479,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.selectedModel = this.selectedNamespace.preview_settings.model
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from selectedNamespace ', this.selectedModel)
         }
-        if (editedAiSettings && editedAiSettings[0]['maxTokens']) {
-          this.maxTokens = editedAiSettings[0]['maxTokens']
+        const incomingMax = editedAiSettings[0]['maxTokens'];
+        if (incomingMax != null && typeof incomingMax === 'number' && !Number.isNaN(incomingMax)) {
+          this.maxTokens = incomingMax;
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from editedAiSettings 1', this.maxTokens)
         } else {
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from editedAiSettings 2', editedAiSettings[0]['maxTokens'])
@@ -443,15 +515,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
         }
 
-        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
-          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
-        } else {
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 2', editedAiSettings[0]['reRankingMultipler'])
-          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
-        }
-
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from editedAiSettings 1', this.context)
@@ -474,13 +537,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
         if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
           this.reRanking = editedAiSettings[0]['reRanking']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
         } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
           this.reRanking = editedAiSettings[0]['reRanking']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
         } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
           this.reRanking = this.selectedNamespace.preview_settings.reranking
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking , ' this.selectedNamespace.preview_settings' ,this.selectedNamespace.preview_settings )
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
+          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
+        } else {
+          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
         }
 
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
@@ -504,6 +575,37 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.citations = this.selectedNamespace.preview_settings.citations;
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test from selectedNamespace ', this.citations)
         }
+
+        if (editedAiSettings && editedAiSettings[0]['useHyde'] === true) {
+          this.useHyde = editedAiSettings[0]['useHyde']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from editedAiSettings 1', this.useHyde)
+        } else if (editedAiSettings && editedAiSettings[0]['useHyde'] === false) {
+          this.useHyde = editedAiSettings[0]['useHyde']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from editedAiSettings 2', this.useHyde)
+        } else if (editedAiSettings && editedAiSettings[0]['useHyde'] === null) {
+          this.useHyde = this.selectedNamespace.preview_settings.use_hyde;
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from selectedNamespace ', this.useHyde)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['useCache'] === true) {
+          this.useCache = editedAiSettings[0]['useCache']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from editedAiSettings 1', this.useCache)
+        } else if (editedAiSettings && editedAiSettings[0]['useCache'] === false) {
+          this.useCache = editedAiSettings[0]['useCache']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from editedAiSettings 2', this.useCache)
+        } else if (editedAiSettings && editedAiSettings[0]['useCache'] === null) {
+          this.useCache = this.selectedNamespace.preview_settings.use_cache;
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from selectedNamespace ', this.useCache)
+        }
+        // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
+        //if (this.useCache === true) {
+        //  this.previewUseStream = false;
+        // }
+
+        // Cache and streaming are mutually exclusive: cached responses cannot
+        // be streamed. The helper forces stream off when cache is on and
+        // restores the previous stream value when cache is turned off again.
+        this.syncStreamWithCache();
       } else {
         this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings are empty')
       }
@@ -544,6 +646,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   }
 
   submitQuestion() {
+    if (!this.question || !this.question.trim()) {
+      return;
+    }
     this.body = {
       "question": this.question,
       "namespace": this.namespaceid,
@@ -554,10 +659,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
       "reranking": this.reRanking,
-      "reranking_multiplier":  this.reRankingMultipler,
+      "reranking_multiplier": this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
+      'use_hyde': this.useHyde,
+      'use_cache': this.useCache,
       'llm': this.selectedNamespace.preview_settings.llm,
       'tags':this.kbTagsArray
     }
@@ -567,18 +674,24 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (this.question && this.question.trim() !== '') {
       this.localDbService.setInStorage(`last_question-${this.namespaceid}`, JSON.stringify(this.question))
       this.logger.log("[MODAL-PREVIEW-KB] Saved last question: ", this.question);
-    } else {
-      // Se la question è vuota, rimuovila dallo storage
-      this.localDbService.removeFromStorage(`last_question-${this.namespaceid}`);
-      this.logger.log("[MODAL-PREVIEW-KB] Question is empty, removed from storage");
     }
     this.searching = true;
-    this.show_answer = false;
+    this.kbStreamFinalized = false;
+    this.show_answer = true;
     this.answer = '';
+    this.qa = null;
     this.source_url = '';
+    this.contentChunks = [];
+    this.contentSources = [];
+    this.responseTime = null;
+    this.prompt_token_size = null;
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
-    this.askAI(this.body, startTime)
+    if (this.previewUseStream) {
+      this.askAIStream(this.body, startTime);
+    } else {
+      this.askAI(this.body, startTime);
+    }
   }
 
   askAI(body, startTime) {
@@ -590,18 +703,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
       // this.responseTime = Math.round((endTime - startTime) / 1000);
-      this.responseTime = response.duration
-      this.translateparam = { respTime: this.responseTime };
+      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
+      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
-      this.contentChunks = this.qa?.content_chunks
-      // this.contentChunks =   [
-      // "This site uses cookies from Google to deliver its services and to analyze traffic. More details Ok, Got it Skip to main content Material Components CDK Guides 14.2.7 arrow_drop_down format_color_fill GitHub Components CDK Guides menu Expansion Panel Autocomplete Badge Bottom Sheet Button Button toggle Card Checkbox Chips Core Datepicker Dialog Divider Expansion Panel Form field Grid list Icon Input List Menu Paginator Progress bar Progress spinner Radio button Ripples Select Sidenav Slide toggle Slider Snackbar Sort header Stepper Table Tabs Toolbar Tooltip Tree overview (/components/expansion/overview) api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link",
-      // "> This is the expansion title </ mat-expansion-panel-header >  < ng-template  matExpansionPanelContent > Some deferred content </ ng-template >  </ mat-expansion-panel >    link Accessibility  MatExpansionPanel imitates the experience of the native <details> and <summary> elements. The expansion panel header applies role=\"button\" and the aria-controls attribute with the content element's ID.  Because expansion panel headers are buttons, avoid adding interactive controls as children of <mat-expansion-panel-header> , including buttons and anchors.  Overview Content Expansion-panel content (/components/expansion/overview#expansion-panel-content) Header (/components/expansion/overview#header) Action bar (/components/expansion/overview#action-bar) Disabling a panel (/components/expansion/overview#disabling-a-panel) Accordion (/components/expansion/overview#accordion) Lazy rendering (/components/expansion/overview#lazy-rendering) Accessibility (/components/expansion/overview#accessibility)",
-      // "api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link Expansion-panel content   link Header  The <mat-expansion-panel-header> shows a summary of the panel content and acts as the control for expanding and collapsing. This header may optionally contain an <mat-panel-title> and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  <",
-      // "and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  < p > This is the primary content of the panel. </ p >  </ mat-expansion-panel >  By default, the expansion-panel header includes a toggle icon at the end of the header to indicate the expansion state. This icon can be hidden via the hideToggle property.  content_copy < mat-expansion-panel  hideToggle >   link Action bar  Actions may optionally be included at the bottom of the panel, visible only when the expansion is in its expanded state.  content_copy < mat-action-row >  < button  mat-button  color = \"primary\" ( click )= \"nextStep()\" > Next </ button >  </ mat-action-row >   link Disabling a panel"
-      // ]
+      this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
+      this.logger.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
+      if (this.qa?.content_chunks) {
+        this.contentChunks = this.qa?.content_chunks 
+      } else if (this.qa?.chunks)  {
+        this.contentChunks = this.qa?.chunks
+      }
+     
+      this.contentSources = this.extractAllSources(response);
       this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
+      this.logger.log("ask gpt preview contentSources: ", this.contentSources);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
         this.answer = response.answer;
@@ -616,6 +732,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         //this.answer = response.answer;
       }
+      this.applyZeroMetricsWhenNoAnswer();
       this.show_answer = true;
       this.searching = false;
     }, (err) => {
@@ -695,6 +812,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // console.log("ERROR ask gpt message ",  message);
 
       // this.error_answer = true;
+      this.responseTime = 0;
+      this.prompt_token_size = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
       this.show_answer = true;
       this.searching = false;
     }, () => {
@@ -707,9 +827,176 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     })
   }
 
+  /**
+   * Gestisce la risposta a stream dal server: aggiorna this.answer man mano che arrivano i chunk.
+   */
+  askAIStream(body: any, startTime: number) {
+    let lastResponse: any = null;
+    this.openaiService.askGptStream(body).subscribe({
+      next: (chunk: { text?: string; fullAnswer?: string; done?: boolean; response?: any }) => {
+        if (chunk.fullAnswer !== undefined) {
+          this.answer = chunk.fullAnswer;
+          this.show_answer = true;
+          this.cdr.detectChanges();
+        } else if (chunk.text) {
+          this.answer = (this.answer || '') + chunk.text;
+          this.show_answer = true;
+          this.cdr.detectChanges();
+        }
+        if (chunk.response) {
+          lastResponse = chunk.response;
+        }
+        if (chunk.done) {
+          this.finalizeStreamResponse(lastResponse, startTime);
+        }
+      },
+      error: (err: any) => {
+        this.kbStreamFinalized = true;
+        this.searching = false;
+        this.show_answer = true;
+        this.handleAskAIError(err);
+      },
+      complete: () => {
+        if (!this.kbStreamFinalized) {
+          this.finalizeStreamResponse(lastResponse, startTime);
+        }
+      }
+    });
+  }
+
+   private finalizeStreamResponse(response: any, _startTime: number) {
+    if (this.kbStreamFinalized) {
+      return;
+    }
+    this.kbStreamFinalized = true;
+    if (response) {
+      response['ai_model'] = this.selectedModel;
+      this.prompt_token_size = response.prompt_token_size;
+      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
+      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
+      this.qa = response;
+      this.contentChunks = this.qa?.content_chunks ?? [];
+      this.contentSources = this.extractAllSources(response);
+      this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentChunks: ', this.contentChunks);
+      this.logger.log('[MODAL-PREVIEW-KB] ask gpt preview contentSources: ', this.contentSources);
+      if (response.source && this.isValidURL(response.source)) this.source_url = response.source;
+      if (response.answer != null && String(response.answer).trim().length) {
+        this.answer = response.answer;
+      }
+    } else {
+      this.qa = {
+        answer: '',
+        ai_model: this.selectedModel,
+        content_chunks: [],
+      };
+      this.contentChunks = [];
+      this.contentSources = [];
+    }
+    this.show_answer = true;
+    this.searching = false;
+    this.aiQuotaExceeded = false;
+    this.applyZeroMetricsWhenNoAnswer();
+    this.logger.log('ask gpt *COMPLETE*');
+    this.checkStoredQuestion();
+    this.cdr.detectChanges();
+    this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
+  }
+
+  private handleAskAIError(err: any) {
+    this.logger.log('ask gpt preview response error: ', err);
+    if (err?.error && typeof err.error === 'string') {
+      this.answer = err.error;
+    } else if (err && err.error && err.error.error_message) {
+      try {
+        const errorMessage = err.error.error_message;
+        const jsonMatch = errorMessage.match(/\{.*\}/);
+        if (jsonMatch) {
+          let jsonString = jsonMatch[0].replace(/'/g, '"');
+          const parsedError = JSON.parse(jsonString);
+          if (parsedError.error?.message) this.answer = parsedError.error.message;
+          else if (parsedError.message) this.answer = parsedError.message;
+          else this.answer = errorMessage;
+        } else {
+          const match = errorMessage.match(/'message':\s*'([^']+)'/);
+          this.answer = match ? match[1] : errorMessage;
+        }
+      } catch {
+        const match = err.error?.error_message?.match(/'message':\s*'([^']+)'/);
+        this.answer = match ? match[1] : err.error?.error_message;
+      }
+    } else if (err?.error?.error_code === 13001) {
+      this.answer = this.translate.instant('KbPage.AiQuotaExceeded');
+      this.aiQuotaExceeded = true;
+    } else if (err?.error?.message) {
+      this.answer = err.error.message;
+    } else if (err?.error?.error?.answer) {
+      this.answer = err.error.error.answer;
+      const msg = err.error.error.error_message?.match(/'message':\s*'([^']+)'/)?.[1];
+      if (msg) this.answer = this.answer + ' (' + msg + ')';
+    } else if (err?.error?.error) {
+      this.answer = err.error.error;
+    } else if (err?.message) {
+      this.answer = err.message;
+    } else {
+      this.answer = 'An error occurred while processing your request.';
+    }
+    this.responseTime = 0;
+    this.prompt_token_size = 0;
+    this.translateparam = { respTime: this.formatNumberUS(0, true) };
+    this.cdr.detectChanges();
+  }
+
   private isValidURL(url) {
     var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
     return urlPattern.test(url);
+  }
+
+    /** Formatta numero in US: virgola migliaia, punto decimali */
+  private formatNumberUS(value: number | null | undefined, decimals = false): string {
+    if (value == null) return '';
+    return decimals
+      ? value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : value.toLocaleString('en-US');
+  }
+
+  get formattedPromptTokenSize(): string {
+    return this.formatNumberUS(this.prompt_token_size);
+  }
+
+  /** Stessa logica di KbPage.NoAnswerFound: tempi e token a 0 se non c'è risposta. */
+  private applyZeroMetricsWhenNoAnswer(): void {
+    if (
+      this.qa &&
+      (!this.answer || this.answer === '') &&
+      (!this.qa.answer || this.qa.answer === '')
+    ) {
+      this.responseTime = 0;
+      this.prompt_token_size = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
+    }
+  }
+
+  /**
+   * Estrae tutte le fonti da response.sources (array) o response.source (stringa).
+   * Supporta items come stringa o oggetto con .url, .href, .source.
+   */
+  private extractAllSources(response: any): { value: string; isUrl: boolean }[] {
+    const out: { value: string; isUrl: boolean }[] = [];
+    if (!response) return out;
+    if (response.sources && Array.isArray(response.sources)) {
+      for (const item of response.sources) {
+        const value = typeof item === 'string' ? item : String(item?.url ?? item?.href ?? item?.source ?? item ?? '');
+        if (value && value.trim()) {
+          out.push({ value: value.trim(), isUrl: this.isValidURL(value.trim()) });
+        }
+      }
+    } else if (response.source != null) {
+      const value = typeof response.source === 'string' ? response.source : String(response.source);
+      if (value && value.trim()) {
+        out.push({ value: value.trim(), isUrl: this.isValidURL(value.trim()) });
+      }
+    }
+    return out;
   }
 
   onTextareaInput(textarea: HTMLTextAreaElement): void { 
@@ -730,6 +1017,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   onEnterKeyDown(event: KeyboardEvent) {
     // Submit on Enter (without Shift), otherwise allow new line
     if (event.key === 'Enter' && !event.shiftKey) {
+      if (!this.question?.trim()) {
+        return;
+      }
       event.preventDefault();
       this.submitQuestion();
     }
@@ -750,14 +1040,16 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.question = "";
     this.answer = "";
     this.source_url = null;
+    this.contentChunks = [];
+    this.contentSources = [];
     this.searching = false;
-
     this.show_answer = false;
     // let element = document.getElementById('enter-button')
     // element.style.display = 'none';
 
     this.dialogRef.close();
     if (this.dialogRefAiSettings) {
+      this.aiSettingsObject[0].maxTokens = this.maxTokens;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
       this.dialogRefAiSettings.close()
     }
@@ -765,6 +1057,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   closeDialogAiSettings(isopenasetting) {
     this.logger.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
+    this.aiSettingsObject[0].maxTokens = this.maxTokens;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     this.dialogRefAiSettings.close()
   }
@@ -805,6 +1098,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   }
 
+  
+
 
   /**
    * Aggiorna l'altezza del container delle tag
@@ -840,9 +1135,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
 
-  goToKbTagsDoc() {
+ 
+
+ goToKbTagsDoc() {
     const docsUrl = URL_kb_contents_tags;
     window.open(docsUrl, '_blank');
-  } 
+  }
 
 }

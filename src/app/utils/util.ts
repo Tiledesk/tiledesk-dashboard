@@ -782,8 +782,6 @@ export function loadTokenMultiplier(ai_models) {
 //     { name: "GPT-5-nano",                       value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    }
 // ]
 
-
-
 export const COHERE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
   { name: "Command A (03-2025)",              value: "command-a-03-2025",            description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 512000,  reasoning: false  },
   { name: "Command R7B (12-2024)",            value: "command-r7b-12-2024",          description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "active",    min_tokens: 1,  max_output_tokens: 4096,    reasoning: true   },
@@ -827,21 +825,21 @@ export const ANTHROPIC_MODEL: Array<{ name: string, value: string, description:s
 ]
 
 export const GROQ_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
-  { name: "Llama 3.1 8B - Instant/Low-latency",               value: "llama-3.1-8b-instant",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
-  { name: "Llama 3.3 70B - Versatile",                        value: "llama-3.3-70b-versatile",                           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
-  { name: "Allam 2 - 7B",                                     value: "allam-2-7b",                                        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false   },
-  { name: "Llama 4 Scout - 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false    },
+  { name: "Llama 3.1 8B – Instant/Low-latency",               value: "llama-3.1-8b-instant",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
+  { name: "Llama 3.3 70B – Versatile",                        value: "llama-3.3-70b-versatile",                           description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
+  { name: "Allam 2 – 7B",                                     value: "allam-2-7b",                                        description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false   },
+  { name: "Llama 4 Scout – 17B (16 Experts, Instruct)",       value: "meta-llama/llama-4-scout-17b-16e-instruct",         description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false    },
   { name: "Kimi K2 Instruct (Moonshot AI)",                   value: "moonshotai/kimi-k2-instruct",                       description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
-  { name: "Qwen 3 - 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false    },
+  { name: "Qwen 3 – 32B",                                     value: "qwen/qwen3-32b",                                    description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false    },
   { name: "Groq Compound",                                    value: "groq/compound",                                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
   { name: "Groq Compound Mini",                               value: "groq/compound-mini",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
   { name: "OpenAI GPT-OSS 120B",                              value: "openai/gpt-oss-120b",                               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
   { name: "OpenAI GPT-OSS 20B",                               value: "openai/gpt-oss-20b",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "active", min_tokens: 1, max_output_tokens: 32768, reasoning: true  },
 
-  { name: "Llama Guard 4 - 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
+  { name: "Llama Guard 4 – 12B Safety Model",                 value: "meta-llama/llama-guard-4-12b",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false  },
   { name: "DeepSeek R1 Distilled Llama 70B",                  value: "deepseek-r1-distill-llama-70b",                     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
-  { name: "Llama 4 Maverick - 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
-  { name: "Gemma 2 - 9B Instruct (Italian tuned)",            value: "gemma2-9b-it",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false },
+  { name: "Llama 4 Maverick – 17B (128 Experts, Instruct)",   value: "meta-llama/llama-4-maverick-17b-128e-instruct",     description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false   },
+  { name: "Gemma 2 – 9B Instruct (Italian tuned)",            value: "gemma2-9b-it",                                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false },
   { name: "Mixtral-8x7b-32768",                               value: "mixtral-8x7b-32768",                                description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 32768, reasoning: false  },
   { name: "Llama-3.2-11b-vision-preview",                     value: "llama-3.2-11b-vision-preview",                      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false},
   { name: "Llama-3.2-3b-preview",                             value: "llama-3.2-3b-preview",                              description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive",  min_tokens: 1, max_output_tokens: 8192, reasoning: false },
@@ -916,6 +914,22 @@ export function getLlmModelDefaultMaxTokens(modelValue: string): number {
   return Math.min(b.max_output_tokens, LLM_DEFAULT_MAX_TOKENS_CAP);
 }
 
+
+export var OLLAMA_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
+]
+export var VLLM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
+]
+
+export const LLM_MODEL: Array<{name: string, value: string, description: string, src: string, status: "active" | "inactive", models: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> }> = [
+  { name: "Cohere",         value: "cohere",            description: "",      src:"assets/images/icons/ai_prompt/cohere.svg",      status: "active",   models: COHERE_MODEL        },
+  { name: "Google",         value: "google",            description: "",      src:"assets/images/icons/ai_prompt/google.svg",      status: "active",   models: GOOGLE_MODEL        },
+  { name: "Anthropic",      value: "anthropic",         description: "",      src:"assets/images/icons/ai_prompt/anthropic.svg",   status: "active",   models: ANTHROPIC_MODEL     },
+  { name: "Groq",           value: "groq",              description: "",      src:"assets/images/icons/ai_prompt/groq.svg",        status: "active",   models: GROQ_MODEL          },
+  { name: "Deepseek",       value: "deepseek",          description: "",      src:"assets/images/icons/ai_prompt/deepseek.svg",    status: "active",   models: DEEPSEEK_MODEL      },
+  { name: "Ollama",         value: "ollama",            description: "",      src:"assets/images/icons/ai_prompt/ollama.svg",      status: "active",   models: OLLAMA_MODEL        },
+  { name: "vLLM",           value: "vllm",              description: "",      src:"assets/images/icons/ai_prompt/vllm.svg",      status: "active",     models: VLLM_MODEL        },
+  { name: "OpenAI",         value: "openai",            description: "",      src:"assets/images/icons/ai_prompt/openai.svg",      status: "active",   models: OPENAI_MODEL        },
+]
 
 
 export const CHANNELS_NAME = {
@@ -1153,7 +1167,6 @@ export const BLOCKED_DOMAINS = [
 export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
-
 // Links to documentation
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // NOT USED 
 export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
@@ -1221,11 +1234,4 @@ export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-auto
 export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
 export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
 
-/** scrape_type 2 (legacy "Standard") is deprecated; map to 4 (Advanced) for UI and new saves. */
-export function normalizeDeprecatedScrapeType(value: number | string | undefined | null): number {
-  const n = Number(value);
-  if (Number.isNaN(n)) return 4;
-  if (n === 2) return 4;
-  return n;
-}
 

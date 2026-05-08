@@ -1,3 +1,47 @@
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#settings {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#settings:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+#close {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#close:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+.close-ai-settings {
+    color: var(--blue-20) !important;
+}
+
 .modal-header {
     .modal-title {
         font-weight: 400;
@@ -130,9 +174,9 @@
     display: inline-block;
     width: 100%;
 
-    .input-container {
-        margin-bottom: -4px;
-    }
+    // .input-container {
+    //     margin-bottom: -4px;
+    // }
 
 
     .custom-input {
@@ -398,11 +442,14 @@
     background-color: var(--only-text-btn-hover-background);
 }
 
+
 .upsell-for-refresh-rate {
     display: flex;
     justify-content: center;
     margin-top: 14px;
-   
+    text-align: center;
+    margin-bottom: 16px;
+
     // padding: 0 40px;
     // align-items: flex-end;
     // margin-top: 10px;
@@ -411,6 +458,7 @@
 .upsell-for-refresh-rate .upsell-text {
     font-size: 14px;
     font-weight: 400;
+    line-height: 1.3;
 }
 
 .upsell-for-refresh-rate .upsell-text-link {
@@ -425,10 +473,10 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 6px;
     margin-top: 14px;
+    margin-bottom: 16px;
 }
-
 
 .html-tags--expansion-panel {
     box-shadow: none;
@@ -463,7 +511,7 @@
 
     .mat-expansion-panel-header-title {
         color: #000000de !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
     }
 
     .mat-expansion-indicator::after {
@@ -483,16 +531,23 @@
     padding: 0px 0px !important;
 }
 
+.kb-tags-container.kb-tags-container-with-tags {
+    margin-bottom: 8px;
+}
+
 .link-to-doc {
     color: var(--blue-light); // #0f62ff;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .link-to-doc:hover {
     text-decoration: underline;
  }
+
+
 
 // mat-expansion-panel ::ng-deep {
 //     background-color: transparent !important;

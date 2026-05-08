@@ -1,21 +1,21 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { KB_LIMIT_CONTENT, normalizeDeprecatedScrapeType, URL_kb_contents_tags } from 'app/utils/util';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { KB_LIMIT_CONTENT, URL_kb_contents_tags } from 'app/utils/util';
+import { MAT_DIALOG_DATA, MatDialog,  MatDialogRef } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { buildDefaultKbScrapeConfig, KbScrapeConfig } from 'app/models/kb-scrape-config-model';
+import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
+
 
 @Component({
   selector: 'modal-urls-knowledge-base',
   templateUrl: './modal-urls-knowledge-base.component.html',
   styleUrls: ['./modal-urls-knowledge-base.component.scss']
 })
-export class ModalUrlsKnowledgeBaseComponent implements OnInit {
+export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
   @Output() saveKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -27,26 +27,58 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   countSitemap: number;
   errorLimit: boolean = false;
 
-  // panelOpenState = true;
-
-  /** Stato espansione pannello HTML tags (chiuso di default; si chiude se si attiva l’estrazione automatica). */
-  htmlTagsPanelExpanded = false;
   /** Stato espansione pannello import da sitemap (accordion separato). */
   sitemapImportPanelExpanded = false;
-  /** When true, backend uses automatic extraction (`scrape_type: 0`); HTML tags panel is disabled. */
-  automaticContentExtraction = false;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  scrape_types: Array<any> = [
-    // { name: "Full HTML page", value: 1 },
-    // scrape_type 2 (Standard) deprecated — use 0 (automatic) or 4 (Advanced)
-    { name: "Advanced", value: 4 },
-  ];
 
-  selectedScrapeType = 4;
-  extract_tags = ['body']; // Always preset to 'body'
-  unwanted_tags = [];
-  unwanted_classnames = [];
-  stored_scrape_option: boolean
+  /**
+   * Controls the visibility of the inline sitemap fetch mini-panel
+   * (the lightweight replacement for the legacy `mat-expansion-panel`).
+   * Toggled by the "Add URLs from a sitemap" link in the textarea label
+   * row; auto-set back to `false` by `fetchSiteMap()` on a successful
+   * sitemap fetch (i.e. when at least one URL is loaded into the textarea).
+   * On error or empty result the panel stays open so the user can correct
+   * the URL without re-opening.
+   */
+  sitemapInputOpen = false;
+
+    // -----------------------------------------------------------------------
+  // Scrape settings — data flow between components
+  // -----------------------------------------------------------------------
+  // The body sent to the server is assembled in `onSaveKnowledgeBase()` from
+  // two distinct sources:
+  //
+  //   1. Parent-owned fields (this component) — modal-specific data that
+  //      lives here and ONLY here:
+  //        - `urls`                → body.name / body.source
+  //        - `selectedRefreshRate` → body.refresh_rate
+  //        - `kbTagsArray`         → body.tags
+  //        - `selectedNamespace`   → body.namespace
+  //        - `type` (constant)     → body.type
+  //
+  //   2. Shared scraping settings (`KbScrapeConfig`) — owned by THIS parent
+  //      but edited by the shared child `<app-kb-scrape-settings>` (rendered
+  //      either inline or inside `ModalKbScrapeSettingsComponent` as a
+  //      side-by-side dialog). The child mutates the same reference in place,
+  //      so changes are visible here without explicit @Output events. Maps to:
+  //        - `automaticContentExtraction` → body.scrape_type (0 if true, else `selectedScrapeType`)
+  //        - `situatedContextEnabled`     → body.situated_context
+  //        - `extract_tags` / `unwanted_tags` / `unwanted_classnames`
+  //                                       → body.scrape_options.* (only when scrape_type === 4)
+  //
+  // Lifecycle:
+  //   parent creates `scrapeConfig` (default values) ──▶ passed by reference
+  //   ──▶ via `[config]` (inline) or via `MAT_DIALOG_DATA.config` (side-by-side dialog)
+  //   ──▶ `<app-kb-scrape-settings>` mutates `scrapeConfig.*`
+  //   ──▶ on save, parent reads `this.scrapeConfig.*` and merges with its own
+  //       fields into the final body sent to the server.
+  // -----------------------------------------------------------------------
+  /** Shared scrape settings; mutated in place by `<app-kb-scrape-settings>` and read at save time. */
+  scrapeConfig: KbScrapeConfig = buildDefaultKbScrapeConfig();
+  /** Reference to the side-by-side scrape settings dialog. Kept so we can close it on cancel/save/destroy. */
+  private scrapeSettingsDialogRef: MatDialogRef<ModalKbScrapeSettingsComponent> | null = null;
+  /** Drives the gear/minus icon swap in the header (mirrors `isopenasetting` in modal-preview-knowledge-base). */
+  isScrapeSettingsOpen = false;
+
 
   // ---------------------
   // Refressh rate
@@ -69,7 +101,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   salesEmail: string;
   siteMap:string;
 
-   // KB Tags
+  // KB Tags
   kbTag: string = '';
   kbTagsArray = []
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
@@ -87,7 +119,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
       originY: 'center',
       overlayX: 'end',
       overlayY: 'center',
-      offsetX: -8
+      offsetX: -30
     }
   ];
 
@@ -119,13 +151,23 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     },
   ];
 
+  // ---------------------------------------------------------------
+  // Refresh-rate help popover (replaces the legacy mat-tooltip).
+  // Mirrors the kb-tags hover-popover pattern: isolated state so the
+  // two popovers don't share the same `isOpen` flag, but reuses the
+  // same `positions` array (popover to the left of the trigger, arrow
+  // on its right edge) for visual consistency with kb-tags.
+  // ---------------------------------------------------------------
+  isRefreshRateHelpOpen = false;
+  private refreshRateHelpCloseTimeout: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
     private logger: LoggerService,
     public brandService: BrandService,
     private kbService: KnowledgeBaseService,
-    private cdr: ChangeDetectorRef
+    private dialog: MatDialog,
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-URLS] data: ", data);
@@ -148,17 +190,34 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     this.hideHelpLink = brand['DOCS'];
   }
 
-  /** */
+
   ngOnInit(): void {
-    // this.kbForm = this.createConditionGroup();
-    this.hasStoredScrapeOptions()
+   // this.hasStoredScrapeOptions()
   }
 
   ngAfterViewInit() {
     this.initTagContainerObserver();
   }
 
-  // CDK methods
+  ngOnChanges(changes: SimpleChanges){
+    // this.logger.log('ModalSiteMapComponent changes: ', changes);
+    // if(this.listSitesOfSitemap.length > 0){
+    //   this.listOfUrls = this.listSitesOfSitemap.join('\n');
+    //   this.countSitemap = this.listSitesOfSitemap.length;
+    // } 
+  }
+
+  ngOnDestroy() { 
+    this.logger.log('[MODALS-URLS] ngOnDestroy called');
+    // Disconnect the observer to avoid memory leaks.
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    // Cascade-close the side-by-side scrape settings dialog if still open.
+    this.closeScrapeSettingsDialog();
+  }
+
+   // CDK methods
   open() {
     clearTimeout(this.closeTimeout);
     this.isOpen = true;
@@ -174,17 +233,62 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     clearTimeout(this.closeTimeout);
   }
 
-  /** */
-  ngOnChanges(changes: SimpleChanges){
-    // this.logger.log('ModalSiteMapComponent changes: ', changes);
-    // if(this.listSitesOfSitemap.length > 0){
-    //   this.listOfUrls = this.listSitesOfSitemap.join('\n');
-    //   this.countSitemap = this.listSitesOfSitemap.length;
-    // } 
+  // ---- Refresh-rate help popover handlers (CDK-overlay) ----
+  openRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
+    this.isRefreshRateHelpOpen = true;
+  }
+
+  scheduleCloseRefreshRateHelp() {
+    this.refreshRateHelpCloseTimeout = setTimeout(() => {
+      this.isRefreshRateHelpOpen = false;
+    }, 150);
+  }
+
+  cancelCloseRefreshRateHelp() {
+    clearTimeout(this.refreshRateHelpCloseTimeout);
+  }
+
+  /**
+   * Toggle the sitemap fetch popover (CDK overlay). The overlay is
+   * anchored to the "Add URLs from a sitemap" link; its content
+   * (input + Fetch + ✕) is created on demand via `*cdkConnectedOverlay`.
+   */
+  toggleSitemapInput(): void {
+    this.sitemapInputOpen = !this.sitemapInputOpen;
+  }
+
+  /**
+   * Explicit dismiss for the sitemap fetch popover: closes the overlay
+   * but DOES NOT clear `siteMap`. Used by the ✕ button, the transparent
+   * backdrop click, and the Esc key so that a user who changes their
+   * mind can later re-open the popover and find the URL they had
+   * previously typed still there. Different from the auto-hide branch
+   * in `fetchSiteMap()`, which clears the input as part of the
+   * post-success "clean state" transition.
+   */
+  closeSitemapInput(): void {
+    this.sitemapInputOpen = false;
+  }
+
+  /**
+   * Auto-focus the sitemap URL input once the CDK overlay attaches.
+   * The input is rendered inside an `ng-template` and only exists in
+   * the DOM after attach, so we defer the focus to a microtask. We
+   * scope the query to the freshly-attached `.sitemap-popover` to
+   * avoid stale matches if multiple overlays were ever opened.
+   */
+  onSitemapPopoverAttach(): void {
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>(
+        '.sitemap-popover input[type="url"]'
+      );
+      input?.focus();
+    });
   }
 
   fetchSiteMap() {
-    this.logger.log('[ModalSiteMapComponent] sitemap: ', this.siteMap);
+    this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
     const body = {sitemap: this.siteMap, tags: this.kbTagsArray}
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("[ModalSiteMapComponent] addSitemap:", resp);
@@ -204,6 +308,13 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
           this.errorLimit = false;
           this.buttonDisabled = false;
         }
+
+        // Conditional auto-hide: only when the fetch actually populated the
+        // textarea. On error / empty sitemap the panel stays open so the user
+        // can correct the URL without re-opening. The siteMap input is also
+        // cleared so a subsequent re-open starts from a clean state.
+        this.sitemapInputOpen = false;
+        this.siteMap = '';
      }
       // this.listOfUrls = resp.sites;
     //   let listSitesOfSitemap = resp.sites.split("\n").filter(function(row) {
@@ -273,198 +384,92 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     // L'observer gestirà automaticamente l'aggiornamento dell'altezza
   }
 
-  /** */
   onSaveKnowledgeBase(){
+    // Close the side-by-side settings dialog (if open) before resolving the parent dialog.
+    this.closeScrapeSettingsDialog();
     //const arrayURLS = this.content.split('\n');
     const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
       return row.trim() !== '';
     });
-    const scrapeType = this.automaticContentExtraction ? 0 : this.selectedScrapeType;
-    let body: any = {
+    // `scrape_type: 0` means automatic content extraction; any other value
+    // (currently only 4 = "Advanced") means manual rules. We always send
+    // `scrape_options` regardless of the mode so the server can persist
+    // the user's manual rules and reuse them when they switch back to
+    // manual extraction in the future.
+    const scrapeType = this.scrapeConfig.automaticContentExtraction ? 0 : this.scrapeConfig.selectedScrapeType;
+    const body: any = {
       list: arrayURLS,
       scrape_type: scrapeType,
       refresh_rate: this.selectedRefreshRate,
-      tags: this.kbTagsArray
-    }
+      tags: this.kbTagsArray,
+      situated_context: this.scrapeConfig.situatedContextEnabled,
+      scrape_options: {
+        tags_to_extract: this.scrapeConfig.extract_tags,
+        unwanted_tags: this.scrapeConfig.unwanted_tags,
+        unwanted_classnames: this.scrapeConfig.unwanted_classnames,
+      },
+    };
 
-    // With scrape_type 0 the server ignores scrape_options; we still send them when Advanced (4) is selected so they are preserved.
-    if (this.selectedScrapeType === 4) {
-      body.scrape_options = {
-        tags_to_extract: this.extract_tags,
-        unwanted_tags: this.unwanted_tags,
-        unwanted_classnames: this.unwanted_classnames
-      }
-    }
-    
     this.dialogRef.close(body);
     // this.saveKnowledgeBase.emit(body);
   }
 
-  onSelectScrapeType(selectedType) {
-    // this.logger.log("onSelectScrapeType: ", selectedType);
-  }
-
-  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
-    const checked = event.checked;
-    if (checked) {
-      this.htmlTagsPanelExpanded = false;
-    }
-    this.automaticContentExtraction = checked;
-  }
-
-  addTag(type, event: MatChipInputEvent): void {
-    // this.logger.log("Tag Event: ", event);
-    const value = (event.value || '').trim();
-    if (value) {
-      if (type === 'extract_tags') {
-        this.extract_tags.push(value);
-      }
-      if (type === 'unwanted_tags') {
-        this.unwanted_tags.push(value);
-      }
-      if (type === 'unwanted_classnames') {
-        this.unwanted_classnames.push(value);
-      }
-    }
-    // Clear the input value
-    if (event.input) {
-      event.input.value = "";
-    }
-    //this.logger.log("Tags: ", this.content.tags);
-  }
-
-  removeTag(arrayName, tag) {
-    this.logger.log("Remove tag arrayName: ", arrayName, ' tag ', tag);
-    if (arrayName === 'extract_tags')  {
-      this.logger.log('extract_tags array',  this.extract_tags)
-      const index =  this.extract_tags.findIndex((val) => val === tag); 
-      this.logger.log("Remove tag index: ", index);
-      this.extract_tags.splice(index, 1)
-    }
-
-    if (arrayName === 'unwanted_tags')  {
-      this.logger.log('unwanted_tags array',  this.extract_tags)
-      const index =  this.unwanted_tags.findIndex((val) => val === tag); // Returns 1  
-      this.logger.log("Remove tag index: ", index);
-      this.unwanted_tags.splice(index, 1)
-    }
-
-    if (arrayName === 'unwanted_classnames')  {
-      this.logger.log('unwanted_classnames array',  this.extract_tags)
-      const index =  this.unwanted_classnames.findIndex((val) => val === tag); // Returns 1  
-      this.logger.log("Remove tag index: ", index);
-      this.unwanted_classnames.splice(index, 1)
-    }
-
-  }
 
   goToPricing() {
-    // this.onCloseBaseModal()
+    this.closeScrapeSettingsDialog();
     let body: any = { upgrade_plan: true}
     this.dialogRef.close(body);
   }
 
   /** */
   onCloseBaseModal() {
+    this.closeScrapeSettingsDialog();
     this.countSitemap = 0;
     this.dialogRef.close();
     // this.closeBaseModal.emit();
+  }
+
+  /**
+   * Open the side-by-side scrape settings dialog, sharing the same `scrapeConfig` reference.
+   * Backdrop is disabled so the parent stays interactive; the user closes it explicitly.
+   */
+  openScrapeSettings(): void {
+    if (this.scrapeSettingsDialogRef) {
+      // Already open: no-op to avoid stacking dialogs.
+      return;
+    }
+    this.isScrapeSettingsOpen = true;
+    this.scrapeSettingsDialogRef = this.dialog.open(ModalKbScrapeSettingsComponent, {
+      width: '380px',
+      // Place the dialog flush to the right of the URLs modal (URLs is 500px wide → half is 250px,
+      // plus a 10px gap so the two cards do not touch).
+      position: { left: 'calc(50% + 260px)', top: '60px' },
+      autoFocus: false,
+      hasBackdrop: false,
+      data: {
+        config: this.scrapeConfig,
+      },
+    });
+    this.scrapeSettingsDialogRef.afterClosed().subscribe(() => {
+      this.scrapeSettingsDialogRef = null;
+      this.isScrapeSettingsOpen = false;
+    });
+  }
+
+  closeScrapeSettingsDialog(): void {
+    if (this.scrapeSettingsDialogRef) {
+      this.scrapeSettingsDialogRef.close();
+      this.scrapeSettingsDialogRef = null;
+    }
+    this.isScrapeSettingsOpen = false;
   }
 
   contacUsViaEmail() {
     window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 
-  /**
-   * Copy all scrape options to localStorage
-   */
-  copyAllScrapeOptions(): void {
-    this.logger.log('[MODALS-URLS] copyAllScrapeOptions called');
-    this.logger.log('[MODALS-URLS] Current extract_tags:', this.extract_tags);
-    this.logger.log('[MODALS-URLS] Current unwanted_tags:', this.unwanted_tags);
-    this.logger.log('[MODALS-URLS] Current unwanted_classnames:', this.unwanted_classnames);
-    
-    const scrapeOptions = {
-      extract_tags: [...this.extract_tags],
-      unwanted_tags: [...this.unwanted_tags],
-      unwanted_classnames: [...this.unwanted_classnames]
-    };
-    this.logger.log('[MODALS-URLS] Scrape options object to save:', scrapeOptions);
-    
-    try {
-      const jsonString = JSON.stringify(scrapeOptions);
-      this.logger.log('[MODALS-URLS] JSON string to save:', jsonString);
-      localStorage.setItem('scrape_options', jsonString);
-      
-      // Verify it was saved
-      const saved = localStorage.getItem('scrape_options');
-      this.logger.log('[MODALS-URLS] Verified saved value:', saved);
-      this.logger.log('[MODALS-URLS] Scrape options copied to storage successfully');
-    } catch (error) {
-      this.logger.error('[MODALS-URLS] Error saving scrape options to storage:', error);
-    }
-  }
 
   /**
-   * Check if stored scrape options exist
-   */
-  hasStoredScrapeOptions(): boolean {
-    try {
-      this.stored_scrape_option =
-        localStorage.getItem('scrape_options') !== null;
-
-      return this.stored_scrape_option;
-    } catch (error) {
-      this.logger.error(
-        '[MODALS-URLS] Error reading scrape options from storage:',
-        error
-      );
-      this.stored_scrape_option = false;
-      return false;
-    }
-  }
-
-  /**
-   * Paste all scrape options from localStorage
-   */
-  pasteAllScrapeOptions(): void {
-    try {
-      const stored = localStorage.getItem('scrape_options');
-      this.logger.log('[MODALS-URLS] Stored value from localStorage:', stored);
-      if (stored) {
-        const scrapeOptions = JSON.parse(stored);
-        this.logger.log('[MODALS-URLS] Parsed scrape options:', scrapeOptions);
-        // Replace existing tags with stored ones
-        if (scrapeOptions.extract_tags && Array.isArray(scrapeOptions.extract_tags)) {
-          this.extract_tags = [...scrapeOptions.extract_tags];
-          this.logger.log('[MODALS-URLS] extract_tags after paste:', this.extract_tags);
-        } else {
-          this.extract_tags = [];
-        }
-        if (scrapeOptions.unwanted_tags && Array.isArray(scrapeOptions.unwanted_tags)) {
-          this.unwanted_tags = [...scrapeOptions.unwanted_tags];
-          this.logger.log('[MODALS-URLS] unwanted_tags after paste:', this.unwanted_tags);
-        } else {
-          this.unwanted_tags = [];
-        }
-        if (scrapeOptions.unwanted_classnames && Array.isArray(scrapeOptions.unwanted_classnames)) {
-          this.unwanted_classnames = [...scrapeOptions.unwanted_classnames];
-          this.logger.log('[MODALS-URLS] unwanted_classnames after paste:', this.unwanted_classnames);
-        } else {
-          this.unwanted_classnames = [];
-        }
-        this.logger.log('[MODALS-URLS] All arrays after paste - extract_tags:', this.extract_tags, 'unwanted_tags:', this.unwanted_tags, 'unwanted_classnames:', this.unwanted_classnames);
-        // Force change detection to update the view
-        this.cdr.detectChanges();
-      } else {
-        this.logger.log('[MODALS-URLS] No stored value found in localStorage');
-      }
-    } catch (error) {
-      this.logger.error('[MODALS-URLS] Error reading scrape options from storage:', error);
-    }
-  }
-
-     /**
    * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
    * L'observer viene creato una sola volta in ngAfterViewInit
    */
@@ -496,7 +501,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
 
     // Se non ci sono tag, mantieni un'altezza minima fissa
     if (this.kbTagsArray.length === 0) {
-      this.tagContainerElementHeight = '20px';
+      this.tagContainerElementHeight = '8px';
       return;
     }
 

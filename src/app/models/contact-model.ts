@@ -6,9 +6,11 @@ export interface Contact {
     id_project?: string;
     lead_id?: string;
     email?: string;
+    phone?: string;
+    phoneFormatted?: string;
     createdBy?: string;
     avatar_fill_colour?: string;
     name_initial?: string;
     tags?: any;
-    __v: any;
+    __v?: any;
 }

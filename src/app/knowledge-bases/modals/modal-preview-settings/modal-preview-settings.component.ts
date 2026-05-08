@@ -1,8 +1,24 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { LLM_MODEL, URL_AI_model_doc, URL_advanced_context_doc, URL_chunk_Limit_doc, URL_contents_sources_doc, URL_hyde_doc, URL_max_tokens_doc, URL_reranking_doc, URL_system_context_doc, URL_temperature_doc, URL_use_cache_doc, loadTokenMultiplier } from 'app/utils/util'; // TYPE_GPT_MODEL,
+import {
+  LLM_MODEL,
+  URL_AI_model_doc,
+  URL_advanced_context_doc,
+  URL_chunk_Limit_doc,
+  URL_contents_sources_doc,
+  URL_max_tokens_doc,
+  URL_reranking_doc,
+  URL_system_context_doc,
+  URL_temperature_doc,
+  loadTokenMultiplier,
+  getLlmModelTokenBounds,
+  getLlmModelDefaultMaxTokens,
+  LLM_MAX_TOKENS_SLIDER_UI_CAP,
+  URL_hyde_doc,
+  URL_use_cache_doc
+} from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -14,18 +30,40 @@ import { IntegrationService } from 'app/services/integration.service';
   styleUrls: ['./modal-preview-settings.component.scss']
 })
 
-export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
+export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('aiModel') aiModel: SatPopover;
+  @ViewChild('aiModelDx') aiModelDx: SatPopover;
   @ViewChild('maxTokens') maxTokens: SatPopover;
+  @ViewChild('maxTokensDx') maxTokensDx: SatPopover;
   @ViewChild('aiModeltemperature') aiModeltemperature: SatPopover;
+  @ViewChild('aiModeltemperatureDx') aiModeltemperatureDx: SatPopover;
   @ViewChild('aiSearchType') aiSearchType: SatPopover;
+  @ViewChild('aiSearchTypeDx') aiSearchTypeDx: SatPopover;
   @ViewChild('chunkLimit') chunkLimit: SatPopover;
+  @ViewChild('chunkLimitDx') chunkLimitDx: SatPopover;
   @ViewChild('systemContext') systemContext: SatPopover;
+  @ViewChild('systemContextDx') systemContextDx: SatPopover;
   @ViewChild('advancedContext') advancedContext: SatPopover;
+  @ViewChild('advancedContextDx') advancedContextDx: SatPopover;
   @ViewChild('contentsSources') contentsSources: SatPopover;
+  @ViewChild('contentsSourcesDx') contentsSourcesDx: SatPopover;
+  @ViewChild('chunkonly') chunkonly: SatPopover;
+  @ViewChild('chunkonlyDx') chunkonlyDx: SatPopover;
   @ViewChild('rerank') rerank: SatPopover;
+  @ViewChild('rerankdx') rerankdx: SatPopover;
+  @ViewChild('rerankingMultiplier') rerankingMultiplier: SatPopover;
+  @ViewChild('rerankingMultiplierDx') rerankingMultiplierDx: SatPopover;
+  @ViewChild('hydePopover') hydePopover: SatPopover;
+  @ViewChild('hydePopoverDx') hydePopoverDx: SatPopover;
+  @ViewChild('useCachePopover') useCachePopover: SatPopover;
+  @ViewChild('useCachePopoverDx') useCachePopoverDx: SatPopover;
+
+  /** Delay before closing help popover so the pointer can move from the label into the panel (links). */
+  private static readonly SETTINGS_HELP_POPOVER_CLOSE_DELAY_MS = 200;
+  private settingsHelpPopoverCloseTimer: ReturnType<typeof setTimeout> | null = null;
 
   private savedScrollData: { scrollTop: number, selector: string, activeElementId?: string } | null = null;
+
 
 
   // @Output() closeBaseModal = new EventEmitter();
@@ -47,8 +85,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   public selectedModel: any // = this.models_list[0].value;
   public max_tokens: number;
-  public max_tokens_min: number;
-  public max_tokens_max: number;
+  public max_tokens_min = 10;
+  /** Tetto effettivo dello slider (può essere < catalogo, es. 100k vs 128k in util). */
+  public max_tokens_max = LLM_MAX_TOKENS_SLIDER_UI_CAP;
+  /** Massimo da catalogo util (max_output_tokens) — solo per etichetta, es. "128k". */
+  public max_tokens_catalog_max = LLM_MAX_TOKENS_SLIDER_UI_CAP;
   public temperature: number; // 0.7
   public alpha: number; // 0.7
   public topK: number;
@@ -59,10 +100,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public reRankingMultipler: number
   public advancedPrompt: boolean // = false;
   public citations: boolean // = false;
+  public useHyde: boolean // = false;
+  public useCache: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
   private modelDefaultValue = "gpt-4o";
-  private maxTokensDefaultValue = 256;
+  /** Valore errato ancora restituito dal server per max_tokens con gpt-4o (workaround sotto). */
+  private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+  private maxTokensDefaultValue = 10000;
   private temperatureDefaultValue = 0.7
   private alphaDefaultValue = 0.5
 
@@ -73,6 +118,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private chunksOnlyDefaultValue = false
   private reRankigDefaultValue = false
   private reRankigMultiplerDefaultValue = 2
+  private useHydeDefaultValue = false
+  private useCacheDefaultValue = false
 
   public countOfOverrides = 0
 
@@ -87,12 +134,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private hasAlreadyOverrideReRanking: boolean;
   private hasAlreadyOverrideReRankingMultipler: boolean;
   private hasAlreadyOverrideCitations: boolean;
+  private hasAlreadyOverrideUseHyde: boolean;
+  private hasAlreadyOverrideUseCache: boolean;
 
   public hideHelpLink: boolean;
 
   temperature_slider_disabled: boolean;
   modelGroups: any[] = [];
   flattenedModels: any[] = [];
+
 
   aiSettingsObject = [{
     model: null,
@@ -106,6 +156,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     reRankingMultipler: null,
     advancedPrompt: null,
     citations: null,
+    useHyde: null,
+    useCache: null,
   }]
 
   pineconeReranking: boolean
@@ -123,6 +175,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // this.logger.log("[MODAL PREVIEW SETTINGS] data ", data)
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
+
     if (data) {
       this.selectedNamespace = data.selectedNamespace
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
@@ -138,10 +191,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         this.diplaySearchTypeSlider = false;
       }
 
-      this.pineconeReranking = data.pineconeReranking
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
-
-      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
+      this.pineconeReranking = data.pineconeReranking
+      this.logger.log("[MODAL PREVIEW SETTINGS] pineconeReranking ", this.pineconeReranking)
 
       this.selectedNamespace.preview_settings
       this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
@@ -176,7 +228,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
         this.temperature_slider_disabled = true;
-        console.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
+        this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
       } else { 
         // this.temperature = this.selectedNamespace.preview_settings.temperature
         this.temperature_slider_disabled = false;
@@ -196,7 +248,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       }
 
 
-      this.context = this.selectedNamespace.preview_settings.context
+       this.context = this.selectedNamespace.preview_settings.context
 
        if (!this.selectedNamespace.preview_settings.chunks_only) {
         this.chunkOnly = false
@@ -206,7 +258,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly ", this.chunkOnly)
       }
 
-        if (!this.selectedNamespace.preview_settings.reranking) {
+      if (!this.selectedNamespace.preview_settings.reranking) {
         this.reRanking = false
         this.selectedNamespace.preview_settings.reranking = this.reRanking
       } else {
@@ -219,6 +271,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       } else {
         this.reRankingMultipler = 2
       }
+      
+      
 
       this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.advancedPrompt)
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
@@ -235,15 +289,25 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       if (!this.selectedNamespace.preview_settings.citations) {
         this.citations = false
         this.selectedNamespace.preview_settings.citations = this.citations
-        this.max_tokens_min = 10
-        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       } else {
         this.citations = this.selectedNamespace.preview_settings.citations;
-        this.max_tokens_min = 1024;
-        // this.max_tokens = 1024;
-        // this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
-        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_hyde) {
+        this.useHyde = false
+        this.selectedNamespace.preview_settings.use_hyde = this.useHyde
+      } else {
+        this.useHyde = this.selectedNamespace.preview_settings.use_hyde;
+        this.logger.log("[MODAL PREVIEW SETTINGS] useHyde ", this.useHyde)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_cache) {
+        this.useCache = false
+        this.selectedNamespace.preview_settings.use_cache = this.useCache
+      } else {
+        this.useCache = this.selectedNamespace.preview_settings.use_cache;
+        this.logger.log("[MODAL PREVIEW SETTINGS] useCache ", this.useCache)
       }
 
 
@@ -372,12 +436,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
 
-    this.selectedModel = this.flattenedModels.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    const modelRow = this.flattenedModels.find(
+      (el) => el.value === this.selectedNamespace.preview_settings.model
+    );
+    this.selectedModel = modelRow?.value ?? this.selectedNamespace.preview_settings.model;
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
 
     const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
     this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
+
+    const mv = this.selectedNamespace?.preview_settings?.model;
+    if (mv) {
+      this.applyMaxTokenSliderFromUtil(mv, { resetMaxTokensToDefault: false });
+    }
   }
 
   getLlmProviderByModel(modelValue: string): string | null {
@@ -392,6 +464,53 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.namespaceid = this.selectedNamespace.id
   }
 
+  ngOnDestroy(): void {
+    this.cancelDelayedHelpPopoverClose();
+  }
+
+  /**
+   * Limiti slider max tokens da util.ts (min_tokens, max_output_tokens).
+   * Default preimpostato: min(max_output_tokens, 10000) tramite getLlmModelDefaultMaxTokens.
+   * Etichetta destra: max_output_tokens di catalogo (es. 128k); slider max = min(catalogo, tetto UI).
+   */
+  private applyMaxTokenSliderFromUtil(
+    modelValue: string,
+    options?: { resetMaxTokensToDefault?: boolean }
+  ): void {
+    if (!modelValue) {
+      return;
+    }
+    const bounds = getLlmModelTokenBounds(modelValue);
+    const utilMin = bounds?.min_tokens ?? 1;
+    // min_tokens da util.ts; con citations il minimo effettivo non scende sotto 1024
+    this.max_tokens_min = this.citations ? Math.max(utilMin, 1024) : utilMin;
+    const catalogMax = bounds?.max_output_tokens ?? LLM_MAX_TOKENS_SLIDER_UI_CAP;
+    this.max_tokens_catalog_max = catalogMax;
+    this.max_tokens_max = Math.min(catalogMax, LLM_MAX_TOKENS_SLIDER_UI_CAP);
+    if (this.max_tokens_min > this.max_tokens_max) {
+      this.max_tokens_max = this.max_tokens_min;
+    }
+
+    const clamp = (v: number) => Math.min(Math.max(v, this.max_tokens_min), this.max_tokens_max);
+
+    if (options?.resetMaxTokensToDefault) {
+      this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    } else if (this.max_tokens != null && !Number.isNaN(this.max_tokens as number)) {
+      let v = Number(this.max_tokens);
+      // Workaround server: gpt-4o + max_tokens=256 (non confrontare con maxTokensDefaultValue: può essere 10000).
+      const modelNorm = (modelValue || '').trim().toLowerCase();
+      if (modelNorm === 'gpt-4o' && v === ModalPreviewSettingsComponent.SERVER_LEGACY_MAX_TOKENS_SENTINEL) {
+        v = getLlmModelDefaultMaxTokens('gpt-4o');
+      }
+      this.max_tokens = clamp(v);
+    } else {
+      this.max_tokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
+    }
+
+    // Sempre allinea il namespace in memoria (anche da preview KB), così il fallback nel listener del preview non ripristina un max_tokens obsoleto.
+    this.selectedNamespace.preview_settings.max_tokens = this.max_tokens;
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
+  }
 
   onSelectModel(selectedModel) {
     this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
@@ -443,17 +562,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     } else {
       this.countOfOverrides = this.countOfOverrides - 1;
     }
+
+    this.applyMaxTokenSliderFromUtil(selectedModel, { resetMaxTokensToDefault: true });
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject);
   }
 
   updateSliderValue(value, type) {
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
-      if (!this.wasOpenedFromThePreviewKBModal) {
-        this.selectedNamespace.preview_settings.max_tokens = value
-      }
+      const previousMaxTokens = this.selectedNamespace.preview_settings.max_tokens;
+      // Sempre aggiorna preview_settings (anche da modal preview), per coerenza con ask e con listenToAiSettingsChanges sul preview KB.
+      this.selectedNamespace.preview_settings.max_tokens = value;
 
       // if (value !== this.maxTokensDefaultValue) {
-      if (value !== this.selectedNamespace.preview_settings.max_tokens) {
+      if (value !== previousMaxTokens) {
         if (this.hasAlreadyOverridedMaxTokens !== true) {
           this.countOfOverrides = this.countOfOverrides + 1;
         }
@@ -556,6 +678,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
 
+  
 
 
   onChangeTextInContex(event) {
@@ -583,6 +706,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   changeChunkOnly(event) {
+    this.saveDialogScrollPosition();
     this.logger.log("[MODAL PREVIEW SETTINGS] changeChunkOnly event ", event.target.checked)
     this.chunkOnly = event.target.checked
     if (!this.wasOpenedFromThePreviewKBModal) {
@@ -593,9 +717,22 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].chunkOnly = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-  }
 
-    changeReranking(event) {
+    if (this.chunkOnly !== this.selectedNamespace.preview_settings.chunks_only) {   
+      if (this.hasAlreadyOverrideChunckOnly !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideChunckOnly = true
+    } else if (this.chunkOnly === this.selectedNamespace.preview_settings.chunks_only) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideChunckOnly = false
+    }
+     this.restoreDialogScrollPosition();
+  }
+ 
+
+
+  changeReranking(event) {
     this.saveDialogScrollPosition();
     this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking event ", event.target.checked)
     this.reRanking = event.target.checked
@@ -634,11 +771,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
     if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
-      // if (this.hasAlreadyOverrideAdvancedContex !== true) {
-      this.countOfOverrides = this.countOfOverrides + 1;
-      // }
+      if (this.hasAlreadyOverrideAdvancedContex !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
       this.hasAlreadyOverrideAdvancedContex = true
-    } else if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
+    } else if (this.advancedPrompt === this.selectedNamespace.preview_settings.advancedPrompt) {
       this.countOfOverrides = this.countOfOverrides - 1;
       this.hasAlreadyOverrideAdvancedContex = false
     }
@@ -648,16 +785,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   changeCitations(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations event ", event.target.checked)
     this.citations = event.target.checked;
-    if (this.citations === true) {
-      this.max_tokens_min = 1024
-      this.max_tokens = 1024
-      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
-    } else {
-      this.max_tokens_min = 10;
-      this.max_tokens = 256
-      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
-    }
-
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.citations = this.citations
@@ -689,10 +816,61 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.logger.log('here y hasAlreadyOverrideCitations', this.hasAlreadyOverrideCitations)
       this.countOfOverrides = this.countOfOverrides - 1;
     }
-
   }
 
-    /**
+  changeUseHyde(event) {
+    this.saveDialogScrollPosition();
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeUseHyde event ", event.target.checked)
+    this.useHyde = event.target.checked
+
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.use_hyde = this.useHyde
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeUseHyde this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Notify "modal-preview-k-b" about the change of the use_hyde flag
+    this.aiSettingsObject[0].useHyde = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.useHyde !== this.selectedNamespace.preview_settings.use_hyde) {
+      if (this.hasAlreadyOverrideUseHyde !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideUseHyde = true
+    } else if (this.useHyde === this.selectedNamespace.preview_settings.use_hyde) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideUseHyde = false
+    }
+    this.restoreDialogScrollPosition();
+  }
+
+  changeUseCache(event) {
+    this.saveDialogScrollPosition();
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeUseCache event ", event.target.checked)
+    this.useCache = event.target.checked
+
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.use_cache = this.useCache
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeUseCache this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    // Notify "modal-preview-k-b" about the change of the use_cache flag
+    this.aiSettingsObject[0].useCache = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.useCache !== this.selectedNamespace.preview_settings.use_cache) {
+      if (this.hasAlreadyOverrideUseCache !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideUseCache = true
+    } else if (this.useCache === this.selectedNamespace.preview_settings.use_cache) {
+      this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideUseCache = false
+    }
+    this.restoreDialogScrollPosition();
+  }
+
+  /**
  * Salva la posizione corrente dello scroll del dialog
  */
 private saveDialogScrollPosition(): void {
@@ -748,6 +926,43 @@ private restoreDialogScrollPosition(): void {
     }, 10); // 10ms è sufficiente
 }
 
+  // !! Not used
+ onCheckboxClick(event: MouseEvent) {
+    // Prevenire la propagazione per evitare che il click arrivi al label
+    event.stopPropagation();
+    
+    // Salvare le posizioni di scroll sia del dialog content che della window
+    const dialogContent = document.querySelector('.mat-dialog-content') as HTMLElement;
+    const windowScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const dialogScrollTop = dialogContent?.scrollTop || 0;
+    
+    this.logger.log('[MODAL PREVIEW SETTINGS] onCheckboxClick windowScrollY:', windowScrollY, 'dialogScrollTop:', dialogScrollTop);
+    
+    // Usare doppio requestAnimationFrame per assicurarsi che lo scroll sia completato
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Ripristinare lo scroll della window
+        if (windowScrollY !== 0) {
+          window.scrollTo(0, windowScrollY);
+        }
+        
+        // Ripristinare lo scroll del dialog content se esiste
+        if (dialogContent) {
+          dialogContent.scrollTop = dialogScrollTop;
+        }
+      });
+    });
+    
+    // Anche setTimeout come fallback
+    setTimeout(() => {
+      if (windowScrollY !== 0) {
+        window.scrollTo(0, windowScrollY);
+      }
+      if (dialogContent) {
+        dialogContent.scrollTop = dialogScrollTop;
+      }
+    }, 10);
+  }
 
   onSavePreviewSettings() {
     // this.logger.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
@@ -775,7 +990,9 @@ private restoreDialogScrollPosition(): void {
     this.hasAlreadyOverridedContex = false;
     this.hasAlreadyOverrideAdvancedContex = false;
     this.hasAlreadyOverrideCitations = false;
+    this.hasAlreadyOverrideChunckOnly = false;
     this.hasAlreadyOverrideReRanking = false;
+    this.hasAlreadyOverrideUseHyde = false;
     //this.hasAlreadyOverrideReRankingMultipler = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
@@ -809,29 +1026,24 @@ private restoreDialogScrollPosition(): void {
 
     this.context = this.selectedNamespaceClone.preview_settings.context;
 
-    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt
+    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt;
 
     this.chunkOnly = this.selectedNamespaceClone.preview_settings.chunks_only;
 
     this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
 
-    this.reRankingMultipler = this.selectedNamespaceClone.preview_settings.reranking_multiplier
+   this.reRankingMultipler = this.selectedNamespaceClone.preview_settings.reranking_multiplier
 
-    this.citations = this.selectedNamespaceClone.preview_settings.citations
+    this.citations = this.selectedNamespaceClone.preview_settings.citations;
     this.logger.log('Reset this.citations ', this.citations)
-    if (this.citations) {
-      this.max_tokens_min = 1024;
-    } else {
-      this.max_tokens_min = 10;
-    }
-    // this.selectedNamespace.preview_settings.context = this.contextDefaultValue;
 
-    // this.aiSettingsObject[0].model = this.modelDefaultValue;
-    // this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
-    // this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
-    // this.aiSettingsObject[0].top_k = this.topkDefaultValue;
-    // this.aiSettingsObject[0].advancedPrompt = this.advancedPromptDefaultValue;
-    // this.aiSettingsObject[0].citations = this.citationsDefaultValue;
+    this.useHyde = this.selectedNamespaceClone.preview_settings.use_hyde;
+    this.logger.log('Reset this.useHyde ', this.useHyde)
+
+    this.useCache = this.selectedNamespaceClone.preview_settings.use_cache;
+    this.logger.log('Reset this.useCache ', this.useCache)
+
+    this.applyMaxTokenSliderFromUtil(this.selectedModel, { resetMaxTokensToDefault: false });
 
     this.aiSettingsObject[0].model = this.selectedModel;
     this.aiSettingsObject[0].maxTokens = this.max_tokens
@@ -843,6 +1055,8 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
     this.aiSettingsObject[0].reRanking = this.reRanking;
     this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
+    this.aiSettingsObject[0].useHyde = this.useHyde;
+    this.aiSettingsObject[0].useCache = this.useCache;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -853,10 +1067,6 @@ private restoreDialogScrollPosition(): void {
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
-    this.max_tokens = this.maxTokensDefaultValue;
-    this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
-
-    this.max_tokens_min = 10;
 
     this.temperature = this.temperatureDefaultValue;
     this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
@@ -885,13 +1095,23 @@ private restoreDialogScrollPosition(): void {
     this.reRankingMultipler = this.reRankigMultiplerDefaultValue;
     this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankigMultiplerDefaultValue
 
+    this.useHyde = this.useHydeDefaultValue;
+    this.selectedNamespace.preview_settings.use_hyde = this.useHydeDefaultValue;
+
+    this.useCache = this.useCacheDefaultValue;
+    this.selectedNamespace.preview_settings.use_cache = this.useCacheDefaultValue;
+
+    this.applyMaxTokenSliderFromUtil(this.modelDefaultValue, { resetMaxTokensToDefault: true });
+
     this.aiSettingsObject[0].model = this.modelDefaultValue;
-    this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
     this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
     this.aiSettingsObject[0].top_k = this.topkDefaultValue;
     this.aiSettingsObject[0].context = this.contextDefaultValue;
     this.aiSettingsObject[0].chunkOnly = this.chunksOnlyDefaultValue;
     this.aiSettingsObject[0].reRanking = this.reRankigDefaultValue;
+    this.aiSettingsObject[0].useHyde = this.useHydeDefaultValue;
+    this.aiSettingsObject[0].useCache = this.useCacheDefaultValue;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -908,14 +1128,7 @@ private restoreDialogScrollPosition(): void {
         //  this.logger.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e:", e);
         //  this.logger.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e.detail:", e.detail);
         if (e.detail && e.detail === true) {
-          this.aiModel.close()
-          this.maxTokens.close()
-          this.aiModeltemperature.close()
-          this.aiSearchType.close();
-          this.chunkLimit.close()
-          this.systemContext.close()
-          this.advancedContext.close()
-          this.contentsSources.close()
+          this.closeAllSettingsPopovers();
         }
       }
     );
@@ -928,14 +1141,7 @@ private restoreDialogScrollPosition(): void {
         //  this.logger.log("[MODAL PREVIEW SETTINGS] has-clicked-inside-modal-preview-kb e:", e);
         //  this.logger.log("[MODAL PREVIEW SETTINGS] has-clicked-inside-modal-preview-kb e.detail:", e.detail);
         if (e.detail && e.detail === true) {
-          this.aiModel.close()
-          this.maxTokens.close()
-          this.aiModeltemperature.close()
-          this.aiSearchType.close()
-          this.chunkLimit.close()
-          this.systemContext.close()
-          this.advancedContext.close()
-          this.contentsSources.close()
+          this.closeAllSettingsPopovers();
         }
       }
     );
@@ -946,14 +1152,67 @@ private restoreDialogScrollPosition(): void {
     // this.clickedInside = true;
     // this.clickedOutside = false;
     // this.logger.log('Clicked inside the div');
-    this.aiModel.close()
-    this.maxTokens.close()
-    this.aiModeltemperature.close()
-    this.aiSearchType.close()
-    this.chunkLimit.close()
-    this.systemContext.close()
-    this.advancedContext.close()
-    this.contentsSources.close()
+    this.closeAllSettingsPopovers();
+  }
+
+  cancelDelayedHelpPopoverClose(): void {
+    if (this.settingsHelpPopoverCloseTimer != null) {
+      clearTimeout(this.settingsHelpPopoverCloseTimer);
+      this.settingsHelpPopoverCloseTimer = null;
+    }
+  }
+
+  /** Schedula la chiusura del popover dopo uscita da label o pannello (tempo per attraversare il gap). */
+  scheduleDelayedHelpPopoverClose(popover: SatPopover): void {
+    this.cancelDelayedHelpPopoverClose();
+    this.settingsHelpPopoverCloseTimer = setTimeout(() => {
+      this.settingsHelpPopoverCloseTimer = null;
+      popover?.close();
+    }, ModalPreviewSettingsComponent.SETTINGS_HELP_POPOVER_CLOSE_DELAY_MS);
+  }
+
+  /**
+   * Open a help popover on label hover (closes the others and cancels deferred closes).
+   * If this popover is already open, do not perform close+reopen (e.g. label ↔ panel return).
+   */
+  openHelpPopover(popover: SatPopover): void {
+    this.cancelDelayedHelpPopoverClose();
+    if (popover?.isOpen()) {
+      return;
+    }
+    this.closeAllSettingsPopovers();
+    popover.open();
+  }
+
+  /** Chiude tutte le varianti popover (sinistra + destra per preview KB). */
+  closeAllSettingsPopovers(): void {
+    this.cancelDelayedHelpPopoverClose();
+    this.aiModel?.close();
+    this.aiModelDx?.close();
+    this.maxTokens?.close();
+    this.maxTokensDx?.close();
+    this.aiModeltemperature?.close();
+    this.aiModeltemperatureDx?.close();
+    this.aiSearchType?.close();
+    this.aiSearchTypeDx?.close();
+    this.chunkLimit?.close();
+    this.chunkLimitDx?.close();
+    this.rerank?.close();
+    this.rerankdx?.close();
+    this.rerankingMultiplier?.close();
+    this.rerankingMultiplierDx?.close();
+    this.systemContext?.close();
+    this.systemContextDx?.close();
+    this.advancedContext?.close();
+    this.advancedContextDx?.close();
+    this.contentsSources?.close();
+    this.contentsSourcesDx?.close();
+    this.chunkonly?.close();
+    this.chunkonlyDx?.close();
+    this.hydePopover?.close();
+    this.hydePopoverDx?.close();
+    this.useCachePopover?.close();
+    this.useCachePopoverDx?.close();
   }
 
   // onMouseEnter(event: MouseEvent): void {
@@ -1018,6 +1277,10 @@ private restoreDialogScrollPosition(): void {
     this.logger.log('[MODAL PREVIEW SETTINGS] contentsSourcesIsOpened')
     this.logger.log("[MODAL PREVIEW SETTINGS] contentsSources sat popover", this.contentsSources)
   }
+  chunkOnlyIsOpened() {
+    this.logger.log('[MODAL PREVIEW SETTINGS] chunkOnlyIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] chunkOnly sat popover", this.chunkonly)
+  }
 
   goToAIModelDoc() {
     const url = URL_AI_model_doc;
@@ -1038,6 +1301,13 @@ private restoreDialogScrollPosition(): void {
     const url = URL_chunk_Limit_doc;
     window.open(url, '_blank');
   }
+
+  goToRerankingDoc(){
+    const url = URL_reranking_doc;
+    window.open(url, '_blank');
+    
+  }
+
 
   goToSystemContextDoc() {
     const url = URL_system_context_doc;
@@ -1064,11 +1334,40 @@ private restoreDialogScrollPosition(): void {
     window.open(url, '_blank');
   }
 
-  formatMaxTokens(value: number): string {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
+  /**
+   * Numeri compatti per token: sotto 1000 intero, poi k, da 1.000.000 usa M (evita "1000k" per 1M).
+   */
+  private formatTokenCountCompact(n: number): string {
+    if (n == null || !Number.isFinite(n)) {
+      return '';
     }
-    return value.toString();
+    const v = Math.round(n);
+    if (v < 1000) {
+      return String(v);
+    }
+    if (v >= 1_000_000) {
+      const m = v / 1_000_000;
+      if (m % 1 === 0) {
+        return `${m}M`;
+      }
+      const s = m.toFixed(2).replace(/\.?0+$/, '');
+      return `${s}M`;
+    }
+    const k = v / 1000;
+    if (k % 1 === 0) {
+      return `${k}k`;
+    }
+    return `${k.toFixed(1)}k`.replace(/\.0k$/, 'k');
+  }
+
+  /**
+   * Deve essere arrow function: mat-slider [displayWith] invoca la callback senza bind(this),
+   * altrimenti this.formatTokenCountCompact è undefined e la UI si blocca.
+   */
+  formatMaxTokens = (value: number): string => this.formatTokenCountCompact(value);
+
+  formatMaxTokensRangeLabel(n: number): string {
+    return this.formatTokenCountCompact(n);
   }
 
 }
