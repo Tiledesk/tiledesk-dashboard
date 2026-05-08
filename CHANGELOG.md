@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.211-stage 
+- Adds new analytics (fix)
+
 ### 2.7.210-stage 
 - Adds new analytics
 
