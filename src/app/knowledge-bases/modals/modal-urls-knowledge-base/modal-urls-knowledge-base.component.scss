@@ -1,5 +1,51 @@
 .modal {
-    font-family: 'Poppins';
+    font-family: var(--header-font-family);;
+}
+
+// Header layout (title + settings/remove/close icons), mirrors `modal-preview-knowledge-base`
+// with a slightly larger gap and explicit vertical centering against the title.
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#settings {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#settings:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+#close {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+}
+
+#close:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33);
+}
+
+.close-ai-settings {
+    color: var(--blue-20) !important;
 }
 
 .modal-header {
@@ -138,6 +184,10 @@
         margin-bottom: 14px;
     }
 
+    .textarea-label {
+        font-weight: 400;
+        font-size: 14px;
+    }
 
     .custom-input {
         width: 100%;
@@ -170,12 +220,11 @@
         border: 1px solid #ccc;
         padding: 10px 10px;
         color: #3c4858 !important;
-        // line-height: 35px;
         font-weight: 300;
-        line-height: inherit;
+        line-height: 1.4;
         white-space: pre;
         resize: block;
-        font-size: 14px;
+        font-size: 13px;
 
         &.invalid {
             border: 2px solid red !important;
@@ -275,10 +324,12 @@
     font-weight: normal;
     margin-top: 6px;
     padding-bottom: 0;
+    color: var(--secondary-text-color);
 }
 
 .input-label-error {
     color: #c62445;
+    font-size: 12px;
 }
 
 // .mat-dialog-close-btn {
@@ -299,6 +350,10 @@
 // }
 
 
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: .25em 0;
+    padding-bottom: 4px;
+}
 
 .scrape-options-header {
     display: flex;
@@ -327,6 +382,8 @@
     vertical-align: middle;
     font-size: 16px;
     cursor: pointer;
+    top: -1px;
+    position: relative;
 }
 
 .mat-icon-wpr>mat-icon {
@@ -334,6 +391,8 @@
     width: 16px;
     height: 16px;
     vertical-align: middle;
+    top: -2px;
+    position: relative;
 }
 
 // .mat-icon-wpr:hover>mat-icon {
@@ -382,18 +441,12 @@
     box-shadow: none;
 }
 
-// ::ng-deep.custom--expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
-//     background: rgba(0, 0, 0, .04) !important;
-// }
-
-
-
 .refresh-rate-wpr {
     display: flex;
     flex-direction: row;
     align-items: center;
     // justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
     gap: 24px
 }
 
@@ -428,6 +481,8 @@
     text-align: center;
     font-size: 12px;
     font-weight: 400;
+    line-height: 1.4;
+    margin-top: 20px;
 }
 
 .contact-sales-to-enable-feature>div {
@@ -582,11 +637,19 @@
 
     .mat-expansion-panel-header-title {
         color: #000000de !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
     }
 
     .mat-expansion-indicator::after {
         color: #000000de !important;
+    }
+}
+
+.html-tags--expansion-panel.expansion-panel-disabled ::ng-deep {
+
+    .mat-expansion-panel-header-title {
+        color: #ddd !important;
+        cursor: not-allowed !important;
     }
 }
 
