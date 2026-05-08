@@ -232,7 +232,7 @@ export class RoleService {
 
             // Department Create
             if (calledby === 'department-create') {
-              const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ);
+              const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.DEPARTMENT_CREATE);
               console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
               return hasPermission;
             }
@@ -836,7 +836,7 @@ export class RoleService {
           }
 
           if (calledby === 'department-create') {
-            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.DEPARTMENT_CREATE);
             console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
             return hasPermission;
           }

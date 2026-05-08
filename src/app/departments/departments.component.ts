@@ -135,7 +135,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         console.log('[DEPTS] - Role:', status.role);
         console.log('[DEPTS] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ)) {
+          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE)) {
 
             this.PERMISSION_TO_CREATE_DEPT = true
             console.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);

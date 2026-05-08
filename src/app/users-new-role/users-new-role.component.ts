@@ -320,7 +320,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view' },
         { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to edit'},
-        { key: PERMISSIONS.DEPARTMENT_CREATE_READ, label: 'Able to create'},
+        { key: PERMISSIONS.DEPARTMENT_CREATE, label: 'Able to create'},
       ]
     },
 
