@@ -857,6 +857,7 @@ export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:st
 ]
 
 export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string,  min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Gpt-5.5",              value: "gpt-5.5",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000,reasoning: true   }, 
   { name: "Gpt-5.4",              value: "gpt-5.4",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
   { name: "Gpt-5.4 mini",         value: "gpt-5.4-mini",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },  
   { name: "Gpt-5.4 nano",         value: "gpt-5.4-nano",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
