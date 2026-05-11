@@ -1,5 +1,8 @@
 # tiledesk-dashboard
  
+### 2.7.212-stage 
+- Implement multi-project availability
+
 ### 2.7.176 (not published)
 - Implements multi-project availability
 
