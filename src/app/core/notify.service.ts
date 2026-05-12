@@ -637,7 +637,162 @@ export class NotifyService {
   }
 
 
-  showUnservedNotication(sender, msg, link) {
+  /** Stack BS5 toasts for “unassigned chat” alerts (single container, top-center). */
+  private static readonly UNSERVED_TOAST_STACK_ID = 'tiledesk-unserved-toast-stack';
+
+  private ensureUnservedToastStackContainer(): HTMLElement {
+    let el = document.getElementById(NotifyService.UNSERVED_TOAST_STACK_ID);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = NotifyService.UNSERVED_TOAST_STACK_ID;
+      el.className = 'toast-container position-fixed top-0 start-50 translate-middle-x p-3';
+      el.setAttribute('aria-live', 'polite');
+      el.style.zIndex = '1080';
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+
+  /**
+   * Paint for unserved toast: inline so layout/colors survive any global CSS order or missing `bs-notifications.scss`.
+   * SCSS file still adds :focus-visible on the clickable body.
+   */
+  private paintUnservedToastDom(
+    toastEl: HTMLElement,
+    header: HTMLElement,
+    body: HTMLElement,
+    senderLine: HTMLElement,
+    msgLine: HTMLElement,
+  ): void {
+    toastEl.style.setProperty('--bs-toast-max-width', '380px');
+    toastEl.style.setProperty('--bs-toast-bg', 'transparent');
+    toastEl.style.setProperty('--bs-toast-border-width', '0');
+    toastEl.style.setProperty('--bs-toast-border-color', 'transparent');
+    toastEl.style.setProperty('--bs-toast-box-shadow', '0 5px 15px -5px rgba(0, 0, 0, 0.4)');
+    toastEl.style.setProperty('--bs-toast-header-bg', '#ffc107');
+    toastEl.style.setProperty('--bs-toast-header-color', '#fff');
+    toastEl.style.setProperty('--bs-toast-header-border-color', 'transparent');
+    toastEl.style.maxWidth = '380px';
+    toastEl.style.width = '380px';
+    toastEl.style.backgroundColor = 'transparent';
+    toastEl.style.border = 'none';
+    toastEl.style.boxShadow = '0 5px 15px -5px rgba(0, 0, 0, 0.4)';
+
+    header.style.backgroundColor = '#ffc107';
+    header.style.color = '#fff';
+    header.style.fontSize = '14px';
+    header.style.fontWeight = '400';
+    header.style.borderBottom = 'none';
+    header.style.padding = '0.65rem 1rem';
+    header.style.cursor = 'default';
+
+    body.style.backgroundColor = '#fcf8e3';
+    body.style.borderTop = 'none';
+    body.style.padding = '1rem 1.1rem';
+    body.style.cursor = 'pointer';
+    body.style.outline = 'none';
+
+    senderLine.style.fontWeight = '300';
+    senderLine.style.color = '#212529';
+    /* html { font-size: 10px } in variables.scss → use rem for readable sizes */
+    senderLine.style.fontSize = '1.4rem';
+    senderLine.style.lineHeight = '1.35';
+
+    msgLine.style.marginTop = '0.35rem';
+    msgLine.style.fontSize = '1.2rem';
+    msgLine.style.fontWeight = '300';
+    msgLine.style.color = 'rgb(85, 85, 85)';
+    msgLine.style.lineHeight = '1.4';
+  }
+
+  /** Unassigned chat: Bootstrap 5 toast (extra: `bs-notifications.scss`). Legacy: {@link NotifyService.old_showUnservedNotication}. */
+  showUnservedNotication(sender: string, msg: string, link: string) {
+    this.logger.log('[NOTIFY-SERVICE] showUnservedNotication link', link);
+
+     this.old_showUnservedNotication(sender, msg, link)
+
+    const w = typeof window !== 'undefined' ? (window as any) : null;
+    const ToastCtor = w?.bootstrap?.Toast as typeof import('bootstrap').Toast | undefined;
+    if (!ToastCtor) {
+      this.logger.log('[NOTIFY-SERVICE] showUnservedNotication: window.bootstrap.Toast missing, skip');
+      return;
+    }
+
+    const container = this.ensureUnservedToastStackContainer();
+
+    const toastEl = document.createElement('div');
+    toastEl.className = 'tiledesk-unserved-toast toast border-0';
+    toastEl.setAttribute('role', 'alert');
+    toastEl.setAttribute('aria-live', 'assertive');
+    toastEl.setAttribute('aria-atomic', 'true');
+
+    const header = document.createElement('div');
+    header.className = 'toast-header';
+    const titleStrong = document.createElement('strong');
+    titleStrong.className = 'me-auto';
+    titleStrong.textContent = 'New unassigned chat';
+    header.appendChild(titleStrong);
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'btn-close btn-close-white';
+    closeBtn.setAttribute('data-bs-dismiss', 'toast');
+    closeBtn.setAttribute('aria-label', 'Close');
+    header.appendChild(closeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'toast-body tiledesk-unserved-toast__body--clickable';
+    body.setAttribute('tabindex', '0');
+    body.setAttribute('role', 'button');
+    body.setAttribute('aria-label', 'Open chat');
+    const senderLine = document.createElement('div');
+    senderLine.className = 'tiledesk-unserved-toast__sender';
+    senderLine.textContent = sender ?? '';
+    const msgLine = document.createElement('div');
+    msgLine.className = 'tiledesk-unserved-toast__msg';
+    msgLine.textContent = msg ?? '';
+    body.appendChild(senderLine);
+    body.appendChild(msgLine);
+
+    this.paintUnservedToastDom(toastEl, header, body, senderLine, msgLine);
+
+    toastEl.appendChild(header);
+    toastEl.appendChild(body);
+    container.appendChild(toastEl);
+
+    const navigateFromLink = () => {
+      if (!link) {
+        return;
+      }
+      const path = link.startsWith('#') ? link.slice(1) : link;
+      if (path) {
+        void this.router.navigateByUrl(path);
+      }
+    };
+    body.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      navigateFromLink();
+    });
+    body.addEventListener('keydown', (ev: KeyboardEvent) => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        navigateFromLink();
+      }
+    });
+
+    const toast = new ToastCtor(toastEl, { autohide: true, delay: 600000 });
+    this.foregroungNotification = toast;
+    toastEl.addEventListener('hidden.bs.toast', () => {
+      toast.dispose();
+      toastEl.remove();
+      if (this.foregroungNotification === toast) {
+        this.foregroungNotification = null;
+      }
+    });
+    toast.show();
+  }
+
+  /** Legacy bootstrap-notify / jQuery `$.notify` (minimalist-pooled). Kept for reference; app uses {@link NotifyService.showUnservedNotication}. */
+ old_showUnservedNotication(sender, msg, link) {
     // console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_initial', requester_avatar_initial)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_bckgrnd', requester_avatar_bckgrnd)
@@ -651,17 +806,17 @@ export class NotifyService {
       url: link,
     }, {
       type: 'minimalist-pooled',
-      delay: 6000,
+      delay: 600000,
       placement: {
         from: 'top',
-        align: 'center'
+        align: 'right'
       },
       // '<span data-notify="icon"></span>' +
       // '<img data-notify="icon" class="img-circle pull-left">' +
       // [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
 
       // '<span class="foreground-notification-img-circle pull-left  [ngStyle]="{"background": '+ requester_avatar_bckgrnd +' } ">' +
-      // requester_avatar_initial 
+      // requester_avatar_initial
       // +'</span>' +
       template: '<div data-notify="container" class="col-3 col-sm-3 alert alert-{0}" role="alert" style="z-index: 1051; box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
 

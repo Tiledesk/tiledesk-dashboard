@@ -44,7 +44,7 @@
     }
 
     .tiledesk-unserved-toast__sender {
-        font-weight: 700;
+        font-weight: 400 !important;
         color: #212529;
         font-size: 1rem;
         line-height: 1.35;
@@ -52,9 +52,9 @@
 
     .tiledesk-unserved-toast__msg {
         margin-top: 0.35rem;
-        font-size: 0.875rem;
+        font-size: 14px !important;
         font-weight: 400;
-        color: #6c757d;
+        color: #6c757d !important;
         line-height: 1.4;
     }
 }
