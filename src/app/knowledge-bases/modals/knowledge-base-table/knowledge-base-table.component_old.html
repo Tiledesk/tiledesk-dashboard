@@ -288,7 +288,7 @@
                 <button id="ai-settings" class="custom--button preview-settings"
                     (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                     matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
-                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    matTooltipPosition='above' matTooltipHideDelay="100">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#fff" style="vertical-align: middle;">
@@ -305,7 +305,7 @@
                 <!-- ---------------------------------------- -->
                 <button id="kb-preview" class="custom--button preview" aria-label="Preview"
                     (click)="$event.stopPropagation(); onOpenBaseModalPreview()" matTooltipClass="kb-custom-mat-tooltip"
-                    matTooltip="{{'KbPage.KBpreview' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltip="{{'KbPage.KBpreview' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
                     matTooltipHideDelay="100">
                     <!-- <span class="material-icons-round">play_arrow</span> -->
                     <span>
@@ -323,7 +323,7 @@
                 <!-- custom--button add-content -->
                 <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
                     (click)="$event.stopPropagation(); onOpenAddContent()" matTooltipClass="kb-custom-mat-tooltip"
-                    matTooltip="{{'KbPage.Add' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltip="{{'KbPage.Add' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
                     matTooltipHideDelay="100">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"

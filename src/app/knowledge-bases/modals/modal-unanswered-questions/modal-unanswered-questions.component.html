@@ -81,7 +81,7 @@
               class="uq-open-conversation-hint"
               matTooltipClass="kb-custom-mat-tooltip"
               [matTooltip]="'KbPage.GoToConversation' | translate"
-              matTooltipPosition="before"
+              matTooltipPosition="above"
               matTooltipHideDelay="100"
               tabindex="0"
               [attr.aria-label]="'KbPage.GoToConversation' | translate">
@@ -91,7 +91,7 @@
               matTooltipClass="kb-custom-mat-tooltip" 
               [matTooltip]="'AddQuestionToKB' | translate" 
               #tooltip="matTooltip" 
-              matTooltipPosition='before' 
+              matTooltipPosition='above' 
               matTooltipHideDelay="100"
               (click)="onOpenAddKnowledgeBaseModal(q)">
               <mat-icon class="add-icon">add_circle_outline</mat-icon>
@@ -100,7 +100,7 @@
               matTooltipClass="kb-custom-mat-tooltip" 
               [matTooltip]="'DiscardQuestion' | translate" 
                #tooltip="matTooltip" 
-              matTooltipPosition='before' 
+              matTooltipPosition='above' 
               matTooltipHideDelay="100"
               (click)="onDiscardQuestion(q)">
               <mat-icon class="delete-icon">delete_outline</mat-icon>
@@ -111,7 +111,7 @@
               class="uq-open-conversation-hint"
               matTooltipClass="kb-custom-mat-tooltip"
               [matTooltip]="'KbPage.ClickToViewConversation' | translate"
-              matTooltipPosition="before"
+              matTooltipPosition="above"
               matTooltipHideDelay="100"
               tabindex="0"
               [attr.aria-label]="'KbPage.ClickToViewConversation' | translate">
@@ -121,7 +121,7 @@
               matTooltipClass="kb-custom-mat-tooltip"
               [matTooltip]="'KbPage.DeleteAnsweredQuestion' | translate"
                #tooltip="matTooltip" 
-              matTooltipPosition='before' 
+              matTooltipPosition='above' 
               matTooltipHideDelay="100"
               (click)="onDeleteAnsweredQuestion(q)">
               <mat-icon class="delete-icon">delete_outline</mat-icon>
