@@ -1,13 +1,55 @@
 <div class="add-content-container unanswered-questions-modal">
  
-  <div class="preview-count-left" style="margin-bottom: 12px;">
-    <div>
-        <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="refreshList()">
-            <mat-icon>refresh</mat-icon>
+   <div class="preview-count-left" style="margin-bottom: 12px;">
+    <div class="left-side-wpr" style="display: flex;align-items: baseline;"> 
+      <div class="refresh-btn-wpr">
+          <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="refreshList()">
+              <mat-icon>refresh</mat-icon>
+          </button>
+      </div>
+      <div class="contents-count" style="font-size: 14px;"> {{'KbPage.TotalQuestions' | translate }}: 
+        <span class="contents-count-num" style="font-weight: 500;" >
+          {{ unansweredQuestionsCount }}
+        </span>
+      </div>
+    </div>
+    <div *ngIf="listMode === 'unanswered'" class="kb-stats-download" >
+  
+        <button type="button" class="btn btn-outlined export-to-csv-btn" [matMenuTriggerFor]="unansweredExportFormatMenu">
+          {{ 'Export' | translate }}
+          <span class="material-icons" style="vertical-align: middle; margin-left: 4px;">
+            save_alt
+          </span>
         </button>
-    </div>
-    <div class="contents-count" style="font-size: 14px;"> {{'KbPage.TotalQuestions' | translate }}: <span class="contents-count-num" style="font-weight: 500;" >{{ unansweredQuestionsCount }}</span>
-    </div>
+        <mat-menu #unansweredExportFormatMenu="matMenu">
+          <button mat-menu-item type="button" (click)="downloadUnansweredQuestions('csv')">
+            <!-- Export as CSV  -->
+            {{'ExportAsCSV' | translate}}
+          </button>
+          <button mat-menu-item type="button" (click)="downloadUnansweredQuestions('json')">
+            <!-- Export as JSON  -->
+            {{'ExportAsJSON' | translate}}</button>
+        </mat-menu>
+      </div>
+      <div *ngIf="listMode === 'answered'" class="kb-stats-download" >
+        <button type="button" class="btn btn-outlined export-to-csv-btn" [matMenuTriggerFor]="answeredExportFormatMenu">
+          {{ 'Export' | translate }}
+          <span class="material-icons" style="vertical-align: middle; margin-left: 4px;">
+            save_alt
+          </span>
+        </button>
+        <mat-menu #answeredExportFormatMenu="matMenu">
+          <button mat-menu-item type="button" (click)="downloadAnsweredQuestions('csv')">
+            <!-- Export as CSV  -->
+            {{'ExportAsCSV' | translate}}
+          </button>
+          <button mat-menu-item type="button" (click)="downloadAnsweredQuestions('json')">
+            <!-- Export as JSON  -->
+            {{'ExportAsJSON' | translate}}
+          </button>
+        </mat-menu>
+      </div>
+
   </div>
 
   <!-- *ngIf="!showUQTableSpinner" -->

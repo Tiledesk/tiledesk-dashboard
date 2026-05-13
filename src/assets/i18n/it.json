@@ -3224,6 +3224,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Nel file CSV da caricare, le colonne sono separate da",
     "ExportAndImport":"Esporta e Importa",
     "ExportAsJSON": "Esporta come JSON",
+    "ExportAsCSV": "Esporta come CSV",
     "ImportFromJSON": "Importa da JSON",
     "ImportFromCSV":"Importa da CSV",
     "ConvertToOffline":"Converti in offline",

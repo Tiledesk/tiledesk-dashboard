@@ -37,7 +37,8 @@
 .preview-count-left {
   width: 100%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .upgrade-title {
