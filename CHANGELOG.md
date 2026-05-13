@@ -1,7 +1,9 @@
 # tiledesk-dashboard
  
-### 2.7.212-stage (not published)
+### 2.7.212-stage
 - Implement multi-project availability
+- Adds the ability to export unanswered and answered questions in CSV or JSON format
+- Enables the message retention tab in the project settings
 
 ### 2.7.176 (not published)
 - Implements multi-project availability
