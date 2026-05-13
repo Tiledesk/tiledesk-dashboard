@@ -1,0 +1,27 @@
+<div class="analytics-new-page">
+  <div *ngIf="loading" class="analytics-new-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>{{ 'AnalyticsNew.Loading' | translate }}</p>
+  </div>
+
+  <div *ngIf="!loading && configError" class="analytics-new-state analytics-new-state--error">
+    <p>{{ 'AnalyticsNew.ConfigurationMissing' | translate }}</p>
+  </div>
+ 
+ 
+
+  <div *ngIf="!loading && tokenError && !configError" class="analytics-new-state analytics-new-state--error">
+    <p>{{ 'AnalyticsNew.TokenError' | translate }}</p>
+  </div>
+ 
+  <iframe
+    *ngIf="embedUrl && !loading"
+    #analyticsIframe
+    class="analytics-new-iframe"
+    [src]="embedUrl"
+    title="Analytics"
+    frameborder="0"
+    allow="clipboard-read; clipboard-write"
+  ></iframe>
+
+</div>

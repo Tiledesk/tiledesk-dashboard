@@ -1,5 +1,8 @@
 # tiledesk-dashboard
  
+### 2.7.212-stage (not published)
+- Implement multi-project availability
+
 ### 2.7.176 (not published)
 - Implements multi-project availability
 
@@ -7,6 +10,19 @@
 - Adds OpenAI GPT-5.5 model
 
 ### 2.7.174
+- Fixed the bug: the permission to Create a Department does not work
+- Fixes bug: The name displayed in the navbar on the support page is incorrect
+
+### 2.7.211-stage 
+- Adds new analytics (fix)
+
+### 2.7.210-stage 
+- Adds new analytics
+
+### 2.7.209-stage 
+- Adds OpenAI GPT-5.5 model
+
+### 2.7.208-stage 
 - Fixed the bug: the permission to Create a Department does not work
 - Fixes bug: The name displayed in the navbar on the support page is incorrect
 
