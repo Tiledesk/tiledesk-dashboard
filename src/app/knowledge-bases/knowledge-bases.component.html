@@ -24,9 +24,26 @@
       <div class="kb-layout" style="display: flex; flex-direction: row; height: 100%;">
         <!-- Sidebar sinistra -->
         <div class="kb-sidebar">
-          <div class="sidebar-title" >
-         
-            {{ 'KbPage.YourKnowledgeBases' | translate }}
+          <!-- Sidebar header: title + alphabetical sort toggle. The toggle
+               cycles between A->Z (default) and Z->A; the chosen direction
+               is persisted in localStorage so it survives reloads. The
+               default KB (starred) is always pinned on top regardless of
+               the chosen direction (see `sortNamespacesInPlace()` in TS). -->
+          <div class="sidebar-title kb-sidebar-title">
+            <span>{{ 'KbPage.YourKnowledgeBases' | translate }}</span>
+            <button *ngIf="!isLoadingNamespaces && namespaces?.length > 1"
+              type="button"
+              class="kb-sort-toggle"
+              [attr.aria-label]="(kbSortOrder === 'asc' ? 'KbPage.SortAZ' : 'KbPage.SortZA') | translate"
+              matTooltipClass="kb-custom-mat-tooltip"
+              [matTooltip]="(kbSortOrder === 'asc' ? 'KbPage.SortAZ' : 'KbPage.SortZA') | translate"
+              matTooltipPosition="below"
+              matTooltipHideDelay="100"
+              (click)="toggleKbSortOrder()">
+              <mat-icon class="kb-sort-toggle__icon">
+                {{ kbSortOrder === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
+              </mat-icon>
+            </button>
           </div>
 
           <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
@@ -316,15 +333,27 @@
                   </div>
 
                   <div class="kb-stats-cards" *ngIf="selectedNamespace">
-                    <div class="kb-stats-card">
+                    <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
+                      [attr.aria-label]="('KbPage.KbStatsContents' | translate) + ' — ' + ('KbPage.Contents' | translate)"
+                      (click)="onKbStatsContentsClick()"
+                      (keydown.enter)="onKbStatsContentsClick()"
+                      (keydown.space)="$event.preventDefault(); onKbStatsContentsClick()">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsContents' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--dark">{{ kbsContentTotalCount }}</div>
                     </div>
-                    <div class="kb-stats-card">
+                    <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
+                      [attr.aria-label]="('KbPage.KbStatsAnswered' | translate) + ' — ' + ('KbPage.AnsweredQuestionsTab' | translate)"
+                      (click)="onKbStatsAnsweredClick()"
+                      (keydown.enter)="onKbStatsAnsweredClick()"
+                      (keydown.space)="$event.preventDefault(); onKbStatsAnsweredClick()">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsAnswered' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--answered">{{ kbStatsAnsweredCount }}</div>
                     </div>
-                    <div class="kb-stats-card">
+                    <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
+                      [attr.aria-label]="('KbPage.KbStatsUnanswered' | translate) + ' — ' + ('KbPage.UnansweredQuestionsTab' | translate)"
+                      (click)="onKbStatsUnansweredClick()"
+                      (keydown.enter)="onKbStatsUnansweredClick()"
+                      (keydown.space)="$event.preventDefault(); onKbStatsUnansweredClick()">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsUnanswered' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--unanswered">{{ kbStatsUnansweredCount }}</div>
                     </div>

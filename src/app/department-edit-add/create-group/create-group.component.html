@@ -18,13 +18,13 @@
   </div>
 
   <div class="row" style="margin-bottom: 15px;">
-    <label *ngIf="!deptName_toUpdate" class="col-xs-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
+    <label *ngIf="!deptName_toUpdate" class="col-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
       {{ "GroupName" | translate}}
     </label>
-    <label *ngIf="deptName_toUpdate" class="col-xs-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
+    <label *ngIf="deptName_toUpdate" class="col-12 custom-label-in-sidebar" style="margin-bottom: 0px;">
       {{ "GroupName" | translate}} ({{'suggested' | translate }})
     </label>
-    <div class="col-xs-12">
+    <div class="col-12">
       <div class="group-name-input-wrap">
         <input [(ngModel)]="group_name" class="input" (ngModelChange)="onChangeGroupName($event)" type="text"
           style="margin-top: 2px;margin-bottom: 0px;" placeholder="{{'EnterTheGroupName' | translate}}">

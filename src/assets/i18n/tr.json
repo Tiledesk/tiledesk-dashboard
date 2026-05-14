@@ -14,6 +14,7 @@
     "Teammates": "takım arkadaşları",
     "TeammatesCapitalized": "Takım arkadaşları",
     "TeammateInitial": "T",
+    "TeammatesCarouselShowAll": "Tüm ekip arkadaşlarını göster",
     "ProjectSettings_Initials": "PA",
     "ProjectSettings": "Proje ayarları",
     "Groups": "Gruplar",
@@ -1671,6 +1672,8 @@
         "Open": "Açık"
     },
     "RequestMsgsPage": {
+       "ShowOriginalMessage": "Orijinal mesajı göster",
+        "HideQuotedText": "Alıntı metnini gizle",
         "ConversationUpdatedSuccessfully": "Konuşma başarıyla güncellendi",
         "ThereWasProblemUpdatingTheConversation": "Konuşmayı güncellerken bir sorun oluştu",
         "MessagesOfTheRequest": "Konuşmanın mesajları",
@@ -2104,6 +2107,8 @@
         "LearnMoreAboutOH": "Çalışma saatleri hakkında daha fazla bilgi edinin"
     },
     "KbPage": {
+        "GoToConversation": "Görüşmeye git",
+        "ClickToViewConversation": "Görüşmeyi görüntülemek için tıklayın",
         "KbStatsContents": "İçerikler",
         "KbStatsAnswered": "Cevaplananlar",
         "KbStatsUnanswered": "Cevaplanmayanlar",
@@ -2201,6 +2206,7 @@
         "titleUrls": "URL'lerden içe aktar",
         "helpUrls": "Genel URL'lerdeki web sayfalarını aşağıdaki metin alanına bir dönüş işaretiyle ayırarak ekleyin.",
         "titleTextareaUrls": "URL'lerin listesi",
+        "AddUrlsFromSitemap": "Sitemap'ten URL'ler ekleyin",
         "placeholderUrls": "URL'leri girin",
         "infoUrls": "Satır başına bir URL.",
         "NoKbMatchParams": "Ingen matchning för de angivna parametrarna",
@@ -2225,6 +2231,7 @@
         "TheNamespaceHasBeenSuccessfullyUpdated": "Bilgi Bankası başarıyla güncellendi",
         "NewNamespace": "Yeni Bilgi Tabanı",
         "NamespaceName": "Bilgi Bankası adı",
+        "NamespaceID": "Bilgi Bankası Kimliği",
         "NewNamespaceCreatedSuccessfully": "{{namespace_name}} Bilgi Bankası başarıyla oluşturuldu",
         "CreateNewNamespace": "Yeni bir Bilgi Bankası oluşturun",
         "MaxTokens": "Maksimum Belirteçler",
@@ -2367,6 +2374,13 @@
         "ContactUsToEnableIt": "Etkinleştirmek için bizimle iletişime geçin",
         "ImportFromWebsites": "Websites'tan içe aktar",
         "AutomaticContentExtraction": "Otomatik içerik çıkarma",
+        "Hyde": "HyDE",
+        "HydeDesc": "Alma kalitesini iyileştirmek için varsayımsal yanıtlar oluşturur (daha yüksek token tüketimi).",
+        "SituatedContext": "Durumsal Bağlam",
+        "SituatedContextDescription": "Daha doğru alma için parçalarınıza durumsal bağlam ekler (daha yüksek token tüketimi ve yalnızca Otomatik içerik çıkarma ile kullanılabilir).",
+        "SituatedContextDescriptionFaq": "Daha doğru alma için parçalarınıza durumsal bağlam ekler (daha yüksek token tüketimi).",
+        "UseCache": "Önbellek kullan",
+        "ImprovesPerformanceByReducingResponseTimes": "Yanıt sürelerini azaltarak performansı iyileştirir",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hepsi bu kadar",
         "Preview2": {

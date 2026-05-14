@@ -5,6 +5,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { TooltipOptions } from 'ng2-tooltip-directive';
 import { concat, from, isObservable, Observable, of } from 'rxjs';
 import { concatMap, first, last, takeWhile } from 'rxjs/operators';
+import { TEAMMATE_STATUS } from './constants';
 
 export const CutomTooltipOptions: TooltipOptions = {
     'show-delay': 0,
@@ -857,6 +858,7 @@ export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:st
 ]
 
 export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string,  min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
+  { name: "Gpt-5.5",              value: "gpt-5.5",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000,reasoning: true   }, 
   { name: "Gpt-5.4",              value: "gpt-5.4",               description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
   { name: "Gpt-5.4 mini",         value: "gpt-5.4-mini",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },  
   { name: "Gpt-5.4 nano",         value: "gpt-5.4-nano",          description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active", min_tokens: 1, max_output_tokens: 128000, reasoning: true  },
@@ -873,7 +875,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
   { name: "GPT-4o mini",          value: "gpt-4o-mini",           description: "TYPE_GPT_MODEL.gpt-4o-mini.description",           status: "active", min_tokens: 1, max_output_tokens: 16384, reasoning: false  },
   { name: "GPT-4 (Legacy)",       value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                 status: "active", min_tokens: 1, max_output_tokens: 8192, reasoning: false   },
   { name: "GPT-4 Turbo Preview",  value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",   status: "active", min_tokens: 1, max_output_tokens: 4096, reasoning: false   },
- { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "active", min_tokens: 1, max_output_tokens: 4096,  reasoning: false    },
+  { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "active", min_tokens: 1, max_output_tokens: 4096,  reasoning: false    },
 
   { name: "GPT-3 (DaVinci)",      value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", min_tokens: 1, max_output_tokens: 4096,  reasoning: false   },
   { name: "OpenAI o1-mini",       value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",               status: "inactive", min_tokens: 1, max_output_tokens: 65536,  reasoning: false  },
@@ -912,60 +914,6 @@ export function getLlmModelDefaultMaxTokens(modelValue: string): number {
   return Math.min(b.max_output_tokens, LLM_DEFAULT_MAX_TOKENS_CAP);
 }
 
-// export const OPENAI_MODEL = [
-//   { name: "Gpt-5",                value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active",   maxTokens: 256000 },
-//   { name: "Gpt-5-mini",           value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active",   maxTokens: 128000 },
-//   { name: "Gpt-5-nano",           value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "active",   maxTokens: 64000 },
-//   { name: "GPT-4.1",              value: "gpt-4.1",               description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", maxTokens: 128000 },
-//   { name: "GPT-4.1 mini",         value: "gpt-4.1-mini",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", maxTokens: 64000 },
-//   { name: "GPT-4.1 nano",         value: "gpt-4.1-nano",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", maxTokens: 32000 },
-//   { name: "GPT-4o",               value: "gpt-4o",                description: "TYPE_GPT_MODEL.gpt-4o.description",                status: "active",   maxTokens: 128000 },
-//   { name: "GPT-4o mini",          value: "gpt-4o-mini",           description: "TYPE_GPT_MODEL.gpt-4o-mini.description",           status: "active",   maxTokens: 64000 },
-//   { name: "GPT-4 (Legacy)",       value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                 status: "active",   maxTokens: 32000 },
-//   { name: "GPT-4 Turbo Preview",  value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",   status: "active",   maxTokens: 128000 },
-//   { name: "GPT-3 (DaVinci)",      value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", maxTokens: 4000 },
-//   { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "active",   maxTokens: 16000 },
-//   { name: "OpenAI o1-mini",       value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",               status: "active",   maxTokens: 64000 },
-//   { name: "OpenAI o1-preview",    value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",            status: "active",   maxTokens: 128000 }
-// ];
-
-// export const ANTHROPIC_MODEL = [
-//   { name: "Claude-3.5 Sonnet",  value: "claude-3-5-sonnet-20240620",   description: "", status: "active",  maxTokens: 200000 },
-//   { name: "Claude 3.5 Haiku",   value: "claude-3-5-haiku-latest",      description: "", status: "active",  maxTokens: 200000 },
-//   { name: "Claude 3.7 Sonnet",  value: "claude-3-7-sonnet-latest",     description: "", status: "active",  maxTokens: 200000 },
-//   { name: "Claude Opus 4",      value: "claude-opus-4-0",              description: "", status: "active",  maxTokens: 200000 },
-//   { name: "Claude Sonnet 4",    value: "claude-sonnet-4-0",            description: "", status: "active",  maxTokens: 200000 }
-// ];
-
-// export const GOOGLE_MODEL = [
-//   { name: "Gemini 2.5 Flash",        value: "gemini-2.5-flash",        description: "", status: "active", maxTokens: 1000000 },
-//   { name: "Gemini 2.5 Flash Lite",   value: "gemini-2.5-flash-lite",   description: "", status: "active", maxTokens: 128000 },
-//   { name: "Gemini 2.0 Flash",        value: "gemini-2.0-flash",        description: "", status: "active", maxTokens: 1000000 },
-//   { name: "Gemini 2.0 Flash Lite",   value: "gemini-2.0-flash-lite",   description: "", status: "active", maxTokens: 128000 },
-//   { name: "Gemini-pro",              value: "gemini-pro",              description: "", status: "inactive", maxTokens: 32000 }
-// ];
-
-// export const COHERE_MODEL = [
-//   { name: "Command R",               value: "command-r",              description: "", status: "inactive", maxTokens: 128000 },
-//   { name: "Command R+",              value: "command-r-plus",         description: "", status: "inactive", maxTokens: 128000 },
-//   { name: "Command R7B (12-2024)",   value: "command-r7b-12-2024",    description: "", status: "active",   maxTokens: 128000 },
-//   { name: "Command A (03-2025)",     value: "command-a-03-2025",      description: "", status: "active",   maxTokens: 200000 },
-//   { name: "Command A Vision (07-2025)", value: "command-a-vision-07-2025", description: "", status: "active", maxTokens: 200000 }
-// ];
-
-// export const GROQ_MODEL = [
-//   { name: "Llama 3.3 70B – Versatile", value: "llama-3.3-70b-versatile", description: "", status: "active", maxTokens: 32000 },
-//   { name: "Llama 3.1 8B – Instant",    value: "llama-3.1-8b-instant",    description: "", status: "active", maxTokens: 8000 },
-//   { name: "Gemma 2 – 9B Instruct",     value: "gemma2-9b-it",            description: "", status: "active", maxTokens: 8000 },
-//   { name: "Allam 2 – 7B",              value: "allam-2-7b",              description: "", status: "active", maxTokens: 8000 },
-//   { name: "Qwen 3 – 32B",              value: "qwen/qwen3-32b",          description: "", status: "active", maxTokens: 32000 },
-//   { name: "Llama Guard 4 – 12B",       value: "meta-llama/llama-guard-4-12b", description: "", status: "active", maxTokens: 16000 },
-//   { name: "DeepSeek R1 Distilled Llama 70B", value: "deepseek-r1-distill-llama-70b", description: "", status: "active", maxTokens: 32000 }
-// ];
-
-// export const DEEPSEEK_MODEL = [
-//   { name: "Deepseek-chat", value: "deepseek-chat", description: "", status: "active", maxTokens: 32000 }
-// ];
 
 export var OLLAMA_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
@@ -1008,6 +956,46 @@ export const CHANNELS = [
     { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
 
 ]
+
+/**
+ * Restituisce lo status dell'utente nel contesto di un project.
+ * Basato su user_available e profileStatus dell'oggetto projectUser.
+ *
+ * @param projectUser - Oggetto con user_available e profileStatus (es. ProjectUser dal websocket)
+ * @returns Oggetto da TEAMMATE_STATUS (Available, Unavailable, Inactive) o null se i dati non sono sufficienti
+ */
+export function getUserStatusFromProjectUser(projectUser: {
+    user_available?: boolean;
+    profileStatus?: string;
+    profile_status?: string;
+  }): typeof TEAMMATE_STATUS[number] | null {
+    if (!projectUser) {
+      return null;
+    }
+
+    const profileStatus =
+      projectUser.profileStatus ?? projectUser.profile_status ?? '';
+  
+    if (projectUser.user_available === false && profileStatus === 'inactive') {
+      return TEAMMATE_STATUS[2]; // Inactive
+    }
+    if (projectUser.user_available === false && (!profileStatus || profileStatus === '')) {
+      return TEAMMATE_STATUS[1]; // Unavailable
+    }
+    if (projectUser.user_available === true && (!profileStatus || profileStatus === '')) {
+      return TEAMMATE_STATUS[0]; // Available
+    }
+  
+    // Fallback per casi non esplicitamente gestiti
+    if (projectUser.user_available === true) {
+      return TEAMMATE_STATUS[0];
+    }
+    if (projectUser.user_available === false) {
+      return TEAMMATE_STATUS[1];
+    }
+  
+    return null;
+  }
 
 export function checkAcceptedFile(fileType, fileUploadAccept): boolean {
 
@@ -1184,16 +1172,15 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation
+export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // NOT USED 
 export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
 export const URL_hybrid_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/hybrid-search'
 export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
 export const URL_understanding_default_roles = 'https://guide.tiledesk.com/understanding-default-roles' // 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-// export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
-export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
-export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
-export const URL_getting_started_with_email_ticketing = "https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
-export const URL_canned_responses_doc = "https://gethelp.tiledesk.com/articles/canned-responses-in-the-agent-chat/"
-export const URL_tag_doc = "https://gethelp.tiledesk.com/articles/tag-chats-and-requests/"
+export const URL_creating_groups = 'https://guide.tiledesk.com/creating-groups' // 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
+export const URL_getting_started_with_email_ticketing = "https://guide.tiledesk.com/getting-started-with-email-ticketing-in-tiledesk" //"https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
+export const URL_canned_responses_doc = 'https://guide.tiledesk.com/canned-responses-in-the-agent-chat' // "https://gethelp.tiledesk.com/articles/canned-responses-in-the-agent-chat/"
+export const URL_tag_doc = 'https://guide.tiledesk.com/tag-chats-and-requests' // "https://gethelp.tiledesk.com/articles/tag-chats-and-requests/"
 export const URL_microlanguage_for_dialogflow_images_videos = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
 export const URL_dialogflow_connector_handoff_to_human_agent_example = 'https://gethelp.tiledesk.com/articles/dialogflow-connector-handoff-to-human-agent-example/' // 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/'
 export const URL_styling_your_chatbot_replies = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/'  // https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/ 
@@ -1207,32 +1194,41 @@ export const URL_external_chatbot_connect_your_own_chatbot = 'https://developer.
 
 export const URL_getting_started_for_admins = 'https://gethelp.tiledesk.com/categories/getting-started-for-admins/' // https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/
 export const URL_getting_started_for_agents = 'https://gethelp.tiledesk.com/categories/getting-started-for-agents/' //'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/'
-export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/' // NOT FOUND on gethelp
+export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://guide.tiledesk.com/manage-your-workspace/google-tag-manager-add-tiledesk-to-your-sites' // NOT FOUND on gethelp
 export const URL_setting_up_automatic_assignment = 'https://gethelp.tiledesk.com/articles/setting-up-automatic-assignment/' // https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/
 export const URL_dialogflow_connector = 'https://gethelp.tiledesk.com/articles/dialogflow-connector/'
 
 
 
 
-export const URL_web_integrations = 'https://gethelp.tiledesk.com/categories/web-integrations/'
-export const URL_install_tiledesk_on_website = 'https://gethelp.tiledesk.com/articles/install-widget-on-your-website/'
-export const URL_install_tiledesk_on_shopify = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-shopify/'
-export const URL_install_tiledesk_on_wordpress = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-wordpress/'
-export const URL_install_tiledesk_on_prestashop = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-prestashop/'
-export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
-export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
-export const URL_install_tiledesk_on_wix = "https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
-export const URL_install_tiledesk_on_magento = "https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
+export const URL_web_integrations = 'https://guide.tiledesk.com/web-integrations' // 'https://gethelp.tiledesk.com/categories/web-integrations/'
+export const URL_install_tiledesk_on_website = "https://guide.tiledesk.com/install-widget-on-your-website" //'https://gethelp.tiledesk.com/articles/install-widget-on-your-website/'
+export const URL_install_tiledesk_on_shopify = "https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-shopify "//'https://gethelp.tiledesk.com/articles/install-tiledesk-on-shopify/'
+export const URL_install_tiledesk_on_wordpress = "https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-wordpress" // 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-wordpress/'
+export const URL_install_tiledesk_on_prestashop = 'https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-prestashop' //'https://gethelp.tiledesk.com/articles/install-tiledesk-on-prestashop/'
+export const URL_install_tiledesk_on_joomla = 'https://guide.tiledesk.com/web-integrations/how-to-install-tiledesk-on-joomla' //'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
+export const URL_install_tiledesk_on_bigcommerce = 'https://guide.tiledesk.com/web-integrations/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website' //'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
+export const URL_install_tiledesk_on_wix = 'https://guide.tiledesk.com/web-integrations/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website' //"https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
+export const URL_install_tiledesk_on_magento = "https://guide.tiledesk.com/web-integrations/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website" //"https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';
 
-export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#1-ai-models';
-export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
-export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
-export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+// export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#1-ai-models';
+// export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
+// export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
+// export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+// export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
+// export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
+// export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
+export const URL_AI_model_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-1.-ai-models';
+export const URL_max_tokens_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-2.-maximum-number-of-tokens';
+export const URL_temperature_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-3.-temperature';
+export const URL_chunk_Limit_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-4.-chunks';
+export const URL_system_context_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-5.-system-context';
+export const URL_advanced_context_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-6.-advanced-context';
 export const URL_reranking_doc = "https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/re-ranking";
-export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
-export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
-export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
+export const URL_contents_sources_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-7.-get-contents-sources';
+export const URL_hyde_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-8.-hyde-hypothetical-document-embeddings';
+export const URL_use_cache_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/advanced-knowledge-base-ai-settings#id-9.-use-cache';
 // export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 export const group_assignment_doc = "https://guide.tiledesk.com/group-assignment-and-load-balancing"

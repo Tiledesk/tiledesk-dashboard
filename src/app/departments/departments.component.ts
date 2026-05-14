@@ -135,7 +135,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[DEPTS] - Role:', status.role);
         this.logger.log('[DEPTS] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ)) {
+          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE)) {
 
             this.PERMISSION_TO_CREATE_DEPT = true
             this.logger.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
@@ -154,12 +154,12 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
             this.PERMISSION_TO_READ_DEPT_DETAILS = true
             this.logger.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
           } else {
-            this.PERMISSION_TO_CREATE_DEPT = false
+            this.PERMISSION_TO_READ_DEPT_DETAILS = false
             this.logger.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
           }
         } else {
           this.PERMISSION_TO_READ_DEPT_DETAILS = true
-          this.logger.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_CREATE_DEPT);
+          this.logger.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
         }
 
 

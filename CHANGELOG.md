@@ -1,4 +1,50 @@
 # tiledesk-dashboard
+ 
+### 2.7.176 (not published)
+- Implements multi-project availability
+
+### 2.7.175
+- Adds OpenAI GPT-5.5 model
+
+### 2.7.174
+- Fixed the bug: the permission to Create a Department does not work
+- Fixes bug: The name displayed in the navbar on the support page is incorrect
+
+### 2.7.173
+- Migrates remaining Bootstrap 3 classes to Bootstrap 5
+- Removes permission HOME_READ
+- Moves in the knowledge bases page the Adds contents button on left 
+- Replaces the accordion for retrieving the Urls from a sitemap in the URL modal window with a popover
+- Updates documentation links
+- Fixes the bug: two scroll bars appear in the unassigned conversations list
+- Adds seconds to the timestamp of admin chat messages
+
+### 2.7.172
+- Adds “Situated Context" feature to modal windows for adding content to the knowledge base
+- Adds in the AI settings modal the option HyDE (Hypothetical Document Embeddings) and Use cache
+- Refactors web content knowledge base modals to improve layout and user experience
+- Adds a chip-based summary of the active scraping rules with a shortcut to open the settings, in the "Import from Website", "Import from Sitemap", and "Details" knowledge base dialogs
+- Improves the layout of the "Details" knowledge base dialog (header icons, side-by-side scraping settings, collapsible chunks)
+- Fixes the bug: the streaming preview not being re-enabled after disabling the "Use cache" option in the AI Settings dialog
+- Improves the " Import URLs from sitemap" UX with an inline link that toggles a fetch panel under the URLs textarea
+- Replaces the "Refresh rate" help icon with a hover popover on the label
+
+
+### 2.7.171
+- Improves the teammates list in the conversation list
+- Sets the default automatic content extraction available for knowledge base web content to true
+- Bug fixing
+
+
+### 2.7.170
+- Improves knowledge base statistics cards with clickable functionality
+- Fixes a bug: the default maximum token value for the GPT-40 template is 256 instead of 10000
+- Increases the line height for the text area of ​​the FAQ, URL, and Text dialog window
+- Adds an arrow to the unanswered and answered questions tables for  the navigation to the conversation
+- Implements teammates carousel in conversation page
+
+### 2.7.169
+- Improve AI settings dialog tooltips
 
 ### 2.7.168-minimal-2
 - Added welcome message and prompt

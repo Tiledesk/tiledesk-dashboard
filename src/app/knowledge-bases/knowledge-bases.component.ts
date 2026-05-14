@@ -143,6 +143,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   listSitesOfSitemap: any = [];
 
   payIsVisible: boolean = false;
+  hybridIsVisible: boolean = false;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   anErrorOccurredWhileUpdating: string;
@@ -347,6 +348,26 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
   }
 
+  /** KPI contenuti: apre il tab Contenuti. */
+  onKbStatsContentsClick(): void {
+    this.switchTab('contents');
+  }
+
+  /** KPI conteggio risposte: apre Domande → Risposte (stessa logica del tab principale). */
+  onKbStatsAnsweredClick(): void {
+    this.switchTab('unanswered');
+  }
+
+  /** KPI senza risposta: apre Domande → Non risposte. */
+  onKbStatsUnansweredClick(): void {
+    this.selectedTab = 'unanswered';
+    if (this.questionsSubTab !== 'unanswered') {
+      this.switchQuestionsSubTab('unanswered');
+    } else {
+      this.loadUnansweredQuestions(0, false);
+    }
+  }
+
   /** Rimuove `tab` / `questionsSub` dall’URL (stato obsoleto rispetto alla tab Contenuti). */
   private clearKbQuestionsDeepLinkQueryParams(): void {
     const qpm = this.route.snapshot.queryParamMap;
@@ -402,6 +423,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isLoadingNamespaces = true;
   pineconeReranking: boolean
 
+  // ---------------------------------------------------------------
+  // KB sidebar — alphabetical sort toggle.
+  // The user can flip the namespace list between A->Z (default) and
+  // Z->A via the icon next to the "Your Knowledge Bases" title.
+  // The chosen direction is persisted in localStorage so it survives
+  // reloads. The default KB (the one with `default: true`, shown with
+  // a star in the sidebar) is always pinned on top regardless of the
+  // direction (see `sortNamespacesInPlace()`); only the remaining
+  // KBs follow the alphabetical order.
+  // ---------------------------------------------------------------
+  /** Persisted localStorage key for the sort direction. Global (not
+   * scoped per project) because users typically want one stable
+   * preference across all projects. */
+  private readonly KB_SORT_ORDER_STORAGE_KEY = 'tiledesk-kb-sort-order';
+  /** Current sort direction for the namespace list in the sidebar. */
+  kbSortOrder: 'asc' | 'desc' = 'asc';
+
 
   fakeUnansered = [
       { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
@@ -446,6 +484,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
+
+    // Restore the user's preferred KB sort direction from localStorage.
+    // Done in ngOnInit (instead of constructor) to keep the constructor
+    // free of side effects (and matching the pattern of other init logic
+    // here). Falls back to the default 'asc' if missing or malformed.
+    this.restoreKbSortOrderPreference();
 
     // Misura il tempo dal click nella sidebar all'inizializzazione
     const clickTime = (window as any).kbNavigationStartTime;
@@ -932,11 +976,82 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
+        // Apply the persisted sort BEFORE selecting the "last used" KB so
+        // both the rendered order in the sidebar and any default selection
+        // logic agree on the same canonical ordering.
+        this.sortNamespacesInPlace();
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
         this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
         this.isLoadingNamespaces = false;
       }
     });
+  }
+
+  // ---------------------------------------------------------------
+  // KB sidebar sort: toggle + sort + persistence helpers.
+  // ---------------------------------------------------------------
+
+  /**
+   * Toggle the namespace list between A->Z and Z->A, persist the
+   * choice and re-sort in place. Triggered by the arrow icon next to
+   * the "Your Knowledge Bases" sidebar title.
+   */
+  toggleKbSortOrder(): void {
+    this.kbSortOrder = this.kbSortOrder === 'asc' ? 'desc' : 'asc';
+    this.persistKbSortOrderPreference();
+    this.sortNamespacesInPlace();
+  }
+
+  /**
+   * Sort `this.namespaces` in place according to `kbSortOrder`.
+   * Pinning rule: the default KB (`default === true`, the starred one
+   * in the sidebar) is always kept at index 0 regardless of direction.
+   * Comparison uses `localeCompare` with `sensitivity: 'base'` so the
+   * order is locale-aware and case-/accent-insensitive (e.g. "École"
+   * sits next to "ecole", not after "Z").
+   */
+  private sortNamespacesInPlace(): void {
+    if (!Array.isArray(this.namespaces) || this.namespaces.length < 2) {
+      return;
+    }
+    const direction = this.kbSortOrder === 'asc' ? 1 : -1;
+    this.namespaces.sort((a: any, b: any) => {
+      // Pin the default KB on top regardless of the chosen direction.
+      if (a?.default && !b?.default) return -1;
+      if (!a?.default && b?.default) return 1;
+      const nameA = (a?.name ?? '').toString();
+      const nameB = (b?.name ?? '').toString();
+      return direction * nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+    });
+  }
+
+  /**
+   * Read the persisted sort preference from localStorage (if any).
+   * Defensive: ignores invalid values so a corrupted entry doesn't
+   * throw and just falls back to the default 'asc'.
+   */
+  private restoreKbSortOrderPreference(): void {
+    try {
+      const stored = localStorage.getItem(this.KB_SORT_ORDER_STORAGE_KEY);
+      if (stored === 'asc' || stored === 'desc') {
+        this.kbSortOrder = stored;
+      }
+    } catch (_) {
+      // localStorage may be unavailable (private mode, restricted
+      // contexts): silently keep the default direction.
+    }
+  }
+
+  /**
+   * Persist the user's sort preference to localStorage. Failures are
+   * swallowed so a quota / privacy error never breaks the UI flow.
+   */
+  private persistKbSortOrderPreference(): void {
+    try {
+      localStorage.setItem(this.KB_SORT_ORDER_STORAGE_KEY, this.kbSortOrder);
+    } catch (_) {
+      // No-op: persistence is a nice-to-have, not a hard requirement.
+    }
   }
 
   isAlphaNumeric(str) {
@@ -2246,6 +2361,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
       data: {
+        hybridIsVisible: this.hybridIsVisible,
         pay: this.payIsVisible,
         hybridActive: this.isActiveHybrid
       },
@@ -2271,6 +2387,8 @@ _presentDialogImportContents() {
       disableClose: true,
       width: '400px',
       id: 'kb-test',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         askBody: previedata
@@ -2308,6 +2426,8 @@ _presentDialogImportContents() {
       hasBackdrop: true,
       disableClose: true,
       width: '360px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         pineconeReranking: this.pineconeReranking
@@ -2393,8 +2513,9 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         kb: kb,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2520,6 +2641,8 @@ _presentDialogImportContents() {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
         width: '600px',
+        autoFocus: false,
+        position: { top: '60px' },
         data: {
           selectedNamespace: this.selectedNamespace,
           prefillKb: typeOrKb
@@ -2534,7 +2657,12 @@ _presentDialogImportContents() {
           }
         } else if (result && result.isSingle === "false") {
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-          this.getListOfKb(paramsDefault, 'add-multi-faq')
+          // FIXED(load-more-after-multi-add): switched from 'add-multi-faq' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add')
         }
       });
       return;
@@ -2566,6 +2694,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
@@ -2581,6 +2711,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
       },
@@ -2595,7 +2727,12 @@ _presentDialogImportContents() {
         }
       } else if (result && result.isSingle === "false") {
         let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-        this.getListOfKb(paramsDefault, 'add-multi-faq')
+        // FIXED(load-more-after-multi-add): switched from 'add-multi-faq' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add')
       }
     });
   }
@@ -2604,8 +2741,9 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2635,8 +2773,9 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalSiteMapComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '500px',
       autoFocus: false,
+      position: { top: '60px' },
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
         refreshRateIsEnabled: this.refreshRateIsEnabled,
@@ -2671,6 +2810,7 @@ _presentDialogImportContents() {
     this.logger.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
     const dialogRef = this.dialog.open(ModalUploadFileComponent, {
       autoFocus: false,
+      position: { top: '60px' },
       width: '400px'
       // data: {
       //   calledBy: 'step1'
@@ -2875,7 +3015,29 @@ _presentDialogImportContents() {
           // this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
+
+      if (key.includes("HYB")) {
+        let hybrid = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - hybrid key&value', hybrid);
+        if (hybrid[1] === "F") {
+          this.hybridIsVisible = false;
+          // this.logger.log("hybridIsVisible: ", this.hybridIsVisible)
+        } else {
+          this.hybridIsVisible = true;
+          // this.logger.log("hybridIsVisible: ", this.hybridIsVisible)
+        }
+      }
     })
+
+    if (!public_Key.includes("PAY")) {
+      this.payIsVisible = false;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - pay isVisible', this.payIsVisible);
+    }
+
+    if (!public_Key.includes("HYB")) {
+      this.hybridIsVisible = false;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - hybrid isVisible', this.hybridIsVisible);
+    }
   }
 
 
@@ -3129,11 +3291,19 @@ _presentDialogImportContents() {
           if (index !== -1) {
             this.kbsList[index] = kb;
           } else {
-            if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-              this.kbsList.unshift(kb);
-            } else {
-              this.kbsList.push(kb);
-            }
+            // FIXED(load-more-after-multi-add): the four call sites that used
+            // to pass 'add-multi-faq' / 'onAddMultiKb' now pass 'after-add',
+            // which is handled by the spread-replace branch above. The
+            // `unshift` path below therefore became dead code after the fix
+            // and is kept commented for archaeological reference (it can be
+            // safely deleted in a follow-up cleanup).
+            //
+            // if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
+            //   this.kbsList.unshift(kb);
+            // } else {
+            //   this.kbsList.push(kb);
+            // }
+            this.kbsList.push(kb);
           }
           this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
           this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
@@ -3362,7 +3532,12 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+      // FIXED(load-more-after-multi-add): switched from 'onAddMultiKb' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
@@ -3449,7 +3624,12 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb');
+      // FIXED(load-more-after-multi-add): switched from 'onAddMultiKb' to
+      // 'after-add' so getListOfKb performs a clean clear+replace of `kbsList`
+      // instead of the legacy `unshift` merge. Keeps the local list as a
+      // contiguous slice of the server pagination so subsequent "Load more"
+      // clicks can never return items already cached locally.
+      this.getListOfKb(paramsDefault, 'after-add');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
@@ -4217,6 +4397,8 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
       data: {
         selectedNamespace: this.selectedNamespace,
         prefillKb: {

@@ -4,7 +4,8 @@
 
     <span *ngIf="!isopenasetting" id="settings" class="material-icons-outlined"
       (click)="presentDialogAiSettings(isopenasetting = !isopenasetting)">
-      settings
+     <!-- settings -->
+      tune
     </span>
     <span *ngIf="isopenasetting" id="settings" class="material-icons-outlined close-ai-settings"
       (click)="closeDialogAiSettings(isopenasetting = !isopenasetting)">
@@ -23,24 +24,27 @@
 </div>
 <div mat-dialog-content (click)="handleClickInside($event)">
 
-  <div class="form--container">
+  <div class="form--container question-preview-form">
      <div class="question-header-row">
-      <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
+      <p class="answer-title">{{ 'FaqPage.Question' | translate }}<span  [style.color]="!question?.trim() ? '#c62445' : 'transparent'">*</span></p>
+    </div>
+     <textarea #questionTextarea class="question-textarea" [ngClass]="{'required': !question?.trim()}" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      <div class="preview-stream-toggle-row">
       <mat-slide-toggle [(ngModel)]="previewUseStream" color="primary" class="preview-stream-toggle"
-       matTooltipClass="kb-custom-mat-tooltip" 
+        matTooltipClass="kb-custom-mat-tooltip" 
         matTooltip="{{'ResponseInStreaming' | translate }}" 
         #tooltip="matTooltip"
         matTooltipPosition='left' 
-        matTooltipHideDelay="100">
+        matTooltipHideDelay="100"
+        [disabled]="useCache">
         {{ 'KbPage.PreviewStream' | translate }}
       </mat-slide-toggle>
-    </div>
-     <textarea #questionTextarea class="question-textarea" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
-        (input)="onTextareaInput(questionTextarea)" (keydown.enter)="onEnterKeyDown($event)" rows="1"></textarea>
+      </div>
 
-        <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;margin-top: -4px;">
+        <!-- <div class="question-required-error-msg" *ngIf="!question?.trim()" style="color:#c62445; font-size: 12px;margin-top: -4px;">
           {{'QuestionIsRequired' | translate}}
-        </div>
+        </div> -->
   </div>
 
   <!-- KB Tags --> 

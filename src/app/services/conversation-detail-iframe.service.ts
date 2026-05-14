@@ -176,17 +176,35 @@ export class ConversationDetailIframeService {
   }
 
   /**
-   * Mostra iframe
+   * Mostra il container solo se l’iframe è già stato creato (nessun primo load senza URL da route).
+   * Utile da NavigationStart: evita di chiamare show() senza params prima di ActivatedRoute.
    */
+  public revealContainerIfInitialized(): void {
+    if (!this.isInitialized || !this.iframeContainer) {
+      return;
+    }
+    this.iframeContainer.style.display = 'block';
+    this.isVisible = true;
+  }
 
+  /**
+   * Mostra iframe (e inizializza alla prima chiamata con parametri da route).
+   */
   public show(params?: { IDConv?: string; Convtype?: string; FullNameConv?: string }): void {
-    if (params) {
+    if (params !== undefined) {
       this.setRouteParams(params);
     }
+
     if (!this.isInitialized) {
+      // Comportamento precedente (lasciato come riferimento — ripristinabile se serve):
+      // this.initialize();
+      // Problema: show() senza argomenti (es. su NavigationStart prima di route.params) creava l’iframe con URL senza IDConv → primo load chat “sbagliato”.
+      if (arguments.length === 0) {
+        return;
+      }
       this.initialize();
     }
-    
+
     if (this.iframeContainer) {
       this.iframeContainer.style.display = 'block';
       this.isVisible = true;

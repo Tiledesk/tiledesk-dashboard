@@ -158,7 +158,7 @@
 .upsell {
   padding: 0 40px;
   display: flex;
-  align-items: flex-end;
+  align-items:  center;
   margin-top: 10px;
 
   .upsell-text {
@@ -168,6 +168,9 @@
   .upsell-text-link {
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
+  } &:hover .upsell-text-link {
+    text-decoration: underline;
   }
 }
 

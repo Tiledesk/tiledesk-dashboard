@@ -426,7 +426,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       const noAuthMatch = cleanUrl.match(/\/project\/[^\/]+\/([^\/]+)\/no-auth$/);
       if (noAuthMatch && noAuthMatch[1]) {
         const callingPage = noAuthMatch[1];
-        this.logger.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
+        console.log('[NAVBAR] Detected /no-auth route with callingPage:', callingPage);
         
         // Imposta il titolo in base al callingPage
         if (callingPage === 'wsrequests' || callingPage === 'all-conversations') {
@@ -451,6 +451,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.currentTitle = 'WhatsAppBroadcasts';
         } else if (callingPage === 'new-broadcast') {
           this.currentTitle = 'NewBroadcast';
+
         } else {
           // Fallback: usa il callingPage stesso
           this.currentTitle = callingPage;
@@ -578,6 +579,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     else if (cleanUrl.indexOf('/activities') !== -1) {
       this.currentTitle = 'Activities';
       this.currentIcon = null;
+    } else if (cleanUrl.indexOf('/support') !== -1) {
+      this.currentTitle = 'Support';
+      this.currentIcon = null;  
     }
     // else if (
     //   cleanUrl.indexOf('/bots/') !== -1 &&

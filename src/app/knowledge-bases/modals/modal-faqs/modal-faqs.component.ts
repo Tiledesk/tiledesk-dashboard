@@ -7,6 +7,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BrandService } from 'app/services/brand.service';
 import { URL_kb_contents_tags } from 'app/utils/util';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 // import { FaqService } from 'app/services/faq.service';
 
 @Component({
@@ -35,6 +36,9 @@ export class ModalFaqsComponent implements OnInit {
     url: '',
     content: ''
   }
+
+  /** Sent to the server as `situated_context`; always included in the body (default false). */
+  situatedContextEnabled = false;
 
   // KB Tags
   kbTag: string = '';
@@ -161,10 +165,15 @@ export class ModalFaqsComponent implements OnInit {
       'source': this.kb.name,
       'content': content, // this.kb.content,
       'type': 'faq',
-      'tags': this.kbTagsArray
+      'tags': this.kbTagsArray,
+      'situated_context': this.situatedContextEnabled
     }
     this.dialogRef.close({'body': body, 'isSingle': isSingle});
 
+  }
+
+  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
+    this.situatedContextEnabled = event.checked;
   }
 
   onCloseBaseModal() {
@@ -252,6 +261,7 @@ export class ModalFaqsComponent implements OnInit {
       const file: File = fileList[0];
       const formData: FormData = new FormData();
       formData.set('delimiter', this.csvColumnsDelimiter);
+      formData.set('situated_context', String(this.situatedContextEnabled));
       formData.append('uploadFile', file, file.name);
       this.logger.log('FORM DATA ', formData)
 

@@ -93,8 +93,10 @@ export class ConversationDetailIframeComponent implements OnInit, OnDestroy {
       
       if (url.includes('/conversation-detail')) {
         // Navigando VERSO questa route
-        this.iframeService.show();
-        
+        // Prima: this.iframeService.show() — poteva inizializzare l’iframe senza route.params (NavigationStart prima di ngOnInit).
+        // this.iframeService.show();
+        this.iframeService.revealContainerIfInitialized();
+
         // Aggiorna contatore badge
         setTimeout(() => {
           this.iframeLoadCount = this.iframeService.getLoadCount();

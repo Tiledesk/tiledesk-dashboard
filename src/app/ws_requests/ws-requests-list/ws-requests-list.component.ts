@@ -132,7 +132,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   project_user_length: number;
   display_teammates_in_scroll_div = false;
-  showRealTeammates = false
+  showRealTeammates = false;
+
+  /** Max avatar visibili nella striscia quando è collassata; skeleton e chip overflow allineati a questo valore. */
+  readonly teammateCarouselVisibleCap = 20;
+  teammatesCarouselExpanded = false;
 
   projectUserAndLeadsArray = []
   projectUserBotsAndDeptsArray = []
@@ -426,16 +430,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   
   
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
-    if (this.projectId) {
-      this.router.navigate(['project', this.projectId, 'conversation-detail']);
-    } else {
-      this.router.navigate(['conversation-detail']);
-    }
+    // if (this.projectId) {
+    //   this.router.navigate(['project', this.projectId, 'conversation-detail']);
+    // } else {
+    //   this.router.navigate(['conversation-detail']);
+    // }
 
-    // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    // let url = baseUrl
-    // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    // myWindow.focus();
+    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
   }
 
   getProjectPlan() {
@@ -730,8 +734,13 @@ getProjectUserRole() {
         // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
         this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
         this.projectUserArray = _projectUsers;
+        this.teammatesCarouselExpanded = false;
 
         _projectUsers.forEach(projectuser => {
+          /* Il template carosello usa *_rt (aggiornati dal WS). Senza bootstrap da HTTP restano undefined
+           * finché non arriva un evento WS → es. user_available === false ma user_available_rt !== false. */
+          projectuser['user_available_rt'] = projectuser['user_available'];
+          projectuser['profileStatus_rt'] = projectuser['profileStatus'];
 
           this.logger.log('WS-REQUESTS-LIST - GET PROJECT-USERS forEach projectuser ', projectuser);
           let imgUrl = ''
@@ -750,8 +759,8 @@ getProjectUserRole() {
             }
           });
 
-          // this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
-          // this.listenToAllProjectUsersOfProject$(projectuser)
+          this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
+          this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
 
@@ -792,8 +801,7 @@ getProjectUserRole() {
       )
       .subscribe((projectUser_from_ws_subscription) => {
         this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription id_user ', projectUser_from_ws_subscription['id_user']);
-      
-        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription ', projectUser_from_ws_subscription);
        
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
         this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS $UBSC TO WS PROJECT-USERS projectuser[_id] ', projectuser['_id'])
@@ -817,6 +825,9 @@ getProjectUserRole() {
           if ('profileStatus' in projectUser_from_ws_subscription) {
             // this.logger.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
             projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
+          }
+          if ('status' in projectUser_from_ws_subscription) {
+            projectuser['status'] = projectUser_from_ws_subscription['status'];
           }
 
         }
@@ -981,11 +992,58 @@ getProjectUserRole() {
   }
 
   public generateFake(count: number): Array<number> {
-    const indexes = [];
-    for (let i = 0; i < count; i++) {
+    const n = Math.max(0, Math.floor(Number(count)) || 0);
+    const indexes: number[] = [];
+    for (let i = 0; i < n; i++) {
       indexes.push(i);
     }
     return indexes;
+  }
+
+  /** Numero di slot skeleton: come i teammate reali in vista collassata (max cap), o count API se inferiore; fallback = cap finché non arriva l’API. */
+  get teammateSkeletonSlotCount(): number {
+    const raw = this.project_user_length as unknown;
+    if (raw === undefined || raw === null) {
+      return this.teammateCarouselVisibleCap;
+    }
+    const n = Math.floor(Number(raw));
+    if (!Number.isFinite(n) || n < 1) {
+      return 0;
+    }
+    return Math.min(n, this.teammateCarouselVisibleCap);
+  }
+
+  get displayedTeammatesForCarousel(): any[] {
+    const arr = this.projectUserArray || [];
+    const cap = this.teammateCarouselVisibleCap;
+    if (this.teammatesCarouselExpanded || arr.length <= cap) {
+      return arr;
+    }
+    return arr.slice(0, cap);
+  }
+
+  get teammatesCarouselOverflowCount(): number {
+    const n = (this.projectUserArray || []).length;
+    return Math.max(0, n - this.teammateCarouselVisibleCap);
+  }
+
+  get teammatesCarouselOverflowChipVisible(): boolean {
+    const n = (this.projectUserArray || []).length;
+    return n > this.teammateCarouselVisibleCap && !this.teammatesCarouselExpanded;
+  }
+
+  expandTeammatesCarousel(ev?: Event): void {
+    ev?.stopPropagation();
+    if ((this.projectUserArray || []).length <= this.teammateCarouselVisibleCap || this.teammatesCarouselExpanded) {
+      return;
+    }
+    if (ev && (ev as KeyboardEvent).type === 'keydown') {
+      const ke = ev as KeyboardEvent;
+      if (ke.key === ' ' || ke.key === 'Spacebar') {
+        ke.preventDefault();
+      }
+    }
+    this.teammatesCarouselExpanded = true;
   }
 
   getLoggedUser() {

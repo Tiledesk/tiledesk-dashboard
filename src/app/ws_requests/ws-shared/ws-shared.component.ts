@@ -104,7 +104,7 @@ export class WsSharedComponent implements OnInit {
   //   const index = this.priority.findIndex(x => x.name === priorityname);
   //   return index
   // }
-  openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string, projectId?: string) {
+  _openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string, projectId?: string) {
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
     let _requester_fullanme = ""
@@ -135,7 +135,46 @@ export class WsSharedComponent implements OnInit {
       this.router.navigate(['conversation-detail', requestid, fullname, 'active']);
       this.logger.log('[WS-SHARED] openChatToTheSelectedConversation - navigazione interna a conversation-detail/' + requestid + '/' + fullname + '/active');
     }
+    
 
+
+    // if (chatTabCount) {
+    //   if (+chatTabCount > 0) {
+    //     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')
+
+    //     url = CHAT_BASE_URL + '#/conversation-detail?convId=' + requestid
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+    //   } else if (chatTabCount && +chatTabCount === 0) {
+    //     url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    //     this.openWindow('Tiledesk - Open Source Live Chat', url)
+    //   }
+    // } else {
+    //   url = CHAT_BASE_URL + '#/conversation-detail/' + requestid + "/" + requester_fullanme + "/active"
+    //   this.openWindow('Tiledesk - Open Source Live Chat', url)
+    // }
+  }
+
+    openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
+    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
+    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
+    let _requester_fullanme = ""
+    if (requester_fullanme.indexOf("#") !== -1) {
+      this.logger.log("requester_fullanme contains #");
+      _requester_fullanme = requester_fullanme.replace(/#/g, "%23")
+
+    } else {
+      this.logger.log("String does not contain #");
+      _requester_fullanme = requester_fullanme
+    }
+    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
+    const chatTabCount = localStorage.getItem('tabCount')
+    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
+
+    let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
+    let url = baseUrl + requestid + '/' + _requester_fullanme.trim() + '/active'
+    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
+    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+    myWindow.focus();
 
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {

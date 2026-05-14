@@ -115,3 +115,9 @@ export const LogLevel = {
     'INFO' : 2,
     'DEBUG' : 3
 }
+
+export const TEAMMATE_STATUS = [
+    { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg', label: "LABEL_AVAILABLE" },
+    { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg', label: "LABEL_NOT_AVAILABLE" },
+    { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg', label: "LABEL_INACTIVE" },
+];

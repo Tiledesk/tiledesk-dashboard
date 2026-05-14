@@ -33,6 +33,8 @@ import {
 
 
 export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
+  private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -45,6 +47,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     context: null,
     advancedPrompt: null,
     citations: null,
+    useHyde: null,
+    useCache: null,
+    reRanking: null,
+    reRankingMultipler: null,
   }]
   panelOpenState = false;
   chunksPanelOpen = false;
@@ -76,6 +82,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   question: string = "";
   /** Preview: risposta in streaming (default) vs risposta completa in un’unica richiesta. */
   previewUseStream = true;
+   /**
+   * Snapshot of `previewUseStream` taken right before `useCache` is turned on,
+   * so we can restore it when the user turns cache off again. Cache and
+   * streaming are mutually exclusive at the API level, so we force stream off
+   * while cache is on; without this snapshot the stream toggle would stay off
+   * after disabling cache, even though the UI re-enables it.
+   * `null` means "no pending restore".
+   */
+  private previewUseStreamBeforeCache: boolean | null = null;
   answer: string = "";
   source_url: any;
   responseTime: number | null = null;
@@ -91,8 +106,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number;
   public chunkOnly: boolean
+  public reRanking: boolean;
+  public reRankingMultipler: number;
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
+  public useHyde: boolean // = false;
+  public useCache: boolean // = false;
   contentChunks: string[] = [];
   contentSources: { value: string; isUrl: boolean }[] = [];
 
@@ -147,6 +166,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.alpha = this.selectedNamespace.preview_settings.alpha;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context;
+      this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier;
       this.logger.log('[MODAL-PREVIEW-KB] this.selectedNamespace.preview_settings ', this.selectedNamespace.preview_settings)
 
       
@@ -156,6 +176,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       } else {
         this.chunkOnly = this.selectedNamespace.preview_settings.chunks_only
         this.logger.log("[MODAL-PREVIEW-KB] chunkOnly ", this.chunkOnly)
+      }
+
+      if (!this.selectedNamespace.preview_settings.reranking) {
+        this.reRanking = false
+        this.selectedNamespace.preview_settings.reranking = this.reRanking
+      } else {
+        this.reRanking = this.selectedNamespace.preview_settings.reranking
+        this.logger.log("[MODAL-PREVIEW-KB] reRanking ", this.reRanking)
       }
 
       if (!this.selectedNamespace.preview_settings.advancedPrompt) {
@@ -173,6 +201,31 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.citations = this.selectedNamespace.preview_settings.citations
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
       }
+
+      if (!this.selectedNamespace.preview_settings.use_hyde) {
+        this.useHyde = false
+        this.selectedNamespace.preview_settings.use_hyde = this.useHyde
+      } else {
+        this.useHyde = this.selectedNamespace.preview_settings.use_hyde
+        this.logger.log("[MODAL-PREVIEW-KB] useHyde ", this.useHyde)
+      }
+
+      if (!this.selectedNamespace.preview_settings.use_cache) {
+        this.useCache = false
+        this.selectedNamespace.preview_settings.use_cache = this.useCache
+      } else {
+        this.useCache = this.selectedNamespace.preview_settings.use_cache
+        this.logger.log("[MODAL-PREVIEW-KB] useCache ", this.useCache)
+      }
+      // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
+      //if (this.useCache === true) {
+      //  this.previewUseStream = false;
+      // }
+
+      // Cache and streaming are mutually exclusive: cached responses cannot be
+      // streamed. The helper forces stream off when cache is on and restores
+      // the previous stream value when cache is turned off.
+      this.syncStreamWithCache();
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace preview_settings', this.selectedNamespace.preview_settings)
@@ -256,6 +309,25 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   }
 
+   /**
+   * Keep `previewUseStream` in sync with `useCache`. Cache and streaming are
+   * mutually exclusive at the API level: when cache turns ON we snapshot the
+   * current stream value and force stream OFF; when cache turns OFF we restore
+   * the snapshotted value so the UI reflects what the user previously had.
+   * Idempotent on repeated calls with the same `useCache` state.
+   */
+  private syncStreamWithCache(): void {
+    if (this.useCache === true) {
+      if (this.previewUseStreamBeforeCache === null) {
+        this.previewUseStreamBeforeCache = this.previewUseStream;
+      }
+      this.previewUseStream = false;
+    } else if (this.previewUseStreamBeforeCache !== null) {
+      this.previewUseStream = this.previewUseStreamBeforeCache;
+      this.previewUseStreamBeforeCache = null;
+    }
+  }
+
   /**
    * Stessi limiti dello slider in modal-preview-settings (`applyMaxTokenSliderFromUtil`), senza reset al default del modello.
    */
@@ -275,7 +347,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     const clamp = (v: number) => Math.min(Math.max(v, max_tokens_min), max_tokens_max);
     const raw = this.maxTokens;
     if (raw != null && !Number.isNaN(Number(raw))) {
-      this.maxTokens = clamp(Number(raw));
+      let v = Number(raw);
+      const modelNorm = (modelValue || '').trim().toLowerCase();
+      if (modelNorm === 'gpt-4o' && v === ModalPreviewKnowledgeBaseComponent.SERVER_LEGACY_MAX_TOKENS_SENTINEL) {
+        v = getLlmModelDefaultMaxTokens('gpt-4o');
+      }
+      this.maxTokens = clamp(v);
     } else {
       this.maxTokens = clamp(getLlmModelDefaultMaxTokens(modelValue));
     }
@@ -320,7 +397,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.isopenasetting = isopenasetting
     this.dialogRefAiSettings = this.dialog.open(ModalPreviewSettingsComponent, {
       width: '320px',
-      position: { left: 'calc(50% + 230px)', top: '60px' },
+      position: { left: 'calc(50% + 210px)', top: '60px' },
+      autoFocus: false,
       hasBackdrop: false,
       data: {
         selectedNamespace: this.selectedNamespace,
@@ -457,6 +535,25 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges chunkOnly to use for test from selectedNamespace ', this.chunkOnly)
         }
 
+        if (editedAiSettings && editedAiSettings[0]['reRanking'] === true) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 1', this.reRanking)
+        } else if (editedAiSettings && editedAiSettings[0]['reRanking'] === false) {
+          this.reRanking = editedAiSettings[0]['reRanking']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from editedAiSettings 2', this.reRanking)
+        } else if ((editedAiSettings && editedAiSettings[0]['reRanking'] === null)) {
+          this.reRanking = this.selectedNamespace.preview_settings.reranking
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRanking to use for test from selectedNamespace ', this.reRanking)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['reRankingMultipler']) {
+          this.reRankingMultipler = editedAiSettings[0]['reRankingMultipler']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from editedAiSettings 1', this.reRankingMultipler)
+        } else {
+          this.reRankingMultipler = this.selectedNamespace.preview_settings.reranking_multiplier
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges reRankingMultipler to use for test from selectedNamespace ', this.reRankingMultipler)
+        }
+
         if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
           this.advancedPrompt = editedAiSettings[0]['advancedPrompt']
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test from editedAiSettings 1', this.advancedPrompt)
@@ -478,6 +575,37 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.citations = this.selectedNamespace.preview_settings.citations;
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test from selectedNamespace ', this.citations)
         }
+
+        if (editedAiSettings && editedAiSettings[0]['useHyde'] === true) {
+          this.useHyde = editedAiSettings[0]['useHyde']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from editedAiSettings 1', this.useHyde)
+        } else if (editedAiSettings && editedAiSettings[0]['useHyde'] === false) {
+          this.useHyde = editedAiSettings[0]['useHyde']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from editedAiSettings 2', this.useHyde)
+        } else if (editedAiSettings && editedAiSettings[0]['useHyde'] === null) {
+          this.useHyde = this.selectedNamespace.preview_settings.use_hyde;
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useHyde to use for test from selectedNamespace ', this.useHyde)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['useCache'] === true) {
+          this.useCache = editedAiSettings[0]['useCache']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from editedAiSettings 1', this.useCache)
+        } else if (editedAiSettings && editedAiSettings[0]['useCache'] === false) {
+          this.useCache = editedAiSettings[0]['useCache']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from editedAiSettings 2', this.useCache)
+        } else if (editedAiSettings && editedAiSettings[0]['useCache'] === null) {
+          this.useCache = this.selectedNamespace.preview_settings.use_cache;
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges useCache to use for test from selectedNamespace ', this.useCache)
+        }
+        // Cache and streaming are mutually exclusive: cached responses cannot be streamed.
+        //if (this.useCache === true) {
+        //  this.previewUseStream = false;
+        // }
+
+        // Cache and streaming are mutually exclusive: cached responses cannot
+        // be streamed. The helper forces stream off when cache is on and
+        // restores the previous stream value when cache is turned off again.
+        this.syncStreamWithCache();
       } else {
         this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings are empty')
       }
@@ -530,9 +658,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
       "chunks_only": this.chunkOnly,
+      "reranking": this.reRanking,
+      "reranking_multiplier": this.reRankingMultipler,
       "system_context": this.context,
       'advancedPrompt': this.advancedPrompt,
       'citations': this.citations,
+      'use_hyde': this.useHyde,
+      'use_cache': this.useCache,
       'llm': this.selectedNamespace.preview_settings.llm,
       'tags':this.kbTagsArray
     }
