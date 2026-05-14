@@ -3271,6 +3271,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "У файлі CSV, який потрібно завантажити, стовпці розділені символом",
     "ExportAndImport": "Експорт і Імпорт",
     "ExportAsJSON": "Експорт як JSON",
+    "ExportAsCSV": "Експортувати у CSV",
     "ImportFromJSON": "Імпорт з JSON",
     "ImportFromCSV": "Імпортувати з CSV",
     "ConvertToOffline": "Перетворити в офлайн",

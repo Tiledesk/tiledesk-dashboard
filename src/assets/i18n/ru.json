@@ -3255,6 +3255,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "В файле CSV, который необходимо загрузить, столбцы разделены",
     "ExportAndImport":"Экспорт и импорт",
     "ExportAsJSON": "Экспортировать как JSON",
+    "ExportAsCSV": "Экспортировать в CSV",
     "ImportFromJSON": "Импорт из JSON",
     "ImportFromCSV":"Импорт из CSV",
     "ConvertToOffline":"Преобразовать в автономный режим",

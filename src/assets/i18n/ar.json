@@ -3256,6 +3256,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "في ملف CSV المراد تحميله ، يتم فصل الأعمدة بـ",
     "ExportAndImport": "تصدير واستيراد",
     "ExportAsJSON": "تصدير بتنسيق JSON",
+    "ExportAsCSV": "تصدير بصيغة CSV",
     "ImportFromJSON": "استيراد من JSON",
     "ImportFromCSV": "استيراد من CSV",
     "ConvertToOffline": "تحويل إلى غير متصل بالشبكة",

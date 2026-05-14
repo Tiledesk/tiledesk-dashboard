@@ -3255,6 +3255,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "У ЦСВ датотеци за отпремање, колоне су раздвојене помоћу",
     "ExportAndImport":"Извоз и увоз",
     "ExportAsJSON": "Извези као ЈСОН",
+    "ExportAsCSV": "Извези као CSV",
     "ImportFromJSON": "Увоз из ЈСОН-а",
     "ImportFromCSV":"Увези из ЦСВ-а",
     "ConvertToOffline":"Претворите у офлајн",

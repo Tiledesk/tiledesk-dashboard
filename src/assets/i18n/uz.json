@@ -3254,6 +3254,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Yuklanishi kerak bo'lgan CSV faylida ustunlar bilan ajratilgan",
     "ExportAndImport": "Eksport va import",
     "ExportAsJSON": "JSON sifatida eksport qiling",
+    "ExportAsCSV": "CSV sifatida eksport qilish",
     "ImportFromJSON": "JSON dan import qilish",
     "ImportFromCSV":"CSV dan import qilish",
     "ConvertToOffline":"Oflayn rejimga aylantirish",

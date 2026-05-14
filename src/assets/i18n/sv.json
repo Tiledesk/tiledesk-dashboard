@@ -3271,6 +3271,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "I CSV-filen som ska laddas upp är kolumnerna åtskilda av",
     "ExportAndImport": "Exportera och importera",
     "ExportAsJSON": "Exportera som JSON",
+    "ExportAsCSV": "Exportera som CSV",
     "ImportFromJSON": "Importera från JSON",
     "ImportFromCSV": "Importera från CSV",
     "ConvertToOffline": "Konvertera till offline",

@@ -3271,6 +3271,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Жүктеп салынатын CSV файлында бағандар арқылы бөлінеді",
     "ExportAndImport": "Экспорт және импорт",
     "ExportAsJSON": "JSON ретінде экспорттау",
+    "ExportAsCSV": "CSV ретінде экспорттау",
     "ImportFromJSON": "JSON ішінен импорттау",
     "ImportFromCSV": "CSV ішінен импорттау",
     "ConvertToOffline": "Офлайнға түрлендіру",

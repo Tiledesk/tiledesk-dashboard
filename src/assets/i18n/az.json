@@ -3255,6 +3255,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"Yüklənəcək CSV faylında sütunlar ilə ayrılır",
     "ExportAndImport":"İxrac və İdxal",
     "ExportAsJSON": "JSON kimi ixrac edin",
+    "ExportAsCSV": "CSV kimi ixrac et",
     "ImportFromJSON": "JSON-dan idxal edin",
     "ImportFromCSV":"CSV-dən idxal edin",
     "ConvertToOffline":"Oflayna çevirin",

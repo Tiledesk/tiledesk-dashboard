@@ -3255,6 +3255,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Dans le fichier CSV à uploader, les colonnes sont séparées par",
     "ExportAndImport": "Exporter et Importer",
     "ExportAsJSON": "Exporter au format JSON",
+    "ExportAsCSV": "Exporter en CSV",
     "ImportFromJSON": "Importer depuis JSON",
     "ImportFromCSV": "Importer depuis CSV",
     "ConvertToOffline": "Convertir hors ligne",

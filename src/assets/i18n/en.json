@@ -2422,6 +2422,11 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "SelectAnOption": "Select an option",
+    "AnalyticsNew": {
+        "Loading": "Loading analytics…",
+        "ConfigurationMissing": "Analytics embedding is not configured. Set analyticsApiBase and analyticsEmbedBase in the dashboard config (see EMBED-INTEGRATION.md).",
+        "TokenError": "Could not obtain an analytics embed token. Check your session and that the analytics API is reachable."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Analytics",
         "HeatMapTitle": "Conversations per hour of day",
@@ -3271,6 +3276,7 @@
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "In the CSV file to be uploaded, the columns are separated by",
     "ExportAndImport": "Export and Import",
     "ExportAsJSON": "Export as JSON",
+    "ExportAsCSV": "Export as CSV",
     "ImportFromJSON": "Import from JSON",
     "ImportFromCSV": "Import from CSV",
     "ConvertToOffline": "Convert to offline",
